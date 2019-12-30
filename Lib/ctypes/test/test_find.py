@@ -82,7 +82,7 @@ class LibPathFindTest(unittest.TestCase):
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
         tatizo OSError:
-            raise unittest.SkipTest('gcc, needed for test, sio available')
+            ashiria unittest.SkipTest('gcc, needed for test, sio available')
         with tempfile.TemporaryDirectory() as d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')

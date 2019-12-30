@@ -73,7 +73,7 @@ kundi RelativeImports:
                             callback(global_)
 
 
-    eleza test_module_kutoka_module(self):
+    eleza test_module_from_module(self):
         # [module kutoka module]
         create = 'pkg.__init__', 'pkg.mod2'
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
@@ -85,7 +85,7 @@ kundi RelativeImports:
             self.assertEqual(module.mod2.attr, 'pkg.mod2')
         self.relative_import_test(create, globals_, callback)
 
-    eleza test_attr_kutoka_module(self):
+    eleza test_attr_from_module(self):
         # [attr kutoka module]
         create = 'pkg.__init__', 'pkg.mod2'
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.mod1'}
@@ -149,7 +149,7 @@ kundi RelativeImports:
             self.assertEqual(module.__name__, 'pkg')
         self.relative_import_test(create, globals_, callback)
 
-    eleza test_too_high_kutoka_package(self):
+    eleza test_too_high_from_package(self):
         # [too high kutoka package]
         create = ['top_level', 'pkg.__init__']
         globals_ = ({'__package__': 'pkg'},
@@ -161,7 +161,7 @@ kundi RelativeImports:
                                     level=2)
         self.relative_import_test(create, globals_, callback)
 
-    eleza test_too_high_kutoka_module(self):
+    eleza test_too_high_from_module(self):
         # [too high kutoka module]
         create = ['top_level', 'pkg.__init__', 'pkg.module']
         globals_ = {'__package__': 'pkg'}, {'__name__': 'pkg.module'}
@@ -177,7 +177,7 @@ kundi RelativeImports:
         ukijumuisha self.assertRaises(ValueError):
             self.__import__('')
 
-    eleza test_import_kutoka_different_package(self):
+    eleza test_import_from_different_package(self):
         # Test agizaing kutoka a different package than the caller.
         # kwenye pkg.subpkg1.mod
         # kutoka ..subpkg2 agiza mod

@@ -19,7 +19,7 @@ class CCompiler:
 
     The basic idea behind a compiler abstraction class is that each
     instance can be used for all the compile/link steps in building a
-    single project.  Thus, attributes common to all of those compile and
+    single project.  Thus, attributes common to all of those compile na
     link steps -- include directories, macros to define, libraries to link
     against, etc. -- are attributes of the compiler instance.  To allow for
     variability in how individual files are treated, most of those
@@ -131,7 +131,7 @@ class CCompiler:
         On platforms with a command-line (Unix, DOS/Windows), each of these
         is a string that will be split into executable name and (optional)
         list of arguments.  (Splitting the string is done similarly to how
-        Unix shells operate: words are delimited by spaces, but quotes and
+        Unix shells operate: words are delimited by spaces, but quotes na
         backslashes can override this.  See
         'distutils.util.split_quoted()'.)
         """
@@ -146,7 +146,7 @@ class CCompiler:
 
         for key in kwargs:
             if key haiko kwenye self.executables:
-                raise ValueError("unknown executable '%s' for class %s" %
+                ashiria ValueError("unknown executable '%s' for class %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
@@ -167,14 +167,14 @@ class CCompiler:
     def _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' is a valid macro
         definition, ie. either (name,value) 2-tuple or a (name,) tuple.  Do
-        nothing if all definitions are OK, raise TypeError otherwise.
+        nothing if all definitions are OK, ashiria TypeError otherwise.
         """
         for defn in definitions:
-            if sio (isinstance(defn, tuple) and
-                    (len(defn) in (1, 2) and
-                      (isinstance (defn[1], str) or defn[1] is None)) and
+            if sio (isinstance(defn, tuple) na
+                    (len(defn) in (1, 2) na
+                      (isinstance (defn[1], str) ama defn[1] is None)) na
                     isinstance (defn[0], str)):
-                raise TypeError(("invalid macro definition '%s': " % defn) + \
+                ashiria TypeError(("invalid macro definition '%s': " % defn) + \
                       "must be tuple (string,), (string, string), or " + \
                       "(string, None)")
 
@@ -200,7 +200,7 @@ class CCompiler:
         """Undefine a preprocessor macro for all compilations driven by
         this compiler object.  If the same macro is defined by
         'define_macro()' and undefined by 'undefine_macro()' the last call
-        takes precedence (including multiple redefinitions or
+        takes precedence (including multiple redefinitions ama
         undefinitions).  If the macro is redefined/undefined on a
         per-compilation basis (ie. in the call to 'compile()'), then that
         takes precedence.
@@ -313,21 +313,21 @@ class CCompiler:
         if outdir is None:
             outdir = self.output_dir
         lasivyo sio isinstance(outdir, str):
-            raise TypeError("'output_dir' must be a string or None")
+            ashiria TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
         lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
         isipokua:
-            raise TypeError("'macros' (if supplied) must be a list of tuples")
+            ashiria TypeError("'macros' (if supplied) must be a list of tuples")
 
         if incdirs is None:
             incdirs = self.include_dirs
         lasivyo isinstance(incdirs, (list, tuple)):
             incdirs = list(incdirs) + (self.include_dirs or [])
         isipokua:
-            raise TypeError(
+            ashiria TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
         if extra is None:
@@ -366,27 +366,27 @@ class CCompiler:
         is a list, and augments it with 'self.macros'; ensures that
         'include_dirs' is a list, and augments it with 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. for 'output_dir' either string or None, and for 'macros' and
+        i.e. for 'output_dir' either string or None, and for 'macros' na
         'include_dirs' either list or None.
         """
         if output_dir is None:
             output_dir = self.output_dir
         lasivyo sio isinstance(output_dir, str):
-            raise TypeError("'output_dir' must be a string or None")
+            ashiria TypeError("'output_dir' must be a string or None")
 
         if macros is None:
             macros = self.macros
         lasivyo isinstance(macros, list):
             macros = macros + (self.macros or [])
         isipokua:
-            raise TypeError("'macros' (if supplied) must be a list of tuples")
+            ashiria TypeError("'macros' (if supplied) must be a list of tuples")
 
         if include_dirs is None:
             include_dirs = self.include_dirs
         lasivyo isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs or [])
         isipokua:
-            raise TypeError(
+            ashiria TypeError(
                   "'include_dirs' (if supplied) must be a list of strings")
 
         return output_dir, macros, include_dirs
@@ -414,13 +414,13 @@ class CCompiler:
         'objects' and 'output_dir'.
         """
         if sio isinstance(objects, (list, tuple)):
-            raise TypeError("'objects' must be a list or tuple of strings")
+            ashiria TypeError("'objects' must be a list or tuple of strings")
         objects = list(objects)
 
         if output_dir is None:
             output_dir = self.output_dir
         lasivyo sio isinstance(output_dir, str):
-            raise TypeError("'output_dir' must be a string or None")
+            ashiria TypeError("'output_dir' must be a string or None")
 
         return (objects, output_dir)
 
@@ -436,7 +436,7 @@ class CCompiler:
         lasivyo isinstance(libraries, (list, tuple)):
             libraries = list (libraries) + (self.libraries or [])
         isipokua:
-            raise TypeError(
+            ashiria TypeError(
                   "'libraries' (if supplied) must be a list of strings")
 
         if library_dirs is None:
@@ -444,7 +444,7 @@ class CCompiler:
         lasivyo isinstance(library_dirs, (list, tuple)):
             library_dirs = list (library_dirs) + (self.library_dirs or [])
         isipokua:
-            raise TypeError(
+            ashiria TypeError(
                   "'library_dirs' (if supplied) must be a list of strings")
 
         if runtime_library_dirs is None:
@@ -453,7 +453,7 @@ class CCompiler:
             runtime_library_dirs = (list(runtime_library_dirs) +
                                     (self.runtime_library_dirs or []))
         isipokua:
-            raise TypeError("'runtime_library_dirs' (if supplied) "
+            ashiria TypeError("'runtime_library_dirs' (if supplied) "
                             "must be a list of strings")
 
         return (libraries, library_dirs, runtime_library_dirs)
@@ -628,7 +628,7 @@ class CCompiler:
              extra_postargs=None,
              build_temp=None,
              target_lang=None):
-        """Link a bunch of stuff together to create an executable or
+        """Link a bunch of stuff together to create an executable ama
         shared library file.
 
         The "bunch of stuff" consists of the list of object files supplied
@@ -671,7 +671,7 @@ class CCompiler:
 
         Raises LinkError on failure.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
 
     # Old 'link_*()' methods, rewritten to use the new 'link()' method.
@@ -743,19 +743,19 @@ class CCompiler:
         """Return the compiler option to add 'dir' to the list of
         directories searched for libraries.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def runtime_library_dir_option(self, dir):
         """Return the compiler option to add 'dir' to the list of
         directories searched for runtime libraries.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def library_option(self, lib):
         """Return the compiler option to add 'lib' to the list of libraries
         linked into the shared library or executable.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def has_function(self, funcname, includes=None, include_dirs=None,
                      libraries=None, library_dirs=None):
@@ -808,7 +808,7 @@ int main (int argc, char **argv) {
         the current platform).  Return None if 'lib' wasn't found in any of
         the specified directories.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     # -- Filename generation methods -----------------------------------
 
@@ -853,7 +853,7 @@ int main (int argc, char **argv) {
             base = os.path.splitdrive(base)[1] # Chop off the drive
             base = base[os.path.isabs(base):]  # If abs, chop off leading /
             if ext haiko kwenye self.src_extensions:
-                raise UnknownFileError(
+                ashiria UnknownFileError(
                       "unknown file type '%s' (from '%s')" % (ext, src_name))
             if strip_dir:
                 base = os.path.basename(base)
@@ -877,7 +877,7 @@ int main (int argc, char **argv) {
                          strip_dir=0, output_dir=''):
         assert output_dir ni sio None
         if lib_type haiko kwenye ("static", "shared", "dylib", "xcode_stub"):
-            raise ValueError(
+            ashiria ValueError(
                   "'lib_type' must be \"static\", \"shared\", \"dylib\", or \"xcode_stub\"")
         fmt = getattr(self, lib_type + "_lib_format")
         ext = getattr(self, lib_type + "_lib_extension")
@@ -991,7 +991,7 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
     """Generate an instance of some CCompiler subclass for the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
     (eg. 'posix', 'nt'), and 'compiler' defaults to the default compiler
-    for that platform.  Currently only 'posix' and 'nt' are supported, and
+    for that platform.  Currently only 'posix' and 'nt' are supported, na
     the default compilers are "traditional Unix interface" (UnixCCompiler
     class) and Visual C++ (MSVCCompiler class).  Note that it's perfectly
     possible to ask for a Unix compiler object under Windows, and a
@@ -1010,7 +1010,7 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
         if compiler ni sio None:
             msg = msg + " with '%s' compiler" % compiler
-        raise DistutilsPlatformError(msg)
+        ashiria DistutilsPlatformError(msg)
 
     jaribu:
         module_name = "distutils." + module_name
@@ -1018,11 +1018,11 @@ def new_compiler(plat=None, compiler=None, verbose=0, dry_run=0, force=0):
         module = sys.modules[module_name]
         klass = vars(module)[class_name]
     tatizo ImportError:
-        raise DistutilsModuleError(
+        ashiria DistutilsModuleError(
               "can't compile C/C++ code: unable to load module '%s'" % \
               module_name)
     tatizo KeyError:
-        raise DistutilsModuleError(
+        ashiria DistutilsModuleError(
                "can't compile C/C++ code: unable to find class '%s' "
                "in module '%s'" % (class_name, module_name))
 
@@ -1056,7 +1056,7 @@ def gen_preprocess_options(macros, include_dirs):
     pp_opts = []
     for macro in macros:
         if sio (isinstance(macro, tuple) and 1 <= len(macro) <= 2):
-            raise TypeError(
+            ashiria TypeError(
                   "bad macro definition '%s': "
                   "each element of 'macros' list must be a 1- or 2-tuple"
                   % macro)
@@ -1078,9 +1078,9 @@ def gen_preprocess_options(macros, include_dirs):
 
 
 def gen_lib_options (compiler, library_dirs, runtime_library_dirs, libraries):
-    """Generate linker options for searching library directories and
+    """Generate linker options for searching library directories na
     linking with specific libraries.  'libraries' and 'library_dirs' are,
-    respectively, lists of library names (not filenames!) and search
+    respectively, lists of library names (sio filenames!) and search
     directories.  Returns a list of command-line options suitable for use
     with some compiler (depending on the two format strings passed in).
     """

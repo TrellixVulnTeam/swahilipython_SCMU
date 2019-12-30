@@ -285,7 +285,7 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        lasivyo (not modifiers
+        lasivyo (sio modifiers
               na final_key haiko kwenye FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')

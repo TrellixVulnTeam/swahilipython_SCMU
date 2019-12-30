@@ -44,7 +44,7 @@ kundi TupleTest(seq_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertKweli(not ())
+        self.assertKweli(sio ())
         self.assertKweli((42, ))
 
     eleza test_len(self):
@@ -173,7 +173,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # j ^ -2 == -j when j ni odd.
         cands = list(range(-10, -1)) + list(range(9))
 
-        # Note:  -1 ni omitted because hash(-1) == hash(-2) == -2, and
+        # Note:  -1 ni omitted because hash(-1) == hash(-2) == -2, na
         # there's nothing the tuple hash can do to avoid collisions
         # inherited kutoka collisions kwenye the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
@@ -419,7 +419,7 @@ kundi TupleTest(seq_tests.CommonTest):
 #
 # "old tuple test" ni just a string name kila the test being run.
 #
-# "32-bit upper hash codes" means this was run under a 64-bit build and
+# "32-bit upper hash codes" means this was run under a 64-bit build na
 # we've shifted away the lower 32 bits of the hash codes.
 #
 # "pileup" ni 0 ikiwa there were no collisions across those hash codes.

@@ -15,15 +15,15 @@ kundi Quitter(object):
         self.name = name
         self.eof = eof
     def __repr__(self):
-        return 'Use %s() or %s to exit' % (self.name, self.eof)
+        return 'Use %s() ama %s to exit' % (self.name, self.eof)
     def __call__(self, code=None):
         # Shells like IDLE catch the SystemExit, but listen when their
         # stdin wrapper is closed.
         jaribu:
             sys.stdin.close()
-        except:
+        tatizo:
             pass
-        raise SystemExit(code)
+        ashiria SystemExit(code)
 
 
 kundi _Printer(object):

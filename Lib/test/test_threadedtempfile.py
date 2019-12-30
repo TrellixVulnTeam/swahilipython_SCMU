@@ -1,6 +1,6 @@
 """
 Create na delete FILES_PER_THREAD temp files (via tempfile.TemporaryFile)
-in each of NUM_THREADS threads, recording the number of successes and
+in each of NUM_THREADS threads, recording the number of successes na
 failures.  A failure ni a bug kwenye tempfile, na may be due to:
 
 + Trying to create more than one tempfile ukijumuisha the same name.
@@ -40,7 +40,7 @@ kundi TempFileGreedy(threading.Thread):
             jaribu:
                 f = tempfile.TemporaryFile("w+b")
                 f.close()
-            except:
+            tatizo:
                 self.error_count += 1
                 print_exc(file=self.errors)
             isipokua:

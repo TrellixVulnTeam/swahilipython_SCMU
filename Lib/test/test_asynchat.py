@@ -57,7 +57,7 @@ kundi echo_server(threading.Thread):
                 n = conn.send(self.buffer[:self.chunk_size])
                 time.sleep(0.001)
                 self.buffer = self.buffer[n:]
-        except:
+        tatizo:
             pita
 
         conn.close()

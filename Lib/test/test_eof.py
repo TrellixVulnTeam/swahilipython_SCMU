@@ -36,8 +36,8 @@ kundi EOFTestCase(unittest.TestCase):
             exec('\\')
         self.assertEqual(str(excinfo.exception), expect)
 
-    @unittest.skipIf(not sys.executable, "sys.executable required")
-    eleza test_line_continuation_EOF_kutoka_file_bpo2180(self):
+    @unittest.skipIf(sio sys.executable, "sys.executable required")
+    eleza test_line_continuation_EOF_from_file_bpo2180(self):
         """Ensure tok_nextc() does sio add too many ending newlines."""
         ukijumuisha support.temp_dir() kama temp_dir:
             file_name = script_helper.make_script(temp_dir, 'foo', '\\')

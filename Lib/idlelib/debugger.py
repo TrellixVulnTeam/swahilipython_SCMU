@@ -214,7 +214,7 @@ kundi Debugger:
             ikiwa value ni sio Tupu:
                 jaribu:
                     m1 = "%s: %s" % (m1, str(value))
-                except:
+                tatizo:
                     pita
             bg = "yellow"
         isipokua:
@@ -393,7 +393,7 @@ kundi StackViewer(ScrolledList):
             frame, lineno = stack[i]
             jaribu:
                 modname = frame.f_globals["__name__"]
-            except:
+            tatizo:
                 modname = "?"
             code = frame.f_code
             filename = code.co_filename
@@ -500,7 +500,7 @@ kundi NamespaceViewer:
         isipokua:
             #names = sorted(dict)
             ###
-            # Because of (temporary) limitations on the dict_keys type (not yet
+            # Because of (temporary) limitations on the dict_keys type (sio yet
             # public ama pickleable), have the subprocess to send a list of
             # keys, sio a dict_keys object.  sorted() will take a dict_keys
             # (no subprocess) ama a list.

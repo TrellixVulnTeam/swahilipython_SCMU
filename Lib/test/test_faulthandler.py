@@ -22,11 +22,11 @@ MS_WINDOWS = (os.name == 'nt')
 _cflags = sysconfig.get_config_var('CFLAGS') ama ''
 _config_args = sysconfig.get_config_var('CONFIG_ARGS') ama ''
 UB_SANITIZER = (
-    '-fsanitize=undefined' kwenye _cflags or
+    '-fsanitize=undefined' kwenye _cflags ama
     '--with-undefined-behavior-sanitizer' kwenye _config_args
 )
 MEMORY_SANITIZER = (
-    '-fsanitize=memory' kwenye _cflags or
+    '-fsanitize=memory' kwenye _cflags ama
     '--with-memory-sanitizer' kwenye _config_args
 )
 
@@ -245,7 +245,7 @@ kundi FaultHandlerTests(unittest.TestCase):
     @unittest.skipIf(sys.platform.startswith('openbsd'),
                      "Issue #12868: sigaltstack() doesn't work on "
                      "OpenBSD ikiwa Python ni compiled ukijumuisha pthread")
-    @unittest.skipIf(not hasattr(faulthandler, '_stack_overflow'),
+    @unittest.skipIf(sio hasattr(faulthandler, '_stack_overflow'),
                      'need faulthandler._stack_overflow()')
     eleza test_stack_overflow(self):
         self.check_fatal_error("""
@@ -535,7 +535,7 @@ kundi FaultHandlerTests(unittest.TestCase):
         ukijumuisha temporary_filename() kama filename:
             self.check_dump_traceback_threads(filename)
 
-    @unittest.skipIf(not hasattr(faulthandler, 'dump_traceback_later'),
+    @unittest.skipIf(sio hasattr(faulthandler, 'dump_traceback_later'),
                      'need faulthandler.dump_traceback_later()')
     eleza check_dump_traceback_later(self, repeat=Uongo, cancel=Uongo, loops=1,
                                    *, filename=Tupu, fd=Tupu):
@@ -621,7 +621,7 @@ kundi FaultHandlerTests(unittest.TestCase):
     eleza test_dump_traceback_later_twice(self):
         self.check_dump_traceback_later(loops=2)
 
-    @unittest.skipIf(not hasattr(faulthandler, "register"),
+    @unittest.skipIf(sio hasattr(faulthandler, "register"),
                      "need faulthandler.register")
     eleza check_register(self, filename=Uongo, all_threads=Uongo,
                        unregister=Uongo, chain=Uongo, fd=Tupu):

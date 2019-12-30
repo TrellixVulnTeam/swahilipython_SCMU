@@ -819,7 +819,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     eleza test_404(self):
-        # send POST ukijumuisha http.client, it should rudisha 404 header and
+        # send POST ukijumuisha http.client, it should rudisha 404 header na
         # 'Not Found' message.
         ukijumuisha contextlib.closing(http.client.HTTPConnection(ADDR, PORT)) kama conn:
             conn.request('POST', '/this-is-not-valid')

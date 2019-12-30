@@ -26,7 +26,7 @@ agiza _ctypes_test
 testdll = CDLL(_ctypes_test.__file__)
 
 # Return machine address `a` as a (possibly long) non-negative integer.
-# Starting with Python 2.5, id(anything) is always non-negative, and
+# Starting with Python 2.5, id(anything) is always non-negative, na
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 def positive_address(a):
     if a >= 0:
@@ -197,7 +197,7 @@ class WCharPointersTestCase(unittest.TestCase):
         self.assertEqual(None, func(c_wchar_p(None)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
-        # XXX Currently, these raise TypeErrors, although they shouldn't:
+        # XXX Currently, these ashiria TypeErrors, although they shouldn't:
         self.assertEqual("123", func(c_wbuffer("123")))
         ca = c_wchar("a")
         self.assertEqual("a", func(pointer(ca))[0])

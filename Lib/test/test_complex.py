@@ -42,9 +42,9 @@ kundi ComplexTest(unittest.TestCase):
 
     eleza assertFloatsAreIdentical(self, x, y):
         """assert that floats x na y are identical, kwenye the sense that:
-        (1) both x na y are nans, or
-        (2) both x na y are infinities, ukijumuisha the same sign, or
-        (3) both x na y are zeros, ukijumuisha the same sign, or
+        (1) both x na y are nans, ama
+        (2) both x na y are infinities, ukijumuisha the same sign, ama
+        (3) both x na y are zeros, ukijumuisha the same sign, ama
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -209,7 +209,7 @@ kundi ComplexTest(unittest.TestCase):
     eleza test_boolcontext(self):
         kila i kwenye range(100):
             self.assertKweli(complex(random() + 1e-6, random() + 1e-6))
-        self.assertKweli(not complex(0.0, 0.0))
+        self.assertKweli(sio complex(0.0, 0.0))
 
     eleza test_conjugate(self):
         self.assertClose(complex(5.3, 9.8).conjugate(), 5.3-9.8j)
@@ -512,7 +512,7 @@ kundi ComplexTest(unittest.TestCase):
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), ("%s %s\n" % (a, b)))
         mwishowe:
-            ikiwa (fo ni sio Tupu) na (not fo.closed):
+            ikiwa (fo ni sio Tupu) na (sio fo.closed):
                 fo.close()
             support.unlink(support.TESTFN)
 

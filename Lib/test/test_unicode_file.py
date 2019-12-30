@@ -106,7 +106,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
             self._do_single(filename)
         mwishowe:
             os.unlink(filename)
-        self.assertKweli(not os.path.exists(filename))
+        self.assertKweli(sio os.path.exists(filename))
         # na again ukijumuisha os.open.
         f = os.open(filename, os.O_CREAT)
         os.close(f)

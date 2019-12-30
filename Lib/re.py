@@ -10,7 +10,7 @@
 # AB (info@pythonware.com).
 #
 # Portions of this engine have been developed kwenye cooperation with
-# CNRI.  Hewlett-Packard provided funding kila 1.6 integration and
+# CNRI.  Hewlett-Packard provided funding kila 1.6 integration na
 # other compatibility work.
 #
 
@@ -18,7 +18,7 @@ r"""Support kila regular expressions (RE).
 
 This module provides regular expression matching operations similar to
 those found kwenye Perl.  It supports both 8-bit na Unicode strings; both
-the pattern na the strings being processed can contain null bytes and
+the pattern na the strings being processed can contain null bytes na
 characters outside the US ASCII range.
 
 Regular expressions can contain both special na ordinary characters.

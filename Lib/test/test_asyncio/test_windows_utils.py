@@ -5,7 +5,7 @@ import unittest
 import warnings
 
 if sys.platform != 'win32':
-    raise unittest.SkipTest('Windows only')
+    ashiria unittest.SkipTest('Windows only')
 
 agiza _overlapped
 agiza _winapi
@@ -37,7 +37,7 @@ class PipeTests(unittest.TestCase):
             tatizo OSError as e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
             isipokua:
-                raise RuntimeError('expected ERROR_IO_INCOMPLETE')
+                ashiria RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
             self.assertFalse(ov2.pending)
@@ -75,7 +75,7 @@ class PipeTests(unittest.TestCase):
         tatizo OSError as e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
         isipokua:
-            raise RuntimeError('expected ERROR_INVALID_HANDLE')
+            ashiria RuntimeError('expected ERROR_INVALID_HANDLE')
 
 
 class PopenTests(unittest.TestCase):

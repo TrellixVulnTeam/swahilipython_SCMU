@@ -38,7 +38,7 @@ kundi DisplayHookTest(unittest.TestCase):
             dh(Tupu)
 
         self.assertEqual(out.getvalue(), "")
-        self.assertKweli(not hasattr(builtins, "_"))
+        self.assertKweli(sio hasattr(builtins, "_"))
 
         # sys.displayhook() requires arguments
         self.assertRaises(TypeError, dh)

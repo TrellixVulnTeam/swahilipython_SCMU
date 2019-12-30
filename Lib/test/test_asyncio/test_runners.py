@@ -13,7 +13,7 @@ class TestPolicy(asyncio.AbstractEventLoopPolicy):
 
     def get_event_loop(self):
         # shouldn't ever be called by asyncio.run()
-        raise RuntimeError
+        ashiria RuntimeError
 
     def new_event_loop(self):
         return self.loop_factory()
@@ -68,7 +68,7 @@ class RunTests(BaseTest):
     def test_asyncio_run_raises(self):
         async def main():
             await asyncio.sleep(0)
-            raise ValueError('spam')
+            ashiria ValueError('spam')
 
         with self.assertRaisesRegex(ValueError, 'spam'):
             asyncio.run(main())
@@ -168,7 +168,7 @@ class RunTests(BaseTest):
 
             nonlocal lazyboy
             lazyboy = asyncio.create_task(spin())
-            raise FancyExit
+            ashiria FancyExit
 
         with self.assertRaises(FancyExit):
             asyncio.run(main())

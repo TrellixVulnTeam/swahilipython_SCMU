@@ -402,7 +402,7 @@ frozenset2({0,
     #See http://bugs.python.org/issue13907
     @test.support.cpython_only
     eleza test_set_of_sets_reprs(self):
-        # This test creates a complex arrangement of frozensets and
+        # This test creates a complex arrangement of frozensets na
         # compares the pretty-printed repr against a string hard-coded in
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
@@ -419,7 +419,7 @@ frozenset2({0,
         # >>> frozenset({1}) < frozenset({0})
         # Uongo
         #
-        # Consequently, this test ni fragile and
+        # Consequently, this test ni fragile na
         # implementation-dependent.  Small changes to Python's sort
         # algorithm cause the test to fail when it should pita.
         # XXX Or changes to the dictionary implmentation...

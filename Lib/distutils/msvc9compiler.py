@@ -66,7 +66,7 @@ class Reg:
             d = cls.read_values(base, path)
             if d and key in d:
                 return d[key]
-        raise KeyError(key)
+        ashiria KeyError(key)
     get_value = classmethod(get_value)
 
     def read_keys(cls, base, key):
@@ -138,9 +138,9 @@ class MacroExpander:
                 self.set_macro("FrameworkSDKDir", NET_BASE,
                                "sdkinstallrootv2.0")
             isipokua:
-                raise KeyError("sdkinstallrootv2.0")
+                ashiria KeyError("sdkinstallrootv2.0")
         tatizo KeyError:
-            raise DistutilsPlatformError(
+            ashiria DistutilsPlatformError(
             """Python was built with Visual Studio 2008;
 extensions must be built with a compiler than can generate compatible binaries.
 Visual Studio 2008 was sio found on this system. If you have Cygwin installed,
@@ -258,7 +258,7 @@ def query_vcvarsall(version, arch="x86"):
     result = {}
 
     if vcvarsall is None:
-        raise DistutilsPlatformError("Unable to find vcvarsall.bat")
+        ashiria DistutilsPlatformError("Unable to find vcvarsall.bat")
     log.debug("Calling 'vcvarsall.bat %s' (version=%s)", arch, version)
     popen = subprocess.Popen('"%s" %s & set' % (vcvarsall, arch),
                              stdout=subprocess.PIPE,
@@ -266,7 +266,7 @@ def query_vcvarsall(version, arch="x86"):
     jaribu:
         stdout, stderr = popen.communicate()
         if popen.wait() != 0:
-            raise DistutilsPlatformError(stderr.decode("mbcs"))
+            ashiria DistutilsPlatformError(stderr.decode("mbcs"))
 
         stdout = stdout.decode("mbcs")
         for line in stdout.split("\n"):
@@ -286,14 +286,14 @@ def query_vcvarsall(version, arch="x86"):
         popen.stderr.close()
 
     if len(result) != len(interesting):
-        raise ValueError(str(list(result.keys())))
+        ashiria ValueError(str(list(result.keys())))
 
     return result
 
 # More globals
 VERSION = get_build_version()
 if VERSION < 8.0:
-    raise DistutilsPlatformError("VC %0.1f ni sio supported by this module" % VERSION)
+    ashiria DistutilsPlatformError("VC %0.1f ni sio supported by this module" % VERSION)
 # MACROS = MacroExpander(VERSION)
 
 class MSVCCompiler(CCompiler) :
@@ -345,7 +345,7 @@ class MSVCCompiler(CCompiler) :
         # sanity check for platforms to prevent obscure errors later.
         ok_plats = 'win32', 'win-amd64'
         if plat_name haiko kwenye ok_plats:
-            raise DistutilsPlatformError("--plat-name must be one of %s" %
+            ashiria DistutilsPlatformError("--plat-name must be one of %s" %
                                          (ok_plats,))
 
         if "DISTUTILS_USE_SDK" in os.environ and "MSSdk" in os.environ and self.find_exe("cl.exe"):
@@ -361,7 +361,7 @@ class MSVCCompiler(CCompiler) :
             # to cross compile, you use 'x86_amd64'.
             # On AMD64, 'vcvars32.bat amd64' is a native build env; to cross
             # compile use 'x86' (ie, it runs the x86 compiler directly)
-            if plat_name == get_platform() or plat_name == 'win32':
+            if plat_name == get_platform() ama plat_name == 'win32':
                 # native build or cross-compile to win32
                 plat_spec = PLAT_TO_VCVARS[plat_name]
             isipokua:
@@ -376,7 +376,7 @@ class MSVCCompiler(CCompiler) :
             os.environ['include'] = vc_env['include']
 
             if len(self.__paths) == 0:
-                raise DistutilsPlatformError("Python was built with %s, "
+                ashiria DistutilsPlatformError("Python was built with %s, "
                        "and extensions need to be built with the same "
                        "version of the compiler, but it isn't installed."
                        % self.__product)
@@ -435,10 +435,10 @@ class MSVCCompiler(CCompiler) :
             base = os.path.splitdrive(base)[1] # Chop off the drive
             base = base[os.path.isabs(base):]  # If abs, chop off leading /
             if ext haiko kwenye self.src_extensions:
-                # Better to raise an exception instead of silently continuing
+                # Better to ashiria an exception instead of silently continuing
                 # and later complain about sources and targets having
                 # different lengths
-                raise CompileError ("Don't know how to compile %s" % src_name)
+                ashiria CompileError ("Don't know how to compile %s" % src_name)
             if strip_dir:
                 base = os.path.basename (base)
             if ext in self._rc_extensions:
@@ -493,7 +493,7 @@ class MSVCCompiler(CCompiler) :
                     self.spawn([self.rc] + pp_opts +
                                [output_opt] + [input_opt])
                 tatizo DistutilsExecError as msg:
-                    raise CompileError(msg)
+                    ashiria CompileError(msg)
                 endelea
             lasivyo ext in self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
@@ -504,7 +504,7 @@ class MSVCCompiler(CCompiler) :
                 #     it includes
                 #
                 # For now (since there are no options to change this),
-                # we use the source-directory for the include file and
+                # we use the source-directory for the include file na
                 # the build directory for the RC file and message
                 # resources. This works at least for win32all.
                 h_dir = os.path.dirname(src)
@@ -520,11 +520,11 @@ class MSVCCompiler(CCompiler) :
                                ["/fo" + obj] + [rc_file])
 
                 tatizo DistutilsExecError as msg:
-                    raise CompileError(msg)
+                    ashiria CompileError(msg)
                 endelea
             isipokua:
                 # how to handle this file?
-                raise CompileError("Don't know how to compile %s to %s"
+                ashiria CompileError("Don't know how to compile %s to %s"
                                    % (src, obj))
 
             output_opt = "/Fo" + obj
@@ -533,7 +533,7 @@ class MSVCCompiler(CCompiler) :
                            [input_opt, output_opt] +
                            extra_postargs)
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
         return objects
 
@@ -558,7 +558,7 @@ class MSVCCompiler(CCompiler) :
             jaribu:
                 self.spawn([self.lib] + lib_args)
             tatizo DistutilsExecError as msg:
-                raise LibError(msg)
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -639,7 +639,7 @@ class MSVCCompiler(CCompiler) :
             jaribu:
                 self.spawn([self.linker] + ld_args)
             tatizo DistutilsExecError as msg:
-                raise LinkError(msg)
+                ashiria LinkError(msg)
 
             # embed the manifest
             # XXX - this is somewhat fragile - if mt.exe fails, distutils
@@ -654,7 +654,7 @@ class MSVCCompiler(CCompiler) :
                     self.spawn(['mt.exe', '-nologo', '-manifest',
                                 mffilename, out_arg])
                 tatizo DistutilsExecError as msg:
-                    raise LinkError(msg)
+                    ashiria LinkError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -702,7 +702,7 @@ class MSVCCompiler(CCompiler) :
             # runtimes are haiko kwenye WinSxS folder, but in Python's own
             # folder), the runtimes do sio need to be in every folder
             # with .pyd's.
-            # Returns either the filename of the modified manifest or
+            # Returns either the filename of the modified manifest ama
             # None if no manifest should be embedded.
             manifest_f = open(manifest_file)
             jaribu:
@@ -741,7 +741,7 @@ class MSVCCompiler(CCompiler) :
         return "/LIBPATH:" + dir
 
     def runtime_library_dir_option(self, dir):
-        raise DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to set runtime library search path for MSVC++")
 
     def library_option(self, lib):

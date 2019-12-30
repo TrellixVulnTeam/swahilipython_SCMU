@@ -199,7 +199,7 @@ isipokua:
     class stdcall_dll(WinDLL):
         def __getattr__(self, name):
             if name[:2] == '__' and name[-2:] == '__':
-                raise AttributeError(name)
+                ashiria AttributeError(name)
             func = self._FuncPtr(("s_" + name, self))
             setattr(self, name, func)
             return func

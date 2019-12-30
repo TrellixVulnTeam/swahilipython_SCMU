@@ -244,38 +244,38 @@ feature_namespaces = "http://xml.org/sax/features/namespaces"
 # true: Perform Namespace processing (default).
 # false: Optionally do sio perform Namespace processing
 #        (implies namespace-prefixes).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_namespace_prefixes = "http://xml.org/sax/features/namespace-prefixes"
 # true: Report the original prefixed names na attributes used kila Namespace
 #       declarations.
-# false: Do sio report attributes used kila Namespace declarations, and
+# false: Do sio report attributes used kila Namespace declarations, na
 #        optionally do sio report original prefixed names (default).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_string_interning = "http://xml.org/sax/features/string-interning"
-# true: All element names, prefixes, attribute names, Namespace URIs, and
+# true: All element names, prefixes, attribute names, Namespace URIs, na
 #       local names are interned using the built-in intern function.
 # false: Names are sio necessarily interned, although they may be (default).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_validation = "http://xml.org/sax/features/validation"
-# true: Report all validation errors (implies external-general-entities and
+# true: Report all validation errors (implies external-general-entities na
 #       external-parameter-entities).
 # false: Do sio report validation errors.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_external_ges = "http://xml.org/sax/features/external-general-entities"
 # true: Include all external general (text) entities.
 # false: Do sio include external general entities.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_external_pes = "http://xml.org/sax/features/external-parameter-entities"
 # true: Include all external parameter entities, including the external
 #       DTD subset.
 # false: Do sio include any external parameter entities, even the external
 #        DTD subset.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 all_features = [feature_namespaces,
                 feature_namespace_prefixes,
@@ -307,7 +307,7 @@ property_dom_node = "http://xml.org/sax/properties/dom-node"
 # description: When parsing, the current DOM node being visited ikiwa this is
 #              a DOM iterator; when sio parsing, the root DOM node for
 #              iteration.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 property_xml_string = "http://xml.org/sax/properties/xml-string"
 # data type: String

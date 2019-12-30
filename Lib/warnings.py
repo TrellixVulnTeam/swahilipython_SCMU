@@ -354,9 +354,9 @@ eleza warn_explicit(message, category, filename, lineno,
     # Search the filters
     kila item kwenye filters:
         action, msg, cat, mod, ln = item
-        ikiwa ((msg ni Tupu ama msg.match(text)) and
-            issubclass(category, cat) and
-            (mod ni Tupu ama mod.match(module)) and
+        ikiwa ((msg ni Tupu ama msg.match(text)) na
+            issubclass(category, cat) na
+            (mod ni Tupu ama mod.match(module)) na
             (ln == 0 ama lineno == ln)):
             koma
     isipokua:

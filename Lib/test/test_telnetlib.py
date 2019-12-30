@@ -108,7 +108,7 @@ kundi TelnetAlike(telnetlib.Telnet):
         ashiria NotImplementedError()
     eleza close(self): pita
     eleza sock_avail(self):
-        rudisha (not self.sock.block)
+        rudisha (sio self.sock.block)
     eleza msg(self, msg, *args):
         ukijumuisha support.captured_stdout() kama out:
             telnetlib.Telnet.msg(self, msg, *args)

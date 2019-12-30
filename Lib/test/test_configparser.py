@@ -235,7 +235,7 @@ kundi BasicTestCase(CfgParserTestCaseClass):
             eq(cf['NoValue'].get('no-such-option-without-value',
                       fallback=Uongo), Uongo)
 
-        # Make sure the right things happen kila remove_section() and
+        # Make sure the right things happen kila remove_section() na
         # remove_option(); added to include check kila SourceForge bug #123324.
 
         cf[self.default_section]['this_value'] = '1'
@@ -355,7 +355,7 @@ boolean {0[0]} NO
                 the larch {0[1]} 1
             """.format(self.delimiters)))
 
-    eleza test_basic_kutoka_dict(self):
+    eleza test_basic_from_dict(self):
         config = {
             "Foo Bar": {
                 "foo": "bar1",
@@ -1072,10 +1072,10 @@ kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
     eleza test_dominating_multiline_values(self):
         # We're reading kutoka file because this ni where the code changed
         # during performance updates kwenye Python 3.2
-        cf_kutoka_file = self.newconfig()
+        cf_from_file = self.newconfig()
         ukijumuisha open(support.TESTFN) kama f:
-            cf_kutoka_file.read_file(f)
-        self.assertEqual(cf_kutoka_file.get('section8', 'lovely_spam4'),
+            cf_from_file.read_file(f)
+        self.assertEqual(cf_from_file.get('section8', 'lovely_spam4'),
                          self.wonderful_spam.replace('\t\n', '\n'))
 
 
@@ -1360,7 +1360,7 @@ kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
         longname = 'yeah, sections can be indented kama well'
         self.assertUongo(cf.getboolean(longname, 'are they subsections'))
         self.assertEqual(cf.get(longname, 'lets use some Unicode'), '片仮名')
-        self.assertEqual(len(cf.items('another one!')), 5) # 4 kwenye section and
+        self.assertEqual(len(cf.items('another one!')), 5) # 4 kwenye section na
                                                            # `go` kutoka DEFAULT
         ukijumuisha self.assertRaises(configparser.InterpolationMissingOptionError):
             cf.items('no values here')

@@ -14,7 +14,7 @@ Date: Fri, 4 May 2001 14:05:44 -0400
 
 Hi,
 
-I'm sorry but I'm using a drainbread ISP, which although big and
+I'm sorry but I'm using a drainbread ISP, which although big na
 wealthy can't seem to generate standard compliant email. :(
 
 This message has a Content-Type: header with no subtype.  I hope you

@@ -1247,7 +1247,7 @@ kundi TestCallbackVarArgs(BaseTest):
         rargs = parser.rargs
         wakati rargs:
             arg = rargs[0]
-            ikiwa ((arg[:2] == "--" na len(arg) > 2) or
+            ikiwa ((arg[:2] == "--" na len(arg) > 2) ama
                 (arg[:1] == "-" na len(arg) > 1 na arg[1] != "-")):
                 koma
             isipokua:
@@ -1461,7 +1461,7 @@ Options:
     the evil
     spirits
     that cause
-    trouble and
+    trouble na
     mayhem)
   --foo=FOO
     store FOO
@@ -1472,7 +1472,7 @@ Options:
   -h, --help
     show this
     help
-    message and
+    message na
     exit
 """
 

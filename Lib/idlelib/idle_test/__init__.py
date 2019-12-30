@@ -3,7 +3,7 @@ which tests the IDLE application kama part of the stdlib test suite.
 Run IDLE tests alone ukijumuisha "python -m test.test_idle".
 Starting ukijumuisha Python 3.6, IDLE requires tcl/tk 8.5 ama later.
 
-This package na its contained modules are subject to change and
+This package na its contained modules are subject to change na
 any direct use ni at your own risk.
 '''
 kutoka os.path agiza dirname

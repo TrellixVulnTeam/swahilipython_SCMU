@@ -490,7 +490,7 @@ eleza median_grouped(data, interval=1):
     0.5-1.5, 1.5-2.5, 2.5-3.5, etc. The middle value falls somewhere in
     kundi 3.5-4.5, na interpolation ni used to estimate it.
 
-    Optional argument ``interval`` represents the kundi interval, and
+    Optional argument ``interval`` represents the kundi interval, na
     defaults to 1. Changing the kundi interval naturally will change the
     interpolated 50th percentile value:
 
@@ -599,7 +599,7 @@ eleza multimode(data):
 # reasonable choice.  Consider a random sample of nine values kutoka a
 # population ukijumuisha a uniform distribution kutoka 0.0 to 100.0.  The
 # distribution of the third ranked sample point ni described by
-# betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, and
+# betavariate(alpha=3, beta=7) which has mode=0.250, median=0.286, na
 # mean=0.300.  Only the latter (which corresponds ukijumuisha R6) gives the
 # desired cut point ukijumuisha 30% of the population falling below that
 # value, making it comparable to a result kutoka an inv_cdf() function.
@@ -718,7 +718,7 @@ eleza variance(data, xbar=Tupu):
     1.3720238095238095
 
     This function does sio check that ``xbar`` ni actually the mean of
-    ``data``. Giving arbitrary values kila ``xbar`` may lead to invalid or
+    ``data``. Giving arbitrary values kila ``xbar`` may lead to invalid ama
     impossible results.
 
     Decimals na Fractions are supported:

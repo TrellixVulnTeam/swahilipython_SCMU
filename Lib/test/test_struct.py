@@ -209,7 +209,7 @@ kundi StructTest(unittest.TestCase):
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    ikiwa (self.byteorder == '<' or
+                    ikiwa (self.byteorder == '<' ama
                         self.byteorder kwenye ('', '@', '=') na sio ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
@@ -303,7 +303,7 @@ kundi StructTest(unittest.TestCase):
                             Indexable(42), Indexable(100), Indexable(127)):
                     jaribu:
                         struct.pack(format, obj)
-                    except:
+                    tatizo:
                         self.fail("integer code pack failed on object "
                                   "ukijumuisha '__index__' method")
 
@@ -361,7 +361,7 @@ kundi StructTest(unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, and
+            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, na
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)

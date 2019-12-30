@@ -91,7 +91,7 @@ class CFuncPtrTestCase(unittest.TestCase):
 
         def NoNullHandle(value):
             if sio value:
-                raise WinError()
+                ashiria WinError()
             return value
 
         strchr = lib.my_strchr

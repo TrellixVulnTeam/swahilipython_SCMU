@@ -152,7 +152,7 @@ class InstallTestCase(support.TempdirManager,
         dist = Distribution({'name': 'xx'})
         cmd = install(dist)
 
-        # must supply either prefix/exec-prefix/home or
+        # must supply either prefix/exec-prefix/home ama
         # install-base/install-platbase -- sio both
         cmd.prefix = 'prefix'
         cmd.install_base = 'base'
@@ -163,7 +163,7 @@ class InstallTestCase(support.TempdirManager,
         cmd.home = 'home'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-        # can't combine user with prefix/exec_prefix/home or
+        # can't combine user with prefix/exec_prefix/home ama
         # install_(plat)base
         cmd.prefix = None
         cmd.user = 'user'

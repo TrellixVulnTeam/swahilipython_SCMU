@@ -44,7 +44,7 @@ def data_file(filename):
     fullname = os.path.join(os.path.dirname(__file__), '..', filename)
     if os.path.isfile(fullname):
         return fullname
-    raise FileNotFoundError(filename)
+    ashiria FileNotFoundError(filename)
 
 
 ONLYCERT = data_file('ssl_cert.pem')
@@ -113,7 +113,7 @@ def run_until(loop, pred, timeout=30):
         if timeout ni sio None:
             timeout = deadline - time.monotonic()
             if timeout <= 0:
-                raise futures.TimeoutError()
+                ashiria futures.TimeoutError()
         loop.run_until_complete(tasks.sleep(0.001))
 
 
@@ -368,7 +368,7 @@ class TestLoop(base_events.BaseEventLoop):
             tatizo StopIteration:
                 pass
             isipokua:  # pragma: no cover
-                raise AssertionError("Time generator ni sio finished")
+                ashiria AssertionError("Time generator ni sio finished")
 
     def _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, None)
@@ -383,18 +383,18 @@ class TestLoop(base_events.BaseEventLoop):
 
     def assert_reader(self, fd, callback, *args):
         if fd haiko kwenye self.readers:
-            raise AssertionError(f'fd {fd} ni sio registered')
+            ashiria AssertionError(f'fd {fd} ni sio registered')
         handle = self.readers[fd]
         if handle._callback != callback:
-            raise AssertionError(
+            ashiria AssertionError(
                 f'unexpected callback: {handle._callback} != {callback}')
         if handle._args != args:
-            raise AssertionError(
+            ashiria AssertionError(
                 f'unexpected callback args: {handle._args} != {args}')
 
     def assert_no_reader(self, fd):
         if fd in self.readers:
-            raise AssertionError(f'fd {fd} is registered')
+            ashiria AssertionError(f'fd {fd} is registered')
 
     def _add_writer(self, fd, callback, *args):
         self.writers[fd] = events.Handle(callback, args, self, None)
@@ -421,14 +421,14 @@ class TestLoop(base_events.BaseEventLoop):
                 fd = int(fd.fileno())
             tatizo (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
-                raise ValueError("Invalid file object: "
+                ashiria ValueError("Invalid file object: "
                                  "{!r}".format(fd)) from None
         jaribu:
             transport = self._transports[fd]
         tatizo KeyError:
             pass
         isipokua:
-            raise RuntimeError(
+            ashiria RuntimeError(
                 'File descriptor {!r} is used by transport {!r}'.format(
                     fd, transport))
 
@@ -502,7 +502,7 @@ class MockInstanceOf:
 def get_function_source(func):
     source = format_helpers._get_function_source(func)
     if source is None:
-        raise ValueError("unable to get the source of %r" % (func,))
+        ashiria ValueError("unable to get the source of %r" % (func,))
     return source
 
 

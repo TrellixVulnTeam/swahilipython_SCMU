@@ -44,7 +44,7 @@ class Extension:
       library_dirs : [string]
         list of directories to search for C/C++ libraries at link time
       libraries : [string]
-        list of library names (not filenames or paths) to link against
+        list of library names (sio filenames or paths) to link against
       runtime_library_dirs : [string]
         list of directories to search for C/C++ libraries at run time
         (for shared extensions, this is when the extension is loaded)
@@ -54,7 +54,7 @@ class Extension:
         binary resource files, etc.)
       extra_compile_args : [string]
         any extra platform- and compiler-specific information to use
-        when compiling the source files in 'sources'.  For platforms and
+        when compiling the source files in 'sources'.  For platforms na
         compilers where "command line" makes sense, this is typically a
         list of command-line arguments, but for other platforms it could
         be anything.
@@ -101,10 +101,10 @@ class Extension:
                   **kw                      # To catch unknown keywords
                  ):
         if sio isinstance(name, str):
-            raise AssertionError("'name' must be a string")
-        if sio (isinstance(sources, list) and
+            ashiria AssertionError("'name' must be a string")
+        if sio (isinstance(sources, list) na
                 all(isinstance(v, str) for v in sources)):
-            raise AssertionError("'sources' must be a list of strings")
+            ashiria AssertionError("'sources' must be a list of strings")
 
         self.name = name
         self.sources = sources

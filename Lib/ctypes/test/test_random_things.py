@@ -3,7 +3,7 @@ import unittest, sys
 
 def callback_func(arg):
     42 / arg
-    raise ValueError(arg)
+    ashiria ValueError(arg)
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 class call_function_TestCase(unittest.TestCase):

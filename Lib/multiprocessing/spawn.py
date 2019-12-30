@@ -85,7 +85,7 @@ eleza get_command_line(**kwds):
     isipokua:
         prog = 'kutoka multiprocessing.spawn agiza spawn_main; spawn_main(%s)'
         prog %= ', '.join('%s=%r' % item kila item kwenye kwds.items())
-        opts = util._args_kutoka_interpreter_flags()
+        opts = util._args_from_interpreter_flags()
         rudisha [_python_exe] + opts + ['-c', prog, '--multiprocessing-fork']
 
 
@@ -182,14 +182,14 @@ eleza get_preparation_data(name):
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Tupu)
     ikiwa main_mod_name ni sio Tupu:
-        d['init_main_kutoka_name'] = main_mod_name
-    lasivyo sys.platform != 'win32' ama (not WINEXE na sio WINSERVICE):
+        d['init_main_from_name'] = main_mod_name
+    lasivyo sys.platform != 'win32' ama (sio WINEXE na sio WINSERVICE):
         main_path = getattr(main_module, '__file__', Tupu)
         ikiwa main_path ni sio Tupu:
-            ikiwa (not os.path.isabs(main_path) and
+            ikiwa (sio os.path.isabs(main_path) na
                         process.ORIGINAL_DIR ni sio Tupu):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
-            d['init_main_kutoka_path'] = os.path.normpath(main_path)
+            d['init_main_from_path'] = os.path.normpath(main_path)
 
     rudisha d
 
@@ -230,14 +230,14 @@ eleza prepare(data):
     ikiwa 'start_method' kwenye data:
         set_start_method(data['start_method'], force=Kweli)
 
-    ikiwa 'init_main_kutoka_name' kwenye data:
-        _fixup_main_kutoka_name(data['init_main_kutoka_name'])
-    lasivyo 'init_main_kutoka_path' kwenye data:
-        _fixup_main_kutoka_path(data['init_main_kutoka_path'])
+    ikiwa 'init_main_from_name' kwenye data:
+        _fixup_main_from_name(data['init_main_from_name'])
+    lasivyo 'init_main_from_path' kwenye data:
+        _fixup_main_from_path(data['init_main_from_path'])
 
 # Multiprocessing module helpers to fix up the main module in
 # spawned subprocesses
-eleza _fixup_main_kutoka_name(mod_name):
+eleza _fixup_main_from_name(mod_name):
     # __main__.py files kila packages, directories, zip archives, etc, run
     # their "main only" code unconditionally, so we don't even try to
     # populate anything kwenye __main__, nor do we make any changes to
@@ -262,7 +262,7 @@ eleza _fixup_main_kutoka_name(mod_name):
     sys.modules['__main__'] = sys.modules['__mp_main__'] = main_module
 
 
-eleza _fixup_main_kutoka_path(main_path):
+eleza _fixup_main_from_path(main_path):
     # If this process was forked, __main__ may already be populated
     current_main = sys.modules['__main__']
 
@@ -294,4 +294,4 @@ eleza import_main_path(main_path):
     '''
     Set sys.modules['__main__'] to module at main_path
     '''
-    _fixup_main_kutoka_path(main_path)
+    _fixup_main_from_path(main_path)

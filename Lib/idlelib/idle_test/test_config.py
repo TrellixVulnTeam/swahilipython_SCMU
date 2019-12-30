@@ -241,7 +241,7 @@ kundi IdleConfTest(unittest.TestCase):
                 ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(not sys.platform.startswith('win'), 'this ni test kila Windows system')
+    @unittest.skipIf(sio sys.platform.startswith('win'), 'this ni test kila Windows system')
     eleza test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=Kweli)

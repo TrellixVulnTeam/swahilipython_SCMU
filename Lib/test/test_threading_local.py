@@ -93,7 +93,7 @@ kundi BaseLocalTest:
             e2.wait()
 
             # 4) New Locals should be empty
-            pitaed = all(not hasattr(local, 'foo') kila local kwenye locals)
+            pitaed = all(sio hasattr(local, 'foo') kila local kwenye locals)
 
         t = threading.Thread(target=f)
         t.start()

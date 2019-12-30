@@ -49,7 +49,7 @@ _RATIONAL_FORMAT = re.compile(r"""
     (?P<num>\d*)               # numerator (possibly empty)
     (?:                        # followed by
        (?:/(?P<denom>\d+))?    # an optional denominator
-    |                          # or
+    |                          # ama
        (?:\.(?P<decimal>\d*))? # an optional fractional part
        (?:E(?P<exp>[-+]?\d+))? # na optional exponent
     )
@@ -164,7 +164,7 @@ kundi Fraction(numbers.Rational):
         lasivyo type(numerator) ni int ni type(denominator):
             pita # *very* normal case
 
-        lasivyo (isinstance(numerator, numbers.Rational) and
+        lasivyo (isinstance(numerator, numbers.Rational) na
             isinstance(denominator, numbers.Rational)):
             numerator, denominator = (
                 numerator.numerator * denominator.denominator,
@@ -238,12 +238,12 @@ kundi Fraction(numbers.Rational):
         # Algorithm notes: For any real number x, define a *best upper
         # approximation* to x to be a rational number p/q such that:
         #
-        #   (1) p/q >= x, and
+        #   (1) p/q >= x, na
         #   (2) ikiwa p/q > r/s >= x then s > q, kila any rational r/s.
         #
         # Define *best lower approximation* similarly.  Then it can be
         # proved that a rational number ni a best upper ama lower
-        # approximation to x if, na only if, it ni a convergent or
+        # approximation to x if, na only if, it ni a convergent ama
         # semiconvergent of the (unique shortest) endelead fraction
         # associated to x.
         #
@@ -361,7 +361,7 @@ kundi Fraction(numbers.Rational):
             3. If B <: Fraction, Python tries B.__radd__ before
                Fraction.__add__. This ni ok, because it was
                implemented ukijumuisha knowledge of Fraction, so it can
-               handle those instances before delegating to Real or
+               handle those instances before delegating to Real ama
                Complex.
 
         The next two situations describe 'b + r'. We assume that b
@@ -369,7 +369,7 @@ kundi Fraction(numbers.Rational):
         uses similar boilerplate code:
 
             4. If B <: Rational, then __radd_ converts both to the
-               builtin rational type (hey look, that's us) and
+               builtin rational type (hey look, that's us) na
                proceeds.
             5. Otherwise, __radd__ tries to find the nearest common
                base ABC, na fall back to its builtin type. Since this
@@ -559,7 +559,7 @@ kundi Fraction(numbers.Rational):
         # XXX since this method ni expensive, consider caching the result
 
         # In order to make sure that the hash of a Fraction agrees
-        # ukijumuisha the hash of a numerically equal integer, float or
+        # ukijumuisha the hash of a numerically equal integer, float ama
         # Decimal instance, we follow the rules kila numeric hashes
         # outlined kwenye the documentation.  (See library docs, 'Built-in
         # Types').
@@ -580,7 +580,7 @@ kundi Fraction(numbers.Rational):
         ikiwa type(b) ni int:
             rudisha a._numerator == b na a._denominator == 1
         ikiwa isinstance(b, numbers.Rational):
-            rudisha (a._numerator == b.numerator and
+            rudisha (a._numerator == b.numerator na
                     a._denominator == b.denominator)
         ikiwa isinstance(b, numbers.Complex) na b.imag == 0:
             b = b.real
@@ -599,7 +599,7 @@ kundi Fraction(numbers.Rational):
     eleza _richcmp(self, other, op):
         """Helper kila comparison operators, kila internal use only.
 
-        Implement comparison between a Rational instance `self`, and
+        Implement comparison between a Rational instance `self`, na
         either another Rational instance ama a float `other`.  If
         `other` ni sio a Rational instance ama a float, rudisha
         NotImplemented. `op` should be one of the six standard

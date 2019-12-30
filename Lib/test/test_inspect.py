@@ -131,7 +131,7 @@ kundi TestPredicates(IsTestBase):
         self.istest(inspect.iscode, 'mod.spam.__code__')
         jaribu:
             1/0
-        except:
+        tatizo:
             tb = sys.exc_info()[2]
             self.istest(inspect.isframe, 'tb.tb_frame')
             self.istest(inspect.istraceback, 'tb')
@@ -627,13 +627,13 @@ kundi TestOneliners(GetSourceBase):
 
     eleza test_manyargs(self):
         # Test inspect.getsource ukijumuisha a regular function where
-        # the arguments are on two lines na _not_ indented and
+        # the arguments are on two lines na _not_ indented na
         # the body on the second line ukijumuisha the last arguments.
         self.assertSourceEqual(mod2.manyargs, 40, 41)
 
     eleza test_twolinefunc(self):
         # Test inspect.getsource ukijumuisha a regular function where
-        # the body ni on two lines, following the argument list and
+        # the body ni on two lines, following the argument list na
         # endelead on the next line by a \\.
         self.assertSourceEqual(mod2.twolinefunc, 44, 45)
 
@@ -673,7 +673,7 @@ kundi TestBuggyCases(GetSourceBase):
 
     # This should sio skip kila CPython, but might on a repackaged python where
     # unicodedata ni sio an external module, ama on pypy.
-    @unittest.skipIf(not hasattr(unicodedata, '__file__') or
+    @unittest.skipIf(sio hasattr(unicodedata, '__file__') ama
                                  unicodedata.__file__.endswith('.py'),
                      "unicodedata ni sio an external binary module")
     eleza test_findsource_binary(self):
@@ -2341,7 +2341,7 @@ kundi TestSignatureObject(unittest.TestCase):
         ukijumuisha self.assertRaisesRegex(TypeError, 'is sio a callable object'):
             inspect.signature(42)
 
-    eleza test_signature_kutoka_functionlike_object(self):
+    eleza test_signature_from_functionlike_object(self):
         eleza func(a,b, *args, kwonly=Kweli, kwonlyreq, **kwargs):
             pita
 
@@ -3153,13 +3153,13 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertEqual(self.signature(Spam.foo),
                          self.signature(Ham.foo))
 
-    eleza test_signature_kutoka_callable_python_obj(self):
+    eleza test_signature_from_callable_python_obj(self):
         kundi MySignature(inspect.Signature): pita
         eleza foo(a, *, b:1): pita
         foo_sig = MySignature.kutoka_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
-    eleza test_signature_kutoka_callable_class(self):
+    eleza test_signature_from_callable_class(self):
         # A regression test kila a kundi inheriting its signature kutoka `object`.
         kundi MySignature(inspect.Signature): pita
         kundi foo: pita
@@ -3168,7 +3168,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information kila builtins requires docstrings")
-    eleza test_signature_kutoka_callable_builtin_obj(self):
+    eleza test_signature_from_callable_builtin_obj(self):
         kundi MySignature(inspect.Signature): pita
         sig = MySignature.kutoka_callable(_pickle.Pickler)
         self.assertIsInstance(sig, MySignature)
@@ -3917,7 +3917,7 @@ kundi TestMain(unittest.TestCase):
 
     eleza test_details(self):
         module = importlib.import_module('unittest')
-        args = support.optim_args_kutoka_interpreter_flags()
+        args = support.optim_args_from_interpreter_flags()
         rc, out, err = assert_python_ok(*args, '-m', 'inspect',
                                         'unittest', '--details')
         output = out.decode()

@@ -1,7 +1,7 @@
 """distutils.errors
 
 Provides exceptions used by the Distutils modules.  Note that Distutils
-modules may raise standard exceptions; in particular, SystemExit is
+modules may ashiria standard exceptions; in particular, SystemExit is
 usually raised for errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
@@ -45,7 +45,7 @@ class DistutilsOptionError (DistutilsError):
     badly-spelled values, etc.  No distinction is made between option
     values originating in the setup script, the command line, config
     files, or what-have-you -- but if we *know* something originated in
-    the setup script, we'll raise DistutilsSetupError instead."""
+    the setup script, we'll ashiria DistutilsSetupError instead."""
     pass
 
 class DistutilsSetupError (DistutilsError):

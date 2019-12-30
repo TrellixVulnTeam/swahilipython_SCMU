@@ -175,7 +175,7 @@ kundi FinderTests:
                 # EINVAL on Solaris, EBUSY on AIX, ENOTEMPTY on Windows
                 self.skipTest("platform does sio allow "
                               "the deletion of the cwd")
-        except:
+        tatizo:
             os.chdir(old_dir)
             os.rmdir(new_dir)
             ashiria

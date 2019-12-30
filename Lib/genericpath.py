@@ -86,7 +86,7 @@ eleza commonprefix(m):
 # describing the same file?
 eleza samestat(s1, s2):
     """Test whether two stat buffers reference the same file"""
-    rudisha (s1.st_ino == s2.st_ino and
+    rudisha (s1.st_ino == s2.st_ino na
             s1.st_dev == s2.st_dev)
 
 
@@ -94,7 +94,7 @@ eleza samestat(s1, s2):
 eleza samefile(f1, f2):
     """Test whether two pathnames reference the same actual file ama directory
 
-    This ni determined by the device number na i-node number and
+    This ni determined by the device number na i-node number na
     ashirias an exception ikiwa an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)

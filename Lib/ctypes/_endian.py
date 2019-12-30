@@ -18,7 +18,7 @@ def _other_endian(typ):
     # if typ is structure
     if issubclass(typ, Structure):
         return typ
-    raise TypeError("This type does sio support other endian: %s" % typ)
+    ashiria TypeError("This type does sio support other endian: %s" % typ)
 
 class _swapped_meta(type(Structure)):
     def __setattr__(self, attrname, value):
@@ -34,7 +34,7 @@ class _swapped_meta(type(Structure)):
 
 ################################################################
 
-# Note: The Structure metaclass checks for the *presence* (not the
+# Note: The Structure metaclass checks for the *presence* (sio the
 # value!) of a _swapped_bytes_ attribute to determine the bit order in
 # structures containing bit fields.
 
@@ -58,4 +58,4 @@ lasivyo sys.byteorder == "big":
         _swappedbytes_ = None
 
 isipokua:
-    raise RuntimeError("Invalid byteorder")
+    ashiria RuntimeError("Invalid byteorder")

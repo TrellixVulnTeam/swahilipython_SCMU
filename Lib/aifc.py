@@ -80,7 +80,7 @@ This rudishas an instance of a kundi ukijumuisha the following public methods:
   setpos(pos) -- seek to the specified position
   tell()      -- rudisha the current position
   close()     -- close the instance (make it unusable)
-The position rudishaed by tell(), the position given to setpos() and
+The position rudishaed by tell(), the position given to setpos() na
 the position of marks are all compatible na have nothing to do with
 the actual position kwenye the file.
 The close() method ni called automatically when the kundi instance
@@ -89,7 +89,7 @@ is destroyed.
 Writing AIFF files:
   f = aifc.open(file, 'w')
 where file ni either the name of a file ama an open file pointer.
-The open file pointer must have methods write(), tell(), seek(), and
+The open file pointer must have methods write(), tell(), seek(), na
 close().
 
 This rudishas an instance of a kundi ukijumuisha the following public methods:
@@ -115,13 +115,13 @@ This rudishas an instance of a kundi ukijumuisha the following public methods:
           -- write audio frames na patch up the file header
   close()     -- patch up the file header na close the
              output file
-You should set the parameters before the first writeframesraw or
+You should set the parameters before the first writeframesraw ama
 writeframes.  The total number of frames does sio need to be set,
 but when it ni set to the correct value, the header does sio have to
 be patched up.
 It ni best to first set all parameters, perhaps possibly the
 compression type, na then write audio frames using writeframesraw.
-When all frames have been written, either call writeframes(b'') or
+When all frames have been written, either call writeframes(b'') ama
 close() to patch up the sizes kwenye the header.
 Marks can be added anytime.  If there are any marks, you must call
 close() after all frames have been written.
@@ -130,7 +130,7 @@ is destroyed.
 
 When a file ni opened ukijumuisha the extension '.aiff', an AIFF file is
 written, otherwise an AIFF-C file ni written.  This default can be
-changed by calling aiff() ama aifc() before the first writeframes or
+changed by calling aiff() ama aifc() before the first writeframes ama
 writeframesraw.
 """
 
@@ -350,7 +350,7 @@ kundi Aifc_read:
             file_object = builtins.open(f, 'rb')
             jaribu:
                 self.initfp(file_object)
-            except:
+            tatizo:
                 file_object.close()
                 ashiria
         isipokua:
@@ -561,7 +561,7 @@ kundi Aifc_write:
             file_object = builtins.open(f, 'wb')
             jaribu:
                 self.initfp(file_object)
-            except:
+            tatizo:
                 file_object.close()
                 ashiria
 

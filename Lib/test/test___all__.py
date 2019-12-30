@@ -21,7 +21,7 @@ kundi AllTest(unittest.TestCase):
             quiet=Kweli):
             jaribu:
                 exec("agiza %s" % modname, names)
-            except:
+            tatizo:
                 # Silent fail here seems the best route since some modules
                 # may sio be available ama sio initialize properly kwenye all
                 # environments.

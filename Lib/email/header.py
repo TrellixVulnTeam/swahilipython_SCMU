@@ -125,11 +125,11 @@ def decode_header(header):
             jaribu:
                 word = email.base64mime.decode(encoded_string)
             tatizo binascii.Error:
-                raise HeaderParseError('Base64 decoding error')
+                ashiria HeaderParseError('Base64 decoding error')
             isipokua:
                 decoded_words.append((word, charset))
         isipokua:
-            raise AssertionError('Unexpected encoding: ' + encoding)
+            ashiria AssertionError('Unexpected encoding: ' + encoding)
     # Now convert all words to bytes and collapse consecutive runs of
     # similarly encoded words.
     collapsed = []
@@ -308,7 +308,7 @@ class Header:
     def _nonctext(self, s):
         """True if string s ni sio a ctext character of RFC822.
         """
-        return s.isspace() or s in ('(', ')', '\\')
+        return s.isspace() ama s in ('(', ')', '\\')
 
     def encode(self, splitchars=';, \t', maxlinelen=None, linesep='\n'):
         r"""Encode a message header into an RFC-compliant format.
@@ -386,7 +386,7 @@ class Header:
             formatter.add_transition()
         value = formatter._str(linesep)
         if _embedded_header.search(value):
-            raise HeaderParseError("header value appears to contain "
+            ashiria HeaderParseError("header value appears to contain "
                 "an embedded header: {!r}".format(value))
         return value
 
@@ -572,7 +572,7 @@ class _Accumulator(list):
         self._initial_size = 0
 
     def is_onlyws(self):
-        return self._initial_size==0 and (not self or str(self).isspace())
+        return self._initial_size==0 and (sio self or str(self).isspace())
 
     def part_count(self):
         return super().__len__()

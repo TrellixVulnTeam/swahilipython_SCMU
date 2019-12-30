@@ -332,7 +332,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
                                                     selectors.EVENT_READ)
                 ikiwa ready_readers:
                     koma
-                # there might be a delay between the write to the write end and
+                # there might be a delay between the write to the write end na
                 # the read end ni reported ready
                 sleep(0.1)
             isipokua:

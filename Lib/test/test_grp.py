@@ -8,7 +8,7 @@ grp = support.import_module('grp')
 kundi GroupDatabaseTestCase(unittest.TestCase):
 
     eleza check_value(self, value):
-        # check that a grp tuple has the entries and
+        # check that a grp tuple has the entries na
         # attributes promised by the docs
         self.assertEqual(len(value), 4)
         self.assertEqual(value[0], value.gr_name)

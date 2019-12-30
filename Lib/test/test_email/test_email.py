@@ -458,7 +458,7 @@ class TestMessageAPI(TestEmailBase):
 
     def test_del_param_on_nonexistent_header(self):
         msg = Message()
-        # Deleting param on empty msg should sio raise exception.
+        # Deleting param on empty msg should sio ashiria exception.
         msg.del_param('filename', 'content-disposition')
 
     def test_del_nonexistent_param(self):
@@ -3133,7 +3133,7 @@ class TestMiscellaneous(TestEmailBase):
         # backslashes ni sio actually a quoted pair because it ni sio inside a
         # comment or quoted string: the address being parsed has a quoted
         # string containing a quoted backslash, followed by 'example' and two
-        # backslashes, followed by another quoted string containing a space and
+        # backslashes, followed by another quoted string containing a space na
         # the word 'example'.  parseaddr copies those two backslashes
         # literally.  Per rfc5322 this ni sio technically correct since a \ may
         # sio appear in an address outside of a quoted string.  It is probably
@@ -3759,7 +3759,7 @@ Here's the message body
 class Test8BitBytesHandling(TestEmailBase):
     # In Python3 all input is string, but that doesn't work if the actual input
     # uses an 8bit transfer encoding.  To hack around that, in email 5.1 we
-    # decode byte streams using the surrogateescape error handler, and
+    # decode byte streams using the surrogateescape error handler, na
     # reconvert to binary at appropriate places if we detect surrogates.  This
     # doesn't allow us to transform headers with 8bit bytes (they get munged),
     # but it does allow us to parse and preserve them, and to decode body

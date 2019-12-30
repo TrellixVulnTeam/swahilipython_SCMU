@@ -71,7 +71,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
     Note that calling this function will alter both sys.path and os.environ.
     """
     if altinstall and default_pip:
-        raise ValueError("Cannot use altinstall and default_pip together")
+        ashiria ValueError("Cannot use altinstall and default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
 

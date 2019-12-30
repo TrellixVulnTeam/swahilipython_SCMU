@@ -16,7 +16,7 @@ class FunctionCallTestCase(unittest.TestCase):
         # "Windows fatal exception: access violation"
         with support.disable_faulthandler():
             # Call functions with invalid arguments, and make sure
-            # that access violations are trapped and raise an
+            # that access violations are trapped and ashiria an
             # exception.
             self.assertRaises(OSError, windll.kernel32.GetModuleHandleA, 32)
 
@@ -83,7 +83,7 @@ class TestWinError(unittest.TestCase):
 
         windll.kernel32.SetLastError(ERROR_INVALID_PARAMETER)
         jaribu:
-            raise WinError()
+            ashiria WinError()
         tatizo OSError as exc:
             e = exc
         self.assertEqual(e.args, args)

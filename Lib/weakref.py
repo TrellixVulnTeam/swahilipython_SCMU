@@ -492,7 +492,7 @@ kundi finalize:
     finalize(obj, func, *args, **kwargs) rudishas a callable finalizer
     object which will be called when obj ni garbage collected. The
     first time the finalizer ni called it evaluates func(*arg, **kwargs)
-    na rudishas the result. After this the finalizer ni dead, and
+    na rudishas the result. After this the finalizer ni dead, na
     calling it just rudishas Tupu.
 
     When the program exits any remaining finalizers kila which the

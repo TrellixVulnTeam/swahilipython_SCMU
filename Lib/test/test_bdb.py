@@ -181,7 +181,7 @@ kundi Tracer(Bdb):
     eleza trace_dispatch(self, frame, event, arg):
         # On an 'exception' event, call_exc_trace() kwenye Python/ceval.c discards
         # a BdbException ashiriad by the Tracer instance, so we ashiria it on the
-        # next trace_dispatch() call that occurs unless the set_quit() or
+        # next trace_dispatch() call that occurs unless the set_quit() ama
         # set_endelea() method has been invoked on the 'exception' event.
         ikiwa self.cur_tatizo ni sio Tupu:
             ashiria self.cur_except
@@ -248,7 +248,7 @@ kundi Tracer(Bdb):
         self.set_tuple = self.set_list.pop(0)
 
     eleza process_event(self, event, frame, *args):
-        # Call get_stack() to enable walking the stack ukijumuisha set_up() and
+        # Call get_stack() to enable walking the stack ukijumuisha set_up() na
         # set_down().
         tb = Tupu
         ikiwa event == 'exception':
@@ -379,7 +379,7 @@ kundi Tracer(Bdb):
             set_method(self.frame, lineno)
             rudisha
 
-        # The following set methods do sio give back control to the tracer and
+        # The following set methods do sio give back control to the tracer na
         # next_set_method() ni called recursively.
         ikiwa (args na set_type kwenye ('koma', 'clear', 'ignore', 'enable',
                                     'disable')) ama set_type kwenye ('up', 'down'):

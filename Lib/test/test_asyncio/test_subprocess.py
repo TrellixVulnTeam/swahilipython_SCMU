@@ -70,7 +70,7 @@ class SubprocessTransportTests(test_utils.TestCase):
         self.assertIsNone(transport._proc)
         self.assertIsNone(transport._protocol)
 
-        # methods must raise ProcessLookupError if the process exited
+        # methods must ashiria ProcessLookupError if the process exited
         self.assertRaises(ProcessLookupError,
                           transport.send_signal, signal.SIGTERM)
         self.assertRaises(ProcessLookupError, transport.terminate)
@@ -245,7 +245,7 @@ class SubprocessMixin:
             await proc.stdin.drain()
 
         coro = write_stdin(proc, large_data)
-        # drain() must raise BrokenPipeError or ConnectionResetError
+        # drain() must ashiria BrokenPipeError or ConnectionResetError
         with test_utils.disable_logger():
             self.assertRaises((BrokenPipeError, ConnectionResetError),
                               self.loop.run_until_complete, coro)
@@ -525,7 +525,7 @@ class SubprocessMixin:
         # Unlike SafeChildWatcher, FastChildWatcher does sio pop the
         # callbacks if waitpid() is called elsewhere. Let's clear them
         # manually to avoid a warning when the watcher is detached.
-        if (sys.platform != 'win32' and
+        if (sys.platform != 'win32' na
                 isinstance(self, SubprocessFastWatcherTests)):
             asyncio.get_child_watcher()._callbacks.clear()
 

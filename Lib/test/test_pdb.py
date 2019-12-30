@@ -250,7 +250,7 @@ eleza test_pdb_komapoint_commands():
     ...     'clear 1',
     ...     'commands 2',
     ...     'p "42"',
-    ...     'andika("42", 7*6)',     # Issue 18764 (not about komapoints)
+    ...     'andika("42", 7*6)',     # Issue 18764 (sio about komapoints)
     ...     'end',
     ...     'endelea',  # will stop at komapoint 2 (line 4)
     ...     'clear',     # clear all!

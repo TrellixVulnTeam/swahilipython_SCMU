@@ -110,7 +110,7 @@ kundi WriteTransport(BaseTransport):
     eleza writelines(self, list_of_data):
         """Write a list (or any iterable) of data bytes to the transport.
 
-        The default implementation concatenates the arguments and
+        The default implementation concatenates the arguments na
         calls write() on the result.
         """
         data = b''.join(list_of_data)
@@ -254,8 +254,8 @@ kundi _FlowControlMixin(Transport):
     The subkundi constructor must call super().__init__(extra).  This
     will call set_write_buffer_limits().
 
-    The user may call set_write_buffer_limits() and
-    get_write_buffer_size(), na their protocol's pause_writing() and
+    The user may call set_write_buffer_limits() na
+    get_write_buffer_size(), na their protocol's pause_writing() na
     resume_writing() may be called.
     """
 
@@ -287,7 +287,7 @@ kundi _FlowControlMixin(Transport):
                 })
 
     eleza _maybe_resume_protocol(self):
-        ikiwa (self._protocol_paused and
+        ikiwa (self._protocol_paused na
                 self.get_write_buffer_size() <= self._low_water):
             self._protocol_paused = Uongo
             jaribu:

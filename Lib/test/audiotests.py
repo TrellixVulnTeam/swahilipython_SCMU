@@ -325,7 +325,7 @@ kundi AudioTestsWithSourceFile(AudioTests):
         self.assertEqual(f.readframes(f.getnframes()),
                          fout.readframes(fout.getnframes()))
 
-    eleza test_read_not_kutoka_start(self):
+    eleza test_read_not_from_start(self):
         ukijumuisha open(TESTFN, 'wb') kama testfile:
             testfile.write(b'ababagalamaga')
             ukijumuisha open(self.sndfilepath, 'rb') kama f:

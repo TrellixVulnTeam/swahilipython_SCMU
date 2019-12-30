@@ -84,7 +84,7 @@ def format_test_result(result):
 
 
 def findtestdir(path=None):
-    return path or os.path.dirname(os.path.dirname(__file__)) or os.curdir
+    return path or os.path.dirname(os.path.dirname(__file__)) ama os.curdir
 
 
 def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
@@ -101,7 +101,7 @@ def findtests(testdir=None, stdtests=STDTESTS, nottests=NOTTESTS):
 
 
 def get_abs_module(ns, test_name):
-    if test_name.startswith('test.') or ns.testdir:
+    if test_name.startswith('test.') ama ns.testdir:
         return test_name
     isipokua:
         # Import it from the test package
@@ -191,7 +191,7 @@ def runtest(ns, test_name):
     """
     jaribu:
         return _runtest(ns, test_name)
-    except:
+    tatizo:
         if sio ns.pgo:
             msg = traceback.format_exc()
             print(f"test {test_name} crashed -- {msg}",
@@ -205,7 +205,7 @@ def _test_module(the_module):
     for error in loader.errors:
         print(error, file=sys.stderr)
     if loader.errors:
-        raise Exception("errors wakati loading tests")
+        ashiria Exception("errors wakati loading tests")
     support.run_unittest(tests)
 
 
@@ -287,7 +287,7 @@ def _runtest_inner(ns, test_name, display_failure=True):
     tatizo KeyboardInterrupt:
         print()
         return INTERRUPTED
-    except:
+    tatizo:
         if sio ns.pgo:
             msg = traceback.format_exc()
             print(f"test {test_name} crashed -- {msg}",
@@ -323,7 +323,7 @@ def cleanup_test_droppings(test_name, verbose):
         lasivyo os.path.isfile(name):
             kind, nuker = "file", os.unlink
         isipokua:
-            raise RuntimeError(f"os.path says {name!r} exists but is neither "
+            ashiria RuntimeError(f"os.path says {name!r} exists but is neither "
                                f"directory nor file")
 
         if verbose:

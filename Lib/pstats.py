@@ -125,7 +125,7 @@ kundi Stats:
             jaribu:
                 file_stats = os.stat(arg)
                 arg = time.ctime(file_stats.st_mtime) + "    " + arg
-            except:  # kwenye case this ni sio unix
+            tatizo:  # kwenye case this ni sio unix
                 pita
             self.files = [arg]
         lasivyo hasattr(arg, 'create_stats'):

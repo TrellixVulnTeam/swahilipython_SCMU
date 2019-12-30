@@ -123,7 +123,7 @@ kundi CmdLineTest(unittest.TestCase):
                             *cmd_line_switches, cwd=Tupu, **env_vars):
         ikiwa isinstance(script_exec_args, str):
             script_exec_args = [script_exec_args]
-        run_args = [*support.optim_args_kutoka_interpreter_flags(),
+        run_args = [*support.optim_args_from_interpreter_flags(),
                     *cmd_line_switches, *script_exec_args, *example_args]
         rc, out, err = assert_python_ok(
             *run_args, __isolated=Uongo, __cwd=cwd, **env_vars
@@ -516,7 +516,7 @@ kundi CmdLineTest(unittest.TestCase):
         script = textwrap.dedent("""\
             jaribu:
                 ashiria ValueError
-            except:
+            tatizo:
                 ashiria NameError kutoka Tupu
             """)
         ukijumuisha support.temp_dir() kama script_dir:

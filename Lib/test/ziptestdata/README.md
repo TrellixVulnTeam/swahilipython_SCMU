@@ -1,6 +1,6 @@
 # Test data for `test_zipfile`
 
-The test executables in this directory are created manually from header.sh and
+The test executables in this directory are created manually from header.sh na
 the `testdata_module_inside_zip.py` file.  You must have infozip's zip utility
 installed (`apt install zip` on Debian).
 

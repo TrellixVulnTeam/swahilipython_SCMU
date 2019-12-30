@@ -189,8 +189,8 @@ eleza _run_until_complete_cb(fut):
 
 ikiwa hasattr(socket, 'TCP_NODELAY'):
     eleza _set_nodelay(sock):
-        ikiwa (sock.family kwenye {socket.AF_INET, socket.AF_INET6} and
-                sock.type == socket.SOCK_STREAM and
+        ikiwa (sock.family kwenye {socket.AF_INET, socket.AF_INET6} na
+                sock.type == socket.SOCK_STREAM na
                 sock.proto == socket.IPPROTO_TCP):
             sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 isipokua:
@@ -334,7 +334,7 @@ kundi Server(events.AbstractServer):
 
         self._serving = Uongo
 
-        ikiwa (self._serving_forever_fut ni sio Tupu and
+        ikiwa (self._serving_forever_fut ni sio Tupu na
                 sio self._serving_forever_fut.done()):
             self._serving_forever_fut.cancel()
             self._serving_forever_fut = Tupu
@@ -593,7 +593,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         future.add_done_callback(_run_until_complete_cb)
         jaribu:
             self.run_forever()
-        except:
+        tatizo:
             ikiwa new_task na future.done() na sio future.cancelled():
                 # The coroutine ashiriad a BaseException. Consume the exception
                 # to sio log a warning, the caller doesn't have access to the
@@ -718,7 +718,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         rudisha handle
 
     eleza _check_callback(self, callback, method):
-        ikiwa (coroutines.iscoroutine(callback) or
+        ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError(
                 f"coroutines cannot be used ukijumuisha {method}()")
@@ -836,7 +836,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                                                   offset, count)
 
     async eleza _sock_sendfile_native(self, sock, file, offset, count):
-        # NB: sendfile syscall ni sio supported kila SSL sockets and
+        # NB: sendfile syscall ni sio supported kila SSL sockets na
         # non-mmap files even ikiwa sendfile ni supported by OS
         ashiria exceptions.SendfileNotAvailableError(
             f"syscall sendfile ni sio available kila socket {sock!r} "
@@ -920,7 +920,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             ikiwa sock ni sio Tupu:
                 sock.close()
             ashiria
-        except:
+        tatizo:
             ikiwa sock ni sio Tupu:
                 sock.close()
             ashiria
@@ -934,7 +934,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             happy_eyeballs_delay=Tupu, interleave=Tupu):
         """Connect to a TCP server.
 
-        Create a streaming transport connection to a given Internet host and
+        Create a streaming transport connection to a given Internet host na
         port: socket family AF_INET ama socket.AF_INET6 depending on host (or
         family ikiwa specified), socket type SOCK_STREAM. protocol_factory must be
         a callable rudishaing a protocol instance.
@@ -1070,7 +1070,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         jaribu:
             await waiter
-        except:
+        tatizo:
             transport.close()
             ashiria
 
@@ -1208,8 +1208,8 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             ikiwa sock.type != socket.SOCK_DGRAM:
                 ashiria ValueError(
                     f'A UDP Socket was expected, got {sock!r}')
-            ikiwa (local_addr ama remote_addr or
-                    family ama proto ama flags or
+            ikiwa (local_addr ama remote_addr ama
+                    family ama proto ama flags ama
                     reuse_address ama reuse_port ama allow_broadcast):
                 # show the problematic kwargs kwenye exception msg
                 opts = dict(local_addr=local_addr, remote_addr=remote_addr,
@@ -1269,7 +1269,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                 # each addr has to have info kila each (family, proto) pair
                 addr_pairs_info = [
                     (key, addr_pair) kila key, addr_pair kwenye addr_infos.items()
-                    ikiwa sio ((local_addr na addr_pair[0] ni Tupu) or
+                    ikiwa sio ((local_addr na addr_pair[0] ni Tupu) ama
                             (remote_addr na addr_pair[1] ni Tupu))]
 
                 ikiwa sio addr_pairs_info:
@@ -1307,7 +1307,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     ikiwa sock ni sio Tupu:
                         sock.close()
                     exceptions.append(exc)
-                except:
+                tatizo:
                     ikiwa sock ni sio Tupu:
                         sock.close()
                     ashiria
@@ -1332,7 +1332,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         jaribu:
             await waiter
-        except:
+        tatizo:
             transport.close()
             ashiria
 
@@ -1402,7 +1402,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
             sockets = []
             ikiwa host == '':
                 hosts = [Tupu]
-            lasivyo (isinstance(host, str) or
+            lasivyo (isinstance(host, str) ama
                   sio isinstance(host, collections.abc.Iterable)):
                 hosts = [host]
             isipokua:
@@ -1436,8 +1436,8 @@ kundi BaseEventLoop(events.AbstractEventLoop):
                     # Disable IPv4/IPv6 dual stack support (enabled by
                     # default on Linux) which makes a single socket
                     # listen on both address families.
-                    ikiwa (_HAS_IPv6 and
-                            af == socket.AF_INET6 and
+                    ikiwa (_HAS_IPv6 na
+                            af == socket.AF_INET6 na
                             hasattr(socket, 'IPPROTO_IPV6')):
                         sock.setsockopt(socket.IPPROTO_IPV6,
                                         socket.IPV6_V6ONLY,
@@ -1511,7 +1511,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         jaribu:
             await waiter
-        except:
+        tatizo:
             transport.close()
             ashiria
 
@@ -1527,7 +1527,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
 
         jaribu:
             await waiter
-        except:
+        tatizo:
             transport.close()
             ashiria
 
@@ -1666,8 +1666,8 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         isipokua:
             exc_info = Uongo
 
-        ikiwa ('source_traceback' haiko kwenye context and
-                self._current_handle ni sio Tupu and
+        ikiwa ('source_traceback' haiko kwenye context na
+                self._current_handle ni sio Tupu na
                 self._current_handle._source_traceback):
             context['handle_traceback'] = \
                 self._current_handle._source_traceback
@@ -1775,7 +1775,7 @@ kundi BaseEventLoop(events.AbstractEventLoop):
         """
 
         sched_count = len(self._scheduled)
-        ikiwa (sched_count > _MIN_SCHEDULED_TIMER_HANDLES and
+        ikiwa (sched_count > _MIN_SCHEDULED_TIMER_HANDLES na
             self._timer_cancelled_count / sched_count >
                 _MIN_CANCELLED_TIMER_HANDLES_FRACTION):
             # Remove delayed calls that were cancelled ikiwa their number

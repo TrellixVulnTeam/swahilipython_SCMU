@@ -1043,8 +1043,8 @@ kundi BaseTest:
         # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         ArraySubclassWithKwargs('b', newarg=1)
 
-    eleza test_create_kutoka_bytes(self):
-        # XXX This test probably needs to be moved kwenye a subkundi or
+    eleza test_create_from_bytes(self):
+        # XXX This test probably needs to be moved kwenye a subkundi ama
         # generalized to use self.typecode.
         a = array.array('H', b"1234")
         self.assertEqual(len(a) * a.itemsize, 4)

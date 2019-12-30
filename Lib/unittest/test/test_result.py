@@ -24,7 +24,7 @@ eleza restore_traceback():
 
 kundi Test_TestResult(unittest.TestCase):
     # Note: there are sio separate tests kila TestResult.wasSuccessful(),
-    # TestResult.errors, TestResult.failures, TestResult.testsRun or
+    # TestResult.errors, TestResult.failures, TestResult.testsRun ama
     # TestResult.shouldStop because these only have meaning kwenye terms of
     # other TestResult methods.
     #
@@ -117,12 +117,12 @@ kundi Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test which ashiriad an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -156,12 +156,12 @@ kundi Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test which ashiriad an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -174,7 +174,7 @@ kundi Test_TestResult(unittest.TestCase):
         test = Foo('test_1')
         jaribu:
             test.fail("foo")
-        except:
+        tatizo:
             exc_info_tuple = sys.exc_info()
 
         result = unittest.TestResult()
@@ -204,12 +204,12 @@ kundi Test_TestResult(unittest.TestCase):
     # ...
     # "testsRun - The total number of tests run so far."
     # ...
-    # "errors - A list containing 2-tuples of TestCase instances and
+    # "errors - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test which ashiriad an
     # unexpected exception. Contains formatted
     # tracebacks instead of sys.exc_info() results."
     # ...
-    # "failures - A list containing 2-tuples of TestCase instances and
+    # "failures - A list containing 2-tuples of TestCase instances na
     # formatted tracebacks. Each tuple represents a test where a failure was
     # explicitly signalled using the TestCase.fail*() ama TestCase.assert*()
     # methods. Contains formatted tracebacks instead
@@ -222,7 +222,7 @@ kundi Test_TestResult(unittest.TestCase):
         test = Foo('test_1')
         jaribu:
             ashiria TypeError()
-        except:
+        tatizo:
             exc_info_tuple = sys.exc_info()
 
         result = unittest.TestResult()
@@ -479,7 +479,7 @@ kundi Test_OldTestResult(unittest.TestCase):
                                        ('testExpectedFail', Kweli),
                                        ('testUnexpectedSuccess', Uongo)):
             test = Test(test_name)
-            self.assertOldResultWarning(test, int(not should_pita))
+            self.assertOldResultWarning(test, int(sio should_pita))
 
     eleza testOldTestTesultSetup(self):
         kundi Test(unittest.TestCase):

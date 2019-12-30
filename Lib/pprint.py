@@ -149,9 +149,9 @@ kundi PrettyPrinter:
         self._stream.write("\n")
 
     eleza pformat(self, object):
-        sio = _StringIO()
-        self._format(object, sio, 0, 0, {}, 0)
-        rudisha sio.getvalue()
+        sio_obj = _StringIO()
+        self._format(object, sio_obj, 0, 0, {}, 0)
+        rudisha sio_obj.getvalue()
 
     eleza isrecursive(self, object):
         rudisha self.format(object, {}, 0, 0)[2]

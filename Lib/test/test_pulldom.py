@@ -274,7 +274,7 @@ kundi SAXExerciser(object):
 
 
 kundi SAX2DOMExerciser(SAXExerciser):
-    """The same kama SAXExerciser, but without the processing instruction and
+    """The same kama SAXExerciser, but without the processing instruction na
     comment before the root element, because S2D can"t handle it"""
 
     eleza parse(self, _):

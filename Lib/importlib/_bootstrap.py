@@ -256,7 +256,7 @@ eleza _load_module_shim(self, fullname):
     This method ni deprecated.  Use loader.exec_module instead.
 
     """
-    spec = spec_kutoka_loader(fullname, self)
+    spec = spec_from_loader(fullname, self)
     ikiwa fullname kwenye sys.modules:
         module = sys.modules[fullname]
         _exec(spec, module)
@@ -283,7 +283,7 @@ eleza _module_repr(module):
         pita
     isipokua:
         ikiwa spec ni sio Tupu:
-            rudisha _module_repr_kutoka_spec(spec)
+            rudisha _module_repr_from_spec(spec)
 
     # We could use module.__class__.__name__ instead of 'module' kwenye the
     # various repr permutations.
@@ -313,7 +313,7 @@ kundi ModuleSpec:
     to use when loading the module.  `parent` ni the name of the
     package the module ni in.  The parent ni derived kutoka the name.
 
-    `is_package` determines ikiwa the module ni considered a package or
+    `is_package` determines ikiwa the module ni considered a package ama
     not.  On modules this ni reflected by the `__path__` attribute.
 
     `origin` ni the specific location used by the loader kutoka which to
@@ -334,7 +334,7 @@ kundi ModuleSpec:
     has a non-Tupu value kwenye `submodule_search_locations`, the agiza
     system will consider modules loaded kutoka the spec kama packages.
 
-    Only finders (see importlib.abc.MetaPathFinder and
+    Only finders (see importlib.abc.MetaPathFinder na
     importlib.abc.PathEntryFinder) should modify ModuleSpec instances.
 
     """
@@ -364,11 +364,11 @@ kundi ModuleSpec:
     eleza __eq__(self, other):
         smsl = self.submodule_search_locations
         jaribu:
-            rudisha (self.name == other.name and
-                    self.loader == other.loader and
-                    self.origin == other.origin and
-                    smsl == other.submodule_search_locations and
-                    self.cached == other.cached and
+            rudisha (self.name == other.name na
+                    self.loader == other.loader na
+                    self.origin == other.origin na
+                    smsl == other.submodule_search_locations na
+                    self.cached == other.cached na
                     self.has_location == other.has_location)
         tatizo AttributeError:
             rudisha Uongo
@@ -403,17 +403,17 @@ kundi ModuleSpec:
         self._set_fileattr = bool(value)
 
 
-eleza spec_kutoka_loader(name, loader, *, origin=Tupu, is_package=Tupu):
+eleza spec_from_loader(name, loader, *, origin=Tupu, is_package=Tupu):
     """Return a module spec based on various loader methods."""
     ikiwa hasattr(loader, 'get_filename'):
         ikiwa _bootstrap_external ni Tupu:
             ashiria NotImplementedError
-        spec_kutoka_file_location = _bootstrap_external.spec_kutoka_file_location
+        spec_from_file_location = _bootstrap_external.spec_from_file_location
 
         ikiwa is_package ni Tupu:
-            rudisha spec_kutoka_file_location(name, loader=loader)
+            rudisha spec_from_file_location(name, loader=loader)
         search = [] ikiwa is_package isipokua Tupu
-        rudisha spec_kutoka_file_location(name, loader=loader,
+        rudisha spec_from_file_location(name, loader=loader,
                                        submodule_search_locations=search)
 
     ikiwa is_package ni Tupu:
@@ -429,7 +429,7 @@ eleza spec_kutoka_loader(name, loader, *, origin=Tupu, is_package=Tupu):
     rudisha ModuleSpec(name, loader, origin=origin, is_package=is_package)
 
 
-eleza _spec_kutoka_module(module, loader=Tupu, origin=Tupu):
+eleza _spec_from_module(module, loader=Tupu, origin=Tupu):
     # This function ni meant kila use kwenye _setup().
     jaribu:
         spec = module.__spec__
@@ -546,7 +546,7 @@ eleza _init_module_attrs(spec, module, *, override=Uongo):
     rudisha module
 
 
-eleza module_kutoka_spec(spec):
+eleza module_from_spec(spec):
     """Create a module based on the provided spec."""
     # Typically loaders will sio implement create_module().
     module = Tupu
@@ -563,7 +563,7 @@ eleza module_kutoka_spec(spec):
     rudisha module
 
 
-eleza _module_repr_kutoka_spec(spec):
+eleza _module_repr_from_spec(spec):
     """Return the repr to use kila the module."""
     # We mostly replicate _module_repr() using the spec attributes.
     name = '?' ikiwa spec.name ni Tupu isipokua spec.name
@@ -616,7 +616,7 @@ eleza _load_backward_compatible(spec):
     # warning here.
     jaribu:
         spec.loader.load_module(spec.name)
-    except:
+    tatizo:
         ikiwa spec.name kwenye sys.modules:
             module = sys.modules.pop(spec.name)
             sys.modules[spec.name] = module
@@ -654,7 +654,7 @@ eleza _load_unlocked(spec):
         ikiwa sio hasattr(spec.loader, 'exec_module'):
             rudisha _load_backward_compatible(spec)
 
-    module = module_kutoka_spec(spec)
+    module = module_from_spec(spec)
 
     # This must be done before putting the module kwenye sys.modules
     # (otherwise an optimization shortcut kwenye agiza.c becomes
@@ -669,7 +669,7 @@ eleza _load_unlocked(spec):
                 # A namespace package so do nothing.
             isipokua:
                 spec.loader.exec_module(module)
-        except:
+        tatizo:
             jaribu:
                 toa sys.modules[spec.name]
             tatizo KeyError:
@@ -727,7 +727,7 @@ kundi BuiltinImporter:
         ikiwa path ni sio Tupu:
             rudisha Tupu
         ikiwa _imp.is_builtin(fullname):
-            rudisha spec_kutoka_loader(fullname, cls, origin='built-in')
+            rudisha spec_from_loader(fullname, cls, origin='built-in')
         isipokua:
             rudisha Tupu
 
@@ -800,7 +800,7 @@ kundi FrozenImporter:
     @classmethod
     eleza find_spec(cls, fullname, path=Tupu, target=Tupu):
         ikiwa _imp.is_frozen(fullname):
-            rudisha spec_kutoka_loader(fullname, cls, origin=cls._ORIGIN)
+            rudisha spec_from_loader(fullname, cls, origin=cls._ORIGIN)
         isipokua:
             rudisha Tupu
 
@@ -884,7 +884,7 @@ eleza _find_spec_legacy(finder, name, path):
     loader = finder.find_module(name, path)
     ikiwa loader ni Tupu:
         rudisha Tupu
-    rudisha spec_kutoka_loader(name, loader)
+    rudisha spec_from_loader(name, loader)
 
 
 eleza _find_spec(name, path, target=Tupu):
@@ -1044,7 +1044,7 @@ eleza _handle_kutokalist(module, kutokalist, import_, *, recursive=Uongo):
                 # Backwards-compatibility dictates we ignore failed
                 # agizas triggered by kutokalist kila modules that don't
                 # exist.
-                ikiwa (exc.name == kutoka_name and
+                ikiwa (exc.name == kutoka_name na
                     sys.modules.get(kutoka_name, _NEEDS_LOADING) ni sio Tupu):
                     endelea
                 ashiria
@@ -1115,7 +1115,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, kutokalist=(), level=0):
         rudisha module
 
 
-eleza _builtin_kutoka_name(name):
+eleza _builtin_from_name(name):
     spec = BuiltinImporter.find_spec(name)
     ikiwa spec ni Tupu:
         ashiria ImportError('no built-in module named ' + name)
@@ -1144,14 +1144,14 @@ eleza _setup(sys_module, _imp_module):
                 loader = FrozenImporter
             isipokua:
                 endelea
-            spec = _spec_kutoka_module(module, loader)
+            spec = _spec_from_module(module, loader)
             _init_module_attrs(spec, module)
 
     # Directly load built-in modules needed during bootstrap.
     self_module = sys.modules[__name__]
     kila builtin_name kwenye ('_thread', '_warnings', '_weakref'):
         ikiwa builtin_name haiko kwenye sys.modules:
-            builtin_module = _builtin_kutoka_name(builtin_name)
+            builtin_module = _builtin_from_name(builtin_name)
         isipokua:
             builtin_module = sys.modules[builtin_name]
         setattr(self_module, builtin_name, builtin_module)

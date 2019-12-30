@@ -174,7 +174,7 @@ kundi TestAcceleratorImported(unittest.TestCase):
     eleza test_correct_import_cET_alias(self):
         self.assertEqual(cET_alias.SubElement.__module__, '_elementtree')
 
-    eleza test_parser_comes_kutoka_C(self):
+    eleza test_parser_comes_from_C(self):
         # The type of methods defined kwenye Python code ni types.FunctionType,
         # wakati the type of methods defined inside _elementtree is
         # <kundi 'wrapper_descriptor'>

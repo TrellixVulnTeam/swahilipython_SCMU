@@ -123,7 +123,7 @@ kundi Queue:
             self._putters.append(putter)
             jaribu:
                 await putter
-            except:
+            tatizo:
                 putter.cancel()  # Just kwenye case putter ni sio done yet.
                 jaribu:
                     # Clean self._putters kutoka canceled putters.
@@ -161,7 +161,7 @@ kundi Queue:
             self._getters.append(getter)
             jaribu:
                 await getter
-            except:
+            tatizo:
                 getter.cancel()  # Just kwenye case getter ni sio done yet.
                 jaribu:
                     # Clean self._getters kutoka canceled getters.

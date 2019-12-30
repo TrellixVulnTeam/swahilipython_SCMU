@@ -87,8 +87,8 @@ kundi PropertyTests(unittest.TestCase):
         self.assertEqual(base.spam, 10)
         self.assertEqual(base._spam, 10)
         delattr(base, "spam")
-        self.assertKweli(not hasattr(base, "spam"))
-        self.assertKweli(not hasattr(base, "_spam"))
+        self.assertKweli(sio hasattr(base, "spam"))
+        self.assertKweli(sio hasattr(base, "_spam"))
         base.spam = 20
         self.assertEqual(base.spam, 20)
         self.assertEqual(base._spam, 20)

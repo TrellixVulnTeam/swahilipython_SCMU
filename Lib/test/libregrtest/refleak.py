@@ -28,7 +28,7 @@ def dash_R(ns, test_name, test_func):
     import collections.abc
 
     if sio hasattr(sys, 'gettotalrefcount'):
-        raise Exception("Tracking reference leaks requires a debug build "
+        ashiria Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
     # Avoid false positives due to various caches
@@ -185,7 +185,7 @@ def clear_caches():
         if hasattr(mod, '__warningregistry__'):
             toa mod.__warningregistry__
 
-    # Flush standard output, so that buffered data is sent to the OS and
+    # Flush standard output, so that buffered data is sent to the OS na
     # associated Python objects are reclaimed.
     for stream in (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
         if stream ni sio None:

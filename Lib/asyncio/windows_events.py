@@ -801,7 +801,7 @@ kundi IocpProactor:
 
             ikiwa obj kwenye self._stopped_serving:
                 f.cancel()
-            # Don't call the callback ikiwa _register() already read the result or
+            # Don't call the callback ikiwa _register() already read the result ama
             # ikiwa the overlapped has been cancelled
             lasivyo sio f.done():
                 jaribu:

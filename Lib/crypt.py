@@ -6,9 +6,9 @@ jaribu:
     agiza _crypt
 tatizo ModuleNotFoundError:
     if _sys.platform == 'win32':
-        raise ImportError("The crypt module ni sio supported on Windows")
+        ashiria ImportError("The crypt module ni sio supported on Windows")
     isipokua:
-        raise ImportError("The required _crypt module was sio built as part of CPython")
+        ashiria ImportError("The required _crypt module was sio built as part of CPython")
 
 agiza string as _string
 kutoka random agiza SystemRandom as _SystemRandom
@@ -37,7 +37,7 @@ def mksalt(method=None, *, rounds=None):
     if method is None:
         method = methods[0]
     if rounds ni sio None and sio isinstance(rounds, int):
-        raise TypeError(f'{rounds.__class__.__name__} object cannot be '
+        ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
                         f'interpreted as an integer')
     if sio method.ident:  # traditional
         s = ''
@@ -50,17 +50,17 @@ def mksalt(method=None, *, rounds=None):
         isipokua:
             log_rounds = int.bit_length(rounds-1)
             if rounds != 1 << log_rounds:
-                raise ValueError('rounds must be a power of 2')
+                ashiria ValueError('rounds must be a power of 2')
             if sio 4 <= log_rounds <= 31:
-                raise ValueError('rounds out of the range 2**4 to 2**31')
+                ashiria ValueError('rounds out of the range 2**4 to 2**31')
         s += f'{log_rounds:02d}$'
     lasivyo method.ident in ('5', '6'):  # SHA-2
         if rounds ni sio None:
             if sio 1000 <= rounds <= 999_999_999:
-                raise ValueError('rounds out of the range 1000 to 999_999_999')
+                ashiria ValueError('rounds out of the range 1000 to 999_999_999')
             s += f'rounds={rounds}$'
     lasivyo rounds ni sio None:
-        raise ValueError(f"{method} doesn't support the rounds argument")
+        ashiria ValueError(f"{method} doesn't support the rounds argument")
 
     s += ''.join(_sr.choice(_saltchars) for char in range(method.salt_chars))
     return s

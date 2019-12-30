@@ -150,7 +150,7 @@ kundi ThreadPoolExecutor(_base.Executor):
         self._broken = Uongo
         self._shutdown = Uongo
         self._shutdown_lock = threading.Lock()
-        self._thread_name_prefix = (thread_name_prefix or
+        self._thread_name_prefix = (thread_name_prefix ama
                                     ("ThreadPoolExecutor-%d" % self._counter()))
         self._initializer = initializer
         self._initargs = initargs

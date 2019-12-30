@@ -173,13 +173,13 @@ kundi IOBinding:
                 # If editFile ni valid na already open, flist.open will
                 # shift focus to its existing window.
                 # If the current window exists na ni a fresh unnamed,
-                # unmodified editor window (not an interpreter shell),
+                # unmodified editor window (sio an interpreter shell),
                 # pita self.loadfile to flist.open so it will load the file
                 # kwenye the current window (ikiwa the file ni sio already open)
                 # instead of a new window.
-                ikiwa (self.editwin and
-                        sio getattr(self.editwin, 'interp', Tupu) and
-                        sio self.filename and
+                ikiwa (self.editwin na
+                        sio getattr(self.editwin, 'interp', Tupu) na
+                        sio self.filename na
                         self.get_saved()):
                     flist.open(filename, self.loadfile)
                 isipokua:

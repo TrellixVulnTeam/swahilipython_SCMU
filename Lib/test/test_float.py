@@ -422,7 +422,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(INF, -0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(NAN, -0.0), 1.0)
 
-            # x**y defers to complex pow kila finite negative x and
+            # x**y defers to complex pow kila finite negative x na
             # non-integral y.
             self.assertEqual(type(pow_op(-2.0, -0.5)), complex)
             self.assertEqual(type(pow_op(-2.0, 0.5)), complex)
@@ -613,7 +613,7 @@ kundi UnknownFormatTestCase(unittest.TestCase):
 
 
 # on an IEEE platform, all we guarantee ni that bit patterns
-# representing infinities ama NaNs do sio ashiria an exception; all else
+# representing infinities ama NaNs do sio ashiria an exception; all ama
 # ni accident (today).
 # let's also try to guarantee that -0.0 na 0.0 don't get confused.
 
@@ -644,7 +644,7 @@ kundi IEEEFormatTestCase(unittest.TestCase):
 kundi FormatTestCase(unittest.TestCase):
 
     eleza test_format(self):
-        # these should be rewritten to use both format(x, spec) and
+        # these should be rewritten to use both format(x, spec) na
         # x.__format__(spec)
 
         self.assertEqual(format(0.0, 'f'), '0.000000')
@@ -918,7 +918,7 @@ kundi RoundTestCase(unittest.TestCase):
 # Beginning ukijumuisha Python 2.6 float has cross platform compatible
 # ways to create na represent inf na nan
 kundi InfNanTest(unittest.TestCase):
-    eleza test_inf_kutoka_str(self):
+    eleza test_inf_from_str(self):
         self.assertKweli(isinf(float("inf")))
         self.assertKweli(isinf(float("+inf")))
         self.assertKweli(isinf(float("-inf")))
@@ -970,7 +970,7 @@ kundi InfNanTest(unittest.TestCase):
         self.assertEqual(str(1e300 * 1e300), "inf")
         self.assertEqual(str(-1e300 * 1e300), "-inf")
 
-    eleza test_nan_kutoka_str(self):
+    eleza test_nan_from_str(self):
         self.assertKweli(isnan(float("nan")))
         self.assertKweli(isnan(float("+nan")))
         self.assertKweli(isnan(float("-nan")))
@@ -1133,7 +1133,7 @@ kundi HexFloatTestCase(unittest.TestCase):
                     self.identical(got, expected)
 
 
-    eleza test_kutoka_hex(self):
+    eleza test_from_hex(self):
         MIN = self.MIN;
         MAX = self.MAX;
         TINY = self.TINY;

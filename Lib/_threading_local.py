@@ -61,7 +61,7 @@ You can create custom local objects by subclassing the local class:
   ...     def squared(self):
   ...         return self.number ** 2
 
-This can be useful to support default values, methods and
+This can be useful to support default values, methods na
 initialization.  Note that if you define an __init__ method, it will be
 called each time the local object is used in a separate thread.  This
 is necessary to initialize each thread's dictionary.
@@ -206,7 +206,7 @@ kundi local:
 
     def __new__(cls, /, *args, **kw):
         if (args or kw) and (cls.__init__ is object.__init__):
-            raise TypeError("Initialization arguments are sio supported")
+            ashiria TypeError("Initialization arguments are sio supported")
         self = object.__new__(cls)
         impl = _localimpl()
         impl.localargs = (args, kw)
@@ -224,7 +224,7 @@ kundi local:
 
     def __setattr__(self, name, value):
         if name == '__dict__':
-            raise AttributeError(
+            ashiria AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         with _patch(self):
@@ -232,7 +232,7 @@ kundi local:
 
     def __delattr__(self, name):
         if name == '__dict__':
-            raise AttributeError(
+            ashiria AttributeError(
                 "%r object attribute '__dict__' is read-only"
                 % self.__class__.__name__)
         with _patch(self):

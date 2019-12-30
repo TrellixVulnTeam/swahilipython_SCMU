@@ -1041,11 +1041,11 @@ kundi IpaddrUnitTest(unittest.TestCase):
     eleza testZeroNetmask(self):
         ipv4_zero_netmask = ipaddress.IPv4Interface('1.2.3.4/0')
         self.assertEqual(int(ipv4_zero_netmask.network.netmask), 0)
-        self.assertEqual(ipv4_zero_netmask._prefix_kutoka_prefix_string('0'), 0)
+        self.assertEqual(ipv4_zero_netmask._prefix_from_prefix_string('0'), 0)
 
         ipv6_zero_netmask = ipaddress.IPv6Interface('::1/0')
         self.assertEqual(int(ipv6_zero_netmask.network.netmask), 0)
-        self.assertEqual(ipv6_zero_netmask._prefix_kutoka_prefix_string('0'), 0)
+        self.assertEqual(ipv6_zero_netmask._prefix_from_prefix_string('0'), 0)
 
     eleza testIPv4Net(self):
         net = ipaddress.IPv4Network('127.0.0.0/0.0.0.255')
@@ -1880,7 +1880,7 @@ kundi IpaddrUnitTest(unittest.TestCase):
         net = self.ipv4_network
         self.assertEqual('1.2.3.0/24', net.compressed)
         net = self.ipv6_network
-        self.assertRaises(ValueError, net._string_kutoka_ip_int, 2**128 + 1)
+        self.assertRaises(ValueError, net._string_from_ip_int, 2**128 + 1)
 
     eleza testIPv6NetworkHelpers(self):
         net = self.ipv6_network

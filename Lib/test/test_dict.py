@@ -38,7 +38,7 @@ kundi DictTest(unittest.TestCase):
             self.assertEqual(eval(dictliteral), dict(items))
 
     eleza test_bool(self):
-        self.assertIs(not {}, Kweli)
+        self.assertIs(sio {}, Kweli)
         self.assertKweli({1: 2})
         self.assertIs(bool({}), Uongo)
         self.assertIs(bool({1: 2}), Kweli)
@@ -802,7 +802,7 @@ kundi DictTest(unittest.TestCase):
         d = {}
 
     eleza test_container_iterator(self):
-        # Bug #3680: tp_traverse was sio implemented kila dictiter and
+        # Bug #3680: tp_traverse was sio implemented kila dictiter na
         # dictview objects.
         kundi C(object):
             pita

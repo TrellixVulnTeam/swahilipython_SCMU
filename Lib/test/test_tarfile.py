@@ -939,9 +939,9 @@ kundi GNUReadTest(LongnameTest, ReadTest, unittest.TestCase):
     subdir = "gnu"
     longnametype = tarfile.GNUTYPE_LONGNAME
 
-    # Since 3.2 tarfile ni supposed to accurately restore sparse members and
+    # Since 3.2 tarfile ni supposed to accurately restore sparse members na
     # produce files ukijumuisha holes. This ni what we actually want to test here.
-    # Unfortunately, sio all platforms/filesystems support sparse files, and
+    # Unfortunately, sio all platforms/filesystems support sparse files, na
     # even on platforms that do it ni non-trivial to make reliable assertions
     # about holes kwenye files. Therefore, we first do one basic test which works
     # an all platforms, na after that a test that will work only on
@@ -972,7 +972,7 @@ kundi GNUReadTest(LongnameTest, ReadTest, unittest.TestCase):
 
     @staticmethod
     eleza _fs_supports_holes():
-        # Return Kweli ikiwa the platform knows the st_blocks stat attribute and
+        # Return Kweli ikiwa the platform knows the st_blocks stat attribute na
         # uses st_blocks units of 512 bytes, na ikiwa the filesystem ni able to
         # store holes of 4 KiB kwenye files.
         #
@@ -2410,7 +2410,7 @@ kundi ContextManagerTest(unittest.TestCase):
         jaribu:
             ukijumuisha tarfile.open(tmpname, "w") kama tar:
                 ashiria Exception
-        except:
+        tatizo:
             pita
         self.assertEqual(os.path.getsize(tmpname), 0,
                 "context manager wrote an end-of-archive block")
@@ -2431,7 +2431,7 @@ kundi ContextManagerTest(unittest.TestCase):
             jaribu:
                 ukijumuisha tarfile.open(fileobj=fobj, mode="w") kama tar:
                     ashiria Exception
-            except:
+            tatizo:
                 pita
             self.assertUongo(fobj.closed, "external file object was closed")
             self.assertKweli(tar.closed, "context manager failed")

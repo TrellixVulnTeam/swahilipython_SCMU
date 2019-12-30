@@ -529,7 +529,7 @@ kundi MockTest(unittest.TestCase):
                 )
 
 
-    eleza test_kutoka_spec(self):
+    eleza test_from_spec(self):
         kundi Something(object):
             x = 3
             __something__ = Tupu
@@ -875,7 +875,7 @@ kundi MockTest(unittest.TestCase):
         self.assertIn('__iter__', dir(mock))
 
 
-    eleza test_dir_kutoka_spec(self):
+    eleza test_dir_from_spec(self):
         mock = Mock(spec=unittest.TestCase)
         testcase_attrs = set(dir(unittest.TestCase))
         attrs = set(dir(mock))
@@ -1682,7 +1682,7 @@ kundi MockTest(unittest.TestCase):
                             self.assertRaises(
                                 AttributeError, setattr, mock, 'three', Tupu
                             )
-            # note that creating a mock, setting an instance attribute, and
+            # note that creating a mock, setting an instance attribute, na
             # *then* setting a spec doesn't work. Not the intended use case
 
 
@@ -1779,7 +1779,7 @@ kundi MockTest(unittest.TestCase):
         self.assertEqual(f1_data, f2_data)
 
     eleza test_mock_open_dunder_iter_issue(self):
-        # Test dunder_iter method generates the expected result and
+        # Test dunder_iter method generates the expected result na
         # consumes the iterator.
         mocked_open = mock.mock_open(read_data='Remarkable\nNorwegian Blue')
         f1 = mocked_open('a-name')

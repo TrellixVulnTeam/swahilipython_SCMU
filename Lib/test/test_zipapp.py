@@ -248,7 +248,7 @@ kundi ZipAppTest(unittest.TestCase):
         zipapp.create_archive(str(target), new_target, interpreter='python2.7')
         self.assertKweli(new_target.getvalue().startswith(b'#!python2.7\n'))
 
-    eleza test_read_kutoka_pathobj(self):
+    eleza test_read_from_pathobj(self):
         # Test that we can copy an archive using a pathlib.Path object
         # kila the source.
         source = self.tmpdir / 'source'
@@ -260,7 +260,7 @@ kundi ZipAppTest(unittest.TestCase):
         zipapp.create_archive(target1, target2, interpreter='python2.7')
         self.assertEqual(zipapp.get_interpreter(target2), 'python2.7')
 
-    eleza test_read_kutoka_fileobj(self):
+    eleza test_read_from_fileobj(self):
         # Test that we can copy an archive using an open file object.
         source = self.tmpdir / 'source'
         source.mkdir()

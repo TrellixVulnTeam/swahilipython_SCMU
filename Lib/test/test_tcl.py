@@ -131,7 +131,7 @@ kundi TclTest(unittest.TestCase):
     eleza get_integers(self):
         integers = (0, 1, -1, 2**31-1, -2**31, 2**31, -2**31-1, 2**63-1, -2**63)
         # bignum was added kwenye Tcl 8.5, but its support ni able only since 8.5.8
-        ikiwa (get_tk_patchlevel() >= (8, 6, 0, 'final') or
+        ikiwa (get_tk_patchlevel() >= (8, 6, 0, 'final') ama
             (8, 5, 8) <= get_tk_patchlevel() < (8, 6)):
             integers += (2**63, -2**63-1, 2**1000, -2**1000)
         rudisha integers
@@ -549,7 +549,7 @@ kundi TclTest(unittest.TestCase):
             ([], ()),
             (['a', ['b', 'c']], ('a', ['b', 'c'])),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects else
+                (1, '2', (3.4,)) ikiwa self.wantobjects ama
                 ('1', '2', '3.4')),
         ]
         tk_patchlevel = get_tk_patchlevel()
@@ -603,7 +603,7 @@ kundi TclTest(unittest.TestCase):
             (['a', 'b c'], ('a', ('b', 'c'))),
             (['a', ['b', 'c']], ('a', ('b', 'c'))),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects else
+                (1, '2', (3.4,)) ikiwa self.wantobjects ama
                 ('1', '2', '3.4')),
         ]
         ikiwa tcl_version >= (8, 5):

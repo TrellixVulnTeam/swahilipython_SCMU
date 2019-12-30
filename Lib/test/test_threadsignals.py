@@ -24,7 +24,7 @@ eleza registerSignals(for_usr1, for_usr2, for_alrm):
     rudisha usr1, usr2, alrm
 
 
-# The signal handler. Just note that the signal occurred and
+# The signal handler. Just note that the signal occurred na
 # kutoka who.
 eleza handle_signals(sig,frame):
     signal_blackboard[sig]['tripped'] += 1
@@ -41,7 +41,7 @@ kundi ThreadSignals(unittest.TestCase):
     eleza test_signals(self):
         ukijumuisha support.wait_threads_exit():
             # Test signal handling semantics of threads.
-            # We spawn a thread, have the thread send two signals, and
+            # We spawn a thread, have the thread send two signals, na
             # wait kila it to finish. Check that we got both signals
             # na that they were run by the main thread.
             signalled_all.acquire()
@@ -52,7 +52,7 @@ kundi ThreadSignals(unittest.TestCase):
         # will come back, but we don't know when.
         # (it might even be after the thread exits
         # na might be out of order.)  If we haven't seen
-        # the signals yet, send yet another signal and
+        # the signals yet, send yet another signal na
         # wait kila it rudisha.
         ikiwa signal_blackboard[signal.SIGUSR1]['tripped'] == 0 \
            ama signal_blackboard[signal.SIGUSR2]['tripped'] == 0:
@@ -78,7 +78,7 @@ kundi ThreadSignals(unittest.TestCase):
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') and
+    @unittest.skipIf(sys.platform.startswith('linux') na
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
@@ -109,7 +109,7 @@ kundi ThreadSignals(unittest.TestCase):
 
     @unittest.skipIf(USING_PTHREAD_COND,
                      'POSIX condition variables cannot be interrupted')
-    @unittest.skipIf(sys.platform.startswith('linux') and
+    @unittest.skipIf(sys.platform.startswith('linux') na
                      sio sys.thread_info.version,
                      'Issue 34004: musl does sio allow interruption of locks '
                      'by signals.')
@@ -156,7 +156,7 @@ kundi ThreadSignals(unittest.TestCase):
                 # Acquire the lock kwenye a non-main thread, so this test works for
                 # RLocks.
                 lock.acquire()
-                # Wait until the main thread ni blocked kwenye the lock acquire, and
+                # Wait until the main thread ni blocked kwenye the lock acquire, na
                 # then wake it up ukijumuisha this.
                 time.sleep(0.5)
                 os.kill(process_pid, signal.SIGUSR1)

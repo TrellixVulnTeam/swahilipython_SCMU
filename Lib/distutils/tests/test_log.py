@@ -30,13 +30,13 @@ class TestLog(unittest.TestCase):
 
                 stdout.seek(0)
                 self.assertEqual(stdout.read().rstrip(),
-                        'Dεbug\tM?ss?ge' if errors == 'replace' else
-                        'Dεbug\tMssge' if errors == 'ignore' else
+                        'Dεbug\tM?ss?ge' if errors == 'replace' ama
+                        'Dεbug\tMssge' if errors == 'ignore' ama
                         'Dεbug\tM\\u0117ss\\xe3ge')
                 stderr.seek(0)
                 self.assertEqual(stderr.read().rstrip(),
-                        'Fαtal\t?rr?r' if errors == 'replace' else
-                        'Fαtal\trrr' if errors == 'ignore' else
+                        'Fαtal\t?rr?r' if errors == 'replace' ama
+                        'Fαtal\trrr' if errors == 'ignore' ama
                         'Fαtal\t\\xc8rr\\u014dr')
 
 def test_suite():

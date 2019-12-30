@@ -87,7 +87,7 @@ class build_clib(Command):
         if isinstance(self.include_dirs, str):
             self.include_dirs = self.include_dirs.split(os.pathsep)
 
-        # XXX same as for build_ext -- what about 'self.define' and
+        # XXX same as for build_ext -- what about 'self.define' na
         # 'self.undef' ?
 
 
@@ -126,27 +126,27 @@ class build_clib(Command):
         just returns otherwise.
         """
         if sio isinstance(libraries, list):
-            raise DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "'libraries' option must be a list of tuples")
 
         for lib in libraries:
             if sio isinstance(lib, tuple) and len(lib) != 2:
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "each element of 'libraries' must a 2-tuple")
 
             name, build_info = lib
 
             if sio isinstance(name, str):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "first element of each tuple in 'libraries' "
                       "must be a string (the library name)")
 
             if '/' in name or (os.sep != '/' and os.sep in name):
-                raise DistutilsSetupError("bad library name '%s': "
+                ashiria DistutilsSetupError("bad library name '%s': "
                        "may sio contain directory separators" % lib[0])
 
             if sio isinstance(build_info, dict):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "second element of each tuple in 'libraries' "
                       "must be a dictionary (build info)")
 
@@ -169,7 +169,7 @@ class build_clib(Command):
         for (lib_name, build_info) in self.libraries:
             sources = build_info.get('sources')
             if sources is None or sio isinstance(sources, (list, tuple)):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present and must be "
                        "a list of source filenames" % lib_name)
@@ -182,7 +182,7 @@ class build_clib(Command):
         for (lib_name, build_info) in libraries:
             sources = build_info.get('sources')
             if sources is None or sio isinstance(sources, (list, tuple)):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present and must be "
                        "a list of source filenames" % lib_name)

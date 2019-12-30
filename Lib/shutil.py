@@ -331,7 +331,7 @@ isipokua:
 eleza copystat(src, dst, *, follow_symlinks=Kweli):
     """Copy file metadata
 
-    Copy the permission bits, last access time, last modification time, and
+    Copy the permission bits, last access time, last modification time, na
     flags kutoka `src` to `dst`. On Linux, copystat() also copies the "extended
     attributes" where possible. The file contents, owner, na group are
     unaffected. `src` na `dst` are path-like objects ama path names given as
@@ -373,9 +373,9 @@ eleza copystat(src, dst, *, follow_symlinks=Kweli):
     tatizo NotImplementedError:
         # ikiwa we got a NotImplementedError, it's because
         #   * follow_symlinks=Uongo,
-        #   * lchown() ni unavailable, and
+        #   * lchown() ni unavailable, na
         #   * either
-        #       * fchownat() ni unavailable or
+        #       * fchownat() ni unavailable ama
         #       * fchownat() doesn't implement AT_SYMLINK_NOFOLLOW.
         #         (it rudishaed ENOSUP.)
         # therefore we're out of options--we simply cannot chown the
@@ -565,7 +565,7 @@ ikiwa hasattr(os.stat_result, 'st_file_attributes'):
     eleza _rmtree_islink(path):
         jaribu:
             st = os.lstat(path)
-            rudisha (stat.S_ISLNK(st.st_mode) or
+            rudisha (stat.S_ISLNK(st.st_mode) ama
                 (st.st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
                  na st.st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT))
         tatizo OSError:
@@ -665,8 +665,8 @@ eleza _rmtree_safe_fd(topfd, path, onerror):
                 onerror(os.unlink, fullname, sys.exc_info())
 
 _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
-                     os.supports_dir_fd and
-                     os.scandir kwenye os.supports_fd and
+                     os.supports_dir_fd na
+                     os.scandir kwenye os.supports_fd na
                      os.stat kwenye os.supports_follow_symlinks)
 
 eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
@@ -675,7 +675,7 @@ eleza rmtree(path, ignore_errors=Uongo, onerror=Tupu):
     If ignore_errors ni set, errors are ignored; otherwise, ikiwa onerror
     ni set, it ni called to handle the error ukijumuisha arguments (func,
     path, exc_info) where func ni platform na implementation dependent;
-    path ni the argument to that function that caused it to fail; and
+    path ni the argument to that function that caused it to fail; na
     exc_info ni a tuple rudishaed by sys.exc_info().  If ignore_errors
     ni false na onerror ni Tupu, an exception ni ashiriad.
 
@@ -999,7 +999,7 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
     'root_dir' ni a directory that will be the root directory of the
     archive; ie. we typically chdir into 'root_dir' before creating the
     archive.  'base_dir' ni the directory where we start archiving kutoka;
-    ie. 'base_dir' will be the common prefix of all files and
+    ie. 'base_dir' will be the common prefix of all files na
     directories kwenye the archive.  'root_dir' na 'base_dir' both default
     to the current directory.  Returns the name of the archive file.
 
@@ -1228,7 +1228,7 @@ ikiwa hasattr(os, 'statvfs'):
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned value ni a named tuple ukijumuisha attributes 'total', 'used' and
+        Returned value ni a named tuple ukijumuisha attributes 'total', 'used' na
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         st = os.statvfs(path)
@@ -1245,7 +1245,7 @@ lasivyo _WINDOWS:
     eleza disk_usage(path):
         """Return disk usage statistics about the given path.
 
-        Returned values ni a named tuple ukijumuisha attributes 'total', 'used' and
+        Returned values ni a named tuple ukijumuisha attributes 'total', 'used' na
         'free', which are the amount of total, used na free space, kwenye bytes.
         """
         total, free = nt._getdiskusage(path)
@@ -1288,7 +1288,7 @@ eleza get_terminal_size(fallback=(80, 24)):
     """Get the size of the terminal window.
 
     For each of the two dimensions, the environment variable, COLUMNS
-    na LINES respectively, ni checked. If the variable ni defined and
+    na LINES respectively, ni checked. If the variable ni defined na
     the value ni a positive integer, it ni used.
 
     When COLUMNS ama LINES ni sio defined, which ni the common case,
@@ -1319,7 +1319,7 @@ eleza get_terminal_size(fallback=(80, 24)):
         jaribu:
             size = os.get_terminal_size(sys.__stdout__.fileno())
         tatizo (AttributeError, ValueError, OSError):
-            # stdout ni Tupu, closed, detached, ama sio a terminal, or
+            # stdout ni Tupu, closed, detached, ama sio a terminal, ama
             # os.get_terminal_size() ni unsupported
             size = os.terminal_size(fallback)
         ikiwa columns <= 0:

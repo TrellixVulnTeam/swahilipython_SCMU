@@ -149,7 +149,7 @@ kundi _ResourceSharer(object):
                         send(conn, destination_pid)
                     mwishowe:
                         close()
-            except:
+            tatizo:
                 ikiwa sio util.is_exiting():
                     sys.excepthook(*sys.exc_info())
 

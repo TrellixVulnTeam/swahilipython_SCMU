@@ -155,8 +155,8 @@ kundi BoolTest(unittest.TestCase):
         self.assertIs(1 haiko kwenye x, Uongo)
         self.assertIs(0 haiko kwenye x, Kweli)
 
-        self.assertIs(not Kweli, Uongo)
-        self.assertIs(not Uongo, Kweli)
+        self.assertIs(sio Kweli, Uongo)
+        self.assertIs(sio Uongo, Kweli)
 
     eleza test_convert(self):
         self.assertRaises(TypeError, bool, 42, 42)
@@ -322,7 +322,7 @@ kundi BoolTest(unittest.TestCase):
                 rudisha -1
         self.assertRaises(ValueError, bool, Eggs())
 
-    eleza test_kutoka_bytes(self):
+    eleza test_from_bytes(self):
         self.assertIs(bool.kutoka_bytes(b'\x00'*8, 'big'), Uongo)
         self.assertIs(bool.kutoka_bytes(b'abcd', 'little'), Kweli)
 

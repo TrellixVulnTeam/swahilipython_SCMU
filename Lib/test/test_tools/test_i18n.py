@@ -53,7 +53,7 @@ kundi Test_pygettext(unittest.TestCase):
 
         rudisha msgids
 
-    eleza extract_docstrings_kutoka_str(self, module_content):
+    eleza extract_docstrings_from_str(self, module_content):
         """ utility: rudisha all msgids extracted kutoka module_content """
         filename = 'test_docstrings.py'
         ukijumuisha temp_cwd(Tupu) kama cwd:
@@ -112,21 +112,21 @@ kundi Test_pygettext(unittest.TestCase):
     eleza test_funcdocstring(self):
         kila doc kwenye ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             ukijumuisha self.subTest(doc):
-                msgids = self.extract_docstrings_kutoka_str(dedent('''\
+                msgids = self.extract_docstrings_from_str(dedent('''\
                 eleza foo(bar):
                     %s
                 ''' % doc))
                 self.assertIn('doc', msgids)
 
     eleza test_funcdocstring_bytes(self):
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar):
             b"""doc"""
         '''))
         self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_funcdocstring_fstring(self):
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar):
             f"""doc"""
         '''))
@@ -135,42 +135,42 @@ kundi Test_pygettext(unittest.TestCase):
     eleza test_classdocstring(self):
         kila doc kwenye ('"""doc"""', "r'''doc'''", "R'doc'", 'u"doc"'):
             ukijumuisha self.subTest(doc):
-                msgids = self.extract_docstrings_kutoka_str(dedent('''\
+                msgids = self.extract_docstrings_from_str(dedent('''\
                 kundi C:
                     %s
                 ''' % doc))
                 self.assertIn('doc', msgids)
 
     eleza test_classdocstring_bytes(self):
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         kundi C:
             b"""doc"""
         '''))
         self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_classdocstring_fstring(self):
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         kundi C:
             f"""doc"""
         '''))
         self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_msgid(self):
-        msgids = self.extract_docstrings_kutoka_str(
+        msgids = self.extract_docstrings_from_str(
                 '''_("""doc""" r'str' u"ing")''')
         self.assertIn('docstring', msgids)
 
     eleza test_msgid_bytes(self):
-        msgids = self.extract_docstrings_kutoka_str('_(b"""doc""")')
+        msgids = self.extract_docstrings_from_str('_(b"""doc""")')
         self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_msgid_fstring(self):
-        msgids = self.extract_docstrings_kutoka_str('_(f"""doc""")')
+        msgids = self.extract_docstrings_from_str('_(f"""doc""")')
         self.assertUongo([msgid kila msgid kwenye msgids ikiwa 'doc' kwenye msgid])
 
     eleza test_funcdocstring_annotated_args(self):
         """ Test docstrings kila functions ukijumuisha annotated args """
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar: str):
             """doc"""
         '''))
@@ -178,7 +178,7 @@ kundi Test_pygettext(unittest.TestCase):
 
     eleza test_funcdocstring_annotated_rudisha(self):
         """ Test docstrings kila functions ukijumuisha annotated rudisha type """
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar) -> str:
             """doc"""
         '''))
@@ -186,7 +186,7 @@ kundi Test_pygettext(unittest.TestCase):
 
     eleza test_funcdocstring_defvalue_args(self):
         """ Test docstring kila functions ukijumuisha default arg values """
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo(bar=()):
             """doc"""
         '''))
@@ -196,7 +196,7 @@ kundi Test_pygettext(unittest.TestCase):
         """ Test docstring extraction kila multiple functions combining
         annotated args, annotated rudisha types na default arg values
         """
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         eleza foo1(bar: tuple=()) -> str:
             """doc1"""
 
@@ -214,7 +214,7 @@ kundi Test_pygettext(unittest.TestCase):
         """ Test docstring extraction kila a kundi ukijumuisha colons occurring within
         the parentheses.
         """
-        msgids = self.extract_docstrings_kutoka_str(dedent('''\
+        msgids = self.extract_docstrings_from_str(dedent('''\
         kundi D(L[1:2], F({1: 2}), metaclass=M(lambda x: x)):
             """doc"""
         '''))

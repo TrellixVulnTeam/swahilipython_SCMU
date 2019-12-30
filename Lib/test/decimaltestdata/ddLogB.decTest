@@ -118,7 +118,7 @@ ddlogb1125 logb 1E-100 -> -100
 ddlogb1127 logb 1E-299 -> -299
 ddlogb1126 logb 1E-383 -> -383
 
--- suggestions from Ilan Nehama
+-- suggestions from Ilan Neh ama
 ddlogb1400 logb 10E-3    -> -2
 ddlogb1401 logb 10E-2    -> -1
 ddlogb1402 logb 100E-2   ->  0

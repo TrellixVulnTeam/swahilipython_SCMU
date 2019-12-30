@@ -16,7 +16,7 @@ agiza token
 # of the tokens such as:
 # `    NAME       'if'          (1, 0) (1, 2)`
 # to make writing tests easier.
-eleza stringify_tokens_kutoka_source(token_generator, source_string):
+eleza stringify_tokens_from_source(token_generator, source_string):
     result = []
     num_lines = len(source_string.splitlines())
     missing_trailing_nl = source_string[-1] haiko kwenye '\r\n'
@@ -36,14 +36,14 @@ kundi TokenizeTest(TestCase):
     # Tests kila the tokenize module.
 
     # The tests can be really simple. Given a small fragment of source
-    # code, print out a table ukijumuisha tokens. The ENDMARKER, ENCODING and
+    # code, print out a table ukijumuisha tokens. The ENDMARKER, ENCODING na
     # final NEWLINE are omitted kila brevity.
 
     eleza check_tokenize(self, s, expected):
         # Format the tokens kwenye s kwenye a table format.
         # The ENDMARKER na final NEWLINE are omitted.
         f = BytesIO(s.encode('utf-8'))
-        result = stringify_tokens_kutoka_source(tokenize(f.readline), s)
+        result = stringify_tokens_from_source(tokenize(f.readline), s)
 
         self.assertEqual(result,
                          ["    ENCODING   'utf-8'       (0, 0) (0, 0)"] +
@@ -949,7 +949,7 @@ kundi GenerateTokensTest(TokenizeTest):
         # Format the tokens kwenye s kwenye a table format.
         # The ENDMARKER na final NEWLINE are omitted.
         f = StringIO(s)
-        result = stringify_tokens_kutoka_source(generate_tokens(f.readline), s)
+        result = stringify_tokens_from_source(generate_tokens(f.readline), s)
         self.assertEqual(result, expected.rstrip().splitlines())
 
 
@@ -980,7 +980,7 @@ kundi TestMisc(TestCase):
                          "+Decimal ('21.3e-5')*-Decimal ('.1234')/Decimal ('81.7')")
 
         # The format of the exponent ni inherited kutoka the platform C library.
-        # Known cases are "e-007" (Windows) na "e-07" (not Windows).  Since
+        # Known cases are "e-007" (Windows) na "e-07" (sio Windows).  Since
         # we're only showing 11 digits, na the 12th isn't close to 5, the
         # rest of the output should be platform-independent.
         self.assertRegex(repr(eval(s)), '-3.2171603427[0-9]*e-0+7')

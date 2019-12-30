@@ -61,9 +61,9 @@ class EmailPolicy(Policy):
 
                            The default is 'long'.
 
-    header_factory      -- a callable that takes two arguments, 'name' and
-                           'value', where 'name' is a header field name and
-                           'value' is an unfolded header field value, and
+    header_factory      -- a callable that takes two arguments, 'name' na
+                           'value', where 'name' is a header field name na
+                           'value' is an unfolded header field value, na
                            returns a string-like object that represents that
                            header.  A default header_factory is provided that
                            understands some of the RFC5322 header field types.
@@ -73,7 +73,7 @@ class EmailPolicy(Policy):
                            completed before the extension is marked stable.)
 
     content_manager     -- an object with at least two methods: get_content
-                           and set_content.  When the get_content or
+                           and set_content.  When the get_content ama
                            set_content method of a Message object is called,
                            it calls the corresponding method of this object,
                            passing it the message object as its first argument,
@@ -109,7 +109,7 @@ class EmailPolicy(Policy):
     # switch a Message object between a Compat32 policy and a policy derived
     # from this class and have the results stay consistent.  This allows a
     # Message object constructed with this policy to be passed to a library
-    # that only handles Compat32 objects, or to receive such an object and
+    # that only handles Compat32 objects, or to receive such an object na
     # convert it to use the newer style by just changing its policy.  It is
     # also chosen because it postpones the relatively expensive full rfc5322
     # parse until as late as possible when parsing from source, since in many
@@ -119,7 +119,7 @@ class EmailPolicy(Policy):
         """+
         The name is parsed as everything up to the ':' and returned unmodified.
         The value is determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, and
+        remainder of the first line, joining all subsequent lines together, na
         stripping any trailing carriage return or linefeed characters.  (This
         is the same as Compat32).
 
@@ -143,7 +143,7 @@ class EmailPolicy(Policy):
         if isinstance(value, str) and len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm sio sure what should happen here.
-            raise ValueError("Header values may sio contain linefeed "
+            ashiria ValueError("Header values may sio contain linefeed "
                              "or carriage return characters")
         return (name, self.header_factory(name, value))
 
@@ -206,9 +206,9 @@ class EmailPolicy(Policy):
             return value.fold(policy=self)
         maxlen = self.max_line_length if self.max_line_length isipokua sys.maxsize
         lines = value.splitlines()
-        refold = (self.refold_source == 'all' or
-                  self.refold_source == 'long' and
-                    (lines and len(lines[0])+len(name)+2 > maxlen or
+        refold = (self.refold_source == 'all' ama
+                  self.refold_source == 'long' na
+                    (lines and len(lines[0])+len(name)+2 > maxlen ama
                      any(len(x) > maxlen for x in lines[1:])))
         if refold or refold_binary and _has_surrogates(value):
             return self.header_factory(name, ''.join(lines)).fold(policy=self)

@@ -270,10 +270,10 @@ kundi FieldStorage:
 
     """Store a sequence of fields, reading multipart/form-data.
 
-    This kundi provides naming, typing, files stored on disk, and
+    This kundi provides naming, typing, files stored on disk, na
     more.  At the top level, it ni accessible like a dictionary, whose
     keys are the field names.  (Note: Tupu can occur kama a field name.)
-    The items are either a Python list (ikiwa there's multiple values) or
+    The items are either a Python list (ikiwa there's multiple values) ama
     another FieldStorage ama MiniFieldStorage object.  If it's a single
     object, it has the following attributes:
 
@@ -318,7 +318,7 @@ kundi FieldStorage:
         Arguments, all optional:
 
         fp              : file pointer; default: sys.stdin.buffer
-            (not used when the request method ni GET)
+            (sio used when the request method ni GET)
             Can be :
             1. a TextIOWrapper object
             2. an object whose read() na readline() methods rudisha bytes
@@ -349,7 +349,7 @@ kundi FieldStorage:
 
         encoding, errors : the encoding na error handler used to decode the
             binary stream to strings. Must be the same kama the charset defined
-            kila the page sending the form (content-type : meta http-equiv or
+            kila the page sending the form (content-type : meta http-equiv ama
             header)
 
         max_num_fields: int. If set, then __init__ throws a ValueError
@@ -613,7 +613,7 @@ kundi FieldStorage:
         self.bytes_read += len(first_line)
 
         # Ensure that we consume the file until we've hit our inner boundary
-        wakati (first_line.strip() != (b"--" + self.innerboundary) and
+        wakati (first_line.strip() != (b"--" + self.innerboundary) na
                 first_line):
             first_line = self.fp.readline()
             self.bytes_read += len(first_line)
@@ -853,7 +853,7 @@ eleza test(environ=os.environ):
             f()
         andika("<H3>What follows ni a test, sio an actual exception:</H3>")
         g()
-    except:
+    tatizo:
         print_exception()
 
     andika("<H1>Second try ukijumuisha a small maxlen...</H1>")
@@ -866,7 +866,7 @@ eleza test(environ=os.environ):
         print_arguments()
         print_form(form)
         print_environ(environ)
-    except:
+    tatizo:
         print_exception()
 
 eleza print_exception(type=Tupu, value=Tupu, tb=Tupu, limit=Tupu):
@@ -987,6 +987,6 @@ eleza valid_boundary(s):
 # Invoke mainline
 # ===============
 
-# Call test() when this file ni run kama a script (not imported kama a module)
+# Call test() when this file ni run kama a script (sio imported kama a module)
 ikiwa __name__ == '__main__':
     test()

@@ -39,21 +39,21 @@ kundi TestEmailBase(unittest.TestCase):
 
     eleza _msgobj(self, filename):
         ukijumuisha openfile(filename) kama fp:
-            rudisha email.message_kutoka_file(fp, policy=self.policy)
+            rudisha email.message_from_file(fp, policy=self.policy)
 
     eleza _str_msg(self, string, message=Tupu, policy=Tupu):
         ikiwa policy ni Tupu:
             policy = self.policy
         ikiwa message ni Tupu:
             message = self.message
-        rudisha email.message_kutoka_string(string, message, policy=policy)
+        rudisha email.message_from_string(string, message, policy=policy)
 
     eleza _bytes_msg(self, bytestring, message=Tupu, policy=Tupu):
         ikiwa policy ni Tupu:
             policy = self.policy
         ikiwa message ni Tupu:
             message = self.message
-        rudisha email.message_kutoka_bytes(bytestring, message, policy=policy)
+        rudisha email.message_from_bytes(bytestring, message, policy=policy)
 
     eleza _make_message(self):
         rudisha self.message(policy=self.policy)
@@ -88,7 +88,7 @@ eleza parameterize(cls):
 
     In a _params dictionary, the keys become part of the name of the generated
     tests.  In a _params list, the values kwenye the list are converted into a
-    string by joining the string values of the elements of the tuple by '_' and
+    string by joining the string values of the elements of the tuple by '_' na
     converting any blanks into '_'s, na this become part of the name.
     The  full name of a generated test ni a 'test_' prefix, the portion of the
     test function name after the  '_as_' separator, plus an '_', plus the name

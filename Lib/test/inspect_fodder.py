@@ -41,7 +41,7 @@ kundi StupidGit:
     eleza argue(self, a, b, c):
         jaribu:
             spam(a, b, c)
-        except:
+        tatizo:
             self.ex = sys.exc_info()
             self.tr = inspect.trace()
 
@@ -78,7 +78,7 @@ async eleza lobbest(grenade):
 currentframe = inspect.currentframe()
 jaribu:
     ashiria Exception()
-except:
+tatizo:
     tb = sys.exc_info()[2]
 
 kundi Callable:

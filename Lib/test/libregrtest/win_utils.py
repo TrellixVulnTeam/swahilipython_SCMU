@@ -109,11 +109,11 @@ class WindowsLoadTracker():
         # (date, process queue length)
         tokens = line.split(',')
         if len(tokens) != 2:
-            raise ValueError
+            ashiria ValueError
 
         value = tokens[1]
-        if sio value.startswith('"') or sio value.endswith('"'):
-            raise ValueError
+        if sio value.startswith('"') ama sio value.endswith('"'):
+            ashiria ValueError
         value = value[1:-1]
         return float(value)
 

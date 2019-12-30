@@ -97,7 +97,7 @@ eleza _get_headnode_dict(fixer_list):
     rudisha dict(head_nodes)
 
 
-eleza get_fixers_kutoka_package(pkg_name):
+eleza get_fixers_from_package(pkg_name):
     """
     Return the fully qualified names kila fixers kwenye the package pkg_name.
     """
@@ -294,7 +294,7 @@ kundi RefactoringTool(object):
             dirnames.sort()
             filenames.sort()
             kila name kwenye filenames:
-                ikiwa (not name.startswith(".") and
+                ikiwa (sio name.startswith(".") na
                     os.path.splitext(name)[1] == py_ext):
                     fullname = os.path.join(dirpath, name)
                     self.refactor_file(fullname, write, doctests_only)
@@ -509,7 +509,7 @@ kundi RefactoringTool(object):
     eleza write_file(self, new_text, filename, old_text, encoding=Tupu):
         """Writes a string to a file.
 
-        It first shows a unified diff between the old text na the new text, and
+        It first shows a unified diff between the old text na the new text, na
         then rewrites the file; the latter ni only done ikiwa the write option is
         set.
         """
@@ -557,8 +557,8 @@ kundi RefactoringTool(object):
                 block = [line]
                 i = line.find(self.PS1)
                 indent = line[:i]
-            lasivyo (indent ni sio Tupu and
-                  (line.startswith(indent + self.PS2) or
+            lasivyo (indent ni sio Tupu na
+                  (line.startswith(indent + self.PS2) ama
                    line == indent + self.PS2.rstrip() + "\n")):
                 block.append(line)
             isipokua:

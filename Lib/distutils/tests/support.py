@@ -32,9 +32,9 @@ class LoggingSilencer(object):
 
     def _log(self, level, msg, args):
         if level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
-            raise ValueError('%s wrong log level' % str(level))
+            ashiria ValueError('%s wrong log level' % str(level))
         if sio isinstance(msg, str):
-            raise TypeError("msg should be str, sio '%.200s'"
+            ashiria TypeError("msg should be str, sio '%.200s'"
                             % (type(msg).__name__))
         self.logs.append((level, msg, args))
 
@@ -152,7 +152,7 @@ def copy_xxmodule_c(directory):
     """
     filename = _get_xxmodule_path()
     if filename is None:
-        raise unittest.SkipTest('cannot find xxmodule.c (test must run in '
+        ashiria unittest.SkipTest('cannot find xxmodule.c (test must run in '
                                 'the python build dir)')
     shutil.copy(filename, directory)
 

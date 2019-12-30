@@ -64,7 +64,7 @@ kundi Query(Toplevel):
             jaribu:
                 self.tk.call('::tk::unsupported::MacWindowStyle', 'style',
                              self._w, 'moveableModal', '')
-            except:
+            tatizo:
                 pita
             self.bind("<Command-.>", self.cancel)
         self.bind('<Key-Escape>', self.cancel)

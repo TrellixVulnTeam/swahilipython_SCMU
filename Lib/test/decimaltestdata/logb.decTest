@@ -120,7 +120,7 @@ logbx1125 logb 1E-100 -> -100
 logbx1126 logb 1E-383 -> -383
 logbx1127 logb 1E-999 -> -999
 
--- suggestions from Ilan Nehama
+-- suggestions from Ilan Neh ama
 logbx1400 logb 10E-3    -> -2
 logbx1401 logb 10E-2    -> -1
 logbx1402 logb 100E-2   ->  0

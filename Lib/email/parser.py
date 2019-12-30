@@ -60,7 +60,7 @@ class Parser:
         """Create a message structure from a string.
 
         Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers ama
         not.  The default is False, meaning it parses the entire contents of
         the file.
         """
@@ -115,7 +115,7 @@ class BytesParser:
         """Create a message structure from a byte string.
 
         Returns the root of the message structure.  Optional headersonly is a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers ama
         not.  The default is False, meaning it parses the entire contents of
         the file.
         """

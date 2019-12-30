@@ -123,7 +123,7 @@ kundi EnumerateTestCase(unittest.TestCase, PickleTest):
 
     eleza test_argumentcheck(self):
         self.assertRaises(TypeError, self.enum) # no arguments
-        self.assertRaises(TypeError, self.enum, 1) # wrong type (not iterable)
+        self.assertRaises(TypeError, self.enum, 1) # wrong type (sio iterable)
         self.assertRaises(TypeError, self.enum, 'abc', 'a') # wrong type
         self.assertRaises(TypeError, self.enum, 'abc', 2, 3) # too many arguments
 

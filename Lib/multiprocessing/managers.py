@@ -354,7 +354,7 @@ kundi Server(object):
         jaribu:
             util.debug('manager received shutdown message')
             c.send(('#RETURN', Tupu))
-        except:
+        tatizo:
             agiza traceback
             traceback.print_exc()
         mwishowe:
@@ -782,7 +782,7 @@ kundi BaseProxy(object):
         self._tls = tls_idset[0]
 
         # self._idset ni used to record the identities of all shared
-        # objects kila which the current process owns references and
+        # objects kila which the current process owns references na
         # which are kwenye the manager at token.address
         self._idset = tls_idset[1]
 
@@ -953,7 +953,7 @@ eleza RebuildProxy(func, token, serializer, kwds):
             server.id_to_local_proxy_obj[token.id] = \
                 server.id_to_obj[token.id]
     incref = (
-        kwds.pop('incref', Kweli) and
+        kwds.pop('incref', Kweli) na
         sio getattr(process.current_process(), '_inheriting', Uongo)
         )
     rudisha func(token, serializer, incref=incref, **kwds)
@@ -1294,7 +1294,7 @@ ikiwa HAS_SHMEM:
             util.debug(f"SharedMemoryServer started by pid {getpid()}")
 
         eleza create(*args, **kwargs):
-            """Create a new distributed-shared object (not backed by a shared
+            """Create a new distributed-shared object (sio backed by a shared
             memory block) na rudisha its id to be used kwenye a Proxy Object."""
             # Unless set up kama a shared proxy, don't make shared_memory_context
             # a standard part of kwargs.  This makes things easier kila supplying

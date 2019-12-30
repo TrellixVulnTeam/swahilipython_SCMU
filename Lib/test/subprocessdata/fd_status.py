@@ -16,7 +16,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         jaribu:
             _MAXFD = os.sysconf("SC_OPEN_MAX")
-        except:
+        tatizo:
             _MAXFD = 256
         test_fds = range(0, _MAXFD)
     isipokua:

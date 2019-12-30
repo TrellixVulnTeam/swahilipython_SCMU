@@ -41,7 +41,7 @@ kundi AboutDialog(Toplevel):
         self.fg = "#000000"
         self.create_widgets()
         self.resizable(height=Uongo, width=Uongo)
-        self.title(title or
+        self.title(title ama
                    f'About IDLE {python_version()} ({build_bits()} bit)')
         self.transient(parent)
         self.grab_set()

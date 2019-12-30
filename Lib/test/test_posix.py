@@ -993,7 +993,7 @@ kundi PosixTester(unittest.TestCase):
         jaribu:
             os.mkdir(base_path)
             os.chdir(base_path)
-        except:
+        tatizo:
             #  Just rudishaing nothing instead of the SkipTest exception, because
             #  the test results kwenye Error kwenye that case.  Is that ok?
             #  ashiria unittest.SkipTest("cannot create directory kila testing")
@@ -1002,7 +1002,7 @@ kundi PosixTester(unittest.TestCase):
             eleza _create_and_do_getcwd(dirname, current_path_length = 0):
                 jaribu:
                     os.mkdir(dirname)
-                except:
+                tatizo:
                     ashiria unittest.SkipTest("mkdir cannot create directory sufficiently deep kila getcwd test")
 
                 os.chdir(dirname)
@@ -1054,7 +1054,7 @@ kundi PosixTester(unittest.TestCase):
         # #10822/#26944 - It ni implementation defined whether
         # posix.getgroups() includes the effective gid.
         symdiff = idg_groups.symmetric_difference(posix.getgroups())
-        self.assertKweli(not symdiff ama symdiff == {posix.getegid()})
+        self.assertKweli(sio symdiff ama symdiff == {posix.getegid()})
 
     # tests kila the posix *at functions follow
 
@@ -1218,7 +1218,7 @@ kundi PosixTester(unittest.TestCase):
         f = posix.open(posix.getcwd(), posix.O_RDONLY)
         jaribu:
             posix.rename(support.TESTFN + 'ren', support.TESTFN, src_dir_fd=f, dst_dir_fd=f)
-        except:
+        tatizo:
             posix.rename(support.TESTFN + 'ren', support.TESTFN)
             ashiria
         isipokua:
@@ -1243,7 +1243,7 @@ kundi PosixTester(unittest.TestCase):
         posix.stat(support.TESTFN + 'del') # should sio ashiria exception
         jaribu:
             posix.unlink(support.TESTFN + 'del', dir_fd=f)
-        except:
+        tatizo:
             support.unlink(support.TESTFN + 'del')
             ashiria
         isipokua:

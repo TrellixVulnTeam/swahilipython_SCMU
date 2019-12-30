@@ -10,7 +10,7 @@ agiza unittest.test
 
 kundi Test_TestProgram(unittest.TestCase):
 
-    eleza test_discovery_kutoka_dotted_path(self):
+    eleza test_discovery_from_dotted_path(self):
         loader = unittest.TestLoader()
 
         tests = [self]

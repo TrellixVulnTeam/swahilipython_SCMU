@@ -65,7 +65,7 @@ kundi _Outcome(object):
             self.skipped.append((test_case, str(e)))
         tatizo _ShouldStop:
             pita
-        except:
+        tatizo:
             exc_info = sys.exc_info()
             ikiwa self.expecting_failure:
                 self.expectedFailure = exc_info
@@ -275,7 +275,7 @@ kundi _AssertWarnsContext(_AssertRaisesBaseContext):
                 endelea
             ikiwa first_matching ni Tupu:
                 first_matching = w
-            ikiwa (self.expected_regex ni sio Tupu and
+            ikiwa (self.expected_regex ni sio Tupu na
                 sio self.expected_regex.search(str(w))):
                 endelea
             # store warning kila later retrieval
@@ -563,7 +563,7 @@ kundi TestCase(object):
     @contextlib.contextmanager
     eleza subTest(self, msg=_subtest_msg_sentinel, **params):
         """Return a context manager that will rudisha the enclosed block
-        of code kwenye a subtest identified by the optional message and
+        of code kwenye a subtest identified by the optional message na
         keyword parameters.  A failure kwenye the subtest marks the test
         case kama failed but resumes execution at the end of the enclosed
         block, allowing further test code to be executed.
@@ -649,7 +649,7 @@ kundi TestCase(object):
         result.startTest(self)
 
         testMethod = getattr(self, self._testMethodName)
-        ikiwa (getattr(self.__class__, "__unittest_skip__", Uongo) or
+        ikiwa (getattr(self.__class__, "__unittest_skip__", Uongo) ama
             getattr(testMethod, "__unittest_skip__", Uongo)):
             # If the kundi ama method was skipped.
             jaribu:
@@ -787,7 +787,7 @@ kundi TestCase(object):
 
     eleza assertRaises(self, expected_exception, *args, **kwargs):
         """Fail unless an exception of kundi expected_exception ni ashiriad
-           by the callable when invoked ukijumuisha specified positional and
+           by the callable when invoked ukijumuisha specified positional na
            keyword arguments. If a different type of exception is
            ashiriad, it will sio be caught, na the test case will be
            deemed to have suffered an error, exactly kama kila an
@@ -820,7 +820,7 @@ kundi TestCase(object):
 
     eleza assertWarns(self, expected_warning, *args, **kwargs):
         """Fail unless a warning of kundi warnClass ni triggered
-           by the callable when invoked ukijumuisha specified positional and
+           by the callable when invoked ukijumuisha specified positional na
            keyword arguments.  If a different type of warning is
            triggered, it will sio be handled: depending on the other
            warning filtering rules kwenye effect, it might be silenced, printed
@@ -1067,7 +1067,7 @@ kundi TestCase(object):
                                  ((i,) + _common_shorten_repr(item1, item2)))
                     koma
             isipokua:
-                ikiwa (len1 == len2 na seq_type ni Tupu and
+                ikiwa (len1 == len2 na seq_type ni Tupu na
                     type(seq1) != type(seq2)):
                     # The sequences are the same, but have differing types.
                     rudisha
@@ -1137,7 +1137,7 @@ kundi TestCase(object):
             msg: Optional message to use on failure instead of a list of
                     differences.
 
-        assertSetEqual uses ducktyping to support different types of sets, and
+        assertSetEqual uses ducktyping to support different types of sets, na
         ni optimized kila sets specifically (parameters must support a
         difference method).
         """
@@ -1278,7 +1278,7 @@ kundi TestCase(object):
 
         ikiwa first != second:
             # don't use difflib ikiwa the strings are too long
-            ikiwa (len(first) > self._diffThreshold or
+            ikiwa (len(first) > self._diffThreshold ama
                 len(second) > self._diffThreshold):
                 self._baseAssertEqual(first, second, msg)
             firstlines = first.splitlines(keepends=Kweli)

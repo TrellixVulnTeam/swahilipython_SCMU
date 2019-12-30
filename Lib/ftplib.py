@@ -356,7 +356,7 @@ kundi FTP:
                     resp = self.getresp()
                 ikiwa resp[0] != '1':
                     ashiria error_reply(resp)
-            except:
+            tatizo:
                 conn.close()
                 ashiria
         isipokua:
@@ -961,7 +961,7 @@ eleza test():
             ikiwa file[2:]: cmd = cmd + ' ' + file[2:]
             resp = ftp.sendcmd(cmd)
         lasivyo file == '-p':
-            ftp.set_pasv(not ftp.pitaiveserver)
+            ftp.set_pasv(sio ftp.pitaiveserver)
         isipokua:
             ftp.retrbinary('RETR ' + file, \
                            sys.stdout.write, 1024)

@@ -157,8 +157,8 @@ kundi ScriptBinding:
             agiza sys kama _sys
             kutoka os.path agiza basename kama _basename
             argv = {argv!r}
-            ikiwa (not _sys.argv or
-                _basename(_sys.argv[0]) != _basename(__file__) or
+            ikiwa (sio _sys.argv ama
+                _basename(_sys.argv[0]) != _basename(__file__) ama
                 len(argv) > 1):
                 _sys.argv = argv
             agiza os kama _os

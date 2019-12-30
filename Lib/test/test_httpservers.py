@@ -355,7 +355,7 @@ kundi SimpleHTTPServerTestCase(BaseTestCase):
             os.chdir(self.cwd)
             jaribu:
                 shutil.rmtree(self.tempdir)
-            except:
+            tatizo:
                 pita
         mwishowe:
             BaseTestCase.tearDown(self)

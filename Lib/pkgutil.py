@@ -32,7 +32,7 @@ eleza _get_spec(finder, name):
         loader = finder.find_module(name)
         ikiwa loader ni Tupu:
             rudisha Tupu
-        rudisha importlib.util.spec_kutoka_loader(name, loader)
+        rudisha importlib.util.spec_from_loader(name, loader)
     isipokua:
         rudisha find_spec(name)
 
@@ -492,7 +492,7 @@ eleza find_loader(fullname):
     jaribu:
         spec = importlib.util.find_spec(fullname)
     tatizo (ImportError, AttributeError, TypeError, ValueError) kama ex:
-        # This hack fixes an impedance mismatch between pkgutil and
+        # This hack fixes an impedance mismatch between pkgutil na
         # importlib, where the latter ashirias other errors kila cases where
         # pkgutil previously ashiriad ImportError
         msg = "Error wakati finding loader kila {!r} ({}: {})"
@@ -623,7 +623,7 @@ eleza get_data(package, resource):
     ikiwa loader ni Tupu ama sio hasattr(loader, 'get_data'):
         rudisha Tupu
     # XXX needs test
-    mod = (sys.modules.get(package) or
+    mod = (sys.modules.get(package) ama
            importlib._bootstrap._load(spec))
     ikiwa mod ni Tupu ama sio hasattr(mod, '__file__'):
         rudisha Tupu

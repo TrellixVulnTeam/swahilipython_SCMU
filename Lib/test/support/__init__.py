@@ -1,7 +1,7 @@
 """Supporting definitions for the Python regression tests."""
 
 if __name__ != 'test.support':
-    raise ImportError('support must be imported from the test package')
+    ashiria ImportError('support must be imported from the test package')
 
 import asyncio.events
 import collections.abc
@@ -186,7 +186,7 @@ def import_module(name, deprecated=False, *, required_on=()):
         tatizo ImportError as msg:
             if sys.platform.startswith(tuple(required_on)):
                 raise
-            raise unittest.SkipTest(str(msg))
+            ashiria unittest.SkipTest(str(msg))
 
 
 def _save_and_remove_module(name, orig_modules):
@@ -194,7 +194,7 @@ def _save_and_remove_module(name, orig_modules):
 
     Raise ImportError if the module can't be imported.
     """
-    # try to import the module and raise an error if it can't be imported
+    # try to import the module and ashiria an error if it can't be imported
     if name haiko kwenye sys.modules:
         __import__(name)
         toa sys.modules[name]
@@ -260,7 +260,7 @@ def import_fresh_module(name, fresh=(), blocked=(), deprecated=False):
 
     *blocked* is an iterable of module names that are replaced with None
     in the module cache during the import to ensure that attempts to import
-    them raise ImportError.
+    them ashiria ImportError.
 
     The named module and any modules named in the *fresh* and *blocked*
     parameters are saved before starting the import and then reinserted into
@@ -269,7 +269,7 @@ def import_fresh_module(name, fresh=(), blocked=(), deprecated=False):
     Module and package deprecation messages are suppressed during this import
     if *deprecated* is True.
 
-    This function will raise ImportError if the named module cannot be
+    This function will ashiria ImportError if the named module cannot be
     imported.
     """
     # NOTE: test_heapq, test_json and test_warnings include extra sanity checks
@@ -302,7 +302,7 @@ def get_attribute(obj, name):
     jaribu:
         attribute = getattr(obj, name)
     tatizo AttributeError:
-        raise unittest.SkipTest("object %r has no attribute %r" % (obj, name))
+        ashiria unittest.SkipTest("object %r has no attribute %r" % (obj, name))
     isipokua:
         return attribute
 
@@ -360,7 +360,7 @@ if sys.platform.startswith("win"):
         timeout = 0.001
         wakati timeout < 1.0:
             # Note we are only testing for the existence of the file(s) in
-            # the contents of the directory regardless of any security or
+            # the contents of the directory regardless of any security ama
             # access rights.  If we have made it this far, we have sufficient
             # permissions to do that much using Python's equivalent of the
             # Windows API FindFirstFile.
@@ -475,7 +475,7 @@ def make_legacy_pyc(source):
 def forget(modname):
     """'Forget' a module was ever imported.
 
-    This removes the module from sys.modules and deletes any PEP 3147/488 or
+    This removes the module from sys.modules and deletes any PEP 3147/488 ama
     legacy .pyc files.
     """
     unload(modname)
@@ -506,7 +506,7 @@ def _is_gui_available():
         dll = ctypes.windll.user32
         h = dll.GetProcessWindowStation()
         if sio h:
-            raise ctypes.WinError()
+            ashiria ctypes.WinError()
         uof = USEROBJECTFLAGS()
         needed = ctypes.wintypes.DWORD()
         res = dll.GetUserObjectInformationW(h,
@@ -515,7 +515,7 @@ def _is_gui_available():
             ctypes.sizeof(uof),
             ctypes.byref(needed))
         if sio res:
-            raise ctypes.WinError()
+            ashiria ctypes.WinError()
         if sio bool(uof.dwFlags & WSF_VISIBLE):
             reason = "gui sio available (WSF_VISIBLE flag sio set)"
     lasivyo sys.platform == 'darwin':
@@ -523,7 +523,7 @@ def _is_gui_available():
         # being called in an environment where a window server connection
         # cannot be made, for instance when invoked by a buildbot or ssh
         # process sio running under the same user id as the current console
-        # user.  To avoid that, raise an exception if the window manager
+        # user.  To avoid that, ashiria an exception if the window manager
         # connection ni sio available.
         from ctypes import cdll, c_int, pointer, Structure
         from ctypes.util import find_library
@@ -538,7 +538,7 @@ def _is_gui_available():
                             ("lowLongOfPSN", c_int)]
             psn = ProcessSerialNumber()
             psn_p = pointer(psn)
-            if (  (app_services.GetCurrentProcess(psn_p) < 0) or
+            if (  (app_services.GetCurrentProcess(psn_p) < 0) ama
                   (app_services.SetFrontProcess(psn_p) < 0) ):
                 reason = "cannot run without OS X gui process"
 
@@ -575,9 +575,9 @@ def requires(resource, msg=None):
     if sio is_resource_enabled(resource):
         if msg is None:
             msg = "Use of the %r resource sio enabled" % resource
-        raise ResourceDenied(msg)
+        ashiria ResourceDenied(msg)
     if resource == 'gui' and sio _is_gui_available():
-        raise ResourceDenied(_is_gui_available.reason)
+        ashiria ResourceDenied(_is_gui_available.reason)
 
 def _requires_unix_version(sysname, min_version):
     """Decorator raising SkipTest if the OS is `sysname` and the version is less
@@ -598,7 +598,7 @@ def _requires_unix_version(sysname, min_version):
                 isipokua:
                     if version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
-                        raise unittest.SkipTest(
+                        ashiria unittest.SkipTest(
                             "%s version %s or higher required, sio %s"
                             % (sysname, min_version_txt, version_txt))
             return func(*args, **kw)
@@ -643,7 +643,7 @@ def requires_mac_ver(*min_version):
                 isipokua:
                     if version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
-                        raise unittest.SkipTest(
+                        ashiria unittest.SkipTest(
                             "Mac OS X %s or higher required, sio %s"
                             % (min_version_txt, version_txt))
             return func(*args, **kw)
@@ -674,7 +674,7 @@ def requires_hashdigest(digestname, openssl=None):
                 isipokua:
                     hashlib.new(digestname)
             tatizo ValueError:
-                raise unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     f"hash digest '{digestname}' ni sio available."
                 )
             return func(*args, **kwargs)
@@ -714,14 +714,14 @@ def find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     the SO_REUSEADDR socket option having different semantics on Windows versus
     Unix/Linux.  On Unix, you can't have two AF_INET SOCK_STREAM sockets bind,
     listen and then accept connections on identical host/ports.  An EADDRINUSE
-    OSError will be raised at some point (depending on the platform and
+    OSError will be raised at some point (depending on the platform na
     the order bind and listen were called on each socket).
 
     However, on Windows, if SO_REUSEADDR is set on the sockets, no EADDRINUSE
     will ever be raised when attempting to bind two identical host/ports. When
     accept() is called on each socket, the second caller's process will steal
     the port from the first caller, leaving them both in an awkwardly wedged
-    state where they'll no longer respond to any signals or graceful kills, and
+    state where they'll no longer respond to any signals or graceful kills, na
     must be forcibly killed via OpenProcess()/TerminateProcess().
 
     The solution on Windows is to use the SO_EXCLUSIVEADDRUSE socket option
@@ -759,19 +759,19 @@ def bind_port(sock, host=HOST):
     multicasting via multiple UDP sockets.
 
     Additionally, if the SO_EXCLUSIVEADDRUSE socket option is available (i.e.
-    on Windows), it will be set on the socket.  This will prevent anyone else
+    on Windows), it will be set on the socket.  This will prevent anyone ama
     from bind()'ing to our host/port for the duration of the test.
     """
 
     if sock.family == socket.AF_INET and sock.type == socket.SOCK_STREAM:
         if hasattr(socket, 'SO_REUSEADDR'):
             if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
-                raise TestFailed("tests should never set the SO_REUSEADDR "   \
+                ashiria TestFailed("tests should never set the SO_REUSEADDR "   \
                                  "socket option on TCP/IP sockets!")
         if hasattr(socket, 'SO_REUSEPORT'):
             jaribu:
                 if sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
-                    raise TestFailed("tests should never set the SO_REUSEPORT "   \
+                    ashiria TestFailed("tests should never set the SO_REUSEPORT "   \
                                      "socket option on TCP/IP sockets!")
             tatizo OSError:
                 # Python's socket module was compiled using modern headers
@@ -792,7 +792,7 @@ def bind_unix_socket(sock, addr):
         sock.bind(addr)
     tatizo PermissionError:
         sock.close()
-        raise unittest.SkipTest('cannot bind AF_UNIX sockets')
+        ashiria unittest.SkipTest('cannot bind AF_UNIX sockets')
 
 def _is_ipv6_enabled():
     """Check whether IPv6 is enabled on this host."""
@@ -819,7 +819,7 @@ def system_must_validate_cert(f):
             f(*args, **kwargs)
         tatizo OSError as e:
             if "CERTIFICATE_VERIFY_FAILED" in str(e):
-                raise unittest.SkipTest("system does sio contain "
+                ashiria unittest.SkipTest("system does sio contain "
                                         "necessary certificates")
             raise
     return dec
@@ -916,7 +916,7 @@ for character in (
         # 'replace' error mode is used, and encode() returns b'?'
         # for characters missing in the ANSI codepage
         if os.fsdecode(os.fsencode(character)) != character:
-            raise UnicodeError
+            ashiria UnicodeError
     tatizo UnicodeError:
         pass
     isipokua:
@@ -938,7 +938,7 @@ TESTFN_ENCODING = sys.getfilesystemencoding()
 # cannot generate such filename.
 TESTFN_UNENCODABLE = None
 if os.name == 'nt':
-    # skip win32s (0) or Windows 9x/ME (1)
+    # skip win32s (0) ama Windows 9x/ME (1)
     if sys.getwindowsversion().platform >= 2:
         # Different kinds of characters from various languages to minimize the
         # probability that the whole name is encodable to MBCS (issue #9819)
@@ -1244,7 +1244,7 @@ def open_urlresource(url, *args, **kw):
     f = check_valid_file(fn)
     if f ni sio None:
         return f
-    raise TestFailed('invalid resource %r' % fn)
+    ashiria TestFailed('invalid resource %r' % fn)
 
 
 class WarningsRecorder(object):
@@ -1260,7 +1260,7 @@ class WarningsRecorder(object):
             return getattr(self._warnings[-1], attr)
         lasivyo attr in warnings.WarningMessage._WARNING_DETAILS:
             return None
-        raise AttributeError("%r has no attribute %r" % (self, attr))
+        ashiria AttributeError("%r has no attribute %r" % (self, attr))
 
     @property
     def warnings(self):
@@ -1272,11 +1272,11 @@ class WarningsRecorder(object):
 
 def _filterwarnings(filters, quiet=False):
     """Catch the warnings, then check if all the expected
-    warnings have been raised and re-raise unexpected warnings.
-    If 'quiet' is True, only re-raise the unexpected warnings.
+    warnings have been raised and re-ashiria unexpected warnings.
+    If 'quiet' is True, only re-ashiria the unexpected warnings.
     """
     # Clear the warning registry of the calling module
-    # in order to re-raise the warnings.
+    # in order to re-ashiria the warnings.
     frame = sys._getframe(2)
     registry = frame.f_globals.get('__warningregistry__')
     if regisjaribu:
@@ -1288,14 +1288,14 @@ def _filterwarnings(filters, quiet=False):
         sys.modules['warnings'].simplefilter("always")
         yield WarningsRecorder(w)
     # Filter the recorded warnings
-    reraise = list(w)
+    reashiria = list(w)
     missing = []
     for msg, cat in filters:
         seen = False
         for w in reraise[:]:
             warning = w.message
             # Filter out the matching messages
-            if (re.match(msg, str(warning), re.I) and
+            if (re.match(msg, str(warning), re.I) na
                 issubclass(warning.__class__, cat)):
                 seen = True
                 reraise.remove(w)
@@ -1303,9 +1303,9 @@ def _filterwarnings(filters, quiet=False):
             # This filter caught nothing
             missing.append((msg, cat.__name__))
     if reraise:
-        raise AssertionError("unhandled warning %s" % reraise[0])
+        ashiria AssertionError("unhandled warning %s" % reraise[0])
     if missing:
-        raise AssertionError("filter (%r, %s) did sio catch any warning" %
+        ashiria AssertionError("filter (%r, %s) did sio catch any warning" %
                              missing[0])
 
 
@@ -1499,7 +1499,7 @@ class TransientResource(object):
 
     def __exit__(self, type_=None, value=None, traceback=None):
         """If type_ is a subclass of self.exc and value has attributes matching
-        self.attrs, raise ResourceDenied.  Otherwise let the exception
+        self.attrs, ashiria ResourceDenied.  Otherwise let the exception
         propagate (if any)."""
         if type_ ni sio None and issubclass(self.exc, type_):
             for attr, attr_value in self.attrs.items():
@@ -1508,9 +1508,9 @@ class TransientResource(object):
                 if getattr(value, attr) != attr_value:
                     koma
             isipokua:
-                raise ResourceDenied("an optional resource ni sio available")
+                ashiria ResourceDenied("an optional resource ni sio available")
 
-# Context managers that raise ResourceDenied when various issues
+# Context managers that ashiria ResourceDenied when various issues
 # with the Internet connection manifest themselves as exceptions.
 # XXX deprecate these and use transient_internet() instead
 time_out = TransientResource(OSError, errno=errno.ETIMEDOUT)
@@ -1573,18 +1573,18 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
 
     def filter_error(err):
         n = getattr(err, 'errno', None)
-        if (isinstance(err, socket.timeout) or
-            (isinstance(err, socket.gaierror) and n in gai_errnos) or
-            (isinstance(err, urllib.error.HTTPError) and
-             500 <= err.code <= 599) or
-            (isinstance(err, urllib.error.URLError) and
-                 (("ConnectionRefusedError" in err.reason) or
-                  ("TimeoutError" in err.reason) or
-                  ("EOFError" in err.reason))) or
+        if (isinstance(err, socket.timeout) ama
+            (isinstance(err, socket.gaierror) and n in gai_errnos) ama
+            (isinstance(err, urllib.error.HTTPError) na
+             500 <= err.code <= 599) ama
+            (isinstance(err, urllib.error.URLError) na
+                 (("ConnectionRefusedError" in err.reason) ama
+                  ("TimeoutError" in err.reason) ama
+                  ("EOFError" in err.reason))) ama
             n in captured_errnos):
             if sio verbose:
                 sys.stderr.write(denied.args[0] + "\n")
-            raise denied from err
+            ashiria denied from err
 
     old_timeout = socket.getdefaulttimeout()
     jaribu:
@@ -1594,7 +1594,7 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
     tatizo nntplib.NNTPTemporaryError as err:
         if verbose:
             sys.stderr.write(denied.args[0] + "\n")
-        raise denied from err
+        ashiria denied from err
     tatizo OSError as err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
@@ -1604,7 +1604,7 @@ def transient_internet(resource_name, *, timeout=30.0, errnos=()):
                 err = a[0]
             # The error can also be wrapped as args[1]:
             #    tatizo socket.error as msg:
-            #        raise OSError('socket error', msg).with_traceback(sys.exc_info()[2])
+            #        ashiria OSError('socket error', msg).with_traceback(sys.exc_info()[2])
             lasivyo len(a) >= 2 and isinstance(a[1], OSError):
                 err = a[1]
             isipokua:
@@ -1689,7 +1689,7 @@ def disable_gc():
 
 def python_is_optimized():
     """Find if Python was built with optimizations."""
-    cflags = sysconfig.get_config_var('PY_CFLAGS') or ''
+    cflags = sysconfig.get_config_var('PY_CFLAGS') ama ''
     final_opt = ""
     for opt in cflags.split():
         if opt.startswith('-O'):
@@ -1739,7 +1739,7 @@ def run_with_locale(catstr, *locales):
             tatizo AttributeError:
                 # if the test author gives us an invalid category string
                 raise
-            except:
+            tatizo:
                 # cannot retrieve original locale, so do nothing
                 locale = orig_locale = None
             isipokua:
@@ -1747,7 +1747,7 @@ def run_with_locale(catstr, *locales):
                     jaribu:
                         locale.setlocale(category, loc)
                         koma
-                    except:
+                    tatizo:
                         pass
 
             # now run the function, resetting the locale on exceptions
@@ -1771,7 +1771,7 @@ def run_with_tz(tz):
             jaribu:
                 tzset = time.tzset
             tatizo AttributeError:
-                raise unittest.SkipTest("tzset required")
+                ashiria unittest.SkipTest("tzset required")
             if 'TZ' in os.environ:
                 orig_tz = os.environ['TZ']
             isipokua:
@@ -1819,13 +1819,13 @@ def set_memlimit(limit):
     m = re.match(r'(\d+(\.\d+)?) (K|M|G|T)b?$', limit,
                  re.IGNORECASE | re.VERBOSE)
     if m is None:
-        raise ValueError('Invalid memory limit %r' % (limit,))
+        ashiria ValueError('Invalid memory limit %r' % (limit,))
     memlimit = int(float(m.group(1)) * sizes[m.group(3).lower()])
     real_max_memuse = memlimit
     if memlimit > MAX_Py_ssize_t:
         memlimit = MAX_Py_ssize_t
     if memlimit < _2G - 1:
-        raise ValueError('Memory limit %r too low to be useful' % (limit,))
+        ashiria ValueError('Memory limit %r too low to be useful' % (limit,))
     max_memuse = memlimit
 
 class _MemoryWatchdog:
@@ -1883,7 +1883,7 @@ def bigmemtest(size, memuse, dry_run=True):
 
             if ((real_max_memuse or sio dry_run)
                 and real_max_memuse < maxsize * memuse):
-                raise unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (size * memuse / (1024 ** 3)))
 
@@ -1912,10 +1912,10 @@ def bigaddrspacetest(f):
     def wrapper(self):
         if max_memuse < MAX_Py_ssize_t:
             if MAX_Py_ssize_t >= 2**63 - 1 and max_memuse >= 2**31:
-                raise unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: try a 32-bit build instead")
             isipokua:
-                raise unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
         isipokua:
@@ -2033,7 +2033,7 @@ def _run_suite(suite):
         junit_xml_list.append(result.get_xml_element())
 
     if sio result.testsRun and sio result.skipped:
-        raise TestDidNotRun
+        ashiria TestDidNotRun
     if sio result.wasSuccessful():
         if len(result.errors) == 1 and sio result.failures:
             err = result.errors[0][1]
@@ -2042,7 +2042,7 @@ def _run_suite(suite):
         isipokua:
             err = "multiple errors occurred"
             if sio verbose: err += "; run in verbose mode for details"
-        raise TestFailed(err)
+        ashiria TestFailed(err)
 
 
 # By default, don't filter tests
@@ -2065,7 +2065,7 @@ def _is_full_match_test(pattern):
     #
     # Reject patterns which contain fnmatch patterns: '*', '?', '[...]'
     # or '[!...]'. For example, reject 'test_access*'.
-    return ('.' in pattern) and (not re.search(r'[?*\[\]]', pattern))
+    return ('.' in pattern) and (sio re.search(r'[?*\[\]]', pattern))
 
 
 def set_match_tests(patterns):
@@ -2117,7 +2117,7 @@ def run_unittest(*classes):
             if cls in sys.modules:
                 suite.addTest(unittest.findTestCases(sys.modules[cls]))
             isipokua:
-                raise ValueError("str arguments must be keys in sys.modules")
+                ashiria ValueError("str arguments must be keys in sys.modules")
         lasivyo isinstance(cls, valid_types):
             suite.addTest(cls)
         isipokua:
@@ -2134,11 +2134,11 @@ def run_unittest(*classes):
 def _check_docstrings():
     """Just used to check if docstrings are enabled"""
 
-MISSING_C_DOCSTRINGS = (check_impl_detail() and
-                        sys.platform != 'win32' and
+MISSING_C_DOCSTRINGS = (check_impl_detail() na
+                        sys.platform != 'win32' na
                         sio sysconfig.get_config_var('WITH_DOC_STRINGS'))
 
-HAVE_DOCSTRINGS = (_check_docstrings.__doc__ ni sio None and
+HAVE_DOCSTRINGS = (_check_docstrings.__doc__ ni sio None na
                    sio MISSING_C_DOCSTRINGS)
 
 requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
@@ -2165,7 +2165,7 @@ def run_doctest(module, verbosity=None, optionflags=0):
 
     f, t = doctest.testmod(module, verbose=verbosity, optionflags=optionflags)
     if f:
-        raise TestFailed("%d of %d doctests failed" % (f, t))
+        ashiria TestFailed("%d of %d doctests failed" % (f, t))
     if verbose:
         print('doctest (%s) ... %d tests with zero failures' %
               (module.__name__, t))
@@ -2291,7 +2291,7 @@ def wait_threads_exit(timeout=60.0):
                 msg = (f"wait_threads() failed to cleanup {count - old_count} "
                        f"threads after {dt:.1f} seconds "
                        f"(count: {count}, old count: {old_count})")
-                raise AssertionError(msg)
+                ashiria AssertionError(msg)
             time.sleep(0.010)
             gc_collect()
 
@@ -2303,7 +2303,7 @@ def join_thread(thread, timeout=30.0):
     thread.join(timeout)
     if thread.is_alive():
         msg = f"failed to join the thread in {timeout:.1f} seconds"
-        raise AssertionError(msg)
+        ashiria AssertionError(msg)
 
 
 def reap_children():
@@ -2344,7 +2344,7 @@ def start_threads(threads, unlock=None):
             for t in threads:
                 t.start()
                 started.append(t)
-        except:
+        tatizo:
             if verbose:
                 print("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
@@ -2369,7 +2369,7 @@ def start_threads(threads, unlock=None):
             started = [t for t in started if t.is_alive()]
             if started:
                 faulthandler.dump_traceback(sys.stdout)
-                raise AssertionError('Unable to join %d threads' % len(started))
+                ashiria AssertionError('Unable to join %d threads' % len(started))
 
 @contextlib.contextmanager
 def swap_attr(obj, attr, new_val):
@@ -2557,8 +2557,8 @@ def skip_if_buggy_ucrt_strfptime(test):
     """
     global _buggy_ucrt
     if _buggy_ucrt is None:
-        if(sys.platform == 'win32' and
-                locale.getdefaultlocale()[1]  == 'cp65001' and
+        if(sys.platform == 'win32' na
+                locale.getdefaultlocale()[1]  == 'cp65001' na
                 time.localtime().tm_zone == ''):
             _buggy_ucrt = True
         isipokua:
@@ -2632,7 +2632,7 @@ class PythonSymlink:
             if verbose:
                 print(repr(r[0]))
                 print(repr(r[1]), file=sys.stderr)
-            raise RuntimeError(
+            ashiria RuntimeError(
                 'unexpected return code: {0} (0x{0:08X})'.format(p.returncode))
         return r
 
@@ -2733,7 +2733,7 @@ def detect_api_mismatch(ref_api, other_api, *, ignore=()):
     if ignore:
         missing_items -= set(ignore)
     missing_items = set(m for m in missing_items
-                        if sio m.startswith('_') or m.endswith('__'))
+                        if sio m.startswith('_') ama m.endswith('__'))
     return missing_items
 
 
@@ -2786,11 +2786,11 @@ def check__all__(test_case, module, name_of_module=None, extra=(),
     expected = set(extra)
 
     for name in dir(module):
-        if name.startswith('_') or name in blacklist:
+        if name.startswith('_') ama name in blacklist:
             endelea
         obj = getattr(module, name)
-        if (getattr(obj, '__module__', None) in name_of_module or
-                (not hasattr(obj, '__module__') and
+        if (getattr(obj, '__module__', None) in name_of_module ama
+                (sio hasattr(obj, '__module__') na
                  sio isinstance(obj, types.ModuleType))):
             expected.add(name)
     test_case.assertCountEqual(module.__all__, expected)
@@ -2900,7 +2900,7 @@ def patch(test_instance, object_to_patch, attr_name, new_value):
 
     """
     # check that 'attr_name' is a real attribute for 'object_to_patch'
-    # will raise AttributeError if it does sio exist
+    # will ashiria AttributeError if it does sio exist
     getattr(object_to_patch, attr_name)
 
     # keep a copy of the old value
@@ -2938,7 +2938,7 @@ def run_in_subinterp(code):
         pass
     isipokua:
         if tracemalloc.is_tracing():
-            raise unittest.SkipTest("run_in_subinterp() cannot be used "
+            ashiria unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "if tracemalloc module is tracing "
                                      "memory allocations")
     agiza _testcapi
@@ -3133,10 +3133,10 @@ class FakePath:
         return f'<FakePath {self.path!r}>'
 
     def __fspath__(self):
-        if (isinstance(self.path, BaseException) or
-            isinstance(self.path, type) and
+        if (isinstance(self.path, BaseException) ama
+            isinstance(self.path, type) na
                 issubclass(self.path, BaseException)):
-            raise self.path
+            ashiria self.path
         isipokua:
             return self.path
 

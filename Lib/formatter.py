@@ -2,7 +2,7 @@
 
 Formatter objects transform an abstract flow of formatting events into
 specific output events on writer objects. Formatters manage several stack
-structures to allow various properties of a writer object to be changed and
+structures to allow various properties of a writer object to be changed na
 restored; writers need sio be able to handle relative changes nor any sort
 of ``change back'' operation. Specific writer properties which may be
 controlled via formatter objects are horizontal alignment, font, na left
@@ -321,7 +321,7 @@ kundi NullWriter:
 kundi AbstractWriter(NullWriter):
     """A writer which can be used kwenye debugging formatters, but sio much else.
 
-    Each method simply announces itself by printing its name and
+    Each method simply announces itself by printing its name na
     arguments on standard output.
 
     """

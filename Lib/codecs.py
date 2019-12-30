@@ -147,7 +147,7 @@ kundi Codec:
             StreamWriter kila codecs which have to keep state kwenye order to
             make encoding efficient.
 
-            The encoder must be able to handle zero length input and
+            The encoder must be able to handle zero length input na
             rudisha an empty object of the output object type kwenye this
             situation.
 
@@ -170,7 +170,7 @@ kundi Codec:
             StreamReader kila codecs which have to keep state kwenye order to
             make decoding efficient.
 
-            The decoder must be able to handle zero length input and
+            The decoder must be able to handle zero length input na
             rudisha an empty object of the output object type kwenye this
             situation.
 
@@ -785,7 +785,7 @@ kundi StreamRecoder:
 
             stream must be a file-like object.
 
-            encode na decode must adhere to the Codec interface; Reader and
+            encode na decode must adhere to the Codec interface; Reader na
             Writer must be factory functions ama classes providing the
             StreamReader na StreamWriter interfaces resp.
 

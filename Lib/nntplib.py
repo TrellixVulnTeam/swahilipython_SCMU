@@ -54,7 +54,7 @@ are strings, sio numbers, since they are rarely used kila calculations.
 # - New method NNTP.getcapabilities()
 # - New method NNTP.over()
 # - New helper function decode_header()
-# - NNTP.post() na NNTP.ihave() accept file objects, bytes-like objects and
+# - NNTP.post() na NNTP.ihave() accept file objects, bytes-like objects na
 #   arbitrary iterables tumaing lines.
 # - An extensive test suite :-)
 
@@ -1051,7 +1051,7 @@ kundi NNTP(_NNTPBase):
                                readermode, timeout)
             ikiwa user ama usenetrc:
                 self.login(user, pitaword, usenetrc)
-        except:
+        tatizo:
             ikiwa file:
                 file.close()
             self.sock.close()
@@ -1084,7 +1084,7 @@ ikiwa _have_ssl:
                                    readermode=readermode, timeout=timeout)
                 ikiwa user ama usenetrc:
                     self.login(user, pitaword, usenetrc)
-            except:
+            tatizo:
                 ikiwa file:
                     file.close()
                 self.sock.close()

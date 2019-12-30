@@ -89,7 +89,7 @@ def setup (**attrs):
 
     global _setup_stop_after, _setup_distribution
 
-    # Determine the distribution class -- either caller-supplied or
+    # Determine the distribution class -- either caller-supplied ama
     # our Distribution (see below).
     klass = attrs.get('distclass')
     if klass:
@@ -108,9 +108,9 @@ def setup (**attrs):
         _setup_distribution = dist = klass(attrs)
     tatizo DistutilsSetupError as msg:
         if 'name' haiko kwenye attrs:
-            raise SystemExit("error in setup command: %s" % msg)
+            ashiria SystemExit("error in setup command: %s" % msg)
         isipokua:
-            raise SystemExit("error in %s setup command: %s" % \
+            ashiria SystemExit("error in %s setup command: %s" % \
                   (attrs['name'], msg))
 
     if _setup_stop_after == "init":
@@ -133,7 +133,7 @@ def setup (**attrs):
     jaribu:
         ok = dist.parse_command_line()
     tatizo DistutilsArgError as msg:
-        raise SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
+        ashiria SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
 
     if DEBUG:
         print("options (after parsing command line):")
@@ -147,20 +147,20 @@ def setup (**attrs):
         jaribu:
             dist.run_commands()
         tatizo KeyboardInterrupt:
-            raise SystemExit("interrupted")
+            ashiria SystemExit("interrupted")
         tatizo OSError as exc:
             if DEBUG:
                 sys.stderr.write("error: %s\n" % (exc,))
                 raise
             isipokua:
-                raise SystemExit("error: %s" % (exc,))
+                ashiria SystemExit("error: %s" % (exc,))
 
         tatizo (DistutilsError,
                 CCompilerError) as msg:
             if DEBUG:
                 raise
             isipokua:
-                raise SystemExit("error: " + str(msg))
+                ashiria SystemExit("error: " + str(msg))
 
     return dist
 
@@ -168,7 +168,7 @@ def setup (**attrs):
 
 
 def run_setup (script_name, script_args=None, stop_after="run"):
-    """Run a setup script in a somewhat controlled environment, and
+    """Run a setup script in a somewhat controlled environment, na
     return the Distribution instance that drives things.  This is useful
     if you need to find out the distribution meta-data (passed as
     keyword args from 'script' to 'setup()', or the contents of the
@@ -183,7 +183,7 @@ def run_setup (script_name, script_args=None, stop_after="run"):
     'stop_after' tells 'setup()' when to stop processing; possible
     values:
       init
-        stop after the Distribution instance has been created and
+        stop after the Distribution instance has been created na
         populated with the keyword arguments to 'setup()'
       config
         stop after config files have been parsed (and their data
@@ -199,7 +199,7 @@ def run_setup (script_name, script_args=None, stop_after="run"):
     used to drive the Distutils.
     """
     if stop_after haiko kwenye ('init', 'config', 'commandline', 'run'):
-        raise ValueError("invalid value for 'stop_after': %r" % (stop_after,))
+        ashiria ValueError("invalid value for 'stop_after': %r" % (stop_after,))
 
     global _setup_stop_after, _setup_distribution
     _setup_stop_after = stop_after
@@ -222,7 +222,7 @@ def run_setup (script_name, script_args=None, stop_after="run"):
         pass
 
     if _setup_distribution is None:
-        raise RuntimeError(("'distutils.core.setup()' was never called -- "
+        ashiria RuntimeError(("'distutils.core.setup()' was never called -- "
                "perhaps '%s' ni sio a Distutils setup script?") % \
               script_name)
 

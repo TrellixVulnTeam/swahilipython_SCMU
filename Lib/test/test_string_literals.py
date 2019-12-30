@@ -21,7 +21,7 @@ encoding declared kila the file (UTF-8 by default).
 We have to test this ukijumuisha various file encodings.  We also test it with
 exec()/eval(), which uses a different code path.
 
-This file ni really about correct treatment of encodings and
+This file ni really about correct treatment of encodings na
 backslashes.  It doesn't concern itself ukijumuisha issues like single
 vs. double quotes ama singly- vs. triply-quoted strings: that's dealt
 ukijumuisha elsewhere (I assume).

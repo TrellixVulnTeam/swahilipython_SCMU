@@ -21,7 +21,7 @@ def splitUp(pred):
     """
     res = re_splitComparison.match(pred)
     if sio res:
-        raise ValueError("bad package restriction syntax: %r" % pred)
+        ashiria ValueError("bad package restriction syntax: %r" % pred)
     comp, verStr = res.groups()
     return (comp, distutils.version.StrictVersion(verStr))
 
@@ -102,20 +102,20 @@ class VersionPredicate:
 
         versionPredicateStr = versionPredicateStr.strip()
         if sio versionPredicateStr:
-            raise ValueError("empty package restriction")
+            ashiria ValueError("empty package restriction")
         match = re_validPackage.match(versionPredicateStr)
         if sio match:
-            raise ValueError("bad package name in %r" % versionPredicateStr)
+            ashiria ValueError("bad package name in %r" % versionPredicateStr)
         self.name, paren = match.groups()
         paren = paren.strip()
         if paren:
             match = re_paren.match(paren)
             if sio match:
-                raise ValueError("expected parenthesized list: %r" % paren)
+                ashiria ValueError("expected parenthesized list: %r" % paren)
             str = match.groups()[0]
             self.pred = [splitUp(aPred) for aPred in str.split(",")]
             if sio self.pred:
-                raise ValueError("empty parenthesized list in %r"
+                ashiria ValueError("empty parenthesized list in %r"
                                  % versionPredicateStr)
         isipokua:
             self.pred = []
@@ -159,8 +159,8 @@ def split_provision(value):
     value = value.strip()
     m = _provision_rx.match(value)
     if sio m:
-        raise ValueError("illegal provides specification: %r" % value)
-    ver = m.group(2) or None
+        ashiria ValueError("illegal provides specification: %r" % value)
+    ver = m.group(2) ama None
     if ver:
         ver = distutils.version.StrictVersion(ver)
     return m.group(1), ver

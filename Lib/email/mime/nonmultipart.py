@@ -18,5 +18,5 @@ class MIMENonMultipart(MIMEBase):
         # The public API prohibits attaching multiple subparts to MIMEBase
         # derived subtypes since none of them are, by definition, of content
         # type multipart/*
-        raise errors.MultipartConversionError(
+        ashiria errors.MultipartConversionError(
             'Cannot attach additional subparts to non-multipart/*')

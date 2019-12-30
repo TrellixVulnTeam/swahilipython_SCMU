@@ -28,7 +28,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
     A refactoring tool that can avoid overwriting its input files.
     Prints output to stdout.
 
-    Output files can optionally be written to a different directory na or
+    Output files can optionally be written to a different directory na ama
     have an extra file suffix appended to their name kila use kwenye situations
     where you do sio want to replace the input files.
     """
@@ -217,7 +217,7 @@ eleza main(fixer_pkg, args=Tupu):
     logger = logging.getLogger('lib2to3.main')
 
     # Initialize the refactoring tool
-    avail_fixes = set(refactor.get_fixers_kutoka_package(fixer_pkg))
+    avail_fixes = set(refactor.get_fixers_from_package(fixer_pkg))
     unwanted_fixes = set(fixer_pkg + ".fix_" + fix kila fix kwenye options.nofix)
     explicit = set()
     ikiwa options.fix:

@@ -1,7 +1,7 @@
 """Pop up a reminder of how to call a function.
 
 Call Tips are floating windows which display function, class, na method
-parameter na docstring information when you type an opening parenthesis, and
+parameter na docstring information when you type an opening parenthesis, na
 which disappear when you type a closing parenthesis.
 """
 agiza __main__

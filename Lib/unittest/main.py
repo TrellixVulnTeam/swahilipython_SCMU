@@ -270,6 +270,6 @@ kundi TestProgram(object):
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         ikiwa self.exit:
-            sys.exit(not self.result.wasSuccessful())
+            sys.exit(sio self.result.wasSuccessful())
 
 main = TestProgram

@@ -24,7 +24,7 @@ inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
 socket.setdefaulttimeout() -- set the default timeout value
-create_connection() -- connects to an address, ukijumuisha an optional timeout and
+create_connection() -- connects to an address, ukijumuisha an optional timeout na
                        optional source address.
 
  [*] sio available on all platforms!
@@ -606,7 +606,7 @@ isipokua:
                     pita
                 csock.setblocking(Kweli)
                 ssock, _ = lsock.accept()
-            except:
+            tatizo:
                 csock.close()
                 ashiria
         mwishowe:
@@ -633,7 +633,7 @@ kundi SocketIO(io.RawIOBase):
 
     # One might wonder why sio let FileIO do the job instead.  There are two
     # main reasons why FileIO ni sio adapted:
-    # - it wouldn't work under Windows (where you can't used read() and
+    # - it wouldn't work under Windows (where you can't used read() na
     #   write() on a socket handle)
     # - it wouldn't work ukijumuisha socket timeouts (FileIO would ignore the
     #   timeout na consider the socket non-blocking)
@@ -899,8 +899,8 @@ eleza getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
 
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments kila creating a socket connected to that service.
-    host ni a domain name, a string representation of an IPv4/v6 address or
-    Tupu. port ni a string service name such kama 'http', a numeric port number or
+    host ni a domain name, a string representation of an IPv4/v6 address ama
+    Tupu. port ni a string service name such kama 'http', a numeric port number ama
     Tupu. By pitaing Tupu kama the value of host na port, you can pita NULL to
     the underlying C API.
 

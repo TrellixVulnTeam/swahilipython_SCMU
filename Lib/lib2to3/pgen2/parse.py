@@ -45,7 +45,7 @@ kundi Parser(object):
     sequence, na should sio be used concurrently by different threads
     to parse separate token sequences.
 
-    See driver.py kila how to get input tokens by tokenizing a file or
+    See driver.py kila how to get input tokens by tokenizing a file ama
     string.
 
     Parsing ni complete when addtoken() rudishas Kweli; the root of the
@@ -151,7 +151,7 @@ kundi Parser(object):
                         koma # To endelea the outer wakati loop
             isipokua:
                 ikiwa (0, state) kwenye arcs:
-                    # An accepting state, pop it na try something else
+                    # An accepting state, pop it na try something ama
                     self.pop()
                     ikiwa sio self.stack:
                         # Done parsing, but another token ni input

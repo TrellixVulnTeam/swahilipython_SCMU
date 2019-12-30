@@ -76,7 +76,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # ama other test suites that will be used to build the suite initially"
     #
     # TestSuite should allow any iterable to provide tests
-    eleza test_init__tests_kutoka_any_iterable(self):
+    eleza test_init__tests_from_any_iterable(self):
         eleza tests():
             tuma unittest.FunctionTestCase(lambda: Tupu)
             tuma unittest.FunctionTestCase(lambda: Tupu)

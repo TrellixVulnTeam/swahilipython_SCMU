@@ -29,7 +29,7 @@ class install_lib(Command):
     #
     # The UI for this is two options, 'compile' and 'optimize'.
     # 'compile' is strictly boolean, and only decides whether to
-    # generate .pyc files.  'optimize' is three-way (0, 1, or 2), and
+    # generate .pyc files.  'optimize' is three-way (0, 1, or 2), na
     # decides both whether to generate .pyc files and what level of
     # optimization to use.
 
@@ -79,9 +79,9 @@ class install_lib(Command):
             jaribu:
                 self.optimize = int(self.optimize)
                 if self.optimize haiko kwenye (0, 1, 2):
-                    raise AssertionError
+                    ashiria AssertionError
             tatizo (ValueError, AssertionError):
-                raise DistutilsOptionError("optimize must be 0, 1, or 2")
+                ashiria DistutilsOptionError("optimize must be 0, 1, or 2")
 
     def run(self):
         # Make sure we have built everything we need first

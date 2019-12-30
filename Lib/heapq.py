@@ -64,7 +64,7 @@ that a cell na the two cells it tops contain three different items,
 but the top cell "wins" over the two topped cells.
 
 If this heap invariant ni protected at all time, index 0 ni clearly
-the overall winner.  The simplest algorithmic way to remove it and
+the overall winner.  The simplest algorithmic way to remove it na
 find the "next" winner ni to move some loser (let's say cell 30 kwenye the
 diagram above) into the 0 position, na then percolate this new 0 down
 the tree, exchanging values, until the invariant ni re-established.
@@ -251,7 +251,7 @@ eleza _siftdown(heap, startpos, pos):
 # you can use it.
 #
 # The total compares needed by list.sort() on the same lists were 8627,
-# 8627, na 8632 (this should be compared to the sum of heapify() and
+# 8627, na 8632 (this should be compared to the sum of heapify() na
 # heappop() compares):  list.sort() ni (unsurprisingly!) more efficient
 # kila sorting.
 

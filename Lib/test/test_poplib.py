@@ -177,7 +177,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
                 lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
-                lasivyo ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
+                lasivyo ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] ama
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" kwenye err.args[1]):
                     rudisha self.handle_close()
                 ashiria

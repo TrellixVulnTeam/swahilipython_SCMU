@@ -220,7 +220,7 @@ kundi AutoCompleteTest(unittest.TestCase):
 
     eleza test_fetch_completions(self):
         # Test that fetch_completions rudishas 2 lists:
-        # For attribute completion, a large list containing all variables, and
+        # For attribute completion, a large list containing all variables, na
         # a small list containing non-private variables.
         # For file completion, a large list containing all files kwenye the path,
         # na a small list containing files that do sio start ukijumuisha '.'.
@@ -270,7 +270,7 @@ kundi AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     eleza test_get_entity(self):
-        # Test that a name ni kwenye the namespace of sys.modules and
+        # Test that a name ni kwenye the namespace of sys.modules na
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual

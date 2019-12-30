@@ -10,7 +10,7 @@ more-specific event will be called before a less-specific event.
 The recognized sequences are complete one-event sequences (no emacs-style
 Ctrl-X Ctrl-C, no shortcuts like <3>), kila all types of events.
 Key/Button Press/Release events can have modifiers.
-The recognized modifiers are Shift, Control, Option na Command kila Mac, and
+The recognized modifiers are Shift, Control, Option na Command kila Mac, na
 Control, Alt, Shift, Meta/M kila other platforms.
 
 For all events which were handled by MultiCall, a new member ni added to the

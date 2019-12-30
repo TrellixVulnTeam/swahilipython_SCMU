@@ -28,7 +28,7 @@ MAKE_FUNCTION_FLAGS = ('defaults', 'kwdefaults', 'annotations', 'closure')
 
 
 def _try_compile(source, name):
-    """Attempts to compile the given source, first as an expression and
+    """Attempts to compile the given source, first as an expression na
        then as a statement if the first approach fails.
 
        Utility function to accept strings in functions that otherwise
@@ -56,11 +56,11 @@ def dis(x=None, *, file=None, depth=None):
     if hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects kutoka...
-    if hasattr(x, '__code__'):  # ...a function, or
+    if hasattr(x, '__code__'):  # ...a function, ama
         x = x.__code__
-    lasivyo hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, ama
         x = x.gi_code
-    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, ama
         x = x.ag_code
     lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
@@ -82,7 +82,7 @@ def dis(x=None, *, file=None, depth=None):
     lasivyo isinstance(x, str):    # Source code
         _disassemble_str(x, file=file, depth=depth)
     isipokua:
-        raise TypeError("don't know how to disassemble %s objects" %
+        ashiria TypeError("don't know how to disassemble %s objects" %
                         type(x).__name__)
 
 def distb(tb=None, *, file=None):
@@ -91,7 +91,7 @@ def distb(tb=None, *, file=None):
         jaribu:
             tb = sys.last_traceback
         tatizo AttributeError:
-            raise RuntimeError("no last traceback to disassemble") kutoka None
+            ashiria RuntimeError("no last traceback to disassemble") kutoka None
         wakati tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file)
 
@@ -131,11 +131,11 @@ def _get_code_object(x):
     if hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects kutoka...
-    if hasattr(x, '__code__'):  # ...a function, or
+    if hasattr(x, '__code__'):  # ...a function, ama
         x = x.__code__
-    lasivyo hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, ama
         x = x.gi_code
-    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, ama
         x = x.ag_code
     lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
@@ -145,7 +145,7 @@ def _get_code_object(x):
     # By now, if we don't have a code object, we can't disassemble x.
     if hasattr(x, 'co_code'):
         return x
-    raise TypeError("don't know how to disassemble %s objects" %
+    ashiria TypeError("don't know how to disassemble %s objects" %
                     type(x).__name__)
 
 def code_info(x):
@@ -401,8 +401,8 @@ def _disassemble_bytes(code, lasti=-1, varnames=None, names=None,
     for instr in _get_instructions_bytes(code, varnames, names,
                                          constants, cells, linestarts,
                                          line_offset=line_offset):
-        new_source_line = (show_lineno and
-                           instr.starts_line ni sio None and
+        new_source_line = (show_lineno na
+                           instr.starts_line ni sio None na
                            instr.offset > 0)
         if new_source_line:
             print(file=file)

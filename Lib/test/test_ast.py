@@ -305,11 +305,11 @@ kundi AST_Tests(unittest.TestCase):
         self.assertIsTupu(slc.lower)
         self.assertIsTupu(slc.step)
 
-    eleza test_kutoka_agiza(self):
+    eleza test_from_agiza(self):
         im = ast.parse("kutoka . agiza y").body[0]
         self.assertIsTupu(im.module)
 
-    eleza test_non_interned_future_kutoka_ast(self):
+    eleza test_non_interned_future_from_ast(self):
         mod = ast.parse("kutoka __future__ agiza division")
         self.assertIsInstance(mod.body[0], ast.ImportFrom)
         mod.body[0].module = " __future__ ".strip()
@@ -1541,7 +1541,7 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_content(s, binop.left, 'arg_one')
         self._check_content(s, binop.right, 'arg_two')
 
-    eleza test_import_kutoka_multi_line(self):
+    eleza test_import_from_multi_line(self):
         s = dedent('''
             kutoka x.y.z agiza (
                 a, b, c kama c
@@ -1581,7 +1581,7 @@ kundi EndPositionTests(unittest.TestCase):
 
     eleza test_boolop(self):
         s = dedent('''
-            ikiwa (one_condition and
+            ikiwa (one_condition na
                     (other_condition ama yet_another_one)):
                 pita
         ''').strip()

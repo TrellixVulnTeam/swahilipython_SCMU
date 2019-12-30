@@ -51,7 +51,7 @@ IDLEfork ChangeLog
 	-c cmd	   run the command kwenye a shell -d	 enable the
 	debugger -i	    open an interactive shell -i file(s) open a
 	shell na also an editor window kila each file -r script  run a file
-	as a script kwenye a shell -s	  run $IDLESTARTUP or
+	as a script kwenye a shell -s	  run $IDLESTARTUP ama
 	$PYTHONSTARTUP before anything isipokua -t title   set title of shell
 	window
 
@@ -126,7 +126,7 @@ IDLEfork ChangeLog
 	* idle.py: py-cvs-2001_07_13 (Rev 1.4) merge
 
 	"Move the action of loading the configuration to the IdleConf
-	module rather than the idle.py script.	This has advantages and
+	module rather than the idle.py script.	This has advantages na
 	disadvantages; the biggest advantage being that we can more easily
 	have an alternative main program."  --GvR
 
@@ -180,7 +180,7 @@ IDLEfork ChangeLog
 	* IdleConf.py: py-cvs-2001_07_13 (Rel 1.7) merge
 
 	"Move the action of loading the configuration to the IdleConf
-	module rather than the idle.py script.	This has advantages and
+	module rather than the idle.py script.	This has advantages na
 	disadvantages; the biggest advantage being that we can more easily
 	have an alternative main program." --GvR
 
@@ -506,7 +506,7 @@ IDLEfork ChangeLog
 
 2000-09-24 17:29  nriley
 
-	* protocol.py: Fixes kila Python 1.6 compatibility - socket bind and
+	* protocol.py: Fixes kila Python 1.6 compatibility - socket bind na
 	connect get a tuple instead two arguments.
 
 2000-09-24 17:28  nriley
@@ -819,7 +819,7 @@ Wed Jun  2 18:18:57 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* CallTips.py:
 	A version that Mark Hammond posted to the newsgroup.  Has some newer
 	stuff kila getting the tip.  Had to fix the Key-( na Key-) events
-	kila Unix.  Will have to re-apply my patch kila catching KeyRelease and
+	kila Unix.  Will have to re-apply my patch kila catching KeyRelease na
 	ButtonRelease events.
 
 	* CallTipWindow.py, CallTips.py:
@@ -874,7 +874,7 @@ Tue Jun  1 20:06:44 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	docstrings often).  PythonWin's shell should set this true too.
 
 	Persistent problem:  strings containing def/kundi can still screw things up
-	completely.  No improvement.  Simplest workaround ni on the user's head, and
+	completely.  No improvement.  Simplest workaround ni on the user's head, na
 	consists of inserting e.g.
 
 	eleza _(): pita
@@ -986,7 +986,7 @@ Mon May  3 15:49:52 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	Give the attached a whirl.  Even ikiwa you hate the implementation, I think
 	you'll like the results.  Think I caught all the "block edit" cmds,
-	including Format Paragraph, plus subtler ones involving smart indents and
+	including Format Paragraph, plus subtler ones involving smart indents na
 	backspacing.
 
 	* WidgetRedirector.py: Tim Peters writes:
@@ -1082,7 +1082,7 @@ Thu Apr 22 23:20:17 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	* ColorDelegator.py:
 	Super-elegant patch by Tim Peters that speeds up colorization
 	dramatically (up to 15 times he claims).  Works by reading more than
-	one line at a time, up to 100-line chunks (starting ukijumuisha one line and
+	one line at a time, up to 100-line chunks (starting ukijumuisha one line na
 	then doubling up to the limit).  On a typical machine (e.g. Tim's
 	P5-166) this doesn't reduce interactive responsiveness kwenye a noticeable
 	way.
@@ -1124,7 +1124,7 @@ Mon Apr 19 16:26:02 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 	o newline_and_indent_event trims trailing whitespace on the old
 	line (pymode na Codewright).
 
-	o newline_and_indent_event no longer fooled by trailing whitespace or
+	o newline_and_indent_event no longer fooled by trailing whitespace ama
 	comment after ":" (pymode, PTUI).
 
 	o newline_and_indent_event now reduces the new line's indentation after
@@ -1391,7 +1391,7 @@ Sat Jan  2 21:28:54 1999  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	Much has changed -- too much, kwenye fact, to write down.
 	The big news ni that there's a standard way to write IDLE extensions;
-	see extend.txt.  Some sample extensions have been provided, and
+	see extend.txt.  Some sample extensions have been provided, na
 	some existing code has been converted to extensions.  Probably the
 	biggest new user feature ni a new search dialog ukijumuisha more options,
 	search na replace, na even search kwenye files (grep).
@@ -1508,7 +1508,7 @@ Fri Oct 16 21:10:12 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 Thu Oct 15 23:27:08 1998  Guido van Rossum  <guido@cnri.reston.va.us>
 
 	* ClassBrowser.py, ScrolledList.py:
-	Generalized the scrolled list which ni the base kila the kundi and
+	Generalized the scrolled list which ni the base kila the kundi na
 	method browser into a separate kundi kwenye its own module.
 
 	* Attic/test.py: Cosmetic change

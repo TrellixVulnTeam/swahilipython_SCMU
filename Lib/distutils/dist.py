@@ -194,7 +194,7 @@ Common commands: (see '--help-commands' for more)
         # gives sysconfig.get_python_version() if the dist file is
         # specific to a Python version, 'any' if it is good for all
         # Python versions on the target platform, and '' for a source
-        # file. pyversion should sio be used to specify minimum or
+        # file. pyversion should sio be used to specify minimum ama
         # maximum required Python versions; use the metainfo for that
         # instead.
         self.dist_files = []
@@ -432,7 +432,7 @@ Common commands: (see '--help-commands' for more)
                     isipokua:
                         setattr(self, opt, val)
                 tatizo ValueError as msg:
-                    raise DistutilsOptionError(msg)
+                    ashiria DistutilsOptionError(msg)
 
     # -- Command-line parsing methods ----------------------------------
 
@@ -463,7 +463,7 @@ Common commands: (see '--help-commands' for more)
 
         # We have to parse the command line a bit at a time -- global
         # options, then the first command, then its options, and so on --
-        # because each command will be handled by a different class, and
+        # because each command will be handled by a different class, na
         # the options that are valid for a particular class aren't known
         # until we have loaded the command class, which doesn't happen
         # until we know what the command is.
@@ -498,7 +498,7 @@ Common commands: (see '--help-commands' for more)
 
         # Oops, no commands found -- an end-user error
         if sio self.commands:
-            raise DistutilsArgError("no commands supplied")
+            ashiria DistutilsArgError("no commands supplied")
 
         # All is well: return true
         return True
@@ -529,7 +529,7 @@ Common commands: (see '--help-commands' for more)
         # Pull the current command from the head of the command line
         command = args[0]
         if sio command_re.match(command):
-            raise SystemExit("invalid command name '%s'" % command)
+            ashiria SystemExit("invalid command name '%s'" % command)
         self.commands.append(command)
 
         # Dig up the command class that implements this command, so we
@@ -538,21 +538,21 @@ Common commands: (see '--help-commands' for more)
         jaribu:
             cmd_class = self.get_command_class(command)
         tatizo DistutilsModuleError as msg:
-            raise DistutilsArgError(msg)
+            ashiria DistutilsArgError(msg)
 
         # Require that the command class be derived from Command -- want
         # to be sure that the basic "command" interface is implemented.
         if sio issubclass(cmd_class, Command):
-            raise DistutilsClassError(
+            ashiria DistutilsClassError(
                 "command class %s must subclass Command" % cmd_class)
 
         # Also make sure that the command object provides a list of its
         # known options.
-        if sio (hasattr(cmd_class, 'user_options') and
+        if sio (hasattr(cmd_class, 'user_options') na
                 isinstance(cmd_class.user_options, list)):
             msg = ("command class %s must provide "
                 "'user_options' attribute (a list of tuples)")
-            raise DistutilsClassError(msg % cmd_class)
+            ashiria DistutilsClassError(msg % cmd_class)
 
         # If the command class has a list of negative alias options,
         # merge it in with the global negative aliases.
@@ -563,7 +563,7 @@ Common commands: (see '--help-commands' for more)
 
         # Check for help_options in command class.  They have a different
         # format (tuple of four) so we need to preprocess them here.
-        if (hasattr(cmd_class, 'help_options') and
+        if (hasattr(cmd_class, 'help_options') na
                 isinstance(cmd_class.help_options, list)):
             help_options = fix_help_options(cmd_class.help_options)
         isipokua:
@@ -580,7 +580,7 @@ Common commands: (see '--help-commands' for more)
             self._show_help(parser, display_options=0, commands=[cmd_class])
             return
 
-        if (hasattr(cmd_class, 'help_options') and
+        if (hasattr(cmd_class, 'help_options') na
                 isinstance(cmd_class.help_options, list)):
             help_option_found=0
             for (help_option, short, desc, func) in cmd_class.help_options:
@@ -589,7 +589,7 @@ Common commands: (see '--help-commands' for more)
                     if callable(func):
                         func()
                     isipokua:
-                        raise DistutilsClassError(
+                        ashiria DistutilsClassError(
                             "invalid help function %r for help option '%s': "
                             "must be a callable object (function, etc.)"
                             % (func, help_option))
@@ -657,7 +657,7 @@ Common commands: (see '--help-commands' for more)
                 klass = command
             isipokua:
                 klass = self.get_command_class(command)
-            if (hasattr(klass, 'help_options') and
+            if (hasattr(klass, 'help_options') na
                     isinstance(klass.help_options, list)):
                 parser.set_option_table(klass.user_options +
                                         fix_help_options(klass.help_options))
@@ -833,20 +833,20 @@ Common commands: (see '--help-commands' for more)
             jaribu:
                 klass = getattr(module, klass_name)
             tatizo AttributeError:
-                raise DistutilsModuleError(
+                ashiria DistutilsModuleError(
                     "invalid command '%s' (no class '%s' in module '%s')"
                     % (command, klass_name, module_name))
 
             self.cmdclass[command] = klass
             return klass
 
-        raise DistutilsModuleError("invalid command '%s'" % command)
+        ashiria DistutilsModuleError("invalid command '%s'" % command)
 
     def get_command_obj(self, command, create=1):
         """Return the command object for 'command'.  Normally this object
         is cached on a previous call to 'get_command_obj()'; if no command
-        object for 'command' is in the cache, then we either create and
-        return it (if 'create' is true) or return None.
+        object for 'command' is in the cache, then we either create na
+        return it (if 'create' is true) ama return None.
         """
         cmd_obj = self.command_obj.get(command)
         if sio cmd_obj and create:
@@ -907,11 +907,11 @@ Common commands: (see '--help-commands' for more)
                 lasivyo hasattr(command_obj, option):
                     setattr(command_obj, option, value)
                 isipokua:
-                    raise DistutilsOptionError(
+                    ashiria DistutilsOptionError(
                         "error in %s: command '%s' has no such option '%s'"
                         % (source, command_name, option))
             tatizo ValueError as msg:
-                raise DistutilsOptionError(msg)
+                ashiria DistutilsOptionError(msg)
 
     def reinitialize_command(self, command, reinit_subcommands=0):
         """Reinitializes a command to the state it was in when first
@@ -923,7 +923,7 @@ Common commands: (see '--help-commands' for more)
         'finalize_options()' or 'ensure_finalized()') before using it for
         real.
 
-        'command' should be a command name (string) or command object.  If
+        'command' should be a command name (string) ama command object.  If
         'reinit_subcommands' is true, also reinitializes the command's
         sub-commands, as declared by the 'sub_commands' class attribute (if
         it has one).  See the "install" command for an example.  Only
@@ -997,7 +997,7 @@ Common commands: (see '--help-commands' for more)
         return self.libraries and len(self.libraries) > 0
 
     def has_modules(self):
-        return self.has_pure_modules() or self.has_ext_modules()
+        return self.has_pure_modules() ama self.has_ext_modules()
 
     def has_headers(self):
         return self.headers and len(self.headers) > 0
@@ -1009,8 +1009,8 @@ Common commands: (see '--help-commands' for more)
         return self.data_files and len(self.data_files) > 0
 
     def is_pure(self):
-        return (self.has_pure_modules() and
-                sio self.has_ext_modules() and
+        return (self.has_pure_modules() na
+                sio self.has_ext_modules() na
                 sio self.has_c_libraries())
 
     # -- Metadata query methods ----------------------------------------
@@ -1120,7 +1120,7 @@ class DistributionMetadata:
         """Write the PKG-INFO format data to a file object.
         """
         version = '1.0'
-        if (self.provides or self.requires or self.obsoletes or
+        if (self.provides or self.requires or self.obsoletes ama
                 self.classifiers or self.download_url):
             version = '1.1'
 

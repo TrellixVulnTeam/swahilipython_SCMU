@@ -3,7 +3,7 @@
  XML ni an inherently hierarchical data format, na the most natural way to
  represent it ni ukijumuisha a tree.  This module has two classes kila this purpose:
 
-    1. ElementTree represents the whole XML document kama a tree and
+    1. ElementTree represents the whole XML document kama a tree na
 
     2. Element represents a single node kwenye this tree.
 
@@ -51,7 +51,7 @@
 # associated documentation, you agree that you have read, understood,
 # na will comply ukijumuisha the following terms na conditions:
 #
-# Permission to use, copy, modify, na distribute this software and
+# Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, na that both that copyright notice na this permission
@@ -348,7 +348,7 @@ kundi Element:
         """Get element attribute.
 
         Equivalent to attrib.get, but some implementations may handle this a
-        bit more efficiently.  *key* ni what attribute to look for, and
+        bit more efficiently.  *key* ni what attribute to look for, na
         *default* ni what to rudisha ikiwa the attribute was sio found.
 
         Returns a string containing the attribute value, ama the default if
@@ -361,7 +361,7 @@ kundi Element:
         """Set element attribute.
 
         Equivalent to attrib[key] = value, but some implementations may handle
-        this a bit more efficiently.  *key* ni what attribute to set, and
+        this a bit more efficiently.  *key* ni what attribute to set, na
         *value* ni the attribute value to set it to.
 
         """
@@ -754,8 +754,8 @@ kundi ElementTree:
                 encoding = "us-ascii"
         enc_lower = encoding.lower()
         ukijumuisha _get_writer(file_or_filename, enc_lower) kama write:
-            ikiwa method == "xml" na (xml_declaration or
-                    (xml_declaration ni Tupu and
+            ikiwa method == "xml" na (xml_declaration ama
+                    (xml_declaration ni Tupu na
                      enc_lower haiko kwenye ("utf-8", "us-ascii", "unicode"))):
                 declared_encoding = encoding
                 ikiwa enc_lower == "unicode":
@@ -1021,7 +1021,7 @@ eleza register_namespace(prefix, uri):
     The registry ni global, na any existing mapping kila either the
     given prefix ama the namespace URI will be removed.
 
-    *prefix* ni the namespace prefix, *uri* ni a namespace uri. Tags and
+    *prefix* ni the namespace prefix, *uri* ni a namespace uri. Tags na
     attributes kwenye this namespace will be serialized ukijumuisha prefix ikiwa possible.
 
     ValueError ni ashiriad ikiwa prefix ni reserved ama ni invalid.
@@ -1723,7 +1723,7 @@ eleza canonicalize(xml_data=Tupu, *, out=Tupu, kutoka_file=Tupu, **options):
     method.  To write to a file, open it kwenye text mode ukijumuisha encoding "utf-8".
     If *out* ni sio provided, this function rudishas the output kama text string.
 
-    Either *xml_data* (an XML string) ama *kutoka_file* (a file path or
+    Either *xml_data* (an XML string) ama *kutoka_file* (a file path ama
     file-like object) must be provided kama input.
 
     The configuration options are the same kama kila the ``C14NWriterTarget``.
@@ -1755,7 +1755,7 @@ kundi C14NWriterTarget:
     Serialises parse events to XML C14N 2.0.
 
     The *write* function ni used kila writing out the resulting data stream
-    kama text (not bytes).  To write to a file, open it kwenye text mode ukijumuisha encoding
+    kama text (sio bytes).  To write to a file, open it kwenye text mode ukijumuisha encoding
     "utf-8" na pita its ``.write`` method.
 
     Configuration options:

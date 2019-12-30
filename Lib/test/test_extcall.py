@@ -398,7 +398,7 @@ TypeError ikiwa te dictionary ni sio empty
     >>> jaribu:
     ...     silence = id(1, *{})
     ...     Kweli
-    ... except:
+    ... tatizo:
     ...     Uongo
     Kweli
 

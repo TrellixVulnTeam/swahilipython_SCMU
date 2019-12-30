@@ -180,7 +180,7 @@ kundi BaseServer:
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes ama
     instances:
 
     - timeout
@@ -317,7 +317,7 @@ kundi BaseServer:
             tatizo Exception:
                 self.handle_error(request, client_address)
                 self.shutdown_request(request)
-            except:
+            tatizo:
                 self.shutdown_request(request)
                 ashiria
         isipokua:
@@ -417,7 +417,7 @@ kundi TCPServer(BaseServer):
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes ama
     instances:
 
     - timeout
@@ -451,7 +451,7 @@ kundi TCPServer(BaseServer):
             jaribu:
                 self.server_bind()
                 self.server_activate()
-            except:
+            tatizo:
                 self.server_close()
                 ashiria
 

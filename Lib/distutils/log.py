@@ -18,7 +18,7 @@ class Log:
 
     def _log(self, level, msg, args):
         if level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
-            raise ValueError('%s wrong log level' % str(level))
+            ashiria ValueError('%s wrong log level' % str(level))
 
         if level >= self.threshold:
             if args:

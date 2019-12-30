@@ -654,14 +654,14 @@ kundi PurePosixPathTest(_BasePurePathTest, unittest.TestCase):
         self.assertEqual(P('/a/b%#c').as_uri(), 'file:///a/b%25%23c')
 
     eleza test_as_uri_non_ascii(self):
-        kutoka urllib.parse agiza quote_kutoka_bytes
+        kutoka urllib.parse agiza quote_from_bytes
         P = self.cls
         jaribu:
             os.fsencode('\xe9')
         tatizo UnicodeEncodeError:
             self.skipTest("\\xe9 cannot be encoded to the filesystem encoding")
         self.assertEqual(P('/a/b\xe9').as_uri(),
-                         'file:///a/b' + quote_kutoka_bytes(os.fsencode('\xe9')))
+                         'file:///a/b' + quote_from_bytes(os.fsencode('\xe9')))
 
     eleza test_match(self):
         P = self.cls
@@ -2009,7 +2009,7 @@ kundi _BasePathTest(object):
         jaribu:
             sock.bind(str(P))
         tatizo OSError kama e:
-            ikiwa (isinstance(e, PermissionError) or
+            ikiwa (isinstance(e, PermissionError) ama
                     "AF_UNIX path too long" kwenye str(e)):
                 self.skipTest("cannot bind Unix socket: " + str(e))
         self.assertKweli(P.is_socket())

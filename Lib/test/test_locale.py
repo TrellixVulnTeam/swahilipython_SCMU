@@ -365,7 +365,7 @@ kundi TestEnUSCollation(BaseLocalizedTest, TestCollation):
         enc = codecs.lookup(locale.getpreferredencoding(Uongo) ama 'ascii').name
         ikiwa enc haiko kwenye ('utf-8', 'iso8859-1', 'cp1252'):
             ashiria unittest.SkipTest('encoding sio suitable')
-        ikiwa enc != 'iso8859-1' na (sys.platform == 'darwin' ama is_android or
+        ikiwa enc != 'iso8859-1' na (sys.platform == 'darwin' ama is_android ama
                                    sys.platform.startswith('freebsd')):
             ashiria unittest.SkipTest('wcscoll/wcsxfrm have known bugs')
         BaseLocalizedTest.setUp(self)

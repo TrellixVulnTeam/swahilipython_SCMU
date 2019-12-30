@@ -286,7 +286,7 @@ kundi ModuleFinderTest(unittest.TestCase):
 ##                sys.path = TEST_PATH
 ##                jaribu:
 ##                    __import__(import_this)
-##                except:
+##                tatizo:
 ##                    agiza traceback; traceback.print_exc()
 ##                sys.path = opath
 ##                rudisha

@@ -20,11 +20,11 @@ FIXER_DIR = os.path.join(TEST_DATA_DIR, "fixers")
 
 sys.path.append(FIXER_DIR)
 jaribu:
-    _DEFAULT_FIXERS = refactor.get_fixers_kutoka_package("myfixes")
+    _DEFAULT_FIXERS = refactor.get_fixers_from_package("myfixes")
 mwishowe:
     sys.path.pop()
 
-_2TO3_FIXERS = refactor.get_fixers_kutoka_package("lib2to3.fixes")
+_2TO3_FIXERS = refactor.get_fixers_from_package("lib2to3.fixes")
 
 kundi TestRefactoringTool(unittest.TestCase):
 
@@ -58,7 +58,7 @@ kundi TestRefactoringTool(unittest.TestCase):
         contents = ["explicit", "first", "last", "parrot", "preorder"]
         non_prefixed = refactor.get_all_fix_names("myfixes")
         prefixed = refactor.get_all_fix_names("myfixes", Uongo)
-        full_names = refactor.get_fixers_kutoka_package("myfixes")
+        full_names = refactor.get_fixers_from_package("myfixes")
         self.assertEqual(prefixed, ["fix_" + name kila name kwenye contents])
         self.assertEqual(non_prefixed, contents)
         self.assertEqual(full_names,
@@ -290,7 +290,7 @@ kutoka __future__ agiza print_function"""
         os.linesep = "\r\n"
         jaribu:
             fn = os.path.join(TEST_DATA_DIR, "crlf.py")
-            fixes = refactor.get_fixers_kutoka_package("lib2to3.fixes")
+            fixes = refactor.get_fixers_from_package("lib2to3.fixes")
             self.check_file_refactoring(fn, fixes)
         mwishowe:
             os.linesep = old_sep

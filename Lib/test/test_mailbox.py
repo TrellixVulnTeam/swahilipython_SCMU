@@ -66,7 +66,7 @@ kundi TestMailbox(TestBase):
         self.assertEqual(len(self._box), 1)
         keys.append(self._box.add(mailbox.Message(_sample_message)))
         self.assertEqual(len(self._box), 2)
-        keys.append(self._box.add(email.message_kutoka_string(_sample_message)))
+        keys.append(self._box.add(email.message_from_string(_sample_message)))
         self.assertEqual(len(self._box), 3)
         keys.append(self._box.add(io.BytesIO(_bytes_sample_message)))
         self.assertEqual(len(self._box), 4)
@@ -114,7 +114,7 @@ kundi TestMailbox(TestBase):
             ashiria Exception("a fake error")
         support.patch(self, email.generator.BytesGenerator, 'flatten', ashiriar)
         ukijumuisha self.assertRaises(Exception):
-            self._box.add(email.message_kutoka_string("From: Alphöso"))
+            self._box.add(email.message_from_string("From: Alphöso"))
         self.assertEqual(len(self._box), 0)
         self._box.close()
         self.assertMailboxEmpty()
@@ -534,7 +534,7 @@ kundi TestMailbox(TestBase):
 
     eleza test_dump_message(self):
         # Write message representations to disk
-        kila input kwenye (email.message_kutoka_string(_sample_message),
+        kila input kwenye (email.message_from_string(_sample_message),
                       _sample_message, io.BytesIO(_bytes_sample_message)):
             output = io.BytesIO()
             self._box._dump_message(input, output)
@@ -1014,13 +1014,13 @@ kundi _TestMboxMMDF(_TestSingleFile):
         self.assertEqual(self._box.get_string(key1, kutoka_=Kweli).split('\n'),
                          (unixkutoka + _sample_message).split('\n'))
 
-    eleza test_add_kutoka_string(self):
+    eleza test_add_from_string(self):
         # Add a string starting ukijumuisha 'From ' to the mailbox
         key = self._box.add('From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_kutoka(), 'foo@bar blah')
         self.assertEqual(self._box[key].get_payload(), '0\n')
 
-    eleza test_add_kutoka_bytes(self):
+    eleza test_add_from_bytes(self):
         # Add a byte string starting ukijumuisha 'From ' to the mailbox
         key = self._box.add(b'From foo@bar blah\nFrom: foo\n\n0\n')
         self.assertEqual(self._box[key].get_kutoka(), 'foo@bar blah')
@@ -1376,7 +1376,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_eMM(self):
         # Initialize based on email.message.Message instance
-        eMM = email.message_kutoka_string(_sample_message)
+        eMM = email.message_from_string(_sample_message)
         msg = self._factory(eMM)
         self._post_initialize_hook(msg)
         self._check_sample(msg)
@@ -1422,7 +1422,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_all_eMM_attribues_exist(self):
         # Issue 12537
-        eMM = email.message_kutoka_string(_sample_message)
+        eMM = email.message_from_string(_sample_message)
         msg = self._factory(_sample_message)
         kila attr kwenye eMM.__dict__:
             self.assertIn(attr, msg.__dict__,
@@ -1430,7 +1430,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_become_message(self):
         # Take on the state of another message
-        eMM = email.message_kutoka_string(_sample_message)
+        eMM = email.message_from_string(_sample_message)
         msg = self._factory()
         msg._become_message(eMM)
         self._check_sample(msg)
@@ -1684,7 +1684,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
             msg_plain = mailbox.Message(msg)
             self._check_sample(msg_plain)
 
-    eleza test_x_kutoka_bytes(self):
+    eleza test_x_from_bytes(self):
         # Convert all formats to Message
         kila class_ kwenye self.all_mailbox_types:
             msg = class_(_bytes_sample_message)

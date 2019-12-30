@@ -86,12 +86,12 @@ class PyPIRCCommand(Command):
                     # work around people having "repository" for the "pypi"
                     # section of their config set to the HTTP (rather than
                     # HTTPS) URL
-                    if (server == 'pypi' and
+                    if (server == 'pypi' na
                         repository in (self.DEFAULT_REPOSITORY, 'pypi')):
                         current['repository'] = self.DEFAULT_REPOSITORY
                         return current
 
-                    if (current['server'] == repository or
+                    if (current['server'] == repository ama
                         current['repository'] == repository):
                         return current
             lasivyo 'server-login' in sections:

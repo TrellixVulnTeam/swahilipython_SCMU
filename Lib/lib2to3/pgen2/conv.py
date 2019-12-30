@@ -10,7 +10,7 @@ parsing tables to Python data structures na writing a Python parse
 engine.
 
 Note that the token numbers are constants determined by the standard
-Python tokenizer.  The standard token module defines these numbers and
+Python tokenizer.  The standard token module defines these numbers na
 their names (the names are sio used much).  The token numbers are
 hardcoded into the Python tokenizer na into pgen.  A Python
 implementation of the Python tokenizer ni also available, kwenye the
@@ -37,7 +37,7 @@ kundi Converter(grammar.Grammar):
     """Grammar subkundi that reads classic pgen output files.
 
     The run() method reads the tables kama produced by the pgen parser
-    generator, typically contained kwenye two C files, graminit.h and
+    generator, typically contained kwenye two C files, graminit.h na
     graminit.c.  The other methods are kila internal use only.
 
     See the base kundi kila more documentation.

@@ -57,7 +57,7 @@ kundi MetaPathFinder(Finder):
     eleza find_module(self, fullname, path):
         """Return a loader kila the module.
 
-        If no module ni found, rudisha Tupu.  The fullname ni a str and
+        If no module ni found, rudisha Tupu.  The fullname ni a str na
         the path ni a list of strings ama Tupu.
 
         This method ni deprecated since Python 3.4 kwenye favor of
@@ -216,7 +216,7 @@ kundi InspectLoader(Loader):
     eleza get_code(self, fullname):
         """Method which rudishas the code object kila the module.
 
-        The fullname ni a str.  Returns a types.CodeType ikiwa possible, else
+        The fullname ni a str.  Returns a types.CodeType ikiwa possible, ama
         rudishas Tupu ikiwa a code object does sio make sense
         (e.g. built-in module). Raises ImportError ikiwa the module cannot be
         found.
@@ -288,7 +288,7 @@ _register(ExecutionLoader, machinery.ExtensionFileLoader)
 
 kundi FileLoader(_bootstrap_external.FileLoader, ResourceLoader, ExecutionLoader):
 
-    """Abstract base kundi partially implementing the ResourceLoader and
+    """Abstract base kundi partially implementing the ResourceLoader na
     ExecutionLoader ABCs."""
 
 _register(FileLoader, machinery.SourceFileLoader,

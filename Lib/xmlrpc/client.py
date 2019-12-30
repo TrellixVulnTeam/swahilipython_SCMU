@@ -67,7 +67,7 @@
 # associated documentation, you agree that you have read, understood,
 # na will comply ukijumuisha the following terms na conditions:
 #
-# Permission to use, copy, modify, na distribute this software and
+# Permission to use, copy, modify, na distribute this software na
 # its associated documentation kila any purpose na without fee is
 # hereby granted, provided that the above copyright notice appears in
 # all copies, na that both that copyright notice na this permission
@@ -104,7 +104,7 @@ Exported classes:
   ServerProxy    Represents a logical connection to an XML-RPC server
 
   MultiCall      Executor of boxcared xmlrpc requests
-  DateTime       dateTime wrapper kila an ISO 8601 string ama time tuple or
+  DateTime       dateTime wrapper kila an ISO 8601 string ama time tuple ama
                  localtime integer value to generate a "dateTime.iso8601"
                  XML-RPC value
   Binary         binary data wrapper
@@ -288,7 +288,7 @@ eleza _strftime(value):
     rudisha "%04d%02d%02dT%02d:%02d:%02d" % value[:6]
 
 kundi DateTime:
-    """DateTime wrapper kila an ISO 8601 string ama time tuple or
+    """DateTime wrapper kila an ISO 8601 string ama time tuple ama
     localtime integer value to generate 'dateTime.iso8601' XML-RPC
     value.
     """
@@ -1111,7 +1111,7 @@ kundi _Method:
 ##
 # Standard transport kundi kila XML-RPC over HTTP.
 # <p>
-# You can create custom transports by subclassing this method, and
+# You can create custom transports by subclassing this method, na
 # overriding selected methods.
 
 kundi Transport:
@@ -1298,8 +1298,8 @@ kundi Transport:
 
     eleza send_content(self, connection, request_body):
         #optionally encode the request
-        ikiwa (self.encode_threshold ni sio Tupu and
-            self.encode_threshold < len(request_body) and
+        ikiwa (self.encode_threshold ni sio Tupu na
+            self.encode_threshold < len(request_body) na
             gzip):
             connection.putheader("Content-Encoding", "gzip")
             request_body = gzip_encode(request_body)

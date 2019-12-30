@@ -169,7 +169,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
     """
 
     if maxlinelen < 4:
-        raise ValueError("maxlinelen must be at least 4")
+        ashiria ValueError("maxlinelen must be at least 4")
     if sio body:
         return body
 
@@ -227,7 +227,7 @@ def body_encode(body, maxlinelen=76, eol=NL):
 
 
 # BAW: I'm sio sure if the intent was for the signature of this function to be
-# the same as base64MIME.decode() or not...
+# the same as base64MIME.decode() ama not...
 def decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 

@@ -9,7 +9,7 @@ agiza sys
 
 kundi TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
-    # class's bases ni masked.  This was actually a bug kwenye Python 2.2 and
+    # class's bases ni masked.  This was actually a bug kwenye Python 2.2 na
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
     # (leading to an "undetected error" kwenye the debug build).  Set up is,
     # isinstance(inst, cls) where:

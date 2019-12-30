@@ -6,7 +6,7 @@ agiza random
 agiza tempfile
 agiza unittest
 
-kutoka importlib.util agiza cache_kutoka_source
+kutoka importlib.util agiza cache_from_source
 kutoka test.support agiza create_empty_file
 
 kundi TestImport(unittest.TestCase):
@@ -39,7 +39,7 @@ kundi TestImport(unittest.TestCase):
         self.remove_modules()
 
     eleza rewrite_file(self, contents):
-        compiled_path = cache_kutoka_source(self.module_path)
+        compiled_path = cache_from_source(self.module_path)
         ikiwa os.path.exists(compiled_path):
             os.remove(compiled_path)
         ukijumuisha open(self.module_path, 'w') kama f:

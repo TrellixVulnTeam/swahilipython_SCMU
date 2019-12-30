@@ -27,10 +27,10 @@ kundi TestableTestProgram(unittest.TestProgram):
 kundi TestDiscovery(unittest.TestCase):
 
     # Heavily mocked tests so I can avoid hitting the filesystem
-    eleza test_get_name_kutoka_path(self):
+    eleza test_get_name_from_path(self):
         loader = unittest.TestLoader()
         loader._top_level_dir = '/foo'
-        name = loader._get_name_kutoka_path('/foo/bar/baz.py')
+        name = loader._get_name_from_path('/foo/bar/baz.py')
         self.assertEqual(name, 'bar.baz')
 
         ikiwa sio __debug__:
@@ -38,7 +38,7 @@ kundi TestDiscovery(unittest.TestCase):
             rudisha
 
         ukijumuisha self.assertRaises(AssertionError):
-            loader._get_name_kutoka_path('/bar/baz.py')
+            loader._get_name_from_path('/bar/baz.py')
 
     eleza test_find_tests(self):
         loader = unittest.TestLoader()
@@ -70,7 +70,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isfile = isfile
         self.addCleanup(restore_isfile)
 
-        loader._get_module_kutoka_name = lambda path: path + ' module'
+        loader._get_module_from_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
         eleza loadTestsFromModule(module, pattern=Tupu):
             # This ni where load_tests ni called.
@@ -116,7 +116,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isfile = lambda path: Uongo
         self.addCleanup(restore_isfile)
 
-        loader._get_module_kutoka_name = lambda path: path + ' module'
+        loader._get_module_from_name = lambda path: path + ' module'
         orig_load_tests = loader.loadTestsFromModule
         eleza loadTestsFromModule(module, pattern=Tupu):
             # This ni where load_tests ni called.
@@ -171,7 +171,7 @@ kundi TestDiscovery(unittest.TestCase):
             eleza __eq__(self, other):
                 rudisha self.path == other.path
 
-        loader._get_module_kutoka_name = lambda name: Module(name)
+        loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
         eleza loadTestsFromModule(module, pattern=Tupu):
             # This ni where load_tests ni called.
@@ -245,7 +245,7 @@ kundi TestDiscovery(unittest.TestCase):
             eleza __eq__(self, other):
                 rudisha self.path == other.path
 
-        loader._get_module_kutoka_name = lambda name: Module(name)
+        loader._get_module_from_name = lambda name: Module(name)
         orig_load_tests = loader.loadTestsFromModule
         eleza loadTestsFromModule(module, pattern=Tupu):
             # This ni where load_tests ni called.
@@ -341,7 +341,7 @@ kundi TestDiscovery(unittest.TestCase):
                 rudisha self.path == other.path
 
         loader = unittest.TestLoader()
-        loader._get_module_kutoka_name = lambda name: Module(name)
+        loader._get_module_from_name = lambda name: Module(name)
         loader.suiteClass = lambda thing: thing
 
         loader._top_level_dir = abspath('/foo')
@@ -349,7 +349,7 @@ kundi TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
-        # We should have loaded tests kutoka both my_package and
+        # We should have loaded tests kutoka both my_package na
         # my_package.test_module, na also run the load_tests hook kwenye both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
@@ -445,7 +445,7 @@ kundi TestDiscovery(unittest.TestCase):
                 rudisha self.path == other.path
 
         loader = unittest.TestLoader()
-        loader._get_module_kutoka_name = lambda name: Module(name)
+        loader._get_module_from_name = lambda name: Module(name)
         loader.suiteClass = lambda thing: thing
 
         suite = loader.discover('/toplevel/startdir', top_level_dir='/toplevel')
@@ -503,11 +503,11 @@ kundi TestDiscovery(unittest.TestCase):
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         self.setup_import_issue_package_tests(vfs)
         import_calls = []
-        eleza _get_module_kutoka_name(name):
+        eleza _get_module_from_name(name):
             import_calls.append(name)
             ashiria ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
-        loader._get_module_kutoka_name = _get_module_kutoka_name
+        loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
 
         self.assertIn(abspath('/foo'), sys.path)
@@ -534,9 +534,9 @@ kundi TestDiscovery(unittest.TestCase):
 
         loader = unittest.TestLoader()
 
-        eleza _get_module_kutoka_name(name):
+        eleza _get_module_from_name(name):
             ashiria unittest.SkipTest('skipperoo')
-        loader._get_module_kutoka_name = _get_module_kutoka_name
+        loader._get_module_from_name = _get_module_from_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
 
@@ -559,11 +559,11 @@ kundi TestDiscovery(unittest.TestCase):
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
         self.setup_import_issue_package_tests(vfs)
         import_calls = []
-        eleza _get_module_kutoka_name(name):
+        eleza _get_module_from_name(name):
             import_calls.append(name)
             ashiria unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
-        loader._get_module_kutoka_name = _get_module_kutoka_name
+        loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
 
         self.assertIn(abspath('/foo'), sys.path)
@@ -784,7 +784,7 @@ kundi TestDiscovery(unittest.TestCase):
         loader = unittest.TestLoader()
         loader.discover(start_dir='foo', pattern='foo.py')
 
-    eleza test_discovery_kutoka_dotted_path(self):
+    eleza test_discovery_from_dotted_path(self):
         loader = unittest.TestLoader()
 
         tests = [self]
@@ -801,7 +801,7 @@ kundi TestDiscovery(unittest.TestCase):
         self.assertEqual(suite._tests, tests)
 
 
-    eleza test_discovery_kutoka_dotted_path_builtin_modules(self):
+    eleza test_discovery_from_dotted_path_builtin_modules(self):
 
         loader = unittest.TestLoader()
 
@@ -824,7 +824,7 @@ kundi TestDiscovery(unittest.TestCase):
                          'Can sio use builtin modules '
                          'as dotted module names')
 
-    eleza test_discovery_kutoka_dotted_namespace_packages(self):
+    eleza test_discovery_from_dotted_namespace_packages(self):
         loader = unittest.TestLoader()
 
         package = types.ModuleType('package')

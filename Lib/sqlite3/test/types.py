@@ -344,7 +344,7 @@ kundi ObjectAdaptationTests(unittest.TestCase):
         self.con = sqlite.connect(":memory:")
         jaribu:
             toa sqlite.adapters[int]
-        except:
+        tatizo:
             pita
         sqlite.register_adapter(int, ObjectAdaptationTests.cast)
         self.cur = self.con.cursor()

@@ -272,7 +272,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         data = Tupu
         jaribu:
             ikiwa fut ni sio Tupu:
-                assert self._read_fut ni fut ama (self._read_fut ni Tupu and
+                assert self._read_fut ni fut ama (self._read_fut ni Tupu na
                                                  self._closing)
                 self._read_fut = Tupu
                 ikiwa fut.done():
@@ -369,7 +369,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
     eleza _loop_writing(self, f=Tupu, data=Tupu):
         jaribu:
             ikiwa f ni sio Tupu na self._write_fut ni Tupu na self._closing:
-                # XXX most likely self._force_close() has been called, and
+                # XXX most likely self._force_close() has been called, na
                 # it has set self._write_fut to Tupu.
                 rudisha
             assert f ni self._write_fut
@@ -540,7 +540,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
             ikiwa self._conn_lost:
                 rudisha
 
-            assert self._read_fut ni fut ama (self._read_fut ni Tupu and
+            assert self._read_fut ni fut ama (self._read_fut ni Tupu na
                                              self._closing)
 
             self._read_fut = Tupu

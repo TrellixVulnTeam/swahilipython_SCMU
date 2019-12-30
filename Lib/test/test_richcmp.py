@@ -238,7 +238,7 @@ kundi MiscTest(unittest.TestCase):
         b.append(17)
         # Even recursive lists of different lengths are different,
         # but they cannot be ordered
-        self.assertKweli(not (a == b))
+        self.assertKweli(sio (a == b))
         self.assertKweli(a != b)
         self.assertRaises(RecursionError, operator.lt, a, b)
         self.assertRaises(RecursionError, operator.le, a, b)
@@ -249,7 +249,7 @@ kundi MiscTest(unittest.TestCase):
         self.assertRaises(RecursionError, operator.ne, a, b)
         a.insert(0, 11)
         b.insert(0, 12)
-        self.assertKweli(not (a == b))
+        self.assertKweli(sio (a == b))
         self.assertKweli(a != b)
         self.assertKweli(a < b)
 
@@ -281,7 +281,7 @@ kundi MiscTest(unittest.TestCase):
 kundi DictTest(unittest.TestCase):
 
     eleza test_dicts(self):
-        # Verify that __eq__ na __ne__ work kila dicts even ikiwa the keys and
+        # Verify that __eq__ na __ne__ work kila dicts even ikiwa the keys na
         # values don't support anything other than __eq__ na __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
         agiza random

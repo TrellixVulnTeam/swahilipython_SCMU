@@ -45,7 +45,7 @@ eleza get_refactorer(fixer_pkg="lib2to3", fixers=Tupu, options=Tupu):
     ikiwa fixers ni sio Tupu:
         fixers = [fixer_pkg + ".fixes.fix_" + fix kila fix kwenye fixers]
     isipokua:
-        fixers = refactor.get_fixers_kutoka_package(fixer_pkg + ".fixes")
+        fixers = refactor.get_fixers_from_package(fixer_pkg + ".fixes")
     options = options ama {}
     rudisha refactor.RefactoringTool(fixers, options, explicit=Kweli)
 

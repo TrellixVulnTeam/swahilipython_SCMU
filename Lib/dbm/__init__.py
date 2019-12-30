@@ -15,7 +15,7 @@ It has the following interface (key and data are strings):
 
         d[key] = data   # store data at key (may override data at
                         # existing key)
-        data = d[key]   # retrieve data at key (raise KeyError if no
+        data = d[key]   # retrieve data at key (ashiria KeyError if no
                         # such key)
         toa d[key]      # delete data stored at key (raises KeyError
                         # if no such key)
@@ -72,7 +72,7 @@ def open(file, flag='r', mode=0o666):
                 _defaultmod = mod
             _modules[name] = mod
         if sio _defaultmod:
-            raise ImportError("no dbm clone found; tried %s" % _names)
+            ashiria ImportError("no dbm clone found; tried %s" % _names)
 
     # guess the type of an existing database, if sio creating a new one
     result = whichdb(file) if 'n' haiko kwenye flag isipokua None
@@ -82,13 +82,13 @@ def open(file, flag='r', mode=0o666):
             # file doesn't exist and the new flag was used so use default type
             mod = _defaultmod
         isipokua:
-            raise error[0]("db file doesn't exist; "
+            ashiria error[0]("db file doesn't exist; "
                            "use 'c' or 'n' flag to create a new db")
     lasivyo result == "":
         # db type cannot be determined
-        raise error[0]("db type could sio be determined")
+        ashiria error[0]("db type could sio be determined")
     lasivyo result haiko kwenye _modules:
-        raise error[0]("db type is {0}, but the module ni sio "
+        ashiria error[0]("db type is {0}, but the module ni sio "
                        "available".format(result))
     isipokua:
         mod = _modules[result]
@@ -186,4 +186,4 @@ def whichdb(filename):
 
 if __name__ == "__main__":
     for filename in sys.argv[1:]:
-        print(whichdb(filename) or "UNKNOWN", filename)
+        print(whichdb(filename) ama "UNKNOWN", filename)

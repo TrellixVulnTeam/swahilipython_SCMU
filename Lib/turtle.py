@@ -32,7 +32,7 @@ the command turtle.forward(15), na it moves (on-screen!) 15 pixels in
 the direction it ni facing, drawing a line kama it moves. Give it the
 command turtle.right(25), na it rotates in-place 25 degrees clockwise.
 
-By combining together these na similar commands, intricate shapes and
+By combining together these na similar commands, intricate shapes na
 pictures can easily be drawn.
 
 ----- turtle.py
@@ -74,7 +74,7 @@ Roughly it has the following features added:
 - A scrollable Canvas class. The default scrollable Canvas can be
   extended interactively kama needed wakati playing around ukijumuisha the turtle(s).
 
-- A TurtleScreen kundi ukijumuisha methods controlling background color or
+- A TurtleScreen kundi ukijumuisha methods controlling background color ama
   background image, window na canvas size na other properties of the
   TurtleScreen.
 
@@ -2547,7 +2547,7 @@ kundi RawTurtle(TPen, TNavigator):
         self._creatingPoly = Uongo
         self._fillitem = self._fillpath = Tupu
         self._shown = visible
-        self._hidden_kutoka_screen = Uongo
+        self._hidden_from_screen = Uongo
         self.currentLineItem = screen._createline()
         self.currentLine = [self._position]
         self.items = [self.currentLineItem]
@@ -2917,7 +2917,7 @@ kundi RawTurtle(TPen, TNavigator):
         If none of the matrix elements are given, rudisha the transformation
         matrix.
         Otherwise set the given elements na transform the turtleshape
-        according to the matrix consisting of first row t11, t12 and
+        according to the matrix consisting of first row t11, t12 na
         second row t21, 22.
         Modify stretchfactor, shearfactor na tiltangle according to the
         given matrix.
@@ -2999,7 +2999,7 @@ kundi RawTurtle(TPen, TNavigator):
         ttype = shape._type
         titem = self.turtle._item
         ikiwa self._shown na screen._updatecounter == 0 na screen._tracing > 0:
-            self._hidden_kutoka_screen = Uongo
+            self._hidden_from_screen = Uongo
             tshape = shape._data
             ikiwa ttype == "polygon":
                 ikiwa self._resizemode == "noresize": w = 1
@@ -3017,7 +3017,7 @@ kundi RawTurtle(TPen, TNavigator):
                     screen._drawpoly(item, poly, fill=self._cc(fc),
                                      outline=self._cc(oc), width=self._outlinewidth, top=Kweli)
         isipokua:
-            ikiwa self._hidden_kutoka_screen:
+            ikiwa self._hidden_from_screen:
                 rudisha
             ikiwa ttype == "polygon":
                 screen._drawpoly(titem, ((0, 0), (0, 0), (0, 0)), "", "")
@@ -3027,7 +3027,7 @@ kundi RawTurtle(TPen, TNavigator):
             lasivyo ttype == "compound":
                 kila item kwenye titem:
                     screen._drawpoly(item, ((0, 0), (0, 0), (0, 0)), "", "")
-            self._hidden_kutoka_screen = Kweli
+            self._hidden_from_screen = Kweli
 
 ##############################  stamp stuff  ###############################
 
@@ -3213,7 +3213,7 @@ kundi RawTurtle(TPen, TNavigator):
             usepc = pc
         screen._drawline(cLI, pl, fill=usepc, width=ps)
 
-        todelete = [i kila i kwenye self.items ikiwa (i haiko kwenye items) and
+        todelete = [i kila i kwenye self.items ikiwa (i haiko kwenye items) na
                                        (screen._type(i) == "line")]
         kila i kwenye todelete:
             screen._delete(i)
@@ -3824,7 +3824,7 @@ eleza write_docstringdict(filename="turtle_docstringdict"):
     filename -- a string, used kama filename
                 default value ni turtle_docstringdict
 
-    Has to be called explicitly, (not used by the turtle-graphics classes)
+    Has to be called explicitly, (sio used by the turtle-graphics classes)
     The docstring dictionary will be written to the Python script <filname>.py
     It ni intended to serve kama a template kila translation of the docstrings
     into different languages.

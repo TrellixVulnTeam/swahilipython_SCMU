@@ -1857,7 +1857,7 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_invalid_start_byte(self):
         """
         Test that an 'invalid start byte' error ni ashiriad when the first byte
-        ni haiko kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, or
+        ni haiko kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, ama
         4-bytes sequence. The invalid start byte ni replaced ukijumuisha a single
         U+FFFD when errors='replace'.
         E.g. <80> ni a continuation byte na can appear only after a start byte.
@@ -2451,7 +2451,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 kundi CAPITest(unittest.TestCase):
 
     # Test PyUnicode_FromFormat()
-    eleza test_kutoka_format(self):
+    eleza test_from_format(self):
         support.import_module('ctypes')
         kutoka ctypes agiza (
             pythonapi, py_object, sizeof,

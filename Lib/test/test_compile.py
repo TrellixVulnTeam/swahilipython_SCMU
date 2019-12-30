@@ -814,7 +814,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             jaribu:
                 a
-            except:
+            tatizo:
                 b
             """
         self.check_stack_size(snippet)
@@ -825,7 +825,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 a
             tatizo ImportError:
                 b
-            except:
+            tatizo:
                 c
             isipokua:
                 d
@@ -838,7 +838,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 a
             tatizo ImportError kama e:
                 b
-            except:
+            tatizo:
                 c
             isipokua:
                 d
@@ -939,7 +939,7 @@ kundi TestStackSizeStability(unittest.TestCase):
             kila x kwenye y:
                 jaribu:
                     t
-                except:
+                tatizo:
                     ikiwa z:
                         koma
                     lasivyo u:
@@ -994,7 +994,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             jaribu:
                 t
-            except:
+            tatizo:
                 ikiwa z:
                     rudisha
                 isipokua:

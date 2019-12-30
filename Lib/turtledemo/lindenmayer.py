@@ -42,7 +42,7 @@ eleza draw( commands, rules ):
         tatizo TypeError:
             jaribu:
                 draw(rules[b], rules)
-            except:
+            tatizo:
                 pita
 
 

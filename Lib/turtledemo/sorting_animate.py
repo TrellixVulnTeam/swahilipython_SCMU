@@ -54,12 +54,12 @@ kundi Shelf(list):
         d.setx(self.x + 34 * len(self))
         self.append(d)
 
-    eleza _close_gap_kutoka_i(self, i):
+    eleza _close_gap_from_i(self, i):
         kila b kwenye self[i:]:
             xpos, _ = b.pos()
             b.setx(xpos - 34)
 
-    eleza _open_gap_kutoka_i(self, i):
+    eleza _open_gap_from_i(self, i):
         kila b kwenye self[i:]:
             xpos, _ = b.pos()
             b.setx(xpos + 34)
@@ -68,11 +68,11 @@ kundi Shelf(list):
         b = list.pop(self, key)
         b.glow()
         b.sety(200)
-        self._close_gap_kutoka_i(key)
+        self._close_gap_from_i(key)
         rudisha b
 
     eleza insert(self, key, b):
-        self._open_gap_kutoka_i(key)
+        self._open_gap_from_i(key)
         list.insert(self, key, b)
         b.setx(self.x + 34 * key)
         width, _, _ = b.shapesize()

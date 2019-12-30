@@ -24,7 +24,7 @@ def interpreter_requires_environment():
 
     This is designed to be used with @unittest.skipIf() to annotate tests
     that need to use an assert_python*() function to launch an isolated
-    mode (-I) or no environment mode (-E) sub-interpreter process.
+    mode (-I) ama no environment mode (-E) sub-interpreter process.
 
     A normal build & test does sio run into this situation but it can happen
     when trying to run the standard library test suite from an interpreter that
@@ -67,7 +67,7 @@ class _PythonRunResult(collections.namedtuple("_PythonRunResult",
             err = b'(... truncated stderr ...)' + err[-maxlen:]
         out = out.decode('ascii', 'replace').rstrip()
         err = err.decode('ascii', 'replace').rstrip()
-        raise AssertionError("Process return code is %d\n"
+        ashiria AssertionError("Process return code is %d\n"
                              "command line: %r\n"
                              "\n"
                              "stdout:\n"
@@ -139,7 +139,7 @@ def run_python_until_end(*args, **env_vars):
 
 def _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
-    if (res.rc and expected_success) or (not res.rc and sio expected_success):
+    if (res.rc and expected_success) ama (sio res.rc and sio expected_success):
         res.fail(cmd_line)
     return res
 

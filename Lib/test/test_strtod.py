@@ -174,7 +174,7 @@ kundi StrtodTests(unittest.TestCase):
 
     eleza test_boundaries(self):
         # boundaries expressed kama triples (n, e, u), where
-        # n*10**e ni an approximation to the boundary value and
+        # n*10**e ni an approximation to the boundary value na
         # u*10**e ni 1ulp
         boundaries = [
             (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)

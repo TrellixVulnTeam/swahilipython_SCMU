@@ -66,7 +66,7 @@ eleza _is_instance_mock(obj):
 
 eleza _is_exception(obj):
     rudisha (
-        isinstance(obj, BaseException) or
+        isinstance(obj, BaseException) ama
         isinstance(obj, type) na issubclass(obj, BaseException)
     )
 
@@ -357,8 +357,8 @@ eleza _check_and_set_parent(parent, value, name, new_name):
 
     ikiwa sio _is_instance_mock(value):
         rudisha Uongo
-    ikiwa ((value._mock_name ama value._mock_new_name) or
-        (value._mock_parent ni sio Tupu) or
+    ikiwa ((value._mock_name ama value._mock_new_name) ama
+        (value._mock_parent ni sio Tupu) ama
         (value._mock_new_parent ni sio Tupu)):
         rudisha Uongo
 
@@ -465,7 +465,7 @@ kundi NonCallableMock(Base):
 
     eleza attach_mock(self, mock, attribute):
         """
-        Attach a mock kama an attribute of this one, replacing its name and
+        Attach a mock kama an attribute of this one, replacing its name na
         parent. Calls to the attached mock will be recorded kwenye the
         `method_calls` na `mock_calls` attributes of this one."""
         inner_mock = _extract_mock(mock)
@@ -727,7 +727,7 @@ kundi NonCallableMock(Base):
             ikiwa m_value ni sio _deleted]
 
         kutoka_type = [e kila e kwenye kutoka_type ikiwa sio e.startswith('_')]
-        kutoka_dict = [e kila e kwenye kutoka_dict ikiwa sio e.startswith('_') or
+        kutoka_dict = [e kila e kwenye kutoka_dict ikiwa sio e.startswith('_') ama
                      _is_magic(e)]
         rudisha sorted(set(extras + kutoka_type + kutoka_dict + kutoka_child_mocks))
 
@@ -736,8 +736,8 @@ kundi NonCallableMock(Base):
         ikiwa name kwenye _allowed_names:
             # property setters go through here
             rudisha object.__setattr__(self, name, value)
-        lasivyo (self._spec_set na self._mock_methods ni sio Tupu and
-            name haiko kwenye self._mock_methods and
+        lasivyo (self._spec_set na self._mock_methods ni sio Tupu na
+            name haiko kwenye self._mock_methods na
             name haiko kwenye self.__dict__):
             ashiria AttributeError("Mock object has no attribute '%s'" % name)
         lasivyo name kwenye _unsupported_magics:
@@ -775,7 +775,7 @@ kundi NonCallableMock(Base):
         ikiwa name kwenye _all_magics na name kwenye type(self).__dict__:
             delattr(type(self), name)
             ikiwa name haiko kwenye self.__dict__:
-                # kila magic methods that are still MagicProxy objects and
+                # kila magic methods that are still MagicProxy objects na
                 # sio set on the instance itself
                 rudisha
 
@@ -802,7 +802,7 @@ kundi NonCallableMock(Base):
         rudisha message % (action, expected_string, actual_string)
 
 
-    eleza _get_call_signature_kutoka_name(self, name):
+    eleza _get_call_signature_from_name(self, name):
         """
         * If call objects are asserted against a method/function like obj.meth1
         then there could be no name kila the call object to lookup. Hence just
@@ -840,7 +840,7 @@ kundi NonCallableMock(Base):
         """
 
         ikiwa isinstance(_call, tuple) na len(_call) > 2:
-            sig = self._get_call_signature_kutoka_name(_call[0])
+            sig = self._get_call_signature_from_name(_call[0])
         isipokua:
             sig = self._spec_signature
 
@@ -997,7 +997,7 @@ kundi NonCallableMock(Base):
             # Any asynchronous magic becomes an AsyncMock
             klass = AsyncMock
         lasivyo issubclass(_type, AsyncMockMixin):
-            ikiwa (_new_name kwenye _all_sync_magics or
+            ikiwa (_new_name kwenye _all_sync_magics ama
                     self._mock_methods na _new_name kwenye self._mock_methods):
                 # Any synchronous method on AsyncMock becomes a MagicMock
                 klass = MagicMock
@@ -1172,7 +1172,7 @@ kundi Mock(CallableMixin, NonCallableMock):
       `spec_set` will ashiria an `AttributeError`.
 
     * `side_effect`: A function to be called whenever the Mock ni called. See
-      the `side_effect` attribute. Useful kila raising exceptions or
+      the `side_effect` attribute. Useful kila raising exceptions ama
       dynamically changing rudisha values. The function ni called ukijumuisha the same
       arguments kama the mock, na unless it rudishas `DEFAULT`, the rudisha
       value of this function ni used kama the rudisha value.
@@ -1313,8 +1313,8 @@ kundi _patch(object):
 
             args += tuple(extra_args)
             tuma (args, keywargs)
-        except:
-            ikiwa (patching haiko kwenye entered_patchers and
+        tatizo:
+            ikiwa (patching haiko kwenye entered_patchers na
                 _is_started(patching)):
                 # the patcher may have been started, but an exception
                 # ashiriad whilst entering one of its additional_patchers
@@ -1403,7 +1403,7 @@ kundi _patch(object):
 
         ikiwa spec ni sio Tupu na autospec ni sio Tupu:
             ashiria TypeError("Can't specify spec na autospec")
-        ikiwa ((spec ni sio Tupu ama autospec ni sio Tupu) and
+        ikiwa ((spec ni sio Tupu ama autospec ni sio Tupu) na
             spec_set haiko kwenye (Kweli, Tupu)):
             ashiria TypeError("Can't provide explicit spec_set *and* spec ama autospec")
 
@@ -1456,7 +1456,7 @@ kundi _patch(object):
                 _kwargs['spec_set'] = spec_set
 
             # add a name to mocks
-            ikiwa (isinstance(Klass, type) and
+            ikiwa (isinstance(Klass, type) na
                 issubclass(Klass, NonCallableMock) na self.attribute):
                 _kwargs['name'] = self.attribute
 
@@ -1469,7 +1469,7 @@ kundi _patch(object):
                 this_spec = spec
                 ikiwa spec_set ni sio Tupu:
                     this_spec = spec_set
-                ikiwa (not _is_list(this_spec) na not
+                ikiwa (sio _is_list(this_spec) na not
                     _instance_callable(this_spec)):
                     Klass = NonCallableMagicMock
 
@@ -1525,7 +1525,7 @@ kundi _patch(object):
             setattr(self.target, self.attribute, self.temp_original)
         isipokua:
             delattr(self.target, self.attribute)
-            ikiwa sio self.create na (not hasattr(self.target, self.attribute) or
+            ikiwa sio self.create na (sio hasattr(self.target, self.attribute) ama
                         self.attribute kwenye ('__doc__', '__module__',
                                            '__defaults__', '__annotations__',
                                            '__kwdefaults__')):
@@ -1689,7 +1689,7 @@ eleza patch(
 
     By default `patch` will fail to replace attributes that don't exist. If
     you pita kwenye `create=Kweli`, na the attribute doesn't exist, patch will
-    create the attribute kila you when the patched function ni called, and
+    create the attribute kila you when the patched function ni called, na
     delete it again afterwards. This ni useful kila writing tests against
     attributes that your production code creates at runtime. It ni off by
     default because it can be dangerous. With it switched on you can write
@@ -1775,7 +1775,7 @@ kundi _patch_dict(object):
     eleza decorate_class(self, klass):
         kila attr kwenye dir(klass):
             attr_value = getattr(klass, attr)
-            ikiwa (attr.startswith(patch.TEST_PREFIX) and
+            ikiwa (attr.startswith(patch.TEST_PREFIX) na
                  hasattr(attr_value, "__call__")):
                 decorator = _patch_dict(self.in_dict, self.values, self.clear)
                 decorated = decorator(attr_value)
@@ -2400,7 +2400,7 @@ kundi _Call(tuple):
                  kutoka_kall=Kweli):
         self._mock_name = name
         self._mock_parent = parent
-        self._mock_kutoka_kall = kutoka_kall
+        self._mock_from_kall = kutoka_kall
 
 
     eleza __eq__(self, other):
@@ -2505,7 +2505,7 @@ kundi _Call(tuple):
         rudisha self._get_call_arguments()[1]
 
     eleza __repr__(self):
-        ikiwa sio self._mock_kutoka_kall:
+        ikiwa sio self._mock_from_kall:
             name = self._mock_name ama 'call'
             ikiwa name.startswith('()'):
                 name = 'call%s' % name
@@ -2532,7 +2532,7 @@ kundi _Call(tuple):
         vals = []
         thing = self
         wakati thing ni sio Tupu:
-            ikiwa thing._mock_kutoka_kall:
+            ikiwa thing._mock_from_kall:
                 vals.append(thing)
             thing = thing._mock_parent
         rudisha _CallList(reversed(vals))

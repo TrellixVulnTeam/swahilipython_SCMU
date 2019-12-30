@@ -49,7 +49,7 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             children.pop().remove()
 
         # If there are no agizas left, just get rid of the entire statement
-        ikiwa (not (agizas.children ama getattr(agizas, 'value', Tupu)) or
+        ikiwa (sio (agizas.children ama getattr(agizas, 'value', Tupu)) ama
             agizas.parent ni Tupu):
             p = node.prefix
             node = BlankLine()

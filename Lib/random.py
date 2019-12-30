@@ -130,7 +130,7 @@ kundi Random(_random.Random):
 
         For version 2 (the default), all of the bits are used ikiwa *a* ni a str,
         bytes, ama bytearray.  For version 1 (provided kila reproducing random
-        sequences kutoka older versions of Python), the algorithm kila str and
+        sequences kutoka older versions of Python), the algorithm kila str na
         bytes generates a narrower range of seeds.
 
         """
@@ -350,7 +350,7 @@ kundi Random(_random.Random):
 
         # There are other sampling algorithms that do sio require
         # auxiliary memory, but they were rejected because they made
-        # too many calls to _randbelow(), making them slower and
+        # too many calls to _randbelow(), making them slower na
         # causing them to eat more entropy than necessary.
 
         ikiwa isinstance(population, _Set):
@@ -499,8 +499,8 @@ kundi Random(_random.Random):
     eleza vonmisesvariate(self, mu, kappa):
         """Circular data distribution.
 
-        mu ni the mean angle, expressed kwenye radians between 0 na 2*pi, and
-        kappa ni the concentration parameter, which must be greater than or
+        mu ni the mean angle, expressed kwenye radians between 0 na 2*pi, na
+        kappa ni the concentration parameter, which must be greater than ama
         equal to zero.  If kappa ni equal to zero, this distribution reduces
         to a uniform random angle over the range 0 to 2*pi.
 
@@ -708,7 +708,7 @@ kundi Random(_random.Random):
 
 kundi SystemRandom(Random):
     """Alternate random number generator using sources provided
-    by the operating system (such kama /dev/urandom on Unix or
+    by the operating system (such kama /dev/urandom on Unix ama
     CryptGenRandom on Windows).
 
      Not available on all systems (see os.urandom() kila details).

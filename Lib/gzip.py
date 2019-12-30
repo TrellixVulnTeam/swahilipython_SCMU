@@ -26,7 +26,7 @@ eleza open(filename, mode="rb", compresslevel=_COMPRESS_LEVEL_BEST,
          encoding=Tupu, errors=Tupu, newline=Tupu):
     """Open a gzip-compressed file kwenye binary ama text mode.
 
-    The filename argument can be an actual filename (a str ama bytes object), or
+    The filename argument can be an actual filename (a str ama bytes object), ama
     an existing file object to read kutoka ama write to.
 
     The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" ama "ab" for
@@ -148,10 +148,10 @@ kundi GzipFile(_compression.BaseStream):
         fileobj, ikiwa discernible; otherwise, it defaults to the empty string,
         na kwenye this case the original filename ni sio included kwenye the header.
 
-        The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', or
+        The mode argument can be any of 'r', 'rb', 'a', 'ab', 'w', 'wb', 'x', ama
         'xb' depending on whether the file will be read ama written.  The default
         ni the mode of fileobj ikiwa discernible; otherwise, the default ni 'rb'.
-        A mode of 'r' ni equivalent to one of 'rb', na similarly kila 'w' and
+        A mode of 'r' ni equivalent to one of 'rb', na similarly kila 'w' na
         'wb', 'a' na 'ab', na 'x' na 'xb'.
 
         The compresslevel argument ni an integer kutoka 0 to 9 controlling the

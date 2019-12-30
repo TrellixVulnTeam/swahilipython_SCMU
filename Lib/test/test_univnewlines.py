@@ -52,7 +52,7 @@ kundi TestGenericUnivNewlines:
     eleza tearDown(self):
         jaribu:
             os.unlink(support.TESTFN)
-        except:
+        tatizo:
             pita
 
     eleza test_read(self):

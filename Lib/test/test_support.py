@@ -469,8 +469,8 @@ kundi TestSupport(unittest.TestCase):
         self.assertEqual(proc.stdout.rstrip(), repr(expected))
         self.assertEqual(proc.returncode, 0)
 
-    eleza test_args_kutoka_interpreter_flags(self):
-        # Test test.support.args_kutoka_interpreter_flags()
+    eleza test_args_from_interpreter_flags(self):
+        # Test test.support.args_from_interpreter_flags()
         kila opts kwenye (
             # no option
             [],
@@ -499,13 +499,13 @@ kundi TestSupport(unittest.TestCase):
             ['-X', 'tracemalloc=3'],
         ):
             ukijumuisha self.subTest(opts=opts):
-                self.check_options(opts, 'args_kutoka_interpreter_flags')
+                self.check_options(opts, 'args_from_interpreter_flags')
 
-        self.check_options(['-I', '-E', '-s'], 'args_kutoka_interpreter_flags',
+        self.check_options(['-I', '-E', '-s'], 'args_from_interpreter_flags',
                            ['-I'])
 
-    eleza test_optim_args_kutoka_interpreter_flags(self):
-        # Test test.support.optim_args_kutoka_interpreter_flags()
+    eleza test_optim_args_from_interpreter_flags(self):
+        # Test test.support.optim_args_from_interpreter_flags()
         kila opts kwenye (
             # no option
             [],
@@ -514,7 +514,7 @@ kundi TestSupport(unittest.TestCase):
             ['-OOOO'],
         ):
             ukijumuisha self.subTest(opts=opts):
-                self.check_options(opts, 'optim_args_kutoka_interpreter_flags')
+                self.check_options(opts, 'optim_args_from_interpreter_flags')
 
     eleza test_match_test(self):
         kundi Test:

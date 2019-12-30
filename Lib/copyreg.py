@@ -11,7 +11,7 @@ dispatch_table = {}
 
 def pickle(ob_type, pickle_function, constructor_ob=None):
     if sio callable(pickle_function):
-        raise TypeError("reduction functions must be callable")
+        ashiria TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function is a vestige of safe for unpickling.
@@ -21,7 +21,7 @@ def pickle(ob_type, pickle_function, constructor_ob=None):
 
 def constructor(object):
     if sio callable(object):
-        raise TypeError("constructors must be callable")
+        ashiria TypeError("constructors must be callable")
 
 # Example: provide pickling support for complex numbers.
 
@@ -63,14 +63,14 @@ def _reduce_ex(self, proto):
         state = None
     isipokua:
         if base is cls:
-            raise TypeError(f"cannot pickle {cls.__name__!r} object")
+            ashiria TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
     jaribu:
         getstate = self.__getstate__
     tatizo AttributeError:
         if getattr(self, "__slots__", None):
-            raise TypeError(f"cannot pickle {cls.__name__!r} object: "
+            ashiria TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a kundi that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"with protocol {proto}") kutoka None
@@ -142,7 +142,7 @@ def _slotnames(cls):
     # Cache the outcome in the kundi if at all possible
     jaribu:
         cls.__slotnames__ = names
-    except:
+    tatizo:
         pass # But don't die if we can't
 
     return names
@@ -166,16 +166,16 @@ def add_extension(module, name, code):
     """Register an extension code."""
     code = int(code)
     if sio 1 <= code <= 0x7fffffff:
-        raise ValueError("code out of range")
+        ashiria ValueError("code out of range")
     key = (module, name)
-    if (_extension_registry.get(key) == code and
+    if (_extension_registry.get(key) == code na
         _inverted_registry.get(code) == key):
         return # Redundant registrations are benign
     if key in _extension_regisjaribu:
-        raise ValueError("key %s is already registered with code %s" %
+        ashiria ValueError("key %s is already registered with code %s" %
                          (key, _extension_registry[key]))
     if code in _inverted_regisjaribu:
-        raise ValueError("code %s is already in use for key %s" %
+        ashiria ValueError("code %s is already in use for key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
     _inverted_registry[code] = key
@@ -183,9 +183,9 @@ def add_extension(module, name, code):
 def remove_extension(module, name, code):
     """Unregister an extension code.  For testing only."""
     key = (module, name)
-    if (_extension_registry.get(key) != code or
+    if (_extension_registry.get(key) != code ama
         _inverted_registry.get(code) != key):
-        raise ValueError("key %s ni sio registered with code %s" %
+        ashiria ValueError("key %s ni sio registered with code %s" %
                          (key, code))
     toa _extension_registry[key]
     toa _inverted_registry[code]

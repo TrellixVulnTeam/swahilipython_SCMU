@@ -51,7 +51,7 @@ class ReturnFuncPtrTestCase(unittest.TestCase):
                     return "my_strchr"
                 if key == 1:
                     return CDLL(_ctypes_test.__file__)
-                raise IndexError
+                ashiria IndexError
 
         # _CFuncPtr instances are now callable with a tuple argument
         # which denotes a function name and a dll:

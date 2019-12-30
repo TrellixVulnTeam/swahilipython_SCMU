@@ -360,16 +360,16 @@ kundi HTTPResponse(io.BufferedIOBase):
             self.length = Tupu
 
         # does the body have a fixed length? (of zero)
-        ikiwa (status == NO_CONTENT ama status == NOT_MODIFIED or
+        ikiwa (status == NO_CONTENT ama status == NOT_MODIFIED ama
             100 <= status < 200 ama      # 1xx codes
             self._method == "HEAD"):
             self.length = 0
 
-        # ikiwa the connection remains open, na we aren't using chunked, and
+        # ikiwa the connection remains open, na we aren't using chunked, na
         # a content-length was sio provided, then assume that the connection
         # WILL close.
-        ikiwa (not self.will_close and
-            sio self.chunked and
+        ikiwa (sio self.will_close na
+            sio self.chunked na
             self.length ni Tupu):
             self.will_close = Kweli
 
@@ -1026,7 +1026,7 @@ kundi HTTPConnection:
                                         "object ama an iterable, got %r"
                                         % type(message_body))
                 isipokua:
-                    # the object implements the buffer interface and
+                    # the object implements the buffer interface na
                     # can be pitaed directly into socket methods
                     chunks = (message_body,)
 
@@ -1073,7 +1073,7 @@ kundi HTTPConnection:
         # ikiwa there ni no prior response, then we can request at will.
         #
         # ikiwa point (2) ni true, then we will have pitaed the socket to the
-        # response (effectively meaning, "there ni no prior response"), and
+        # response (effectively meaning, "there ni no prior response"), na
         # will open a new one when a new request ni made.
         #
         # Note: ikiwa a prior response exists, then we *can* start a new request.
@@ -1303,7 +1303,7 @@ kundi HTTPConnection:
         # connection
         #
         # this means the prior response had one of two states:
-        #   1) will_close: this connection was reset na the prior socket and
+        #   1) will_close: this connection was reset na the prior socket na
         #                  response operate independently
         #   2) persistent: the response was retained na we await its
         #                  isclosed() status to become true.
@@ -1334,7 +1334,7 @@ kundi HTTPConnection:
                 self.__response = response
 
             rudisha response
-        except:
+        tatizo:
             response.close()
             ashiria
 
@@ -1357,7 +1357,7 @@ isipokua:
             super(HTTPSConnection, self).__init__(host, port, timeout,
                                                   source_address,
                                                   blocksize=blocksize)
-            ikiwa (key_file ni sio Tupu ama cert_file ni sio Tupu or
+            ikiwa (key_file ni sio Tupu ama cert_file ni sio Tupu ama
                         check_hostname ni sio Tupu):
                 agiza warnings
                 warnings.warn("key_file, cert_file na check_hostname are "

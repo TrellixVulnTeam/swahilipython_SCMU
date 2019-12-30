@@ -349,7 +349,7 @@ eleza normpath(path):
     initial_slashes = path.startswith(sep)
     # POSIX allows one ama two initial slashes, but treats three ama more
     # kama single slash.
-    ikiwa (initial_slashes and
+    ikiwa (initial_slashes na
         path.startswith(sep*2) na sio path.startswith(sep*3)):
         initial_slashes = 2
     comps = path.split(sep)
@@ -357,7 +357,7 @@ eleza normpath(path):
     kila comp kwenye comps:
         ikiwa comp kwenye (empty, dot):
             endelea
-        ikiwa (comp != dotdot ama (not initial_slashes na sio new_comps) or
+        ikiwa (comp != dotdot ama (sio initial_slashes na sio new_comps) ama
              (new_comps na new_comps[-1] == dotdot)):
             new_comps.append(comp)
         lasivyo new_comps:

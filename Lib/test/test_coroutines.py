@@ -1152,7 +1152,7 @@ kundi CoroutineTest(unittest.TestCase):
         async eleza g():
             jaribu:
                 ashiria KeyError
-            except:
+            tatizo:
                 rudisha await f()
 
         _, result = run_async(g())

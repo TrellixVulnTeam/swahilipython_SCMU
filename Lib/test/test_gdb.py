@@ -203,7 +203,7 @@ kundi DebuggerTests(unittest.TestCase):
         args = ['--eval-command=%s' % cmd kila cmd kwenye commands]
         args += ["--args",
                  sys.executable]
-        args.extend(subprocess._args_kutoka_interpreter_flags())
+        args.extend(subprocess._args_from_interpreter_flags())
 
         ikiwa sio import_site:
             # -S suppresses the default 'agiza site'
@@ -863,7 +863,7 @@ id(42)
             ('sorted', '[]', 'builtin_sorted', 1),  # METH_FASTCALL|METH_KEYWORDS
         ):
             ukijumuisha self.subTest(c_name):
-                cmd = ('kutoka time agiza gmtime\n'  # (not always needed)
+                cmd = ('kutoka time agiza gmtime\n'  # (sio always needed)
                     'eleza foo():\n'
                     f'    {py_name}({py_args})\n'
                     'eleza bar():\n'

@@ -3,7 +3,7 @@
 Each menu selection ama shortcut key selection replaces the word ukijumuisha a
 different word ukijumuisha the same prefix. The search kila matches begins
 before the target na moves toward the top of the editor. It then starts
-after the cursor na moves down. It then rudishas to the original word and
+after the cursor na moves down. It then rudishas to the original word na
 the cycle starts again.
 
 Changing the current text line ama leaving the cursor kwenye a different

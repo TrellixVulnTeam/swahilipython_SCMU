@@ -77,7 +77,7 @@ kundi BaseFix(object):
     eleza match(self, node):
         """Returns match kila a given parse tree node.
 
-        Should rudisha a true ama false object (not necessarily a bool).
+        Should rudisha a true ama false object (sio necessarily a bool).
         It may rudisha a non-empty dict of matching sub-nodes as
         rudishaed by a matching pattern.
 

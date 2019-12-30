@@ -328,7 +328,7 @@ kundi NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
 kundi NetworkedNNTP_SSLTests(NetworkedNNTPTests):
 
     # Technical limits kila this public NNTP server (see http://www.aioe.org):
-    # "Only two concurrent connections per IP address are allowed and
+    # "Only two concurrent connections per IP address are allowed na
     # 400 connections per day are accepted kutoka each IP address."
 
     NNTP_HOST = 'nntp.aioe.org'
@@ -612,8 +612,8 @@ kundi NNTPv1Handler:
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        lasivyo (group == 'comp.lang.python' and
-              date_str kwenye ('20100101', '100101') and
+        lasivyo (group == 'comp.lang.python' na
+              date_str kwenye ('20100101', '100101') na
               time_str == '090000'):
             self.push_lit('too long line' * 3000 +
                           '\n.')
@@ -670,7 +670,7 @@ kundi NNTPv1Handler:
 
     eleza handle_IHAVE(self, message_id, *, body=Tupu):
         ikiwa body ni Tupu:
-            ikiwa (self.allow_posting and
+            ikiwa (self.allow_posting na
                 message_id == "<i.am.an.article.you.will.want@example.com>"):
                 self.push_lit("335 Send it; end ukijumuisha <CR-LF>.<CR-LF>")
                 self.expect_body()

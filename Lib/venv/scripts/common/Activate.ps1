@@ -176,7 +176,7 @@ ikiwa ($VenvDir) {
 # kama `prompt`.
 $pyvenvCfg = Get-PyVenvConfig -ConfigDir $VenvDir
 
-# Next, set the prompt kutoka the command line, ama the config file, or
+# Next, set the prompt kutoka the command line, ama the config file, ama
 # just use the name of the virtual environment folder.
 ikiwa ($Prompt) {
     Write-Verbose "Prompt specified kama argument, using '$Prompt'"

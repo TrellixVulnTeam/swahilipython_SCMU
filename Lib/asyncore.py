@@ -7,7 +7,7 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, na distribute this software and
+# Permission to use, copy, modify, na distribute this software na
 # its documentation kila any purpose na without fee ni hereby
 # granted, provided that the above copyright notice appear kwenye all
 # copies na that both that copyright notice na this permission
@@ -28,7 +28,7 @@
 """Basic infrastructure kila asynchronous socket service clients na servers.
 
 There are only two ways to have a program on a single processor do "more
-than one thing at a time".  Multi-threaded programming ni the simplest and
+than one thing at a time".  Multi-threaded programming ni the simplest na
 most popular way to do it, but there ni another very different technique,
 that lets you have nearly all the advantages of multi-threading, without
 actually using multiple threads. it's really only practical ikiwa your program
@@ -39,8 +39,8 @@ rarely CPU-bound, however.
 If your operating system supports the select() system call kwenye its I/O
 library (and nearly all do), then you can use it to juggle multiple
 communication channels at once; doing other work wakati your I/O ni taking
-place kwenye the "background."  Although this strategy can seem strange and
-complex, especially at first, it ni kwenye many ways easier to understand and
+place kwenye the "background."  Although this strategy can seem strange na
+complex, especially at first, it ni kwenye many ways easier to understand na
 control than multi-threaded programming. The module documented here solves
 many of the difficult problems kila you, making the task of building
 sophisticated high-performance network servers na clients a snap.
@@ -83,7 +83,7 @@ eleza read(obj):
         obj.handle_read_event()
     tatizo _reashiriad_exceptions:
         ashiria
-    except:
+    tatizo:
         obj.handle_error()
 
 eleza write(obj):
@@ -91,7 +91,7 @@ eleza write(obj):
         obj.handle_write_event()
     tatizo _reashiriad_exceptions:
         ashiria
-    except:
+    tatizo:
         obj.handle_error()
 
 eleza _exception(obj):
@@ -99,7 +99,7 @@ eleza _exception(obj):
         obj.handle_expt_event()
     tatizo _reashiriad_exceptions:
         ashiria
-    except:
+    tatizo:
         obj.handle_error()
 
 eleza readwrite(obj, flags):
@@ -119,7 +119,7 @@ eleza readwrite(obj, flags):
             obj.handle_close()
     tatizo _reashiriad_exceptions:
         ashiria
-    except:
+    tatizo:
         obj.handle_error()
 
 eleza poll(timeout=0.0, map=Tupu):
@@ -459,7 +459,7 @@ kundi dispatcher:
         # sometimes a user repr method will crash.
         jaribu:
             self_repr = repr(self)
-        except:
+        tatizo:
             self_repr = '<__repr__(self) failed kila object at %0x>' % id(self)
 
         self.log_info(
@@ -518,7 +518,7 @@ kundi dispatcher_with_send(dispatcher):
         self.initiate_send()
 
     eleza writable(self):
-        rudisha (not self.connected) ama len(self.out_buffer)
+        rudisha (sio self.connected) ama len(self.out_buffer)
 
     eleza send(self, data):
         ikiwa self.debug:
@@ -563,14 +563,14 @@ eleza close_all(map=Tupu, ignore_all=Uongo):
                 ashiria
         tatizo _reashiriad_exceptions:
             ashiria
-        except:
+        tatizo:
             ikiwa sio ignore_all:
                 ashiria
     map.clear()
 
 # Asynchronous File I/O:
 #
-# After a little research (reading man pages on various unixen, and
+# After a little research (reading man pages on various unixen, na
 # digging through the linux kernel), I've determined that select()
 # isn't meant kila doing asynchronous file i/o.
 # Heartening, though - reading linux/mm/filemap.c shows that linux
@@ -603,8 +603,8 @@ ikiwa os.name == 'posix':
             rudisha os.write(self.fd, *args)
 
         eleza getsockopt(self, level, optname, buflen=Tupu):
-            ikiwa (level == socket.SOL_SOCKET and
-                optname == socket.SO_ERROR and
+            ikiwa (level == socket.SOL_SOCKET na
+                optname == socket.SO_ERROR na
                 sio buflen):
                 rudisha 0
             ashiria NotImplementedError("Only asyncore specific behaviour "

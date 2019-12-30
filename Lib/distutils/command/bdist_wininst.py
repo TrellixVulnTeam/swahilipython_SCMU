@@ -101,7 +101,7 @@ class bdist_wininst(Command):
         if sio self.skip_build and self.distribution.has_ext_modules():
             short_version = get_python_version()
             if self.target_version and self.target_version != short_version:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "target version can only be %s, or the '--skip-build'" \
                       " option must be specified" % (short_version,))
             self.target_version = short_version
@@ -116,15 +116,15 @@ class bdist_wininst(Command):
                 if self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install_script '%s' sio found in scripts"
                       % self.install_script)
 
     def run(self):
-        if (sys.platform != "win32" and
-            (self.distribution.has_ext_modules() or
+        if (sys.platform != "win32" na
+            (self.distribution.has_ext_modules() ama
              self.distribution.has_c_libraries())):
-            raise DistutilsPlatformError \
+            ashiria DistutilsPlatformError \
                   ("distribution contains extensions and/or C libraries; "
                    "must be compiled on a Windows 32 platform")
 
@@ -231,8 +231,8 @@ class bdist_wininst(Command):
         if self.install_script:
             lines.append("install_script=%s" % self.install_script)
         lines.append("info=%s" % escape(info))
-        lines.append("target_compile=%d" % (not self.no_target_compile))
-        lines.append("target_optimize=%d" % (not self.no_target_optimize))
+        lines.append("target_compile=%d" % (sio self.no_target_compile))
+        lines.append("target_optimize=%d" % (sio self.no_target_optimize))
         if self.target_version:
             lines.append("target_version=%s" % self.target_version)
         if self.user_access_control:
@@ -276,7 +276,7 @@ class bdist_wininst(Command):
             # Append the pre-install script
             cfgdata = cfgdata + b"\0"
             if self.pre_install_script:
-                # We need to normalize newlines, so we open in text mode and
+                # We need to normalize newlines, so we open in text mode na
                 # convert back to bytes. "latin-1" simply avoids any possible
                 # failures.
                 with open(self.pre_install_script, "r",
@@ -291,7 +291,7 @@ class bdist_wininst(Command):
             # The 'magic number' 0x1234567B is used to make sure that the
             # binary layout of 'cfgdata' is what the wininst.exe binary
             # expects.  If the layout changes, increment that number, make
-            # the corresponding changes to the wininst.exe sources, and
+            # the corresponding changes to the wininst.exe sources, na
             # recompile them.
             header = struct.pack("<iii",
                                 0x1234567B,       # tag

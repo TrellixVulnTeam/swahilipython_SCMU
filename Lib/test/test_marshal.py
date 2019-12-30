@@ -538,10 +538,10 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
             support.unlink(support.TESTFN)
             self.assertEqual(marshal.loads(data), obj)
 
-    eleza test_read_short_kutoka_file(self):
+    eleza test_read_short_from_file(self):
         ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x34\x12xxxx')
-        r, p = _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
+        r, p = _testcapi.pymarshal_read_short_from_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x1234)
         self.assertEqual(p, 2)
@@ -549,13 +549,13 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
         ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x12')
         ukijumuisha self.assertRaises(EOFError):
-            _testcapi.pymarshal_read_short_kutoka_file(support.TESTFN)
+            _testcapi.pymarshal_read_short_from_file(support.TESTFN)
         support.unlink(support.TESTFN)
 
-    eleza test_read_long_kutoka_file(self):
+    eleza test_read_long_from_file(self):
         ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x78\x56\x34\x12xxxx')
-        r, p = _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
+        r, p = _testcapi.pymarshal_read_long_from_file(support.TESTFN)
         support.unlink(support.TESTFN)
         self.assertEqual(r, 0x12345678)
         self.assertEqual(p, 4)
@@ -563,32 +563,32 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
         ukijumuisha open(support.TESTFN, 'wb') kama f:
             f.write(b'\x56\x34\x12')
         ukijumuisha self.assertRaises(EOFError):
-            _testcapi.pymarshal_read_long_kutoka_file(support.TESTFN)
+            _testcapi.pymarshal_read_long_from_file(support.TESTFN)
         support.unlink(support.TESTFN)
 
-    eleza test_read_last_object_kutoka_file(self):
+    eleza test_read_last_object_from_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
             ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
-            r, p = _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
+            r, p = _testcapi.pymarshal_read_last_object_from_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
 
             ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
             ukijumuisha self.assertRaises(EOFError):
-                _testcapi.pymarshal_read_last_object_kutoka_file(support.TESTFN)
+                _testcapi.pymarshal_read_last_object_from_file(support.TESTFN)
             support.unlink(support.TESTFN)
 
-    eleza test_read_object_kutoka_file(self):
+    eleza test_read_object_from_file(self):
         obj = ('\u20ac', b'abc', 123, 45.6, 7+8j)
         kila v kwenye range(marshal.version + 1):
             data = marshal.dumps(obj, v)
             ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data + b'xxxx')
-            r, p = _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)
+            r, p = _testcapi.pymarshal_read_object_from_file(support.TESTFN)
             support.unlink(support.TESTFN)
             self.assertEqual(r, obj)
             self.assertEqual(p, len(data))
@@ -596,7 +596,7 @@ kundi CAPI_TestCase(unittest.TestCase, HelperMixin):
             ukijumuisha open(support.TESTFN, 'wb') kama f:
                 f.write(data[:1])
             ukijumuisha self.assertRaises(EOFError):
-                _testcapi.pymarshal_read_object_kutoka_file(support.TESTFN)
+                _testcapi.pymarshal_read_object_from_file(support.TESTFN)
             support.unlink(support.TESTFN)
 
 

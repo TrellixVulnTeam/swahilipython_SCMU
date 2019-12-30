@@ -174,4 +174,4 @@ eleza main(*args):
     rudisha Kweli
 
 ikiwa __name__ == "__main__":
-    sys.exit(int(not main()))
+    sys.exit(int(sio main()))

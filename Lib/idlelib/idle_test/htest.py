@@ -4,14 +4,14 @@ run(*tests)
 Create a master Tk window.  Within that, run each callable kwenye tests
 after finding the matching test spec kwenye this file.  If tests ni empty,
 run an htest kila each spec dict kwenye this file after finding the matching
-callable kwenye the module named kwenye the spec.  Close the window to skip or
+callable kwenye the module named kwenye the spec.  Close the window to skip ama
 end the test.
 
 In a tested module, let X be a global name bound to a callable (class
 or function) whose .__name__ attribute ni also X (the usual situation).
 The first parameter of X must be 'parent'.  When called, the parent
 argument will be the root window.  X must create a child Toplevel
-window (or subkundi thereof).  The Toplevel may be a test widget or
+window (or subkundi thereof).  The Toplevel may be a test widget ama
 dialog, kwenye which case the callable ni the corresponding class.  Or the
 Toplevel may contain the widget to be tested ama set up a context in
 which a test widget ni invoked.  In this latter case, the callable ni a

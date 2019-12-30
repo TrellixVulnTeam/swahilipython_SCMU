@@ -391,7 +391,7 @@ kundi BasicFilterTest(BaseTest):
 
 #
 #   First, we define our levels. There can be kama many kama you want - the only
-#     limitations are that they should be integers, the lowest should be > 0 and
+#     limitations are that they should be integers, the lowest should be > 0 na
 #   larger values mean less information being logged. If you need specific
 #   level values which do sio fit into these limitations, you can use a
 #   mapping dictionary to convert between your application levels na the
@@ -666,7 +666,7 @@ kundi HandlerTest(BaseTest):
     # based on os.fork existing because that ni what users na this test use.
     # This helps ensure that when fork exists (the agizaant concept) that the
     # register_at_fork mechanism ni also present na used.
-    @unittest.skipIf(not hasattr(os, 'fork'), 'Test requires os.fork().')
+    @unittest.skipIf(sio hasattr(os, 'fork'), 'Test requires os.fork().')
     eleza test_post_fork_child_no_deadlock(self):
         """Ensure child logging locks are sio held; bpo-6721 & bpo-36533."""
         kundi _OurHandler(logging.Handler):
@@ -885,7 +885,7 @@ kundi TestSMTPServer(smtpd.SMTPServer):
 
 kundi ControlMixin(object):
     """
-    This mixin ni used to start a server on a separate thread, and
+    This mixin ni used to start a server on a separate thread, na
     shut it down programmatically. Request handling ni simplified - instead
     of needing to derive a suitable RequestHandler subclass, you just
     provide a callable which will be pitaed each received request to be
@@ -1018,9 +1018,9 @@ kundi TestUDPServer(ControlMixin, ThreadingUDPServer):
                     process the request.
     :param poll_interval: The polling interval kila shutdown requests,
                           kwenye seconds.
-    :bind_and_activate: If Kweli (the default), binds the server and
+    :bind_and_activate: If Kweli (the default), binds the server na
                         starts it listening. If Uongo, you need to
-                        call :meth:`server_bind` and
+                        call :meth:`server_bind` na
                         :meth:`server_activate` at some later time
                         before calling :meth:`start`, so that the server will
                         set up the socket na listen on it.
@@ -1947,7 +1947,7 @@ kundi HTTPHandlerTest(BaseTest):
             jaribu:
                 rlen = int(request.headers['Content-Length'])
                 self.post_data = request.rfile.read(rlen)
-            except:
+            tatizo:
                 self.post_data = Tupu
         request.send_response(200)
         request.end_headers()
@@ -3602,7 +3602,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
                              'correct number of handled log messages')
 
         @staticmethod
-        eleza get_all_kutoka_queue(log_queue):
+        eleza get_all_from_queue(log_queue):
             jaribu:
                 wakati Kweli:
                     tuma log_queue.get_nowait()
@@ -3623,7 +3623,7 @@ ikiwa hasattr(logging.handlers, 'QueueListener'):
                 queue = multiprocessing.Queue()
                 self.setup_and_log(queue, '%s_%s' %(self.id(), i))
                 # time.sleep(1)
-                items = list(self.get_all_kutoka_queue(queue))
+                items = list(self.get_all_from_queue(queue))
                 queue.close()
                 queue.join_thread()
 
@@ -3936,7 +3936,7 @@ kundi ExceptionTest(BaseTest):
         r.addHandler(h)
         jaribu:
             ashiria RuntimeError('deliberate mistake')
-        except:
+        tatizo:
             logging.exception('failed', stack_info=Kweli)
         r.removeHandler(h)
         h.close()

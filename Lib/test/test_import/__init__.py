@@ -77,15 +77,15 @@ kundi ImportTests(unittest.TestCase):
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             agiza something_that_should_not_exist_anywhere
 
-    eleza test_kutoka_import_missing_module_ashirias_ModuleNotFoundError(self):
+    eleza test_from_import_missing_module_ashirias_ModuleNotFoundError(self):
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             kutoka something_that_should_not_exist_anywhere agiza blah
 
-    eleza test_kutoka_import_missing_attr_ashirias_ImportError(self):
+    eleza test_from_import_missing_attr_ashirias_ImportError(self):
         ukijumuisha self.assertRaises(ImportError):
             kutoka importlib agiza something_that_should_not_exist_anywhere
 
-    eleza test_kutoka_import_missing_attr_has_name_and_path(self):
+    eleza test_from_import_missing_attr_has_name_and_path(self):
         ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka os agiza i_dont_exist
         self.assertEqual(cm.exception.name, 'os')
@@ -93,7 +93,7 @@ kundi ImportTests(unittest.TestCase):
         self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka 'os' \(.*os.py\)")
 
     @cpython_only
-    eleza test_kutoka_import_missing_attr_has_name_and_so_path(self):
+    eleza test_from_import_missing_attr_has_name_and_so_path(self):
         agiza _testcapi
         ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka _testcapi agiza i_dont_exist
@@ -101,20 +101,20 @@ kundi ImportTests(unittest.TestCase):
         self.assertEqual(cm.exception.path, _testcapi.__file__)
         self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka '_testcapi' \(.*\.(so|pyd)\)")
 
-    eleza test_kutoka_import_missing_attr_has_name(self):
+    eleza test_from_import_missing_attr_has_name(self):
         ukijumuisha self.assertRaises(ImportError) kama cm:
             # _warning has no path kama it's a built-in module.
             kutoka _warning agiza i_dont_exist
         self.assertEqual(cm.exception.name, '_warning')
         self.assertIsTupu(cm.exception.path)
 
-    eleza test_kutoka_import_missing_attr_path_is_canonical(self):
+    eleza test_from_import_missing_attr_path_is_canonical(self):
         ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka os.path agiza i_dont_exist
         self.assertIn(cm.exception.name, {'posixpath', 'ntpath'})
         self.assertIsNotTupu(cm.exception)
 
-    eleza test_kutoka_import_star_invalid_type(self):
+    eleza test_from_import_star_invalid_type(self):
         agiza re
         ukijumuisha _ready_to_agiza() kama (name, path):
             ukijumuisha open(path, 'w') kama f:
@@ -368,7 +368,7 @@ kundi ImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         jaribu:
             source = TESTFN + ".py"
-            compiled = importlib.util.cache_kutoka_source(source)
+            compiled = importlib.util.cache_from_source(source)
             ukijumuisha open(source, 'w') kama f:
                 pita
             jaribu:
@@ -400,26 +400,26 @@ kundi ImportTests(unittest.TestCase):
         stdout, stderr = popen.communicate()
         self.assertIn(b"ImportError", stdout)
 
-    eleza test_kutoka_import_message_for_nonexistent_module(self):
+    eleza test_from_import_message_for_nonexistent_module(self):
         ukijumuisha self.assertRaisesRegex(ImportError, "^No module named 'bogus'"):
             kutoka bogus agiza foo
 
-    eleza test_kutoka_import_message_for_existing_module(self):
+    eleza test_from_import_message_for_existing_module(self):
         ukijumuisha self.assertRaisesRegex(ImportError, "^cannot agiza name 'bogus'"):
             kutoka re agiza bogus
 
-    eleza test_kutoka_import_AttributeError(self):
+    eleza test_from_import_AttributeError(self):
         # Issue #24492: trying to agiza an attribute that ashirias an
         # AttributeError should lead to an ImportError.
         kundi AlwaysAttributeError:
             eleza __getattr__(self, _):
                 ashiria AttributeError
 
-        module_name = 'test_kutoka_import_AttributeError'
+        module_name = 'test_from_import_AttributeError'
         self.addCleanup(unload, module_name)
         sys.modules[module_name] = AlwaysAttributeError()
         ukijumuisha self.assertRaises(ImportError) kama cm:
-            kutoka test_kutoka_import_AttributeError agiza does_not_exist
+            kutoka test_from_import_AttributeError agiza does_not_exist
 
         self.assertEqual(str(cm.exception),
             "cannot agiza name 'does_not_exist' kutoka '<unknown module name>' (unknown location)")
@@ -517,7 +517,7 @@ kundi FilePermissionTests(unittest.TestCase):
     eleza test_creation_mode(self):
         mask = 0o022
         ukijumuisha temp_umask(mask), _ready_to_agiza() kama (name, path):
-            cached_path = importlib.util.cache_kutoka_source(path)
+            cached_path = importlib.util.cache_from_source(path)
             module = __import__(name)
             ikiwa sio os.path.exists(cached_path):
                 self.fail("__import__ did sio result kwenye creation of "
@@ -535,7 +535,7 @@ kundi FilePermissionTests(unittest.TestCase):
         # permissions of .pyc should match those of .py, regardless of mask
         mode = 0o600
         ukijumuisha temp_umask(0o022), _ready_to_agiza() kama (name, path):
-            cached_path = importlib.util.cache_kutoka_source(path)
+            cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
             ikiwa sio os.path.exists(cached_path):
@@ -550,7 +550,7 @@ kundi FilePermissionTests(unittest.TestCase):
     eleza test_cached_readonly(self):
         mode = 0o400
         ukijumuisha temp_umask(0o022), _ready_to_agiza() kama (name, path):
-            cached_path = importlib.util.cache_kutoka_source(path)
+            cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
             ikiwa sio os.path.exists(cached_path):
@@ -587,7 +587,7 @@ kundi FilePermissionTests(unittest.TestCase):
             unload(name)
             importlib.invalidate_caches()
             bytecode_only = path + "c"
-            os.rename(importlib.util.cache_kutoka_source(path), bytecode_only)
+            os.rename(importlib.util.cache_from_source(path), bytecode_only)
             m = __import__(name)
             self.assertEqual(m.x, 'rewritten')
 
@@ -609,7 +609,7 @@ func_filename = func.__code__.co_filename
 """
     dir_name = os.path.abspath(TESTFN)
     file_name = os.path.join(dir_name, module_name) + os.extsep + "py"
-    compiled_name = importlib.util.cache_kutoka_source(file_name)
+    compiled_name = importlib.util.cache_from_source(file_name)
 
     eleza setUp(self):
         self.sys_path = sys.path[:]
@@ -788,7 +788,7 @@ kundi RelativeImportTests(unittest.TestCase):
             self.fail("explicit relative agiza triggered an "
                       "implicit absolute agiza")
 
-    eleza test_import_kutoka_non_package(self):
+    eleza test_import_from_non_package(self):
         path = os.path.join(os.path.dirname(__file__), 'data', 'package2')
         ukijumuisha uncache('submodule1', 'submodule2'), DirsOnSysPath(path):
             ukijumuisha self.assertRaises(ImportError):
@@ -796,7 +796,7 @@ kundi RelativeImportTests(unittest.TestCase):
             self.assertNotIn('submodule1', sys.modules)
             self.assertNotIn('submodule2', sys.modules)
 
-    eleza test_import_kutoka_unloaded_package(self):
+    eleza test_import_from_unloaded_package(self):
         ukijumuisha uncache('package2', 'package2.submodule1', 'package2.submodule2'), \
              DirsOnSysPath(os.path.join(os.path.dirname(__file__), 'data')):
             agiza package2.submodule1
@@ -849,7 +849,7 @@ kundi PycacheTests(unittest.TestCase):
         self.assertUongo(os.path.exists('__pycache__'))
         __import__(TESTFN)
         self.assertKweli(os.path.exists('__pycache__'))
-        pyc_path = importlib.util.cache_kutoka_source(self.source)
+        pyc_path = importlib.util.cache_from_source(self.source)
         self.assertKweli(os.path.exists(pyc_path),
                         'bytecode file {!r} kila {!r} does sio '
                         'exist'.format(pyc_path, TESTFN))
@@ -865,7 +865,7 @@ kundi PycacheTests(unittest.TestCase):
         ukijumuisha temp_umask(0o222):
             __import__(TESTFN)
         self.assertKweli(os.path.exists('__pycache__'))
-        pyc_path = importlib.util.cache_kutoka_source(self.source)
+        pyc_path = importlib.util.cache_from_source(self.source)
         self.assertUongo(os.path.exists(pyc_path),
                         'bytecode file {!r} kila {!r} '
                         'exists'.format(pyc_path, TESTFN))
@@ -875,7 +875,7 @@ kundi PycacheTests(unittest.TestCase):
         # With PEP 3147 cache layout, removing the source but leaving the pyc
         # file does sio satisfy the agiza.
         __import__(TESTFN)
-        pyc_file = importlib.util.cache_kutoka_source(self.source)
+        pyc_file = importlib.util.cache_from_source(self.source)
         self.assertKweli(os.path.exists(pyc_file))
         os.remove(self.source)
         forget(TESTFN)
@@ -904,7 +904,7 @@ kundi PycacheTests(unittest.TestCase):
     eleza test___cached__(self):
         # Modules now also have an __cached__ that points to the pyc file.
         m = __import__(TESTFN)
-        pyc_file = importlib.util.cache_kutoka_source(TESTFN + '.py')
+        pyc_file = importlib.util.cache_from_source(TESTFN + '.py')
         self.assertEqual(m.__cached__, os.path.join(os.curdir, pyc_file))
 
     @skip_if_dont_write_bytecode
@@ -939,14 +939,14 @@ kundi PycacheTests(unittest.TestCase):
             pita
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
-        init_pyc = importlib.util.cache_kutoka_source(
+        init_pyc = importlib.util.cache_from_source(
             os.path.join('pep3147', '__init__.py'))
         self.assertEqual(m.__cached__, os.path.join(os.curdir, init_pyc))
-        foo_pyc = importlib.util.cache_kutoka_source(os.path.join('pep3147', 'foo.py'))
+        foo_pyc = importlib.util.cache_from_source(os.path.join('pep3147', 'foo.py'))
         self.assertEqual(sys.modules['pep3147.foo'].__cached__,
                          os.path.join(os.curdir, foo_pyc))
 
-    eleza test_package___cached___kutoka_pyc(self):
+    eleza test_package___cached___from_pyc(self):
         # Like test___cached__ but ensuring __cached__ when imported kutoka a
         # PEP 3147 pyc file.
         eleza cleanup():
@@ -966,10 +966,10 @@ kundi PycacheTests(unittest.TestCase):
         unload('pep3147')
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
-        init_pyc = importlib.util.cache_kutoka_source(
+        init_pyc = importlib.util.cache_from_source(
             os.path.join('pep3147', '__init__.py'))
         self.assertEqual(m.__cached__, os.path.join(os.curdir, init_pyc))
-        foo_pyc = importlib.util.cache_kutoka_source(os.path.join('pep3147', 'foo.py'))
+        foo_pyc = importlib.util.cache_from_source(os.path.join('pep3147', 'foo.py'))
         self.assertEqual(sys.modules['pep3147.foo'].__cached__,
                          os.path.join(os.curdir, foo_pyc))
 
@@ -993,7 +993,7 @@ kundi TestSymbolicallyLinkedPackage(unittest.TestCase):
         test.support.rmtree(self.package_name)
         self.orig_sys_path = sys.path[:]
 
-        # create a sample package; imagine you have a package ukijumuisha a tag and
+        # create a sample package; imagine you have a package ukijumuisha a tag na
         #  you want to symbolically link it kutoka its untagged name.
         os.mkdir(self.tagged)
         self.addCleanup(test.support.rmtree, self.tagged)
@@ -1331,7 +1331,7 @@ kundi CircularImportTests(unittest.TestCase):
         self.assertIn('partially initialized module', errmsg)
         self.assertIn('circular agiza', errmsg)
 
-    eleza test_circular_kutoka_agiza(self):
+    eleza test_circular_from_agiza(self):
         ukijumuisha self.assertRaises(ImportError) kama cm:
             agiza test.test_agiza.data.circular_agizas.kutoka_cycle1
         self.assertIn(

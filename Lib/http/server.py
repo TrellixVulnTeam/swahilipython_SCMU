@@ -41,7 +41,7 @@ XXX To do:
 #
 # URL: http://www.ics.uci.edu/pub/ietf/http/draft-ietf-http-v10-spec-00.txt
 #
-# and
+# na
 #
 # Network Working Group                                      R. Fielding
 # Request kila Comments: 2616                                       et al
@@ -187,7 +187,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     <command> <path>
 
     (i.e. <version> ni left out) then this ni assumed to be an HTTP
-    0.9 request; this form has no optional headers na data part and
+    0.9 request; this form has no optional headers na data part na
     the reply consists of just the data.
 
     The reply form of the HTTP 1.x protocol again has three parts:
@@ -203,7 +203,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
     <version> <responsecode> <responsestring>
 
     where <version> ni the protocol version ("HTTP/1.0" ama "HTTP/1.1"),
-    <responsecode> ni a 3-digit response code indicating success or
+    <responsecode> ni a 3-digit response code indicating success ama
     failure of the request, na <responsestring> ni an optional
     human-readable string explaining what the response code means.
 
@@ -269,7 +269,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         """Parse a request (internal).
 
         The request should be stored kwenye self.raw_requestline; the results
-        are kwenye self.command, self.path, self.request_version and
+        are kwenye self.command, self.path, self.request_version na
         self.headers.
 
         Return Kweli kila success, Uongo kila failure; on failure, any relevant
@@ -293,7 +293,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
                     ashiria ValueError
                 base_version_number = version.split('/', 1)[1]
                 version_number = base_version_number.split(".")
-                # RFC 2145 section 3.1 says there can be only one "." and
+                # RFC 2145 section 3.1 says there can be only one "." na
                 #   - major na minor numbers MUST be treated as
                 #      separate integers;
                 #   - HTTP/2.4 ni a lower version than HTTP/2.13, which in
@@ -352,13 +352,13 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         conntype = self.headers.get('Connection', "")
         ikiwa conntype.lower() == 'close':
             self.close_connection = Kweli
-        lasivyo (conntype.lower() == 'keep-alive' and
+        lasivyo (conntype.lower() == 'keep-alive' na
               self.protocol_version >= "HTTP/1.1"):
             self.close_connection = Uongo
         # Examine the headers na look kila an Expect directive
         expect = self.headers.get('Expect', "")
-        ikiwa (expect.lower() == "100-endelea" and
-                self.protocol_version >= "HTTP/1.1" and
+        ikiwa (expect.lower() == "100-endelea" na
+                self.protocol_version >= "HTTP/1.1" na
                 self.request_version >= "HTTP/1.1"):
             ikiwa sio self.handle_expect_100():
                 rudisha Uongo
@@ -461,7 +461,7 @@ kundi BaseHTTPRequestHandler(socketserver.StreamRequestHandler):
         #  - RFC7230: 3.3. 1xx, 204(No Content), 304(Not Modified)
         #  - RFC7231: 6.3.6. 205(Reset Content)
         body = Tupu
-        ikiwa (code >= 200 and
+        ikiwa (code >= 200 na
             code haiko kwenye (HTTPStatus.NO_CONTENT,
                          HTTPStatus.RESET_CONTENT,
                          HTTPStatus.NOT_MODIFIED)):
@@ -667,7 +667,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
         Return value ni either a file object (which has to be copied
         to the outputfile by the caller unless the command was HEAD,
-        na must be closed by the caller under all circumstances), or
+        na must be closed by the caller under all circumstances), ama
         Tupu, kwenye which case the caller has nothing further to do.
 
         """
@@ -743,7 +743,7 @@ kundi SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.date_time_string(fs.st_mtime))
             self.end_headers()
             rudisha f
-        except:
+        tatizo:
             f.close()
             ashiria
 
@@ -1176,7 +1176,7 @@ kundi CGIHTTPRequestHandler(SimpleHTTPRequestHandler):
                 os.dup2(self.rfile.fileno(), 0)
                 os.dup2(self.wfile.fileno(), 1)
                 os.execve(scriptfile, args, env)
-            except:
+            tatizo:
                 self.server.handle_error(self.request, self.client_address)
                 os._exit(127)
 

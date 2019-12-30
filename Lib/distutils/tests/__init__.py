@@ -18,7 +18,7 @@ import unittest
 from test.support import run_unittest
 
 
-here = os.path.dirname(__file__) or os.curdir
+here = os.path.dirname(__file__) ama os.curdir
 
 
 def test_suite():

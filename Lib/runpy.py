@@ -127,7 +127,7 @@ eleza _get_module_details(mod_name, error=ImportError):
     jaribu:
         spec = importlib.util.find_spec(mod_name)
     tatizo (ImportError, AttributeError, TypeError, ValueError) kama ex:
-        # This hack fixes an impedance mismatch between pkgutil and
+        # This hack fixes an impedance mismatch between pkgutil na
         # importlib, where the latter ashirias other errors kila cases where
         # pkgutil previously ashiriad ImportError
         msg = "Error wakati finding module specification kila {!r} ({}: {})"
@@ -226,7 +226,7 @@ eleza _get_main_module_details(error=ImportError):
         sys.modules[main_name] = saved_main
 
 
-eleza _get_code_kutoka_file(run_name, fname):
+eleza _get_code_from_file(run_name, fname):
     # Check kila a compiled file first
     ukijumuisha open(fname, "rb") kama f:
         code = read_code(f)
@@ -242,7 +242,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
        Returns the resulting top level namespace dictionary
 
        The file path may refer directly to a Python script (i.e.
-       one that could be directly executed ukijumuisha execfile) ama else
+       one that could be directly executed ukijumuisha execfile) ama ama
        it may refer to a zipfile ama directory containing a top
        level __main__.py script.
     """
@@ -258,7 +258,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
     ikiwa isinstance(importer, type(Tupu)) ama is_NullImporter:
         # Not a valid sys.path entry, so run the code directly
         # execfile() doesn't help kama we want to allow compiled files
-        code, fname = _get_code_kutoka_file(run_name, path_name)
+        code, fname = _get_code_from_file(run_name, path_name)
         rudisha _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=fname)
     isipokua:

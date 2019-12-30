@@ -223,7 +223,7 @@ kundi FormatClassTest(unittest.TestCase):
 # a mock Editor ukijumuisha .text na  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
-# A real EditorWindow creates unneeded, time-consuming baggage and
+# A real EditorWindow creates unneeded, time-consuming baggage na
 # sometimes emits shutdown warnings like this:
 # "warning: callback failed kwenye WindowList <kundi '_tkinter.TclError'>
 # : invalid command name ".55131368.windows".

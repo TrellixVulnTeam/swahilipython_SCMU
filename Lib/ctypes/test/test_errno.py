@@ -8,7 +8,7 @@ class Test(unittest.TestCase):
     def test_open(self):
         libc_name = find_library("c")
         if libc_name is None:
-            raise unittest.SkipTest("Unable to find C library")
+            ashiria unittest.SkipTest("Unable to find C library")
         libc = CDLL(libc_name, use_errno=True)
         if os.name == "nt":
             libc_open = libc._open

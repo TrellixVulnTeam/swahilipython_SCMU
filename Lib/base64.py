@@ -31,7 +31,7 @@ __all__ = [
 
 bytes_types = (bytes, bytearray)  # Types acceptable kama binary data
 
-eleza _bytes_kutoka_decode_data(s):
+eleza _bytes_from_decode_data(s):
     ikiwa isinstance(s, str):
         jaribu:
             rudisha s.encode('ascii')
@@ -77,9 +77,9 @@ eleza b64decode(s, altchars=Tupu, validate=Uongo):
     to the padding check.  If validate ni Kweli, these non-alphabet characters
     kwenye the input result kwenye a binascii.Error.
     """
-    s = _bytes_kutoka_decode_data(s)
+    s = _bytes_from_decode_data(s)
     ikiwa altchars ni sio Tupu:
-        altchars = _bytes_kutoka_decode_data(altchars)
+        altchars = _bytes_from_decode_data(altchars)
         assert len(altchars) == 2, repr(altchars)
         s = s.translate(bytes.maketrans(altchars, b'+/'))
     ikiwa validate na sio re.match(b'^[A-Za-z0-9+/]*={0,2}$', s):
@@ -128,7 +128,7 @@ eleza urlsafe_b64decode(s):
 
     The alphabet uses '-' instead of '+' na '_' instead of '/'.
     """
-    s = _bytes_kutoka_decode_data(s)
+    s = _bytes_from_decode_data(s)
     s = s.translate(_urlsafe_decode_translation)
     rudisha b64decode(s)
 
@@ -200,14 +200,14 @@ eleza b32decode(s, casefold=Uongo, map01=Tupu):
     # ikiwa the function ni never called
     ikiwa _b32rev ni Tupu:
         _b32rev = {v: k kila k, v kwenye enumerate(_b32alphabet)}
-    s = _bytes_kutoka_decode_data(s)
+    s = _bytes_from_decode_data(s)
     ikiwa len(s) % 8:
         ashiria binascii.Error('Incorrect padding')
     # Handle section 2.4 zero na one mapping.  The flag map01 will be either
     # Uongo, ama the character to map the digit 1 (one) to.  It should be
     # either L (el) ama I (eye).
     ikiwa map01 ni sio Tupu:
-        map01 = _bytes_kutoka_decode_data(map01)
+        map01 = _bytes_from_decode_data(map01)
         assert len(map01) == 1, repr(map01)
         s = s.translate(bytes.maketrans(b'01', b'O' + map01))
     ikiwa casefold:
@@ -260,7 +260,7 @@ eleza b16decode(s, casefold=Uongo):
     s ni incorrectly padded ama ikiwa there are non-alphabet characters present
     kwenye the input.
     """
-    s = _bytes_kutoka_decode_data(s)
+    s = _bytes_from_decode_data(s)
     ikiwa casefold:
         s = s.upper()
     ikiwa re.search(b'[^0-9A-F]', s):
@@ -286,8 +286,8 @@ eleza _85encode(b, chars, chars2, pad=Uongo, foldnuls=Uongo, foldspaces=Uongo):
         b = b + b'\0' * padding
     words = struct.Struct('!%dI' % (len(b) // 4)).unpack(b)
 
-    chunks = [b'z' ikiwa foldnuls na sio word else
-              b'y' ikiwa foldspaces na word == 0x20202020 else
+    chunks = [b'z' ikiwa foldnuls na sio word ama
+              b'y' ikiwa foldspaces na word == 0x20202020 ama
               (chars2[word // 614125] +
                chars2[word // 85 % 7225] +
                chars[word % 85])
@@ -357,7 +357,7 @@ eleza a85decode(b, *, foldspaces=Uongo, adobe=Uongo, ignorechars=b' \t\n\r\v'):
 
     The result ni rudishaed kama a bytes object.
     """
-    b = _bytes_kutoka_decode_data(b)
+    b = _bytes_from_decode_data(b)
     ikiwa adobe:
         ikiwa sio b.endswith(_A85END):
             ashiria ValueError(
@@ -446,7 +446,7 @@ eleza b85decode(b):
         kila i, c kwenye enumerate(_b85alphabet):
             _b85dec[c] = i
 
-    b = _bytes_kutoka_decode_data(b)
+    b = _bytes_from_decode_data(b)
     padding = (-len(b)) % 5
     b = b + b'~' * padding
     out = []

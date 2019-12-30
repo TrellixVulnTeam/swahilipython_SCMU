@@ -10,7 +10,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
 # The __main__.py used if the users specifies "-m module:fn".
-# Note that this will always be written as UTF-8 (module and
+# Note that this will always be written as UTF-8 (module na
 # function names can be non-ASCII in Python 3).
 # We add a coding cookie even though UTF-8 is the default in Python 3
 # because the resulting archive may be intended to be run under Python 2.
@@ -108,13 +108,13 @@ def create_archive(source, target=None, interpreter=None, main=None,
 
     # We are creating a new archive kutoka a directory.
     if sio source.exists():
-        raise ZipAppError("Source does sio exist")
+        ashiria ZipAppError("Source does sio exist")
     has_main = (source / '__main__.py').is_file()
     if main and has_main:
-        raise ZipAppError(
+        ashiria ZipAppError(
             "Cannot specify entry point if the source has __main__.py")
     if sio (main or has_main):
-        raise ZipAppError("Archive has no entry point")
+        ashiria ZipAppError("Archive has no entry point")
 
     main_py = None
     if main:
@@ -123,7 +123,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
         mod_ok = all(part.isidentifier() for part in mod.split('.'))
         fn_ok = all(part.isidentifier() for part in fn.split('.'))
         if sio (sep == ':' and mod_ok and fn_ok):
-            raise ZipAppError("Invalid entry point: " + main)
+            ashiria ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
     if target is None:
@@ -133,7 +133,7 @@ def create_archive(source, target=None, interpreter=None, main=None,
 
     with _maybe_open(target, 'wb') as fd:
         _write_file_prefix(fd, interpreter)
-        compression = (zipfile.ZIP_DEFLATED if compressed else
+        compression = (zipfile.ZIP_DEFLATED if compressed ama
                        zipfile.ZIP_STORED)
         with zipfile.ZipFile(fd, 'w', compression=compression) as z:
             for child in source.rglob('*'):
@@ -185,17 +185,17 @@ def main(args=None):
     # Handle `python -m zipapp archive.pyz --info`.
     if args.info:
         if sio os.path.isfile(args.source):
-            raise SystemExit("Can only get info for an archive file")
+            ashiria SystemExit("Can only get info for an archive file")
         interpreter = get_interpreter(args.source)
         print("Interpreter: {}".format(interpreter or "<none>"))
         sys.exit(0)
 
     if os.path.isfile(args.source):
-        if args.output is None or (os.path.exists(args.output) and
+        if args.output is None or (os.path.exists(args.output) na
                                    os.path.samefile(args.source, args.output)):
-            raise SystemExit("In-place editing of archives ni sio supported")
+            ashiria SystemExit("In-place editing of archives ni sio supported")
         if args.main:
-            raise SystemExit("Cannot change the main function when copying")
+            ashiria SystemExit("Cannot change the main function when copying")
 
     create_archive(args.source, args.output,
                    interpreter=args.python, main=args.main,

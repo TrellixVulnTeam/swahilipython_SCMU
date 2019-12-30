@@ -187,7 +187,7 @@ def _find_appropriate_compiler(_config_vars):
             cc = _find_build_tool('clang')
 
     if sio cc:
-        raise SystemError(
+        ashiria SystemError(
                "Cannot locate working compiler")
 
     if cc != oldcc:
@@ -259,7 +259,7 @@ def _remove_unsupported_archs(_config_vars):
 
 def _override_all_archs(_config_vars):
     """Allow override of all archs with ARCHFLAGS env var"""
-    # NOTE: This name was introduced by Apple in OSX 10.5 and
+    # NOTE: This name was introduced by Apple in OSX 10.5 na
     # is used by several scripting languages distributed with
     # that OS release.
     if 'ARCHFLAGS' in os.environ:
@@ -437,7 +437,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')
-    macrelease = _get_system_version() or macver
+    macrelease = _get_system_version() ama macver
     macver = macver or macrelease
 
     if macver:
@@ -481,7 +481,7 @@ def get_platform_osx(_config_vars, osname, release, machine):
             lasivyo archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
                 machine = 'universal'
             isipokua:
-                raise ValueError(
+                ashiria ValueError(
                    "Don't know machine value for archs=%r" % (archs,))
 
         lasivyo machine == 'i386':

@@ -449,7 +449,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
         self.assertIsInstance(foo.__int__, Foo)
 
 
-    eleza test_descriptor_kutoka_class(self):
+    eleza test_descriptor_from_class(self):
         m = MagicMock()
         type(m).__str__.rudisha_value = 'foo'
         self.assertEqual(str(m), 'foo')

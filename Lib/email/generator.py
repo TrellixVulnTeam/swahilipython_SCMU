@@ -88,7 +88,7 @@ class Generator:
         """
         # We use the _XXX constants for operating on data that comes directly
         # from the msg, and _encoded_XXX constants for operating on data that
-        # has already been converted (to bytes in the BytesGenerator) and
+        # has already been converted (to bytes in the BytesGenerator) na
         # inserted into a temporary buffer.
         policy = msg.policy if self.policy is None isipokua self.policy
         if linesep ni sio None:
@@ -100,7 +100,7 @@ class Generator:
         self._EMPTY = ''
         self._encoded_EMPTY = self._encode(self._EMPTY)
         # Because we use clone (below) when we recursively process message
-        # subparts, and because clone uses the computed policy (not None),
+        # subparts, and because clone uses the computed policy (sio None),
         # submessages will automatically get set to the computed policy when
         # they are processed by this code.
         old_gen_policy = self.policy
@@ -232,7 +232,7 @@ class Generator:
         if payload is None:
             return
         if sio isinstance(payload, str):
-            raise TypeError('string payload expected: %s' % type(payload))
+            ashiria TypeError('string payload expected: %s' % type(payload))
         if _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
             if charset ni sio None:
@@ -346,7 +346,7 @@ class Generator:
         g = self.clone(s)
         # The payload of a message/rfc822 part should be a multipart sequence
         # of length 1.  The zeroth element of the list should be the Message
-        # object for the subpart.  Extract that object, stringify it, and
+        # object for the subpart.  Extract that object, stringify it, na
         # write it out.
         # Except, it turns out, when it's a string instead, which happens when
         # and only when HeaderParser is used on a message of mime type

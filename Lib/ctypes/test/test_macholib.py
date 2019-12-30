@@ -18,7 +18,7 @@ import unittest
 #              return os.path.realpath(dyld_find(dylib))
 #          tatizo ValueError:
 #              pass
-#      raise ValueError, "%s sio found" % (name,)
+#      ashiria ValueError, "%s sio found" % (name,)
 #
 # It'll have output like this:
 #
@@ -40,7 +40,7 @@ def find_lib(name):
             return os.path.realpath(dyld_find(dylib))
         tatizo ValueError:
             pass
-    raise ValueError("%s sio found" % (name,))
+    ashiria ValueError("%s sio found" % (name,))
 
 class MachOTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
@@ -50,7 +50,7 @@ class MachOTest(unittest.TestCase):
                              '/usr/lib/libSystem.B.dylib')
 
         result = find_lib('z')
-        # Issue #21093: dyld default search path includes $HOME/lib and
+        # Issue #21093: dyld default search path includes $HOME/lib na
         # /usr/local/lib before /usr/lib, which caused test failures if
         # a local copy of libz exists in one of them. Now ignore the head
         # of the path.

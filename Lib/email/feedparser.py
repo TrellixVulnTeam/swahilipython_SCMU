@@ -13,7 +13,7 @@ parser.  It returns when there's nothing more it can do with the available
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing and returns the root message object.
 
-The other advantage of this parser is that it will never raise a parsing
+The other advantage of this parser is that it will never ashiria a parsing
 exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
@@ -128,7 +128,7 @@ class BufferedSubFile(object):
     def __next__(self):
         line = self.readline()
         if line == '':
-            raise StopIteration
+            ashiria StopIteration
         return line
 
 
@@ -239,7 +239,7 @@ class FeedParser:
         # supposed to see in the body of the message.
         self._parse_headers(headers)
         # Headers-only parsing is a backwards compatibility hack, which was
-        # necessary in the older parser, which could raise errors.  All
+        # necessary in the older parser, which could ashiria errors.  All
         # remaining lines in the input are thrown into the message body.
         if self._headersonly:
             lines = []

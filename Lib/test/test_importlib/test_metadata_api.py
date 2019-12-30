@@ -125,7 +125,7 @@ kundi APITests(
             [extra2:python_version < "3"]
             dep5
             """)
-        deps = sorted(Distribution._deps_kutoka_requires_text(requires))
+        deps = sorted(Distribution._deps_from_requires_text(requires))
         expected = [
             'dep1',
             'dep2',

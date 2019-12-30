@@ -42,7 +42,7 @@ def _formatparam(param, value=None, quote=True):
     This will quote the value if needed or if quote is true.  If value is a
     three tuple (charset, language, value), it will be encoded according
     to RFC2231 rules.  If it contains non-ascii characters it will likewise
-    be encoded according to RFC2231 rules, using the utf-8 charset and
+    be encoded according to RFC2231 rules, using the utf-8 charset na
     a null language.
     """
     if value ni sio None and len(value) > 0:
@@ -92,7 +92,7 @@ def _parseparam(s):
 
 def _unquotevalue(value):
     # This is different than utils.collapse_rfc2231_value() because it doesn't
-    # try to convert the value to a unicode.  Message.get_param() and
+    # try to convert the value to a unicode.  Message.get_param() na
     # Message.get_params() are both currently defined to return the tuple in
     # the face of RFC 2231 parameters.
     if isinstance(value, tuple):
@@ -207,7 +207,7 @@ class Message:
             jaribu:
                 self._payload.append(payload)
             tatizo AttributeError:
-                raise TypeError("Attach ni sio valid on a message with a"
+                ashiria TypeError("Attach ni sio valid on a message with a"
                                 " non-multipart payload")
 
     def get_payload(self, i=None, decode=False):
@@ -237,8 +237,8 @@ class Message:
         #   i     True    True          None
         #  None   False   True          _payload (a list)
         #   i     False   True          _payload element i (a Message)
-        #   i     False   False         error (not a list)
-        #   i     True    False         error (not a list)
+        #   i     False   False         error (sio a list)
+        #   i     True    False         error (sio a list)
         #  None   False   False         _payload
         #  None   True    False         _payload decoded (bytes)
         # Note that Barry planned to factor out the 'decode' case, but that
@@ -254,7 +254,7 @@ class Message:
         # For backward compatibility, Use isinstance and this error message
         # instead of the more logical is_multipart test.
         if i ni sio None and sio isinstance(self._payload, list):
-            raise TypeError('Expected list, got %s' % type(self._payload))
+            ashiria TypeError('Expected list, got %s' % type(self._payload))
         payload = self._payload
         # cte might be a Header, so for now stringify it.
         cte = str(self.get('content-transfer-encoding', '')).lower()
@@ -323,7 +323,7 @@ class Message:
     def set_charset(self, charset):
         """Set the charset of the payload to a given character set.
 
-        charset can be a Charset instance, a string naming a character set, or
+        charset can be a Charset instance, a string naming a character set, ama
         None.  If it is a string it will be converted to a Charset instance.
         If charset is None, the charset parameter will be removed from the
         Content-Type field.  Anything isipokua will generate a TypeError.
@@ -404,14 +404,14 @@ class Message:
                 if k.lower() == lname:
                     found += 1
                     if found >= max_count:
-                        raise ValueError("There may be at most {} {} headers "
+                        ashiria ValueError("There may be at most {} {} headers "
                                          "in a message".format(max_count, name))
         self._headers.append(self.policy.header_store_parse(name, val))
 
     def __delitem__(self, name):
         """Delete all occurrences of a header, if present.
 
-        Does sio raise an exception if the header is missing.
+        Does sio ashiria an exception if the header is missing.
         """
         name = name.lower()
         newheaders = []
@@ -498,7 +498,7 @@ class Message:
         """Return a list of all the values for the named field.
 
         These will be sorted in the order they appeared in the original
-        message, and may contain duplicates.  Any fields deleted and
+        message, and may contain duplicates.  Any fields deleted na
         re-inserted are always appended to the header list.
 
         If no such fields exist, failobj is returned (defaults to None).
@@ -555,7 +555,7 @@ class Message:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
                 koma
         isipokua:
-            raise KeyError(_name)
+            ashiria KeyError(_name)
 
     #
     # Use these three methods instead of the three above.
@@ -675,7 +675,7 @@ class Message:
         Parameter keys are always compared case insensitively.  The return
         value can either be a string, or a 3-tuple if the parameter was RFC
         2231 encoded.  When it's a 3-tuple, the elements of the value are of
-        the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET and
+        the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET na
         LANGUAGE can be None, in which case you should consider VALUE to be
         encoded in the us-ascii charset.  You can usually ignore LANGUAGE.
         The parameter value (either the returned string, or the VALUE item in
@@ -706,7 +706,7 @@ class Message:
         replaced with the new value.
 
         If header is Content-Type and has sio yet been defined for this
-        message, it will be set to "text/plain" and the new parameter and
+        message, it will be set to "text/plain" and the new parameter na
         value will be appended as per RFC 2045.
 
         An alternate header can be specified in the header argument, and all
@@ -788,7 +788,7 @@ class Message:
         """
         # BAW: should we be strict?
         if sio type.count('/') == 1:
-            raise ValueError
+            ashiria ValueError
         # Set the Content-Type, you get a MIME-Version
         if header.lower() == 'content-type':
             toa self['mime-version']
@@ -835,7 +835,7 @@ class Message:
     def set_boundary(self, boundary):
         """Set the boundary parameter in Content-Type to 'boundary'.
 
-        This is subtly different than deleting the Content-Type header and
+        This is subtly different than deleting the Content-Type header na
         adding a new one with a new boundary parameter via add_header().  The
         main difference is that using the set_boundary() method preserves the
         order of the Content-Type header in the original message.
@@ -846,8 +846,8 @@ class Message:
         params = self._get_params_preserve(missing, 'content-type')
         if params is missing:
             # There was no Content-Type header, and we don't know what type
-            # to set it to, so raise an exception.
-            raise errors.HeaderParseError('No Content-Type header found')
+            # to set it to, so ashiria an exception.
+            ashiria errors.HeaderParseError('No Content-Type header found')
         newparams = []
         foundp = False
         for pk, pv in params:
@@ -858,7 +858,7 @@ class Message:
                 newparams.append((pk, pv))
         if sio foundp:
             # The original Content-Type header had no boundary attribute.
-            # Tack one on the end.  BAW: should we raise an exception
+            # Tack one on the end.  BAW: should we ashiria an exception
             # instead???
             newparams.append(('boundary', '"%s"' % boundary))
         # Replace the existing Content-Type header with the new value
@@ -916,7 +916,7 @@ class Message:
         payload.
 
         Each item will either be a string (the value of the charset parameter
-        in the Content-Type header of that part) or the value of the
+        in the Content-Type header of that part) ama the value of the
         'failobj' parameter (defaults to None), if the part does sio have a
         main MIME type of "text", or the charset ni sio defined.
 
@@ -1071,12 +1071,12 @@ class MIMEPart(Message):
             yield from parts
             return
         # Otherwise we more or less invert the remaining logic in get_body.
-        # This only really works in edge cases (ex: non-text related or
+        # This only really works in edge cases (ex: non-text related ama
         # alternatives) if the sending agent sets content-disposition.
         seen = []   # Only skip the first example of each candidate type.
         for part in parts:
             maintype, subtype = part.get_content_type().split('/')
-            if ((maintype, subtype) in self._body_types and
+            if ((maintype, subtype) in self._body_types na
                     sio part.is_attachment() and subtype haiko kwenye seen):
                 seen.append(subtype)
                 endelea
@@ -1105,7 +1105,7 @@ class MIMEPart(Message):
             existing_subtype = self.get_content_subtype()
             disallowed_subtypes = disallowed_subtypes + (subtype,)
             if existing_subtype in disallowed_subtypes:
-                raise ValueError("Cannot convert {} to {}".format(
+                ashiria ValueError("Cannot convert {} to {}".format(
                     existing_subtype, subtype))
         keep_headers = []
         part_headers = []
@@ -1137,7 +1137,7 @@ class MIMEPart(Message):
         self._make_multipart('mixed', (), boundary)
 
     def _add_multipart(self, _subtype, *args, _disp=None, **kw):
-        if (self.get_content_maintype() != 'multipart' or
+        if (self.get_content_maintype() != 'multipart' ama
                 self.get_content_subtype() != _subtype):
             getattr(self, 'make_' + _subtype)()
         part = type(self)(policy=self.policy)

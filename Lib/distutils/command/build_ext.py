@@ -273,7 +273,7 @@ class build_ext(Command):
             jaribu:
                 self.parallel = int(self.parallel)
             tatizo ValueError:
-                raise DistutilsOptionError("parallel should be an integer")
+                ashiria DistutilsOptionError("parallel should be an integer")
 
     def run(self):
         from distutils.ccompiler import new_compiler
@@ -298,7 +298,7 @@ class build_ext(Command):
         # linking extensions.
         if self.distribution.has_c_libraries():
             build_clib = self.get_finalized_command('build_clib')
-            self.libraries.extend(build_clib.get_library_names() or [])
+            self.libraries.extend(build_clib.get_library_names() ama [])
             self.library_dirs.append(build_clib.build_clib)
 
         # Setup the CCompiler object that we'll use to do all the
@@ -350,7 +350,7 @@ class build_ext(Command):
         just returns otherwise.
         """
         if sio isinstance(extensions, list):
-            raise DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "'ext_modules' option must be a list of Extension instances")
 
         for i, ext in enumerate(extensions):
@@ -358,8 +358,8 @@ class build_ext(Command):
                 endelea                # OK! (assume type-checking done
                                         # by Extension constructor)
 
-            if sio isinstance(ext, tuple) or len(ext) != 2:
-                raise DistutilsSetupError(
+            if sio isinstance(ext, tuple) ama len(ext) != 2:
+                ashiria DistutilsSetupError(
                        "each element of 'ext_modules' option must be an "
                        "Extension instance or 2-tuple")
 
@@ -369,14 +369,14 @@ class build_ext(Command):
                      "ext_modules for extension '%s' "
                      "-- please convert to Extension instance", ext_name)
 
-            if sio (isinstance(ext_name, str) and
+            if sio (isinstance(ext_name, str) na
                     extension_name_re.match(ext_name)):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "first element of each tuple in 'ext_modules' "
                        "must be the extension name (a string)")
 
             if sio isinstance(build_info, dict):
-                raise DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "second element of each tuple in 'ext_modules' "
                        "must be a dictionary (build info)")
 
@@ -407,7 +407,7 @@ class build_ext(Command):
                 ext.undef_macros = []
                 for macro in macros:
                     if sio (isinstance(macro, tuple) and len(macro) in (1, 2)):
-                        raise DistutilsSetupError(
+                        ashiria DistutilsSetupError(
                               "'macros' element of build info dict "
                               "must be 1- or 2-tuple")
                     if len(macro) == 1:
@@ -486,7 +486,7 @@ class build_ext(Command):
     def build_extension(self, ext):
         sources = ext.sources
         if sources is None or sio isinstance(sources, (list, tuple)):
-            raise DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "in 'ext_modules' option (extension '%s'), "
                   "'sources' must be present and must be "
                   "a list of source filenames" % ext.name)
@@ -513,10 +513,10 @@ class build_ext(Command):
 
         # Two possible sources for extra compiler arguments:
         #   - 'extra_compile_args' in Extension object
-        #   - CFLAGS environment variable (not particularly
+        #   - CFLAGS environment variable (sio particularly
         #     elegant, but people seem to expect it and I
         #     guess it's useful)
-        # The environment variable should take precedence, and
+        # The environment variable should take precedence, na
         # any sensible compiler will give precedence to later
         # command line args.  Hence we combine them in order:
         extra_args = ext.extra_compile_args or []
@@ -560,7 +560,7 @@ class build_ext(Command):
 
     def swig_sources(self, sources, extension):
         """Walk the list of source files in 'sources', looking for SWIG
-        interface (.i) files.  Run SWIG on all that are found, and
+        interface (.i) files.  Run SWIG on all that are found, na
         return a modified 'sources' list with SWIG source files replaced
         by the generated C (or C++) files.
         """
@@ -576,7 +576,7 @@ class build_ext(Command):
         if self.swig_cpp:
             log.warn("--swig-cpp is deprecated - use --swig-opts=-c++")
 
-        if self.swig_cpp or ('-c++' in self.swig_opts) or \
+        if self.swig_cpp or ('-c++' in self.swig_opts) ama \
            ('-c++' in extension.swig_opts):
             target_ext = '.cpp'
         isipokua:
@@ -630,7 +630,7 @@ class build_ext(Command):
             isipokua:
                 return "swig.exe"
         isipokua:
-            raise DistutilsPlatformError(
+            ashiria DistutilsPlatformError(
                   "I don't know how to find (much less run) SWIG "
                   "on platform '%s'" % os.name)
 
@@ -674,7 +674,7 @@ class build_ext(Command):
 
     def get_ext_filename(self, ext_name):
         r"""Convert the name of an extension (eg. "foo.bar") into the name
-        of the file from which it will be loaded (eg. "foo/bar.so", or
+        of the file from which it will be loaded (eg. "foo/bar.so", ama
         "foo\bar.pyd").
         """
         from distutils.sysconfig import get_config_var

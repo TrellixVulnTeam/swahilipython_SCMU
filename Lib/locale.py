@@ -4,7 +4,7 @@ The module provides low-level access to the C lib's locale APIs na adds high
 level number formatting APIs kama well kama a locale aliasing engine to complement
 these.
 
-The aliasing engine includes support kila many commonly used locale names and
+The aliasing engine includes support kila many commonly used locale names na
 maps them to values suitable kila pitaing to the C lib's setlocale() function. It
 also includes default encodings kila all supported locale names.
 
@@ -677,7 +677,7 @@ isipokua:
 #
 # The local_encoding_alias table maps lowercase encoding alias names
 # to C locale encoding names (case-sensitive). Note that normalize()
-# first looks up the encoding kwenye the encodings.aliases dictionary and
+# first looks up the encoding kwenye the encodings.aliases dictionary na
 # then applies this mapping to find the correct C lib name kila the
 # encoding.
 #
@@ -1630,7 +1630,7 @@ windows_locale = {
     0x0c0a: "es_ES", # Spanish - Spain (Modern)
     0x100a: "es_GT", # Spanish - Guatemala
     0x140a: "es_CR", # Spanish - Costa Rica
-    0x180a: "es_PA", # Spanish - Panama
+    0x180a: "es_PA", # Spanish - Pan ama
     0x1c0a: "es_DO", # Spanish - Dominican Republic
     0x200a: "es_VE", # Spanish - Venezuela
     0x240a: "es_CO", # Spanish - Colombia
@@ -1719,7 +1719,7 @@ eleza _print_locale():
 
     jaribu:
         setlocale(LC_ALL, "")
-    except:
+    tatizo:
         andika('NOTE:')
         andika('setlocale(LC_ALL, "") does sio support the default locale')
         andika('given kwenye the OS environment variables.')

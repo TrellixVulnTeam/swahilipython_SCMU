@@ -589,7 +589,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             "g1 about to tuma kutoka g2"
         ])
 
-    eleza test_attempted_tuma_kutoka_loop(self):
+    eleza test_attempted_tuma_from_loop(self):
         """
         Test attempted tuma-kutoka loop
         """
@@ -624,7 +624,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             "g2: about to tuma kutoka g1",
         ])
 
-    eleza test_rudishaing_value_kutoka_delegated_throw(self):
+    eleza test_rudishaing_value_from_delegated_throw(self):
         """
         Test rudishaing value kutoka delegated 'throw'
         """
@@ -756,7 +756,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             'f caught StopIteration(StopIteration(3))'
         ])
 
-    eleza test_catching_exception_kutoka_subgen_and_rudishaing(self):
+    eleza test_catching_exception_from_subgen_and_rudishaing(self):
         """
         Test catching an exception thrown into a
         subgenerator na rudishaing a value
@@ -876,7 +876,7 @@ kundi TestPEP380Operation(unittest.TestCase):
             "Enter f",
         ])
 
-    eleza test_tuma_kutoka_empty(self):
+    eleza test_tuma_from_empty(self):
         eleza g():
             tuma kutoka ()
         self.assertRaises(StopIteration, next, g())

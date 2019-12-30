@@ -249,7 +249,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         # testing the `medata-check` option
         dist, cmd = self.get_cmd(metadata={})
 
-        # this should raise some warnings !
+        # this should ashiria some warnings !
         # with the `check` subcommand
         cmd.ensure_finalized()
         cmd.run()
@@ -294,7 +294,7 @@ class SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(cmd.template, 'MANIFEST.in')
         self.assertEqual(cmd.dist_dir, 'dist')
 
-        # formats has to be a string splitable on (' ', ',') or
+        # formats has to be a string splitable on (' ', ',') ama
         # a stringlist
         cmd.formats = 1
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)

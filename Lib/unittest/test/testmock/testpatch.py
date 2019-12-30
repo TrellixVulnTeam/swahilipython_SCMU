@@ -1035,7 +1035,7 @@ kundi PatchTest(unittest.TestCase):
             ashiria AssertionError
         jaribu:
             test()
-        except:
+        tatizo:
             err = sys.exc_info()
 
         result = unittest.TextTestResult(Tupu, Tupu, 0)

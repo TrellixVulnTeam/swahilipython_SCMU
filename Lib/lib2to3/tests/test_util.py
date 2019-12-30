@@ -184,7 +184,7 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("a", "agiza b"))
         self.assertUongo(self.find_binding("a", "agiza b, c, d"))
 
-    eleza test_kutoka_agiza(self):
+    eleza test_from_agiza(self):
         self.assertKweli(self.find_binding("a", "kutoka x agiza a"))
         self.assertKweli(self.find_binding("a", "kutoka a agiza a"))
         self.assertKweli(self.find_binding("a", "kutoka x agiza b, c, a, d"))
@@ -200,7 +200,7 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("a", "agiza a kama f"))
         self.assertUongo(self.find_binding("a", "agiza b, c kama f, d kama e"))
 
-    eleza test_kutoka_import_as(self):
+    eleza test_from_import_as(self):
         self.assertKweli(self.find_binding("a", "kutoka x agiza b kama a"))
         self.assertKweli(self.find_binding("a", "kutoka x agiza g kama a, d kama b"))
         self.assertKweli(self.find_binding("a", "kutoka x.b agiza t kama a"))
@@ -215,7 +215,7 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("b", "agiza b", "b"))
         self.assertUongo(self.find_binding("b", "agiza b, c, d", "c"))
 
-    eleza test_kutoka_import_with_package(self):
+    eleza test_from_import_with_package(self):
         self.assertKweli(self.find_binding("a", "kutoka x agiza a", "x"))
         self.assertKweli(self.find_binding("a", "kutoka a agiza a", "a"))
         self.assertKweli(self.find_binding("a", "kutoka x agiza *", "x"))
@@ -233,7 +233,7 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("a", "agiza a kama f", "f"))
         self.assertUongo(self.find_binding("a", "agiza a kama f", "a"))
 
-    eleza test_kutoka_import_as_with_package(self):
+    eleza test_from_import_as_with_package(self):
         # Because it would take a lot of special-case code kwenye the fixers
         # to deal ukijumuisha kutoka foo agiza bar kama baz, we'll simply always
         # fail ikiwa there ni an "kutoka ... agiza ... kama ..."
@@ -374,14 +374,14 @@ kundi Test_find_binding(support.TestCase):
         s = """
             jaribu:
                 a = 6
-            except:
+            tatizo:
                 b = 8"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 a = 6"""
         self.assertKweli(self.find_binding("a", s))
 
@@ -390,14 +390,14 @@ kundi Test_find_binding(support.TestCase):
                 b = 8
             tatizo KeyError:
                 pita
-            except:
+            tatizo:
                 a = 6"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 b = 6"""
         self.assertUongo(self.find_binding("a", s))
 
@@ -406,29 +406,29 @@ kundi Test_find_binding(support.TestCase):
             jaribu:
                 jaribu:
                     a = 6
-                except:
+                tatizo:
                     pita
-            except:
+            tatizo:
                 b = 8"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 jaribu:
                     a = 6
-                except:
+                tatizo:
                     pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 jaribu:
                     pita
-                except:
+                tatizo:
                     a = 6"""
         self.assertKweli(self.find_binding("a", s))
 
@@ -438,28 +438,28 @@ kundi Test_find_binding(support.TestCase):
                     b = 8
                 tatizo KeyError:
                     pita
-                except:
+                tatizo:
                     a = 6
-            except:
+            tatizo:
                 pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 pita
-            except:
+            tatizo:
                 jaribu:
                     b = 8
                 tatizo KeyError:
                     pita
-                except:
+                tatizo:
                     a = 6"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 b = 6"""
         self.assertUongo(self.find_binding("a", s))
 
@@ -467,14 +467,14 @@ kundi Test_find_binding(support.TestCase):
             jaribu:
                 jaribu:
                     b = 8
-                except:
+                tatizo:
                     c = d
-            except:
+            tatizo:
                 jaribu:
                     b = 6
-                except:
+                tatizo:
                     t = 8
-                except:
+                tatizo:
                     o = y"""
         self.assertUongo(self.find_binding("a", s))
 
@@ -482,7 +482,7 @@ kundi Test_find_binding(support.TestCase):
         s = """
             jaribu:
                 c = 6
-            except:
+            tatizo:
                 b = 8
             mwishowe:
                 a = 9"""
@@ -505,7 +505,7 @@ kundi Test_find_binding(support.TestCase):
         s = """
             jaribu:
                 b = 8
-            except:
+            tatizo:
                 b = 9
             mwishowe:
                 b = 6"""
@@ -515,12 +515,12 @@ kundi Test_find_binding(support.TestCase):
         s = """
             jaribu:
                 c = 6
-            except:
+            tatizo:
                 b = 8
             mwishowe:
                 jaribu:
                     a = 9
-                except:
+                tatizo:
                     b = 9
                 mwishowe:
                     c = 9"""
@@ -563,7 +563,7 @@ kundi Test_touch_agiza(support.TestCase):
         fixer_util.touch_agiza(Tupu, "foo", node)
         self.assertEqual(str(node), 'agiza foo\nbar()\n\n')
 
-    eleza test_kutoka_agiza(self):
+    eleza test_from_agiza(self):
         node = parse('bar()')
         fixer_util.touch_agiza("html", "escape", node)
         self.assertEqual(str(node), 'kutoka html agiza escape\nbar()\n\n')

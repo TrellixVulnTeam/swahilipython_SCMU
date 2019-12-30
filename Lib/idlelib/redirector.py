@@ -42,7 +42,7 @@ kundi WidgetRedirector:
         self.orig = w + "_orig"
         # Rename the Tcl command within Tcl:
         tk.call("rename", w, self.orig)
-        # Create a new Tcl command whose name ni the widget's pathname, and
+        # Create a new Tcl command whose name ni the widget's pathname, na
         # whose action ni to dispatch on the operation pitaed to the widget:
         tk.createcommand(w, self.dispatch)
 

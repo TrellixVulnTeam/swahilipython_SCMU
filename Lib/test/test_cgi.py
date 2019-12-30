@@ -25,7 +25,7 @@ kundi ComparableException:
     eleza __eq__(self, anExc):
         ikiwa sio isinstance(anExc, Exception):
             rudisha NotImplemented
-        rudisha (self.err.__class__ == anExc.__class__ and
+        rudisha (self.err.__class__ == anExc.__class__ na
                 self.err.args == anExc.args)
 
     eleza __getattr__(self, attr):

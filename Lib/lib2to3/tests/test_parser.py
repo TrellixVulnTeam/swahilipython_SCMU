@@ -39,10 +39,10 @@ kundi TestDriver(support.TestCase):
 
 
 kundi TestPgen2Caching(support.TestCase):
-    eleza test_load_grammar_kutoka_txt_file(self):
+    eleza test_load_grammar_from_txt_file(self):
         pgen2_driver.load_grammar(support.grammar_path, save=Uongo, force=Kweli)
 
-    eleza test_load_grammar_kutoka_pickle(self):
+    eleza test_load_grammar_from_pickle(self):
         # Make a copy of the grammar file kwenye a temp directory we are
         # guaranteed to be able to write to.
         tmpdir = tempfile.mkdtemp()
@@ -61,7 +61,7 @@ kundi TestPgen2Caching(support.TestCase):
             shutil.rmtree(tmpdir)
 
     @unittest.skipIf(sys.executable ni Tupu, 'sys.executable required')
-    eleza test_load_grammar_kutoka_subprocess(self):
+    eleza test_load_grammar_from_subprocess(self):
         tmpdir = tempfile.mkdtemp()
         tmpsubdir = os.path.join(tmpdir, 'subdir')
         jaribu:
@@ -108,7 +108,7 @@ pgen2_driver.load_grammar(%r, save=Kweli, force=Kweli)
                 rudisha pickle.dumps({'elephant': 19})
         kundi MyModule:
             __file__ = 'parsertestmodule'
-            __spec__ = importlib.util.spec_kutoka_loader(modname, MyLoader())
+            __spec__ = importlib.util.spec_from_loader(modname, MyLoader())
         sys.modules[modname] = MyModule()
         self.addCleanup(operator.delitem, sys.modules, modname)
         g = pgen2_driver.load_packaged_grammar(modname, 'Grammar.txt')
@@ -529,7 +529,7 @@ kundi TestSetLiteral(GrammarTest):
         self.validate("""x = {2, 3, 4,}""")
 
 
-# Adapted kutoka Python 3's Lib/test/test_unicode_identifiers.py and
+# Adapted kutoka Python 3's Lib/test/test_unicode_identifiers.py na
 # Lib/test/test_tokenize.py:TokenizeTest.test_non_ascii_identifiers
 kundi TestIdentfier(GrammarTest):
     eleza test_non_ascii_identifiers(self):

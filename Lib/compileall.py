@@ -42,7 +42,7 @@ eleza _walk_dir(dir, ddir=Tupu, maxlevels=10, quiet=0):
             dfile = Tupu
         ikiwa sio os.path.isdir(fullname):
             tuma fullname
-        lasivyo (maxlevels > 0 na name != os.curdir na name != os.pardir and
+        lasivyo (maxlevels > 0 na name != os.curdir na name != os.pardir na
               os.path.isdir(fullname) na sio os.path.islink(fullname)):
             tuma kutoka _walk_dir(fullname, ddir=dfile,
                                  maxlevels=maxlevels - 1, quiet=quiet)
@@ -133,10 +133,10 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
         isipokua:
             ikiwa optimize >= 0:
                 opt = optimize ikiwa optimize >= 1 isipokua ''
-                cfile = importlib.util.cache_kutoka_source(
+                cfile = importlib.util.cache_from_source(
                                 fullname, optimization=opt)
             isipokua:
-                cfile = importlib.util.cache_kutoka_source(fullname)
+                cfile = importlib.util.cache_from_source(fullname)
             cache_dir = os.path.dirname(cfile)
         head, tail = name[:-3], name[-3:]
         ikiwa tail == '.py':
@@ -201,7 +201,7 @@ eleza compile_path(skip_curdir=1, maxlevels=0, force=Uongo, quiet=0,
     """
     success = Kweli
     kila dir kwenye sys.path:
-        ikiwa (not dir ama dir == os.curdir) na skip_curdir:
+        ikiwa (sio dir ama dir == os.curdir) na skip_curdir:
             ikiwa quiet < 2:
                 andika('Skipping current directory')
         isipokua:
@@ -324,5 +324,5 @@ eleza main():
 
 
 ikiwa __name__ == '__main__':
-    exit_status = int(not main())
+    exit_status = int(sio main())
     sys.exit(exit_status)

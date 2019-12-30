@@ -22,7 +22,7 @@ hostname (default: localhost) on the local machine.
 Run "pydoc -p <port>" to start an HTTP server on the given port on the
 local machine.  Port number 0 can be used to get an arbitrary unused port.
 
-Run "pydoc -b" to start an HTTP server on an arbitrary unused port and
+Run "pydoc -b" to start an HTTP server on an arbitrary unused port na
 open a Web browser to interactively browse documentation.  Combine with
 the -n na -p options to control the hostname na port used.
 
@@ -50,7 +50,7 @@ Richard Chamberlain, kila the first implementation of textdoc.
 # Known bugs that can't be fixed here:
 #   - synopsis() cannot be prevented kutoka clobbering existing
 #     loaded modules.
-#   - If the __file__ attribute on a module ni a relative path and
+#   - If the __file__ attribute on a module ni a relative path na
 #     the current directory ni changed ukijumuisha os.chdir(), an incorrect
 #     path will be displayed.
 
@@ -112,8 +112,8 @@ eleza classname(object, modname):
 
 eleza isdata(object):
     """Check ikiwa an object ni of a type that probably means it's data."""
-    rudisha sio (inspect.ismodule(object) ama inspect.isclass(object) or
-                inspect.isroutine(object) ama inspect.isframe(object) or
+    rudisha sio (inspect.ismodule(object) ama inspect.isclass(object) ama
+                inspect.isroutine(object) ama inspect.isframe(object) ama
                 inspect.istraceback(object) ama inspect.iscode(object))
 
 eleza replace(text, *pairs):
@@ -274,11 +274,11 @@ eleza synopsis(filename, cache={}):
             # Must be a binary module, which has to be imported.
             loader = loader_cls('__temp__', filename)
             # XXX We probably don't need to pita kwenye the loader here.
-            spec = importlib.util.spec_kutoka_file_location('__temp__', filename,
+            spec = importlib.util.spec_from_file_location('__temp__', filename,
                                                           loader=loader)
             jaribu:
                 module = importlib._bootstrap._load(spec)
-            except:
+            tatizo:
                 rudisha Tupu
             toa sys.modules['__temp__']
             result = module.__doc__.splitlines()[0] ikiwa module.__doc__ isipokua Tupu
@@ -308,10 +308,10 @@ eleza agizafile(path):
     isipokua:
         loader = importlib._bootstrap_external.SourceFileLoader(name, path)
     # XXX We probably don't need to pita kwenye the loader here.
-    spec = importlib.util.spec_kutoka_file_location(name, path, loader=loader)
+    spec = importlib.util.spec_from_file_location(name, path, loader=loader)
     jaribu:
         rudisha importlib._bootstrap._load(spec)
-    except:
+    tatizo:
         ashiria ErrorDuringImport(path, sys.exc_info())
 
 eleza safeagiza(path, forceload=0, cache={}):
@@ -340,7 +340,7 @@ eleza safeagiza(path, forceload=0, cache={}):
                     cache[key] = sys.modules[key]
                     toa sys.modules[key]
         module = __import__(path)
-    except:
+    tatizo:
         # Did the error occur before ama after the module was found?
         (exc, value, tb) = info = sys.exc_info()
         ikiwa path kwenye sys.modules:
@@ -405,12 +405,12 @@ kundi Doc:
         docloc = os.environ.get("PYTHONDOCS", self.PYTHONDOCS)
 
         basedir = os.path.normcase(basedir)
-        ikiwa (isinstance(object, type(os)) and
+        ikiwa (isinstance(object, type(os)) na
             (object.__name__ kwenye ('errno', 'exceptions', 'gc', 'imp',
                                  'marshal', 'posix', 'signal', 'sys',
-                                 '_thread', 'zipagiza') or
-             (file.startswith(basedir) and
-              sio file.startswith(os.path.join(basedir, 'site-packages')))) and
+                                 '_thread', 'zipagiza') ama
+             (file.startswith(basedir) na
+              sio file.startswith(os.path.join(basedir, 'site-packages')))) na
             object.__name__ haiko kwenye ('xml.etree', 'test.pydoc_mod')):
             ikiwa docloc.startswith(("http://", "https://")):
                 docloc = "%s/%s" % (docloc.rstrip("/"), object.__name__.lower())
@@ -459,7 +459,7 @@ kundi HTMLRepr(Repr):
     eleza repr_instance(self, x, level):
         jaribu:
             rudisha self.escape(cram(stripid(repr(x)), self.maxstring))
-        except:
+        tatizo:
             rudisha self.escape('<%s instance>' % x.__class__.__name__)
 
     repr_unicode = repr_string
@@ -686,7 +686,7 @@ kundi HTMLDoc(Doc):
         classes, cdict = [], {}
         kila key, value kwenye inspect.getmembers(object, inspect.isclass):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 (inspect.getmodule(value) ama object) ni object):
                 ikiwa visiblename(key, all, object):
                     classes.append((key, value))
@@ -702,7 +702,7 @@ kundi HTMLDoc(Doc):
         funcs, fdict = [], {}
         kila key, value kwenye inspect.getmembers(object, inspect.isroutine):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 inspect.isbuiltin(value) ama inspect.getmodule(value) ni object):
                 ikiwa visiblename(key, all, object):
                     funcs.append((key, value))
@@ -951,7 +951,7 @@ kundi HTMLDoc(Doc):
                 isipokua:
                     note = ' unbound %s method' % self.classlink(imclass,mod)
 
-        ikiwa (inspect.iscoroutinefunction(object) or
+        ikiwa (inspect.iscoroutinefunction(object) ama
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         isipokua:
@@ -985,7 +985,7 @@ kundi HTMLDoc(Doc):
         ikiwa sio argspec:
             argspec = '(...)'
 
-        decl = asyncqualifier + title + self.escape(argspec) + (note and
+        decl = asyncqualifier + title + self.escape(argspec) + (note na
                self.grey('<font face="helvetica, arial">%s</font>' % note))
 
         ikiwa skipdocs:
@@ -1063,7 +1063,7 @@ kundi TextRepr(Repr):
     eleza repr_instance(self, x, level):
         jaribu:
             rudisha cram(stripid(repr(x)), self.maxstring)
-        except:
+        tatizo:
             rudisha '<%s instance>' % x.__class__.__name__
 
 kundi TextDoc(Doc):
@@ -1138,7 +1138,7 @@ location listed above.
         funcs = []
         kila key, value kwenye inspect.getmembers(object, inspect.isroutine):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 inspect.isbuiltin(value) ama inspect.getmodule(value) ni object):
                 ikiwa visiblename(key, all, object):
                     funcs.append((key, value))
@@ -1388,7 +1388,7 @@ location listed above.
                 isipokua:
                     note = ' unbound %s method' % classname(imclass,mod)
 
-        ikiwa (inspect.iscoroutinefunction(object) or
+        ikiwa (inspect.iscoroutinefunction(object) ama
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         isipokua:
@@ -1670,9 +1670,9 @@ eleza render_doc(thing, title='Python Library Documentation: %s', forceload=0,
     lasivyo module na module ni sio object:
         desc += ' kwenye module ' + module.__name__
 
-    ikiwa sio (inspect.ismodule(object) or
-              inspect.isclass(object) or
-              inspect.isroutine(object) or
+    ikiwa sio (inspect.ismodule(object) ama
+              inspect.isclass(object) ama
+              inspect.isroutine(object) ama
               inspect.isdatadescriptor(object)):
         # If the pitaed object ni a piece of data ama an instance,
         # document its available methods instead of its value.
@@ -1717,7 +1717,7 @@ kundi Helper:
     # kwenye pydoc_data/topics.py.
     #
     # CAUTION: ikiwa you change one of these dictionaries, be sure to adapt the
-    #          list of needed labels kwenye Doc/tools/extensions/pyspecific.py and
+    #          list of needed labels kwenye Doc/tools/extensions/pyspecific.py na
     #          regenerate the pydoc_data/topics.py file by running
     #              make pydoc-topics
     #          kwenye Doc/ na copying the output file into the Lib/ directory.
@@ -1976,7 +1976,7 @@ If this ni your first time using Python, you should definitely check out
 the tutorial on the Internet at https://docs.python.org/{0}/tutorial/.
 
 Enter the name of any module, keyword, ama topic to get help on writing
-Python programs na using Python modules.  To quit this help utility and
+Python programs na using Python modules.  To quit this help utility na
 rudisha to the interpreter, just type "quit".
 
 To get a list of available modules, keywords, symbols, ama topics, type

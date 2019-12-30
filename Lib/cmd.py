@@ -36,7 +36,7 @@ If the value of `self.intro' ni nonempty when the cmdloop method ni called,
 it ni printed out on interpreter startup.  This value may be overridden
 via an optional argument to the cmdloop() method.
 
-The data members `self.doc_header', `self.misc_header', and
+The data members `self.doc_header', `self.misc_header', na
 `self.undoc_header' set the headers used kila the help function's
 listings of documented functions, miscellaneous topics, na undocumented
 functions respectively.
@@ -52,7 +52,7 @@ IDENTCHARS = string.ascii_letters + string.digits + '_'
 kundi Cmd:
     """A simple framework kila writing line-oriented command interpreters.
 
-    These are often useful kila test harnesses, administrative tools, and
+    These are often useful kila test harnesses, administrative tools, na
     prototypes that will later be wrapped kwenye a more sophisticated interface.
 
     A Cmd instance ama subkundi instance ni a line-oriented interpreter
@@ -229,7 +229,7 @@ kundi Cmd:
     eleza default(self, line):
         """Called on an input line when the command prefix ni sio recognized.
 
-        If this method ni sio overridden, it prints an error message and
+        If this method ni sio overridden, it prints an error message na
         rudishas.
 
         """

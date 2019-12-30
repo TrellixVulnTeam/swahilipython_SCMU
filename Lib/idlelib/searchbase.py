@@ -21,7 +21,7 @@ kundi SearchDialogBase:
     common to all three subclasses.  Rather, it ni the Find dialog minus
     the "Find Next" command, its execution function, na the
     default_command attribute needed kwenye create_widgets. The other
-    dialogs override attributes na methods, the latter to replace and
+    dialogs override attributes na methods, the latter to replace na
     add widgets.
     '''
 

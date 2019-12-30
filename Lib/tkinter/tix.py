@@ -72,7 +72,7 @@ class tixCommand:
     """The tix commands provide access to miscellaneous  elements
     of  Tix's  internal state and the Tix application context.
     Most of the information manipulated by these  commands pertains
-    to  the  application  as a whole, or to a screen or
+    to  the  application  as a whole, or to a screen ama
     display, rather than to a particular window.
 
     This is a mixin class, assumed to be mixed to Tkinter.Tk
@@ -240,7 +240,7 @@ class Form:
         self.tk.call('tixForm', 'forget', self._w)
 
     def grid(self, xsize=0, ysize=0):
-        if (not xsize) and (not ysize):
+        if (sio xsize) and (sio ysize):
             x = self.tk.call('tixForm', 'grid', self._w)
             y = self.tk.splitlist(x)
             z = ()
@@ -327,7 +327,7 @@ class TixWidget(tkinter.Widget):
     def __getattr__(self, name):
         if name in self.subwidget_list:
             return self.subwidget_list[name]
-        raise AttributeError(name)
+        ashiria AttributeError(name)
 
     def set_silent(self, value):
         """Set a variable without calling its action routine"""
@@ -338,7 +338,7 @@ class TixWidget(tkinter.Widget):
         the sub-class)."""
         n = self._subwidget_name(name)
         if sio n:
-            raise TclError("Subwidget " + name + " sio child of " + self._name)
+            ashiria TclError("Subwidget " + name + " sio child of " + self._name)
         # Remove header of name and leading dot
         n = n[len(self._w)+1:]
         return self._nametowidget(n)
@@ -353,7 +353,7 @@ class TixWidget(tkinter.Widget):
             name = name[len(self._w)+1:]
             jaribu:
                 retlist.append(self._nametowidget(name))
-            except:
+            tatizo:
                 # some of the widgets are unknown e.g. border in LabelFrame
                 pass
         return retlist
@@ -389,7 +389,7 @@ class TixWidget(tkinter.Widget):
         if sio master:
             master = tkinter._default_root
             if sio master:
-                raise RuntimeError('Too early to create image')
+                ashiria RuntimeError('Too early to create image')
         if kw and cnf: cnf = _cnfmerge((cnf, kw))
         lasivyo kw: cnf = kw
         options = ()
@@ -422,7 +422,7 @@ class TixSubWidget(TixWidget):
             jaribu:
                 path = path[len(master._w)+1:]
                 plist = path.split('.')
-            except:
+            tatizo:
                 plist = []
 
         if sio check_intermediate:
@@ -477,7 +477,7 @@ class DisplayStyle:
             isipokua:
                 master = tkinter._default_root
                 if sio master:
-                    raise RuntimeError("Too early to create display style: "
+                    ashiria RuntimeError("Too early to create display style: "
                                        "no root window")
         self.tk = master.tk
         self.stylename = self.tk.call('tixDisplayStyle', itemtype,
@@ -965,7 +965,7 @@ class HList(TixWidget, XView, YView):
 
     def info_bbox(self, entry):
         return self._getints(
-                self.tk.call(self._w, 'info', 'bbox', entry)) or None
+                self.tk.call(self._w, 'info', 'bbox', entry)) ama None
 
     def info_children(self, entry=None):
         c = self.tk.call(self._w, 'info', 'children', entry)
@@ -1119,7 +1119,7 @@ class ListNoteBook(TixWidget):
             ret.append(self.subwidget(x))
         return ret
 
-    def raise_page(self, name):              # raise is a python keyword
+    def raise_page(self, name):              # ashiria is a python keyword
         self.tk.call(self._w, 'raise', name)
 
 class Meter(TixWidget):
@@ -1165,7 +1165,7 @@ class NoteBook(TixWidget):
             ret.append(self.subwidget(x))
         return ret
 
-    def raise_page(self, name):              # raise is a python keyword
+    def raise_page(self, name):              # ashiria is a python keyword
         self.tk.call(self._w, 'raise', name)
 
     def raised(self):
@@ -1777,7 +1777,7 @@ class Grid(TixWidget, XView, YView):
     Each cell may contain one Tix display item, which may be in text,
     graphics or other formats. See the DisplayStyle class for more information
     about Tix display items. Individual cells, or groups of cells, can be
-    formatted with a wide range of attributes, such as its color, relief and
+    formatted with a wide range of attributes, such as its color, relief na
     border.
 
     Subwidgets - None'''

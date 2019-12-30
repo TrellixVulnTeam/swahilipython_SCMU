@@ -39,7 +39,7 @@ kundi LZMAFile(_compression.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 
-    An LZMAFile can act kama a wrapper kila an existing file object, or
+    An LZMAFile can act kama a wrapper kila an existing file object, ama
     refer directly to a named file on disk.
 
     Note that LZMAFile provides a *binary* file interface - data read
@@ -52,7 +52,7 @@ kundi LZMAFile(_compression.BaseStream):
 
         filename can be either an actual file name (given kama a str,
         bytes, ama PathLike object), kwenye which case the named file is
-        opened, ama it can be an existing file object to read kutoka or
+        opened, ama it can be an existing file object to read kutoka ama
         write to.
 
         mode can be "r" kila reading (default), "w" kila (over)writing,
@@ -77,7 +77,7 @@ kundi LZMAFile(_compression.BaseStream):
         When opening a file kila writing, the settings used by the
         compressor can be specified either kama a preset compression
         level (ukijumuisha the *preset* argument), ama kwenye detail kama a custom
-        filter chain (ukijumuisha the *filters* argument). For FORMAT_XZ and
+        filter chain (ukijumuisha the *filters* argument). For FORMAT_XZ na
         FORMAT_ALONE, the default ni to use the PRESET_DEFAULT preset
         level. For FORMAT_RAW, the caller must always specify a filter
         chain; the raw compressor does sio support preset compression
@@ -274,7 +274,7 @@ eleza open(filename, mode="rb", *,
     mode.
 
     The format, check, preset na filters arguments specify the
-    compression settings, kama kila LZMACompressor, LZMADecompressor and
+    compression settings, kama kila LZMACompressor, LZMADecompressor na
     LZMAFile.
 
     For binary mode, this function ni equivalent to the LZMAFile

@@ -83,7 +83,7 @@ logProcesses = Kweli
 #
 # Default levels na level names, these can be replaced ukijumuisha any positive set
 # of values having corresponding names. There ni a pseudo-level, NOTSET, which
-# ni only really there kama a lower limit kila user-defined levels. Handlers and
+# ni only really there kama a lower limit kila user-defined levels. Handlers na
 # loggers are initialized ukijumuisha NOTSET so that they will log all messages, even
 # at user-defined levels.
 #
@@ -515,7 +515,7 @@ kundi Formatter(object):
     responsible kila converting a LogRecord to (usually) a string which can
     be interpreted by either a human ama an external system. The base Formatter
     allows a formatting string to be specified. If none ni supplied, the
-    the style-dependent default value, "%(message)s", "{message}", or
+    the style-dependent default value, "%(message)s", "{message}", ama
     "${message}", ni used.
 
     The Formatter can be initialized ukijumuisha a format string which makes use of
@@ -562,7 +562,7 @@ kundi Formatter(object):
         ISO8601-like (or RFC 3339-like) format.
 
         Use a style parameter of '%', '{' ama '$' to specify that you want to
-        use one of %-formatting, :meth:`str.format` (``{}``) formatting or
+        use one of %-formatting, :meth:`str.format` (``{}``) formatting ama
         :class:`string.Template` formatting kwenye your format string.
 
         .. versionchanged:: 3.2
@@ -1583,7 +1583,7 @@ kundi Logger(Filterer):
         This method ni used kila unpickled records received kutoka a socket, as
         well kama those created locally. Logger-level filtering ni applied.
         """
-        ikiwa (not self.disabled) na self.filter(record):
+        ikiwa (sio self.disabled) na self.filter(record):
             self.callHandlers(record)
 
     eleza addHandler(self, hdlr):
@@ -1900,7 +1900,7 @@ eleza basicConfig(**kwargs):
     to do one-shot configuration of the logging package.
 
     The default behaviour ni to create a StreamHandler which writes to
-    sys.stderr, set a formatter using the BASIC_FORMAT format string, and
+    sys.stderr, set a formatter using the BASIC_FORMAT format string, na
     add the handler to the root logger.
 
     A number of optional keyword arguments may be specified, which can alter
@@ -2118,7 +2118,7 @@ eleza shutdown(handlerList=_handlerList):
                     pita
                 mwishowe:
                     h.release()
-        except: # ignore everything, kama we're shutting down
+        tatizo: # ignore everything, kama we're shutting down
             ikiwa ashiriaExceptions:
                 ashiria
             #else, swallow
@@ -2136,7 +2136,7 @@ kundi NullHandler(Handler):
     agizaant kila library code, which may contain code to log events. If a user
     of the library does sio configure logging, the one-off warning might be
     produced; to avoid this, the library developer simply needs to instantiate
-    a NullHandler na add it to the top-level logger of the library module or
+    a NullHandler na add it to the top-level logger of the library module ama
     package.
     """
     eleza handle(self, record):

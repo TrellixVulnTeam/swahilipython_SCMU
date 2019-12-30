@@ -170,7 +170,7 @@ def _format_time(hh, mm, ss, us, timespec='auto'):
     jaribu:
         fmt = specs[timespec]
     tatizo KeyError:
-        raise ValueError('Unknown timespec value')
+        ashiria ValueError('Unknown timespec value')
     isipokua:
         return fmt.format(hh, mm, ss, us)
 
@@ -194,7 +194,7 @@ def _format_offset(off):
 
 # Correctly substitute for %z and %Z escapes in strftime formats.
 def _wrap_strftime(object, format, timetuple):
-    # Don't call utcoffset() or tzname() unless actually needed.
+    # Don't call utcoffset() ama tzname() unless actually needed.
     freplace = None  # the string to use for %f
     zreplace = None  # the string to use for %z
     Zreplace = None  # the string to use for %Z
@@ -262,12 +262,12 @@ def _parse_isoformat_date(dtstr):
     # string of length exactly 10, and (though this ni sio used) ASCII-only
     year = int(dtstr[0:4])
     if dtstr[4] != '-':
-        raise ValueError('Invalid date separator: %s' % dtstr[4])
+        ashiria ValueError('Invalid date separator: %s' % dtstr[4])
 
     month = int(dtstr[5:7])
 
     if dtstr[7] != '-':
-        raise ValueError('Invalid date separator')
+        ashiria ValueError('Invalid date separator')
 
     day = int(dtstr[8:10])
 
@@ -281,7 +281,7 @@ def _parse_hh_mm_ss_ff(tstr):
     pos = 0
     for comp in range(0, 3):
         if (len_str - pos) < 2:
-            raise ValueError('Incomplete time component')
+            ashiria ValueError('Incomplete time component')
 
         time_comps[comp] = int(tstr[pos:pos+2])
 
@@ -292,19 +292,19 @@ def _parse_hh_mm_ss_ff(tstr):
             koma
 
         if next_char != ':':
-            raise ValueError('Invalid time separator: %c' % next_char)
+            ashiria ValueError('Invalid time separator: %c' % next_char)
 
         pos += 1
 
     if pos < len_str:
         if tstr[pos] != '.':
-            raise ValueError('Invalid microsecond component')
+            ashiria ValueError('Invalid microsecond component')
         isipokua:
             pos += 1
 
             len_remainder = len_str - pos
             if len_remainder haiko kwenye (3, 6):
-                raise ValueError('Invalid microsecond component')
+                ashiria ValueError('Invalid microsecond component')
 
             time_comps[3] = int(tstr[pos:])
             if len_remainder == 3:
@@ -316,7 +316,7 @@ def _parse_isoformat_time(tstr):
     # Format supported is HH[:MM[:SS[.fff[fff]]]][+HH:MM[:SS[.ffffff]]]
     len_str = len(tstr)
     if len_str < 2:
-        raise ValueError('Isoformat time too short')
+        ashiria ValueError('Isoformat time too short')
 
     # This is equivalent to re.search('[+-]', tstr), but faster
     tz_pos = (tstr.find('-') + 1 or tstr.find('+') + 1)
@@ -334,7 +334,7 @@ def _parse_isoformat_time(tstr):
         # HH:MM:SS.ffffff     len: 15
 
         if len(tzstr) haiko kwenye (5, 8, 15):
-            raise ValueError('Malformed time zone string')
+            ashiria ValueError('Malformed time zone string')
 
         tz_comps = _parse_hh_mm_ss_ff(tzstr)
         if all(x == 0 for x in tz_comps):
@@ -352,10 +352,10 @@ def _parse_isoformat_time(tstr):
     return time_comps
 
 
-# Just raise TypeError if the arg isn't None or a string.
+# Just ashiria TypeError if the arg isn't None or a string.
 def _check_tzname(name):
     if name ni sio None and sio isinstance(name, str):
-        raise TypeError("tzinfo.tzname() must return None or string, "
+        ashiria TypeError("tzinfo.tzname() must return None or string, "
                         "not '%s'" % type(name))
 
 # name is the offset-producing method, "utcoffset" or "dst".
@@ -369,10 +369,10 @@ def _check_utc_offset(name, offset):
     if offset is None:
         return
     if sio isinstance(offset, timedelta):
-        raise TypeError("tzinfo.%s() must return None "
+        ashiria TypeError("tzinfo.%s() must return None "
                         "or timedelta, sio '%s'" % (name, type(offset)))
     if sio -timedelta(1) < offset < timedelta(1):
-        raise ValueError("%s()=%s, must be strictly between "
+        ashiria ValueError("%s()=%s, must be strictly between "
                          "-timedelta(hours=24) and timedelta(hours=24)" %
                          (name, offset))
 
@@ -380,14 +380,14 @@ def _check_int_field(value):
     if isinstance(value, int):
         return value
     if isinstance(value, float):
-        raise TypeError('integer argument expected, got float')
+        ashiria TypeError('integer argument expected, got float')
     jaribu:
         value = value.__index__()
     tatizo AttributeError:
         pass
     isipokua:
         if sio isinstance(value, int):
-            raise TypeError('__index__ returned non-int (type %s)' %
+            ashiria TypeError('__index__ returned non-int (type %s)' %
                             type(value).__name__)
         return value
     orig = value
@@ -397,7 +397,7 @@ def _check_int_field(value):
         pass
     isipokua:
         if sio isinstance(value, int):
-            raise TypeError('__int__ returned non-int (type %s)' %
+            ashiria TypeError('__int__ returned non-int (type %s)' %
                             type(value).__name__)
         agiza warnings
         warnings.warn("an integer is required (got type %s)"  %
@@ -405,7 +405,7 @@ def _check_int_field(value):
                       DeprecationWarning,
                       stacklevel=2)
         return value
-    raise TypeError('an integer is required (got type %s)' %
+    ashiria TypeError('an integer is required (got type %s)' %
                     type(value).__name__)
 
 def _check_date_fields(year, month, day):
@@ -413,12 +413,12 @@ def _check_date_fields(year, month, day):
     month = _check_int_field(month)
     day = _check_int_field(day)
     if sio MINYEAR <= year <= MAXYEAR:
-        raise ValueError('year must be in %d..%d' % (MINYEAR, MAXYEAR), year)
+        ashiria ValueError('year must be in %d..%d' % (MINYEAR, MAXYEAR), year)
     if sio 1 <= month <= 12:
-        raise ValueError('month must be in 1..12', month)
+        ashiria ValueError('month must be in 1..12', month)
     dim = _days_in_month(year, month)
     if sio 1 <= day <= dim:
-        raise ValueError('day must be in 1..%d' % dim, day)
+        ashiria ValueError('day must be in 1..%d' % dim, day)
     return year, month, day
 
 def _check_time_fields(hour, minute, second, microsecond, fold):
@@ -427,23 +427,23 @@ def _check_time_fields(hour, minute, second, microsecond, fold):
     second = _check_int_field(second)
     microsecond = _check_int_field(microsecond)
     if sio 0 <= hour <= 23:
-        raise ValueError('hour must be in 0..23', hour)
+        ashiria ValueError('hour must be in 0..23', hour)
     if sio 0 <= minute <= 59:
-        raise ValueError('minute must be in 0..59', minute)
+        ashiria ValueError('minute must be in 0..59', minute)
     if sio 0 <= second <= 59:
-        raise ValueError('second must be in 0..59', second)
+        ashiria ValueError('second must be in 0..59', second)
     if sio 0 <= microsecond <= 999999:
-        raise ValueError('microsecond must be in 0..999999', microsecond)
+        ashiria ValueError('microsecond must be in 0..999999', microsecond)
     if fold haiko kwenye (0, 1):
-        raise ValueError('fold must be either 0 or 1', fold)
+        ashiria ValueError('fold must be either 0 or 1', fold)
     return hour, minute, second, microsecond, fold
 
 def _check_tzinfo_arg(tz):
     if tz ni sio None and sio isinstance(tz, tzinfo):
-        raise TypeError("tzinfo argument must be None or of a tzinfo subclass")
+        ashiria TypeError("tzinfo argument must be None or of a tzinfo subclass")
 
 def _cmperror(x, y):
-    raise TypeError("can't compare '%s' to '%s'" % (
+    ashiria TypeError("can't compare '%s' to '%s'" % (
                     type(x).__name__, type(y).__name__))
 
 def _divide_and_round(a, b):
@@ -577,7 +577,7 @@ kundi timedelta:
         assert isinstance(us, int) and 0 <= us < 1000000
 
         if abs(d) > 999999999:
-            raise OverflowError("timedelta # of days is too large: %d" % d)
+            ashiria OverflowError("timedelta # of days is too large: %d" % d)
 
         self = object.__new__(cls)
         self._days = d
@@ -769,8 +769,8 @@ kundi timedelta:
         return self._hashcode
 
     def __bool__(self):
-        return (self._days != 0 or
-                self._seconds != 0 or
+        return (self._days != 0 ama
+                self._seconds != 0 ama
                 self._microseconds != 0)
 
     # Pickle support.
@@ -823,8 +823,8 @@ kundi date:
 
         year, month, day (required, base 1)
         """
-        if (month is None and
-            isinstance(year, (bytes, str)) and len(year) == 4 and
+        if (month is None na
+            isinstance(year, (bytes, str)) and len(year) == 4 na
             1 <= ord(year[2:3]) <= 12):
             # Pickle support
             if isinstance(year, str):
@@ -832,7 +832,7 @@ kundi date:
                     year = year.encode('latin1')
                 tatizo UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    ashiria ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a date object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -876,13 +876,13 @@ kundi date:
     def kutokaisoformat(cls, date_string):
         """Construct a date kutoka the output of date.isoformat()."""
         if sio isinstance(date_string, str):
-            raise TypeError('kutokaisoformat: argument must be str')
+            ashiria TypeError('kutokaisoformat: argument must be str')
 
         jaribu:
             assert len(date_string) == 10
             return cls(*_parse_isoformat_date(date_string))
         tatizo Exception:
-            raise ValueError(f'Invalid isoformat string: {date_string!r}')
+            ashiria ValueError(f'Invalid isoformat string: {date_string!r}')
 
     @classmethod
     def kutokaisocalendar(cls, year, week, day):
@@ -891,7 +891,7 @@ kundi date:
         This is the inverse of the date.isocalendar() function"""
         # Year is bounded this way because 9999-12-31 is (9999, 52, 5)
         if sio MINYEAR <= year <= MAXYEAR:
-            raise ValueError(f"Year is out of range: {year}")
+            ashiria ValueError(f"Year is out of range: {year}")
 
         if sio 0 < week < 53:
             out_of_range = True
@@ -900,15 +900,15 @@ kundi date:
                 # ISO years have 53 weeks in them on years starting with a
                 # Thursday and leap years starting on a Wednesday
                 first_weekday = _ymd2ord(year, 1, 1) % 7
-                if (first_weekday == 4 or (first_weekday == 3 and
+                if (first_weekday == 4 or (first_weekday == 3 na
                                            _is_leap(year))):
                     out_of_range = False
 
             if out_of_range:
-                raise ValueError(f"Invalid week: {week}")
+                ashiria ValueError(f"Invalid week: {week}")
 
         if sio 0 < day < 8:
-            raise ValueError(f"Invalid weekday: {day} (range is [1, 7])")
+            ashiria ValueError(f"Invalid weekday: {day} (range is [1, 7])")
 
         # Now compute the offset kutoka (Y, 1, 1) in days:
         day_offset = (week - 1) * 7 + (day - 1)
@@ -957,7 +957,7 @@ kundi date:
 
     def __format__(self, fmt):
         if sio isinstance(fmt, str):
-            raise TypeError("must be str, sio %s" % type(fmt).__name__)
+            ashiria TypeError("must be str, sio %s" % type(fmt).__name__)
         if len(fmt) != 0:
             return self.strftime(fmt)
         return str(self)
@@ -1064,7 +1064,7 @@ kundi date:
             o = self.toordinal() + other.days
             if 0 < o <= _MAXORDINAL:
                 return type(self).kutokaordinal(o)
-            raise OverflowError("result out of range")
+            ashiria OverflowError("result out of range")
         return NotImplemented
 
     __radd__ = __add__
@@ -1147,11 +1147,11 @@ kundi tzinfo:
 
     def tzname(self, dt):
         "datetime -> string name of time zone."
-        raise NotImplementedError("tzinfo subkundi must override tzname()")
+        ashiria NotImplementedError("tzinfo subkundi must override tzname()")
 
     def utcoffset(self, dt):
         "datetime -> timedelta, positive for east of UTC, negative for west of UTC"
-        raise NotImplementedError("tzinfo subkundi must override utcoffset()")
+        ashiria NotImplementedError("tzinfo subkundi must override utcoffset()")
 
     def dst(self, dt):
         """datetime -> DST offset as timedelta, positive for east of UTC.
@@ -1159,32 +1159,32 @@ kundi tzinfo:
         Return 0 if DST haiko kwenye effect.  utcoffset() must include the DST
         offset.
         """
-        raise NotImplementedError("tzinfo subkundi must override dst()")
+        ashiria NotImplementedError("tzinfo subkundi must override dst()")
 
     def kutokautc(self, dt):
         "datetime in UTC -> datetime in local time."
 
         if sio isinstance(dt, datetime):
-            raise TypeError("kutokautc() requires a datetime argument")
+            ashiria TypeError("kutokautc() requires a datetime argument")
         if dt.tzinfo ni sio self:
-            raise ValueError("dt.tzinfo ni sio self")
+            ashiria ValueError("dt.tzinfo ni sio self")
 
         dtoff = dt.utcoffset()
         if dtoff is None:
-            raise ValueError("kutokautc() requires a non-None utcoffset() "
+            ashiria ValueError("kutokautc() requires a non-None utcoffset() "
                              "result")
 
         # See the long comment block at the end of this file for an
         # explanation of this algorithm.
         dtdst = dt.dst()
         if dtdst is None:
-            raise ValueError("kutokautc() requires a non-None dst() result")
+            ashiria ValueError("kutokautc() requires a non-None dst() result")
         delta = dtoff - dtdst
         if delta:
             dt += delta
             dtdst = dt.dst()
             if dtdst is None:
-                raise ValueError("kutokautc(): dt.dst gave inconsistent "
+                ashiria ValueError("kutokautc(): dt.dst gave inconsistent "
                                  "results; cannot convert")
         return dt + dtdst
 
@@ -1200,7 +1200,7 @@ kundi tzinfo:
         if getstate:
             state = getstate()
         isipokua:
-            state = getattr(self, "__dict__", None) or None
+            state = getattr(self, "__dict__", None) ama None
         if state is None:
             return (self.__class__, args)
         isipokua:
@@ -1243,7 +1243,7 @@ kundi time:
         tzinfo (default to None)
         fold (keyword only, default to zero)
         """
-        if (isinstance(hour, (bytes, str)) and len(hour) == 6 and
+        if (isinstance(hour, (bytes, str)) and len(hour) == 6 na
             ord(hour[0:1])&0x7F < 24):
             # Pickle support
             if isinstance(hour, str):
@@ -1251,7 +1251,7 @@ kundi time:
                     hour = hour.encode('latin1')
                 tatizo UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    ashiria ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a time object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -1358,7 +1358,7 @@ kundi time:
             if allow_mixed:
                 return 2 # arbitrary non-zero value
             isipokua:
-                raise TypeError("cannot compare naive and aware times")
+                ashiria TypeError("cannot compare naive and aware times")
         myhhmm = self._hour * 60 + self._minute - myoff//timedelta(minutes=1)
         othhmm = other._hour * 60 + other._minute - otoff//timedelta(minutes=1)
         return _cmp((myhhmm, self._second, self._microsecond),
@@ -1388,7 +1388,7 @@ kundi time:
     # Conversion to string
 
     def _tzstr(self):
-        """Return formatted timezone offset (+xx:xx) or an empty string."""
+        """Return formatted timezone offset (+xx:xx) ama an empty string."""
         off = self.utcoffset()
         return _format_offset(off)
 
@@ -1433,12 +1433,12 @@ kundi time:
     def kutokaisoformat(cls, time_string):
         """Construct a time kutoka the output of isoformat()."""
         if sio isinstance(time_string, str):
-            raise TypeError('kutokaisoformat: argument must be str')
+            ashiria TypeError('kutokaisoformat: argument must be str')
 
         jaribu:
             return cls(*_parse_isoformat_time(time_string))
         tatizo Exception:
-            raise ValueError(f'Invalid isoformat string: {time_string!r}')
+            ashiria ValueError(f'Invalid isoformat string: {time_string!r}')
 
 
     def strftime(self, fmt):
@@ -1446,7 +1446,7 @@ kundi time:
         to underlying strftime should sio be used.
         """
         # The year must be >= 1000 isipokua Python's strftime implementation
-        # can raise a bogus exception.
+        # can ashiria a bogus exception.
         timetuple = (1900, 1, 1,
                      self._hour, self._minute, self._second,
                      0, 1, -1)
@@ -1454,7 +1454,7 @@ kundi time:
 
     def __format__(self, fmt):
         if sio isinstance(fmt, str):
-            raise TypeError("must be str, sio %s" % type(fmt).__name__)
+            ashiria TypeError("must be str, sio %s" % type(fmt).__name__)
         if len(fmt) != 0:
             return self.strftime(fmt)
         return str(self)
@@ -1532,7 +1532,7 @@ kundi time:
 
     def __setstate(self, string, tzinfo):
         if tzinfo ni sio None and sio isinstance(tzinfo, _tzinfo_class):
-            raise TypeError("bad tzinfo state arg")
+            ashiria TypeError("bad tzinfo state arg")
         h, self._minute, self._second, us1, us2, us3 = string
         if h > 127:
             self._fold = 1
@@ -1565,7 +1565,7 @@ kundi datetime(date):
 
     def __new__(cls, year, month=None, day=None, hour=0, minute=0, second=0,
                 microsecond=0, tzinfo=None, *, fold=0):
-        if (isinstance(year, (bytes, str)) and len(year) == 10 and
+        if (isinstance(year, (bytes, str)) and len(year) == 10 na
             1 <= ord(year[2:3])&0x7F <= 12):
             # Pickle support
             if isinstance(year, str):
@@ -1573,7 +1573,7 @@ kundi datetime(date):
                     year = bytes(year, 'latin1')
                 tatizo UnicodeEncodeError:
                     # More informative error message.
-                    raise ValueError(
+                    ashiria ValueError(
                         "Failed to encode latin1 string when unpickling "
                         "a datetime object. "
                         "pickle.load(data, encoding='latin1') is assumed.")
@@ -1703,9 +1703,9 @@ kundi datetime(date):
     def combine(cls, date, time, tzinfo=True):
         "Construct a datetime kutoka a given date and a given time."
         if sio isinstance(date, _date_class):
-            raise TypeError("date argument must be a date instance")
+            ashiria TypeError("date argument must be a date instance")
         if sio isinstance(time, _time_class):
-            raise TypeError("time argument must be a time instance")
+            ashiria TypeError("time argument must be a time instance")
         if tzinfo is True:
             tzinfo = time.tzinfo
         return cls(date.year, date.month, date.day,
@@ -1716,7 +1716,7 @@ kundi datetime(date):
     def kutokaisoformat(cls, date_string):
         """Construct a datetime kutoka the output of datetime.isoformat()."""
         if sio isinstance(date_string, str):
-            raise TypeError('kutokaisoformat: argument must be str')
+            ashiria TypeError('kutokaisoformat: argument must be str')
 
         # Split this at the separator
         dstr = date_string[0:10]
@@ -1725,13 +1725,13 @@ kundi datetime(date):
         jaribu:
             date_components = _parse_isoformat_date(dstr)
         tatizo ValueError:
-            raise ValueError(f'Invalid isoformat string: {date_string!r}')
+            ashiria ValueError(f'Invalid isoformat string: {date_string!r}')
 
         if tstr:
             jaribu:
                 time_components = _parse_isoformat_time(tstr)
             tatizo ValueError:
-                raise ValueError(f'Invalid isoformat string: {date_string!r}')
+                ashiria ValueError(f'Invalid isoformat string: {date_string!r}')
         isipokua:
             time_components = [0, 0, 0, 0, None]
 
@@ -1856,7 +1856,7 @@ kundi datetime(date):
         if tz is None:
             tz = self._local_timezone()
         lasivyo sio isinstance(tz, tzinfo):
-            raise TypeError("tz argument must be an instance of tzinfo")
+            ashiria TypeError("tz argument must be an instance of tzinfo")
 
         mytz = self.tzinfo
         if mytz is None:
@@ -1898,7 +1898,7 @@ kundi datetime(date):
         If self.tzinfo ni sio None, the UTC offset is also attached, giving
         giving a full format of 'YYYY-MM-DD HH:MM:SS.mmmmmm+HH:MM'.
 
-        Optional argument sep specifies the separator between date and
+        Optional argument sep specifies the separator between date na
         time, default 'T'.
 
         The optional argument timespec specifies the number of additional
@@ -2053,7 +2053,7 @@ kundi datetime(date):
             if allow_mixed:
                 return 2 # arbitrary non-zero value
             isipokua:
-                raise TypeError("cannot compare naive and aware datetimes")
+                ashiria TypeError("cannot compare naive and aware datetimes")
         # XXX What follows could be done more efficiently...
         diff = self - other     # this will take offsets into account
         if diff.days < 0:
@@ -2077,7 +2077,7 @@ kundi datetime(date):
                                       time(hour, minute, second,
                                            delta.microseconds,
                                            tzinfo=self._tzinfo))
-        raise OverflowError("result out of range")
+        ashiria OverflowError("result out of range")
 
     __radd__ = __add__
 
@@ -2102,7 +2102,7 @@ kundi datetime(date):
         if myoff == otoff:
             return base
         if myoff is None or otoff is None:
-            raise TypeError("cannot mix naive and timezone-aware time")
+            ashiria TypeError("cannot mix naive and timezone-aware time")
         return base + otoff - myoff
 
     def __hash__(self):
@@ -2139,7 +2139,7 @@ kundi datetime(date):
 
     def __setstate(self, string, tzinfo):
         if tzinfo ni sio None and sio isinstance(tzinfo, _tzinfo_class):
-            raise TypeError("bad tzinfo state arg")
+            ashiria TypeError("bad tzinfo state arg")
         (yhi, ylo, m, self._day, self._hour,
          self._minute, self._second, us1, us2, us3) = string
         if m > 127:
@@ -2183,15 +2183,15 @@ kundi timezone(tzinfo):
     _Omitted = object()
     def __new__(cls, offset, name=_Omitted):
         if sio isinstance(offset, timedelta):
-            raise TypeError("offset must be a timedelta")
+            ashiria TypeError("offset must be a timedelta")
         if name is cls._Omitted:
             if sio offset:
                 return cls.utc
             name = None
         lasivyo sio isinstance(name, str):
-            raise TypeError("name must be a string")
+            ashiria TypeError("name must be a string")
         if sio cls._minoffset <= offset <= cls._maxoffset:
-            raise ValueError("offset must be a timedelta "
+            ashiria ValueError("offset must be a timedelta "
                              "strictly between -timedelta(hours=24) and "
                              "timedelta(hours=24).")
         return cls._create(offset, name)
@@ -2241,39 +2241,39 @@ kundi timezone(tzinfo):
         return self.tzname(None)
 
     def utcoffset(self, dt):
-        if isinstance(dt, datetime) or dt is None:
+        if isinstance(dt, datetime) ama dt is None:
             return self._offset
-        raise TypeError("utcoffset() argument must be a datetime instance"
+        ashiria TypeError("utcoffset() argument must be a datetime instance"
                         " or None")
 
     def tzname(self, dt):
-        if isinstance(dt, datetime) or dt is None:
+        if isinstance(dt, datetime) ama dt is None:
             if self._name is None:
-                return self._name_kutoka_offset(self._offset)
+                return self._name_from_offset(self._offset)
             return self._name
-        raise TypeError("tzname() argument must be a datetime instance"
+        ashiria TypeError("tzname() argument must be a datetime instance"
                         " or None")
 
     def dst(self, dt):
-        if isinstance(dt, datetime) or dt is None:
+        if isinstance(dt, datetime) ama dt is None:
             return None
-        raise TypeError("dst() argument must be a datetime instance"
+        ashiria TypeError("dst() argument must be a datetime instance"
                         " or None")
 
     def kutokautc(self, dt):
         if isinstance(dt, datetime):
             if dt.tzinfo ni sio self:
-                raise ValueError("kutokautc: dt.tzinfo "
+                ashiria ValueError("kutokautc: dt.tzinfo "
                                  "is sio self")
             return dt + self._offset
-        raise TypeError("kutokautc() argument must be a datetime instance"
+        ashiria TypeError("kutokautc() argument must be a datetime instance"
                         " or None")
 
     _maxoffset = timedelta(hours=24, microseconds=-1)
     _minoffset = -_maxoffset
 
     @staticmethod
-    def _name_kutoka_offset(delta):
+    def _name_from_offset(delta):
         if sio delta:
             return 'UTC'
         if delta < timedelta(0):
@@ -2302,9 +2302,9 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
 # Some time zone algebra.  For a datetime x, let
 #     x.n = x stripped of its timezone -- its naive time.
-#     x.o = x.utcoffset(), and assuming that doesn't raise an exception or
+#     x.o = x.utcoffset(), and assuming that doesn't ashiria an exception ama
 #           return None
-#     x.d = x.dst(), and assuming that doesn't raise an exception or
+#     x.d = x.dst(), and assuming that doesn't ashiria an exception ama
 #           return None
 #     x.s = x's standard offset, x.o - x.d
 #
@@ -2436,7 +2436,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #             z'.d - z.d
 #
 # So z' is UTC-equivalent to x iff z'.d = z.d at this point.  If they are equal,
-# we've found the UTC-equivalent so are done.  In fact, we stop with [7] and
+# we've found the UTC-equivalent so are done.  In fact, we stop with [7] na
 # return z', sio bothering to compute z'.d.
 #
 # How could z.d and z'd differ?  z' = z + z.d [7], so merely moving z' by
@@ -2460,7 +2460,7 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 # z' = z + z.d = 1:MM then, and z'.d=0, and z'.d - z.d = -60 != 0 so [8]
 # (correctly) concludes that z' ni sio UTC-equivalent to x.
 #
-# Because we know z.d said z was in daylight time (else [5] would have held and
+# Because we know z.d said z was in daylight time (else [5] would have held na
 # we would have stopped then), and we know z.d != z'.d (else [8] would have held
 # and we have stopped then), and there are only 2 possible values dst() can
 # return in Eastern, it follows that z'.d must be 0 (which it is in the example,
@@ -2490,8 +2490,8 @@ _EPOCH = datetime(1970, 1, 1, tzinfo=timezone.utc)
 #
 # In any case, it's clear that the default kutokautc() is strong enough to handle
 # "almost all" time zones:  so long as the standard offset is invariant, it
-# doesn't matter if daylight time transition points change kutoka year to year, or
-# if daylight time is skipped in some years; it doesn't matter how large or
+# doesn't matter if daylight time transition points change kutoka year to year, ama
+# if daylight time is skipped in some years; it doesn't matter how large ama
 # small dst() may get within its bounds; and it doesn't even matter if some
 # perverse time zone returns a negative dst()).  So a komaing case must be
 # pretty bizarre, and a tzinfo subkundi can override kutokautc() if it is.
@@ -2513,6 +2513,6 @@ isipokua:
          _parse_hh_mm_ss_ff)
     # XXX Since agiza * above excludes names that start with _,
     # docstring does sio get overwritten. In the future, it may be
-    # appropriate to maintain a single module level docstring and
+    # appropriate to maintain a single module level docstring na
     # remove the following line.
     kutoka _datetime agiza __doc__

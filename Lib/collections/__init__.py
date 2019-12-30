@@ -344,7 +344,7 @@ eleza namedtuple(typename, field_names, *, rename=Uongo, defaults=Tupu, module=T
     ikiwa rename:
         seen = set()
         kila index, name kwenye enumerate(field_names):
-            ikiwa (not name.isidentifier()
+            ikiwa (sio name.isidentifier()
                 ama _iskeyword(name)
                 ama name.startswith('_')
                 ama name kwenye seen):

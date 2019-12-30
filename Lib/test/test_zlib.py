@@ -455,7 +455,7 @@ kundi CompressObjectTestCase(BaseCompressTestCase, unittest.TestCase):
                     b = obj.flush( sync )
                     c = obj.compress( data[3000:] )
                     d = obj.flush()
-                except:
+                tatizo:
                     andika("Error kila flush mode={}, level={}"
                           .format(sync, level))
                     ashiria

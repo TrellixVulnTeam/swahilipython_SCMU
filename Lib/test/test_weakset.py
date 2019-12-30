@@ -97,7 +97,7 @@ kundi TestWeakSet(unittest.TestCase):
 
     eleza test_isdisjoint(self):
         self.assertKweli(self.s.isdisjoint(WeakSet(self.items2)))
-        self.assertKweli(not self.s.isdisjoint(WeakSet(self.letters)))
+        self.assertKweli(sio self.s.isdisjoint(WeakSet(self.letters)))
 
     eleza test_and(self):
         i = self.s.intersection(self.items2)

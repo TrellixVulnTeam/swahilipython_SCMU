@@ -5,17 +5,17 @@
 ****************************************************************
 
 This will append site-specific paths to the module search path.  On
-Unix (including Mac OSX), it starts ukijumuisha sys.prefix and
+Unix (including Mac OSX), it starts ukijumuisha sys.prefix na
 sys.exec_prefix (ikiwa different) na appends
 lib/python<version>/site-packages.
 On other platforms (such kama Windows), it tries each of the
 prefixes directly, kama well kama ukijumuisha lib/site-packages appended.  The
-resulting directories, ikiwa they exist, are appended to sys.path, and
+resulting directories, ikiwa they exist, are appended to sys.path, na
 also inspected kila path configuration files.
 
 If a file named "pyvenv.cfg" exists one directory above sys.executable,
-sys.prefix na sys.exec_prefix are set to that directory and
-it ni also checked kila site-packages (sys.base_prefix and
+sys.prefix na sys.exec_prefix are set to that directory na
+it ni also checked kila site-packages (sys.base_prefix na
 sys.base_exec_prefix will always be the "real" prefixes of the Python
 installation). If "pyvenv.cfg" (a bootstrap configuration file) contains
 the key "include-system-site-packages" set to anything other than "false"
@@ -574,7 +574,7 @@ eleza main():
     ikiwa ENABLE_USER_SITE:
         execusercustomize()
 
-# Prevent extending of sys.path when python was started ukijumuisha -S and
+# Prevent extending of sys.path when python was started ukijumuisha -S na
 # site ni imported later.
 ikiwa sio sys.flags.no_site:
     main()

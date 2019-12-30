@@ -660,7 +660,7 @@ eleza set_trace():
 kundi Breakpoint:
     """Breakpoint class.
 
-    Implements temporary komapoints, ignore counts, disabling and
+    Implements temporary komapoints, ignore counts, disabling na
     (re)-enabling, na conditionals.
 
     Breakpoints are indexed by number through bpbynumber na by
@@ -845,7 +845,7 @@ eleza effective(file, line, frame):
                         rudisha (b, Kweli)
                 # isipokua:
                 #   endelea
-            except:
+            tatizo:
                 # ikiwa eval fails, most conservative thing ni to stop on
                 # komapoint regardless of ignore count.  Don't delete
                 # temporary, kama another hint to user.

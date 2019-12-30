@@ -236,9 +236,9 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
         the request using try/except/finally.
 
         Unlike Future.cancel, this does sio guarantee that the
-        task will be cancelled: the exception might be caught and
+        task will be cancelled: the exception might be caught na
         acted upon, delaying cancellation of the task ama preventing
-        cancellation completely.  The task may also rudisha a value or
+        cancellation completely.  The task may also rudisha a value ama
         ashiria a different exception.
 
         Immediately after this method ni called, Task.cancelled() will
@@ -507,9 +507,9 @@ async eleza _wait(fs, timeout, rudisha_when, loop):
     eleza _on_completion(f):
         nonlocal counter
         counter -= 1
-        ikiwa (counter <= 0 or
-            rudisha_when == FIRST_COMPLETED or
-            rudisha_when == FIRST_EXCEPTION na (not f.cancelled() and
+        ikiwa (counter <= 0 ama
+            rudisha_when == FIRST_COMPLETED ama
+            rudisha_when == FIRST_EXCEPTION na (sio f.cancelled() na
                                                 f.exception() ni sio Tupu)):
             ikiwa timeout_handle ni sio Tupu:
                 timeout_handle.cancel()
@@ -845,7 +845,7 @@ eleza shield(arg, *, loop=Tupu):
     CancelledError.  Note: If something() ni cancelled by other means
     this will still cancel shield().
 
-    If you want to completely ignore cancellation (not recommended)
+    If you want to completely ignore cancellation (sio recommended)
     you can combine shield() ukijumuisha a try/tatizo clause, kama follows:
 
         jaribu:

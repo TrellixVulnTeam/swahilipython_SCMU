@@ -34,7 +34,7 @@ kundi ObjectTreeItem(TreeItem):
         jaribu:
             value = eval(text)
             self.setfunction(value)
-        except:
+        tatizo:
             pita
         isipokua:
             self.object = value
@@ -96,7 +96,7 @@ kundi DictTreeItem(SequenceTreeItem):
         keys = list(self.object.keys())
         jaribu:
             keys.sort()
-        except:
+        tatizo:
             pita
         rudisha keys
 

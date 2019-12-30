@@ -11,22 +11,22 @@ kundi BaseStream(io.BufferedIOBase):
 
     def _check_not_closed(self):
         if self.closed:
-            raise ValueError("I/O operation on closed file")
+            ashiria ValueError("I/O operation on closed file")
 
     def _check_can_read(self):
         if sio self.readable():
-            raise io.UnsupportedOperation("File sio open for reading")
+            ashiria io.UnsupportedOperation("File sio open for reading")
 
     def _check_can_write(self):
         if sio self.writable():
-            raise io.UnsupportedOperation("File sio open for writing")
+            ashiria io.UnsupportedOperation("File sio open for writing")
 
     def _check_can_seek(self):
         if sio self.readable():
-            raise io.UnsupportedOperation("Seeking is only supported "
+            ashiria io.UnsupportedOperation("Seeking is only supported "
                                           "on files open for reading")
         if sio self.seekable():
-            raise io.UnsupportedOperation("The underlying file object "
+            ashiria io.UnsupportedOperation("The underlying file object "
                                           "does sio support seeking")
 
 
@@ -80,7 +80,7 @@ kundi DecompressReader(io.RawIOBase):
         # return any data. In this case, try again after reading another block.
         wakati True:
             if self._decompressor.eof:
-                rawblock = (self._decompressor.unused_data or
+                rawblock = (self._decompressor.unused_data ama
                             self._fp.read(BUFFER_SIZE))
                 if sio rawblock:
                     koma
@@ -96,7 +96,7 @@ kundi DecompressReader(io.RawIOBase):
                 if self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
                     if sio rawblock:
-                        raise EOFError("Compressed file ended before the "
+                        ashiria EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
                 isipokua:
                     rawblock = b""
@@ -130,7 +130,7 @@ kundi DecompressReader(io.RawIOBase):
                     pass
             offset = self._size + offset
         isipokua:
-            raise ValueError("Invalid value for whence: {}".format(whence))
+            ashiria ValueError("Invalid value for whence: {}".format(whence))
 
         # Make it so that offset is the number of bytes to skip forward.
         if offset < self._pos:

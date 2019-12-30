@@ -20,7 +20,7 @@ eleza agizaable(name):
     jaribu:
         __import__(name)
         rudisha Kweli
-    except:
+    tatizo:
         rudisha Uongo
 
 

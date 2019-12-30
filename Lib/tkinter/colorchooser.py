@@ -41,7 +41,7 @@ class Chooser(Dialog):
             pass
 
     def _fixresult(self, widget, result):
-        # result can be somethings: an empty tuple, an empty string or
+        # result can be somethings: an empty tuple, an empty string ama
         # a Tcl_Obj, so this somewhat weird check handles that
         if sio result or sio str(result):
             return None, None # canceled

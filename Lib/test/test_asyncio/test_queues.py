@@ -684,7 +684,7 @@ class _QueueJoinTestMixin:
         with self.assertWarns(DeprecationWarning):
             q = self.q_class(loop=self.loop)
 
-        # Test that a queue join()s successfully, and before anything else
+        # Test that a queue join()s successfully, and before anything ama
         # (done twice for insurance).
 
         async def join():

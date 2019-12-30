@@ -50,14 +50,14 @@ kundi ModuleFromSpecTests:
                 pita
         spec = self.machinery.ModuleSpec('test', Loader())
         ukijumuisha self.assertRaises(ImportError):
-            module = self.util.module_kutoka_spec(spec)
+            module = self.util.module_from_spec(spec)
 
     eleza test_create_module_rudishas_Tupu(self):
         kundi Loader(self.abc.Loader):
             eleza create_module(self, spec):
                 rudisha Tupu
         spec = self.machinery.ModuleSpec('test', Loader())
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertIsInstance(module, types.ModuleType)
         self.assertEqual(module.__name__, spec.name)
 
@@ -71,47 +71,47 @@ kundi ModuleFromSpecTests:
                 module.__name__ = name
                 rudisha module
         spec = self.machinery.ModuleSpec('test', Loader())
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertIsInstance(module, CustomModule)
         self.assertEqual(module.__name__, name)
 
     eleza test___name__(self):
         spec = self.machinery.ModuleSpec('test', object())
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__name__, spec.name)
 
     eleza test___spec__(self):
         spec = self.machinery.ModuleSpec('test', object())
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__spec__, spec)
 
     eleza test___loader__(self):
         loader = object()
         spec = self.machinery.ModuleSpec('test', loader)
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertIs(module.__loader__, loader)
 
     eleza test___package__(self):
         spec = self.machinery.ModuleSpec('test.pkg', object())
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__package__, spec.parent)
 
     eleza test___path__(self):
         spec = self.machinery.ModuleSpec('test', object(), is_package=Kweli)
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__path__, spec.submodule_search_locations)
 
     eleza test___file__(self):
         spec = self.machinery.ModuleSpec('test', object(), origin='some/path')
         spec.has_location = Kweli
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__file__, spec.origin)
 
     eleza test___cached__(self):
         spec = self.machinery.ModuleSpec('test', object())
         spec.cached = 'some/path'
         spec.has_location = Kweli
-        module = self.util.module_kutoka_spec(spec)
+        module = self.util.module_from_spec(spec)
         self.assertEqual(module.__cached__, spec.cached)
 
 (Frozen_ModuleFromSpecTests,
@@ -554,59 +554,59 @@ kundi MagicNumberTests:
 
 kundi PEP3147Tests:
 
-    """Tests of PEP 3147-related functions: cache_kutoka_source na source_kutoka_cache."""
+    """Tests of PEP 3147-related functions: cache_from_source na source_from_cache."""
 
     tag = sys.implementation.cache_tag
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag sio be Tupu')
-    eleza test_cache_kutoka_source(self):
+    eleza test_cache_from_source(self):
         # Given the path to a .py file, rudisha the path to its PEP 3147
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
                               'qux.{}.pyc'.format(self.tag))
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
+        self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    eleza test_cache_kutoka_source_no_cache_tag(self):
+    eleza test_cache_from_source_no_cache_tag(self):
         # No cache tag means NotImplementedError.
         ukijumuisha support.swap_attr(sys.implementation, 'cache_tag', Tupu):
             ukijumuisha self.assertRaises(NotImplementedError):
-                self.util.cache_kutoka_source('whatever.py')
+                self.util.cache_from_source('whatever.py')
 
-    eleza test_cache_kutoka_source_no_dot(self):
+    eleza test_cache_from_source_no_dot(self):
         # Directory ukijumuisha a dot, filename without dot.
         path = os.path.join('foo.bar', 'file')
         expect = os.path.join('foo.bar', '__pycache__',
                               'file{}.pyc'.format(self.tag))
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
+        self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    eleza test_cache_kutoka_source_debug_override(self):
+    eleza test_cache_from_source_debug_override(self):
         # Given the path to a .py file, rudisha the path to its PEP 3147/PEP 488
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            self.assertEqual(self.util.cache_kutoka_source(path, Uongo),
-                             self.util.cache_kutoka_source(path, optimization=1))
-            self.assertEqual(self.util.cache_kutoka_source(path, Kweli),
-                             self.util.cache_kutoka_source(path, optimization=''))
+            self.assertEqual(self.util.cache_from_source(path, Uongo),
+                             self.util.cache_from_source(path, optimization=1))
+            self.assertEqual(self.util.cache_from_source(path, Kweli),
+                             self.util.cache_from_source(path, optimization=''))
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error')
             ukijumuisha self.assertRaises(DeprecationWarning):
-                self.util.cache_kutoka_source(path, Uongo)
+                self.util.cache_from_source(path, Uongo)
             ukijumuisha self.assertRaises(DeprecationWarning):
-                self.util.cache_kutoka_source(path, Kweli)
+                self.util.cache_from_source(path, Kweli)
 
-    eleza test_cache_kutoka_source_cwd(self):
+    eleza test_cache_from_source_cwd(self):
         path = 'foo.py'
         expect = os.path.join('__pycache__', 'foo.{}.pyc'.format(self.tag))
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
+        self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    eleza test_cache_kutoka_source_override(self):
+    eleza test_cache_from_source_override(self):
         # When debug_override ni sio Tupu, it can be any true-ish ama false-ish
         # value.
         path = os.path.join('foo', 'bar', 'baz.py')
@@ -616,22 +616,22 @@ kundi PEP3147Tests:
             eleza __bool__(self): ashiria RuntimeError
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
-            self.assertEqual(self.util.cache_kutoka_source(path, []),
-                             self.util.cache_kutoka_source(path, optimization=1))
-            self.assertEqual(self.util.cache_kutoka_source(path, [17]),
-                             self.util.cache_kutoka_source(path, optimization=''))
+            self.assertEqual(self.util.cache_from_source(path, []),
+                             self.util.cache_from_source(path, optimization=1))
+            self.assertEqual(self.util.cache_from_source(path, [17]),
+                             self.util.cache_from_source(path, optimization=''))
             ukijumuisha self.assertRaises(RuntimeError):
-                self.util.cache_kutoka_source('/foo/bar/baz.py', Bearish())
+                self.util.cache_from_source('/foo/bar/baz.py', Bearish())
 
 
-    eleza test_cache_kutoka_source_optimization_empty_string(self):
+    eleza test_cache_from_source_optimization_empty_string(self):
         # Setting 'optimization' to '' leads to no optimization tag (PEP 488).
         path = 'foo.py'
         expect = os.path.join('__pycache__', 'foo.{}.pyc'.format(self.tag))
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
+        self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
-    eleza test_cache_kutoka_source_optimization_Tupu(self):
+    eleza test_cache_from_source_optimization_Tupu(self):
         # Setting 'optimization' to Tupu uses the interpreter's optimization.
         # (PEP 488)
         path = 'foo.py'
@@ -644,123 +644,123 @@ kundi PEP3147Tests:
         isipokua:
             msg = '{!r} ni a non-standard optimization level'.format(optimization_level)
             self.skipTest(msg)
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=Tupu),
+        self.assertEqual(self.util.cache_from_source(path, optimization=Tupu),
                          expect)
 
-    eleza test_cache_kutoka_source_optimization_set(self):
+    eleza test_cache_from_source_optimization_set(self):
         # The 'optimization' parameter accepts anything that has a string repr
         # that pitaes str.alnum().
         path = 'foo.py'
         valid_characters = string.ascii_letters + string.digits
         almost_expect = os.path.join('__pycache__', 'foo.{}'.format(self.tag))
-        got = self.util.cache_kutoka_source(path, optimization=valid_characters)
+        got = self.util.cache_from_source(path, optimization=valid_characters)
         # Test all valid characters are accepted.
         self.assertEqual(got,
                          almost_expect + '.opt-{}.pyc'.format(valid_characters))
         # str() should be called on argument.
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=42),
+        self.assertEqual(self.util.cache_from_source(path, optimization=42),
                          almost_expect + '.opt-42.pyc')
         # Invalid characters ashiria ValueError.
         ukijumuisha self.assertRaises(ValueError):
-            self.util.cache_kutoka_source(path, optimization='path/is/bad')
+            self.util.cache_from_source(path, optimization='path/is/bad')
 
-    eleza test_cache_kutoka_source_debug_override_optimization_both_set(self):
+    eleza test_cache_from_source_debug_override_optimization_both_set(self):
         # Can only set one of the optimization-related parameters.
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore')
             ukijumuisha self.assertRaises(TypeError):
-                self.util.cache_kutoka_source('foo.py', Uongo, optimization='')
+                self.util.cache_from_source('foo.py', Uongo, optimization='')
 
     @unittest.skipUnless(os.sep == '\\' na os.altsep == '/',
                      'test meaningful only where os.altsep ni defined')
-    eleza test_sep_altsep_and_sep_cache_kutoka_source(self):
+    eleza test_sep_altsep_and_sep_cache_from_source(self):
         # Windows path na PEP 3147 where sep ni right of altsep.
         self.assertEqual(
-            self.util.cache_kutoka_source('\\foo\\bar\\baz/qux.py', optimization=''),
+            self.util.cache_from_source('\\foo\\bar\\baz/qux.py', optimization=''),
             '\\foo\\bar\\baz\\__pycache__\\qux.{}.pyc'.format(self.tag))
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag sio be Tupu')
-    eleza test_cache_kutoka_source_path_like_arg(self):
+    eleza test_cache_from_source_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
                               'qux.{}.pyc'.format(self.tag))
-        self.assertEqual(self.util.cache_kutoka_source(path, optimization=''),
+        self.assertEqual(self.util.cache_from_source(path, optimization=''),
                          expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_source_kutoka_cache(self):
+    eleza test_source_from_cache(self):
         # Given the path to a PEP 3147 defined .pyc file, rudisha the path to
         # its source.  This tests the good path.
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             'qux.{}.pyc'.format(self.tag))
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        self.assertEqual(self.util.source_kutoka_cache(path), expect)
+        self.assertEqual(self.util.source_from_cache(path), expect)
 
-    eleza test_source_kutoka_cache_no_cache_tag(self):
+    eleza test_source_from_cache_no_cache_tag(self):
         # If sys.implementation.cache_tag ni Tupu, ashiria NotImplementedError.
         path = os.path.join('blah', '__pycache__', 'whatever.pyc')
         ukijumuisha support.swap_attr(sys.implementation, 'cache_tag', Tupu):
             ukijumuisha self.assertRaises(NotImplementedError):
-                self.util.source_kutoka_cache(path)
+                self.util.source_from_cache(path)
 
-    eleza test_source_kutoka_cache_bad_path(self):
+    eleza test_source_from_cache_bad_path(self):
         # When the path to a pyc file ni haiko kwenye PEP 3147 format, a ValueError
         # ni ashiriad.
         self.assertRaises(
-            ValueError, self.util.source_kutoka_cache, '/foo/bar/bazqux.pyc')
+            ValueError, self.util.source_from_cache, '/foo/bar/bazqux.pyc')
 
-    eleza test_source_kutoka_cache_no_slash(self):
+    eleza test_source_from_cache_no_slash(self):
         # No slashes at all kwenye path -> ValueError
         self.assertRaises(
-            ValueError, self.util.source_kutoka_cache, 'foo.cpython-32.pyc')
+            ValueError, self.util.source_from_cache, 'foo.cpython-32.pyc')
 
-    eleza test_source_kutoka_cache_too_few_dots(self):
+    eleza test_source_from_cache_too_few_dots(self):
         # Too few dots kwenye final path component -> ValueError
         self.assertRaises(
-            ValueError, self.util.source_kutoka_cache, '__pycache__/foo.pyc')
+            ValueError, self.util.source_from_cache, '__pycache__/foo.pyc')
 
-    eleza test_source_kutoka_cache_too_many_dots(self):
+    eleza test_source_from_cache_too_many_dots(self):
         ukijumuisha self.assertRaises(ValueError):
-            self.util.source_kutoka_cache(
+            self.util.source_from_cache(
                     '__pycache__/foo.cpython-32.opt-1.foo.pyc')
 
-    eleza test_source_kutoka_cache_not_opt(self):
+    eleza test_source_from_cache_not_opt(self):
         # Non-`opt-` path component -> ValueError
         self.assertRaises(
-            ValueError, self.util.source_kutoka_cache,
+            ValueError, self.util.source_from_cache,
             '__pycache__/foo.cpython-32.foo.pyc')
 
-    eleza test_source_kutoka_cache_no__pycache__(self):
+    eleza test_source_from_cache_no__pycache__(self):
         # Another problem ukijumuisha the path -> ValueError
         self.assertRaises(
-            ValueError, self.util.source_kutoka_cache,
+            ValueError, self.util.source_from_cache,
             '/foo/bar/foo.cpython-32.foo.pyc')
 
-    eleza test_source_kutoka_cache_optimized_bytecode(self):
+    eleza test_source_from_cache_optimized_bytecode(self):
         # Optimized bytecode ni sio an issue.
         path = os.path.join('__pycache__', 'foo.{}.opt-1.pyc'.format(self.tag))
-        self.assertEqual(self.util.source_kutoka_cache(path), 'foo.py')
+        self.assertEqual(self.util.source_from_cache(path), 'foo.py')
 
-    eleza test_source_kutoka_cache_missing_optimization(self):
+    eleza test_source_from_cache_missing_optimization(self):
         # An empty optimization level ni a no-no.
         path = os.path.join('__pycache__', 'foo.{}.opt-.pyc'.format(self.tag))
         ukijumuisha self.assertRaises(ValueError):
-            self.util.source_kutoka_cache(path)
+            self.util.source_from_cache(path)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_source_kutoka_cache_path_like_arg(self):
+    eleza test_source_from_cache_path_like_arg(self):
         path = pathlib.PurePath('foo', 'bar', 'baz', '__pycache__',
                                 'qux.{}.pyc'.format(self.tag))
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        self.assertEqual(self.util.source_kutoka_cache(path), expect)
+        self.assertEqual(self.util.source_from_cache(path), expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_cache_kutoka_source_respects_pycache_prefix(self):
-        # If pycache_prefix ni set, cache_kutoka_source will rudisha a bytecode
+    eleza test_cache_from_source_respects_pycache_prefix(self):
+        # If pycache_prefix ni set, cache_from_source will rudisha a bytecode
         # path inside that directory (in a subdirectory mirroring the .py file's
         # path) rather than kwenye a __pycache__ dir next to the py file.
         pycache_prefixes = [
@@ -783,12 +783,12 @@ kundi PEP3147Tests:
                     'qux.{}.pyc'.format(self.tag))
                 ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
                     self.assertEqual(
-                        self.util.cache_kutoka_source(path, optimization=''),
+                        self.util.cache_from_source(path, optimization=''),
                         expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_cache_kutoka_source_respects_pycache_prefix_relative(self):
+    eleza test_cache_from_source_respects_pycache_prefix_relative(self):
         # If the .py path we are given ni relative, we will resolve to an
         # absolute path before prefixing ukijumuisha pycache_prefix, to avoid any
         # possible ambiguity.
@@ -801,12 +801,12 @@ kundi PEP3147Tests:
             'foo', 'bar', 'baz', f'qux.{self.tag}.pyc')
         ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
             self.assertEqual(
-                self.util.cache_kutoka_source(path, optimization=''),
+                self.util.cache_from_source(path, optimization=''),
                 expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_source_kutoka_cache_inside_pycache_prefix(self):
+    eleza test_source_from_cache_inside_pycache_prefix(self):
         # If pycache_prefix ni set na the cache path we get ni inside it,
         # we rudisha an absolute path to the py file based on the remainder of
         # the path within pycache_prefix.
@@ -815,11 +815,11 @@ kundi PEP3147Tests:
                             f'qux.{self.tag}.pyc')
         expect = os.path.join(os.path.sep, 'foo', 'bar', 'baz', 'qux.py')
         ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
-            self.assertEqual(self.util.source_kutoka_cache(path), expect)
+            self.assertEqual(self.util.source_from_cache(path), expect)
 
     @unittest.skipIf(sys.implementation.cache_tag ni Tupu,
                      'requires sys.implementation.cache_tag to sio be Tupu')
-    eleza test_source_kutoka_cache_outside_pycache_prefix(self):
+    eleza test_source_from_cache_outside_pycache_prefix(self):
         # If pycache_prefix ni set but the cache path we get ni sio inside
         # it, just ignore it na handle the cache path according to the default
         # behavior.
@@ -828,7 +828,7 @@ kundi PEP3147Tests:
                             f'qux.{self.tag}.pyc')
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
         ukijumuisha util.temporary_pycache_prefix(pycache_prefix):
-            self.assertEqual(self.util.source_kutoka_cache(path), expect)
+            self.assertEqual(self.util.source_from_cache(path), expect)
 
 
 (Frozen_PEP3147Tests,

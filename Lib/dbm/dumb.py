@@ -138,13 +138,13 @@ class _Database(collections.abc.MutableMapping):
 
     def _verify_open(self):
         if self._index is None:
-            raise error('DBM object has already been closed')
+            ashiria error('DBM object has already been closed')
 
     def __getitem__(self, key):
         if isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
-        pos, siz = self._index[key]     # may raise KeyError
+        pos, siz = self._index[key]     # may ashiria KeyError
         with _io.open(self._datfile, 'rb') as f:
             f.seek(pos)
             dat = f.read(siz)
@@ -185,15 +185,15 @@ class _Database(collections.abc.MutableMapping):
 
     def __setitem__(self, key, val):
         if self._readonly:
-            raise error('The database is opened for reading only')
+            ashiria error('The database is opened for reading only')
         if isinstance(key, str):
             key = key.encode('utf-8')
         lasivyo sio isinstance(key, (bytes, bytearray)):
-            raise TypeError("keys must be bytes or strings")
+            ashiria TypeError("keys must be bytes or strings")
         if isinstance(val, str):
             val = val.encode('utf-8')
         lasivyo sio isinstance(val, (bytes, bytearray)):
-            raise TypeError("values must be bytes or strings")
+            ashiria TypeError("values must be bytes or strings")
         self._verify_open()
         self._modified = True
         if key haiko kwenye self._index:
@@ -222,7 +222,7 @@ class _Database(collections.abc.MutableMapping):
 
     def __delitem__(self, key):
         if self._readonly:
-            raise error('The database is opened for reading only')
+            ashiria error('The database is opened for reading only')
         if isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
@@ -239,7 +239,7 @@ class _Database(collections.abc.MutableMapping):
         jaribu:
             return list(self._index)
         tatizo TypeError:
-            raise error('DBM object has already been closed') from None
+            ashiria error('DBM object has already been closed') from None
 
     def items(self):
         self._verify_open()
@@ -252,7 +252,7 @@ class _Database(collections.abc.MutableMapping):
             return key in self._index
         tatizo TypeError:
             if self._index is None:
-                raise error('DBM object has already been closed') from None
+                ashiria error('DBM object has already been closed') from None
             isipokua:
                 raise
 
@@ -260,14 +260,14 @@ class _Database(collections.abc.MutableMapping):
         jaribu:
             return iter(self._index)
         tatizo TypeError:
-            raise error('DBM object has already been closed') from None
+            ashiria error('DBM object has already been closed') from None
     __iter__ = iterkeys
 
     def __len__(self):
         jaribu:
             return len(self._index)
         tatizo TypeError:
-            raise error('DBM object has already been closed') from None
+            ashiria error('DBM object has already been closed') from None
 
     def close(self):
         jaribu:
@@ -312,5 +312,5 @@ def open(file, flag='c', mode=0o666):
         # Turn off any bits that are set in the umask
         mode = mode & (~um)
     if flag haiko kwenye ('r', 'w', 'c', 'n'):
-        raise ValueError("Flag must be one of 'r', 'w', 'c', or 'n'")
+        ashiria ValueError("Flag must be one of 'r', 'w', 'c', or 'n'")
     return _Database(file, mode, flag=flag)

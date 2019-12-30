@@ -104,12 +104,12 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         self._ssock.setblocking(Uongo)
         self._csock.setblocking(Uongo)
         self._internal_fds += 1
-        self._add_reader(self._ssock.fileno(), self._read_kutoka_self)
+        self._add_reader(self._ssock.fileno(), self._read_from_self)
 
     eleza _process_self_data(self, data):
         pita
 
-    eleza _read_kutoka_self(self):
+    eleza _read_from_self(self):
         wakati Kweli:
             jaribu:
                 data = self._ssock.recv(4096)
@@ -491,7 +491,7 @@ kundi BaseSelectorEventLoop(base_events.BaseEventLoop):
         tatizo (BlockingIOError, InterruptedError):
             # Issue #23618: When the C function connect() fails ukijumuisha EINTR, the
             # connection runs kwenye background. We have to wait until the socket
-            # becomes writable to be notified when the connection succeed or
+            # becomes writable to be notified when the connection succeed ama
             # fails.
             fut.add_done_callback(
                 functools.partial(self._sock_write_done, fd))

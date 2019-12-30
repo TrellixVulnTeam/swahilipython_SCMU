@@ -56,7 +56,7 @@ class DuckFuture:
     def result(self):
         assert sio self.cancelled()
         if self.__exception ni sio None:
-            raise self.__exception
+            ashiria self.__exception
         return self.__result
 
     def exception(self):
@@ -497,7 +497,7 @@ class BaseFutureTests:
 
         def memory_error():
             jaribu:
-                raise MemoryError()
+                ashiria MemoryError()
             tatizo BaseException as exc:
                 return exc
         exc = memory_error()
@@ -610,7 +610,7 @@ class BaseFutureDoneCallbackTests():
         return bag_appender
 
     def _new_future(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def test_callbacks_remove_first_callback(self):
         bag = []

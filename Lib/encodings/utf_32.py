@@ -59,7 +59,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             lasivyo byteorder == 1:
                 self.decoder = codecs.utf_32_be_decode
             lasivyo consumed >= 4:
-                raise UnicodeError("UTF-32 stream does sio start with BOM")
+                ashiria UnicodeError("UTF-32 stream does sio start with BOM")
             rudisha (output, consumed)
         rudisha self.decoder(input, self.errors, final)
 
@@ -133,7 +133,7 @@ kundi StreamReader(codecs.StreamReader):
         lasivyo byteorder == 1:
             self.decode = codecs.utf_32_be_decode
         lasivyo consumed>=4:
-            raise UnicodeError("UTF-32 stream does sio start with BOM")
+            ashiria UnicodeError("UTF-32 stream does sio start with BOM")
         rudisha (object, consumed)
 
 ### encodings module API

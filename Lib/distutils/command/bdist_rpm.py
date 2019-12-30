@@ -182,7 +182,7 @@ class bdist_rpm(Command):
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
         if self.rpm_base is None:
             if sio self.rpm3_mode:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "you must specify --rpm-base in RPM 2 mode")
             self.rpm_base = os.path.join(self.bdist_base, "rpm")
 
@@ -192,14 +192,14 @@ class bdist_rpm(Command):
             isipokua:
                 self.python = "python3"
         lasivyo self.fix_python:
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "--python and --fix-python are mutually exclusive options")
 
         if os.name != 'posix':
-            raise DistutilsPlatformError("don't know how to create RPM "
+            ashiria DistutilsPlatformError("don't know how to create RPM "
                    "distributions on platform %s" % os.name)
         if self.binary_only and self.source_only:
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "cannot supply both '--source-only' and '--binary-only'")
 
         # don't pass CFLAGS to pure python distributions
@@ -304,7 +304,7 @@ class bdist_rpm(Command):
             if os.path.exists(self.icon):
                 self.copy_file(self.icon, source_dir)
             isipokua:
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                       "icon file '%s' does sio exist" % self.icon)
 
         # build package
@@ -355,7 +355,7 @@ class bdist_rpm(Command):
 
             status = out.close()
             if status:
-                raise DistutilsExecError("Failed to execute: %s" % repr(q_cmd))
+                ashiria DistutilsExecError("Failed to execute: %s" % repr(q_cmd))
 
         mwishowe:
             out.close()

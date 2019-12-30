@@ -99,7 +99,7 @@ kundi ContextManagerTestCase(unittest.TestCase):
         eleza whoo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 tuma
         ctx = whoo()
         ctx.__enter__()
@@ -715,7 +715,7 @@ kundi TestBaseExitStack:
             eleza __exit__(self, *exc_details):
                 jaribu:
                     ashiria self.inner
-                except:
+                tatizo:
                     ashiria self.outer
 
         kundi SuppressExc:
@@ -1008,7 +1008,7 @@ kundi TestSuppress(unittest.TestCase):
         obj = suppress()
         self.assertEqual(obj.__doc__, cm_docstring)
 
-    eleza test_no_result_kutoka_enter(self):
+    eleza test_no_result_from_enter(self):
         ukijumuisha suppress(ValueError) kama enter_result:
             self.assertIsTupu(enter_result)
 

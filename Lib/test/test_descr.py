@@ -923,7 +923,7 @@ kundi ClassPropertiesAndMethods(unittest.TestCase):
             self.fail("expected MRO order disagreement (G)")
 
     # see thread python-dev/2002-October/029035.html
-    eleza test_ex5_kutoka_c3_switch(self):
+    eleza test_ex5_from_c3_switch(self):
         # Testing ex5 kutoka C3 switch discussion...
         kundi A(object): pita
         kundi B(object): pita
@@ -1984,7 +1984,7 @@ order (MRO) kila bases """
         self.assertEqual(cm.exception.args[0], expected_errmsg)
 
     eleza test_special_method_lookup(self):
-        # The lookup of special methods bypitaes __getattr__ and
+        # The lookup of special methods bypitaes __getattr__ na
         # __getattribute__, but they still can be descriptors.
 
         eleza run_context(manager):
@@ -2099,7 +2099,7 @@ order (MRO) kila bases """
                 ashiria IndexError
         c1 = C()
         c2 = C()
-        self.assertUongo(not c1)
+        self.assertUongo(sio c1)
         self.assertNotEqual(id(c1), id(c2))
         hash(c1)
         hash(c2)
@@ -2122,7 +2122,7 @@ order (MRO) kila bases """
                 ashiria IndexError
         d1 = D()
         d2 = D()
-        self.assertUongo(not d1)
+        self.assertUongo(sio d1)
         self.assertNotEqual(id(d1), id(d2))
         hash(d1)
         hash(d2)
@@ -2168,12 +2168,12 @@ order (MRO) kila bases """
         p1 = Proxy(1)
         p_1 = Proxy(-1)
         self.assertUongo(p0)
-        self.assertUongo(not p1)
+        self.assertUongo(sio p1)
         self.assertEqual(hash(p0), hash(0))
         self.assertEqual(p0, p0)
         self.assertNotEqual(p0, p1)
         self.assertUongo(p0 != p0)
-        self.assertEqual(not p0, p1)
+        self.assertEqual(sio p0, p1)
         self.assertKweli(p0 < p1)
         self.assertKweli(p0 <= p1)
         self.assertKweli(p1 > p0)
@@ -2990,7 +2990,7 @@ order (MRO) kila bases """
         ## mwishowe:
         ##     jaribu:
         ##         f.close()
-        ##     except:
+        ##     tatizo:
         ##         pita
         ##     support.unlink(support.TESTFN)
 
@@ -3128,7 +3128,7 @@ order (MRO) kila bases """
             eleza __eq__(self, other):
                 jaribu:
                     rudisha abs(self - other) <= 1e-6
-                except:
+                tatizo:
                     rudisha NotImplemented
         zz = ZZ(1.0000003)
         self.assertEqual(zz, 1+0j)
@@ -4430,7 +4430,7 @@ order (MRO) kila bases """
         hash(l.__add__)
 
     eleza test_builtin_function_or_method(self):
-        # Not really belonging to test_descr, but introspection and
+        # Not really belonging to test_descr, but introspection na
         # comparison on <type 'builtin_function_or_method'> seems not
         # to be tested elsewhere
         l = []
@@ -4913,7 +4913,7 @@ kundi PTypesLongInitTest(unittest.TestCase):
                 pita
         jaribu:
             pow(0, UserLong(), 0)
-        except:
+        tatizo:
             pita
 
         # Another segfault only when run early
@@ -5429,7 +5429,7 @@ kundi DebugHelperMeta(type):
 kundi MroTest(unittest.TestCase):
     """
     Regressions kila some bugs revealed through
-    mcsl.mro() customization (typeobject.c: mro_internal()) and
+    mcsl.mro() customization (typeobject.c: mro_internal()) na
     cls.__bases__ assignment (typeobject.c: type_set_bases()).
     """
 

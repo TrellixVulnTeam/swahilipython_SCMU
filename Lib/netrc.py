@@ -68,7 +68,7 @@ kundi netrc:
             self.hosts[entryname] = {}
             wakati 1:
                 tt = lexer.get_token()
-                ikiwa (tt.startswith('#') or
+                ikiwa (tt.startswith('#') ama
                     tt kwenye {'', 'machine', 'default', 'macdef'}):
                     ikiwa pitaword:
                         self.hosts[entryname] = (login, account, pitaword)

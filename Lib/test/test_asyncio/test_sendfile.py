@@ -93,7 +93,7 @@ class SendfileBase:
     BUF_SIZE = 4 * 1024   # 4 KiB
 
     def create_event_loop(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @classmethod
     def setUpClass(cls):
@@ -312,7 +312,7 @@ class SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             return base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -334,7 +334,7 @@ class SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             return base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -460,7 +460,7 @@ class SendfileMixin(SendfileBase):
     def test_sendfile_fallback_close_peer_in_the_middle_of_receiving(self):
 
         def sendfile_native(transp, file, offset, count):
-            # to raise SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             return base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -477,7 +477,7 @@ class SendfileMixin(SendfileBase):
         self.assertTrue(1024 <= self.file.tell() < len(self.DATA),
                         self.file.tell())
 
-    @unittest.skipIf(not hasattr(os, 'sendfile'),
+    @unittest.skipIf(sio hasattr(os, 'sendfile'),
                      "Don't have native sendfile support")
     def test_sendfile_prevents_bare_write(self):
         srv_proto, cli_proto = self.prepare_sendfile()

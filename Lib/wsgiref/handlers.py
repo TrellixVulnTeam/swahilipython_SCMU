@@ -140,10 +140,10 @@ kundi BaseHandler:
             # We expect the client to close the connection abruptly kutoka time
             # to time.
             rudisha
-        except:
+        tatizo:
             jaribu:
                 self.handle_error()
-            except:
+            tatizo:
                 # If we get an error handling an error, just give up already!
                 self.close()
                 ashiria   # ...and let the actual server figure it out.
@@ -183,7 +183,7 @@ kundi BaseHandler:
                 kila data kwenye self.result:
                     self.write(data)
                 self.finish_content()
-        except:
+        tatizo:
             # Call close() on the iterable rudishaed by the WSGI application
             # kwenye case of an exception.
             ikiwa hasattr(self.result, 'close'):
@@ -490,12 +490,12 @@ kundi BaseCGIHandler(SimpleHandler):
         handler = BaseCGIHandler(inp,out,err,env)
         handler.run(app)
 
-    This handler kundi ni useful kila gateway protocols like ReadyExec and
+    This handler kundi ni useful kila gateway protocols like ReadyExec na
     FastCGI, that have usable input/output/error streams na an environment
     mapping.  It's also the base kundi kila CGIHandler, which just uses
     sys.stdin, os.environ, na so on.
 
-    The constructor also takes keyword arguments 'multithread' and
+    The constructor also takes keyword arguments 'multithread' na
     'multiprocess' (defaulting to 'Kweli' na 'Uongo' respectively) to control
     the configuration sent to the application.  It sets 'origin_server' to
     Uongo (to enable CGI-like output), na assumes that 'wsgi.run_once' is
@@ -514,7 +514,7 @@ kundi CGIHandler(BaseCGIHandler):
         CGIHandler().run(app)
 
     The difference between this kundi na BaseCGIHandler ni that it always
-    uses 'wsgi.run_once' of 'Kweli', 'wsgi.multithread' of 'Uongo', and
+    uses 'wsgi.run_once' of 'Kweli', 'wsgi.multithread' of 'Uongo', na
     'wsgi.multiprocess' of 'Kweli'.  It does sio take any initialization
     parameters, but always uses 'sys.stdin', 'os.environ', na friends.
 

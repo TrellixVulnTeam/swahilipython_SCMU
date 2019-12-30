@@ -166,7 +166,7 @@ kundi Completer:
             noprefix = Tupu
         wakati Kweli:
             kila word kwenye words:
-                ikiwa (word[:n] == attr and
+                ikiwa (word[:n] == attr na
                     sio (noprefix na word[:n+1] == noprefix)):
                     match = "%s.%s" % (expr, word)
                     jaribu:

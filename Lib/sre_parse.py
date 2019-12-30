@@ -402,7 +402,7 @@ eleza _escape(source, escape, state):
             # octal escape *or* decimal group reference (sigh)
             ikiwa source.next kwenye DIGITS:
                 escape += source.get()
-                ikiwa (escape[1] kwenye OCTDIGITS na escape[2] kwenye OCTDIGITS and
+                ikiwa (escape[1] kwenye OCTDIGITS na escape[2] kwenye OCTDIGITS na
                     source.next kwenye OCTDIGITS):
                     # got three octal digits; this ni an octal escape
                     escape += source.get()
@@ -557,9 +557,9 @@ eleza _parse(source, state, verbose, nested, first=Uongo):
                         agiza warnings
                         warnings.warn(
                             'Possible set %s at position %d' % (
-                                'difference' ikiwa this == '-' else
-                                'intersection' ikiwa this == '&' else
-                                'symmetric difference' ikiwa this == '~' else
+                                'difference' ikiwa this == '-' isipokua
+                                'intersection' ikiwa this == '&' isipokua
+                                'symmetric difference' ikiwa this == '~' isipokua
                                 'union',
                                 source.tell() - 1),
                             FutureWarning, stacklevel=nested + 6
@@ -829,7 +829,7 @@ eleza _parse(source, state, verbose, nested, first=Uongo):
                     group = state.opengroup(name)
                 tatizo error kama err:
                     ashiria source.error(err.msg, len(name) + 1) kutoka Tupu
-            sub_verbose = ((verbose ama (add_flags & SRE_FLAG_VERBOSE)) and
+            sub_verbose = ((verbose ama (add_flags & SRE_FLAG_VERBOSE)) na
                            sio (del_flags & SRE_FLAG_VERBOSE))
             p = _parse_sub(source, state, sub_verbose, nested + 1)
             ikiwa sio source.match(")"):
@@ -967,7 +967,7 @@ eleza parse(str, flags=0, state=Tupu):
     rudisha p
 
 eleza parse_template(source, state):
-    # parse 're' replacement string into list of literals and
+    # parse 're' replacement string into list of literals na
     # group references
     s = Tokenizer(source)
     sget = s.get
@@ -1023,7 +1023,7 @@ eleza parse_template(source, state):
                 isoctal = Uongo
                 ikiwa s.next kwenye DIGITS:
                     this += sget()
-                    ikiwa (c kwenye OCTDIGITS na this[2] kwenye OCTDIGITS and
+                    ikiwa (c kwenye OCTDIGITS na this[2] kwenye OCTDIGITS na
                         s.next kwenye OCTDIGITS):
                         this += sget()
                         isoctal = Kweli

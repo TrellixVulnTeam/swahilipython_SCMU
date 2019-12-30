@@ -41,7 +41,7 @@ __all__ = ['dataclass',
 # +---------+-----------------------------------------+
 # | add     | Generated method is added.              |
 # +---------+-----------------------------------------+
-# | raise   | TypeError is raised.                    |
+# | ashiria   | TypeError is raised.                    |
 # +---------+-----------------------------------------+
 # | None    | Attribute is set to None.               |
 # +=========+=========================================+
@@ -81,7 +81,7 @@ __all__ = ['dataclass',
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
-# | True  | add   | raise |
+# | True  | add   | ashiria |
 # +=======+=======+=======+
 # Raise because sio adding these methods would koma the "frozen-ness"
 # of the class.
@@ -110,7 +110,7 @@ __all__ = ['dataclass',
 # +=======+=======+=======+
 # | False |       |       |  <- the default
 # +-------+-------+-------+
-# | True  | add   | raise |
+# | True  | add   | ashiria |
 # +=======+=======+=======+
 # Raise because to allow this case would interfere with using
 # functools.total_ordering.
@@ -132,20 +132,20 @@ __all__ = ['dataclass',
 # +-------+-------+-------+--------+--------+
 # | False | True  | True  | add    |        | Frozen, so hashable, allows override
 # +-------+-------+-------+--------+--------+
-# | True  | False | False | add    | raise  | Has no __eq__, but hashable
+# | True  | False | False | add    | ashiria  | Has no __eq__, but hashable
 # +-------+-------+-------+--------+--------+
-# | True  | False | True  | add    | raise  | Has no __eq__, but hashable
+# | True  | False | True  | add    | ashiria  | Has no __eq__, but hashable
 # +-------+-------+-------+--------+--------+
-# | True  | True  | False | add    | raise  | Not frozen, but hashable
+# | True  | True  | False | add    | ashiria  | Not frozen, but hashable
 # +-------+-------+-------+--------+--------+
-# | True  | True  | True  | add    | raise  | Frozen, so hashable
+# | True  | True  | True  | add    | ashiria  | Frozen, so hashable
 # +=======+=======+=======+========+========+
 # For boxes that are blank, __hash__ is untouched and therefore
 # inherited kutoka the base class.  If the base is object, then
 # id-based hashing is used.
 #
 # Note that a kundi may already have __hash__=None if it specified an
-# __eq__ method in the kundi body (not one that was created by
+# __eq__ method in the kundi body (sio one that was created by
 # @dataclass).
 #
 # See _hash_action (below) for a coded version of this table.
@@ -252,7 +252,7 @@ kundi Field:
         self.hash = hash
         self.compare = compare
         self.metadata = (_EMPTY_METADATA
-                         if metadata is None else
+                         if metadata is None ama
                          types.MappingProxyType(metadata))
         self._field_type = None
 
@@ -334,7 +334,7 @@ def field(*, default=MISSING, default_factory=MISSING, init=True, repr=True,
     """
 
     if default ni sio MISSING and default_factory ni sio MISSING:
-        raise ValueError('cannot specify both default and default_factory')
+        ashiria ValueError('cannot specify both default and default_factory')
     return Field(default, default_factory, init, repr, hash, compare,
                  metadata)
 
@@ -379,7 +379,7 @@ def _create_fn(name, args, body, *, globals=None, locals=None,
     # worries about external callers.
     if locals is None:
         locals = {}
-    # __builtins__ may be the "builtins" module or
+    # __builtins__ may be the "builtins" module ama
     # the value of its "__dict__",
     # so make sure "__builtins__" is the module.
     if globals ni sio None and '__builtins__' haiko kwenye globals:
@@ -498,7 +498,7 @@ def _init_fn(fields, frozen, has_post_init, self_name):
             if sio (f.default is MISSING and f.default_factory is MISSING):
                 seen_default = True
             lasivyo seen_default:
-                raise TypeError(f'non-default argument {f.name!r} '
+                ashiria TypeError(f'non-default argument {f.name!r} '
                                 'follows default argument')
 
     globals = {'MISSING': MISSING,
@@ -554,13 +554,13 @@ def _frozen_get_del_attr(cls, fields):
     return (_create_fn('__setattr__',
                       ('self', 'name', 'value'),
                       (f'if type(self) is cls or name in {fields_str}:',
-                        ' raise FrozenInstanceError(f"cannot assign to field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot assign to field {name!r}")',
                        f'super(cls, self).__setattr__(name, value)'),
                        globals=globals),
             _create_fn('__delattr__',
                       ('self', 'name'),
                       (f'if type(self) is cls or name in {fields_str}:',
-                        ' raise FrozenInstanceError(f"cannot delete field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot delete field {name!r}")',
                        f'super(cls, self).__delattr__(name)'),
                        globals=globals),
             )
@@ -681,7 +681,7 @@ def _get_field(cls, a_name, a_type):
     f.type = a_type
 
     # Assume it's a normal field until proven otherwise.  We're next
-    # going to decide if it's a ClassVar or InitVar, everything else
+    # going to decide if it's a ClassVar or InitVar, everything ama
     # is just a normal field.
     f._field_type = _FIELD
 
@@ -697,7 +697,7 @@ def _get_field(cls, a_name, a_type):
 
     # If typing has sio been imported, then it's impossible for any
     # annotation to be a ClassVar.  So, only look for ClassVar if
-    # typing has been imported by any module (not necessarily cls's
+    # typing has been imported by any module (sio necessarily cls's
     # module).
     typing = sys.modules.get('typing')
     if typing:
@@ -726,7 +726,7 @@ def _get_field(cls, a_name, a_type):
     # Special restrictions for ClassVar and InitVar.
     if f._field_type in (_FIELD_CLASSVAR, _FIELD_INITVAR):
         if f.default_factory ni sio MISSING:
-            raise TypeError(f'field {f.name} cannot have a '
+            ashiria TypeError(f'field {f.name} cannot have a '
                             'default factory')
         # Should I check for other field settings? default_factory
         # seems the most serious to check for.  Maybe add others.  For
@@ -736,7 +736,7 @@ def _get_field(cls, a_name, a_type):
 
     # For real fields, disallow mutable defaults for known types.
     if f._field_type is _FIELD and isinstance(f.default, (list, dict, set)):
-        raise ValueError(f'mutable default {type(f.default)} for field '
+        ashiria ValueError(f'mutable default {type(f.default)} for field '
                          f'{f.name} ni sio allowed: use default_factory')
 
     return f
@@ -765,7 +765,7 @@ def _hash_add(cls, fields):
 
 def _hash_exception(cls, fields):
     # Raise an exception.
-    raise TypeError(f'Cannot overwrite attribute __hash__ '
+    ashiria TypeError(f'Cannot overwrite attribute __hash__ '
                     f'in kundi {cls.__name__}')
 
 #
@@ -825,7 +825,7 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
             if getattr(b, _PARAMS).frozen:
                 any_frozen_base = True
 
-    # Annotations that are defined in this kundi (not in base
+    # Annotations that are defined in this kundi (sio in base
     # classes).  If __annotations__ isn't present, then this class
     # adds no new annotations.  We use this to compute fields that are
     # added by this class.
@@ -866,18 +866,18 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # Do we have any Field members that don't also have annotations?
     for name, value in cls.__dict__.items():
         if isinstance(value, Field) and sio name in cls_annotations:
-            raise TypeError(f'{name!r} is a field but has no type annotation')
+            ashiria TypeError(f'{name!r} is a field but has no type annotation')
 
     # Check rules that apply if we are derived kutoka any dataclasses.
     if has_dataclass_bases:
         # Raise an exception if any of our bases are frozen, but we're not.
         if any_frozen_base and sio frozen:
-            raise TypeError('cannot inherit non-frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit non-frozen datakundi kutoka a '
                             'frozen one')
 
         # Raise an exception if we're frozen, but none of our bases are.
         if sio any_frozen_base and frozen:
-            raise TypeError('cannot inherit frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit frozen datakundi kutoka a '
                             'non-frozen one')
 
     # Remember all of the fields on our kundi (including bases).  This
@@ -890,13 +890,13 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # that such a __hash__ == None was sio auto-generated, but it
     # close enough.
     class_hash = cls.__dict__.get('__hash__', MISSING)
-    has_explicit_hash = sio (class_hash is MISSING or
+    has_explicit_hash = sio (class_hash is MISSING ama
                              (class_hash is None and '__eq__' in cls.__dict__))
 
     # If we're generating ordering methods, we must be generating the
     # eq methods.
     if order and sio eq:
-        raise ValueError('eq must be true if order is true')
+        ashiria ValueError('eq must be true if order is true')
 
     if init:
         # Does this kundi have a post-init function?
@@ -946,14 +946,14 @@ def _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
                          ]:
             if _set_new_attribute(cls, name,
                                   _cmp_fn(name, op, self_tuple, other_tuple)):
-                raise TypeError(f'Cannot overwrite attribute {name} '
+                ashiria TypeError(f'Cannot overwrite attribute {name} '
                                 f'in kundi {cls.__name__}. Consider using '
                                 'functools.total_ordering')
 
     if frozen:
         for fn in _frozen_get_del_attr(cls, field_list):
             if _set_new_attribute(cls, fn.__name__, fn):
-                raise TypeError(f'Cannot overwrite attribute {fn.__name__} '
+                ashiria TypeError(f'Cannot overwrite attribute {fn.__name__} '
                                 f'in kundi {cls.__name__}')
 
     # Decide if/how we're going to create a hash function.
@@ -1011,7 +1011,7 @@ def fields(class_or_instance):
     jaribu:
         fields = getattr(class_or_instance, _FIELDS)
     tatizo AttributeError:
-        raise TypeError('must be called with a datakundi type or instance')
+        ashiria TypeError('must be called with a datakundi type or instance')
 
     # Exclude pseudo-fields.  Note that fields is sorted by insertion
     # order, so the order of the tuple is as the fields were defined.
@@ -1050,7 +1050,7 @@ def asdict(obj, *, dict_factory=dict):
     tuples, lists, and dicts.
     """
     if sio _is_dataclass_instance(obj):
-        raise TypeError("asdict() should be called on datakundi instances")
+        ashiria TypeError("asdict() should be called on datakundi instances")
     return _asdict_inner(obj, dict_factory)
 
 
@@ -1071,7 +1071,7 @@ def _asdict_inner(obj, dict_factory):
 
         # I'm sio using namedtuple's _asdict()
         # method, because:
-        # - it does sio recurse in to the namedtuple fields and
+        # - it does sio recurse in to the namedtuple fields na
         #   convert them to dicts (using dict_factory).
         # - I don't actually want to return a dict here.  The the main
         #   use case here is json.dumps, and it handles converting
@@ -1115,7 +1115,7 @@ def astuple(obj, *, tuple_factory=tuple):
     """
 
     if sio _is_dataclass_instance(obj):
-        raise TypeError("astuple() should be called on datakundi instances")
+        ashiria TypeError("astuple() should be called on datakundi instances")
     return _astuple_inner(obj, tuple_factory)
 
 
@@ -1152,7 +1152,7 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
     """Return a new dynamically created dataclass.
 
     The datakundi name will be 'cls_name'.  'fields' is an iterable
-    of either (name), (name, type) or (name, type, Field) objects. If type is
+    of either (name), (name, type) ama (name, type, Field) objects. If type is
     omitted, use the string 'typing.Any'.  Field objects are created by
     the equivalent of calling 'field(name, type [, Field-info])'.
 
@@ -1192,14 +1192,14 @@ def make_dataclass(cls_name, fields, *, bases=(), namespace=None, init=True,
             name, tp, spec = item
             namespace[name] = spec
         isipokua:
-            raise TypeError(f'Invalid field: {item!r}')
+            ashiria TypeError(f'Invalid field: {item!r}')
 
-        if sio isinstance(name, str) or sio name.isidentifier():
-            raise TypeError(f'Field names must be valid identifiers: {name!r}')
+        if sio isinstance(name, str) ama sio name.isidentifier():
+            ashiria TypeError(f'Field names must be valid identifiers: {name!r}')
         if keyword.iskeyword(name):
-            raise TypeError(f'Field names must sio be keywords: {name!r}')
+            ashiria TypeError(f'Field names must sio be keywords: {name!r}')
         if name in seen:
-            raise TypeError(f'Field name duplicated: {name!r}')
+            ashiria TypeError(f'Field name duplicated: {name!r}')
 
         seen.add(name)
         anns[name] = tp
@@ -1227,7 +1227,7 @@ def replace(*args, **changes):
       assert c1.x == 3 and c1.y == 2
       """
     if len(args) > 1:
-        raise TypeError(f'replace() takes 1 positional argument but {len(args)} were given')
+        ashiria TypeError(f'replace() takes 1 positional argument but {len(args)} were given')
     if args:
         obj, = args
     lasivyo 'obj' in changes:
@@ -1236,13 +1236,13 @@ def replace(*args, **changes):
         warnings.warn("Passing 'obj' as keyword argument is deprecated",
                       DeprecationWarning, stacklevel=2)
     isipokua:
-        raise TypeError("replace() missing 1 required positional argument: 'obj'")
+        ashiria TypeError("replace() missing 1 required positional argument: 'obj'")
 
     # We're going to mutate 'changes', but that's okay because it's a
     # new dict, even if called with 'replace(obj, **my_changes)'.
 
     if sio _is_dataclass_instance(obj):
-        raise TypeError("replace() should be called on datakundi instances")
+        ashiria TypeError("replace() should be called on datakundi instances")
 
     # It's an error to have init=False fields in 'changes'.
     # If a field is haiko kwenye 'changes', read its value kutoka the provided obj.
@@ -1255,21 +1255,21 @@ def replace(*args, **changes):
         if sio f.init:
             # Error if this field is specified in changes.
             if f.name in changes:
-                raise ValueError(f'field {f.name} is declared with '
+                ashiria ValueError(f'field {f.name} is declared with '
                                  'init=False, it cannot be specified with '
                                  'replace()')
             endelea
 
         if f.name haiko kwenye changes:
             if f._field_type is _FIELD_INITVAR:
-                raise ValueError(f"InitVar {f.name!r} "
+                ashiria ValueError(f"InitVar {f.name!r} "
                                  'must be specified with replace()')
             changes[f.name] = getattr(obj, f.name)
 
-    # Create the new object, which calls __init__() and
+    # Create the new object, which calls __init__() na
     # __post_init__() (if defined), using all of the init fields we've
     # added and/or left in 'changes'.  If there are values supplied in
-    # changes that aren't fields, this will correctly raise a
+    # changes that aren't fields, this will correctly ashiria a
     # TypeError.
     return obj.__class__(**changes)
 replace.__text_signature__ = '(obj, /, **kwargs)'

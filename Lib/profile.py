@@ -305,7 +305,7 @@ kundi Profile:
         cc, ns, tt, ct, callers = timings[rfn]
         ikiwa sio ns:
             # This ni the only occurrence of the function on the stack.
-            # Else this ni a (directly ama indirectly) recursive call, and
+            # Else this ni a (directly ama indirectly) recursive call, na
             # its cumulative time will get updated when the topmost call to
             # it rudishas.
             ct = ct + frame_total

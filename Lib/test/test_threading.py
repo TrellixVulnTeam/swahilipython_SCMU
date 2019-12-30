@@ -527,7 +527,7 @@ kundi ThreadTests(BaseTestCase):
     @unittest.skipIf(sys.platform kwenye platforms_to_skip, "due to known OS bug")
     @unittest.skipUnless(hasattr(os, 'fork'), "test needs os.fork()")
     @unittest.skipUnless(hasattr(os, 'waitpid'), "test needs os.waitpid()")
-    eleza test_main_thread_after_fork_kutoka_nonmain_thread(self):
+    eleza test_main_thread_after_fork_from_nonmain_thread(self):
         code = """ikiwa 1:
             agiza os, threading, sys
 
@@ -813,7 +813,7 @@ kundi ThreadJoinOnShutdown(BaseTestCase):
 
     @unittest.skipUnless(hasattr(os, 'fork'), "needs os.fork()")
     @unittest.skipIf(sys.platform kwenye platforms_to_skip, "due to known OS bug")
-    eleza test_3_join_in_forked_kutoka_thread(self):
+    eleza test_3_join_in_forked_from_thread(self):
         # Like the test above, but fork() was called kutoka a worker thread
         # In the forked process, the main Thread object must be marked kama stopped.
 

@@ -101,7 +101,7 @@ def get_platform():
             'x64' : 'win-amd64',
             'arm' : 'win-arm32',
         }
-        return TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) or get_host_platform()
+        return TARGET_TO_PLAT.get(os.environ.get('VSCMD_ARG_TGT_ARCH')) ama get_host_platform()
     isipokua:
         return get_host_platform()
 
@@ -111,7 +111,7 @@ def convert_path (pathname):
     directory separator.  Needed because filenames in the setup script are
     always supplied in Unix style, and have to be converted to the local
     convention before we can actually use them in the filesystem.  Raises
-    ValueError on non-Unix-ish systems if 'pathname' either starts or
+    ValueError on non-Unix-ish systems if 'pathname' either starts ama
     ends with a slash.
     """
     if os.sep == '/':
@@ -119,9 +119,9 @@ def convert_path (pathname):
     if sio pathname:
         return pathname
     if pathname[0] == '/':
-        raise ValueError("path '%s' cannot be absolute" % pathname)
+        ashiria ValueError("path '%s' cannot be absolute" % pathname)
     if pathname[-1] == '/':
-        raise ValueError("path '%s' cannot end with '/'" % pathname)
+        ashiria ValueError("path '%s' cannot end with '/'" % pathname)
 
     paths = pathname.split('/')
     wakati '.' in paths:
@@ -152,7 +152,7 @@ def change_root (new_root, pathname):
         return os.path.join(new_root, path)
 
     isipokua:
-        raise DistutilsPlatformError("nothing known about platform '%s'" % os.name)
+        ashiria DistutilsPlatformError("nothing known about platform '%s'" % os.name)
 
 
 _environ_checked = 0
@@ -185,7 +185,7 @@ def check_environ ():
 
 def subst_vars (s, local_vars):
     """Perform shell/Perl-style variable substitution on 'string'.  Every
-    occurrence of '$' followed by a name is considered a variable, and
+    occurrence of '$' followed by a name is considered a variable, na
     variable is substituted by the value found in the 'local_vars'
     dictionary, or in 'os.environ' if it's haiko kwenye 'local_vars'.
     'os.environ' is first checked/augmented to guarantee that it contains
@@ -203,7 +203,7 @@ def subst_vars (s, local_vars):
     jaribu:
         return re.sub(r'\$([a-zA-Z_][a-zA-Z_0-9]*)', _subst, s)
     tatizo KeyError as var:
-        raise ValueError("invalid variable '$%s'" % var)
+        ashiria ValueError("invalid variable '$%s'" % var)
 
 # subst_vars ()
 
@@ -224,7 +224,7 @@ def _init_regex():
     _dquote_re = re.compile(r'"(?:[^"\\]|\\.)*"')
 
 def split_quoted (s):
-    """Split a string up according to Unix shell-like rules for quotes and
+    """Split a string up according to Unix shell-like rules for quotes na
     backslashes.  In short: words are delimited by spaces, as long as those
     spaces are sio escaped by a backslash, or inside a quoted string.
     Single and double quotes are equivalent, and the quote characters can
@@ -266,10 +266,10 @@ def split_quoted (s):
             lasivyo s[end] == '"':         # slurp doubly-quoted string
                 m = _dquote_re.match(s, end)
             isipokua:
-                raise RuntimeError("this can't happen (bad char '%c')" % s[end])
+                ashiria RuntimeError("this can't happen (bad char '%c')" % s[end])
 
             if m is None:
-                raise ValueError("bad string (mismatched %s quotes?)" % s[end])
+                ashiria ValueError("bad string (mismatched %s quotes?)" % s[end])
 
             (beg, end) = m.span()
             s = s[:beg] + s[beg+1:end-1] + s[end:]
@@ -304,7 +304,7 @@ def execute (func, args, msg=None, verbose=0, dry_run=0):
 
 
 def strtobool (val):
-    """Convert a string representation of truth to true (1) or false (0).
+    """Convert a string representation of truth to true (1) ama false (0).
 
     True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
     are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
@@ -316,7 +316,7 @@ def strtobool (val):
     lasivyo val in ('n', 'no', 'f', 'false', 'off', '0'):
         return 0
     isipokua:
-        raise ValueError("invalid truth value %r" % (val,))
+        ashiria ValueError("invalid truth value %r" % (val,))
 
 
 def byte_compile (py_files,
@@ -335,7 +335,7 @@ def byte_compile (py_files,
     timestamps.
 
     The source filename encoded in each bytecode file defaults to the
-    filenames listed in 'py_files'; you can modify these with 'prefix' and
+    filenames listed in 'py_files'; you can modify these with 'prefix' na
     'basedir'.  'prefix' is a string that will be stripped off of each
     source filename, and 'base_dir' is a directory name that will be
     prepended (after 'prefix' is stripped).  You can supply either or both
@@ -359,7 +359,7 @@ def byte_compile (py_files,
 
     # nothing is done if sys.dont_write_bytecode is True
     if sys.dont_write_bytecode:
-        raise DistutilsByteCompileError('byte-compiling is disabled.')
+        ashiria DistutilsByteCompileError('byte-compiling is disabled.')
 
     # First, if the caller didn't force us into direct or indirect mode,
     # figure out which mode we should be in.  We take a conservative
@@ -450,7 +450,7 @@ byte_compile(files, optimize=%r, force=%r,
             dfile = file
             if prefix:
                 if file[:len(prefix)] != prefix:
-                    raise ValueError("invalid prefix: filename %r doesn't start with %r"
+                    ashiria ValueError("invalid prefix: filename %r doesn't start with %r"
                            % (file, prefix))
                 dfile = dfile[len(prefix):]
             if base_dir:

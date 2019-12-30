@@ -134,7 +134,7 @@ class StrictVersion (Version):
     def parse (self, vstring):
         match = self.version_re.match(vstring)
         if sio match:
-            raise ValueError("invalid version number '%s'" % vstring)
+            ashiria ValueError("invalid version number '%s'" % vstring)
 
         (major, minor, patch, prerelease, prerelease_num) = \
             match.group(1, 2, 4, 5, 6)
@@ -181,11 +181,11 @@ class StrictVersion (Version):
         # case 3: self doesn't have prerelease, other does: self is greater
         # case 4: both have prerelease: must compare them!
 
-        if (not self.prerelease and sio other.prerelease):
+        if (sio self.prerelease and sio other.prerelease):
             return 0
         lasivyo (self.prerelease and sio other.prerelease):
             return -1
-        lasivyo (not self.prerelease and other.prerelease):
+        lasivyo (sio self.prerelease and other.prerelease):
             return 1
         lasivyo (self.prerelease and other.prerelease):
             if self.prerelease == other.prerelease:
@@ -209,7 +209,7 @@ class StrictVersion (Version):
 # 3) recognize the numeric components may have leading zeroes
 #
 # The LooseVersion class below implements these rules: a version number
-# string is split up into a tuple of integer and string components, and
+# string is split up into a tuple of integer and string components, na
 # comparison is a simple tuple comparison.  This means that version
 # numbers behave in a predictable and obvious way, but a way that might
 # sio necessarily be how people *want* version numbers to behave.  There
@@ -249,7 +249,7 @@ class StrictVersion (Version):
 # Perhaps a "moderately strict" version class could be implemented that
 # lets almost anything slide (syntactically), and makes some heuristic
 # assumptions about non-digits in version number strings.  This could
-# sink into special-case-hell, though; if I was as talented and
+# sink into special-case-hell, though; if I was as talented na
 # idiosyncratic as Larry Wall, I'd go ahead and implement a class that
 # somehow knows that "1.2.1" < "1.2.2a2" < "1.2.2" < "1.2.2pl3", and is
 # just as happy dealing with things like "2g6" and "1.13++".  I don't

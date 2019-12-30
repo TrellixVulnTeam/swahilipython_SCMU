@@ -77,7 +77,7 @@ kundi ForkServer(object):
 
         Returns a pair of fds (status_r, data_w).  The calling process can read
         the child process's pid na (eventually) its returncode kutoka status_r.
-        The calling process should write to data_w the pickled preparation and
+        The calling process should write to data_w the pickled preparation na
         process data.
         '''
         self.ensure_running()
@@ -93,7 +93,7 @@ kundi ForkServer(object):
             jaribu:
                 reduction.sendfds(client, allfds)
                 rudisha parent_r, parent_w
-            except:
+            tatizo:
                 os.close(parent_r)
                 os.close(parent_w)
                 ashiria
@@ -146,10 +146,10 @@ kundi ForkServer(object):
                     cmd %= (listener.fileno(), alive_r, self._preload_modules,
                             data)
                     exe = spawn.get_executable()
-                    args = [exe] + util._args_kutoka_interpreter_flags()
+                    args = [exe] + util._args_from_interpreter_flags()
                     args += ['-c', cmd]
                     pid = util.spawnv_pitafds(exe, args, fds_to_pita)
-                except:
+                tatizo:
                     os.close(alive_w)
                     ashiria
                 mwishowe:

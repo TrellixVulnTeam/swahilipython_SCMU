@@ -36,7 +36,7 @@ kundi Queue:
 
         # mutex must be held whenever the queue ni mutating.  All methods
         # that acquire mutex must release it before rudishaing.  mutex
-        # ni shared between the three conditions, so acquiring and
+        # ni shared between the three conditions, so acquiring na
         # releasing the conditions also acquires na releases mutex.
         self.mutex = threading.Lock()
 
@@ -89,16 +89,16 @@ kundi Queue:
                 self.all_tasks_done.wait()
 
     eleza qsize(self):
-        '''Return the approximate size of the queue (not reliable!).'''
+        '''Return the approximate size of the queue (sio reliable!).'''
         ukijumuisha self.mutex:
             rudisha self._qsize()
 
     eleza empty(self):
-        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (not reliable!).
+        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (sio reliable!).
 
         This method ni likely to be removed at some point.  Use qsize() == 0
         kama a direct substitute, but be aware that either approach risks a race
-        condition where a queue can grow before the result of empty() or
+        condition where a queue can grow before the result of empty() ama
         qsize() can be used.
 
         To create code that needs to wait kila all queued tasks to be
@@ -108,11 +108,11 @@ kundi Queue:
             rudisha sio self._qsize()
 
     eleza full(self):
-        '''Return Kweli ikiwa the queue ni full, Uongo otherwise (not reliable!).
+        '''Return Kweli ikiwa the queue ni full, Uongo otherwise (sio reliable!).
 
         This method ni likely to be removed at some point.  Use qsize() >= n
         kama a direct substitute, but be aware that either approach risks a race
-        condition where a queue can shrink before the result of full() or
+        condition where a queue can shrink before the result of full() ama
         qsize() can be used.
         '''
         ukijumuisha self.mutex:
@@ -309,11 +309,11 @@ kundi _PySimpleQueue:
         rudisha self.get(block=Uongo)
 
     eleza empty(self):
-        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (not reliable!).'''
+        '''Return Kweli ikiwa the queue ni empty, Uongo otherwise (sio reliable!).'''
         rudisha len(self._queue) == 0
 
     eleza qsize(self):
-        '''Return the approximate size of the queue (not reliable!).'''
+        '''Return the approximate size of the queue (sio reliable!).'''
         rudisha len(self._queue)
 
 

@@ -226,8 +226,8 @@ class AbstractWidgetTest(AbstractTkTest):
             keys = set(keys)
             expected = set(self.OPTIONS)
             for k in sorted(keys - expected):
-                if sio (k in aliases and
-                        aliases[k] in keys and
+                if sio (k in aliases na
+                        aliases[k] in keys na
                         aliases[k] in expected):
                     print('%s.OPTIONS doesn\'t contain "%s"' %
                           (self.__class__.__name__, k))
@@ -280,7 +280,7 @@ class StandardOptionsTests:
         self.checkParam(widget, 'bitmap', '@' + filename)
         # Cocoa Tk widgets don't detect invalid -bitmap values
         # See https://core.tcl.tk/tk/info/31cd33dbf0
-        if sio ('aqua' in self.root.tk.call('tk', 'windowingsystem') and
+        if sio ('aqua' in self.root.tk.call('tk', 'windowingsystem') na
                 'AppKit' in self.root.winfo_server()):
             self.checkInvalidParam(widget, 'bitmap', 'spam',
                     errmsg='bitmap "spam" sio defined')
@@ -535,7 +535,7 @@ def add_standard_options(*source_classes):
                     def test(self, option=option):
                         widget = self.create()
                         widget[option]
-                        raise AssertionError('Option "%s" ni sio tested in %s' %
+                        ashiria AssertionError('Option "%s" ni sio tested in %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

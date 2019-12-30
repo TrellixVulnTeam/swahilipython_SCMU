@@ -1,7 +1,7 @@
 """distutils.command.config
 
 Implements the Distutils 'config' command, a (mostly) empty command class
-that exists mainly to be sub-classed by specific module distributions and
+that exists mainly to be sub-classed by specific module distributions na
 applications.  The idea is that wakati every "config" command is different,
 at least they're all named the same, and users always see "config" in the
 list of standard commands.  Also, this is a good place to put common
@@ -233,7 +233,7 @@ class config(Command):
 
     def try_link(self, body, headers=None, include_dirs=None, libraries=None,
                  library_dirs=None, lang="c"):
-        """Try to compile and link a source file, built from 'body' and
+        """Try to compile and link a source file, built from 'body' na
         'headers', to executable form.  Return true on success, false
         otherwise.
         """

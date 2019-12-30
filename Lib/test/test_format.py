@@ -80,7 +80,7 @@ eleza test_exc(formatstr, args, exception, excmsg):
         isipokua:
             ikiwa verbose: andika('no')
             andika('Unexpected ', exception, ':', repr(str(exc)))
-    except:
+    tatizo:
         ikiwa verbose: andika('no')
         andika('Unexpected exception')
         ashiria
@@ -316,7 +316,7 @@ kundi FormatTest(unittest.TestCase):
                 ashiria TestFailed('"%*d"%(maxsize, -127) should fail')
 
     eleza test_bytes_and_bytearray_format(self):
-        # %c will insert a single byte, either kutoka an int kwenye range(256), or
+        # %c will insert a single byte, either kutoka an int kwenye range(256), ama
         # kutoka a bytes argument of length 1, sio kutoka a str.
         testcommon(b"%c", 7, b"\x07")
         testcommon(b"%c", b"Z", b"Z")

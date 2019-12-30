@@ -57,7 +57,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     """Create a (possibly compressed) tar file from all the files under
     'base_dir'.
 
-    'compress' must be "gzip" (the default), "bzip2", "xz", "compress", or
+    'compress' must be "gzip" (the default), "bzip2", "xz", "compress", ama
     None.  ("compress" will be deprecated in Python 3.2)
 
     'owner' and 'group' can be used to define an owner and a group for the
@@ -76,7 +76,7 @@ def make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
 
     # flags for compression program, each element of list will be an argument
     if compress ni sio None and compress haiko kwenye compress_ext.keys():
-        raise ValueError(
+        ashiria ValueError(
               "bad value for 'compress': must be None, 'gzip', 'bzip2', "
               "'xz' or 'compress'")
 
@@ -128,7 +128,7 @@ def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
     """Create a zip file from all the files under 'base_dir'.
 
     The output zip file will be named 'base_name' + ".zip".  Uses either the
-    "zipfile" Python module (if available) or the InfoZIP "zip" utility
+    "zipfile" Python module (if available) ama the InfoZIP "zip" utility
     (if installed and found on the default search path).  If neither tool is
     available, raises DistutilsExecError.  Returns the name of the output zip
     file.
@@ -150,7 +150,7 @@ def make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
         tatizo DistutilsExecError:
             # XXX really should distinguish between "couldn't find
             # external 'zip' command" and "zip failed".
-            raise DistutilsExecError(("unable to create zip file '%s': "
+            ashiria DistutilsExecError(("unable to create zip file '%s': "
                    "could neither import the 'zipfile' module nor "
                    "find a standalone zip utility") % zip_filename)
 
@@ -214,7 +214,7 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     'root_dir' is a directory that will be the root directory of the
     archive; ie. we typically chdir into 'root_dir' before creating the
     archive.  'base_dir' is the directory where we start archiving from;
-    ie. 'base_dir' will be the common prefix of all files and
+    ie. 'base_dir' will be the common prefix of all files na
     directories in the archive.  'root_dir' and 'base_dir' both default
     to the current directory.  Returns the name of the archive file.
 
@@ -236,7 +236,7 @@ def make_archive(base_name, format, root_dir=None, base_dir=None, verbose=0,
     jaribu:
         format_info = ARCHIVE_FORMATS[format]
     tatizo KeyError:
-        raise ValueError("unknown archive format '%s'" % format)
+        ashiria ValueError("unknown archive format '%s'" % format)
 
     func = format_info[0]
     for arg, val in format_info[1]:

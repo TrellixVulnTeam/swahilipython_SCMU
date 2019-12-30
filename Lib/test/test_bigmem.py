@@ -906,7 +906,7 @@ kundi TupleTest(unittest.TestCase):
         rudisha self.basic_test_repeat(size)
 
     @bigmemtest(size=_1G - 1, memuse=pointer_size * 2)
-    eleza test_kutoka_2G_generator(self, size):
+    eleza test_from_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
         tatizo MemoryError:
@@ -917,7 +917,7 @@ kundi TupleTest(unittest.TestCase):
             self.assertEqual(t[-10:], (42,) * 10)
 
     @bigmemtest(size=_1G - 25, memuse=pointer_size * 2)
-    eleza test_kutoka_almost_2G_generator(self, size):
+    eleza test_from_almost_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
         tatizo MemoryError:

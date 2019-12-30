@@ -58,7 +58,7 @@ kundi RebindBuiltinsTests(unittest.TestCase):
         ukijumuisha swap_attr(builtins, "len", lambda x: 7):
             self.assertEqual(next(g), 7)
 
-    eleza test_modify_builtins_kutoka_leaf_function(self):
+    eleza test_modify_builtins_from_leaf_function(self):
         # Verify that modifications made by leaf functions percolate up the
         # callstack.
         ukijumuisha swap_attr(builtins, "len", len):

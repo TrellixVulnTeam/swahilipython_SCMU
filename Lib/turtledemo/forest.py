@@ -94,7 +94,7 @@ eleza main():
         kila b kwenye u,s,t:
             jaribu:
                 b.__next__()
-            except:
+            tatizo:
                 done += 1
         ikiwa done == 3:
             koma

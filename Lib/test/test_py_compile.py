@@ -54,7 +54,7 @@ kundi PyCompileTestsBase:
         self.directory = tempfile.mkdtemp()
         self.source_path = os.path.join(self.directory, '_test.py')
         self.pyc_path = self.source_path + 'c'
-        self.cache_path = importlib.util.cache_kutoka_source(self.source_path)
+        self.cache_path = importlib.util.cache_from_source(self.source_path)
         self.cwd_drive = os.path.splitdrive(os.getcwd())[0]
         # In these tests we compute relative paths.  When using Windows, the
         # current working directory path na the 'self.source_path' might be
@@ -88,7 +88,7 @@ kundi PyCompileTestsBase:
             ukijumuisha self.assertRaises(FileExistsError):
                 py_compile.compile(self.source_path, self.pyc_path)
 
-    @unittest.skipIf(not os.path.exists(os.devnull) ama os.path.isfile(os.devnull),
+    @unittest.skipIf(sio os.path.exists(os.devnull) ama os.path.isfile(os.devnull),
                      'requires os.devnull na kila it to be a non-regular file')
     eleza test_do_not_overwrite_nonregular_files(self):
         # In the face of a cfile argument being a non-regular file, bail out.
@@ -134,7 +134,7 @@ kundi PyCompileTestsBase:
         ukijumuisha support.captured_stderr():
             self.assertIsTupu(py_compile.compile(bad_coding, doashiria=Uongo))
         self.assertUongo(os.path.exists(
-            importlib.util.cache_kutoka_source(bad_coding)))
+            importlib.util.cache_from_source(bad_coding)))
 
     eleza test_source_date_epoch(self):
         py_compile.compile(self.source_path, self.pyc_path)
@@ -155,7 +155,7 @@ kundi PyCompileTestsBase:
         # http://bugs.python.org/issue22966
         # py_compile foo.bar.py -> __pycache__/foo.cpython-34.pyc
         weird_path = os.path.join(self.directory, 'foo.bar.py')
-        cache_path = importlib.util.cache_kutoka_source(weird_path)
+        cache_path = importlib.util.cache_from_source(weird_path)
         pyc_path = weird_path + 'c'
         head, tail = os.path.split(cache_path)
         penultimate_tail = os.path.basename(head)

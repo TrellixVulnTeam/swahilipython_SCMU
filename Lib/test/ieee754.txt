@@ -19,7 +19,7 @@ is small than epsilon.
 NaNs na INFs
 =============
 
-In Python 2.6 na newer NaNs (not a number) na infinity can be constructed
+In Python 2.6 na newer NaNs (sio a number) na infinity can be constructed
 kutoka the strings 'inf' na 'nan'.
 
 >>> INF = float('inf')

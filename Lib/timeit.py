@@ -115,7 +115,7 @@ kundi Timer:
             stmtprefix = ''
             setup = '_setup()'
         isipokua:
-            raise ValueError("setup is neither a string nor callable")
+            ashiria ValueError("setup is neither a string nor callable")
         if isinstance(stmt, str):
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
@@ -125,7 +125,7 @@ kundi Timer:
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
         isipokua:
-            raise ValueError("stmt is neither a string nor callable")
+            ashiria ValueError("stmt is neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save for traceback display
         code = compile(src, dummy_src_name, "exec")
@@ -140,7 +140,7 @@ kundi Timer:
             t = Timer(...)       # outside the try/except
             jaribu:
                 t.timeit(...)    # or t.repeat(...)
-            except:
+            tatizo:
                 t.print_exc()
 
         The advantage over the standard traceback is that source lines
@@ -155,18 +155,18 @@ kundi Timer:
                                                None,
                                                self.src.split("\n"),
                                                dummy_src_name)
-        # isipokua the source is already stored somewhere else
+        # isipokua the source is already stored somewhere ama
 
         traceback.print_exc(file=file)
 
     def timeit(self, number=default_number):
         """Time 'number' executions of the main statement.
 
-        To be precise, this executes the setup statement once, and
+        To be precise, this executes the setup statement once, na
         then returns the time it takes to execute the main statement
         a number of times, as a float measured in seconds.  The
         argument is the number of times through the loop, defaulting
-        to one million.  The main statement, the setup statement and
+        to one million.  The main statement, the setup statement na
         the timer function to be used are passed to the constructor.
         """
         it = itertools.repeat(None, number)
@@ -267,7 +267,7 @@ def main(args=None, *, _wrap_timer=None):
         return 2
 
     timer = default_timer
-    stmt = "\n".join(args) or "pass"
+    stmt = "\n".join(args) ama "pass"
     number = 0 # auto-determine
     setup = []
     repeat = default_repeat
@@ -300,7 +300,7 @@ def main(args=None, *, _wrap_timer=None):
         if o in ("-h", "--help"):
             print(__doc__, end=' ')
             return 0
-    setup = "\n".join(setup) or "pass"
+    setup = "\n".join(setup) ama "pass"
 
     # Include the current directory, so that local agizas work (sys.path
     # contains the directory of this script, rather than the current
@@ -322,7 +322,7 @@ def main(args=None, *, _wrap_timer=None):
                                   secs=time_taken, prec=precision))
         jaribu:
             number, _ = t.autorange(callback)
-        except:
+        tatizo:
             t.print_exc()
             return 1
 
@@ -331,7 +331,7 @@ def main(args=None, *, _wrap_timer=None):
 
     jaribu:
         raw_timings = t.repeat(repeat, number)
-    except:
+    tatizo:
         t.print_exc()
         return 1
 

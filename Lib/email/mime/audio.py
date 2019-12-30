@@ -67,7 +67,7 @@ class MIMEAudio(MIMENonMultipart):
         if _subtype is None:
             _subtype = _whatsnd(_audiodata)
         if _subtype is None:
-            raise TypeError('Could sio find audio MIME subtype')
+            ashiria TypeError('Could sio find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_audiodata)

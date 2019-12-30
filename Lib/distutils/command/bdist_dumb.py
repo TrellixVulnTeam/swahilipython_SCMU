@@ -1,7 +1,7 @@
 """distutils.command.bdist_dumb
 
 Implements the Distutils 'bdist_dumb' command (create a "dumb" built
-distribution -- i.e., just an archive to be unpacked under $prefix or
+distribution -- i.e., just an archive to be unpacked under $prefix ama
 $exec_prefix)."""
 
 import os
@@ -67,7 +67,7 @@ class bdist_dumb(Command):
             jaribu:
                 self.format = self.default_format[os.name]
             tatizo KeyError:
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                        "don't know how to create dumb built distributions "
                        "on platform %s" % os.name)
 
@@ -97,9 +97,9 @@ class bdist_dumb(Command):
         if sio self.relative:
             archive_root = self.bdist_dir
         isipokua:
-            if (self.distribution.has_ext_modules() and
+            if (self.distribution.has_ext_modules() na
                 (install.install_base != install.install_platbase)):
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                        "can't make a dumb built distribution where "
                        "base and platbase are different (%s, %s)"
                        % (repr(install.install_base),

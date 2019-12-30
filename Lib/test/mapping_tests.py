@@ -134,7 +134,7 @@ kundi BasicTestMappingProtocol(unittest.TestCase):
         self.assertEqual(self._empty_mapping(), self._empty_mapping())
 
     eleza test_bool(self):
-        self.assertKweli(not self._empty_mapping())
+        self.assertKweli(sio self._empty_mapping())
         self.assertKweli(self.reference)
         self.assertKweli(bool(self._empty_mapping()) ni Uongo)
         self.assertKweli(bool(self.reference) ni Kweli)
@@ -310,7 +310,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
 
     eleza test_bool(self):
         BasicTestMappingProtocol.test_bool(self)
-        self.assertKweli(not self._empty_mapping())
+        self.assertKweli(sio self._empty_mapping())
         self.assertKweli(self._full_mapping({"x": "y"}))
         self.assertKweli(bool(self._empty_mapping()) ni Uongo)
         self.assertKweli(bool(self._full_mapping({"x": "y"})) ni Kweli)
@@ -339,7 +339,7 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
     eleza test_contains(self):
         d = self._empty_mapping()
         self.assertNotIn('a', d)
-        self.assertKweli(not ('a' kwenye d))
+        self.assertKweli(sio ('a' kwenye d))
         self.assertKweli('a' haiko kwenye d)
         d = self._full_mapping({'a': 1, 'b': 2})
         self.assertIn('a', d)
@@ -518,8 +518,8 @@ kundi TestMappingProtocol(BasicTestMappingProtocol):
                     kb, vb = tb = b.popitem()
                     self.assertEqual(vb, int(kb))
                     self.assertKweli(not(copymode < 0 na ta != tb))
-                self.assertKweli(not a)
-                self.assertKweli(not b)
+                self.assertKweli(sio a)
+                self.assertKweli(sio b)
 
     eleza test_pop(self):
         BasicTestMappingProtocol.test_pop(self)

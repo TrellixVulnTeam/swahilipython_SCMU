@@ -79,7 +79,7 @@ kundi UUID:
     Converting a UUID to a string ukijumuisha str() tumas something kwenye the form
     '12345678-1234-1234-1234-123456789abc'.  The UUID constructor accepts
     five possible forms: a similar string of hexadecimal digits, ama a tuple
-    of six integer fields (ukijumuisha 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, and
+    of six integer fields (ukijumuisha 32-bit, 16-bit, 16-bit, 8-bit, 8-bit, na
     48-bit values respectively) kama an argument named 'fields', ama a string
     of 16 bytes (ukijumuisha all the integer fields kwenye big-endian order) kama an
     argument named 'bytes', ama a string of 16 bytes (ukijumuisha the first three
@@ -500,7 +500,7 @@ eleza _ipconfig_getnode():
         buffer = ctypes.create_string_buffer(300)
         ctypes.windll.kernel32.GetSystemDirectoryA(buffer, 300)
         dirs.insert(0, buffer.value.decode('mbcs'))
-    except:
+    tatizo:
         pita
     kila dir kwenye dirs:
         jaribu:
@@ -638,7 +638,7 @@ eleza _load_system_functions():
         # on the box.
         jaribu:
             lib = ctypes.windll.rpcrt4
-        except:
+        tatizo:
             lib = Tupu
         _UuidCreate = getattr(lib, 'UuidCreateSequential',
                               getattr(lib, 'UuidCreate', Tupu))
@@ -666,7 +666,7 @@ eleza _windll_getnode():
 
 eleza _random_getnode():
     """Get a random node ID."""
-    # RFC 4122, $4.1.6 says "For systems ukijumuisha no IEEE address, a randomly or
+    # RFC 4122, $4.1.6 says "For systems ukijumuisha no IEEE address, a randomly ama
     # pseudo-randomly generated value may be used; see Section 4.5.  The
     # multicast bit must be set kwenye such addresses, kwenye order that they will
     # never conflict ukijumuisha addresses obtained kutoka network cards."
@@ -721,7 +721,7 @@ eleza getnode(*, getters=Tupu):
     kila getter kwenye _GETTERS + [_random_getnode]:
         jaribu:
             _node = getter()
-        except:
+        tatizo:
             endelea
         ikiwa (_node ni sio Tupu) na (0 <= _node < (1 << 48)):
             rudisha _node

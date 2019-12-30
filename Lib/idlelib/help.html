@@ -121,7 +121,7 @@ of global na local namespaces</p></li>
 <div class="section" id="menus">
 <h2>Menus<a class="headerlink" href="#menus" title="Permalink to this headline">¶</a></h2>
 <p>IDLE has two main window types, the Shell window na the Editor window.  It is
-possible to have multiple editor windows simultaneously.  On Windows and
+possible to have multiple editor windows simultaneously.  On Windows na
 Linux, each has its own top menu.  Each menu documented below indicates
 which window type it ni associated with.</p>
 <p>Output windows, such kama used kila Edit =&gt; Find kwenye Files, are a subtype of editor
@@ -234,7 +234,7 @@ Editing na navigation section below.</p>
 <dt>New Indent Width</dt><dd><p>Open a dialog to change indent width. The accepted default by the Python
 community ni 4 spaces.</p>
 </dd>
-<dt>Format Paragraph</dt><dd><p>Reformat the current blank-line-delimited paragraph kwenye comment block or
+<dt>Format Paragraph</dt><dd><p>Reformat the current blank-line-delimited paragraph kwenye comment block ama
 multiline string ama selected line kwenye a string.  All lines kwenye the
 paragraph will be formatted to less than N columns, where N defaults to 72.</p>
 </dd>
@@ -264,7 +264,7 @@ on a command line. The module can be run kwenye the Shell without restarting.</p
 </dl>
 <dl class="simple" id="check-module">
 <dt>Check Module</dt><dd><p>Check the syntax of the module currently open kwenye the Editor window. If the
-module has sio been saved IDLE will either prompt the user to save or
+module has sio been saved IDLE will either prompt the user to save ama
 autosave, kama selected kwenye the General tab of the Idle Settings dialog.  If
 there ni a syntax error, the approximate location ni indicated kwenye the
 Editor window.</p>
@@ -316,7 +316,7 @@ access to locals na globals.</p>
 <h3>Options menu (Shell na Editor)<a class="headerlink" href="#options-menu-shell-and-editor" title="Permalink to this headline">¶</a></h3>
 <dl class="simple">
 <dt>Configure IDLE</dt><dd><p>Open a configuration dialog na change preferences kila the following:
-fonts, indentation, keybindings, text color themes, startup windows and
+fonts, indentation, keybindings, text color themes, startup windows na
 size, additional help sources, na extensions.  On macOS, open the
 configuration dialog by selecting Preferences kwenye the application
 menu. For more details, see
@@ -354,7 +354,7 @@ no effect when a window ni maximized.</p>
 <dl class="simple">
 <dt>About IDLE</dt><dd><p>Display version, copyright, license, credits, na more.</p>
 </dd>
-<dt>IDLE Help</dt><dd><p>Display this IDLE document, detailing the menu options, basic editing and
+<dt>IDLE Help</dt><dd><p>Display this IDLE document, detailing the menu options, basic editing na
 navigation, na other tips.</p>
 </dd>
 <dt>Python Docs</dt><dd><p>Access local Python documentation, ikiwa installed, ama start a web browser
@@ -418,7 +418,7 @@ and that other files do not.  Run Python code ukijumuisha the Run menu.</p>
 </div>
 <div class="section" id="key-bindings">
 <h3>Key bindings<a class="headerlink" href="#key-bindings" title="Permalink to this headline">¶</a></h3>
-<p>In this section, ‘C’ refers to the <kbd class="kbd docutils literal notranslate">Control</kbd> key on Windows na Unix and
+<p>In this section, ‘C’ refers to the <kbd class="kbd docutils literal notranslate">Control</kbd> key on Windows na Unix na
 the <kbd class="kbd docutils literal notranslate">Command</kbd> key on macOS.</p>
 <ul>
 <li><p><kbd class="kbd docutils literal notranslate">Backspace</kbd> deletes to the left; <kbd class="kbd docutils literal notranslate">Del</kbd> deletes to the right</p></li>
@@ -473,12 +473,12 @@ the ACW will open immediately ikiwa a possible continuation ni found.</p>
 <p>‘Show Completions’ will force open a completions window, by default the
 <kbd class="kbd docutils literal notranslate">C-space</kbd> will open a completions window. In an empty
 string, this will contain the files kwenye the current directory. On a
-blank line, it will contain the built-in na user-defined functions and
+blank line, it will contain the built-in na user-defined functions na
 classes kwenye the current namespaces, plus any modules imported. If some
 characters have been entered, the ACW will attempt to be more specific.</p>
 <p>If a string of characters ni typed, the ACW selection will jump to the
 entry most closely matching those characters.  Entering a <kbd class="kbd docutils literal notranslate">tab</kbd> will
-cause the longest non-ambiguous match to be entered kwenye the Editor window or
+cause the longest non-ambiguous match to be entered kwenye the Editor window ama
 Shell.  Two <kbd class="kbd docutils literal notranslate">tab</kbd> kwenye a row will supply the current ACW selection, as
 will rudisha ama a double click.  Cursor keys, Page Up/Down, mouse selection,
 and the scroll wheel all operate on the ACW.</p>
@@ -559,14 +559,14 @@ macOS use <kbd class="kbd docutils literal notranslate">C-p</kbd>.</p></li>
 <div class="section" id="text-colors">
 <h3>Text colors<a class="headerlink" href="#text-colors" title="Permalink to this headline">¶</a></h3>
 <p>Idle defaults to black on white text, but colors text ukijumuisha special meanings.
-For the shell, these are shell output, shell error, user output, and
+For the shell, these are shell output, shell error, user output, na
 user error.  For Python code, at the shell prompt ama kwenye an editor, these are
-keywords, builtin kundi na function names, names following <code class="docutils literal notranslate"><span class="pre">class</span></code> and
+keywords, builtin kundi na function names, names following <code class="docutils literal notranslate"><span class="pre">class</span></code> na
 <code class="docutils literal notranslate"><span class="pre">def</span></code>, strings, na comments. For any text window, these are the cursor (when
 present), found text (when possible), na selected text.</p>
 <p>Text coloring ni done kwenye the background, so uncolorized text ni occasionally
 visible.  To change the color scheme, use the Configure IDLE dialog
-Highlighting tab.  The marking of debugger komapoint lines kwenye the editor and
+Highlighting tab.  The marking of debugger komapoint lines kwenye the editor na
 text kwenye popups na dialogs ni sio user-configurable.</p>
 </div>
 </div>
@@ -605,7 +605,7 @@ functions to be used kutoka IDLE’s Python shell.</p>
 <code class="docutils literal notranslate"><span class="pre">sys.argv[1:...]</span></code> na <code class="docutils literal notranslate"><span class="pre">sys.argv[0]</span></code> ni set to <code class="docutils literal notranslate"><span class="pre">''</span></code>, <code class="docutils literal notranslate"><span class="pre">'-c'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'-r'</span></code>.  No editor window ni opened, even ikiwa that ni the default
 set kwenye the Options dialog.</p></li>
-<li><p>Otherwise, arguments are files opened kila editing and
+<li><p>Otherwise, arguments are files opened kila editing na
 <code class="docutils literal notranslate"><span class="pre">sys.argv</span></code> reflects the arguments pitaed to IDLE itself.</p></li>
 </ul>
 </div>
@@ -657,7 +657,7 @@ and <code class="docutils literal notranslate"><span class="pre">threading.activ
 the user interface process that runs the shell na editor.  In the execution
 process, it replaces <code class="docutils literal notranslate"><span class="pre">sys.stdin</span></code>, <code class="docutils literal notranslate"><span class="pre">sys.stdout</span></code>, na <code class="docutils literal notranslate"><span class="pre">sys.stderr</span></code>
 ukijumuisha objects that get input kutoka na send output to the Shell window.
-The original values stored kwenye <code class="docutils literal notranslate"><span class="pre">sys.__stdin__</span></code>, <code class="docutils literal notranslate"><span class="pre">sys.__stdout__</span></code>, and
+The original values stored kwenye <code class="docutils literal notranslate"><span class="pre">sys.__stdin__</span></code>, <code class="docutils literal notranslate"><span class="pre">sys.__stdout__</span></code>, na
 <code class="docutils literal notranslate"><span class="pre">sys.__stderr__</span></code> are sio touched, but may be <code class="docutils literal notranslate"><span class="pre">Tupu</span></code>.</p>
 <p>When Shell has the focus, it controls the keyboard na screen.  This is
 normally transparent, but functions that directly access the keyboard
@@ -670,7 +670,7 @@ or <code class="docutils literal notranslate"><span class="pre">print</span></co
 IDLE should be started kwenye a command line window.  The secondary subprocess
 will then be attached to that window kila input na output.</p>
 <p>The IDLE code running kwenye the execution process adds frames to the call stack
-that would sio be there otherwise.  IDLE wraps <code class="docutils literal notranslate"><span class="pre">sys.getrecursionlimit</span></code> and
+that would sio be there otherwise.  IDLE wraps <code class="docutils literal notranslate"><span class="pre">sys.getrecursionlimit</span></code> na
 <code class="docutils literal notranslate"><span class="pre">sys.setrecursionlimit</span></code> to reduce the effect of the additional stack frames.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">sys</span></code> ni reset by user code, such kama ukijumuisha <code class="docutils literal notranslate"><span class="pre">importlib.reload(sys)</span></code>,
 IDLE’s changes are lost na input kutoka the keyboard na output to the screen
@@ -769,7 +769,7 @@ Python execution server.  This can be useful ikiwa Python cannot create
 the subprocess ama the RPC socket interface on your platform.  However,
 in this mode user code ni sio isolated kutoka IDLE itself.  Also, the
 environment ni sio restarted when Run/Run Module (F5) ni selected.  If
-your code has been modified, you must reload() the affected modules and
+your code has been modified, you must reload() the affected modules na
 re-agiza any specific items (e.g. kutoka foo agiza baz) ikiwa the changes
 are to take effect.  For these reasons, it ni preferable to run IDLE
 ukijumuisha the default subprocess ikiwa at all possible.</p>

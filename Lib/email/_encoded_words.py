@@ -159,8 +159,8 @@ def decode(ew):
     where '*lang' may be omitted but the other parts may sio be.
 
     This function expects exactly such a string (that is, it does sio check the
-    syntax and may raise errors if the string ni sio well formed), and returns
-    the encoded_string decoded first kutoka its Content Transfer Encoding and
+    syntax and may ashiria errors if the string ni sio well formed), and returns
+    the encoded_string decoded first kutoka its Content Transfer Encoding na
     then kutoka the resulting bytes into unicode using the specified charset.  If
     the cte-decoded string does sio successfully decode using the specified
     character set, a defect is added to the defects list and the unknown octets

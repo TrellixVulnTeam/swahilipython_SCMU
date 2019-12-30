@@ -45,7 +45,7 @@ kundi TestingImporter(abc.MetaPathFinder, abc.Loader):
     eleza find_spec(self, name, path, target=Tupu):
         ikiwa name != self.module_name:
             rudisha Tupu
-        rudisha util.spec_kutoka_loader(name, util.LazyLoader(self))
+        rudisha util.spec_from_loader(name, util.LazyLoader(self))
 
     eleza exec_module(self, module):
         exec(self.source_code, module.__dict__)
@@ -63,7 +63,7 @@ kundi LazyLoaderTests(unittest.TestCase):
         loader = TestingImporter()
         ikiwa source_code ni sio Tupu:
             loader.source_code = source_code
-        spec = util.spec_kutoka_loader(TestingImporter.module_name,
+        spec = util.spec_from_loader(TestingImporter.module_name,
                                      util.LazyLoader(loader))
         module = spec.loader.create_module(spec)
         ikiwa module ni Tupu:

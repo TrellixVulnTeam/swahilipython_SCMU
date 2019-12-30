@@ -150,7 +150,7 @@ eleza list_public_methods(obj):
     object, which represent callable attributes"""
 
     rudisha [member kila member kwenye dir(obj)
-                ikiwa sio member.startswith('_') and
+                ikiwa sio member.startswith('_') na
                     callable(getattr(obj, member))]
 
 kundi SimpleXMLRPCDispatcher:
@@ -176,7 +176,7 @@ kundi SimpleXMLRPCDispatcher:
         Only one instance can be installed at a time.
 
         If the registered instance has a _dispatch method then that
-        method will be called ukijumuisha the name of the XML-RPC method and
+        method will be called ukijumuisha the name of the XML-RPC method na
         its parameters kama a tuple
         e.g. instance._dispatch('add',(2,3))
 
@@ -268,7 +268,7 @@ kundi SimpleXMLRPCDispatcher:
         tatizo Fault kama fault:
             response = dumps(fault, allow_none=self.allow_none,
                              encoding=self.encoding)
-        except:
+        tatizo:
             # report exception back to server
             exc_type, exc_value, exc_tb = sys.exc_info()
             jaribu:
@@ -368,7 +368,7 @@ kundi SimpleXMLRPCDispatcher:
                     {'faultCode' : fault.faultCode,
                      'faultString' : fault.faultString}
                     )
-            except:
+            tatizo:
                 exc_type, exc_value, exc_tb = sys.exc_info()
                 jaribu:
                     results.append(
@@ -389,7 +389,7 @@ kundi SimpleXMLRPCDispatcher:
         ikiwa available.
 
         If the registered instance has a _dispatch method then that
-        method will be called ukijumuisha the name of the XML-RPC method and
+        method will be called ukijumuisha the name of the XML-RPC method na
         its parameters kama a tuple
         e.g. instance._dispatch('add',(2,3))
 
@@ -634,7 +634,7 @@ kundi MultiPathXMLRPCServer(SimpleXMLRPCServer):
         jaribu:
             response = self.dispatchers[path]._marshaled_dispatch(
                data, dispatch_method, path)
-        except:
+        tatizo:
             # report low level exception back to server
             # (each dispatcher should have handled their own
             # exceptions)

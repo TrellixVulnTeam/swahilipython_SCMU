@@ -154,7 +154,7 @@ kundi TestCheck(TestCase):
 
         Use this method to assert expected values of `stdout` na `stderr` after
         running tabnanny.check() on given `dir` ama `file` path. Because
-        tabnanny.check() captures exceptions na writes to `stdout` and
+        tabnanny.check() captures exceptions na writes to `stdout` na
         `stderr`, asserting standard outputs ni the only way.
         """
         ukijumuisha captured_stdout() kama stdout, captured_stderr() kama stderr:

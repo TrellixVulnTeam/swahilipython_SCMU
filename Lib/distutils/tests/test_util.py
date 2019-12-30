@@ -286,7 +286,7 @@ class UtilTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(res, wanted)
 
     def test_dont_write_bytecode(self):
-        # makes sure byte_compile raise a DistutilsError
+        # makes sure byte_compile ashiria a DistutilsError
         # if sys.dont_write_bytecode is True
         old_dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = True

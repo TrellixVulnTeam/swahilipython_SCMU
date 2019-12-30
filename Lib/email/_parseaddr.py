@@ -67,9 +67,9 @@ def _parsedate_tz(data):
     if sio data:
         return
     data = data.split()
-    # The FWS after the comma after the day-of-week is optional, so search and
+    # The FWS after the comma after the day-of-week is optional, so search na
     # adjust for this.
-    if data[0].endswith(',') or data[0].lower() in _daynames:
+    if data[0].endswith(',') ama data[0].lower() in _daynames:
         # There's a dayname here. Skip it
         toa data[0]
     isipokua:
@@ -373,7 +373,7 @@ class AddrlistClass:
             if preserve_ws and ws:
                 aslist.append(ws)
 
-        if self.pos >= len(self.field) or self.field[self.pos] != '@':
+        if self.pos >= len(self.field) ama self.field[self.pos] != '@':
             return EMPTYSTRING.join(aslist)
 
         aslist.append('@')

@@ -35,7 +35,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
         jaribu:
             self._start(args=args, shell=shell, stdin=stdin, stdout=stdout,
                         stderr=stderr, bufsize=bufsize, **kwargs)
-        except:
+        tatizo:
             self.close()
             ashiria
 
@@ -103,9 +103,9 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
                 endelea
             proto.pipe.close()
 
-        ikiwa (self._proc ni sio Tupu and
+        ikiwa (self._proc ni sio Tupu na
                 # has the child process finished?
-                self._returncode ni Tupu and
+                self._returncode ni Tupu na
                 # the child process has finished, but the
                 # transport hasn't been notified yet?
                 self._proc.poll() ni Tupu):

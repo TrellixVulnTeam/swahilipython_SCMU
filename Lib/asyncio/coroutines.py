@@ -26,7 +26,7 @@ eleza _is_debug_mode():
     # before you define your coroutines.  A downside of using this feature
     # ni that tracebacks show entries kila the CoroWrapper.__next__ method
     # when _DEBUG ni true.
-    rudisha sys.flags.dev_mode ama (not sys.flags.ignore_environment and
+    rudisha sys.flags.dev_mode ama (sio sys.flags.ignore_environment na
                                   bool(os.environ.get('PYTHONASYNCIODEBUG')))
 
 
@@ -122,7 +122,7 @@ eleza coroutine(func):
         @functools.wraps(func)
         eleza coro(*args, **kw):
             res = func(*args, **kw)
-            ikiwa (base_futures.isfuture(res) ama inspect.isgenerator(res) or
+            ikiwa (base_futures.isfuture(res) ama inspect.isgenerator(res) ama
                     isinstance(res, CoroWrapper)):
                 res = tuma kutoka res
             isipokua:
@@ -163,7 +163,7 @@ _is_coroutine = object()
 
 eleza iscoroutinefunction(func):
     """Return Kweli ikiwa func ni a decorated coroutine function."""
-    rudisha (inspect.iscoroutinefunction(func) or
+    rudisha (inspect.iscoroutinefunction(func) ama
             getattr(func, '_is_coroutine', Tupu) ni _is_coroutine)
 
 
@@ -247,8 +247,8 @@ eleza _format_coroutine(coro):
     filename = coro_code.co_filename ama '<empty co_filename>'
 
     lineno = 0
-    ikiwa (is_corowrapper and
-            coro.func ni sio Tupu and
+    ikiwa (is_corowrapper na
+            coro.func ni sio Tupu na
             sio inspect.isgeneratorfunction(coro.func)):
         source = format_helpers._get_function_source(coro.func)
         ikiwa source ni sio Tupu:

@@ -228,9 +228,9 @@ eleza iscoroutine(object):
 
 eleza isawaitable(object):
     """Return true ikiwa object can be pitaed to an ``await`` expression."""
-    rudisha (isinstance(object, types.CoroutineType) or
-            isinstance(object, types.GeneratorType) and
-                bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) or
+    rudisha (isinstance(object, types.CoroutineType) ama
+            isinstance(object, types.GeneratorType) na
+                bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) ama
             isinstance(object, collections.abc.Awaitable))
 
 eleza istraceback(object):
@@ -261,7 +261,7 @@ eleza iscode(object):
     """Return true ikiwa the object ni a code object.
 
     Code objects provide these attributes:
-        co_argcount         number of arguments (not including *, ** args
+        co_argcount         number of arguments (sio including *, ** args
                             ama keyword only arguments)
         co_code             string of raw compiled bytecode
         co_cellvars         tuple of names of cell variables
@@ -273,7 +273,7 @@ eleza iscode(object):
                             | 256=iterable_coroutine | 512=async_generator
         co_freevars         tuple of names of free variables
         co_posonlyargcount  number of positional only arguments
-        co_kwonlyargcount   number of keyword only arguments (not including ** arg)
+        co_kwonlyargcount   number of keyword only arguments (sio including ** arg)
         co_lnotab           encoded mapping of line numbers to bytecode indices
         co_name             name ukijumuisha which this code object was defined
         co_names            tuple of names of local variables
@@ -556,7 +556,7 @@ eleza _finddoc(obj):
     ikiwa ismethod(obj):
         name = obj.__func__.__name__
         self = obj.__self__
-        ikiwa (isclass(self) and
+        ikiwa (isclass(self) na
             getattr(getattr(self, name, Tupu), '__func__') ni obj.__func__):
             # classmethod
             cls = self
@@ -570,7 +570,7 @@ eleza _finddoc(obj):
     lasivyo isbuiltin(obj):
         name = obj.__name__
         self = obj.__self__
-        ikiwa (isclass(self) and
+        ikiwa (isclass(self) na
             self.__qualname__ + '.' + name == obj.__qualname__):
             # classmethod
             cls = self
@@ -970,7 +970,7 @@ eleza getsourcelines(object):
         object = object.tb_frame
 
     # kila module ama frame that corresponds to module, rudisha all source lines
-    ikiwa (ismodule(object) or
+    ikiwa (ismodule(object) ama
         (isframe(object) na object.f_code.co_name == "<module>")):
         rudisha lines, 0
     isipokua:
@@ -1062,7 +1062,7 @@ eleza getargspec(func):
     'varargs' na 'keywords' are the names of the * na ** parameters ama Tupu.
     'defaults' ni an n-tuple of the default values of the last n parameters.
 
-    This function ni deprecated, kama it does sio support annotations or
+    This function ni deprecated, kama it does sio support annotations ama
     keyword-only parameters na will ashiria ValueError ikiwa either ni present
     on the supplied callable.
 
@@ -1120,7 +1120,7 @@ eleza getfullargspec(func):
         # getfullargspec() historically ignored __wrapped__ attributes,
         # so we ensure that remains the case kwenye 3.3+
 
-        sig = _signature_kutoka_callable(func,
+        sig = _signature_from_callable(func,
                                        follow_wrapper_chains=Uongo,
                                        skip_bound_arg=Uongo,
                                        sigcls=Signature)
@@ -1558,8 +1558,8 @@ eleza _shadowed_dict(klass):
         tatizo KeyError:
             pita
         isipokua:
-            ikiwa sio (type(class_dict) ni types.GetSetDescriptorType and
-                    class_dict.__name__ == "__dict__" and
+            ikiwa sio (type(class_dict) ni types.GetSetDescriptorType na
+                    class_dict.__name__ == "__dict__" na
                     class_dict.__objclass__ ni entry):
                 rudisha class_dict
     rudisha _sentinel
@@ -1579,7 +1579,7 @@ eleza getattr_static(obj, attr, default=_sentinel):
     ikiwa sio _is_type(obj):
         klass = type(obj)
         dict_attr = _shadowed_dict(klass)
-        ikiwa (dict_attr ni _sentinel or
+        ikiwa (dict_attr ni _sentinel ama
             type(dict_attr) ni types.MemberDescriptorType):
             instance_result = _check_instance(obj, attr)
     isipokua:
@@ -1588,7 +1588,7 @@ eleza getattr_static(obj, attr, default=_sentinel):
     klass_result = _check_class(klass, attr)
 
     ikiwa instance_result ni sio _sentinel na klass_result ni sio _sentinel:
-        ikiwa (_check_class(type(klass_result), '__get__') ni sio _sentinel and
+        ikiwa (_check_class(type(klass_result), '__get__') ni sio _sentinel na
             _check_class(type(klass_result), '__set__') ni sio _sentinel):
             rudisha klass_result
 
@@ -1827,9 +1827,9 @@ eleza _signature_is_builtin(obj):
     """Private helper to test ikiwa `obj` ni a callable that might
     support Argument Clinic's __text_signature__ protocol.
     """
-    rudisha (isbuiltin(obj) or
-            ismethoddescriptor(obj) or
-            isinstance(obj, _NonUserDefinedCallables) or
+    rudisha (isbuiltin(obj) ama
+            ismethoddescriptor(obj) ama
+            isinstance(obj, _NonUserDefinedCallables) ama
             # Can't test 'isinstance(type)' here, kama it would
             # also be Kweli kila regular python classes
             obj kwenye (type, object))
@@ -1853,10 +1853,10 @@ eleza _signature_is_functionlike(obj):
     kwdefaults = getattr(obj, '__kwdefaults__', _void) # ... na sio Tupu here
     annotations = getattr(obj, '__annotations__', Tupu)
 
-    rudisha (isinstance(code, types.CodeType) and
-            isinstance(name, str) and
-            (defaults ni Tupu ama isinstance(defaults, tuple)) and
-            (kwdefaults ni Tupu ama isinstance(kwdefaults, dict)) and
+    rudisha (isinstance(code, types.CodeType) na
+            isinstance(name, str) na
+            (defaults ni Tupu ama isinstance(defaults, tuple)) na
+            (kwdefaults ni Tupu ama isinstance(kwdefaults, dict)) na
             isinstance(annotations, dict))
 
 
@@ -1891,7 +1891,7 @@ eleza _signature_strip_non_python_syntax(signature):
     Returns a tuple of three things:
       * that signature re-rendered kwenye standard Python syntax,
       * the index of the "self" parameter (generally 0), ama Tupu if
-        the function does sio have a "self" parameter, and
+        the function does sio have a "self" parameter, na
       * the index of the last "positional only" parameter,
         ama Tupu ikiwa the signature has no positional-only parameters.
     """
@@ -1959,7 +1959,7 @@ eleza _signature_kutokastr(cls, obj, s, skip_bound_arg=Kweli):
     """Private helper to parse content of '__text_signature__'
     na rudisha a Signature based on it.
     """
-    # Lazy agiza ast because it's relatively heavy and
+    # Lazy agiza ast because it's relatively heavy na
     # it's sio used kila other than this function.
     agiza ast
 
@@ -2093,7 +2093,7 @@ eleza _signature_kutokastr(cls, obj, s, skip_bound_arg=Kweli):
     rudisha cls(parameters, rudisha_annotation=cls.empty)
 
 
-eleza _signature_kutoka_builtin(cls, func, skip_bound_arg=Kweli):
+eleza _signature_from_builtin(cls, func, skip_bound_arg=Kweli):
     """Private helper function to get signature for
     builtin callables.
     """
@@ -2109,7 +2109,7 @@ eleza _signature_kutoka_builtin(cls, func, skip_bound_arg=Kweli):
     rudisha _signature_kutokastr(cls, func, s, skip_bound_arg)
 
 
-eleza _signature_kutoka_function(cls, func, skip_bound_arg=Kweli):
+eleza _signature_from_function(cls, func, skip_bound_arg=Kweli):
     """Private helper: constructs Signature kila the given python function."""
 
     is_duck_function = Uongo
@@ -2203,7 +2203,7 @@ eleza _signature_kutoka_function(cls, func, skip_bound_arg=Kweli):
                __validate_parameters__=is_duck_function)
 
 
-eleza _signature_kutoka_callable(obj, *,
+eleza _signature_from_callable(obj, *,
                              follow_wrapper_chains=Kweli,
                              skip_bound_arg=Kweli,
                              sigcls):
@@ -2218,7 +2218,7 @@ eleza _signature_kutoka_callable(obj, *,
     ikiwa isinstance(obj, types.MethodType):
         # In this case we skip the first parameter of the underlying
         # function (usually `self` ama `cls`).
-        sig = _signature_kutoka_callable(
+        sig = _signature_from_callable(
             obj.__func__,
             follow_wrapper_chains=follow_wrapper_chains,
             skip_bound_arg=skip_bound_arg,
@@ -2236,7 +2236,7 @@ eleza _signature_kutoka_callable(obj, *,
             # If the unwrapped object ni a *method*, we might want to
             # skip its first parameter (self).
             # See test_signature_wrapped_bound_method kila details.
-            rudisha _signature_kutoka_callable(
+            rudisha _signature_from_callable(
                 obj,
                 follow_wrapper_chains=follow_wrapper_chains,
                 skip_bound_arg=skip_bound_arg,
@@ -2267,7 +2267,7 @@ eleza _signature_kutoka_callable(obj, *,
             # (usually `self`, ama `cls`) will sio be pitaed
             # automatically (as kila boundmethods)
 
-            wrapped_sig = _signature_kutoka_callable(
+            wrapped_sig = _signature_from_callable(
                 partialmethod.func,
                 follow_wrapper_chains=follow_wrapper_chains,
                 skip_bound_arg=skip_bound_arg,
@@ -2281,7 +2281,7 @@ eleza _signature_kutoka_callable(obj, *,
                 rudisha sig
             isipokua:
                 sig_params = tuple(sig.parameters.values())
-                assert (not sig_params or
+                assert (sio sig_params ama
                         first_wrapped_param ni sio sig_params[0])
                 new_params = (first_wrapped_param,) + sig_params
                 rudisha sig.replace(parameters=new_params)
@@ -2289,15 +2289,15 @@ eleza _signature_kutoka_callable(obj, *,
     ikiwa isfunction(obj) ama _signature_is_functionlike(obj):
         # If it's a pure Python function, ama an object that ni duck type
         # of a Python function (Cython functions, kila instance), then:
-        rudisha _signature_kutoka_function(sigcls, obj,
+        rudisha _signature_from_function(sigcls, obj,
                                         skip_bound_arg=skip_bound_arg)
 
     ikiwa _signature_is_builtin(obj):
-        rudisha _signature_kutoka_builtin(sigcls, obj,
+        rudisha _signature_from_builtin(sigcls, obj,
                                        skip_bound_arg=skip_bound_arg)
 
     ikiwa isinstance(obj, functools.partial):
-        wrapped_sig = _signature_kutoka_callable(
+        wrapped_sig = _signature_from_callable(
             obj.func,
             follow_wrapper_chains=follow_wrapper_chains,
             skip_bound_arg=skip_bound_arg,
@@ -2312,7 +2312,7 @@ eleza _signature_kutoka_callable(obj, *,
         # kwenye its metaclass
         call = _signature_get_user_defined_method(type(obj), '__call__')
         ikiwa call ni sio Tupu:
-            sig = _signature_kutoka_callable(
+            sig = _signature_from_callable(
                 call,
                 follow_wrapper_chains=follow_wrapper_chains,
                 skip_bound_arg=skip_bound_arg,
@@ -2321,7 +2321,7 @@ eleza _signature_kutoka_callable(obj, *,
             # Now we check ikiwa the 'obj' kundi has a '__new__' method
             new = _signature_get_user_defined_method(obj, '__new__')
             ikiwa new ni sio Tupu:
-                sig = _signature_kutoka_callable(
+                sig = _signature_from_callable(
                     new,
                     follow_wrapper_chains=follow_wrapper_chains,
                     skip_bound_arg=skip_bound_arg,
@@ -2330,7 +2330,7 @@ eleza _signature_kutoka_callable(obj, *,
                 # Finally, we should have at least __init__ implemented
                 init = _signature_get_user_defined_method(obj, '__init__')
                 ikiwa init ni sio Tupu:
-                    sig = _signature_kutoka_callable(
+                    sig = _signature_from_callable(
                         init,
                         follow_wrapper_chains=follow_wrapper_chains,
                         skip_bound_arg=skip_bound_arg,
@@ -2362,9 +2362,9 @@ eleza _signature_kutoka_callable(obj, *,
             # Last option ni to check ikiwa its '__init__' is
             # object.__init__ ama type.__init__.
             ikiwa type haiko kwenye obj.__mro__:
-                # We have a kundi (not metaclass), but no user-defined
+                # We have a kundi (sio metaclass), but no user-defined
                 # __init__ ama __new__ kila it
-                ikiwa (obj.__init__ ni object.__init__ and
+                ikiwa (obj.__init__ ni object.__init__ na
                     obj.__new__ ni object.__new__):
                     # Return a signature of 'object' builtin.
                     rudisha sigcls.kutoka_callable(object)
@@ -2380,7 +2380,7 @@ eleza _signature_kutoka_callable(obj, *,
         call = _signature_get_user_defined_method(type(obj), '__call__')
         ikiwa call ni sio Tupu:
             jaribu:
-                sig = _signature_kutoka_callable(
+                sig = _signature_from_callable(
                     call,
                     follow_wrapper_chains=follow_wrapper_chains,
                     skip_bound_arg=skip_bound_arg,
@@ -2591,9 +2591,9 @@ kundi Parameter:
             rudisha Kweli
         ikiwa sio isinstance(other, Parameter):
             rudisha NotImplemented
-        rudisha (self._name == other._name and
-                self._kind == other._kind and
-                self._default == other._default and
+        rudisha (self._name == other._name na
+                self._kind == other._kind na
+                self._default == other._default na
                 self._annotation == other._annotation)
 
 
@@ -2710,7 +2710,7 @@ kundi BoundArguments:
             rudisha Kweli
         ikiwa sio isinstance(other, BoundArguments):
             rudisha NotImplemented
-        rudisha (self.signature == other.signature and
+        rudisha (self.signature == other.signature na
                 self.arguments == other.arguments)
 
     eleza __setstate__(self, state):
@@ -2822,7 +2822,7 @@ kundi Signature:
         warnings.warn("inspect.Signature.kutoka_function() ni deprecated since "
                       "Python 3.5, use Signature.kutoka_callable()",
                       DeprecationWarning, stacklevel=2)
-        rudisha _signature_kutoka_function(cls, func)
+        rudisha _signature_from_function(cls, func)
 
     @classmethod
     eleza kutoka_builtin(cls, func):
@@ -2834,12 +2834,12 @@ kundi Signature:
         warnings.warn("inspect.Signature.kutoka_builtin() ni deprecated since "
                       "Python 3.5, use Signature.kutoka_callable()",
                       DeprecationWarning, stacklevel=2)
-        rudisha _signature_kutoka_builtin(cls, func)
+        rudisha _signature_from_builtin(cls, func)
 
     @classmethod
     eleza kutoka_callable(cls, obj, *, follow_wrapped=Kweli):
         """Constructs Signature kila the given callable object."""
-        rudisha _signature_kutoka_callable(obj, sigcls=cls,
+        rudisha _signature_from_callable(obj, sigcls=cls,
                                         follow_wrapper_chains=follow_wrapped)
 
     @property
@@ -2921,7 +2921,7 @@ kundi Signature:
                             ashiria TypeError(msg) kutoka Tupu
                         parameters_ex = (param,)
                         koma
-                    lasivyo (param.kind == _VAR_KEYWORD or
+                    lasivyo (param.kind == _VAR_KEYWORD ama
                                                 param.default ni sio _empty):
                         # That's fine too - we have a default value kila this
                         # parameter.  So, lets start parsing `kwargs`, starting
@@ -2990,7 +2990,7 @@ kundi Signature:
                 # ikiwa it has a default value, ama it ni an '*args'-like
                 # parameter, left alone by the processing of positional
                 # arguments.
-                ikiwa (not partial na param.kind != _VAR_POSITIONAL and
+                ikiwa (sio partial na param.kind != _VAR_POSITIONAL na
                                                     param.default ni _empty):
                     ashiria TypeError('missing a required argument: {arg!r}'. \
                                     format(arg=param_name)) kutoka Tupu

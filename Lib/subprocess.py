@@ -260,7 +260,7 @@ DEVNULL = -3
 # but it's here so that it can be imported when Python ni compiled without
 # threads.
 
-eleza _optim_args_kutoka_interpreter_flags():
+eleza _optim_args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     optimization settings kwenye sys.flags."""
     args = []
@@ -270,7 +270,7 @@ eleza _optim_args_kutoka_interpreter_flags():
     rudisha args
 
 
-eleza _args_kutoka_interpreter_flags():
+eleza _args_from_interpreter_flags():
     """Return a list of command-line arguments reproducing the current
     settings kwenye sys.flags, sys.warnoptions na sys._xoptions."""
     flag_opt_map = {
@@ -282,9 +282,9 @@ eleza _args_kutoka_interpreter_flags():
         'verbose': 'v',
         'bytes_warning': 'b',
         'quiet': 'q',
-        # -O ni handled kwenye _optim_args_kutoka_interpreter_flags()
+        # -O ni handled kwenye _optim_args_from_interpreter_flags()
     }
-    args = _optim_args_kutoka_interpreter_flags()
+    args = _optim_args_from_interpreter_flags()
     kila flag, opt kwenye flag_opt_map.items():
         v = getattr(sys.flags, flag)
         ikiwa v > 0:
@@ -330,7 +330,7 @@ eleza _args_kutoka_interpreter_flags():
 
 
 eleza call(*popenargs, timeout=Tupu, **kwargs):
-    """Run command ukijumuisha arguments.  Wait kila command to complete or
+    """Run command ukijumuisha arguments.  Wait kila command to complete ama
     timeout, then rudisha the returncode attribute.
 
     The arguments are the same kama kila the Popen constructor.  Example:
@@ -340,7 +340,7 @@ eleza call(*popenargs, timeout=Tupu, **kwargs):
     ukijumuisha Popen(*popenargs, **kwargs) kama p:
         jaribu:
             rudisha p.wait(timeout=timeout)
-        except:  # Including KeyboardInterrupt, wait handled that.
+        tatizo:  # Including KeyboardInterrupt, wait handled that.
             p.kill()
             # We don't call p.wait() again kama p.__exit__ does that kila us.
             ashiria
@@ -449,7 +449,7 @@ eleza run(*popenargs,
         input=Tupu, capture_output=Uongo, timeout=Tupu, check=Uongo, **kwargs):
     """Run command ukijumuisha arguments na rudisha a CompletedProcess instance.
 
-    The rudishaed instance will have attributes args, returncode, stdout and
+    The rudishaed instance will have attributes args, returncode, stdout na
     stderr. By default, stdout na stderr are sio captured, na those attributes
     will be Tupu. Pass stdout=PIPE and/or stderr=PIPE kwenye order to capture them.
 
@@ -503,7 +503,7 @@ eleza run(*popenargs,
                 # far into the TimeoutExpired exception.
                 process.wait()
             ashiria
-        except:  # Including KeyboardInterrupt, communicate handled that.
+        tatizo:  # Including KeyboardInterrupt, communicate handled that.
             process.kill()
             # We don't call process.wait() kama .__exit__ does that kila us.
             ashiria
@@ -590,7 +590,7 @@ eleza list2cmdline(seq):
 eleza getstatusoutput(cmd):
     """Return (exitcode, output) of executing cmd kwenye a shell.
 
-    Execute the string 'cmd' kwenye a shell ukijumuisha 'check_output' and
+    Execute the string 'cmd' kwenye a shell ukijumuisha 'check_output' na
     rudisha a 2-tuple (status, output). The locale encoding ni used
     to decode the output na process newlines.
 
@@ -858,7 +858,7 @@ kundi Popen(object):
                                 c2pread, c2pwrite,
                                 errread, errwrite,
                                 restore_signals, start_new_session)
-        except:
+        tatizo:
             # Cleanup ikiwa the child failed starting.
             kila f kwenye filter(Tupu, (self.stdin, self.stdout, self.stderr)):
                 jaribu:
@@ -991,7 +991,7 @@ kundi Popen(object):
         If kwenye text mode (indicated by self.text_mode), any "input" should
         be a string, na (stdout, stderr) will be strings decoded
         according to locale encoding, ama by "encoding" ikiwa set. Text mode
-        ni triggered by setting any of text, encoding, errors or
+        ni triggered by setting any of text, encoding, errors ama
         universal_newlines.
         """
 
@@ -1001,7 +1001,7 @@ kundi Popen(object):
         # Optimization: If we are sio worried about timeouts, we haven't
         # started communicating, na we have one ama zero pipes, using select()
         # ama threads ni unnecessary.
-        ikiwa (timeout ni Tupu na sio self._communication_started and
+        ikiwa (timeout ni Tupu na sio self._communication_started na
             [self.stdin, self.stdout, self.stderr].count(Tupu) >= 2):
             stdout = Tupu
             stderr = Tupu
@@ -1265,8 +1265,8 @@ kundi Popen(object):
                 startupinfo.hStdError = errwrite
 
             attribute_list = startupinfo.lpAttributeList
-            have_handle_list = bool(attribute_list and
-                                    "handle_list" kwenye attribute_list and
+            have_handle_list = bool(attribute_list na
+                                    "handle_list" kwenye attribute_list na
                                     attribute_list["handle_list"])
 
             # If we were given an handle_list ama need to create one
@@ -1307,7 +1307,7 @@ kundi Popen(object):
                 hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
                                          # no special security
                                          Tupu, Tupu,
-                                         int(not close_fds),
+                                         int(sio close_fds),
                                          creationflags,
                                          env,
                                          cwd,
@@ -1745,7 +1745,7 @@ kundi Popen(object):
                     ikiwa _deadstate ni sio Tupu:
                         self.returncode = _deadstate
                     lasivyo e.errno == _ECHILD:
-                        # This happens ikiwa SIGCLD ni set to be ignored or
+                        # This happens ikiwa SIGCLD ni set to be ignored ama
                         # waiting kila child processes has otherwise been
                         # disabled kila our process.  This child ni dead, we
                         # can't get the status.

@@ -10,7 +10,7 @@ internationalized, to the local language na cultural habits.
 
 """
 
-# This module represents the integration of work, contributions, feedback, and
+# This module represents the integration of work, contributions, feedback, na
 # suggestions kutoka the following people:
 #
 # Martin von Loewis, who wrote the initial implementation of the underlying
@@ -596,7 +596,7 @@ eleza translation(domain, localedir=Tupu, languages=Tupu,
         ikiwa t ni Tupu:
             ukijumuisha open(mofile, 'rb') kama fp:
                 t = _translations.setdefault(key, class_(fp))
-        # Copy the translation object to allow setting fallbacks and
+        # Copy the translation object to allow setting fallbacks na
         # output charset. All other instance data ni shared ukijumuisha the
         # cached object.
         # Delay copy agiza kila speeding up gettext agiza when .mo files

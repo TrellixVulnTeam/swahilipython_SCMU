@@ -10,7 +10,7 @@ Interface summary:
 For module specific errors, copy.Error is raised.
 
 The difference between shallow and deep copying is only relevant for
-compound objects (objects that contain other objects, like lists or
+compound objects (objects that contain other objects, like lists ama
 kundi instances).
 
 - A shallow copy constructs a new compound object and then (to the
@@ -95,7 +95,7 @@ def copy(x):
             if reductor:
                 rv = reductor()
             isipokua:
-                raise Error("un(shallow)copyable object of type %s" % cls)
+                ashiria Error("un(shallow)copyable object of type %s" % cls)
 
     if isinstance(rv, str):
         return x
@@ -164,7 +164,7 @@ def deepcopy(x, memo=None, _nil=[]):
                         if reductor:
                             rv = reductor()
                         isipokua:
-                            raise Error(
+                            ashiria Error(
                                 "un(deep)copyable object of type %s" % cls)
                 if isinstance(rv, str):
                     y = x

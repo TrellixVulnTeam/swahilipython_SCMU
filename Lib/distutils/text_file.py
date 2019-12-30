@@ -43,7 +43,7 @@ class TextFile:
            strip trailing whitespace (including line terminator!) from
            each line before returning it
          skip_blanks [default: true}
-           skip lines that are empty *after* stripping comments and
+           skip lines that are empty *after* stripping comments na
            whitespace.  (If both lstrip_ws and rstrip_ws are false,
            then some lines may consist of solely whitespace: these will
            *not* be skipped, even if 'skip_blanks' is true.)
@@ -81,7 +81,7 @@ class TextFile:
            They keyword argument options are described above and affect
            the values returned by 'readline()'."""
         if filename is None and file is None:
-            raise RuntimeError("you must supply either or both of 'filename' and 'file'")
+            ashiria RuntimeError("you must supply either or both of 'filename' and 'file'")
 
         # set values for all options -- either from client option hash
         # or fallback to default_options
@@ -94,7 +94,7 @@ class TextFile:
         # sanity check client option hash
         for opt in options.keys():
             if opt haiko kwenye self.default_options:
-                raise KeyError("invalid TextFile option '%s'" % opt)
+                ashiria KeyError("invalid TextFile option '%s'" % opt)
 
         if file is None:
             self.open(filename)
@@ -137,7 +137,7 @@ class TextFile:
         return "".join(outmsg)
 
     def error(self, msg, line=None):
-        raise ValueError("error: " + self.gen_error(msg, line))
+        ashiria ValueError("error: " + self.gen_error(msg, line))
 
     def warn(self, msg, line=None):
         """Print (to stderr) a warning message tied to the current logical
@@ -179,9 +179,9 @@ class TextFile:
             if self.strip_comments and line:
 
                 # Look for the first "#" in the line.  If none, never
-                # mind.  If we find one and it's the first character, or
+                # mind.  If we find one and it's the first character, ama
                 # ni sio preceded by "\", then it starts a comment --
-                # strip the comment, strip whitespace before it, and
+                # strip the comment, strip whitespace before it, na
                 # carry on.  Otherwise, it's just an escaped "#", so
                 # unescape it (and any other escaped "#"'s that might be
                 # lurking in there) and otherwise leave the line alone.
@@ -243,7 +243,7 @@ class TextFile:
                 isipokua:
                     self.current_line = self.current_line + 1
 
-            # strip whitespace however the client wants (leading and
+            # strip whitespace however the client wants (leading na
             # trailing, or one or the other, or neither)
             if self.lstrip_ws and self.rstrip_ws:
                 line = line.strip()

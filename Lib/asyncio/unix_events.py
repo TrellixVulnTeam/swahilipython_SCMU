@@ -81,7 +81,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         Raise ValueError ikiwa the signal number ni invalid ama uncatchable.
         Raise RuntimeError ikiwa there ni a problem setting up the handler.
         """
-        ikiwa (coroutines.iscoroutine(callback) or
+        ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
             ashiria TypeError("coroutines cannot be used "
                             "ukijumuisha add_signal_handler()")
@@ -242,14 +242,14 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             jaribu:
                 sock.setblocking(Uongo)
                 await self.sock_connect(sock, path)
-            except:
+            tatizo:
                 sock.close()
                 ashiria
 
         isipokua:
             ikiwa sock ni Tupu:
                 ashiria ValueError('no path na sock were specified')
-            ikiwa (sock.family != socket.AF_UNIX or
+            ikiwa (sock.family != socket.AF_UNIX ama
                     sock.type != socket.SOCK_STREAM):
                 ashiria ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
@@ -303,7 +303,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                     ashiria OSError(errno.EADDRINUSE, msg) kutoka Tupu
                 isipokua:
                     ashiria
-            except:
+            tatizo:
                 sock.close()
                 ashiria
         isipokua:
@@ -311,7 +311,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 ashiria ValueError(
                     'path was sio specified, na no sock specified')
 
-            ikiwa (sock.family != socket.AF_UNIX or
+            ikiwa (sock.family != socket.AF_UNIX ama
                     sock.type != socket.SOCK_STREAM):
                 ashiria ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
@@ -378,8 +378,8 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                             fd, sock, fileno,
                             offset, count, blocksize, total_sent)
         tatizo OSError kama exc:
-            ikiwa (registered_fd ni sio Tupu and
-                    exc.errno == errno.ENOTCONN and
+            ikiwa (registered_fd ni sio Tupu na
+                    exc.errno == errno.ENOTCONN na
                     type(exc) ni sio ConnectionError):
                 # If we have an ENOTCONN na this isn't a first call to
                 # sendfile(), i.e. the connection was closed kwenye the middle
@@ -448,8 +448,8 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
         self._paused = Uongo
 
         mode = os.fstat(self._fileno).st_mode
-        ikiwa sio (stat.S_ISFIFO(mode) or
-                stat.S_ISSOCK(mode) or
+        ikiwa sio (stat.S_ISFIFO(mode) ama
+                stat.S_ISSOCK(mode) ama
                 stat.S_ISCHR(mode)):
             self._pipe = Tupu
             self._fileno = Tupu
@@ -802,7 +802,7 @@ kundi _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 kundi AbstractChildWatcher:
     """Abstract base kundi kila monitoring child processes.
 
-    Objects derived kutoka this kundi monitor a collection of subprocesses and
+    Objects derived kutoka this kundi monitor a collection of subprocesses na
     report their termination ama interruption by a signal.
 
     New callbacks are registered ukijumuisha .add_child_handler(). Starting a new
@@ -1353,7 +1353,7 @@ kundi _UnixDefaultEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
 
         super().set_event_loop(loop)
 
-        ikiwa (self._watcher ni sio Tupu and
+        ikiwa (self._watcher ni sio Tupu na
                 isinstance(threading.current_thread(), threading._MainThread)):
             self._watcher.attach_loop(loop)
 

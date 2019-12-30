@@ -283,7 +283,7 @@ ikiwa _winapi:
                     waitres = _winapi.WaitForMultipleObjects(
                         [ov.event], Uongo, INFINITE)
                     assert waitres == WAIT_OBJECT_0
-            except:
+            tatizo:
                 ov.cancel()
                 ashiria
             mwishowe:
@@ -305,7 +305,7 @@ ikiwa _winapi:
                             waitres = _winapi.WaitForMultipleObjects(
                                 [ov.event], Uongo, INFINITE)
                             assert waitres == WAIT_OBJECT_0
-                    except:
+                    tatizo:
                         ov.cancel()
                         ashiria
                     mwishowe:
@@ -324,7 +324,7 @@ ikiwa _winapi:
             ashiria RuntimeError("shouldn't get here; expected KeyboardInterrupt")
 
         eleza _poll(self, timeout):
-            ikiwa (self._got_empty_message or
+            ikiwa (self._got_empty_message ama
                         _winapi.PeekNamedPipe(self._handle)[0] != 0):
                 rudisha Kweli
             rudisha bool(wait([self], timeout))
@@ -347,7 +347,7 @@ ikiwa _winapi:
 
 kundi Connection(_ConnectionBase):
     """
-    Connection kundi based on an arbitrary file descriptor (Unix only), or
+    Connection kundi based on an arbitrary file descriptor (Unix only), ama
     a socket handle (Windows).
     """
 
@@ -676,7 +676,7 @@ ikiwa sys.platform == 'win32':
                 jaribu:
                     res = _winapi.WaitForMultipleObjects(
                         [ov.event], Uongo, INFINITE)
-                except:
+                tatizo:
                     ov.cancel()
                     _winapi.CloseHandle(handle)
                     ashiria
@@ -860,7 +860,7 @@ ikiwa sys.platform == 'win32':
                         ov_list.append(ov)
                         waithandle_to_obj[ov.event] = o
                     isipokua:
-                        # If o.fileno() ni an overlapped pipe handle and
+                        # If o.fileno() ni an overlapped pipe handle na
                         # err == 0 then there ni a zero length message
                         # kwenye the pipe, but it HAS NOT been consumed...
                         ikiwa ov na sys.getwindowsversion()[:2] >= (6, 2):

@@ -14,7 +14,7 @@ agiza weakref
 agiza atexit
 agiza threading        # we want threading to install it's
                         # cleanup function before multiprocessing does
-kutoka subprocess agiza _args_kutoka_interpreter_flags
+kutoka subprocess agiza _args_from_interpreter_flags
 
 kutoka . agiza process
 
@@ -321,7 +321,7 @@ eleza _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # then replaces all values kwenye the module dict ukijumuisha Tupu.
             # For instance, after setuptools runs a test it replaces
             # sys.modules ukijumuisha a copy created earlier.  See issues
-            # #9775 na #15881.  Also related: #4106, #9205, and
+            # #9775 na #15881.  Also related: #4106, #9205, na
             # #9207.
 
             kila p kwenye active_children():
@@ -397,7 +397,7 @@ eleza _close_stdin():
         fd = os.open(os.devnull, os.O_RDONLY)
         jaribu:
             sys.stdin = open(fd, closefd=Uongo)
-        except:
+        tatizo:
             os.close(fd)
             ashiria
     tatizo (OSError, ValueError):

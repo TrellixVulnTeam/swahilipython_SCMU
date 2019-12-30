@@ -57,7 +57,7 @@ kundi _SSLPipe(object):
         """
         The *context* argument specifies the ssl.SSLContext to use.
 
-        The *server_side* argument indicates whether this ni a server side or
+        The *server_side* argument indicates whether this ni a server side ama
         client side transport.
 
         The optional *server_hostname* argument can be used to specify the

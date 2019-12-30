@@ -27,7 +27,7 @@ def openfile(filename):
 jaribu:
     openfile('crispin-torture.txt')
 tatizo OSError:
-    raise unittest.SkipTest
+    ashiria unittest.SkipTest
 
 
 

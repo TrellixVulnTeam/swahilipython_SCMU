@@ -157,7 +157,7 @@ eleza digest(key, msg, digest):
 
     Note: key na msg must be a bytes ama bytearray objects.
     """
-    ikiwa (_hashopenssl ni sio Tupu and
+    ikiwa (_hashopenssl ni sio Tupu na
             isinstance(digest, str) na digest kwenye _openssl_md_meths):
         rudisha _hashopenssl.hmac_digest(key, msg, digest)
 

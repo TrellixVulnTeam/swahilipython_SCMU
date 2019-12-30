@@ -46,7 +46,7 @@
 #    0.7.2 - fixed architecture() to use sizeof(pointer) where available
 #    0.7.1 - added support kila Caldera OpenLinux
 #    0.7.0 - some fixes kila WinCE; untabified the source file
-#    0.6.2 - support kila OpenVMS - requires version 1.5.2-V006 ama higher and
+#    0.6.2 - support kila OpenVMS - requires version 1.5.2-V006 ama higher na
 #            vms_lib.getsyi() configured
 #    0.6.1 - added code to prevent 'uname -p' on platforms which are
 #            known sio to support it
@@ -220,7 +220,7 @@ eleza libc_ver(executable=Tupu, lib='', version='', chunksize=16384):
             lasivyo so:
                 ikiwa lib != 'glibc':
                     lib = 'libc'
-                    ikiwa soversion na (not version ama V(soversion) > V(version)):
+                    ikiwa soversion na (sio version ama V(soversion) > V(version)):
                         version = soversion
                     ikiwa threads na version[-len(threads):] != threads:
                         version = version + threads
@@ -365,8 +365,8 @@ eleza win32_ver(release='', version='', csd='', ptype=''):
     maj, min, build = winver.platform_version ama winver[:3]
     version = '{0}.{1}.{2}'.format(maj, min, build)
 
-    release = (_WIN32_CLIENT_RELEASES.get((maj, min)) or
-               _WIN32_CLIENT_RELEASES.get((maj, Tupu)) or
+    release = (_WIN32_CLIENT_RELEASES.get((maj, min)) ama
+               _WIN32_CLIENT_RELEASES.get((maj, Tupu)) ama
                release)
 
     # getwindowsversion() reflect the compatibility mode Python is
@@ -381,8 +381,8 @@ eleza win32_ver(release='', version='', csd='', ptype=''):
 
     # VER_NT_SERVER = 3
     ikiwa getattr(winver, 'product_type', Tupu) == 3:
-        release = (_WIN32_SERVER_RELEASES.get((maj, min)) or
-                   _WIN32_SERVER_RELEASES.get((maj, Tupu)) or
+        release = (_WIN32_SERVER_RELEASES.get((maj, min)) ama
+                   _WIN32_SERVER_RELEASES.get((maj, Tupu)) ama
                    release)
 
     jaribu:
@@ -397,7 +397,7 @@ eleza win32_ver(release='', version='', csd='', ptype=''):
             cvkey = r'SOFTWARE\Microsoft\Windows NT\CurrentVersion'
             ukijumuisha winreg.OpenKeyEx(HKEY_LOCAL_MACHINE, cvkey) kama key:
                 ptype = QueryValueEx(key, 'CurrentType')[0]
-        except:
+        tatizo:
             pita
 
     rudisha release, version, csd, ptype
@@ -535,7 +535,7 @@ eleza system_alias(system, release, version):
         # In case one of the other tricks
         system = 'Windows'
 
-    # bpo-35516: Don't replace Darwin ukijumuisha macOS since input release and
+    # bpo-35516: Don't replace Darwin ukijumuisha macOS since input release na
     # version arguments can be different than the currently running version.
 
     rudisha system, release, version
@@ -788,7 +788,7 @@ eleza uname():
                 use_syscmd_ver = 0
             # Try to use the PROCESSOR_* environment variables
             # available on Win XP na later; see
-            # http://support.microsoft.com/kb/888731 and
+            # http://support.microsoft.com/kb/888731 na
             # http://www.geocities.com/rick_lively/MANUALS/ENV/MSWIN/PROCESSI.HTM
             ikiwa sio machine:
                 # WOW64 processes mask the native architecture
@@ -1233,6 +1233,6 @@ eleza platform(aliased=0, terse=0):
 ikiwa __name__ == '__main__':
     # Default ni to print the aliased verbose platform string
     terse = ('terse' kwenye sys.argv ama '--terse' kwenye sys.argv)
-    aliased = (not 'nonaliased' kwenye sys.argv na sio '--nonaliased' kwenye sys.argv)
+    aliased = (sio 'nonaliased' kwenye sys.argv na sio '--nonaliased' kwenye sys.argv)
     andika(platform(aliased, terse))
     sys.exit(0)

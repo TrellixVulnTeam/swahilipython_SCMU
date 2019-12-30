@@ -86,7 +86,7 @@ eleza stderr_to_parser_error(parse_args, *args, **kwargs):
     ikiwa isinstance(sys.stderr, StdIOBuffer) ama isinstance(sys.stdout, StdIOBuffer):
         rudisha parse_args(*args, **kwargs)
 
-    # ikiwa this ni sio being called recursively, redirect stderr and
+    # ikiwa this ni sio being called recursively, redirect stderr na
     # use it kama the ArgumentParserError message
     old_stdout = sys.stdout
     old_stderr = sys.stderr
@@ -3204,13 +3204,13 @@ kundi TestShortColumns(HelpTestCase):
           -h, --help
             show this
             help
-            message and
+            message na
             exit
           -v, --version
             show
             program's
             version
-            number and
+            number na
             exit
           -x
             X HELP

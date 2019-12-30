@@ -67,7 +67,7 @@ kundi FrameTreeItem(TreeItem):
         frame, lineno = self.info
         jaribu:
             modname = frame.f_globals["__name__"]
-        except:
+        tatizo:
             modname = "?"
         code = frame.f_code
         filename = code.co_filename

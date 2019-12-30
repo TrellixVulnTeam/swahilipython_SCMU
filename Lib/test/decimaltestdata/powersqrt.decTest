@@ -26,7 +26,7 @@ version: 2.59
 --    x    ** 0.5 (x>0) has no preferred exponent, and is Inexact
 --                (and hence full precision); almost all differences are
 --                in this category
---    0.00 ** 0.5 becomes 0 (not 0.0), etc.
+--    0.00 ** 0.5 becomes 0 (sio 0.0), etc.
 --   -0    ** 0.5 becomes 0 (never -0)
 --    Some exact subnormals become inexact and hence underflows
 

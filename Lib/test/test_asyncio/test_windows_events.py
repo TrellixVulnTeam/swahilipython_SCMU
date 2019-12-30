@@ -8,7 +8,7 @@ import unittest
 from unittest import mock
 
 if sys.platform != 'win32':
-    raise unittest.SkipTest('Windows only')
+    ashiria unittest.SkipTest('Windows only')
 
 agiza _overlapped
 agiza _winapi

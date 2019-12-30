@@ -72,7 +72,7 @@
 # 4. Security na Domain Membership Options:
 # This option ni agizaant kila security. It allows you to restrict
 # connections to machines which are on your local network. The
-# following example restricts access to two C kundi networks and
+# following example restricts access to two C kundi networks na
 # the "loopback" interface. For more examples of the syntax see
 # the smb.conf man page. Do sio enable this ikiwa (tcp/ip) name resolution #does
 # sio work kila all the hosts kwenye your network.
@@ -118,7 +118,7 @@
 #        the encrypted SMB pitawords. They allow the Unix pitaword
 #        to be kept kwenye sync ukijumuisha the SMB pitaword.
 ;  unix pitaword sync = Yes
-# You either need to setup a pitawd program na pitawd chat, or
+# You either need to setup a pitawd program na pitawd chat, ama
 # enable pam pitaword change
 ;  pam pitaword change = yes
 ;  pitawd program = /usr/bin/pitawd %u
@@ -134,7 +134,7 @@
 # of the machine that ni connecting
 ;   include = /etc/samba/smb.conf.%m
 
-# Options kila using winbind. Winbind allows you to do all account and
+# Options kila using winbind. Winbind allows you to do all account na
 # authentication kutoka a Windows ama samba domain controller, creating
 # accounts on the fly, na maintaining a mapping of Windows RIDs to
 # unix uid's 
@@ -209,13 +209,13 @@
 
 # 6. Domain Control Options:
 # Enable this ikiwa you want Samba to be a domain logon server kila 
-# Windows95 workstations ama Primary Domain Controller kila WinNT and
+# Windows95 workstations ama Primary Domain Controller kila WinNT na
 # Win2k
 
 ;  domain logons = yes
 
 
-# ikiwa you enable domain logons then you may want a per-machine or
+# ikiwa you enable domain logons then you may want a per-machine ama
 # per user logon script
 # run a specific logon batch file per workstation (machine)
 ;   logon script = %m.bat

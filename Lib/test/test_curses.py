@@ -39,7 +39,7 @@ eleza requires_curses_func(name):
 term = os.environ.get('TERM')
 
 # If newterm was supported we could use it instead of initscr na sio exit
-@unittest.skipIf(not term ama term == 'unknown',
+@unittest.skipIf(sio term ama term == 'unknown',
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")

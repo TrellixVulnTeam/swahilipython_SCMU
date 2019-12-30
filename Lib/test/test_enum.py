@@ -509,7 +509,7 @@ kundi TestEnum(unittest.TestCase):
         dates[Season.AUTUMN] = '1031'
         self.assertEqual(dates[Season.AUTUMN], '1031')
 
-    eleza test_intenum_kutoka_scratch(self):
+    eleza test_intenum_from_scratch(self):
         kundi phy(int, Enum):
             pi = 3
             tau = 2 * pi
@@ -523,7 +523,7 @@ kundi TestEnum(unittest.TestCase):
             tau = 2 * pi
         self.assertKweli(phy.pi < phy.tau)
 
-    eleza test_floatenum_kutoka_scratch(self):
+    eleza test_floatenum_from_scratch(self):
         kundi phy(float, Enum):
             pi = 3.1415926
             tau = 2 * pi
@@ -537,7 +537,7 @@ kundi TestEnum(unittest.TestCase):
             tau = 2 * pi
         self.assertKweli(phy.pi < phy.tau)
 
-    eleza test_strenum_kutoka_scratch(self):
+    eleza test_strenum_from_scratch(self):
         kundi phy(str, Enum):
             pi = 'Pi'
             tau = 'Tau'
@@ -596,7 +596,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual([k kila k,v kwenye WeekDay.__members__.items()
                 ikiwa v.name != k], ['TEUSDAY', ])
 
-    eleza test_intenum_kutoka_bytes(self):
+    eleza test_intenum_from_bytes(self):
         self.assertIs(IntStooges.kutoka_bytes(b'\x00\x03', 'big'), IntStooges.MOE)
         ukijumuisha self.assertRaises(ValueError):
             IntStooges.kutoka_bytes(b'\x00\x05', 'big')
@@ -797,7 +797,7 @@ kundi TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    eleza test_programmatic_function_kutoka_dict(self):
+    eleza test_programmatic_function_from_dict(self):
         SummerMonth = Enum(
                 'SummerMonth',
                 OrderedDict((('june', 1), ('july', 2), ('august', 3)))
@@ -849,7 +849,7 @@ kundi TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    eleza test_programmatic_function_type_kutoka_subclass(self):
+    eleza test_programmatic_function_type_from_subclass(self):
         SummerMonth = IntEnum('SummerMonth', 'june july august')
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -865,7 +865,7 @@ kundi TestEnum(unittest.TestCase):
             self.assertIn(e, SummerMonth)
             self.assertIs(type(e), SummerMonth)
 
-    eleza test_programmatic_function_type_kutoka_subclass_with_start(self):
+    eleza test_programmatic_function_type_from_subclass_with_start(self):
         SummerMonth = IntEnum('SummerMonth', 'june july august', start=40)
         lst = list(SummerMonth)
         self.assertEqual(len(lst), len(SummerMonth))
@@ -1427,7 +1427,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual(AutoNumber.third.value, 3)
         self.assertIs(AutoNumber(1), AutoNumber.first)
 
-    eleza test_inherited_new_kutoka_enhanced_enum(self):
+    eleza test_inherited_new_from_enhanced_enum(self):
         kundi AutoNumber(Enum):
             eleza __new__(cls):
                 value = len(cls.__members__) + 1
@@ -1443,7 +1443,7 @@ kundi TestEnum(unittest.TestCase):
         self.assertEqual(list(Color), [Color.red, Color.green, Color.blue])
         self.assertEqual(list(map(int, Color)), [1, 2, 3])
 
-    eleza test_inherited_new_kutoka_mixed_enum(self):
+    eleza test_inherited_new_from_mixed_enum(self):
         kundi AutoNumber(IntEnum):
             eleza __new__(cls):
                 value = len(cls.__members__) + 1
@@ -2131,7 +2131,7 @@ kundi TestFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    eleza test_programatic_function_kutoka_dict(self):
+    eleza test_programatic_function_from_dict(self):
         Perm = Flag('Perm', OrderedDict((('R', 2), ('W', 8), ('X', 32))))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2565,7 +2565,7 @@ kundi TestIntFlag(unittest.TestCase):
             self.assertIn(e, Perm)
             self.assertIs(type(e), Perm)
 
-    eleza test_programatic_function_kutoka_dict(self):
+    eleza test_programatic_function_from_dict(self):
         Perm = IntFlag('Perm', OrderedDict((('R', 2), ('W', 8), ('X', 32))))
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2582,7 +2582,7 @@ kundi TestIntFlag(unittest.TestCase):
             self.assertIs(type(e), Perm)
 
 
-    eleza test_programatic_function_kutoka_empty_list(self):
+    eleza test_programatic_function_from_empty_list(self):
         Perm = enum.IntFlag('Perm', [])
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))
@@ -2593,7 +2593,7 @@ kundi TestIntFlag(unittest.TestCase):
         self.assertEqual(len(Thing), 0, Thing)
 
 
-    eleza test_programatic_function_kutoka_empty_tuple(self):
+    eleza test_programatic_function_from_empty_tuple(self):
         Perm = enum.IntFlag('Perm', ())
         lst = list(Perm)
         self.assertEqual(len(lst), len(Perm))

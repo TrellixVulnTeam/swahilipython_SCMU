@@ -17,7 +17,7 @@ __all__ = ['extract_stack', 'extract_tb', 'format_exception',
 #
 
 eleza print_list(extracted_list, file=Tupu):
-    """Print the list of tuples kama rudishaed by extract_tb() or
+    """Print the list of tuples kama rudishaed by extract_tb() ama
     extract_stack() kama a formatted stack trace to the given file."""
     ikiwa file ni Tupu:
         file = sys.stderr
@@ -153,7 +153,7 @@ eleza _format_final_exc_line(etype, value):
 eleza _some_str(value):
     jaribu:
         rudisha str(value)
-    except:
+    tatizo:
         rudisha '<unprintable %s object>' % type(value).__name__
 
 # --
@@ -261,9 +261,9 @@ kundi FrameSummary:
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, FrameSummary):
-            rudisha (self.filename == other.filename and
-                    self.lineno == other.lineno and
-                    self.name == other.name and
+            rudisha (self.filename == other.filename na
+                    self.lineno == other.lineno na
+                    self.name == other.name na
                     self.locals == other.locals)
         ikiwa isinstance(other, tuple):
             rudisha (self.filename, self.lineno, self.name, self.line) == other
@@ -403,8 +403,8 @@ kundi StackSummary(list):
         last_name = Tupu
         count = 0
         kila frame kwenye self:
-            ikiwa (last_file ni Tupu ama last_file != frame.filename or
-                last_line ni Tupu ama last_line != frame.lineno or
+            ikiwa (last_file ni Tupu ama last_file != frame.filename ama
+                last_line ni Tupu ama last_line != frame.lineno ama
                 last_name ni Tupu ama last_name != frame.name):
                 ikiwa count > _RECURSIVE_CUTOFF:
                     count -= _RECURSIVE_CUTOFF
@@ -593,7 +593,7 @@ kundi TracebackException:
 
         If chain ni sio *Kweli*, *__cause__* na *__context__* will sio be formatted.
 
-        The rudisha value ni a generator of strings, each ending kwenye a newline and
+        The rudisha value ni a generator of strings, each ending kwenye a newline na
         some containing internal newlines. `print_exception` ni a wrapper around
         this method which just prints the lines to a file.
 
@@ -604,7 +604,7 @@ kundi TracebackException:
             ikiwa self.__cause__ ni sio Tupu:
                 tuma kutoka self.__cause__.format(chain=chain)
                 tuma _cause_message
-            lasivyo (self.__context__ ni sio Tupu and
+            lasivyo (self.__context__ ni sio Tupu na
                 sio self.__suppress_context__):
                 tuma kutoka self.__context__.format(chain=chain)
                 tuma _context_message

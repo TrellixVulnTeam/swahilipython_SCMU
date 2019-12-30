@@ -165,8 +165,8 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         '''Load a module kutoka the test extension by name'''
         origin = self.spec.origin
         loader = self.machinery.ExtensionFileLoader(fullname, origin)
-        spec = importlib.util.spec_kutoka_loader(fullname, loader)
-        module = importlib.util.module_kutoka_spec(spec)
+        spec = importlib.util.spec_from_loader(fullname, loader)
+        module = importlib.util.module_from_spec(spec)
         loader.exec_module(module)
         rudisha module
 
@@ -267,7 +267,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
                 self.assertEqual(module.__name__, name)
                 self.assertEqual(module.__doc__, "Module named kwenye %s" % lang)
 
-    @unittest.skipIf(not hasattr(sys, 'gettotalrefcount'),
+    @unittest.skipIf(sio hasattr(sys, 'gettotalrefcount'),
             '--with-pydebug has to be enabled kila this test')
     eleza test_bad_traverse(self):
         ''' Issue #32374: Test that traverse fails when accessing per-module
@@ -283,7 +283,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
 
                     ukijumuisha support.SuppressCrashReport():
                         m = spec.loader.create_module(spec)
-                except:
+                tatizo:
                     # Prevent Python-level exceptions kutoka
                     # ending the process ukijumuisha non-zero status
                     # (We are testing kila a crash kwenye C-code)

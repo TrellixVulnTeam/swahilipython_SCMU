@@ -16,7 +16,7 @@ To work ukijumuisha plist data kwenye bytes objects, you can use loads()
 and dumps().
 
 Values can be strings, integers, floats, booleans, tuples, lists,
-dictionaries (but only ukijumuisha string keys), Data, bytes, bytearray, or
+dictionaries (but only ukijumuisha string keys), Data, bytes, bytearray, ama
 datetime.datetime objects.
 
 Generate Plist example:
@@ -242,7 +242,7 @@ eleza _decode_base64(s):
 _dateParser = re.compile(r"(?P<year>\d\d\d\d)(?:-(?P<month>\d\d)(?:-(?P<day>\d\d)(?:T(?P<hour>\d\d)(?::(?P<minute>\d\d)(?::(?P<second>\d\d))?)?)?)?)?Z", re.ASCII)
 
 
-eleza _date_kutoka_string(s):
+eleza _date_from_string(s):
     order = ('year', 'month', 'day', 'hour', 'minute', 'second')
     gd = _dateParser.match(s).groupdict()
     lst = []
@@ -373,7 +373,7 @@ kundi _PlistParser:
             self.add_object(Data.kutokaBase64(self.get_data()))
 
     eleza end_date(self):
-        self.add_object(_date_kutoka_string(self.get_data()))
+        self.add_object(_date_from_string(self.get_data()))
 
 
 kundi _DumbXMLWriter:
@@ -639,7 +639,7 @@ kundi _BinaryPlistParser:
         lasivyo token == 0x09:
             result = Kweli
 
-        # The referenced source code also mentions URL (0x0c, 0x0d) and
+        # The referenced source code also mentions URL (0x0c, 0x0d) na
         # UUID (0x0e), but neither can be generated using the Cocoa libraries.
 
         lasivyo token == 0x0f:
@@ -737,7 +737,7 @@ kundi _BinaryPlistWriter (object):
 
         # Mappings kutoka object->objectid
         # First dict has (type(object), object) kama the key,
-        # second dict ni used when object ni sio hashable and
+        # second dict ni used when object ni sio hashable na
         # has id(object) kama the key.
         self._objtable = {}
         self._objidtable = {}

@@ -317,7 +317,7 @@ eleza _get_elements_by_tagName_helper(parent, name, rc):
 eleza _get_elements_by_tagName_ns_helper(parent, nsURI, localName, rc):
     kila node kwenye parent.childNodes:
         ikiwa node.nodeType == Node.ELEMENT_NODE:
-            ikiwa ((localName == "*" ama node.localName == localName) and
+            ikiwa ((localName == "*" ama node.localName == localName) na
                 (nsURI == "*" ama node.namespaceURI == nsURI)):
                 rc.append(node)
             _get_elements_by_tagName_ns_helper(node, nsURI, localName, rc)
@@ -861,7 +861,7 @@ kundi Element(Node):
             writer.write("\"")
         ikiwa self.childNodes:
             writer.write(">")
-            ikiwa (len(self.childNodes) == 1 and
+            ikiwa (len(self.childNodes) == 1 na
                 self.childNodes[0].nodeType kwenye (
                         Node.TEXT_NODE, Node.CDATA_SECTION_NODE)):
                 self.childNodes[0].writexml(writer, '', '', '')

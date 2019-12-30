@@ -58,7 +58,7 @@ The template.py file does this.
 
 To avoid interfering ukijumuisha other GUI tests, all GUI objects must be
 destroyed na deleted by the end of the test.  The Tk root created kwenye a
-setUpX function should be destroyed kwenye the corresponding tearDownX and
+setUpX function should be destroyed kwenye the corresponding tearDownX na
 the module ama kundi attribute deleted.  Others widgets should descend
 kutoka the single root na the attributes deleted BEFORE root is
 destroyed.  See https://bugs.python.org/issue20567.

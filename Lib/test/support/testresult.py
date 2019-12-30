@@ -189,7 +189,7 @@ if __name__ == '__main__':
         def test_error(self):
             print('stdout', file=sys.stdout)
             print('stderr', file=sys.stderr)
-            raise RuntimeError('error message')
+            ashiria RuntimeError('error message')
 
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestTests))

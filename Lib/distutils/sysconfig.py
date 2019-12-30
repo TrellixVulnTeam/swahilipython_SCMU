@@ -1,5 +1,5 @@
 """Provide access to Python's configuration information.  The specific
-configuration variables available depend heavily on the platform and
+configuration variables available depend heavily on the platform na
 configuration.  The values may be retrieved using
 get_config_var(name), and the list of variables is available via
 get_config_vars().keys().  Additional convenience functions are also
@@ -37,7 +37,7 @@ isipokua:
         project_base = os.getcwd()
 
 
-# python_build: (Boolean) if true, we're either building Python or
+# python_build: (Boolean) if true, we're either building Python ama
 # building an extension with an un-installed Python, so we use
 # different (hard-wired) directories.
 def _is_python_source_dir(d):
@@ -93,7 +93,7 @@ def get_python_inc(plat_specific=0, prefix=None):
     otherwise, this is the path to platform-specific header files
     (namely pyconfig.h).
 
-    If 'prefix' is supplied, use it instead of sys.base_prefix or
+    If 'prefix' is supplied, use it instead of sys.base_prefix ama
     sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
     """
     if prefix is None:
@@ -120,13 +120,13 @@ def get_python_inc(plat_specific=0, prefix=None):
                     os.path.join(prefix, "PC"))
         return os.path.join(prefix, "include")
     isipokua:
-        raise DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
             "I don't know where Python installs its C header files "
             "on platform '%s'" % os.name)
 
 
 def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
-    """Return the directory containing the Python library (standard or
+    """Return the directory containing the Python library (standard ama
     site additions).
 
     If 'plat_specific' is true, return the directory containing
@@ -136,7 +136,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
     containing standard Python library modules; otherwise, return the
     directory for site-specific modules.
 
-    If 'prefix' is supplied, use it instead of sys.base_prefix or
+    If 'prefix' is supplied, use it instead of sys.base_prefix ama
     sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
     """
     if prefix is None:
@@ -158,7 +158,7 @@ def get_python_lib(plat_specific=0, standard_lib=0, prefix=None):
         isipokua:
             return os.path.join(prefix, "Lib", "site-packages")
     isipokua:
-        raise DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
             "I don't know where Python installs its library "
             "on platform '%s'" % os.name)
 
@@ -343,7 +343,7 @@ def parse_makefile(fn, g=None):
     wakati notdone:
         for name in list(notdone):
             value = notdone[name]
-            m = _findvar1_rx.search(value) or _findvar2_rx.search(value)
+            m = _findvar1_rx.search(value) ama _findvar2_rx.search(value)
             if m:
                 n = m.group(1)
                 found = True
@@ -418,7 +418,7 @@ def expand_makefile_vars(s, vars):
     # according to make's variable expansion semantics.
 
     wakati True:
-        m = _findvar1_rx.search(s) or _findvar2_rx.search(s)
+        m = _findvar1_rx.search(s) ama _findvar2_rx.search(s)
         if m:
             (beg, end) = m.span()
             s = s[0:beg] + vars.get(m.group(1)) + s[end:]
@@ -467,7 +467,7 @@ def _init_nt():
 def get_config_vars(*args):
     """With no arguments, return a dictionary of all configuration
     variables relevant for the current platform.  Generally this includes
-    everything needed to build extensions and install both pure modules and
+    everything needed to build extensions and install both pure modules na
     extensions.  On Unix, this means every variable defined in Python's
     installed Makefile; on Windows it's a much smaller set.
 
@@ -516,7 +516,7 @@ def get_config_vars(*args):
         # from a different directory.
         if python_build and os.name == "posix":
             base = project_base
-            if (not os.path.isabs(_config_vars['srcdir']) and
+            if (sio os.path.isabs(_config_vars['srcdir']) na
                 base != os.getcwd()):
                 # srcdir is relative and we are haiko kwenye the same directory
                 # as the executable. Assume executable is in the build

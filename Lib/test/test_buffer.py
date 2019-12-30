@@ -227,7 +227,7 @@ eleza is_byte_format(fmt):
 eleza is_memoryview_format(fmt):
     """format suitable kila memoryview"""
     x = len(fmt)
-    rudisha ((x == 1 ama (x == 2 na fmt[0] == '@')) and
+    rudisha ((x == 1 ama (x == 2 na fmt[0] == '@')) na
             fmt[x-1] kwenye MEMORYVIEW)
 
 NON_BYTE_FORMAT = [c kila c kwenye fmtdict['@'] ikiwa sio is_byte_format(c)]
@@ -253,8 +253,8 @@ eleza prod(lst):
         x *= v
     rudisha x
 
-eleza strides_kutoka_shape(ndim, shape, itemsize, layout):
-    """Calculate strides of a contiguous array. Layout ni 'C' or
+eleza strides_from_shape(ndim, shape, itemsize, layout):
+    """Calculate strides of a contiguous array. Layout ni 'C' ama
        'F' (Fortran)."""
     ikiwa ndim == 0:
         rudisha ()
@@ -323,8 +323,8 @@ eleza transpose(src, shape):
     ikiwa sio shape:
         rudisha src
     ndim = len(shape)
-    sstrides = strides_kutoka_shape(ndim, shape, 1, 'C')
-    dstrides = strides_kutoka_shape(ndim, shape[::-1], 1, 'C')
+    sstrides = strides_from_shape(ndim, shape, 1, 'C')
+    dstrides = strides_from_shape(ndim, shape[::-1], 1, 'C')
     dest = [0] * len(src)
     kila ind kwenye indices(shape):
         fr = getindex(ndim, ind, sstrides)
@@ -540,7 +540,7 @@ eleza rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
         offset = -imin-itemsize ikiwa randrange(2) == 0 isipokua memlen
     rudisha memlen, itemsize, ndim, shape, strides, offset
 
-eleza randslice_kutoka_slicelen(slicelen, listlen):
+eleza randslice_from_slicelen(slicelen, listlen):
     """Create a random slice of len slicelen that fits into listlen."""
     maxstart = listlen - slicelen
     start = randrange(maxstart+1)
@@ -553,7 +553,7 @@ eleza randslice_kutoka_slicelen(slicelen, listlen):
         ashiria RuntimeError
     rudisha s
 
-eleza randslice_kutoka_shape(ndim, shape):
+eleza randslice_from_shape(ndim, shape):
     """Create two sets of slices kila an array x ukijumuisha shape 'shape'
        such that shapeof(x[lslices]) == shapeof(x[rslices])."""
     lslices = [0] * ndim
@@ -561,8 +561,8 @@ eleza randslice_kutoka_shape(ndim, shape):
     kila n kwenye range(ndim):
         l = shape[n]
         slicelen = randrange(1, l+1) ikiwa l > 0 isipokua 0
-        lslices[n] = randslice_kutoka_slicelen(slicelen, l)
-        rslices[n] = randslice_kutoka_slicelen(slicelen, l)
+        lslices[n] = randslice_from_slicelen(slicelen, l)
+        rslices[n] = randslice_from_slicelen(slicelen, l)
     rudisha tuple(lslices), tuple(rslices)
 
 eleza rand_aligned_slices(maxdim=5, maxshape=16):
@@ -595,10 +595,10 @@ eleza rand_aligned_slices(maxdim=5, maxshape=16):
             _, _, _, slicelen = slice_indices(s_small, small)
         isipokua:
             slicelen = randrange(1, small+1) ikiwa small > 0 isipokua 0
-            s_small = randslice_kutoka_slicelen(slicelen, small)
+            s_small = randslice_from_slicelen(slicelen, small)
 
         # Create a slice of the same length kila the bigger value.
-        s_big = randslice_kutoka_slicelen(slicelen, big)
+        s_big = randslice_from_slicelen(slicelen, big)
         ikiwa randrange(2) == 0:
             rshape[n], lshape[n] = big, small
             rslices[n], lslices[n] = s_big, s_small
@@ -608,19 +608,19 @@ eleza rand_aligned_slices(maxdim=5, maxshape=16):
 
     rudisha lshape, rshape, tuple(lslices), tuple(rslices)
 
-eleza randitems_kutoka_structure(fmt, t):
+eleza randitems_from_structure(fmt, t):
     """Return a list of random items kila structure 't' ukijumuisha format
        'fmtchar'."""
     memlen, itemsize, _, _, _, _ = t
     rudisha gen_items(memlen//itemsize, '#'+fmt, 'numpy')
 
-eleza ndarray_kutoka_structure(items, fmt, t, flags=0):
+eleza ndarray_from_structure(items, fmt, t, flags=0):
     """Return ndarray kutoka the tuple rudishaed by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
     rudisha ndarray(items, shape=shape, strides=strides, format=fmt,
                    offset=offset, flags=ND_WRITABLE|flags)
 
-eleza numpy_array_kutoka_structure(items, fmt, t):
+eleza numpy_array_from_structure(items, fmt, t):
     """Return numpy_array kutoka the tuple rudishaed by rand_structure()"""
     memlen, itemsize, ndim, shape, strides, offset = t
     buf = bytearray(memlen)
@@ -698,7 +698,7 @@ eleza rslice(n, allow_empty=Uongo):
        be non-empty."""
     minlen = 0 ikiwa allow_empty ama n == 0 isipokua 1
     slicelen = randrange(minlen, n+1)
-    rudisha randslice_kutoka_slicelen(slicelen, n)
+    rudisha randslice_from_slicelen(slicelen, n)
 
 eleza rslices(n, allow_empty=Uongo):
     """Generate random slices kila a single dimension."""
@@ -970,17 +970,17 @@ kundi TestBufferProtocol(unittest.TestCase):
             rudisha ((req&flag) == flag)
 
         ikiwa (# writable request to read-only exporter
-            (ex.readonly na match(req, PyBUF_WRITABLE)) or
+            (ex.readonly na match(req, PyBUF_WRITABLE)) ama
             # cannot match explicit contiguity request
-            (match(req, PyBUF_C_CONTIGUOUS) na sio ex.c_contiguous) or
-            (match(req, PyBUF_F_CONTIGUOUS) na sio ex.f_contiguous) or
-            (match(req, PyBUF_ANY_CONTIGUOUS) na sio ex.contiguous) or
+            (match(req, PyBUF_C_CONTIGUOUS) na sio ex.c_contiguous) ama
+            (match(req, PyBUF_F_CONTIGUOUS) na sio ex.f_contiguous) ama
+            (match(req, PyBUF_ANY_CONTIGUOUS) na sio ex.contiguous) ama
             # buffer needs suboffsets
-            (not match(req, PyBUF_INDIRECT) na ex.suboffsets) or
+            (sio match(req, PyBUF_INDIRECT) na ex.suboffsets) ama
             # buffer without strides must be C-contiguous
-            (not match(req, PyBUF_STRIDES) na sio ex.c_contiguous) or
+            (sio match(req, PyBUF_STRIDES) na sio ex.c_contiguous) ama
             # PyBUF_SIMPLE|PyBUF_FORMAT na PyBUF_WRITABLE|PyBUF_FORMAT
-            (not match(req, PyBUF_ND) na match(req, PyBUF_FORMAT))):
+            (sio match(req, PyBUF_ND) na match(req, PyBUF_FORMAT))):
 
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
             rudisha
@@ -1240,18 +1240,18 @@ kundi TestBufferProtocol(unittest.TestCase):
         nd = ndarray(ex, getbuf=PyBUF_SIMPLE)
         self.assertRaises(ValueError, nd.tolist)
 
-        # memoryview_kutoka_buffer()
+        # memoryview_from_buffer()
         ex1 = ndarray([1,2,3], shape=[3], format='L')
         ex2 = ndarray(ex1)
         nd = ndarray(ex2)
-        self.assertRaises(TypeError, nd.memoryview_kutoka_buffer)
+        self.assertRaises(TypeError, nd.memoryview_from_buffer)
 
         nd = ndarray([(1,)*200], shape=[1], format='L'*200)
-        self.assertRaises(TypeError, nd.memoryview_kutoka_buffer)
+        self.assertRaises(TypeError, nd.memoryview_from_buffer)
 
         n = ND_MAX_NDIM
         nd = ndarray(list(range(n)), shape=[1]*n)
-        self.assertRaises(ValueError, nd.memoryview_kutoka_buffer)
+        self.assertRaises(ValueError, nd.memoryview_from_buffer)
 
         # get_contiguous()
         nd = ndarray([1], shape=[1])
@@ -1357,7 +1357,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                     # C array
                     nd = ndarray(items, shape=shape, format=fmt, flags=flags)
 
-                    strides = strides_kutoka_shape(ndim, shape, itemsize, 'C')
+                    strides = strides_from_shape(ndim, shape, itemsize, 'C')
                     lst = carray(items, shape)
                     self.verify(nd, obj=Tupu,
                                 itemsize=itemsize, fmt=fmt, readonly=Kweli,
@@ -1369,7 +1369,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                         ex = ndarray(items, shape=shape, format=fmt)
                         nd = ndarray(ex, getbuf=PyBUF_CONTIG_RO|PyBUF_FORMAT)
                         self.assertKweli(nd.strides == ())
-                        mv = nd.memoryview_kutoka_buffer()
+                        mv = nd.memoryview_from_buffer()
                         self.verify(mv, obj=Tupu,
                                     itemsize=itemsize, fmt=fmt, readonly=Kweli,
                                     ndim=ndim, shape=shape, strides=strides,
@@ -1379,7 +1379,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                     nd = ndarray(items, shape=shape, format=fmt,
                                  flags=flags|ND_FORTRAN)
 
-                    strides = strides_kutoka_shape(ndim, shape, itemsize, 'F')
+                    strides = strides_from_shape(ndim, shape, itemsize, 'F')
                     lst = farray(items, shape)
                     self.verify(nd, obj=Tupu,
                                 itemsize=itemsize, fmt=fmt, readonly=Kweli,
@@ -1488,7 +1488,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(nd[i], items[i])
 
             ikiwa is_memoryview_format(fmt):
-                mv = nd.memoryview_kutoka_buffer()
+                mv = nd.memoryview_from_buffer()
                 self.assertIs(mv.__eq__(nd), NotImplemented)
                 kila i kwenye range(-5, 5):
                     self.assertEqual(mv[i], items[i])
@@ -1844,7 +1844,7 @@ kundi TestBufferProtocol(unittest.TestCase):
 
             kila flags kwenye (0, ND_PIL):
                 kila _ kwenye range(ITERATIONS):
-                    lslices, rslices = randslice_kutoka_shape(ndim, shape)
+                    lslices, rslices = randslice_from_shape(ndim, shape)
 
                     nd = ndarray(items, shape=shape, format=fmt,
                                  flags=flags|ND_WRITABLE)
@@ -1876,9 +1876,9 @@ kundi TestBufferProtocol(unittest.TestCase):
                 t = rand_structure(itemsize, Kweli, maxdim=MAXDIM,
                                    maxshape=MAXSHAPE)
                 self.assertKweli(verify_structure(*t))
-                items = randitems_kutoka_structure(fmt, t)
+                items = randitems_from_structure(fmt, t)
 
-                x = ndarray_kutoka_structure(items, fmt, t)
+                x = ndarray_from_structure(items, fmt, t)
                 xlist = x.tolist()
 
                 mv = memoryview(x)
@@ -1888,7 +1888,7 @@ kundi TestBufferProtocol(unittest.TestCase):
 
                 ikiwa t[2] > 0:
                     # ndim > 0: test against suboffsets representation.
-                    y = ndarray_kutoka_structure(items, fmt, t, flags=ND_PIL)
+                    y = ndarray_from_structure(items, fmt, t, flags=ND_PIL)
                     ylist = y.tolist()
                     self.assertEqual(xlist, ylist)
 
@@ -1902,7 +1902,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                     shape = t[3]
                     ikiwa 0 kwenye shape:
                         endelea # http://projects.scipy.org/numpy/ticket/1910
-                    z = numpy_array_kutoka_structure(items, fmt, t)
+                    z = numpy_array_from_structure(items, fmt, t)
                     self.verify(x, obj=Tupu,
                                 itemsize=z.itemsize, fmt=fmt, readonly=Uongo,
                                 ndim=z.ndim, shape=z.shape, strides=z.strides,
@@ -1917,11 +1917,11 @@ kundi TestBufferProtocol(unittest.TestCase):
                 t = rand_structure(itemsize, Uongo, maxdim=MAXDIM,
                                    maxshape=MAXSHAPE)
                 self.assertUongo(verify_structure(*t))
-                items = randitems_kutoka_structure(fmt, t)
+                items = randitems_from_structure(fmt, t)
 
                 nderr = Uongo
                 jaribu:
-                    x = ndarray_kutoka_structure(items, fmt, t)
+                    x = ndarray_from_structure(items, fmt, t)
                 tatizo Exception kama e:
                     nderr = e.__class__
                 self.assertKweli(nderr)
@@ -1929,7 +1929,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                 ikiwa numpy_array:
                     numpy_err = Uongo
                     jaribu:
-                        y = numpy_array_kutoka_structure(items, fmt, t)
+                        y = numpy_array_from_structure(items, fmt, t)
                     tatizo Exception kama e:
                         numpy_err = e.__class__
 
@@ -1948,11 +1948,11 @@ kundi TestBufferProtocol(unittest.TestCase):
                 tr = rand_structure(itemsize, Kweli, shape=rshape)
                 self.assertKweli(verify_structure(*tl))
                 self.assertKweli(verify_structure(*tr))
-                litems = randitems_kutoka_structure(fmt, tl)
-                ritems = randitems_kutoka_structure(fmt, tr)
+                litems = randitems_from_structure(fmt, tl)
+                ritems = randitems_from_structure(fmt, tr)
 
-                xl = ndarray_kutoka_structure(litems, fmt, tl)
-                xr = ndarray_kutoka_structure(ritems, fmt, tr)
+                xl = ndarray_from_structure(litems, fmt, tl)
+                xr = ndarray_from_structure(ritems, fmt, tr)
                 xl[lslices] = xr[rslices]
                 xllist = xl.tolist()
                 xrlist = xr.tolist()
@@ -1964,8 +1964,8 @@ kundi TestBufferProtocol(unittest.TestCase):
 
                 ikiwa tl[2] > 0 na tr[2] > 0:
                     # ndim > 0: test against suboffsets representation.
-                    yl = ndarray_kutoka_structure(litems, fmt, tl, flags=ND_PIL)
-                    yr = ndarray_kutoka_structure(ritems, fmt, tr, flags=ND_PIL)
+                    yl = ndarray_from_structure(litems, fmt, tl, flags=ND_PIL)
+                    yr = ndarray_from_structure(ritems, fmt, tr, flags=ND_PIL)
                     yl[lslices] = yr[rslices]
                     yllist = yl.tolist()
                     yrlist = yr.tolist()
@@ -1981,8 +1981,8 @@ kundi TestBufferProtocol(unittest.TestCase):
                     ikiwa 0 kwenye lshape ama 0 kwenye rshape:
                         endelea # http://projects.scipy.org/numpy/ticket/1910
 
-                    zl = numpy_array_kutoka_structure(litems, fmt, tl)
-                    zr = numpy_array_kutoka_structure(ritems, fmt, tr)
+                    zl = numpy_array_from_structure(litems, fmt, tl)
+                    zr = numpy_array_from_structure(ritems, fmt, tr)
                     zl[lslices] = zr[rslices]
 
                     ikiwa sio is_overlapping(tl) na sio is_overlapping(tr):
@@ -2044,10 +2044,10 @@ kundi TestBufferProtocol(unittest.TestCase):
         self.assertEqual(nd.offset, 7)
         self.assertEqual(nd.tolist(), [7,8,9])
 
-    eleza test_ndarray_memoryview_kutoka_buffer(self):
+    eleza test_ndarray_memoryview_from_buffer(self):
         kila flags kwenye (0, ND_PIL):
             nd = ndarray(list(range(3)), shape=[3], flags=flags)
-            m = nd.memoryview_kutoka_buffer()
+            m = nd.memoryview_from_buffer()
             self.assertEqual(m, nd)
 
     eleza test_ndarray_get_pointer(self):
@@ -2368,7 +2368,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             self.assertKweli(m.contiguous)
 
             ndim = len(shape)
-            strides = strides_kutoka_shape(ndim, shape, 1, 'C')
+            strides = strides_from_shape(ndim, shape, 1, 'C')
             lst = carray(items, shape)
 
             self.verify(m, obj=ex,
@@ -2386,7 +2386,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             # PyMemoryView_FromBuffer(): no strides
             nd = ndarray(ex, getbuf=PyBUF_CONTIG_RO|PyBUF_FORMAT)
             self.assertEqual(nd.strides, ())
-            m = nd.memoryview_kutoka_buffer()
+            m = nd.memoryview_from_buffer()
             self.verify(m, obj=Tupu,
                         itemsize=1, fmt='B', readonly=Kweli,
                         ndim=ndim, shape=shape, strides=strides,
@@ -2397,7 +2397,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             self.assertEqual(nd.format, '')
             self.assertEqual(nd.shape, ())
             self.assertEqual(nd.strides, ())
-            m = nd.memoryview_kutoka_buffer()
+            m = nd.memoryview_from_buffer()
 
             lst = [items] ikiwa ndim == 0 isipokua items
             self.verify(m, obj=Tupu,
@@ -2415,7 +2415,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             self.assertKweli(m.contiguous)
 
             ndim = len(shape)
-            strides = strides_kutoka_shape(ndim, shape, 1, 'F')
+            strides = strides_from_shape(ndim, shape, 1, 'F')
             lst = farray(items, shape)
 
             self.verify(m, obj=ex,
@@ -2466,7 +2466,7 @@ kundi TestBufferProtocol(unittest.TestCase):
         # ndim > 64
         nd = ndarray([1]*128, shape=[1]*128, format='L')
         self.assertRaises(ValueError, memoryview, nd)
-        self.assertRaises(ValueError, nd.memoryview_kutoka_buffer)
+        self.assertRaises(ValueError, nd.memoryview_from_buffer)
         self.assertRaises(ValueError, get_contiguous, nd, PyBUF_READ, 'C')
         self.assertRaises(ValueError, get_contiguous, nd, PyBUF_READ, 'F')
         self.assertRaises(ValueError, get_contiguous, nd[::-1], PyBUF_READ, 'C')
@@ -4308,7 +4308,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             toa y, z
             self.assertEqual(m[1:3], x[1:3])
 
-    eleza test_memoryview_kutoka_static_exporter(self):
+    eleza test_memoryview_from_static_exporter(self):
 
         fmt = 'B'
         lst = [0,1,2,3,4,5,6,7,8,9,10,11]

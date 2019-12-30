@@ -221,7 +221,7 @@ kundi MinidomTest(unittest.TestCase):
         dom = parse(tstfile)
         self.confirm(dom)# should sio be zero
         dom.appendChild(dom.createComment("foo"))
-        self.confirm(not dom.childNodes[-1].childNodes)
+        self.confirm(sio dom.childNodes[-1].childNodes)
         dom.unlink()
 
     eleza testUnlink(self):
@@ -426,26 +426,26 @@ kundi MinidomTest(unittest.TestCase):
                 na elems[0].nodeName == "minidom:myelem")
         dom.unlink()
 
-    eleza get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(self, doc, nsuri,
+    eleza get_empty_nodelist_from_elements_by_tagName_ns_helper(self, doc, nsuri,
                                                               lname):
         nodelist = doc.getElementsByTagNameNS(nsuri, lname)
         self.confirm(len(nodelist) == 0)
 
     eleza testGetEmptyNodeListFromElementsByTagNameNS(self):
         doc = parseString('<doc/>')
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, 'http://xml.python.org/namespaces/a', 'localname')
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, '*', 'splat')
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, 'http://xml.python.org/namespaces/a', '*')
 
         doc = parseString('<doc xmlns="http://xml.python.org/splat"><e/></doc>')
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, "http://xml.python.org/splat", "not-there")
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, "*", "not-there")
-        self.get_empty_nodelist_kutoka_elements_by_tagName_ns_helper(
+        self.get_empty_nodelist_from_elements_by_tagName_ns_helper(
             doc, "http://somewhere.else.net/not-there", "e")
 
     eleza testElementReprAndStr(self):
@@ -703,7 +703,7 @@ kundi MinidomTest(unittest.TestCase):
                     "]>\n"
                     "<doc attr='value'/>")
         doc2 = doc.cloneNode(1)
-        self.confirm(not (doc.isSameNode(doc2) ama doc2.isSameNode(doc)),
+        self.confirm(sio (doc.isSameNode(doc2) ama doc2.isSameNode(doc)),
                 "testCloneDocumentDeep: document objects sio distinct")
         self.confirm(len(doc.childNodes) == len(doc2.childNodes),
                 "testCloneDocumentDeep: wrong number of Document children")
@@ -711,14 +711,14 @@ kundi MinidomTest(unittest.TestCase):
                 "testCloneDocumentDeep: documentElement sio an ELEMENT_NODE")
         self.confirm(doc2.documentElement.ownerDocument.isSameNode(doc2),
             "testCloneDocumentDeep: documentElement owner ni sio new document")
-        self.confirm(not doc.documentElement.isSameNode(doc2.documentElement),
+        self.confirm(sio doc.documentElement.isSameNode(doc2.documentElement),
                 "testCloneDocumentDeep: documentElement should sio be shared")
         ikiwa doc.doctype ni sio Tupu:
             # check the doctype iff the original DOM maintained it
             self.confirm(doc2.doctype.nodeType == Node.DOCUMENT_TYPE_NODE,
                     "testCloneDocumentDeep: doctype sio a DOCUMENT_TYPE_NODE")
             self.confirm(doc2.doctype.ownerDocument.isSameNode(doc2))
-            self.confirm(not doc.doctype.isSameNode(doc2.doctype))
+            self.confirm(sio doc.doctype.isSameNode(doc2.doctype))
 
     eleza testCloneDocumentTypeDeepOk(self):
         doctype = create_nonempty_doctype()
@@ -736,8 +736,8 @@ kundi MinidomTest(unittest.TestCase):
         kila i kwenye range(len(doctype.entities)):
             se = doctype.entities.item(i)
             ce = clone.entities.item(i)
-            self.confirm((not se.isSameNode(ce))
-                    na (not ce.isSameNode(se))
+            self.confirm((sio se.isSameNode(ce))
+                    na (sio ce.isSameNode(se))
                     na ce.nodeName == se.nodeName
                     na ce.notationName == se.notationName
                     na ce.publicId == se.publicId
@@ -748,8 +748,8 @@ kundi MinidomTest(unittest.TestCase):
         kila i kwenye range(len(doctype.notations)):
             sn = doctype.notations.item(i)
             cn = clone.notations.item(i)
-            self.confirm((not sn.isSameNode(cn))
-                    na (not cn.isSameNode(sn))
+            self.confirm((sio sn.isSameNode(cn))
+                    na (sio cn.isSameNode(sn))
                     na cn.nodeName == sn.nodeName
                     na cn.publicId == sn.publicId
                     na cn.systemId == sn.systemId)
@@ -808,8 +808,8 @@ kundi MinidomTest(unittest.TestCase):
         attr = doc.documentElement.getAttributeNode("attr")
         self.assertNotEqual(attr, Tupu)
         clone = attr.cloneNode(deep)
-        self.confirm(not clone.isSameNode(attr))
-        self.confirm(not attr.isSameNode(clone))
+        self.confirm(sio clone.isSameNode(attr))
+        self.confirm(sio attr.isSameNode(clone))
         self.confirm(clone.ownerElement ni Tupu,
                 testName + ": ownerElement should be Tupu")
         self.confirm(clone.ownerDocument.isSameNode(attr.ownerDocument),
@@ -1095,11 +1095,11 @@ kundi MinidomTest(unittest.TestCase):
         root = doc.documentElement
         (pi, text, elm) = root.childNodes
 
-        self.confirm(pi.nextSibling ni text and
-                pi.previousSibling ni Tupu and
-                text.nextSibling ni elm and
-                text.previousSibling ni pi and
-                elm.nextSibling ni Tupu and
+        self.confirm(pi.nextSibling ni text na
+                pi.previousSibling ni Tupu na
+                text.nextSibling ni elm na
+                text.previousSibling ni pi na
+                elm.nextSibling ni Tupu na
                 elm.previousSibling ni text, "testSiblings")
 
         doc.unlink()
@@ -1112,10 +1112,10 @@ kundi MinidomTest(unittest.TestCase):
         (elm2a, elm2b) = elm1.childNodes
         elm3 = elm2b.childNodes[0]
 
-        self.confirm(root.parentNode ni doc and
-                elm1.parentNode ni root and
-                elm2a.parentNode ni elm1 and
-                elm2b.parentNode ni elm1 and
+        self.confirm(root.parentNode ni doc na
+                elm1.parentNode ni root na
+                elm2a.parentNode ni elm1 na
+                elm2b.parentNode ni elm1 na
                 elm3.parentNode ni elm2b, "testParents")
         doc.unlink()
 
@@ -1486,9 +1486,9 @@ kundi MinidomTest(unittest.TestCase):
         a3.value = "v"
         e.setAttributeNode(a3)
         self.confirm(e.isSameNode(doc.getElementById("w")))
-        self.confirm(not a1.isId)
+        self.confirm(sio a1.isId)
         self.confirm(a2.isId)
-        self.confirm(not a3.isId)
+        self.confirm(sio a3.isId)
         self.confirm(doc.getElementById("v") ni Tupu)
         # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")
@@ -1522,9 +1522,9 @@ kundi MinidomTest(unittest.TestCase):
         a3.value = "v"
         e.setAttributeNode(a3)
         self.confirm(e.isSameNode(doc.getElementById("w")))
-        self.confirm(not a1.isId)
+        self.confirm(sio a1.isId)
         self.confirm(a2.isId)
-        self.confirm(not a3.isId)
+        self.confirm(sio a3.isId)
         self.confirm(doc.getElementById("v") ni Tupu)
         # renaming an attribute should sio affect its ID-ness:
         doc.renameNode(a2, xml.dom.EMPTY_NAMESPACE, "an")

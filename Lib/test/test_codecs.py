@@ -82,7 +82,7 @@ kundi MixInCheckStateHandling:
                 # reset decoder to the default state without anything buffered
                 d.setstate((state[0][:0], 0))
                 # Feeding the previous input may sio produce any output
-                self.assertKweli(not d.decode(state[0]))
+                self.assertKweli(sio d.decode(state[0]))
                 # The decoder must rudisha to the same state
                 self.assertEqual(state, d.getstate())
             # Create a new decoder na set it to the state

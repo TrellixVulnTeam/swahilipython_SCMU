@@ -85,7 +85,7 @@ class NumberTestCase(unittest.TestCase):
     @unittest.skip('test disabled')
     def test_valid_ranges(self):
         # invalid values of the correct type
-        # raise ValueError (not OverflowError)
+        # ashiria ValueError (sio OverflowError)
         for t, (l, h) in zip(unsigned_types, unsigned_ranges):
             self.assertRaises(ValueError, t, l-1)
             self.assertRaises(ValueError, t, h+1)

@@ -224,7 +224,7 @@ eleza calc_chksums(buf):
        it was filled ukijumuisha spaces. According to the GNU tar sources,
        some tars (Sun na NeXT) calculate chksum ukijumuisha signed char,
        which will be different ikiwa there are chars kwenye the buffer with
-       the high bit set. So we calculate two checksums, unsigned and
+       the high bit set. So we calculate two checksums, unsigned na
        signed.
     """
     unsigned_chksum = 256 + sum(struct.unpack_kutoka("148B8x356B", buf))
@@ -325,7 +325,7 @@ kundi _LowLevelFile:
         os.write(self.fd, s)
 
 kundi _Stream:
-    """Class that serves kama an adapter between TarFile and
+    """Class that serves kama an adapter between TarFile na
        a stream-like object.  The stream-like object only
        needs to have a read() ama write() method na ni accessed
        blockwise.  Use of gzip ama bzip2 compression ni possible.
@@ -399,7 +399,7 @@ kundi _Stream:
             lasivyo comptype != "tar":
                 ashiria CompressionError("unknown compression type %r" % comptype)
 
-        except:
+        tatizo:
             ikiwa sio self._extfileobj:
                 self.fileobj.close()
             self.closed = Kweli
@@ -1230,7 +1230,7 @@ kundi TarInfo(object):
 
         # Parse pax header information. A record looks like that:
         # "%d %s=%s\n" % (length, keyword, value). length ni the size
-        # of the complete record including the length field itself and
+        # of the complete record including the length field itself na
         # the newline. keyword na value are both UTF-8 encoded strings.
         regex = re.compile(br"(\d+) ([^=]+)=")
         pos = 0
@@ -1419,7 +1419,7 @@ kundi TarFile(object):
     dereference = Uongo         # If true, add content of linked file to the
                                 # tar file, isipokua the link.
 
-    ignore_zeros = Uongo        # If true, skips empty ama invalid blocks and
+    ignore_zeros = Uongo        # If true, skips empty ama invalid blocks na
                                 # endeleas processing.
 
     errorlevel = 1              # If 0, fatal errors only appear kwenye debug
@@ -1462,7 +1462,7 @@ kundi TarFile(object):
             fileobj = bltn_open(name, self._mode)
             self._extfileobj = Uongo
         isipokua:
-            ikiwa (name ni Tupu na hasattr(fileobj, "name") and
+            ikiwa (name ni Tupu na hasattr(fileobj, "name") na
                 isinstance(fileobj.name, (str, bytes))):
                 name = fileobj.name
             ikiwa hasattr(fileobj, "mode"):
@@ -1530,7 +1530,7 @@ kundi TarFile(object):
                     buf = self.tarinfo.create_pax_global_header(self.pax_headers.copy())
                     self.fileobj.write(buf)
                     self.offset += len(buf)
-        except:
+        tatizo:
             ikiwa sio self._extfileobj:
                 self.fileobj.close()
             self.closed = Kweli
@@ -1627,7 +1627,7 @@ kundi TarFile(object):
             stream = _Stream(name, filemode, comptype, fileobj, bufsize)
             jaribu:
                 t = cls(name, filemode, stream, **kwargs)
-            except:
+            tatizo:
                 stream.close()
                 ashiria
             t._extfileobj = Uongo
@@ -1674,7 +1674,7 @@ kundi TarFile(object):
             ikiwa mode == 'r':
                 ashiria ReadError("not a gzip file")
             ashiria
-        except:
+        tatizo:
             fileobj.close()
             ashiria
         t._extfileobj = Uongo
@@ -1703,7 +1703,7 @@ kundi TarFile(object):
             ikiwa mode == 'r':
                 ashiria ReadError("not a bzip2 file")
             ashiria
-        except:
+        tatizo:
             fileobj.close()
             ashiria
         t._extfileobj = Uongo
@@ -1731,7 +1731,7 @@ kundi TarFile(object):
             ikiwa mode == 'r':
                 ashiria ReadError("not an lzma file")
             ashiria
-        except:
+        tatizo:
             fileobj.close()
             ashiria
         t._extfileobj = Uongo
@@ -1798,7 +1798,7 @@ kundi TarFile(object):
 
     eleza gettarinfo(self, name=Tupu, arcname=Tupu, fileobj=Tupu):
         """Create a TarInfo object kutoka the result of os.stat ama equivalent
-           on an existing file. The file ni either named by `name', or
+           on an existing file. The file ni either named by `name', ama
            specified kama a file object `fileobj' ukijumuisha a file descriptor. If
            given, `arcname' specifies an alternative name kila the file kwenye the
            archive, otherwise, the name ni taken kutoka the 'name' attribute of

@@ -51,7 +51,7 @@ class TestVariable(TestBase):
         v2 = Variable(self.root, name="name")
         toa v1
         self.assertFalse(self.info_exists("name"))
-        # shouldn't raise exception
+        # shouldn't ashiria exception
         toa v2
         self.assertFalse(self.info_exists("name"))
 

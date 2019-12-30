@@ -94,7 +94,7 @@ class MultiprocessIterator:
     def __next__(self):
         with self.lock:
             if self.tests_iter is None:
-                raise StopIteration
+                ashiria StopIteration
             return next(self.tests_iter)
 
     def stop(self):
@@ -175,7 +175,7 @@ class TestWorkerProcess(threading.Thread):
 
             self._killed = False
             self._popen = popen
-        except:
+        tatizo:
             self.current_test_name = None
             raise
 
@@ -185,7 +185,7 @@ class TestWorkerProcess(threading.Thread):
                 # self._popen is still running. Call again kill()
                 # to ensure that the process is killed.
                 self._kill()
-                raise ExitThread
+                ashiria ExitThread
 
             jaribu:
                 stdout, stderr = popen.communicate(timeout=self.timeout)
@@ -195,7 +195,7 @@ class TestWorkerProcess(threading.Thread):
                 if self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
-                    raise ExitThread
+                    ashiria ExitThread
 
                 # On timeout, kill the process
                 self._kill()
@@ -210,14 +210,14 @@ class TestWorkerProcess(threading.Thread):
                 if self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
-                    raise ExitThread
+                    ashiria ExitThread
                 raise
             isipokua:
                 stdout = stdout.strip()
                 stderr = stderr.rstrip()
 
             return (retcode, stdout, stderr)
-        except:
+        tatizo:
             self._kill()
             raise
         mwishowe:

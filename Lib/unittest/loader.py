@@ -173,7 +173,7 @@ kundi TestLoader(object):
                     na error_case ni sio Tupu):
                     # This ni a package (no __path__ per importlib docs), na we
                     # encountered an error agizaing something. We cannot tell
-                    # the difference between package.WrongNameTestClass and
+                    # the difference between package.WrongNameTestClass na
                     # package.wrong_module_name so we just report the
                     # ImportError - it ni more informative.
                     self.errors.append(error_message)
@@ -191,8 +191,8 @@ kundi TestLoader(object):
             rudisha self.loadTestsFromModule(obj)
         lasivyo isinstance(obj, type) na issubclass(obj, case.TestCase):
             rudisha self.loadTestsFromTestCase(obj)
-        lasivyo (isinstance(obj, types.FunctionType) and
-              isinstance(parent, type) and
+        lasivyo (isinstance(obj, types.FunctionType) na
+              isinstance(parent, type) na
               issubclass(parent, case.TestCase)):
             name = parts[-1]
             inst = parent(name)
@@ -316,7 +316,7 @@ kundi TestLoader(object):
                             is_namespace = Kweli
 
                             kila path kwenye the_module.__path__:
-                                ikiwa (not set_implicit_top and
+                                ikiwa (sio set_implicit_top na
                                     sio path.startswith(top_level_dir)):
                                     endelea
                                 self._top_level_dir = \
@@ -361,7 +361,7 @@ kundi TestLoader(object):
             # should an exception be ashiriad instead
             rudisha os.path.dirname(full_path)
 
-    eleza _get_name_kutoka_path(self, path):
+    eleza _get_name_from_path(self, path):
         ikiwa path == self._top_level_dir:
             rudisha '.'
         path = _jython_aware_splitext(os.path.normpath(path))
@@ -373,7 +373,7 @@ kundi TestLoader(object):
         name = _relpath.replace(os.path.sep, '.')
         rudisha name
 
-    eleza _get_module_kutoka_name(self, name):
+    eleza _get_module_from_name(self, name):
         __import__(name)
         rudisha sys.modules[name]
 
@@ -384,7 +384,7 @@ kundi TestLoader(object):
     eleza _find_tests(self, start_dir, pattern, namespace=Uongo):
         """Used by discovery. Yields test suites it loads."""
         # Handle the __init__ kwenye this package
-        name = self._get_name_kutoka_path(start_dir)
+        name = self._get_name_from_path(start_dir)
         # name ni '.' when start_dir == top_level_dir (and top_level_dir ni by
         # definition sio a package).
         ikiwa name != '.' na name haiko kwenye self._loading_packages:
@@ -408,7 +408,7 @@ kundi TestLoader(object):
                 tuma tests
             ikiwa should_recurse:
                 # we found a package that didn't use load_tests.
-                name = self._get_name_kutoka_path(full_path)
+                name = self._get_name_from_path(full_path)
                 self._loading_packages.add(name)
                 jaribu:
                     tuma kutoka self._find_tests(full_path, pattern, namespace)
@@ -421,7 +421,7 @@ kundi TestLoader(object):
         Loads tests kutoka a single file, ama a directories' __init__.py when
         pitaed the directory.
 
-        Returns a tuple (Tupu_or_tests_kutoka_file, should_recurse).
+        Returns a tuple (Tupu_or_tests_from_file, should_recurse).
         """
         basename = os.path.basename(full_path)
         ikiwa os.path.isfile(full_path):
@@ -431,12 +431,12 @@ kundi TestLoader(object):
             ikiwa sio self._match_path(basename, full_path, pattern):
                 rudisha Tupu, Uongo
             # ikiwa the test file matches, load it
-            name = self._get_name_kutoka_path(full_path)
+            name = self._get_name_from_path(full_path)
             jaribu:
-                module = self._get_module_kutoka_name(name)
+                module = self._get_module_from_name(name)
             tatizo case.SkipTest kama e:
                 rudisha _make_skipped_test(name, e, self.suiteClass), Uongo
-            except:
+            tatizo:
                 error_case, error_message = \
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)
@@ -459,18 +459,18 @@ kundi TestLoader(object):
                         msg % (mod_name, module_dir, expected_dir))
                 rudisha self.loadTestsFromModule(module, pattern=pattern), Uongo
         lasivyo os.path.isdir(full_path):
-            ikiwa (not namespace and
+            ikiwa (sio namespace na
                 sio os.path.isfile(os.path.join(full_path, '__init__.py'))):
                 rudisha Tupu, Uongo
 
             load_tests = Tupu
             tests = Tupu
-            name = self._get_name_kutoka_path(full_path)
+            name = self._get_name_from_path(full_path)
             jaribu:
-                package = self._get_module_kutoka_name(name)
+                package = self._get_module_from_name(name)
             tatizo case.SkipTest kama e:
                 rudisha _make_skipped_test(name, e, self.suiteClass), Uongo
-            except:
+            tatizo:
                 error_case, error_message = \
                     _make_failed_import_test(name, self.suiteClass)
                 self.errors.append(error_message)

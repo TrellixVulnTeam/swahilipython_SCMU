@@ -100,8 +100,8 @@ kundi OSSAudioDevTests(unittest.TestCase):
 
         kila config kwenye [config1, config2]:
             (fmt, channels, rate) = config
-            ikiwa (dsp.setfmt(fmt) == fmt and
-                dsp.channels(channels) == channels and
+            ikiwa (dsp.setfmt(fmt) == fmt na
+                dsp.channels(channels) == channels na
                 dsp.speed(rate) == rate):
                 koma
         isipokua:
@@ -120,7 +120,7 @@ kundi OSSAudioDevTests(unittest.TestCase):
 
     eleza set_bad_parameters(self, dsp):
         # Now try some configurations that are presumably bogus: eg. 300
-        # channels currently exceeds even Hollywood's ambitions, and
+        # channels currently exceeds even Hollywood's ambitions, na
         # negative sampling rate ni utter nonsense.  setparameters() should
         # accept these kwenye non-strict mode, rudishaing something other than
         # was requested, but should barf kwenye strict mode.

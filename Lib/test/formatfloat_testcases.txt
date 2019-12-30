@@ -284,7 +284,7 @@
 %.12g 37210.0 -> 37210
 %.12g 36210.0 -> 36210
 
--- alternate g formatting:  always include decimal point and
+-- alternate g formatting:  always include decimal point na
 -- exactly <precision> significant digits.
 %#.0g 0 -> 0.
 %#.1g 0 -> 0.

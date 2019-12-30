@@ -165,7 +165,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
     TIMEOUT = 60
 
     def new_loop(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def test_buf_feed_data(self):
 
@@ -633,7 +633,7 @@ class BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         self.assertTrue(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must sio raise an
+        # Python issue #23197: cancelling a handshake must sio ashiria an
         # exception or log an error, even if the handshake failed
         self.assertEqual(messages, [])
 

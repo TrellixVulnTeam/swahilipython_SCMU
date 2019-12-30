@@ -43,7 +43,7 @@ CERT_NONE - no certificates kutoka the other side are required (or will
 CERT_OPTIONAL - certificates are sio required, but ikiwa provided will be
                 validated, na ikiwa validation fails, the connection will
                 also fail
-CERT_REQUIRED - certificates are required, na will be validated, and
+CERT_REQUIRED - certificates are required, na will be validated, na
                 ikiwa validation fails, the connection will also fail
 
 The following constants identify various SSL protocol variants:
@@ -472,7 +472,7 @@ kundi Purpose(_ASN1Object, _Enum):
 
 
 kundi SSLContext(_SSLContext):
-    """An SSLContext holds various SSL-related configuration options and
+    """An SSLContext holds various SSL-related configuration options na
     data, such kama certificates na possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
 
@@ -925,7 +925,7 @@ kundi SSLObject:
         rudisha self._sslobj.cipher()
 
     eleza shared_ciphers(self):
-        """Return a list of ciphers shared by the client during the handshake or
+        """Return a list of ciphers shared by the client during the handshake ama
         Tupu ikiwa this ni sio a valid server connection.
         """
         rudisha self._sslobj.shared_ciphers()
@@ -970,7 +970,7 @@ eleza _sslcopydoc(func):
 
 kundi SSLSocket(socket):
     """This kundi implements a subtype of socket.socket that wraps
-    the underlying OS socket kwenye an SSL context when necessary, and
+    the underlying OS socket kwenye an SSL context when necessary, na
     provides read na write methods over that channel. """
 
     eleza __init__(self, *args, **kwargs):

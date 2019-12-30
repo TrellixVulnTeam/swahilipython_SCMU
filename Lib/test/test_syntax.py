@@ -9,7 +9,7 @@ SyntaxError: name 'x' ni parameter na global
 
 The tests are all ashiria SyntaxErrors.  They were created by checking
 each C call that ashirias SyntaxError.  There are several modules that
-ashiria these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
+ashiria these exceptions-- ast.c, compile.c, future.c, pythonrun.c, na
 symtable.c.
 
 The parser itself outlaws a lot of invalid syntax.  Tupu of these
@@ -373,7 +373,7 @@ endelea kwenye a finally should be ok.
     ...        mwishowe:
     ...            jaribu:
     ...                endelea
-    ...            except:
+    ...            tatizo:
     ...                pita
     ...    andika(abc)
     >>> test()
@@ -386,7 +386,7 @@ endelea kwenye a finally should be ok.
     ...        mwishowe:
     ...            jaribu:
     ...                pita
-    ...            except:
+    ...            tatizo:
     ...                endelea
     ...    andika(abc)
     >>> test()

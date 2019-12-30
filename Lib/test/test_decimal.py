@@ -441,7 +441,7 @@ kundi IBMTestCases(unittest.TestCase):
                 result = str(int(eval(result))) # 'Kweli', 'Uongo' -> '1', '0'
         tatizo Signals[self.decimal] kama error:
             self.fail("Raised %s kwenye %s" % (error, s))
-        except: #Catch any error long enough to state the test case.
+        tatizo: #Catch any error long enough to state the test case.
             andika("ERROR:", s)
             ashiria
 
@@ -493,11 +493,11 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         Decimal = self.decimal.Decimal
         self.assertEqual(Decimal(), Decimal("0"))
 
-    eleza test_explicit_kutoka_Tupu(self):
+    eleza test_explicit_from_Tupu(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, Decimal, Tupu)
 
-    eleza test_explicit_kutoka_int(self):
+    eleza test_explicit_from_int(self):
         Decimal = self.decimal.Decimal
 
         #positive
@@ -524,7 +524,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
                     d = Decimal(i)
                     self.assertEqual(str(d), str(i))
 
-    eleza test_explicit_kutoka_string(self):
+    eleza test_explicit_from_string(self):
         Decimal = self.decimal.Decimal
         InvalidOperation = self.decimal.InvalidOperation
         localcontext = self.decimal.localcontext
@@ -581,7 +581,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
             self.assertRaises(InvalidOperation, Decimal, "1_2_\u00003")
 
     @cpython_only
-    eleza test_kutoka_legacy_strings(self):
+    eleza test_from_legacy_strings(self):
         agiza _testcapi
         Decimal = self.decimal.Decimal
         context = self.decimal.Context()
@@ -590,7 +590,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(Decimal(s)), '9.999999')
         self.assertEqual(str(context.create_decimal(s)), '9.999999')
 
-    eleza test_explicit_kutoka_tuples(self):
+    eleza test_explicit_from_tuples(self):
         Decimal = self.decimal.Decimal
 
         #zero
@@ -633,7 +633,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         self.assertRaises(ValueError, Decimal, (1, (4, 10, 4, 9, 1), 2) )
         self.assertRaises(ValueError, Decimal, (1, (4, 3, 4, 'a', 1), 2) )
 
-    eleza test_explicit_kutoka_list(self):
+    eleza test_explicit_from_list(self):
         Decimal = self.decimal.Decimal
 
         d = Decimal([0, [0], 0])
@@ -648,7 +648,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         d = Decimal((1, [4, 3, 4, 9, 1, 3, 5, 3, 4], -25))
         self.assertEqual(str(d), '-4.34913534E-17')
 
-    eleza test_explicit_kutoka_bool(self):
+    eleza test_explicit_from_bool(self):
         Decimal = self.decimal.Decimal
 
         self.assertIs(bool(Decimal(0)), Uongo)
@@ -656,7 +656,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(Decimal(Uongo), Decimal(0))
         self.assertEqual(Decimal(Kweli), Decimal(1))
 
-    eleza test_explicit_kutoka_Decimal(self):
+    eleza test_explicit_from_Decimal(self):
         Decimal = self.decimal.Decimal
 
         #positive
@@ -680,7 +680,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(e), '0')
 
     @requires_IEEE_754
-    eleza test_explicit_kutoka_float(self):
+    eleza test_explicit_from_float(self):
 
         Decimal = self.decimal.Decimal
 
@@ -792,7 +792,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
         self.assertEqual(str(nc.create_decimal(Decimal('NaN12345'))), 'NaN')
         self.assertKweli(nc.flags[InvalidOperation])
 
-    eleza test_explicit_context_create_kutoka_float(self):
+    eleza test_explicit_context_create_from_float(self):
 
         Decimal = self.decimal.Decimal
 
@@ -835,11 +835,11 @@ kundi PyExplicitConstructionTest(ExplicitConstructionTest):
 kundi ImplicitConstructionTest(unittest.TestCase):
     '''Unit tests kila Implicit Construction cases of Decimal.'''
 
-    eleza test_implicit_kutoka_Tupu(self):
+    eleza test_implicit_from_Tupu(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + Tupu', locals())
 
-    eleza test_implicit_kutoka_int(self):
+    eleza test_implicit_from_int(self):
         Decimal = self.decimal.Decimal
 
         #normal
@@ -847,15 +847,15 @@ kundi ImplicitConstructionTest(unittest.TestCase):
         #exceeding precision
         self.assertEqual(Decimal(5) + 123456789000, Decimal(123456789000))
 
-    eleza test_implicit_kutoka_string(self):
+    eleza test_implicit_from_string(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + "3"', locals())
 
-    eleza test_implicit_kutoka_float(self):
+    eleza test_implicit_from_float(self):
         Decimal = self.decimal.Decimal
         self.assertRaises(TypeError, eval, 'Decimal(5) + 2.2', locals())
 
-    eleza test_implicit_kutoka_Decimal(self):
+    eleza test_implicit_from_Decimal(self):
         Decimal = self.decimal.Decimal
         self.assertEqual(Decimal(5) + Decimal(45), Decimal(50))
 
@@ -1181,7 +1181,7 @@ kundi FormatTest(unittest.TestCase):
         self.assertEqual(format(Decimal('100000000.123'), 'n'),
                          '100\u066c000\u066c000\u066b123')
 
-    eleza test_decimal_kutoka_float_argument_type(self):
+    eleza test_decimal_from_float_argument_type(self):
         kundi A(self.decimal.Decimal):
             eleza __init__(self, a):
                 self.a_type = type(a)
@@ -2392,7 +2392,7 @@ kundi UsabilityTest(unittest.TestCase):
                 self.assertEqual(c.Emax, 999)
                 self.assertEqual(c.Emin, -999)
 
-    eleza test_conversions_kutoka_int(self):
+    eleza test_conversions_from_int(self):
         # Check that methods taking a second Decimal argument will
         # always accept an integer kwenye place of a Decimal.
         Decimal = self.decimal.Decimal
@@ -2536,7 +2536,7 @@ kundi PythonAPItests(unittest.TestCase):
             r = d.to_integral(ROUND_DOWN)
             self.assertEqual(Decimal(math.trunc(d)), r)
 
-    eleza test_kutoka_float(self):
+    eleza test_from_float(self):
 
         Decimal = self.decimal.Decimal
 
@@ -2568,32 +2568,32 @@ kundi PythonAPItests(unittest.TestCase):
             x = random.expovariate(0.01) * (random.random() * 2.0 - 1.0)
             self.assertEqual(x, float(MyDecimal.kutoka_float(x))) # roundtrip
 
-    eleza test_create_decimal_kutoka_float(self):
+    eleza test_create_decimal_from_float(self):
         Decimal = self.decimal.Decimal
         Context = self.decimal.Context
         Inexact = self.decimal.Inexact
 
         context = Context(prec=5, rounding=ROUND_DOWN)
         self.assertEqual(
-            context.create_decimal_kutoka_float(math.pi),
+            context.create_decimal_from_float(math.pi),
             Decimal('3.1415')
         )
         context = Context(prec=5, rounding=ROUND_UP)
         self.assertEqual(
-            context.create_decimal_kutoka_float(math.pi),
+            context.create_decimal_from_float(math.pi),
             Decimal('3.1416')
         )
         context = Context(prec=5, traps=[Inexact])
         self.assertRaises(
             Inexact,
-            context.create_decimal_kutoka_float,
+            context.create_decimal_from_float,
             math.pi
         )
-        self.assertEqual(repr(context.create_decimal_kutoka_float(-0.0)),
+        self.assertEqual(repr(context.create_decimal_from_float(-0.0)),
                          "Decimal('-0')")
-        self.assertEqual(repr(context.create_decimal_kutoka_float(1.0)),
+        self.assertEqual(repr(context.create_decimal_from_float(1.0)),
                          "Decimal('1')")
-        self.assertEqual(repr(context.create_decimal_kutoka_float(10)),
+        self.assertEqual(repr(context.create_decimal_from_float(10)),
                          "Decimal('10')")
 
     eleza test_quantize(self):
@@ -2816,7 +2816,7 @@ kundi ContextAPItests(unittest.TestCase):
                                               Overflow])
 
     @cpython_only
-    eleza test_kutoka_legacy_strings(self):
+    eleza test_from_legacy_strings(self):
         agiza _testcapi
         c = self.decimal.Context()
 
@@ -3807,7 +3807,7 @@ kundi ContextFlags(unittest.TestCase):
             self.assertKweli(c.flags[FloatOperation])
 
             c.clear_flags()
-            x = c.create_decimal_kutoka_float(7.5)
+            x = c.create_decimal_from_float(7.5)
             self.assertUongo(c.flags[FloatOperation])
             self.assertEqual(x, 7.5)
             self.assertKweli(c.flags[FloatOperation])
@@ -3830,7 +3830,7 @@ kundi ContextFlags(unittest.TestCase):
             self.assertUongo(c.flags[FloatOperation])
 
             c.clear_flags()
-            x = c.create_decimal_kutoka_float(7.5)
+            x = c.create_decimal_from_float(7.5)
             self.assertUongo(c.flags[FloatOperation])
 
     eleza test_float_comparison(self):
@@ -4400,7 +4400,7 @@ kundi Coverage(unittest.TestCase):
             c.clear_flags()
             q, r = divmod(Decimal(11), 0)
             self.assertKweli(q.is_infinite() na r.is_nan())
-            self.assertKweli(c.flags[InvalidOperation] and
+            self.assertKweli(c.flags[InvalidOperation] na
                             c.flags[DivisionByZero])
 
     eleza test_power(self):
@@ -5386,7 +5386,7 @@ kundi CWhitebox(unittest.TestCase):
             x = "1e%d" % (-sys.maxsize-1)
             self.assertRaises(InvalidOperation, Decimal, x)
 
-    eleza test_kutoka_tuple(self):
+    eleza test_from_tuple(self):
         Decimal = C.Decimal
         localcontext = C.localcontext
         InvalidOperation = C.InvalidOperation
@@ -5487,7 +5487,7 @@ kundi SignatureTest(unittest.TestCase):
                 endelea
             p_func = getattr(P, attr)
             c_func = getattr(C, attr)
-            ikiwa (attr == 'Decimal' ama attr == 'Context' or
+            ikiwa (attr == 'Decimal' ama attr == 'Context' ama
                 inspect.isfunction(p_func)):
                 p_sig = inspect.signature(p_func)
                 c_sig = inspect.signature(c_func)

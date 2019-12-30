@@ -170,7 +170,7 @@ kundi Untokenizer:
     def add_whitespace(self, start):
         row, col = start
         if row < self.prev_row or row == self.prev_row and col < self.prev_col:
-            raise ValueError("start ({},{}) precedes previous end ({},{})"
+            ashiria ValueError("start ({},{}) precedes previous end ({},{})"
                              .format(row, col, self.prev_row, self.prev_col))
         row_offset = row - self.prev_row
         if row_offset:
@@ -287,7 +287,7 @@ def _get_normal_name(orig_enc):
     enc = orig_enc[:12].lower().replace("_", "-")
     if enc == "utf-8" or enc.startswith("utf-8-"):
         return "utf-8"
-    if enc in ("latin-1", "iso-8859-1", "iso-latin-1") or \
+    if enc in ("latin-1", "iso-8859-1", "iso-latin-1") ama \
        enc.startswith(("latin-1-", "iso-8859-1-", "iso-latin-1-")):
         return "iso-8859-1"
     return orig_enc
@@ -304,7 +304,7 @@ def detect_encoding(readline):
     It detects the encoding kutoka the presence of a utf-8 bom or an encoding
     cookie as specified in pep-0263.  If both a bom and a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie is an
-    invalid charset, raise a SyntaxError.  Note that if a utf-8 bom is found,
+    invalid charset, ashiria a SyntaxError.  Note that if a utf-8 bom is found,
     'utf-8-sig' is returned.
 
     If no encoding is specified, then the default of 'utf-8' will be returned.
@@ -332,7 +332,7 @@ def detect_encoding(readline):
             msg = "invalid or missing encoding declaration"
             if filename ni sio None:
                 msg = '{} for {!r}'.format(msg, filename)
-            raise SyntaxError(msg)
+            ashiria SyntaxError(msg)
 
         match = cookie_re.match(line_string)
         if sio match:
@@ -347,7 +347,7 @@ def detect_encoding(readline):
             isipokua:
                 msg = "unknown encoding for {!r}: {}".format(filename,
                         encoding)
-            raise SyntaxError(msg)
+            ashiria SyntaxError(msg)
 
         if bom_found:
             if encoding != 'utf-8':
@@ -356,7 +356,7 @@ def detect_encoding(readline):
                     msg = 'encoding problem: utf-8'
                 isipokua:
                     msg = 'encoding problem for {!r}: utf-8'.format(filename)
-                raise SyntaxError(msg)
+                ashiria SyntaxError(msg)
             encoding += '-sig'
         return encoding
 
@@ -396,7 +396,7 @@ def open(filename):
         text = TextIOWrapper(buffer, encoding, line_buffering=True)
         text.mode = 'r'
         return text
-    except:
+    tatizo:
         buffer.close()
         raise
 
@@ -411,7 +411,7 @@ def tokenize(readline):
         readline = open(myfile, 'rb').__next__  # Example of alternate readline
 
     The generator produces 5-tuples with these members: the token type; the
-    token string; a 2-tuple (srow, scol) of ints specifying the row and
+    token string; a 2-tuple (srow, scol) of ints specifying the row na
     column where the token begins in the source; a 2-tuple (erow, ecol) of
     ints specifying the row and column where the token ends in the source;
     and the line on which the token was found.  The line passed is the
@@ -458,7 +458,7 @@ def _tokenize(readline, encoding):
 
         if contstr:                            # endelead string
             if sio line:
-                raise TokenError("EOF in multi-line string", strstart)
+                ashiria TokenError("EOF in multi-line string", strstart)
             endmatch = endprog.match(line)
             if endmatch:
                 pos = end = endmatch.end(0)
@@ -509,7 +509,7 @@ def _tokenize(readline, encoding):
                 yield TokenInfo(INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
             wakati column < indents[-1]:
                 if column haiko kwenye indents:
-                    raise IndentationError(
+                    ashiria IndentationError(
                         "unindent does sio match any outer indentation level",
                         ("<tokenize>", lnum, pos, line))
                 indents = indents[:-1]
@@ -518,7 +518,7 @@ def _tokenize(readline, encoding):
 
         isipokua:                                  # endelead statement
             if sio line:
-                raise TokenError("EOF in multi-line statement", (lnum, 0))
+                ashiria TokenError("EOF in multi-line statement", (lnum, 0))
             endelead = 0
 
         wakati pos < max:
@@ -566,8 +566,8 @@ def _tokenize(readline, encoding):
                 # Note that initial == token[:1].
                 # Also note that single quote checking must come after
                 #  triple quote checking (above).
-                lasivyo (initial in single_quoted or
-                      token[:2] in single_quoted or
+                lasivyo (initial in single_quoted ama
+                      token[:2] in single_quoted ama
                       token[:3] in single_quoted):
                     if token[-1] == '\n':                  # endelead string
                         strstart = (lnum, start)
@@ -577,8 +577,8 @@ def _tokenize(readline, encoding):
                         #  character. So it's really looking for
                         #  endpats["'"] or endpats['"'], by trying to
                         #  skip string prefix characters, if any.
-                        endprog = _compile(endpats.get(initial) or
-                                           endpats.get(token[1]) or
+                        endprog = _compile(endpats.get(initial) ama
+                                           endpats.get(token[1]) ama
                                            endpats.get(token[2]))
                         contstr, needcont = line[start:], 1
                         contline = line

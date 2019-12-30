@@ -109,7 +109,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             self.reset()
             self._cont_handler.setDocumentLocator(ExpatLocator(self))
             xmlreader.IncrementalParser.parse(self, source)
-        except:
+        tatizo:
             # bpo-30264: Close the source on error to sio leak resources:
             # xml.sax.parse() doesn't give access to the underlying parser
             # to the caller
@@ -232,7 +232,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 file.close()
 
     eleza close(self):
-        ikiwa (self._entity_stack ama self._parser ni Tupu or
+        ikiwa (self._entity_stack ama self._parser ni Tupu ama
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
             rudisha
@@ -409,7 +409,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         source = self._ent_handler.resolveEntity(pubid, sysid)
         source = saxutils.prepare_input_source(source,
-                                               self._source.getSystemId() or
+                                               self._source.getSystemId() ama
                                                "")
 
         self._entity_stack.append((self._parser, self._source))
@@ -418,7 +418,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         jaribu:
             xmlreader.IncrementalParser.parse(self, source)
-        except:
+        tatizo:
             rudisha 0  # FIXME: save error info here?
 
         (self._parser, self._source) = self._entity_stack[-1]

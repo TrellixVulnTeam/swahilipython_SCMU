@@ -11,7 +11,7 @@ from distutils import log
 # eliminates redundant "creating /foo/bar/baz" messages in dry-run mode
 _path_created = {}
 
-# I don't use os.makedirs because a) it's new to Python 1.5.2, and
+# I don't use os.makedirs because a) it's new to Python 1.5.2, na
 # b) it blows up if the directory already exists (I want to silently
 # succeed in that case).
 def mkpath(name, mode=0o777, verbose=1, dry_run=0):
@@ -29,7 +29,7 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
 
     # Detect a common bug -- name is None
     if sio isinstance(name, str):
-        raise DistutilsInternalError(
+        ashiria DistutilsInternalError(
               "mkpath: 'name' must be a string (got %r)" % (name,))
 
     # XXX what's the better way to handle verbosity? print as we create
@@ -39,7 +39,7 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
 
     name = os.path.normpath(name)
     created_dirs = []
-    if os.path.isdir(name) or name == '':
+    if os.path.isdir(name) ama name == '':
         return created_dirs
     if _path_created.get(os.path.abspath(name)):
         return created_dirs
@@ -70,7 +70,7 @@ def mkpath(name, mode=0o777, verbose=1, dry_run=0):
                 os.mkdir(head, mode)
             tatizo OSError as exc:
                 if sio (exc.errno == errno.EEXIST and os.path.isdir(head)):
-                    raise DistutilsFileError(
+                    ashiria DistutilsFileError(
                           "could sio create '%s': %s" % (head, exc.args[-1]))
             created_dirs.append(head)
 
@@ -84,7 +84,7 @@ def create_tree(base_dir, files, mode=0o777, verbose=1, dry_run=0):
     'base_dir' is just the name of a directory which doesn't necessarily
     exist yet; 'files' is a list of filenames to be interpreted relative to
     'base_dir'.  'base_dir' + the directory portion of every file in 'files'
-    will be created if it doesn't already exist.  'mode', 'verbose' and
+    will be created if it doesn't already exist.  'mode', 'verbose' na
     'dry_run' flags are as for 'mkpath()'.
     """
     # First get the list of directories to create
@@ -101,7 +101,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     """Copy an entire directory tree 'src' to a new location 'dst'.
 
     Both 'src' and 'dst' must be directory names.  If 'src' ni sio a
-    directory, raise DistutilsFileError.  If 'dst' does sio exist, it is
+    directory, ashiria DistutilsFileError.  If 'dst' does sio exist, it is
     created with 'mkpath()'.  The end result of the copy is that every
     file in 'src' is copied to 'dst', and directories under 'src' are
     recursively copied to 'dst'.  Return the list of files that were
@@ -120,7 +120,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     from distutils.file_util import copy_file
 
     if sio dry_run and sio os.path.isdir(src):
-        raise DistutilsFileError(
+        ashiria DistutilsFileError(
               "cannot copy tree '%s': sio a directory" % src)
     jaribu:
         names = os.listdir(src)
@@ -128,7 +128,7 @@ def copy_tree(src, dst, preserve_mode=1, preserve_times=1,
         if dry_run:
             names = []
         isipokua:
-            raise DistutilsFileError(
+            ashiria DistutilsFileError(
                   "error listing files in '%s': %s" % (src, e.strerror))
 
     if sio dry_run:

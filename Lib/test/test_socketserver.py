@@ -62,7 +62,7 @@ eleza simple_subprocess(testcase):
         os._exit(72)
     jaribu:
         tuma Tupu
-    except:
+    tatizo:
         ashiria
     mwishowe:
         pid2, status = os.waitpid(pid, 0)
@@ -295,7 +295,7 @@ kundi SocketServerTest(unittest.TestCase):
 
 kundi ErrorHandlerTest(unittest.TestCase):
     """Test that the servers pita normal exceptions kutoka the handler to
-    handle_error(), na that exiting exceptions like SystemExit and
+    handle_error(), na that exiting exceptions like SystemExit na
     KeyboardInterrupt are sio pitaed."""
 
     eleza tearDown(self):

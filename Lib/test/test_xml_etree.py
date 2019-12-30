@@ -3492,7 +3492,7 @@ kundi IOTest(unittest.TestCase):
                     '''<?xml version='1.0' encoding='utf-16'?>\n'''
                     '''<site />'''.encode("utf-16"))
 
-    eleza test_read_kutoka_stringio(self):
+    eleza test_read_from_stringio(self):
         tree = ET.ElementTree()
         stream = io.StringIO('''<?xml version="1.0"?><site></site>''')
         tree.parse(stream)
@@ -3504,7 +3504,7 @@ kundi IOTest(unittest.TestCase):
         tree.write(stream, encoding='unicode')
         self.assertEqual(stream.getvalue(), '''<site />''')
 
-    eleza test_read_kutoka_bytesio(self):
+    eleza test_read_from_bytesio(self):
         tree = ET.ElementTree()
         raw = io.BytesIO(b'''<?xml version="1.0"?><site></site>''')
         tree.parse(raw)
@@ -3519,7 +3519,7 @@ kundi IOTest(unittest.TestCase):
     kundi dummy:
         pita
 
-    eleza test_read_kutoka_user_text_reader(self):
+    eleza test_read_from_user_text_reader(self):
         stream = io.StringIO('''<?xml version="1.0"?><site></site>''')
         reader = self.dummy()
         reader.read = stream.read
@@ -3535,7 +3535,7 @@ kundi IOTest(unittest.TestCase):
         tree.write(writer, encoding='unicode')
         self.assertEqual(stream.getvalue(), '''<site />''')
 
-    eleza test_read_kutoka_user_binary_reader(self):
+    eleza test_read_from_user_binary_reader(self):
         raw = io.BytesIO(b'''<?xml version="1.0"?><site></site>''')
         reader = self.dummy()
         reader.read = raw.read

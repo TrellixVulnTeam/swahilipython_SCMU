@@ -197,7 +197,7 @@ kundi SequenceMatcher:
         #          'insert'    b[j1:j2] should be inserted
         #          'equal'     a[i1:i2] == b[j1:j2]
         # isjunk
-        #      a user-supplied function taking a sequence element and
+        #      a user-supplied function taking a sequence element na
         #      returning true iff the element is "junk" -- this has
         #      subtle but helpful effects on the algorithm, which I'll
         #      get around to writing up someday <0.9 wink>.
@@ -285,7 +285,7 @@ kundi SequenceMatcher:
     # map at all, which stops the central find_longest_match method
     # kutoka starting any matching block at a junk element ...
     # b2j also does sio contain entries for "popular" elements, meaning
-    # elements that account for more than 1 + 1% of the total elements, and
+    # elements that account for more than 1 + 1% of the total elements, na
     # when the sequence is reasonably large (>= 200 elements); this can
     # be viewed as an adaptive notion of semi-junk, and yields an enormous
     # speedup when, e.g., comparing program files with hundreds of
@@ -295,7 +295,7 @@ kundi SequenceMatcher:
     # repeatedly
 
     def __chain_b(self):
-        # Because isjunk is a user-defined (not C) function, and we test
+        # Because isjunk is a user-defined (sio C) function, and we test
         # for junk a LOT, it's agizaant to minimize the number of calls.
         # Before the tricks described here, __chain_b was by far the most
         # time-consuming routine in the whole module!  If anyone sees
@@ -449,8 +449,8 @@ kundi SequenceMatcher:
         Each triple is of the form (i, j, n), and means that
         a[i:i+n] == b[j:j+n].  The triples are monotonically increasing in
         i and in j.  New in Python 2.5, it's also guaranteed that if
-        (i, j, n) and (i', j', n') are adjacent triples in the list, and
-        the second ni sio the last triple in the list, then i+n != i' or
+        (i, j, n) and (i', j', n') are adjacent triples in the list, na
+        the second ni sio the last triple in the list, then i+n != i' ama
         j+n != j'.  IOW, adjacent triples never describe adjacent equal
         blocks.
 
@@ -622,14 +622,14 @@ kundi SequenceMatcher:
     def ratio(self):
         """Return a measure of the sequences' similarity (float in [0,1]).
 
-        Where T is the total number of elements in both sequences, and
+        Where T is the total number of elements in both sequences, na
         M is the number of matches, this is 2.0*M / T.
         Note that this is 1 if the sequences are identical, and 0 if
         they have nothing in common.
 
         .ratio() is expensive to compute if you haven't already computed
-        .get_matching_blocks() or .get_opcodes(), in which case you may
-        want to try .quick_ratio() or .real_quick_ratio() first to get an
+        .get_matching_blocks() ama .get_opcodes(), in which case you may
+        want to try .quick_ratio() ama .real_quick_ratio() first to get an
         upper bound.
 
         >>> s = SequenceMatcher(None, "abcd", "bcde")
@@ -647,7 +647,7 @@ kundi SequenceMatcher:
     def quick_ratio(self):
         """Return an upper bound on ratio() relatively quickly.
 
-        This isn't defined beyond that it is an upper bound on .ratio(), and
+        This isn't defined beyond that it is an upper bound on .ratio(), na
         is faster to compute.
         """
 
@@ -676,8 +676,8 @@ kundi SequenceMatcher:
     def real_quick_ratio(self):
         """Return an upper bound on ratio() very quickly.
 
-        This isn't defined beyond that it is an upper bound on .ratio(), and
-        is faster to compute than either .ratio() or .quick_ratio().
+        This isn't defined beyond that it is an upper bound on .ratio(), na
+        is faster to compute than either .ratio() ama .quick_ratio().
         """
 
         la, lb = len(self.a), len(self.b)
@@ -715,9 +715,9 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
     """
 
     if sio n >  0:
-        raise ValueError("n must be > 0: %r" % (n,))
+        ashiria ValueError("n must be > 0: %r" % (n,))
     if sio 0.0 <= cutoff <= 1.0:
-        raise ValueError("cutoff must be in [0.0, 1.0]: %r" % (cutoff,))
+        ashiria ValueError("cutoff must be in [0.0, 1.0]: %r" % (cutoff,))
     result = []
     s = SequenceMatcher()
     s.set_seq2(word)
@@ -745,7 +745,7 @@ def _keep_original_ws(s, tag_s):
 
 kundi Differ:
     r"""
-    Differ is a kundi for comparing sequences of lines of text, and
+    Differ is a kundi for comparing sequences of lines of text, na
     producing human-readable differences or deltas.  Differ uses
     SequenceMatcher both to compare sequences of lines, and to compare
     sequences of characters within similar (near-matching) lines.
@@ -897,7 +897,7 @@ kundi Differ:
             lasivyo tag == 'equal':
                 g = self._dump(' ', a, alo, ahi)
             isipokua:
-                raise ValueError('unknown tag %r' % (tag,))
+                ashiria ValueError('unknown tag %r' % (tag,))
 
             yield kutoka g
 
@@ -1005,7 +1005,7 @@ kundi Differ:
                     atags += ' ' * la
                     btags += ' ' * lb
                 isipokua:
-                    raise ValueError('unknown tag %r' % (tag,))
+                    ashiria ValueError('unknown tag %r' % (tag,))
             yield kutoka self._qformat(aelt, belt, atags, btags)
         isipokua:
             # the synch pair is identical
@@ -1225,7 +1225,7 @@ def context_diff(a, b, kutokafile='', tofile='',
     For inputs that do sio have trailing newlines, set the lineterm
     argument to "" so that the output will be uniformly newline free.
 
-    The context diff format normally has a header for filenames and
+    The context diff format normally has a header for filenames na
     modification times.  Any or all of these may be specified using
     strings for 'kutokafile', 'tofile', 'kutokafiledate', and 'tofiledate'.
     The modification times are normally expressed in the ISO 8601 format.
@@ -1291,21 +1291,21 @@ def _check_types(a, b, *args):
     #   +++ b'newfile.txt'
     # because of how str.format() incorporates bytes objects.
     if a and sio isinstance(a[0], str):
-        raise TypeError('lines to compare must be str, sio %s (%r)' %
+        ashiria TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(a[0]).__name__, a[0]))
     if b and sio isinstance(b[0], str):
-        raise TypeError('lines to compare must be str, sio %s (%r)' %
+        ashiria TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(b[0]).__name__, b[0]))
     for arg in args:
         if sio isinstance(arg, str):
-            raise TypeError('all arguments must be str, not: %r' % (arg,))
+            ashiria TypeError('all arguments must be str, not: %r' % (arg,))
 
 def diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'',
                kutokafiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
     r"""
     Compare `a` and `b`, two sequences of lines represented as bytes rather
     than str. This is a wrapper for `dfunc`, which is typically either
-    unified_diff() or context_diff(). Inputs are losslessly converted to
+    unified_diff() ama context_diff(). Inputs are losslessly converted to
     strings so that `dfunc` only has to worry about strings, and encoded
     back to bytes on return. This is necessary to compare files with
     unknown or inconsistent encoding. All other inputs (tatizo `n`) must be
@@ -1317,7 +1317,7 @@ def diff_bytes(dfunc, a, b, kutokafile=b'', tofile=b'',
         tatizo AttributeError as err:
             msg = ('all arguments must be bytes, sio %s (%r)' %
                    (type(s).__name__, s))
-            raise TypeError(msg) kutoka err
+            ashiria TypeError(msg) kutoka err
     a = list(map(decode, a))
     b = list(map(decode, b))
     kutokafile = decode(kutokafile)
@@ -1337,7 +1337,7 @@ def ndiff(a, b, linejunk=None, charjunk=IS_CHARACTER_JUNK):
     Optional keyword parameters `linejunk` and `charjunk` are for filter
     functions, or can be None:
 
-    - linejunk: A function that should accept a single string argument and
+    - linejunk: A function that should accept a single string argument na
       return true iff the string is junk.  The default is None, and is
       recommended; the underlying SequenceMatcher kundi has an adaptive
       notion of "noise" lines.
@@ -1799,7 +1799,7 @@ kundi HtmlDiff(object):
         # if line text doesn't need wrapping, just add it to the output list
         size = len(text)
         max = self._wrapcolumn
-        if (size <= max) or ((size -(text.count('\0')*3)) <= max):
+        if (size <= max) ama ((size -(text.count('\0')*3)) <= max):
             data_list.append((line_num,text))
             return
 
@@ -2071,7 +2071,7 @@ def restore(delta, which):
     jaribu:
         tag = {1: "- ", 2: "+ "}[int(which)]
     tatizo KeyError:
-        raise ValueError('unknown delta choice (must be 1 or 2): %r'
+        ashiria ValueError('unknown delta choice (must be 1 or 2): %r'
                            % which) kutoka None
     prefixes = ("  ", tag)
     for line in delta:

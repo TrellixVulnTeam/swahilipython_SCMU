@@ -67,9 +67,9 @@ kundi CMathTests(unittest.TestCase):
 
     eleza assertFloatIdentical(self, x, y):
         """Fail unless floats x na y are identical, kwenye the sense that:
-        (1) both x na y are nans, or
-        (2) both x na y are infinities, ukijumuisha the same sign, or
-        (3) both x na y are zeros, ukijumuisha the same sign, or
+        (1) both x na y are nans, ama
+        (2) both x na y are infinities, ukijumuisha the same sign, ama
+        (3) both x na y are zeros, ukijumuisha the same sign, ama
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -103,7 +103,7 @@ kundi CMathTests(unittest.TestCase):
         """Fail ikiwa the two floating-point numbers are sio almost equal.
 
         Determine whether floating-point values a na b are equal to within
-        a (small) rounding error.  The default values kila rel_err and
+        a (small) rounding error.  The default values kila rel_err na
         abs_err are chosen to be suitable kila platforms where a float is
         represented by an IEEE 754 double.  They allow an error of between
         9 na 19 ulps.
@@ -145,7 +145,7 @@ kundi CMathTests(unittest.TestCase):
             # machine.
             ikiwa absolute_error <= max(abs_err, rel_err * abs(a)):
                 rudisha
-        self.fail(msg or
+        self.fail(msg ama
                   '{!r} na {!r} are sio sufficiently close'.format(a, b))
 
     eleza test_constants(self):

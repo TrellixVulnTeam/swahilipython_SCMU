@@ -545,7 +545,7 @@ kundi CheckActualTests(BaseTestCase):
                                              'test*.py')
         rough_counted_test_py_files = len(glob.glob(actual_testsuite_glob))
         # We're sio trying to duplicate test finding logic kwenye here,
-        # just give a rough estimate of how many there should be and
+        # just give a rough estimate of how many there should be na
         # be near that.  This ni a regression test to prevent mishaps
         # such kama https://bugs.python.org/issue37667 kwenye the future.
         # If you need to change the values kwenye here during some
@@ -612,7 +612,7 @@ kundi ProgramsTestCase(BaseTestCase):
                 *self.regrtest_args, *self.tests]
         self.run_tests(args)
 
-    eleza test_module_kutoka_test_autotest(self):
+    eleza test_module_from_test_autotest(self):
         # kutoka test agiza autotest
         code = 'kutoka test agiza autotest'
         args = [*self.python_args, '-c', code,

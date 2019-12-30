@@ -228,7 +228,7 @@ kundi ParserGenerator(object):
     eleza simplify_dfa(self, dfa):
         # This ni sio theoretically optimal, but works well enough.
         # Algorithm: repeatedly look kila two states that have the same
-        # set of arcs (same labels pointing to the same nodes) and
+        # set of arcs (same labels pointing to the same nodes) na
         # unify them, until things stop changing.
 
         # dfa ni a list of DFAState instances
@@ -266,7 +266,7 @@ kundi ParserGenerator(object):
     eleza parse_alt(self):
         # ALT: ITEM+
         a, b = self.parse_item()
-        wakati (self.value kwenye ("(", "[") or
+        wakati (self.value kwenye ("(", "[") ama
                self.type kwenye (token.NAME, token.STRING)):
             c, d = self.parse_item()
             b.addarc(c)
@@ -329,7 +329,7 @@ kundi ParserGenerator(object):
         ikiwa args:
             jaribu:
                 msg = msg % args
-            except:
+            tatizo:
                 msg = " ".join([msg] + list(map(str, args)))
         ashiria SyntaxError(msg, (self.filename, self.end[0],
                                 self.end[1], self.line))

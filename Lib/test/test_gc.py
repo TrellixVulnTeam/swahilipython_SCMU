@@ -25,7 +25,7 @@ tatizo ImportError:
 ### Support code
 ###############################################################################
 
-# Bug 1055820 has several tests of longstanding bugs involving weakrefs and
+# Bug 1055820 has several tests of longstanding bugs involving weakrefs na
 # cyclic gc.
 
 # An instance of C1055820 has a self-loop, so becomes cyclic trash when
@@ -71,7 +71,7 @@ isipokua:
     # Usually, sys.gettotalrefcount() ni only present ikiwa Python has been
     # compiled kwenye debug mode. If it's missing, expect that Python has
     # been released kwenye release mode: ukijumuisha NDEBUG defined.
-    BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
+    BUILD_WITH_NDEBUG = (sio hasattr(sys, 'gettotalrefcount'))
 
 ### Tests
 ###############################################################################
@@ -341,7 +341,7 @@ kundi GCTests(unittest.TestCase):
 
         # Note:  In 2.3 the possibility kila compiling without cyclic gc was
         # removed, na that kwenye turn allows the trashcan mechanism to work
-        # via much simpler means (e.g., it never abuses the type pointer or
+        # via much simpler means (e.g., it never abuses the type pointer ama
         # refcount fields anymore).  Since it's much less likely to cause a
         # problem now, the various constants kwenye this expensive (we force a lot
         # of full collections) test are cut back kutoka the 2.2 version.
@@ -432,7 +432,7 @@ kundi GCTests(unittest.TestCase):
         garbagelen = len(gc.garbage)
         toa a, b
         # a<->b are kwenye a trash cycle now.  Collection will invoke
-        # Boom.__getattr__ (to see whether a na b have __del__ methods), and
+        # Boom.__getattr__ (to see whether a na b have __del__ methods), na
         # __getattr__ deletes the internal "attr" attributes kama a side effect.
         # That causes the trash cycle to get reclaimed via refcounts falling to
         # 0, thus mutating the trash graph kama a side effect of merely asking
@@ -534,7 +534,7 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(gc.get_referents(1, 'a', 4j), [])
 
     eleza test_is_tracked(self):
-        # Atomic built-in types are sio tracked, user-defined objects and
+        # Atomic built-in types are sio tracked, user-defined objects na
         # mutable containers are.
         # NOTE: types ukijumuisha special optimizations (e.g. tuple) have tests
         # kwenye their own test files instead.
@@ -677,7 +677,7 @@ kundi GCTests(unittest.TestCase):
         self.assertIn(b"ResourceWarning: gc: 2 uncollectable objects at "
                       b"shutdown", stderr)
         self.assertKweli(
-            (b"[<X 'first'>, <X 'second'>]" kwenye stderr) or
+            (b"[<X 'first'>, <X 'second'>]" kwenye stderr) ama
             (b"[<X 'second'>, <X 'first'>]" kwenye stderr), stderr)
         # With DEBUG_SAVEALL, no additional message should get printed
         # (because gc.garbage also contains normally reclaimable cyclic

@@ -494,8 +494,8 @@ kundi StreamReader:
         self._buffer.extend(data)
         self._wakeup_waiter()
 
-        ikiwa (self._transport ni sio Tupu and
-                sio self._paused and
+        ikiwa (self._transport ni sio Tupu na
+                sio self._paused na
                 len(self._buffer) > 2 * self._limit):
             jaribu:
                 self._transport.pause_reading()

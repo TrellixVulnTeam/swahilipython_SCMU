@@ -41,7 +41,7 @@ kundi _TriggerThread(threading.Thread):
 
 # Execute a function that blocks, na kwenye a separate thread, a function that
 # triggers the release.  Returns the result of the blocking function.  Caution:
-# block_func must guarantee to block until trigger_func ni called, and
+# block_func must guarantee to block until trigger_func ni called, na
 # trigger_func must guarantee to change queue state so that block_func can make
 # enough progress to rudisha.  In particular, a block_func that just ashirias an
 # exception regardless of whether trigger_func ni called will lead to
@@ -107,7 +107,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
         kila i kwenye range(QUEUE_SIZE-1):
             q.put(i)
             self.assertKweli(q.qsize(), "Queue should sio be empty")
-        self.assertKweli(not qfull(q), "Queue should sio be full")
+        self.assertKweli(sio qfull(q), "Queue should sio be full")
         last = 2 * QUEUE_SIZE
         full = 3 * 2 * QUEUE_SIZE
         q.put(last)
@@ -130,7 +130,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
         # Empty it
         kila i kwenye range(QUEUE_SIZE):
             q.get()
-        self.assertKweli(not q.qsize(), "Queue should be empty")
+        self.assertKweli(sio q.qsize(), "Queue should be empty")
         jaribu:
             q.get(block=0)
             self.fail("Didn't appear to block ukijumuisha an empty queue")
@@ -185,7 +185,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
             self.fail("Did sio detect task count going negative")
 
     eleza test_queue_join(self):
-        # Test that a queue join()s successfully, na before anything else
+        # Test that a queue join()s successfully, na before anything ama
         # (done twice kila insurance).
         q = self.type2test()
         self.queue_join_test(q)
@@ -355,7 +355,7 @@ kundi FailingQueueTest(BlockingTestMixin):
         q.put("last")
         self.assertKweli(qfull(q), "Queue should be full")
         q.get()
-        self.assertKweli(not qfull(q), "Queue should sio be full")
+        self.assertKweli(sio qfull(q), "Queue should sio be full")
         q.put("last")
         self.assertKweli(qfull(q), "Queue should be full")
         # Test a blocking put
@@ -363,7 +363,7 @@ kundi FailingQueueTest(BlockingTestMixin):
         # Empty it
         kila i kwenye range(QUEUE_SIZE):
             q.get()
-        self.assertKweli(not q.qsize(), "Queue should be empty")
+        self.assertKweli(sio q.qsize(), "Queue should be empty")
         q.put("first")
         q.fail_next_get = Kweli
         jaribu:
@@ -380,7 +380,7 @@ kundi FailingQueueTest(BlockingTestMixin):
             pita
         self.assertKweli(q.qsize(), "Queue should sio be empty")
         q.get()
-        self.assertKweli(not q.qsize(), "Queue should be empty")
+        self.assertKweli(sio q.qsize(), "Queue should be empty")
         q.fail_next_get = Kweli
         jaribu:
             self.do_exceptional_blocking_test(q.get, (), q.put, ('empty',),
@@ -391,7 +391,7 @@ kundi FailingQueueTest(BlockingTestMixin):
         # put succeeded, but get failed.
         self.assertKweli(q.qsize(), "Queue should sio be empty")
         q.get()
-        self.assertKweli(not q.qsize(), "Queue should be empty")
+        self.assertKweli(sio q.qsize(), "Queue should be empty")
 
     eleza test_failing_queue(self):
 

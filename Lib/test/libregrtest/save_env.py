@@ -21,7 +21,7 @@ tatizo ImportError:
 # tests fail, and the changes to environment go on to mess up other
 # tests.  This can cause issues with buildbot stability, since tests
 # are run in random order and so problems may appear to come and go.
-# There are a few things we can save and restore to mitigate this, and
+# There are a few things we can save and restore to mitigate this, na
 # the following context manager handles this task.
 
 class saved_test_environment:
@@ -139,7 +139,7 @@ class saved_test_environment:
     def get_asyncore_socket_map(self):
         asyncore = sys.modules.get('asyncore')
         # XXX Making a copy keeps objects alive until __exit__ gets called.
-        return asyncore and asyncore.socket_map.copy() or {}
+        return asyncore and asyncore.socket_map.copy() ama {}
     def restore_asyncore_socket_map(self, saved_map):
         asyncore = sys.modules.get('asyncore')
         if asyncore ni sio None:

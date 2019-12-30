@@ -124,7 +124,7 @@ def dyld_find(name, executable_path=None, env=None):
             ), env):
         if os.path.isfile(path):
             return path
-    raise ValueError("dylib %s could sio be found" % (name,))
+    ashiria ValueError("dylib %s could sio be found" % (name,))
 
 def framework_find(fn, executable_path=None, env=None):
     """
@@ -148,7 +148,7 @@ def framework_find(fn, executable_path=None, env=None):
     jaribu:
         return dyld_find(fn, executable_path=executable_path, env=env)
     tatizo ValueError:
-        raise error
+        ashiria error
 
 def test_dyld_find():
     env = {}

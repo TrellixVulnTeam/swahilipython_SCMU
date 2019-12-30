@@ -1339,7 +1339,7 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(fields(C), fields(C(0, 0.0)))
 
     eleza test_helper_fields_exception(self):
-        # Check that TypeError ni ashiriad ikiwa sio pitaed a datakundi or
+        # Check that TypeError ni ashiriad ikiwa sio pitaed a datakundi ama
         #  instance.
         ukijumuisha self.assertRaisesRegex(TypeError, 'datakundi type ama instance'):
             fields(0)
@@ -2550,7 +2550,7 @@ kundi TestFrozen(unittest.TestCase):
 
     # Test both ways: ukijumuisha an intermediate normal (non-dataclass)
     #  kundi na without an intermediate class.
-    eleza test_inherit_nonfrozen_kutoka_frozen(self):
+    eleza test_inherit_nonfrozen_from_frozen(self):
         kila intermediate_kundi kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 @dataclass(frozen=Kweli)
@@ -2568,7 +2568,7 @@ kundi TestFrozen(unittest.TestCase):
                     kundi D(I):
                         pita
 
-    eleza test_inherit_frozen_kutoka_nonfrozen(self):
+    eleza test_inherit_frozen_from_nonfrozen(self):
         kila intermediate_kundi kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 @dataclass
@@ -2586,7 +2586,7 @@ kundi TestFrozen(unittest.TestCase):
                     kundi D(I):
                         pita
 
-    eleza test_inherit_kutoka_normal_class(self):
+    eleza test_inherit_from_normal_class(self):
         kila intermediate_kundi kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 kundi C:
@@ -2896,7 +2896,7 @@ kundi TestStringAnnotations(unittest.TestCase):
                   ):
             ukijumuisha self.subTest(m=m):
                 # There's a difference kwenye how the ClassVars are
-                # interpreted when using string annotations or
+                # interpreted when using string annotations ama
                 # not. See the imported modules kila details.
                 ikiwa m.USING_STRINGS:
                     c = m.CV(10)
@@ -2906,7 +2906,7 @@ kundi TestStringAnnotations(unittest.TestCase):
 
 
                 # There's a difference kwenye how the InitVars are
-                # interpreted when using string annotations or
+                # interpreted when using string annotations ama
                 # not. See the imported modules kila details.
                 c = m.IV(0, 1, 2, 3, 4)
 

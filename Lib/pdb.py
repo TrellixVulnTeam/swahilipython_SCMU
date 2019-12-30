@@ -304,7 +304,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # 'tuma kutoka' ama a generator controlled by a kila loop. No exception has
         # actually occurred kwenye this case. The debugger uses this debug event to
         # stop when the debuggee ni rudishaing kutoka such generators.
-        prefix = 'Internal ' ikiwa (not exc_traceback
+        prefix = 'Internal ' ikiwa (sio exc_traceback
                                     na exc_type ni StopIteration) isipokua ''
         self.message('%s%s' % (prefix,
             traceback.format_exception_only(exc_type, exc_value)[-1].strip()))
@@ -381,7 +381,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 sys.stdout = save_stdout
                 sys.stdin = save_stdin
                 sys.displayhook = save_displayhook
-        except:
+        tatizo:
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
 
@@ -527,7 +527,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         Type a line containing just 'end' to terminate the commands.
         The commands are executed when the komapoint ni hit.
 
-        To remove all commands kutoka a komapoint, type commands and
+        To remove all commands kutoka a komapoint, type commands na
         follow it immediately ukijumuisha end; that is, give no commands.
 
         With no bpnumber argument, commands refers to the last
@@ -558,7 +558,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         isipokua:
             jaribu:
                 bnum = int(arg)
-            except:
+            tatizo:
                 self.error("Usage: commands [bnum]\n        ...\n        end")
                 rudisha
         self.commands_bnum = bnum
@@ -653,7 +653,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                     func = eval(arg,
                                 self.curframe.f_globals,
                                 self.curframe_locals)
-                except:
+                tatizo:
                     func = arg
                 jaribu:
                     ikiwa hasattr(func, '__func__'):
@@ -664,7 +664,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                     funcname = code.co_name
                     lineno = code.co_firstlineno
                     filename = code.co_filename
-                except:
+                tatizo:
                     # last thing to try
                     (ok, filename, ln) = self.lineinfo(arg)
                     ikiwa sio ok:
@@ -757,7 +757,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             rudisha 0
         line = line.strip()
         # Don't allow setting komapoint at a blank line
-        ikiwa (not line ama (line[0] == '#') or
+        ikiwa (sio line ama (line[0] == '#') ama
              (line[:3] == '"""') ama line[:3] == "'''"):
             self.error('Blank ama comment')
             rudisha 0
@@ -839,7 +839,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         args = arg.split()
         jaribu:
             count = int(args[1].strip())
-        except:
+        tatizo:
             count = 0
         jaribu:
             bp = self.get_bpbynumber(args[0].strip())
@@ -1159,7 +1159,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     eleza _getval(self, arg):
         jaribu:
             rudisha eval(arg, self.curframe.f_globals, self.curframe_locals)
-        except:
+        tatizo:
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
             ashiria
@@ -1170,7 +1170,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 rudisha eval(arg, self.curframe.f_globals, self.curframe_locals)
             isipokua:
                 rudisha eval(arg, frame.f_globals, frame.f_locals)
-        except:
+        tatizo:
             exc_info = sys.exc_info()[:2]
             err = traceback.format_exception_only(*exc_info)[-1].strip()
             rudisha _rstr('** ashiriad %s **' % err)
@@ -1181,7 +1181,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         jaribu:
             self.message(repr(self._getval(arg)))
-        except:
+        tatizo:
             pita
 
     eleza do_pp(self, arg):
@@ -1190,7 +1190,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         jaribu:
             self.message(pprint.pformat(self._getval(arg)))
-        except:
+        tatizo:
             pita
 
     complete_print = _complete_expression
@@ -1268,7 +1268,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         jaribu:
             obj = self._getval(arg)
-        except:
+        tatizo:
             rudisha
         jaribu:
             lines, lineno = getsourcelines(obj)
@@ -1306,7 +1306,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         """
         jaribu:
             value = self._getval(arg)
-        except:
+        tatizo:
             # _getval() already printed the error
             rudisha
         code = Tupu
@@ -1560,7 +1560,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # When bdb sets tracing, a number of call na line events happens
         # BEFORE debugger even reaches user's code (and the exact sequence of
         # events depends on python version). So we take special measures to
-        # avoid stopping before we reach the main script (see user_line and
+        # avoid stopping before we reach the main script (see user_line na
         # user_call kila details).
         self._wait_for_mainpyfile = Kweli
         self.mainpyfile = self.canonic(filename)
@@ -1713,7 +1713,7 @@ eleza main():
         tatizo SyntaxError:
             traceback.print_exc()
             sys.exit(1)
-        except:
+        tatizo:
             traceback.print_exc()
             andika("Uncaught exception. Entering post mortem debugging")
             andika("Running 'cont' ama 'step' will restart the program")

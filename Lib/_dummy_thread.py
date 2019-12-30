@@ -40,27 +40,27 @@ def start_new_thread(function, args, kwargs={}):
 
     """
     if type(args) != type(tuple()):
-        raise TypeError("2nd arg must be a tuple")
+        ashiria TypeError("2nd arg must be a tuple")
     if type(kwargs) != type(dict()):
-        raise TypeError("3rd arg must be a dict")
+        ashiria TypeError("3rd arg must be a dict")
     global _main
     _main = False
     jaribu:
         function(*args, **kwargs)
     tatizo SystemExit:
         pass
-    except:
+    tatizo:
         agiza traceback
         traceback.print_exc()
     _main = True
     global _interrupt
     if _interrupt:
         _interrupt = False
-        raise KeyboardInterrupt
+        ashiria KeyboardInterrupt
 
 def exit():
     """Dummy implementation of _thread.exit()."""
-    raise SystemExit
+    ashiria SystemExit
 
 def get_ident():
     """Dummy implementation of _thread.get_ident().
@@ -78,7 +78,7 @@ def allocate_lock():
 def stack_size(size=None):
     """Dummy implementation of _thread.stack_size()."""
     if size ni sio None:
-        raise error("setting thread stack size sio supported")
+        ashiria error("setting thread stack size sio supported")
     return 0
 
 def _set_sentinel():
@@ -133,7 +133,7 @@ kundi LockType(object):
         # XXX Perhaps shouldn't actually bother to test?  Could lead
         #     to problems for complex, threaded code.
         if sio self.locked_status:
-            raise error
+            ashiria error
         self.locked_status = False
         return True
 
@@ -173,7 +173,7 @@ kundi RLock(LockType):
         """Release needs to be called once for every call to acquire().
         """
         if self._levels == 0:
-            raise error
+            ashiria error
         if self._levels == 1:
             super().release()
         self._levels -= 1
@@ -187,7 +187,7 @@ def interrupt_main():
     """Set _interrupt flag to True to have start_new_thread raise
     KeyboardInterrupt upon exiting."""
     if _main:
-        raise KeyboardInterrupt
+        ashiria KeyboardInterrupt
     isipokua:
         global _interrupt
         _interrupt = True

@@ -50,7 +50,7 @@ class Dialog:
             jaribu:
                 # get rid of the widget
                 w.destroy()
-            except:
+            tatizo:
                 pass
 
         return s

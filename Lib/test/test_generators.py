@@ -17,7 +17,7 @@ tatizo ImportError:
 # This tests to make sure that ikiwa a SIGINT arrives just before we send into a
 # tuma kutoka chain, the KeyboardInterrupt ni ashiriad kwenye the innermost
 # generator (see bpo-30039).
-@unittest.skipUnless(_testcapi ni sio Tupu and
+@unittest.skipUnless(_testcapi ni sio Tupu na
                      hasattr(_testcapi, "ashiria_SIGINT_then_send_Tupu"),
                      "needs _testcapi.ashiria_SIGINT_then_send_Tupu")
 kundi SignalAndYieldFromTest(unittest.TestCase):
@@ -399,7 +399,7 @@ However, "rudisha" na StopIteration are sio exactly equivalent:
     >>> eleza g1():
     ...     jaribu:
     ...         rudisha
-    ...     except:
+    ...     tatizo:
     ...         tuma 1
     ...
     >>> list(g1())
@@ -408,7 +408,7 @@ However, "rudisha" na StopIteration are sio exactly equivalent:
     >>> eleza g2():
     ...     jaribu:
     ...         ashiria StopIteration
-    ...     except:
+    ...     tatizo:
     ...         tuma 42
     >>> andika(list(g2()))
     [42]
@@ -491,7 +491,7 @@ Specification: Return
         >>> eleza f1():
         ...     jaribu:
         ...         rudisha
-        ...     except:
+        ...     tatizo:
         ...        tuma 1
         >>> andika(list(f1()))
         []
@@ -501,7 +501,7 @@ Specification: Return
         >>> eleza f2():
         ...     jaribu:
         ...         ashiria StopIteration
-        ...     except:
+        ...     tatizo:
         ...         tuma 42
         >>> andika(list(f2()))
         [42]
@@ -542,10 +542,10 @@ Specification: Try/Except/Finally
     ...             tuma 4
     ...             tuma 5
     ...             ashiria
-    ...         except:
+    ...         tatizo:
     ...             tuma 6
     ...         tuma 7     # the "ashiria" above stops this
-    ...     except:
+    ...     tatizo:
     ...         tuma 8
     ...     tuma 9
     ...     jaribu:
@@ -649,7 +649,7 @@ in try/except, sio like a rudisha.
 ...     tuma 1
 ...     jaribu:
 ...         ashiria StopIteration
-...     except:
+...     tatizo:
 ...         tuma 2
 ...     tuma 3
 >>> list(g())
@@ -995,7 +995,7 @@ In python, we have to explicitly maintain a list of already computed results
 and abandon genuine recursivity.
 
 This ni what had been attempted above ukijumuisha the LazyList class. One problem
-ukijumuisha that kundi ni that it keeps a list of all of the generated results and
+ukijumuisha that kundi ni that it keeps a list of all of the generated results na
 therefore continually grows. This partially defeats the goal of the generator
 concept, viz. produce the results only kama needed instead of producing them
 all na thereby wasting memory.
@@ -1079,7 +1079,7 @@ These are fine:
 ...             1//0
 ...         tatizo ZeroDivisionError:
 ...             tuma 666
-...         except:
+...         tatizo:
 ...             pita
 ...     mwishowe:
 ...         pita
@@ -1091,12 +1091,12 @@ These are fine:
 ...             1//0
 ...         tatizo ZeroDivisionError:
 ...             tuma 666
-...         except:
+...         tatizo:
 ...             jaribu:
 ...                 x = 12
 ...             mwishowe:
 ...                 tuma 12
-...     except:
+...     tatizo:
 ...         rudisha
 >>> list(f())
 [12, 666]
@@ -1144,7 +1144,7 @@ These are fine:
 ...                         f(a, b, c, d, e)
 ...         isipokua:
 ...             pita
-...     except:
+...     tatizo:
 ...         x = 1
 ...     rudisha
 >>> type(f())
@@ -1387,7 +1387,7 @@ kundi Queens:
         # NE-SW diagonals: 2n-1 of these, i+j unique na invariant along
         # each, smallest i+j ni 0, largest ni 2n-2.
 
-        # For each square, compute a bit vector of the columns and
+        # For each square, compute a bit vector of the columns na
         # diagonals it covers, na kila each row compute a function that
         # generates the possibilities kila the columns kwenye that row.
         self.rowgenerators = []
@@ -1441,7 +1441,7 @@ kundi Knights:
         # successors can't go back to i0 again.  Return 0 ikiwa we can
         # detect this makes a solution impossible, isipokua rudisha 1.
 
-        eleza remove_kutoka_successors(i0, len=len):
+        eleza remove_from_successors(i0, len=len):
             # If we remove all exits kutoka a free square, we're dead:
             # even ikiwa we move to it next, we can't leave it again.
             # If we create a square ukijumuisha one exit, we must visit it next;
@@ -1475,7 +1475,7 @@ kundi Knights:
             # Since we're looking kila a cycle, it doesn't matter where we
             # start.  Starting kwenye a corner makes the 2nd move easy.
             corner = self.coords2index(0, 0)
-            remove_kutoka_successors(corner)
+            remove_from_successors(corner)
             self.lastij = corner
             tuma corner
             add_to_successors(corner)
@@ -1498,7 +1498,7 @@ kundi Knights:
                 final = self.coords2index(3-i, 3-j)
                 self.final = final
 
-                remove_kutoka_successors(this)
+                remove_from_successors(this)
                 succs[final].append(corner)
                 self.lastij = this
                 tuma this
@@ -1512,7 +1512,7 @@ kundi Knights:
             candidates = []
             kila i kwenye succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_kutoka_successors() pruning flawed"
+                assert e > 0, "else remove_from_successors() pruning flawed"
                 ikiwa e == 1:
                     candidates = [(e, i)]
                     koma
@@ -1522,7 +1522,7 @@ kundi Knights:
 
             kila e, i kwenye candidates:
                 ikiwa i != self.final:
-                    ikiwa remove_kutoka_successors(i):
+                    ikiwa remove_from_successors(i):
                         self.lastij = i
                         tuma i
                     add_to_successors(i)
@@ -1540,7 +1540,7 @@ kundi Knights:
             candidates = []
             kila i kwenye succs[self.lastij]:
                 e = len(succs[i])
-                assert e > 0, "else remove_kutoka_successors() pruning flawed"
+                assert e > 0, "else remove_from_successors() pruning flawed"
                 ikiwa e == 1:
                     candidates = [(e, 0, i)]
                     koma
@@ -1552,7 +1552,7 @@ kundi Knights:
 
             kila e, d, i kwenye candidates:
                 ikiwa i != self.final:
-                    ikiwa remove_kutoka_successors(i):
+                    ikiwa remove_from_successors(i):
                         self.lastij = i
                         tuma i
                     add_to_successors(i)
@@ -1590,7 +1590,7 @@ kundi Knights:
         kila i kwenye range(m):
             kila j kwenye rangen:
                 s = [c2i(i+io, j+jo) kila io, jo kwenye offsets
-                                     ikiwa 0 <= i+io < m and
+                                     ikiwa 0 <= i+io < m na
                                         0 <= j+jo < n]
                 succs.append(s)
 
@@ -1927,7 +1927,7 @@ TypeError: exceptions must be classes ama instances deriving kutoka BaseExceptio
 >>> eleza throw(g,exc):
 ...     jaribu:
 ...         ashiria exc
-...     except:
+...     tatizo:
 ...         g.throw(*sys.exc_info())
 >>> throw(g,ValueError) # do it ukijumuisha traceback included
 caught ValueError ()
@@ -1967,7 +1967,7 @@ The traceback should have 3 levels:
 >>> eleza f():
 ...     jaribu:
 ...         tuma
-...     except:
+...     tatizo:
 ...         ashiria
 >>> g = f()
 >>> jaribu:

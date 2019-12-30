@@ -369,7 +369,7 @@ kundi MetaPathFinderFindModuleTests:
 
     eleza test_spec(self):
         loader = object()
-        spec = self.util.spec_kutoka_loader('blah', loader)
+        spec = self.util.spec_from_loader('blah', loader)
         finder = self.finder(spec)
         ukijumuisha self.assertWarns(DeprecationWarning):
             found = finder.find_module('blah', Tupu)
@@ -405,7 +405,7 @@ kundi PathEntryFinderFindLoaderTests:
 
     eleza test_spec_with_loader(self):
         loader = object()
-        spec = self.util.spec_kutoka_loader('blah', loader)
+        spec = self.util.spec_from_loader('blah', loader)
         finder = self.finder(spec)
         ukijumuisha self.assertWarns(DeprecationWarning):
             found = finder.find_loader('blah')
@@ -462,7 +462,7 @@ kundi LoaderLoadModuleTests:
         name = 'blah'
         loader = self.loader()
         module = types.ModuleType(name)
-        module.__spec__ = self.util.spec_kutoka_loader(name, loader)
+        module.__spec__ = self.util.spec_from_loader(name, loader)
         module.__loader__ = loader
         ukijumuisha test_util.uncache(name):
             sys.modules[name] = module
@@ -570,7 +570,7 @@ kundi InspectLoaderLoadModuleTests:
         self.addCleanup(support.unload, self.module_name)
 
     eleza load(self, loader):
-        spec = self.util.spec_kutoka_loader(self.module_name, loader)
+        spec = self.util.spec_from_loader(self.module_name, loader)
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('ignore', DeprecationWarning)
             rudisha self.init._bootstrap._load_unlocked(spec)
@@ -707,7 +707,7 @@ kundi SourceLoader(SourceOnlyLoader):
 
     eleza __init__(self, path, magic=Tupu):
         super().__init__(path)
-        self.bytecode_path = self.util.cache_kutoka_source(self.path)
+        self.bytecode_path = self.util.cache_from_source(self.path)
         self.source_size = len(self.source)
         ikiwa magic ni Tupu:
             magic = self.util.MAGIC_NUMBER
@@ -753,7 +753,7 @@ kundi SourceLoaderTestHarness:
             module_name = 'mod'
             self.path = os.path.join(self.package, '.'.join(['mod', 'py']))
             self.name = '.'.join([self.package, module_name])
-        self.cached = self.util.cache_kutoka_source(self.path)
+        self.cached = self.util.cache_from_source(self.path)
         self.loader = self.loader_mock(self.path, **kwargs)
 
     eleza verify_module(self, module):
@@ -892,7 +892,7 @@ kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         self.loader.bytecode_path = "<does sio exist>"
         # Sanity check
         ukijumuisha self.assertRaises(OSError):
-            bytecode_path = self.util.cache_kutoka_source(self.path)
+            bytecode_path = self.util.cache_from_source(self.path)
             self.loader.get_data(bytecode_path)
         code_object = self.loader.get_code(self.name)
         self.verify_code(code_object, bytecode_written=Kweli)

@@ -277,7 +277,7 @@ class StructureTestCase(unittest.TestCase):
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should raise ValueError?, sio RuntimeError
+        # XXX Should ashiria ValueError?, sio RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     def test_nested_initializers(self):

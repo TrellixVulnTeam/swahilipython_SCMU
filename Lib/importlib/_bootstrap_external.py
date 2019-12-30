@@ -160,7 +160,7 @@ _code_type = type(_write_atomic.__code__)
 # to represent the magic number kwenye __pycache__ directories.  When you change
 # the magic number, you must also set a new unique magic tag.  Generally this
 # can be named after the Python major version of the magic number bump, but
-# it can really be anything, kama long kama it's different than anything else
+# it can really be anything, kama long kama it's different than anything ama
 # that's come before.  The tags are included kwenye the following table, starting
 # ukijumuisha Python 3.2a0.
 #
@@ -187,7 +187,7 @@ _code_type = type(_write_atomic.__code__)
 #     Python 2.5a0: 62092 (changed WITH_CLEANUP opcode)
 #     Python 2.5b3: 62101 (fix wrong code: kila x, kwenye ...)
 #     Python 2.5b3: 62111 (fix wrong code: x += tuma)
-#     Python 2.5c1: 62121 (fix wrong lnotab ukijumuisha kila loops and
+#     Python 2.5c1: 62121 (fix wrong lnotab ukijumuisha kila loops na
 #                          storing constants that should have been removed)
 #     Python 2.5c2: 62131 (fix wrong code: kila x, kwenye ... kwenye listcomp/genexp)
 #     Python 2.6a0: 62151 (peephole optimizations na STORE_MAP opcode)
@@ -291,7 +291,7 @@ BYTECODE_SUFFIXES = ['.pyc']
 # Deprecated.
 DEBUG_BYTECODE_SUFFIXES = OPTIMIZED_BYTECODE_SUFFIXES = BYTECODE_SUFFIXES
 
-eleza cache_kutoka_source(path, debug_override=Tupu, *, optimization=Tupu):
+eleza cache_from_source(path, debug_override=Tupu, *, optimization=Tupu):
     """Given the path to a .py file, rudisha the path to its .pyc file.
 
     The .py file does sio need to exist; this simply rudishas the path to the
@@ -362,7 +362,7 @@ eleza cache_kutoka_source(path, debug_override=Tupu, *, optimization=Tupu):
     rudisha _path_join(head, _PYCACHE, filename)
 
 
-eleza source_kutoka_cache(path):
+eleza source_from_cache(path):
     """Given the path to a .pyc. file, rudisha the path to its .py file.
 
     The .pyc file does sio need to exist; this simply rudishas the path to
@@ -415,7 +415,7 @@ eleza _get_sourcefile(bytecode_path):
     ikiwa sio rest ama extension.lower()[-3:-1] != 'py':
         rudisha bytecode_path
     jaribu:
-        source_path = source_kutoka_cache(bytecode_path)
+        source_path = source_from_cache(bytecode_path)
     tatizo (NotImplementedError, ValueError):
         source_path = bytecode_path[:-1]
     rudisha source_path ikiwa _path_isfile(source_path) isipokua bytecode_path
@@ -424,7 +424,7 @@ eleza _get_sourcefile(bytecode_path):
 eleza _get_cached(filename):
     ikiwa filename.endswith(tuple(SOURCE_SUFFIXES)):
         jaribu:
-            rudisha cache_kutoka_source(filename)
+            rudisha cache_from_source(filename)
         tatizo NotImplementedError:
             pita
     lasivyo filename.endswith(tuple(BYTECODE_SUFFIXES)):
@@ -481,7 +481,7 @@ eleza _find_module_shim(self, fullname):
 
     """
     # Call find_loader(). If it rudishas a string (indicating this
-    # ni a namespace package portion), generate a warning and
+    # ni a namespace package portion), generate a warning na
     # rudisha Tupu.
     loader, portions = self.find_loader(fullname)
     ikiwa loader ni Tupu na len(portions):
@@ -546,7 +546,7 @@ eleza _validate_timestamp_pyc(data, source_mtime, source_size, name,
         message = f'bytecode ni stale kila {name!r}'
         _bootstrap._verbose_message('{}', message)
         ashiria ImportError(message, **exc_details)
-    ikiwa (source_size ni sio Tupu and
+    ikiwa (source_size ni sio Tupu na
         _unpack_uint32(data[12:16]) != (source_size & 0xFFFFFFFF)):
         ashiria ImportError(f'bytecode ni stale kila {name!r}', **exc_details)
 
@@ -626,7 +626,7 @@ eleza decode_source(source_bytes):
 _POPULATE = object()
 
 
-eleza spec_kutoka_file_location(name, location=Tupu, *, loader=Tupu,
+eleza spec_from_file_location(name, location=Tupu, *, loader=Tupu,
                             submodule_search_locations=_POPULATE):
     """Return a module spec based on a file location.
 
@@ -640,7 +640,7 @@ eleza spec_kutoka_file_location(name, location=Tupu, *, loader=Tupu,
     """
     ikiwa location ni Tupu:
         # The caller may simply want a partially populated location-
-        # oriented spec.  So we set the location to a bogus value and
+        # oriented spec.  So we set the location to a bogus value na
         # fill kwenye kama much kama we can.
         location = '<unknown>'
         ikiwa hasattr(loader, 'get_filename'):
@@ -739,7 +739,7 @@ kundi WindowsRegistryFinder:
             rudisha Tupu
         kila loader, suffixes kwenye _get_supported_file_loaders():
             ikiwa filepath.endswith(tuple(suffixes)):
-                spec = _bootstrap.spec_kutoka_loader(fullname,
+                spec = _bootstrap.spec_from_loader(fullname,
                                                    loader(fullname, filepath),
                                                    origin=filepath)
                 rudisha spec
@@ -760,7 +760,7 @@ kundi WindowsRegistryFinder:
 
 kundi _LoaderBasics:
 
-    """Base kundi of common code needed by both SourceLoader and
+    """Base kundi of common code needed by both SourceLoader na
     SourcelessFileLoader."""
 
     eleza is_package(self, fullname):
@@ -860,7 +860,7 @@ kundi SourceLoader(_LoaderBasics):
         hash_based = Uongo
         check_source = Kweli
         jaribu:
-            bytecode_path = cache_kutoka_source(source_path)
+            bytecode_path = cache_from_source(source_path)
         tatizo NotImplementedError:
             bytecode_path = Tupu
         isipokua:
@@ -885,8 +885,8 @@ kundi SourceLoader(_LoaderBasics):
                         hash_based = flags & 0b1 != 0
                         ikiwa hash_based:
                             check_source = flags & 0b10 != 0
-                            ikiwa (_imp.check_hash_based_pycs != 'never' and
-                                (check_source or
+                            ikiwa (_imp.check_hash_based_pycs != 'never' na
+                                (check_source ama
                                  _imp.check_hash_based_pycs == 'always')):
                                 source_bytes = self.get_data(source_path)
                                 source_hash = _imp.source_hash(
@@ -915,7 +915,7 @@ kundi SourceLoader(_LoaderBasics):
             source_bytes = self.get_data(source_path)
         code_object = self.source_to_code(source_bytes, source_path)
         _bootstrap._verbose_message('code object kutoka {}', source_path)
-        ikiwa (not sys.dont_write_bytecode na bytecode_path ni sio Tupu and
+        ikiwa (sio sys.dont_write_bytecode na bytecode_path ni sio Tupu na
                 source_mtime ni sio Tupu):
             ikiwa hash_based:
                 ikiwa source_hash ni Tupu:
@@ -943,7 +943,7 @@ kundi FileLoader:
         self.path = path
 
     eleza __eq__(self, other):
-        rudisha (self.__class__ == other.__class__ and
+        rudisha (self.__class__ == other.__class__ na
                 self.__dict__ == other.__dict__)
 
     eleza __hash__(self):
@@ -1090,7 +1090,7 @@ kundi ExtensionFileLoader(FileLoader, _LoaderBasics):
         self.path = path
 
     eleza __eq__(self, other):
-        rudisha (self.__class__ == other.__class__ and
+        rudisha (self.__class__ == other.__class__ na
                 self.__dict__ == other.__dict__)
 
     eleza __hash__(self):
@@ -1192,7 +1192,7 @@ kundi _NamespacePath:
         self._path.append(item)
 
 
-# We use this exclusively kwenye module_kutoka_spec() kila backward-compatibility.
+# We use this exclusively kwenye module_from_spec() kila backward-compatibility.
 kundi _NamespaceLoader:
     eleza __init__(self, name, path, path_finder):
         self._path = _NamespacePath(name, path, path_finder)
@@ -1294,7 +1294,7 @@ kundi PathFinder:
             loader = finder.find_module(fullname)
             portions = []
         ikiwa loader ni sio Tupu:
-            rudisha _bootstrap.spec_kutoka_loader(fullname, loader)
+            rudisha _bootstrap.spec_from_loader(fullname, loader)
         spec = _bootstrap.ModuleSpec(fullname, Tupu)
         spec.submodule_search_locations = portions
         rudisha spec
@@ -1357,7 +1357,7 @@ kundi PathFinder:
 
     @classmethod
     eleza find_module(cls, fullname, path=Tupu):
-        """find the module on sys.path ama 'path' based on sys.path_hooks and
+        """find the module on sys.path ama 'path' based on sys.path_hooks na
         sys.path_importer_cache.
 
         This method ni deprecated.  Use find_spec() instead.
@@ -1425,7 +1425,7 @@ kundi FileFinder:
 
     eleza _get_spec(self, loader_class, fullname, path, smsl, target):
         loader = loader_class(fullname, path)
-        rudisha spec_kutoka_file_location(fullname, path, loader=loader,
+        rudisha spec_from_file_location(fullname, path, loader=loader,
                                        submodule_search_locations=smsl)
 
     eleza find_spec(self, fullname, target=Tupu):
@@ -1543,7 +1543,7 @@ eleza _fix_up_module(ns, name, pathname, cpathname=Tupu):
         isipokua:
             loader = SourceFileLoader(name, pathname)
     ikiwa sio spec:
-        spec = spec_kutoka_file_location(name, pathname, loader=loader)
+        spec = spec_from_file_location(name, pathname, loader=loader)
     jaribu:
         ns['__spec__'] = spec
         ns['__loader__'] = loader
@@ -1581,7 +1581,7 @@ eleza _setup(_bootstrap_module):
     self_module = sys.modules[__name__]
     kila builtin_name kwenye ('_io', '_warnings', 'builtins', 'marshal'):
         ikiwa builtin_name haiko kwenye sys.modules:
-            builtin_module = _bootstrap._builtin_kutoka_name(builtin_name)
+            builtin_module = _bootstrap._builtin_from_name(builtin_name)
         isipokua:
             builtin_module = sys.modules[builtin_name]
         setattr(self_module, builtin_name, builtin_module)
@@ -1597,7 +1597,7 @@ eleza _setup(_bootstrap_module):
             koma
         isipokua:
             jaribu:
-                os_module = _bootstrap._builtin_kutoka_name(builtin_os)
+                os_module = _bootstrap._builtin_from_name(builtin_os)
                 koma
             tatizo ImportError:
                 endelea
@@ -1609,16 +1609,16 @@ eleza _setup(_bootstrap_module):
     setattr(self_module, '_pathseps_with_colon', {f':{s}' kila s kwenye path_separators})
 
     # Directly load the _thread module (needed during bootstrap).
-    thread_module = _bootstrap._builtin_kutoka_name('_thread')
+    thread_module = _bootstrap._builtin_from_name('_thread')
     setattr(self_module, '_thread', thread_module)
 
     # Directly load the _weakref module (needed during bootstrap).
-    weakref_module = _bootstrap._builtin_kutoka_name('_weakref')
+    weakref_module = _bootstrap._builtin_from_name('_weakref')
     setattr(self_module, '_weakref', weakref_module)
 
     # Directly load the winreg module (needed during bootstrap).
     ikiwa builtin_os == 'nt':
-        winreg_module = _bootstrap._builtin_kutoka_name('winreg')
+        winreg_module = _bootstrap._builtin_from_name('winreg')
         setattr(self_module, '_winreg', winreg_module)
 
     # Constants

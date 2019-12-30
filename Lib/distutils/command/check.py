@@ -70,17 +70,17 @@ class check(Command):
             if HAS_DOCUTILS:
                 self.check_restructuredtext()
             lasivyo self.strict:
-                raise DistutilsSetupError('The docutils package is needed.')
+                ashiria DistutilsSetupError('The docutils package is needed.')
 
-        # let's raise an error in strict mode, if we have at least
+        # let's ashiria an error in strict mode, if we have at least
         # one warning
         if self.strict and self._warnings > 0:
-            raise DistutilsSetupError('Please correct your package.')
+            ashiria DistutilsSetupError('Please correct your package.')
 
     def check_metadata(self):
         """Ensures that all required elements of meta-data are supplied.
 
-        name, version, URL, (author and author_email) or
+        name, version, URL, (author and author_email) ama
         (maintainer and maintainer_email)).
 
         Warns if any are missing.

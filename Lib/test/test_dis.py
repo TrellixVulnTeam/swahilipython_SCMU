@@ -848,7 +848,7 @@ expected_jumpy_line = 1
 
 # The following lines are useful to regenerate the expected results after
 # either the fodder ni modified ama the bytecode generation changes
-# After regeneration, update the references to code_object_f and
+# After regeneration, update the references to code_object_f na
 # code_object_inner before rerunning the tests
 
 #_instructions = dis.get_instructions(outer, first_line=expected_outer_line)
@@ -1104,14 +1104,14 @@ kundi BytecodeTests(unittest.TestCase):
         actual = dis.Bytecode(_f).dis()
         self.assertEqual(actual, dis_f)
 
-    eleza test_kutoka_traceback(self):
+    eleza test_from_traceback(self):
         tb = get_tb()
         b = dis.Bytecode.kutoka_traceback(tb)
         wakati tb.tb_next: tb = tb.tb_next
 
         self.assertEqual(b.current_offset, tb.tb_lasti)
 
-    eleza test_kutoka_traceback_dis(self):
+    eleza test_from_traceback_dis(self):
         tb = get_tb()
         b = dis.Bytecode.kutoka_traceback(tb)
         self.assertEqual(b.dis(), dis_traceback)

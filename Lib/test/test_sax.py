@@ -1097,7 +1097,7 @@ kundi ExpatReaderTest(XmlTestBase):
 
         self.assertEqual(attrs.getLength(), 1)
         self.assertEqual(attrs.getNames(), [(ns_uri, "attr")])
-        self.assertKweli((attrs.getQNames() == [] or
+        self.assertKweli((attrs.getQNames() == [] ama
                          attrs.getQNames() == ["ns:attr"]))
         self.assertEqual(len(attrs), 1)
         self.assertIn((ns_uri, "attr"), attrs)

@@ -440,7 +440,7 @@ kundi TestGzip(BaseTest):
             ukijumuisha io.TextIOWrapper(f, encoding="ascii") kama t:
                 self.assertEqual(t.readlines(), lines)
 
-    eleza test_fileobj_kutoka_fdopen(self):
+    eleza test_fileobj_from_fdopen(self):
         # Issue #13781: Opening a GzipFile kila writing fails when using a
         # fileobj created ukijumuisha os.fdopen().
         fd = os.open(self.filename, os.O_WRONLY | os.O_CREAT)

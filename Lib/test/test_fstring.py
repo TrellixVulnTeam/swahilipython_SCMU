@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# There are tests here ukijumuisha unicode string literals and
+# There are tests here ukijumuisha unicode string literals na
 # identifiers. There's a code kwenye ast.c that was added because of a
 # failure ukijumuisha a non-ascii-only expression.  So, I have tests for
 # that.  There are workarounds that would let me run tests kila that

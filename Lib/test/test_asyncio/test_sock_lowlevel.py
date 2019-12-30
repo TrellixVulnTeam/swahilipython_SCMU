@@ -45,7 +45,7 @@ class MyProto(asyncio.Protocol):
 class BaseSockTestsMixin:
 
     def create_event_loop(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def setUp(self):
         self.loop = self.create_event_loop()

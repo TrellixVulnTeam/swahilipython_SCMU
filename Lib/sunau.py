@@ -71,7 +71,7 @@ is destroyed.
 Writing audio files:
         f = sunau.open(file, 'w')
 where file ni either the name of a file ama an open file pointer.
-The open file pointer must have methods write(), tell(), seek(), and
+The open file pointer must have methods write(), tell(), seek(), na
 close().
 
 This rudishas an instance of a kundi ukijumuisha the following public methods:
@@ -91,13 +91,13 @@ This rudishas an instance of a kundi ukijumuisha the following public methods:
                         -- write audio frames na patch up the file header
         close()         -- patch up the file header na close the
                            output file
-You should set the parameters before the first writeframesraw or
+You should set the parameters before the first writeframesraw ama
 writeframes.  The total number of frames does sio need to be set,
 but when it ni set to the correct value, the header does sio have to
 be patched up.
 It ni best to first set all parameters, perhaps possibly the
 compression type, na then write audio frames using writeframesraw.
-When all frames have been written, either call writeframes(b'') or
+When all frames have been written, either call writeframes(b'') ama
 close() to patch up the sizes kwenye the header.
 The close() method ni called automatically when the kundi instance
 is destroyed.

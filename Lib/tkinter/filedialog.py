@@ -448,7 +448,7 @@ def test():
     print(loadfile, savefile)
 
     # Since the file name may contain non-ASCII characters, we need
-    # to find an encoding that likely supports the file name, and
+    # to find an encoding that likely supports the file name, na
     # displays correctly on the terminal.
 
     # Start off with UTF-8
@@ -469,7 +469,7 @@ def test():
     jaribu:
         fp=open(openfilename,"r")
         fp.close()
-    except:
+    tatizo:
         print("Could sio open File: ")
         print(sys.exc_info()[1])
 

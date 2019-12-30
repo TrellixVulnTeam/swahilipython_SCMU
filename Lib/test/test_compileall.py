@@ -31,11 +31,11 @@ kundi CompileallTestsBase:
     eleza setUp(self):
         self.directory = tempfile.mkdtemp()
         self.source_path = os.path.join(self.directory, '_test.py')
-        self.bc_path = importlib.util.cache_kutoka_source(self.source_path)
+        self.bc_path = importlib.util.cache_from_source(self.source_path)
         ukijumuisha open(self.source_path, 'w') kama file:
             file.write('x = 123\n')
         self.source_path2 = os.path.join(self.directory, '_test2.py')
-        self.bc_path2 = importlib.util.cache_kutoka_source(self.source_path2)
+        self.bc_path2 = importlib.util.cache_from_source(self.source_path2)
         shutil.copyfile(self.source_path, self.source_path2)
         self.subdirectory = os.path.join(self.directory, '_subdir')
         os.mkdir(self.subdirectory)
@@ -87,16 +87,16 @@ kundi CompileallTestsBase:
         kila fn kwenye (self.bc_path, self.bc_path2):
             jaribu:
                 os.unlink(fn)
-            except:
+            tatizo:
                 pita
         self.assertKweli(compileall.compile_file(self.source_path,
                                                 force=Uongo, quiet=Kweli))
-        self.assertKweli(os.path.isfile(self.bc_path) and
+        self.assertKweli(os.path.isfile(self.bc_path) na
                         sio os.path.isfile(self.bc_path2))
         os.unlink(self.bc_path)
         self.assertKweli(compileall.compile_dir(self.directory, force=Uongo,
                                                quiet=Kweli))
-        self.assertKweli(os.path.isfile(self.bc_path) and
+        self.assertKweli(os.path.isfile(self.bc_path) na
                         os.path.isfile(self.bc_path2))
         os.unlink(self.bc_path)
         os.unlink(self.bc_path2)
@@ -148,13 +148,13 @@ kundi CompileallTestsBase:
         # interpreter's creates the correct file names
         optimize, opt = (1, 1) ikiwa __debug__ isipokua (0, '')
         compileall.compile_dir(self.directory, quiet=Kweli, optimize=optimize)
-        cached = importlib.util.cache_kutoka_source(self.source_path,
+        cached = importlib.util.cache_from_source(self.source_path,
                                                   optimization=opt)
         self.assertKweli(os.path.isfile(cached))
-        cached2 = importlib.util.cache_kutoka_source(self.source_path2,
+        cached2 = importlib.util.cache_from_source(self.source_path2,
                                                    optimization=opt)
         self.assertKweli(os.path.isfile(cached2))
-        cached3 = importlib.util.cache_kutoka_source(self.source_path3,
+        cached3 = importlib.util.cache_from_source(self.source_path3,
                                                    optimization=opt)
         self.assertKweli(os.path.isfile(cached3))
 
@@ -263,7 +263,7 @@ kundi CommandLineTestsBase:
             ashiria unittest.SkipTest('not all entries on sys.path are writable')
 
     eleza _get_run_args(self, args):
-        rudisha [*support.optim_args_kutoka_interpreter_flags(),
+        rudisha [*support.optim_args_from_interpreter_flags(),
                 '-S', '-m', 'compileall',
                 *args]
 
@@ -279,11 +279,11 @@ kundi CommandLineTestsBase:
         rudisha rc, out, err
 
     eleza assertCompiled(self, fn):
-        path = importlib.util.cache_kutoka_source(fn)
+        path = importlib.util.cache_from_source(fn)
         self.assertKweli(os.path.exists(path))
 
     eleza assertNotCompiled(self, fn):
-        path = importlib.util.cache_kutoka_source(fn)
+        path = importlib.util.cache_from_source(fn)
         self.assertUongo(os.path.exists(path))
 
     eleza setUp(self):
@@ -310,7 +310,7 @@ kundi CommandLineTestsBase:
         self._skip_if_sys_path_not_writable()
         bazfn = script_helper.make_script(self.directory, 'baz', '')
         self.assertRunOK(PYTHONPATH=self.directory)
-        pycpath = importlib.util.cache_kutoka_source(bazfn)
+        pycpath = importlib.util.cache_from_source(bazfn)
         # Set atime/mtime backward to avoid file timestamp resolution issues
         os.utime(pycpath, (time.time()-60,)*2)
         mtime = os.stat(pycpath).st_mtime
@@ -377,7 +377,7 @@ kundi CommandLineTestsBase:
     @without_source_date_epoch  # timestamp invalidation test
     eleza test_force(self):
         self.assertRunOK('-q', self.pkgdir)
-        pycpath = importlib.util.cache_kutoka_source(self.barfn)
+        pycpath = importlib.util.cache_from_source(self.barfn)
         # set atime/mtime backward to avoid file timestamp resolution issues
         os.utime(pycpath, (time.time()-60,)*2)
         mtime = os.stat(pycpath).st_mtime
@@ -474,7 +474,7 @@ kundi CommandLineTestsBase:
         bazfn = script_helper.make_script(self.pkgdir, 'baz', 'ashiria Exception')
         self.assertRunOK('-q', '-d', 'dinsdale', self.pkgdir)
         fn = script_helper.make_script(self.pkgdir, 'bing', 'agiza baz')
-        pyc = importlib.util.cache_kutoka_source(bazfn)
+        pyc = importlib.util.cache_from_source(bazfn)
         os.rename(pyc, os.path.join(self.pkgdir, 'baz.pyc'))
         os.remove(bazfn)
         rc, out, err = script_helper.assert_python_failure(fn, __isolated=Uongo)
@@ -485,7 +485,7 @@ kundi CommandLineTestsBase:
             '-i', os.path.join(self.directory, 'nosuchfile'), self.pkgdir)
         self.assertRegex(out, b'rror.*nosuchfile')
         self.assertNotRegex(err, b'Traceback')
-        self.assertUongo(os.path.exists(importlib.util.cache_kutoka_source(
+        self.assertUongo(os.path.exists(importlib.util.cache_from_source(
                                             self.pkgdir_cachedir)))
 
     eleza test_include_file_with_arg(self):
@@ -543,7 +543,7 @@ kundi CommandLineTestsBase:
 
     eleza test_pyc_invalidation_mode(self):
         script_helper.make_script(self.pkgdir, 'f1', '')
-        pyc = importlib.util.cache_kutoka_source(
+        pyc = importlib.util.cache_from_source(
             os.path.join(self.pkgdir, 'f1.py'))
         self.assertRunOK('--invalidation-mode=checked-hash', self.pkgdir)
         ukijumuisha open(pyc, 'rb') kama fp:

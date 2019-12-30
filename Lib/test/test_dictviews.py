@@ -77,15 +77,15 @@ kundi DictSetTest(unittest.TestCase):
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_items([('a', 'ABC'), (1, 10)])" or
+        self.assertKweli(r == "dict_items([('a', 'ABC'), (1, 10)])" ama
                         r == "dict_items([(1, 10), ('a', 'ABC')])")
         r = repr(d.keys())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_keys(['a', 1])" or
+        self.assertKweli(r == "dict_keys(['a', 1])" ama
                         r == "dict_keys([1, 'a'])")
         r = repr(d.values())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_values(['ABC', 10])" or
+        self.assertKweli(r == "dict_values(['ABC', 10])" ama
                         r == "dict_values([10, 'ABC'])")
 
     eleza test_keys_set_operations(self):

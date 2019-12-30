@@ -237,7 +237,7 @@ eleza get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return Tupu ikiwa the tracemalloc module ni sio tracing memory allocations or
+    Return Tupu ikiwa the tracemalloc module ni sio tracing memory allocations ama
     did sio trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
@@ -348,7 +348,7 @@ kundi Filter(BaseFilter):
             rudisha (lineno == self.lineno)
 
     eleza _match_frame(self, filename, lineno):
-        rudisha self._match_frame_impl(filename, lineno) ^ (not self.inclusive)
+        rudisha self._match_frame_impl(filename, lineno) ^ (sio self.inclusive)
 
     eleza _match_traceback(self, traceback):
         ikiwa self.all_frames:
@@ -356,7 +356,7 @@ kundi Filter(BaseFilter):
                    kila filename, lineno kwenye traceback):
                 rudisha self.inclusive
             isipokua:
-                rudisha (not self.inclusive)
+                rudisha (sio self.inclusive)
         isipokua:
             filename, lineno = traceback[0]
             rudisha self._match_frame(filename, lineno)
@@ -383,7 +383,7 @@ kundi DomainFilter(BaseFilter):
 
     eleza _match(self, trace):
         domain, size, traceback = trace
-        rudisha (domain == self.domain) ^ (not self.inclusive)
+        rudisha (domain == self.domain) ^ (sio self.inclusive)
 
 
 kundi Snapshot:
@@ -418,7 +418,7 @@ kundi Snapshot:
                        kila trace_filter kwenye include_filters):
                 rudisha Uongo
         ikiwa exclude_filters:
-            ikiwa any(not trace_filter._match(trace)
+            ikiwa any(sio trace_filter._match(trace)
                    kila trace_filter kwenye exclude_filters):
                 rudisha Uongo
         rudisha Kweli

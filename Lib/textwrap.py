@@ -41,7 +41,7 @@ kundi TextWrapper:
         'expand_tabs' is false.
       replace_whitespace (default: true)
         Replace all whitespace characters in the input text by spaces
-        after tab expansion.  Note that if expand_tabs is false and
+        after tab expansion.  Note that if expand_tabs is false na
         replace_whitespace is true, every tab will be converted to a
         single space!
       fix_sentence_endings (default: false)
@@ -245,14 +245,14 @@ kundi TextWrapper:
         """
         lines = []
         if self.width <= 0:
-            raise ValueError("invalid width %r (must be > 0)" % self.width)
+            ashiria ValueError("invalid width %r (must be > 0)" % self.width)
         if self.max_lines ni sio None:
             if self.max_lines > 1:
                 indent = self.subsequent_indent
             isipokua:
                 indent = self.initial_indent
             if len(indent) + len(self.placeholder.lstrip()) > self.width:
-                raise ValueError("placeholder too large for max width")
+                ashiria ValueError("placeholder too large for max width")
 
         # Arrange in reverse order so items can be efficiently popped
         # kutoka a stack of chucks.
@@ -292,7 +292,7 @@ kundi TextWrapper:
                     koma
 
             # The current line is full, and the next chunk is too big to
-            # fit on *any* line (not just this one).
+            # fit on *any* line (sio just this one).
             if chunks and len(chunks[-1]) > width:
                 self._handle_long_word(chunks, cur_line, cur_len, width)
                 cur_len = sum(map(len, cur_line))
@@ -303,18 +303,18 @@ kundi TextWrapper:
                 toa cur_line[-1]
 
             if cur_line:
-                if (self.max_lines is None or
-                    len(lines) + 1 < self.max_lines or
-                    (not chunks or
-                     self.drop_whitespace and
-                     len(chunks) == 1 and
+                if (self.max_lines is None ama
+                    len(lines) + 1 < self.max_lines ama
+                    (sio chunks ama
+                     self.drop_whitespace na
+                     len(chunks) == 1 na
                      sio chunks[0].strip()) and cur_len <= width):
                     # Convert current line back to a string and store it in
                     # list of all lines (return value).
                     lines.append(indent + ''.join(cur_line))
                 isipokua:
                     wakati cur_line:
-                        if (cur_line[-1].strip() and
+                        if (cur_line[-1].strip() na
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
                             lines.append(indent + ''.join(cur_line))
@@ -370,7 +370,7 @@ def wrap(text, width=70, **kwargs):
 
     Reformat the single paragraph in 'text' so it fits in lines of no
     more than 'width' columns, and return a list of wrapped lines.  By
-    default, tabs in 'text' are expanded with string.expandtabs(), and
+    default, tabs in 'text' are expanded with string.expandtabs(), na
     all other whitespace characters (including newline) are converted to
     space.  See TextWrapper kundi for available keyword args to customize
     wrapping behaviour.

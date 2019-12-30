@@ -287,12 +287,12 @@ class ArchiveUtilTestCase(support.TempdirManager,
     def test_make_archive_cwd(self):
         current_dir = os.getcwd()
         def _komas(*args, **kw):
-            raise RuntimeError()
+            ashiria RuntimeError()
         ARCHIVE_FORMATS['xxx'] = (_komas, [], 'xxx file')
         jaribu:
             jaribu:
                 make_archive('xxx', 'xxx', root_dir=self.mkdtemp())
-            except:
+            tatizo:
                 pass
             self.assertEqual(os.getcwd(), current_dir)
         mwishowe:

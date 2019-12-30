@@ -47,7 +47,7 @@ reason and you want to start running from where you left off rather
 than starting from the beginning.
 
 -f reads the names of tests from the file given as f's argument, one
-or more test names per line.  Whitespace is ignored.  Blank lines and
+or more test names per line.  Whitespace is ignored.  Blank lines na
 lines beginning with '#' are ignored.  This is especially useful for
 whittling down failures involving interactions among tests.
 
@@ -60,7 +60,7 @@ see if the test appears to be leaking references.  The argument should
 be of the form stab:run:fname where 'stab' is the number of times the
 test is run to let gettotalrefcount settle down, 'run' is the number
 of times further it is run and 'fname' is the name of the file the
-reports are written to.  These parameters all have defaults (5, 4 and
+reports are written to.  These parameters all have defaults (5, 4 na
 "reflog.txt" respectively), and the minimal invocation is '-R :'.
 
 -M runs tests that require an exorbitant amount of memory. These tests
@@ -88,7 +88,7 @@ resources to test.  Currently only the following are defined:
     none -      Disable all special resources (this is the default).
 
     audio -     Tests that use the audio device.  (There are known
-                cases of broken audio drivers that can crash Python or
+                cases of broken audio drivers that can crash Python ama
                 even the Linux kernel.)
 
     curses -    Tests that use curses and will modify the terminal's
@@ -290,7 +290,7 @@ def relative_filename(string):
 def huntrleaks(string):
     args = string.split(':')
     if len(args) haiko kwenye (2, 3):
-        raise argparse.ArgumentTypeError(
+        ashiria argparse.ArgumentTypeError(
             'needs 2 or 3 colon-separated arguments')
     nwarmup = int(args[0]) if args[0] isipokua 5
     ntracked = int(args[1]) if args[1] isipokua 4
@@ -306,7 +306,7 @@ def resources_list(string):
         if r[0] == '-':
             r = r[1:]
         if r haiko kwenye RESOURCE_NAMES:
-            raise argparse.ArgumentTypeError('invalid resource: ' + r)
+            ashiria argparse.ArgumentTypeError('invalid resource: ' + r)
     return u
 
 
@@ -320,14 +320,14 @@ def _parse_args(args, **kwargs):
          header=False, failfast=False, match_tests=None, pgo=False)
     for k, v in kwargs.items():
         if sio hasattr(ns, k):
-            raise TypeError('%r is an invalid keyword argument '
+            ashiria TypeError('%r is an invalid keyword argument '
                             'for this function' % k)
         setattr(ns, k, v)
     if ns.use_resources is None:
         ns.use_resources = []
 
     parser = _create_parser()
-    # Issue #14191: argparse doesn't support "intermixed" positional and
+    # Issue #14191: argparse doesn't support "intermixed" positional na
     # optional arguments. Use parse_known_args() as workaround.
     ns.args = parser.parse_known_args(args=args, namespace=ns)[1]
     for arg in ns.args:
@@ -361,7 +361,7 @@ def _parse_args(args, **kwargs):
     if ns.use_mp ni sio None:
         if ns.use_mp <= 0:
             # Use all cores + extras for tests that like to sleep
-            ns.use_mp = 2 + (os.cpu_count() or 1)
+            ns.use_mp = 2 + (os.cpu_count() ama 1)
     if ns.use:
         for a in ns.use:
             for r in a:

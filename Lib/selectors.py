@@ -232,7 +232,7 @@ kundi _BaseSelectorImpl(BaseSelector):
             ashiria
 
     eleza register(self, fileobj, events, data=Tupu):
-        ikiwa (not events) ama (events & ~(EVENT_READ | EVENT_WRITE)):
+        ikiwa (sio events) ama (events & ~(EVENT_READ | EVENT_WRITE)):
             ashiria ValueError("Invalid events: {!r}".format(events))
 
         key = SelectorKey(fileobj, self._fileobj_lookup(fileobj), events, data)
@@ -272,7 +272,7 @@ kundi _BaseSelectorImpl(BaseSelector):
     eleza get_map(self):
         rudisha self._map
 
-    eleza _key_kutoka_fd(self, fd):
+    eleza _key_from_fd(self, fd):
         """Return the key associated to a given file descriptor.
 
         Parameters:
@@ -332,7 +332,7 @@ kundi SelectSelector(_BaseSelectorImpl):
             ikiwa fd kwenye w:
                 events |= EVENT_WRITE
 
-            key = self._key_kutoka_fd(fd)
+            key = self._key_from_fd(fd)
             ikiwa key:
                 ready.append((key, events & key.events))
         rudisha ready
@@ -357,7 +357,7 @@ kundi _PollLikeSelector(_BaseSelectorImpl):
             poller_events |= self._EVENT_WRITE
         jaribu:
             self._selector.register(key.fd, poller_events)
-        except:
+        tatizo:
             super().unregister(fileobj)
             ashiria
         rudisha key
@@ -387,7 +387,7 @@ kundi _PollLikeSelector(_BaseSelectorImpl):
                 selector_events |= self._EVENT_WRITE
             jaribu:
                 self._selector.modify(key.fd, selector_events)
-            except:
+            tatizo:
                 super().unregister(fileobj)
                 ashiria
             changed = Kweli
@@ -422,7 +422,7 @@ kundi _PollLikeSelector(_BaseSelectorImpl):
             ikiwa event & ~self._EVENT_WRITE:
                 events |= EVENT_READ
 
-            key = self._key_kutoka_fd(fd)
+            key = self._key_from_fd(fd)
             ikiwa key:
                 ready.append((key, events & key.events))
         rudisha ready
@@ -475,7 +475,7 @@ ikiwa hasattr(select, 'epoll'):
                 ikiwa event & ~select.EPOLLOUT:
                     events |= EVENT_READ
 
-                key = self._key_kutoka_fd(fd)
+                key = self._key_from_fd(fd)
                 ikiwa key:
                     ready.append((key, events & key.events))
             rudisha ready
@@ -524,7 +524,7 @@ ikiwa hasattr(select, 'kqueue'):
                     kev = select.kevent(key.fd, select.KQ_FILTER_WRITE,
                                         select.KQ_EV_ADD)
                     self._selector.control([kev], 0, 0)
-            except:
+            tatizo:
                 super().unregister(fileobj)
                 ashiria
             rudisha key
@@ -567,7 +567,7 @@ ikiwa hasattr(select, 'kqueue'):
                 ikiwa flag == select.KQ_FILTER_WRITE:
                     events |= EVENT_WRITE
 
-                key = self._key_kutoka_fd(fd)
+                key = self._key_from_fd(fd)
                 ikiwa key:
                     ready.append((key, events & key.events))
             rudisha ready

@@ -35,7 +35,7 @@ def initscr():
 
     return stdscr
 
-# This is a similar wrapper for start_color(), which adds the COLORS and
+# This is a similar wrapper for start_color(), which adds the COLORS na
 # COLOR_PAIRS variables which are only available after start_color() is
 # called.
 
@@ -76,7 +76,7 @@ def wrapper(*args, **kwds):
         warnings.warn("Passing 'func' as keyword argument is deprecated",
                       DeprecationWarning, stacklevel=2)
     isipokua:
-        raise TypeError('wrapper expected at least 1 positional argument, '
+        ashiria TypeError('wrapper expected at least 1 positional argument, '
                         'got %d' % len(args))
 
     jaribu:
@@ -89,7 +89,7 @@ def wrapper(*args, **kwds):
         ckoma()
 
         # In keypad mode, escape sequences for special keys
-        # (like the cursor keys) will be interpreted and
+        # (like the cursor keys) will be interpreted na
         # a special value like curses.KEY_LEFT will be returned
         stdscr.keypad(1)
 
@@ -99,7 +99,7 @@ def wrapper(*args, **kwds):
         # module -- the error return from C start_color() is ignorable.
         jaribu:
             start_color()
-        except:
+        tatizo:
             pass
 
         return func(stdscr, *args, **kwds)

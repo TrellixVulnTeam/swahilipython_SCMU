@@ -17,7 +17,7 @@ tatizo ImportError:
 @mock.patch('os.environ')
 kundi GetpitaGetuserTest(unittest.TestCase):
 
-    eleza test_username_takes_username_kutoka_env(self, environ):
+    eleza test_username_takes_username_from_env(self, environ):
         expected_name = 'some_name'
         environ.get.rudisha_value = expected_name
         self.assertEqual(expected_name, getpita.getuser())

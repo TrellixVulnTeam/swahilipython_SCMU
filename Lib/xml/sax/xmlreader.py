@@ -97,7 +97,7 @@ kundi IncrementalParser(XMLReader):
     When the parser ni instantiated it ni ready to begin accepting
     data kutoka the feed method immediately. After parsing has been
     finished ukijumuisha a call to close the reset method must be called to
-    make the parser ready to accept new data, either kutoka feed or
+    make the parser ready to accept new data, either kutoka feed ama
     using the parse method.
 
     Note that these methods must _not_ be called during parsing, that

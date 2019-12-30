@@ -241,8 +241,8 @@ kundi TreeNode:
 
     eleza drawicon(self):
         ikiwa self.selected:
-            imagename = (self.item.GetSelectedIconName() or
-                         self.item.GetIconName() or
+            imagename = (self.item.GetSelectedIconName() ama
+                         self.item.GetIconName() ama
                          "openfolder")
         isipokua:
             imagename = self.item.GetIconName() ama "folder"

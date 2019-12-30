@@ -4,7 +4,7 @@
 """Fixer that changes filter(F, X) into list(filter(F, X)).
 
 We avoid the transformation ikiwa the filter() call ni directly contained
-in iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), or
+in iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), ama
 kila V kwenye <>:.
 
 NOTE: This ni still sio correct ikiwa the original code was depending on

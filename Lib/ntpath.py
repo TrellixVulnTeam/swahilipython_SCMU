@@ -101,7 +101,7 @@ eleza join(path, *paths):
                 result_path = result_path + sep
             result_path = result_path + p_path
         ## add separator between UNC na non-absolute path
-        ikiwa (result_path na result_path[0] haiko kwenye seps and
+        ikiwa (result_path na result_path[0] haiko kwenye seps na
             result_drive na result_drive[-1:] != colon):
             rudisha result_drive + sep + result_path
         rudisha result_drive + result_path
@@ -259,7 +259,7 @@ eleza ismount(path):
     path = abspath(path)
     root, rest = splitdrive(path)
     ikiwa root na root[0] kwenye seps:
-        rudisha (not rest) ama (rest kwenye seps)
+        rudisha (sio rest) ama (rest kwenye seps)
     ikiwa rest kwenye seps:
         rudisha Kweli
 
@@ -530,7 +530,7 @@ isipokua:
         ikiwa seen ni Tupu:
             seen = set()
 
-        # These error codes indicate that we should stop reading links and
+        # These error codes indicate that we should stop reading links na
         # rudisha the path we currently have.
         # 1: ERROR_INVALID_FUNCTION
         # 2: ERROR_FILE_NOT_FOUND
@@ -639,7 +639,7 @@ isipokua:
 
 
 # Win9x family na earlier have no Unicode filename support.
-supports_unicode_filenames = (hasattr(sys, "getwindowsversion") and
+supports_unicode_filenames = (hasattr(sys, "getwindowsversion") na
                               sys.getwindowsversion()[3] >= 2)
 
 eleza relpath(path, start=Tupu):

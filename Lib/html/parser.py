@@ -69,7 +69,7 @@ kundi HTMLParser(_markupbase.ParserBase):
         ...
         p.close()
 
-    Start tags are handled by calling self.handle_starttag() or
+    Start tags are handled by calling self.handle_starttag() ama
     self.handle_startendtag(); end tags by self.handle_endtag().  The
     data between tags ni pitaed kutoka the parser to the derived class
     by calling self.handle_data() ukijumuisha the data kama argument (the data
@@ -146,7 +146,7 @@ kundi HTMLParser(_markupbase.ParserBase):
                     # this ni the case before proceeding by looking kila an
                     # & near the end na see ikiwa it's followed by a space ama ;.
                     amppos = rawdata.rfind('&', max(i, n-34))
-                    ikiwa (amppos >= 0 and
+                    ikiwa (amppos >= 0 na
                         sio re.compile(r'[\s;]').search(rawdata, amppos)):
                         koma  # wait till we get all the text
                     j = n

@@ -107,7 +107,7 @@ __import__ = {'Frozen': staticmethod(builtins.__import__),
 eleza case_insensitive_tests(test):
     """Class decorator that nullifies tests requiring a case-insensitive
     file system."""
-    rudisha unittest.skipIf(not CASE_INSENSITIVE_FS,
+    rudisha unittest.skipIf(sio CASE_INSENSITIVE_FS,
                             "requires a case-insensitive filesystem")(test)
 
 
@@ -273,7 +273,7 @@ kundi mock_spec(_ImporterMock):
             module = self.modules[fullname]
         tatizo KeyError:
             rudisha Tupu
-        spec = util.spec_kutoka_file_location(
+        spec = util.spec_from_file_location(
                 fullname, module.__file__, loader=self,
                 submodule_search_locations=getattr(module, '__path__', Tupu))
         rudisha spec
@@ -338,7 +338,7 @@ eleza create_modules(*names):
 
     All files are created kwenye a temporary directory rudishaed by
     tempfile.mkdtemp(). This directory ni inserted at the beginning of
-    sys.path. When the context manager exits all created files (source and
+    sys.path. When the context manager exits all created files (source na
     bytecode) are explicitly deleted.
 
     No magic ni performed when creating packages! This means that ikiwa you create
@@ -443,7 +443,7 @@ eleza create_package(file, path, is_package=Kweli, contents=()):
                 tuma entry
 
     name = 'testingpackage'
-    # Unfortunately importlib.util.module_kutoka_spec() was sio introduced until
+    # Unfortunately importlib.util.module_from_spec() was sio introduced until
     # Python 3.5.
     module = types.ModuleType(name)
     loader = Reader()

@@ -44,7 +44,7 @@ class Test(unittest.TestCase):
                     for dim in v.shape:
                         n = n * dim
                     self.assertEqual(n * v.itemsize, len(v.tobytes()))
-            except:
+            tatizo:
                 # so that we can see the failing type
                 print(tp)
                 raise
@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
                     for dim in v.shape:
                         n = n * dim
                     self.assertEqual(n, len(v))
-            except:
+            tatizo:
                 # so that we can see the failing type
                 print(tp)
                 raise

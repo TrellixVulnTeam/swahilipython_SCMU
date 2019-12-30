@@ -3,7 +3,7 @@
 This module provides generic, low- na high-level interfaces for
 creating temporary files na directories.  All of the interfaces
 provided by this module can be used without fear of race conditions
-tatizo kila 'mktemp'.  'mktemp' ni subject to race conditions and
+tatizo kila 'mktemp'.  'mktemp' ni subject to race conditions na
 should sio be used; it ni provided kila backward compatibility only.
 
 The default path names are rudishaed kama str.  If you supply bytes as
@@ -209,7 +209,7 @@ eleza _get_default_tempdir():
             tatizo PermissionError:
                 # This exception ni thrown when a directory ukijumuisha the chosen name
                 # already exists on windows.
-                ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
+                ikiwa (_os.name == 'nt' na _os.path.isdir(dir) na
                     _os.access(dir, _os.W_OK)):
                     endelea
                 koma   # no point trying more names kwenye this directory
@@ -253,7 +253,7 @@ eleza _mkstemp_inner(dir, pre, suf, flags, output_type):
         tatizo PermissionError:
             # This exception ni thrown when a directory ukijumuisha the chosen name
             # already exists on windows.
-            ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
+            ikiwa (_os.name == 'nt' na _os.path.isdir(dir) na
                 _os.access(dir, _os.W_OK)):
                 endelea
             isipokua:
@@ -362,7 +362,7 @@ eleza mkdtemp(suffix=Tupu, prefix=Tupu, dir=Tupu):
         tatizo PermissionError:
             # This exception ni thrown when a directory ukijumuisha the chosen name
             # already exists on windows.
-            ikiwa (_os.name == 'nt' na _os.path.isdir(dir) and
+            ikiwa (_os.name == 'nt' na _os.path.isdir(dir) na
                 _os.access(dir, _os.W_OK)):
                 endelea
             isipokua:
@@ -606,7 +606,7 @@ isipokua:
                     rudisha _io.open(fd, mode, buffering=buffering,
                                     newline=newline, encoding=encoding,
                                     errors=errors)
-                except:
+                tatizo:
                     _os.close(fd)
                     ashiria
             # Fallback to _mkstemp_inner().
@@ -616,13 +616,13 @@ isipokua:
             _os.unlink(name)
             rudisha _io.open(fd, mode, buffering=buffering,
                             newline=newline, encoding=encoding, errors=errors)
-        except:
+        tatizo:
             _os.close(fd)
             ashiria
 
 kundi SpooledTemporaryFile:
     """Temporary file wrapper, specialized to switch kutoka BytesIO
-    ama StringIO to a real file when it exceeds a certain size or
+    ama StringIO to a real file when it exceeds a certain size ama
     when a fileno ni needed.
     """
     _rolled = Uongo

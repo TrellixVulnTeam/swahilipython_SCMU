@@ -182,7 +182,7 @@ kundi MmapTests(unittest.TestCase):
                 m = mmap.mmap(f.fileno(), mapsize+1)
             tatizo ValueError:
                 # we do sio expect a ValueError on Windows
-                # CAUTION:  This also changes the size of the file on disk, and
+                # CAUTION:  This also changes the size of the file on disk, na
                 # later tests assume that the length hasn't changed.  We need to
                 # repair that.
                 ikiwa sys.platform.startswith('win'):
@@ -644,7 +644,7 @@ kundi MmapTests(unittest.TestCase):
         m = mmap.mmap(-1, 1000, tagname="foo")
         jaribu:
             mmap.mmap(-1, 5000, tagname="foo")[:] # same tagname, but larger size
-        except:
+        tatizo:
             pita
         m.close()
 
@@ -656,11 +656,11 @@ kundi MmapTests(unittest.TestCase):
         f.close()
         jaribu:
             m.resize(0) # will ashiria OSError
-        except:
+        tatizo:
             pita
         jaribu:
             m[:]
-        except:
+        tatizo:
             pita
         m.close()
 

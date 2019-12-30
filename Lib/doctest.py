@@ -86,7 +86,7 @@ __all__ = [
     'DocFileSuite',
     'set_unittest_reportflags',
     # 8. Debugging Support
-    'script_kutoka_examples',
+    'script_from_examples',
     'testsource',
     'debug_src',
     'debug',
@@ -111,7 +111,7 @@ TestResults = namedtuple('TestResults', 'failed attempted')
 #  - Example: a <source, want> pair, plus an intra-docstring line number.
 #  - DocTest: a collection of examples, parsed kutoka a docstring, plus
 #    info about where the docstring came kutoka (name, filename, lineno).
-#  - DocTestFinder: extracts DocTests kutoka a given object's docstring and
+#  - DocTestFinder: extracts DocTests kutoka a given object's docstring na
 #    its contained objects' docstrings.
 #  - DocTestRunner: runs DocTest cases, and accumulates statistics.
 #
@@ -209,7 +209,7 @@ def _normalize_module(module, depth=2):
     lasivyo module is None:
         return sys.modules[sys._getframe(depth).f_globals['__name__']]
     isipokua:
-        raise TypeError("Expected a module, string, or None")
+        ashiria TypeError("Expected a module, string, or None")
 
 def _load_testfile(filename, package, module_relative, encoding):
     if module_relative:
@@ -299,7 +299,7 @@ def _ellipsis_match(want, got):
     # match for each piece.  If there's no overall match that way alone,
     # there's no overall match period.
     for w in ws:
-        # w may be '' at times, if there are consecutive ellipses, or
+        # w may be '' at times, if there are consecutive ellipses, ama
         # due to an ellipsis at the start or end of `want`.  That's OK.
         # Search for an empty string succeeds, and doesn't change startpos.
         startpos = got.find(w, startpos, endpos)
@@ -382,9 +382,9 @@ kundi _OutputRedirectingPdb(pdb.Pdb):
 # [XX] Normalize with respect to os.path.pardir?
 def _module_relative_path(module, test_path):
     if sio inspect.ismodule(module):
-        raise TypeError('Expected a module: %r' % module)
+        ashiria TypeError('Expected a module: %r' % module)
     if test_path.startswith('/'):
-        raise ValueError('Module-relative files may sio have absolute paths')
+        ashiria ValueError('Module-relative files may sio have absolute paths')
 
     # Normalize the path. On Windows, replace "/" with "\".
     test_path = os.path.join(*(test_path.split('/')))
@@ -407,7 +407,7 @@ def _module_relative_path(module, test_path):
                     return fullpath
 
         # A module w/o __file__ (this includes builtins)
-        raise ValueError("Can't resolve paths relative to the module "
+        ashiria ValueError("Can't resolve paths relative to the module "
                          "%r (it has no __file__)"
                          % module.__name__)
 
@@ -455,7 +455,7 @@ kundi Example:
         I.e., the number of space characters that precede the
         example's first prompt.
 
-      - options: A dictionary mapping kutoka option flags to True or
+      - options: A dictionary mapping kutoka option flags to True ama
         False, which is used to override default options for this
         example.  Any option flags sio contained in this dictionary
         are left at their default value (as specified by the
@@ -576,7 +576,7 @@ kundi DocTestParser:
     # This regular expression is used to find doctest examples in a
     # string.  It defines three groups: `source` is the source code
     # (including leading indentation and prompts); `indent` is the
-    # indentation of the first (PS1) line of the source code; and
+    # indentation of the first (PS1) line of the source code; na
     # `want` is the expected output (including leading indentation).
     _EXAMPLE_RE = re.compile(r'''
         # Source consists of a PS1 line followed by zero or more PS2 lines.
@@ -658,7 +658,7 @@ kundi DocTestParser:
 
     def get_doctest(self, string, globs, name, filename, lineno):
         """
-        Extract all doctest examples kutoka the given string, and
+        Extract all doctest examples kutoka the given string, na
         collect them into a `DocTest` object.
 
         `globs`, `name`, `filename`, and `lineno` are attributes for
@@ -703,7 +703,7 @@ kundi DocTestParser:
         self._check_prefix(source_lines[1:], ' '*indent + '.', name, lineno)
         source = '\n'.join([sl[indent+4:] for sl in source_lines])
 
-        # Divide want into lines; check that it's properly indented; and
+        # Divide want into lines; check that it's properly indented; na
         # then strip the indentation.  Spaces before the last newline should
         # be preserved, so plain rstrip() isn't good enough.
         want = m.group('want')
@@ -749,15 +749,15 @@ kundi DocTestParser:
         for m in self._OPTION_DIRECTIVE_RE.finditer(source):
             option_strings = m.group(1).replace(',', ' ').split()
             for option in option_strings:
-                if (option[0] haiko kwenye '+-' or
+                if (option[0] haiko kwenye '+-' ama
                     option[1:] haiko kwenye OPTIONFLAGS_BY_NAME):
-                    raise ValueError('line %r of the doctest for %s '
+                    ashiria ValueError('line %r of the doctest for %s '
                                      'has an invalid option: %r' %
                                      (lineno+1, name, option))
                 flag = OPTIONFLAGS_BY_NAME[option[1:]]
                 options[flag] = (option[0] == '+')
         if options and self._IS_BLANK_OR_COMMENT(source):
-            raise ValueError('line %r of the doctest for %s has an option '
+            ashiria ValueError('line %r of the doctest for %s has an option '
                              'directive on a line with no example: %r' %
                              (lineno, name, source))
         return options
@@ -776,14 +776,14 @@ kundi DocTestParser:
 
     def _check_prompt_blank(self, lines, indent, name, lineno):
         """
-        Given the lines of a source string (including prompts and
+        Given the lines of a source string (including prompts na
         leading indentation), check to make sure that every prompt is
         followed by a space character.  If any line ni sio followed by
-        a space character, then raise ValueError.
+        a space character, then ashiria ValueError.
         """
         for i, line in enumerate(lines):
             if len(line) >= indent+4 and line[indent+3] != ' ':
-                raise ValueError('line %r of the docstring for %s '
+                ashiria ValueError('line %r of the docstring for %s '
                                  'lacks blank after %s: %r' %
                                  (lineno+i+1, name,
                                   line[indent:indent+3], line))
@@ -791,11 +791,11 @@ kundi DocTestParser:
     def _check_prefix(self, lines, prefix, name, lineno):
         """
         Check that every line in the given list starts with the given
-        prefix; if any line does not, then raise a ValueError.
+        prefix; if any line does not, then ashiria a ValueError.
         """
         for i, line in enumerate(lines):
             if line and sio line.startswith(prefix):
-                raise ValueError('line %r of the docstring for %s has '
+                ashiria ValueError('line %r of the docstring for %s has '
                                  'inconsistent leading whitespace: %r' %
                                  (lineno+i+1, name, line))
 
@@ -818,7 +818,7 @@ kundi DocTestFinder:
         """
         Create a new doctest finder.
 
-        The optional argument `parser` specifies a kundi or
+        The optional argument `parser` specifies a kundi ama
         function that should be used to create new DocTest objects (or
         objects that implement the same interface as DocTest).  The
         signature for this factory function should match the signature
@@ -856,7 +856,7 @@ kundi DocTestFinder:
         Contained objects whose module does sio match `module` are ignored.
 
         If `module` is False, no attempt to find the module will be made.
-        This is obscure, of use mostly in tests:  if `module` is False, or
+        This is obscure, of use mostly in tests:  if `module` is False, ama
         is None but cannot be found automatically, then all objects are
         considered to belong to the (non-existent) module, so all contained
         objects will (recursively) be searched for doctests.
@@ -874,7 +874,7 @@ kundi DocTestFinder:
         if name is None:
             name = getattr(obj, '__name__', None)
             if name is None:
-                raise ValueError("DocTestFinder.find: name must be given "
+                ashiria ValueError("DocTestFinder.find: name must be given "
                         "when obj.__name__ doesn't exist: %r" %
                                  (type(obj),))
 
@@ -904,7 +904,7 @@ kundi DocTestFinder:
             isipokua:
                 if module ni sio None:
                     # Supply the module globals in case the module was
-                    # originally loaded via a PEP 302 loader and
+                    # originally loaded via a PEP 302 loader na
                     # file ni sio a valid filesystem path
                     source_lines = linecache.getlines(file, module.__dict__)
                 isipokua:
@@ -937,7 +937,7 @@ kundi DocTestFinder:
         tests.sort()
         return tests
 
-    def _kutoka_module(self, module, object):
+    def _from_module(self, module, object):
         """
         Return true if the given object is defined in the given
         module.
@@ -963,11 +963,11 @@ kundi DocTestFinder:
         lasivyo isinstance(object, property):
             return True # [XX] no way sio be sure.
         isipokua:
-            raise ValueError("object must be a kundi or function")
+            ashiria ValueError("object must be a kundi or function")
 
     def _find(self, tests, obj, name, module, source_lines, globs, seen):
         """
-        Find tests for the given object and any contained objects, and
+        Find tests for the given object and any contained objects, na
         add them to `tests`.
         """
         if self._verbose:
@@ -989,8 +989,8 @@ kundi DocTestFinder:
                 valname = '%s.%s' % (name, valname)
                 # Recurse to functions & classes.
                 if ((inspect.isroutine(inspect.unwrap(val))
-                     or inspect.isclass(val)) and
-                    self._kutoka_module(module, val)):
+                     or inspect.isclass(val)) na
+                    self._from_module(module, val)):
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
 
@@ -998,12 +998,12 @@ kundi DocTestFinder:
         if inspect.ismodule(obj) and self._recurse:
             for valname, val in getattr(obj, '__test__', {}).items():
                 if sio isinstance(valname, str):
-                    raise ValueError("DocTestFinder.find: __test__ keys "
+                    ashiria ValueError("DocTestFinder.find: __test__ keys "
                                      "must be strings: %r" %
                                      (type(valname),))
-                if sio (inspect.isroutine(val) or inspect.isclass(val) or
-                        inspect.ismodule(val) or isinstance(val, str)):
-                    raise ValueError("DocTestFinder.find: __test__ values "
+                if sio (inspect.isroutine(val) ama inspect.isclass(val) ama
+                        inspect.ismodule(val) ama isinstance(val, str)):
+                    ashiria ValueError("DocTestFinder.find: __test__ values "
                                      "must be strings, functions, methods, "
                                      "classes, or modules: %r" %
                                      (type(val),))
@@ -1021,9 +1021,9 @@ kundi DocTestFinder:
                     val = getattr(obj, valname).__func__
 
                 # Recurse to methods, properties, and nested classes.
-                if ((inspect.isroutine(val) or inspect.isclass(val) or
-                      isinstance(val, property)) and
-                      self._kutoka_module(module, val)):
+                if ((inspect.isroutine(val) ama inspect.isclass(val) ama
+                      isinstance(val, property)) na
+                      self._from_module(module, val)):
                     valname = '%s.%s' % (name, valname)
                     self._find(tests, val, valname, module, source_lines,
                                globs, seen)
@@ -1169,7 +1169,7 @@ kundi DocTestRunner:
     `TestRunner.run`; this function will be called with strings that
     should be displayed.  It defaults to `sys.stdout.write`.  If
     capturing the output ni sio sufficient, then the display output
-    can be also customized by subclassing DocTestRunner, and
+    can be also customized by subclassing DocTestRunner, na
     overriding the methods `report_start`, `report_success`,
     `report_unexpected_exception`, and `report_failure`.
     """
@@ -1294,7 +1294,7 @@ kundi DocTestRunner:
 
             # If REPORT_ONLY_FIRST_FAILURE is set, then suppress
             # reporting after the first failure.
-            quiet = (self.optionflags & REPORT_ONLY_FIRST_FAILURE and
+            quiet = (self.optionflags & REPORT_ONLY_FIRST_FAILURE na
                      failures > 0)
 
             # Merge in the example's options.
@@ -1331,7 +1331,7 @@ kundi DocTestRunner:
                 exception = None
             tatizo KeyboardInterrupt:
                 raise
-            except:
+            tatizo:
                 exception = sys.exc_info()
                 self.debugger.set_endelea() # ==== Example Finished ====
 
@@ -1742,13 +1742,13 @@ kundi UnexpectedException(Exception):
         return str(self.test)
 
 kundi DebugRunner(DocTestRunner):
-    r"""Run doc tests but raise an exception as soon as there is a failure.
+    r"""Run doc tests but ashiria an exception as soon as there is a failure.
 
        If an unexpected exception occurs, an UnexpectedException is raised.
        It contains the test, the example, and the original exception:
 
          >>> runner = DebugRunner(verbose=False)
-         >>> test = DocTestParser().get_doctest('>>> raise KeyError\n42',
+         >>> test = DocTestParser().get_doctest('>>> ashiria KeyError\n42',
          ...                                    {}, 'foo', 'foo.py', 0)
          >>> jaribu:
          ...     runner.run(test)
@@ -1762,7 +1762,7 @@ kundi DebugRunner(DocTestRunner):
          '42\n'
 
          >>> exc_info = failure.exc_info
-         >>> raise exc_info[1] # Already has the traceback
+         >>> ashiria exc_info[1] # Already has the traceback
          Traceback (most recent call last):
          ...
          KeyError
@@ -1806,7 +1806,7 @@ kundi DebugRunner(DocTestRunner):
 
          >>> test = DocTestParser().get_doctest('''
          ...      >>> x = 2
-         ...      >>> raise KeyError
+         ...      >>> ashiria KeyError
          ...      ''', {}, 'foo', 'foo.py', 0)
 
          >>> runner.run(test)
@@ -1839,10 +1839,10 @@ kundi DebugRunner(DocTestRunner):
         return r
 
     def report_unexpected_exception(self, out, test, example, exc_info):
-        raise UnexpectedException(test, example, exc_info)
+        ashiria UnexpectedException(test, example, exc_info)
 
     def report_failure(self, out, test, example, got):
-        raise DocTestFailure(test, example, got)
+        ashiria DocTestFailure(test, example, got)
 
 ######################################################################
 ## 6. Test Functions
@@ -1930,7 +1930,7 @@ def testmod(m=None, name=None, globs=None, verbose=None,
 
     # Check that we were actually given a module.
     if sio inspect.ismodule(m):
-        raise TypeError("testmod: module required; %r" % (m,))
+        ashiria TypeError("testmod: module required; %r" % (m,))
 
     # If no name was given, then use the module's name.
     if name is None:
@@ -2040,7 +2040,7 @@ def testfile(filename, module_relative=True, name=None, package=None,
     global master
 
     if package and sio module_relative:
-        raise ValueError("Package may only be specified for module-"
+        ashiria ValueError("Package may only be specified for module-"
                          "relative paths.")
 
     # Relativize the path
@@ -2139,7 +2139,7 @@ def set_unittest_reportflags(flags):
     global _unittest_reportflags
 
     if (flags & REPORTING_FLAGS) != flags:
-        raise ValueError("Only reporting flags allowed", flags)
+        ashiria ValueError("Only reporting flags allowed", flags)
     old = _unittest_reportflags
     _unittest_reportflags = flags
     return old
@@ -2193,7 +2193,7 @@ kundi DocTestCase(unittest.TestCase):
             sys.stdout = old
 
         if failures:
-            raise self.failureException(self.format_failure(new.getvalue()))
+            ashiria self.failureException(self.format_failure(new.getvalue()))
 
     def format_failure(self, err):
         test = self._dt_test
@@ -2219,7 +2219,7 @@ kundi DocTestCase(unittest.TestCase):
            UnexpectedException errors if there is an unexpected
            exception:
 
-             >>> test = DocTestParser().get_doctest('>>> raise KeyError\n42',
+             >>> test = DocTestParser().get_doctest('>>> ashiria KeyError\n42',
              ...                {}, 'foo', 'foo.py', 0)
              >>> case = DocTestCase(test)
              >>> jaribu:
@@ -2227,7 +2227,7 @@ kundi DocTestCase(unittest.TestCase):
              ... tatizo UnexpectedException as f:
              ...     failure = f
 
-           The UnexpectedException contains the test, the example, and
+           The UnexpectedException contains the test, the example, na
            the original exception:
 
              >>> failure.test is test
@@ -2237,7 +2237,7 @@ kundi DocTestCase(unittest.TestCase):
              '42\n'
 
              >>> exc_info = failure.exc_info
-             >>> raise exc_info[1] # Already has the traceback
+             >>> ashiria exc_info[1] # Already has the traceback
              Traceback (most recent call last):
              ...
              KeyError
@@ -2414,7 +2414,7 @@ def DocFileTest(path, module_relative=True, package=None,
         globs = globs.copy()
 
     if package and sio module_relative:
-        raise ValueError("Package may only be specified for module-"
+        ashiria ValueError("Package may only be specified for module-"
                          "relative paths.")
 
     # Relativize the path.
@@ -2504,7 +2504,7 @@ def DocFileSuite(*paths, **kw):
 ## 8. Debugging Support
 ######################################################################
 
-def script_kutoka_examples(s):
+def script_from_examples(s):
     r"""Extract script kutoka text with examples.
 
        Converts text with examples to a Python script.  Example input is
@@ -2536,7 +2536,7 @@ def script_kutoka_examples(s):
        ...           Ho hum
        ...           '''
 
-       >>> print(script_kutoka_examples(text))
+       >>> print(script_from_examples(text))
        # Here are examples of simple math.
        #
        #     Python has super accurate integer addition
@@ -2597,14 +2597,14 @@ def testsource(module, name):
     tests = DocTestFinder().find(module)
     test = [t for t in tests if t.name == name]
     if sio test:
-        raise ValueError(name, "not found in tests")
+        ashiria ValueError(name, "not found in tests")
     test = test[0]
-    testsrc = script_kutoka_examples(test.docstring)
+    testsrc = script_from_examples(test.docstring)
     return testsrc
 
 def debug_src(src, pm=False, globs=None):
     """Debug a single doctest docstring, in argument `src`'"""
-    testsrc = script_kutoka_examples(src)
+    testsrc = script_from_examples(src)
     debug_script(testsrc, pm, globs)
 
 def debug_script(src, pm=False, globs=None):
@@ -2619,7 +2619,7 @@ def debug_script(src, pm=False, globs=None):
     if pm:
         jaribu:
             exec(src, globs, globs)
-        except:
+        tatizo:
             print(sys.exc_info()[1])
             p = pdb.Pdb(nosigint=True)
             p.reset()

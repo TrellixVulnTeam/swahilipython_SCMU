@@ -19,7 +19,7 @@
 # Copyright 1991-1995, Stichting Mathematisch Centrum, all rights reserved.
 #
 #
-# Permission to use, copy, modify, and distribute this Python software and
+# Permission to use, copy, modify, and distribute this Python software na
 # its associated documentation for any purpose without fee is hereby
 # granted, provided that the above copyright notice appears in all copies,
 # and that both that copyright notice and this permission notice appear in
@@ -103,7 +103,7 @@ kundi _Ignore:
             # as compared to cases like:
             #  d = "/usr/local"
             #  filename = "/usr/local.py"
-            # or
+            # ama
             #  d = "/usr/local.py"
             #  filename = "/usr/local.py"
             if filename.startswith(d + os.sep):
@@ -323,7 +323,7 @@ kundi CoverageResults:
 
         return n_hits, n_lines
 
-def _find_lines_kutoka_code(code, strs):
+def _find_lines_from_code(code, strs):
     """Return dict where keys are lines in the line number table."""
     linenos = {}
 
@@ -336,7 +336,7 @@ def _find_lines_kutoka_code(code, strs):
 def _find_lines(code, strs):
     """Return lineno dict for all code objects reachable kutoka code."""
     # get all of the lineno information kutoka the code of this scope level
-    linenos = _find_lines_kutoka_code(code, strs)
+    linenos = _find_lines_from_code(code, strs)
 
     # and check the constants for references to other code objects
     for c in code.co_consts:
@@ -455,7 +455,7 @@ kundi Trace:
         if len(args) >= 2:
             self, func, *args = args
         lasivyo sio args:
-            raise TypeError("descriptor 'runfunc' of 'Trace' object "
+            ashiria TypeError("descriptor 'runfunc' of 'Trace' object "
                             "needs an argument")
         lasivyo 'func' in kw:
             func = kw.pop('func')
@@ -464,7 +464,7 @@ kundi Trace:
             warnings.warn("Passing 'func' as keyword argument is deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            raise TypeError('runfunc expected at least 1 positional argument, '
+            ashiria TypeError('runfunc expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         result = None

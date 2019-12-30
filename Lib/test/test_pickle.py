@@ -440,7 +440,7 @@ kundi CompatPickleTests(unittest.TestCase):
                 tatizo ImportError kama exc:
                     ikiwa support.verbose:
                         andika(exc)
-                ikiwa ((module2, module3) haiko kwenye ALT_IMPORT_MAPPING and
+                ikiwa ((module2, module3) haiko kwenye ALT_IMPORT_MAPPING na
                     REVERSE_IMPORT_MAPPING.get(module3, Tupu) != module2):
                     kila (m3, n3), (m2, n2) kwenye REVERSE_NAME_MAPPING.items():
                         ikiwa (module3, module2) == (m3, m2):

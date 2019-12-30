@@ -167,7 +167,7 @@ kundi IMAP4:
     <instance>.readonly("<reason>"), which ni a sub-kundi of 'abort'.
 
     "error" exceptions imply a program error.
-    "abort" exceptions imply the connection should be reset, and
+    "abort" exceptions imply the connection should be reset, na
             the command re-tried.
     "readonly" exceptions imply the command should be re-tried.
 
@@ -1141,7 +1141,7 @@ kundi IMAP4:
 
             # Some have reported "unexpected response" exceptions.
             # Note that ignoring them here causes loops.
-            # Instead, send me details of the unexpected response and
+            # Instead, send me details of the unexpected response na
             # I'll update the code kwenye `_get_response()'.
 
             jaribu:
@@ -1247,7 +1247,7 @@ kundi IMAP4:
             wakati n:
                 jaribu:
                     self._mesg(*self._cmd_log[i])
-                except:
+                tatizo:
                     pita
                 i += 1
                 ikiwa i >= self._cmd_log_len:
@@ -1269,7 +1269,7 @@ ikiwa HAVE_SSL:
                 certfile - PEM formatted certificate chain file (default: Tupu);
                 ssl_context - a SSLContext object that contains your certificate chain
                               na private key (default: Tupu)
-                Note: ikiwa ssl_context ni provided, then parameters keyfile or
+                Note: ikiwa ssl_context ni provided, then parameters keyfile ama
                 certfile should sio be set otherwise ValueError ni ashiriad.
 
         kila more documentation see the docstring of the parent kundi IMAP4.
@@ -1611,7 +1611,7 @@ ikiwa __name__ == '__main__':
 
         andika('\nAll tests OK.')
 
-    except:
+    tatizo:
         andika('\nTests failed.')
 
         ikiwa sio Debug:

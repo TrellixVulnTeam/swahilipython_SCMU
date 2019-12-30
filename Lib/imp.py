@@ -16,7 +16,7 @@ tatizo ImportError:
     # Platform doesn't support dynamic loading.
     create_dynamic = Tupu
 
-kutoka importlib._bootstrap agiza _ERR_MSG, _exec, _load, _builtin_kutoka_name
+kutoka importlib._bootstrap agiza _ERR_MSG, _exec, _load, _builtin_from_name
 kutoka importlib._bootstrap_external agiza SourcelessFileLoader
 
 kutoka importlib agiza machinery
@@ -69,7 +69,7 @@ eleza get_tag():
     rudisha sys.implementation.cache_tag
 
 
-eleza cache_kutoka_source(path, debug_override=Tupu):
+eleza cache_from_source(path, debug_override=Tupu):
     """**DEPRECATED**
 
     Given the path to a .py file, rudisha the path to its .pyc file.
@@ -85,10 +85,10 @@ eleza cache_kutoka_source(path, debug_override=Tupu):
     """
     ukijumuisha warnings.catch_warnings():
         warnings.simplefilter('ignore')
-        rudisha util.cache_kutoka_source(path, debug_override)
+        rudisha util.cache_from_source(path, debug_override)
 
 
-eleza source_kutoka_cache(path):
+eleza source_from_cache(path):
     """**DEPRECATED**
 
     Given the path to a .pyc. file, rudisha the path to its .py file.
@@ -99,7 +99,7 @@ eleza source_kutoka_cache(path):
     sys.implementation.cache_tag ni Tupu then NotImplementedError ni ashiriad.
 
     """
-    rudisha util.source_kutoka_cache(path)
+    rudisha util.source_from_cache(path)
 
 
 eleza get_suffixes():
@@ -164,7 +164,7 @@ kundi _LoadSourceCompatibility(_HackedGetData, machinery.SourceFileLoader):
 
 eleza load_source(name, pathname, file=Tupu):
     loader = _LoadSourceCompatibility(name, pathname, file)
-    spec = util.spec_kutoka_file_location(name, pathname, loader=loader)
+    spec = util.spec_from_file_location(name, pathname, loader=loader)
     ikiwa name kwenye sys.modules:
         module = _exec(spec, sys.modules[name])
     isipokua:
@@ -184,7 +184,7 @@ kundi _LoadCompiledCompatibility(_HackedGetData, SourcelessFileLoader):
 eleza load_compiled(name, pathname, file=Tupu):
     """**DEPRECATED**"""
     loader = _LoadCompiledCompatibility(name, pathname, file)
-    spec = util.spec_kutoka_file_location(name, pathname, loader=loader)
+    spec = util.spec_from_file_location(name, pathname, loader=loader)
     ikiwa name kwenye sys.modules:
         module = _exec(spec, sys.modules[name])
     isipokua:
@@ -208,7 +208,7 @@ eleza load_package(name, path):
                 koma
         isipokua:
             ashiria ValueError('{!r} ni sio a package'.format(path))
-    spec = util.spec_kutoka_file_location(name, path,
+    spec = util.spec_from_file_location(name, path,
                                         submodule_search_locations=[])
     ikiwa name kwenye sys.modules:
         rudisha _exec(spec, sys.modules[name])
@@ -225,7 +225,7 @@ eleza load_module(name, file, filename, details):
 
     """
     suffix, mode, type_ = details
-    ikiwa mode na (not mode.startswith(('r', 'U')) ama '+' kwenye mode):
+    ikiwa mode na (sio mode.startswith(('r', 'U')) ama '+' kwenye mode):
         ashiria ValueError('invalid file open mode {!r}'.format(mode))
     lasivyo file ni Tupu na type_ kwenye {PY_SOURCE, PY_COMPILED}:
         msg = 'file object required kila agiza (type code {})'.format(type_)
@@ -321,7 +321,7 @@ eleza init_builtin(name):
     exist
     """
     jaribu:
-        rudisha _builtin_kutoka_name(name)
+        rudisha _builtin_from_name(name)
     tatizo ImportError:
         rudisha Tupu
 

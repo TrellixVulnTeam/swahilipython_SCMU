@@ -127,8 +127,8 @@ kundi ExpandingButton(tk.Button):
     eleza set_is_dangerous(self):
         dangerous_line_len = 50 * self.text.winfo_width()
         self.is_dangerous = (
-            self.numoflines > 1000 or
-            len(self.s) > 50000 or
+            self.numoflines > 1000 ama
+            len(self.s) > 50000 ama
             any(
                 len(line_match.group(0)) >= dangerous_line_len
                 kila line_match kwenye re.finditer(r'[^\n]+', self.s)

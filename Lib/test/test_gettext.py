@@ -765,7 +765,7 @@ kundi WeirdMetadataTest(GettextBaseTest):
         ukijumuisha open(MMOFILE, 'rb') kama fp:
             jaribu:
                 self.t = gettext.GNUTranslations(fp)
-            except:
+            tatizo:
                 self.tearDown()
                 ashiria
 

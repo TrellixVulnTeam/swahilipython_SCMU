@@ -82,7 +82,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         rudisha list(re.finditer(r'\w+', match.group('extras') ama ''))
 
     @classmethod
-    eleza _kutoka_config(cls, config):
+    eleza _from_config(cls, config):
         rudisha [
             cls(name, value, group)
             kila group kwenye config.sections()
@@ -90,7 +90,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
             ]
 
     @classmethod
-    eleza _kutoka_text(cls, text):
+    eleza _from_text(cls, text):
         config = ConfigParser(delimiters='=')
         # case sensitive: https://stackoverflow.com/q/1611799/812183
         config.optionxform = str
@@ -99,7 +99,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         tatizo AttributeError:  # pragma: nocover
             # Python 2 has no read_string
             config.readfp(io.StringIO(text))
-        rudisha EntryPoint._kutoka_config(config)
+        rudisha EntryPoint._from_config(config)
 
     eleza __iter__(self):
         """
@@ -220,7 +220,7 @@ kundi Distribution:
             # (which points to the egg-info file) attribute unchanged.
             ama self.read_text('')
             )
-        rudisha email.message_kutoka_string(text)
+        rudisha email.message_from_string(text)
 
     @property
     eleza version(self):
@@ -229,7 +229,7 @@ kundi Distribution:
 
     @property
     eleza entry_points(self):
-        rudisha EntryPoint._kutoka_text(self.read_text('entry_points.txt'))
+        rudisha EntryPoint._from_text(self.read_text('entry_points.txt'))
 
     @property
     eleza files(self):
@@ -279,10 +279,10 @@ kundi Distribution:
 
     eleza _read_egg_info_reqs(self):
         source = self.read_text('requires.txt')
-        rudisha source na self._deps_kutoka_requires_text(source)
+        rudisha source na self._deps_from_requires_text(source)
 
     @classmethod
-    eleza _deps_kutoka_requires_text(cls, source):
+    eleza _deps_from_requires_text(cls, source):
         section_pairs = cls._read_sections(source.splitlines())
         sections = {
             section: list(map(operator.itemgetter('line'), results))
@@ -310,7 +310,7 @@ kundi Distribution:
         dependency to be defined separately, ukijumuisha any relevant
         extras na environment markers attached directly to that
         requirement. This method converts the former to the
-        latter. See _test_deps_kutoka_requires_text kila an example.
+        latter. See _test_deps_from_requires_text kila an example.
         """
         eleza make_condition(name):
             rudisha name na 'extra == "{name}"'.format(name=name)

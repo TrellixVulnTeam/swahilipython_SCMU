@@ -33,7 +33,7 @@ kundi Future:
 
     - This kundi ni sio thread-safe.
 
-    - result() na exception() do sio take a timeout argument and
+    - result() na exception() do sio take a timeout argument na
       ashiria an exception when the future isn't done yet.
 
     - Callbacks registered ukijumuisha add_done_callback() are always called
@@ -121,7 +121,7 @@ kundi Future:
         """Cancel the future na schedule callbacks.
 
         If the future ni already done ama cancelled, rudisha Uongo.  Otherwise,
-        change the future's state to cancelled, schedule the callbacks and
+        change the future's state to cancelled, schedule the callbacks na
         rudisha Kweli.
         """
         self.__log_traceback = Uongo
@@ -362,7 +362,7 @@ eleza _chain_future(source, destination):
                 source_loop.call_soon_threadsafe(source.cancel)
 
     eleza _call_set_state(source):
-        ikiwa (destination.cancelled() and
+        ikiwa (destination.cancelled() na
                 dest_loop ni sio Tupu na dest_loop.is_closed()):
             rudisha
         ikiwa dest_loop ni Tupu ama dest_loop ni source_loop:

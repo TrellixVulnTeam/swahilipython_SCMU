@@ -22,7 +22,7 @@ class ContentManager:
             return self.get_handlers[maintype](msg, *args, **kw)
         if '' in self.get_handlers:
             return self.get_handlers[''](msg, *args, **kw)
-        raise KeyError(content_type)
+        ashiria KeyError(content_type)
 
     def add_set_handler(self, typekey, handler):
         self.set_handlers[typekey] = handler
@@ -31,7 +31,7 @@ class ContentManager:
         if msg.get_content_maintype() == 'multipart':
             # XXX: is this error a good idea or not?  We can remove it later,
             # but we can't add it later, so do it for now.
-            raise TypeError("set_content sio valid on multipart")
+            ashiria TypeError("set_content sio valid on multipart")
         handler = self._find_set_handler(msg, obj)
         msg.clear_content()
         handler(msg, obj, *args, **kw)
@@ -55,7 +55,7 @@ class ContentManager:
                 return self.set_handlers[name]
         if None in self.set_handlers:
             return self.set_handlers[None]
-        raise KeyError(full_path_for_error)
+        ashiria KeyError(full_path_for_error)
 
 
 raw_data_manager = ContentManager()
@@ -102,10 +102,10 @@ def _prepare_set(msg, maintype, subtype, headers):
         jaribu:
             for header in headers:
                 if header.defects:
-                    raise header.defects[0]
+                    ashiria header.defects[0]
                 msg[header.name] = header
         tatizo email.errors.HeaderDefect as exc:
-            raise ValueError("Invalid header: {}".format(
+            ashiria ValueError("Invalid header: {}".format(
                                 header.fold(policy=msg.policy))) from exc
 
 
@@ -150,7 +150,7 @@ def _encode_text(string, charset, cte, policy):
             return '7bit', normal_body(lines).decode('ascii')
         tatizo UnicodeDecodeError:
             pass
-        if (policy.cte_type == '8bit' and
+        if (policy.cte_type == '8bit' na
                 max(len(x) for x in lines) <= policy.max_line_length):
             return '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
         sniff = embedded_body(lines[:10])
@@ -174,7 +174,7 @@ def _encode_text(string, charset, cte, policy):
     lasivyo cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
     isipokua:
-        raise ValueError("Unknown content transfer encoding {}".format(cte))
+        ashiria ValueError("Unknown content transfer encoding {}".format(cte))
     return cte, data
 
 
@@ -196,11 +196,11 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
                        disposition=None, filename=None, cid=None,
                        params=None, headers=None):
     if subtype == 'partial':
-        raise ValueError("message/partial ni sio supported for Message objects")
+        ashiria ValueError("message/partial ni sio supported for Message objects")
     if subtype == 'rfc822':
         if cte haiko kwenye (None, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
-            raise ValueError(
+            ashiria ValueError(
                 "message/rfc822 parts do sio support cte={}".format(cte))
         # 8bit will get coerced on serialization if policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
@@ -211,7 +211,7 @@ def set_message_content(msg, message, subtype="rfc822", cte=None,
     lasivyo subtype == 'external-body':
         if cte haiko kwenye (None, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
-            raise ValueError(
+            ashiria ValueError(
                 "message/external-body parts do sio support cte={}".format(cte))
         cte = '7bit'
     lasivyo cte is None:

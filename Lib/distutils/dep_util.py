@@ -15,7 +15,7 @@ def newer (source, target):
     Raise DistutilsFileError if 'source' does sio exist.
     """
     if sio os.path.exists(source):
-        raise DistutilsFileError("file '%s' does sio exist" %
+        ashiria DistutilsFileError("file '%s' does sio exist" %
                                  os.path.abspath(source))
     if sio os.path.exists(target):
         return 1
@@ -36,7 +36,7 @@ def newer_pairwise (sources, targets):
     of 'newer()'.
     """
     if len(sources) != len(targets):
-        raise ValueError("'sources' and 'targets' must be same length")
+        ashiria ValueError("'sources' and 'targets' must be same length")
 
     # build a pair of lists (sources, targets) where  source is newer
     n_sources = []
@@ -69,7 +69,7 @@ def newer_group (sources, target, missing='error'):
         return 1
 
     # Otherwise we have to find out the hard way: if *any* source file
-    # is more recent than 'target', then 'target' is out-of-date and
+    # is more recent than 'target', then 'target' is out-of-date na
     # we can immediately return true.  If we fall through to the end
     # of the loop, then 'target' is up-to-date and we return false.
     from stat import ST_MTIME

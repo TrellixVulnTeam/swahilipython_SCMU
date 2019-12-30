@@ -91,8 +91,8 @@ kundi FixDict(fixer_base.BaseFix):
         ikiwa node.parent ni Tupu:
             rudisha Uongo
         results = {}
-        ikiwa (node.parent.parent ni sio Tupu and
-               self.p1.match(node.parent.parent, results) and
+        ikiwa (node.parent.parent ni sio Tupu na
+               self.p1.match(node.parent.parent, results) na
                results["node"] ni node):
             ikiwa isiter:
                 # iter(d.iterkeys()) -> iter(d.keys()), etc.

@@ -401,7 +401,7 @@ kundi TimeTestCase(unittest.TestCase):
 
     eleza test_ctime_without_arg(self):
         # Not sure how to check the values, since the clock could tick
-        # at any time.  Make sure these are at least accepted and
+        # at any time.  Make sure these are at least accepted na
         # don't ashiria errors.
         time.ctime()
         time.ctime(Tupu)
@@ -686,11 +686,11 @@ kundi TestPytime(unittest.TestCase):
         # See ikiwa the offset na zone are similar to the module
         # attributes.
         ikiwa lt.tm_gmtoff ni Tupu:
-            self.assertKweli(not hasattr(time, "timezone"))
+            self.assertKweli(sio hasattr(time, "timezone"))
         isipokua:
             self.assertEqual(lt.tm_gmtoff, -[time.timezone, time.altzone][lt.tm_isdst])
         ikiwa lt.tm_zone ni Tupu:
-            self.assertKweli(not hasattr(time, "tzname"))
+            self.assertKweli(sio hasattr(time, "tzname"))
         isipokua:
             self.assertEqual(lt.tm_zone, time.tzname[lt.tm_isdst])
 

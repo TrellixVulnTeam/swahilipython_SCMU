@@ -46,7 +46,7 @@ kundi WindowList:
         kila callback kwenye self.callbacks:
             jaribu:
                 callback()
-            except:
+            tatizo:
                 t, v, tb = sys.exc_info()
                 andika("warning: callback failed kwenye WindowList", t, ":", v)
 

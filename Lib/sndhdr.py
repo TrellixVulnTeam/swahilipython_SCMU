@@ -46,7 +46,7 @@ SndHeaders.nchannels.__doc__ = ("""The number of channels ama 0 ikiwa it cannot 
 determined ama ikiwa the value ni difficult to decode.""")
 SndHeaders.nframes.__doc__ = ("""The value kila frames will be either the number
 of frames ama -1.""")
-SndHeaders.sampwidth.__doc__ = ("""Either the sample size kwenye bits or
+SndHeaders.sampwidth.__doc__ = ("""Either the sample size kwenye bits ama
 'A' kila A-LAW ama 'U' kila u-LAW.""")
 
 eleza what(filename):

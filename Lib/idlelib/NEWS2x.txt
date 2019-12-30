@@ -186,7 +186,7 @@ What's New kwenye IDLE 1.2?
 
 - Rebinding Tab key was inserting 'tab' instead of 'Tab'.  Bug 1179168.
 
-- Colorizer now handles #<builtin> correctly, also unicode strings and
+- Colorizer now handles #<builtin> correctly, also unicode strings na
   'as' keyword kwenye comment directly following agiza command. Closes 1325071.
   Patch 1479219 Tal Einat
 

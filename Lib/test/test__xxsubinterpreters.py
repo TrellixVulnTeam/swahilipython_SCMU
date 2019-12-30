@@ -459,13 +459,13 @@ kundi GetCurrentTests(TestBase):
 
 kundi GetMainTests(TestBase):
 
-    eleza test_kutoka_main(self):
+    eleza test_from_main(self):
         [expected] = interpreters.list_all()
         main = interpreters.get_main()
         self.assertEqual(main, expected)
         self.assertIsInstance(main, interpreters.InterpreterID)
 
-    eleza test_kutoka_subinterpreter(self):
+    eleza test_from_subinterpreter(self):
         [expected] = interpreters.list_all()
         interp = interpreters.create()
         out = _run_output(interp, dedent("""
@@ -492,7 +492,7 @@ kundi IsRunningTests(TestBase):
             self.assertKweli(interpreters.is_running(interp))
         self.assertUongo(interpreters.is_running(interp))
 
-    eleza test_kutoka_subinterpreter(self):
+    eleza test_from_subinterpreter(self):
         interp = interpreters.create()
         out = _run_output(interp, dedent(f"""
             agiza _xxsubinterpreters kama _interpreters
@@ -720,7 +720,7 @@ kundi DestroyTests(TestBase):
         ukijumuisha self.assertRaises(ValueError):
             interpreters.destroy(-1)
 
-    eleza test_kutoka_current(self):
+    eleza test_from_current(self):
         main, = interpreters.list_all()
         id = interpreters.create()
         script = dedent(f"""
@@ -734,7 +734,7 @@ kundi DestroyTests(TestBase):
         interpreters.run_string(id, script)
         self.assertEqual(set(interpreters.list_all()), {main, id})
 
-    eleza test_kutoka_sibling(self):
+    eleza test_from_sibling(self):
         main, = interpreters.list_all()
         id1 = interpreters.create()
         id2 = interpreters.create()
@@ -746,7 +746,7 @@ kundi DestroyTests(TestBase):
 
         self.assertEqual(set(interpreters.list_all()), {main, id1})
 
-    eleza test_kutoka_other_thread(self):
+    eleza test_from_other_thread(self):
         id = interpreters.create()
         eleza f():
             interpreters.destroy(id)

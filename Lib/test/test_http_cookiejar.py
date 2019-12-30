@@ -239,7 +239,7 @@ kundi HeaderTests(unittest.TestCase):
         kila arg, expect kwenye tests:
             jaribu:
                 result = split_header_words([arg])
-            except:
+            tatizo:
                 agiza traceback, io
                 f = io.StringIO()
                 traceback.print_exc(Tupu, f)
@@ -290,7 +290,7 @@ kundi FakeResponse:
         headers: list of RFC822-style 'Key: value' strings
         """
         agiza email
-        self._headers = email.message_kutoka_string("\n".join(headers))
+        self._headers = email.message_from_string("\n".join(headers))
         self._url = url
     eleza info(self): rudisha self._headers
 
@@ -1281,7 +1281,7 @@ kundi CookieTests(unittest.TestCase):
 
     eleza test_bad_cookie_header(self):
 
-        eleza cookiejar_kutoka_cookie_headers(headers):
+        eleza cookiejar_from_cookie_headers(headers):
             c = CookieJar()
             req = urllib.request.Request("http://www.example.com/")
             r = FakeResponse(headers, "http://www.example.com/")
@@ -1302,13 +1302,13 @@ kundi CookieTests(unittest.TestCase):
             ["Set-Cookie: b=foo; version=spam"],
             ["Set-Cookie:; Expires=%s" % future],
             ]:
-            c = cookiejar_kutoka_cookie_headers(headers)
+            c = cookiejar_from_cookie_headers(headers)
             # these bad cookies shouldn't be set
             self.assertEqual(len(c), 0)
 
         # cookie ukijumuisha invalid expires ni treated kama session cookie
         headers = ["Set-Cookie: c=foo; expires=Foo Bar 12 33:22:11 2000"]
-        c = cookiejar_kutoka_cookie_headers(headers)
+        c = cookiejar_from_cookie_headers(headers)
         cookie = c._cookies["www.example.com"]["/"]["c"]
         self.assertIsTupu(cookie.expires)
 
@@ -1585,7 +1585,7 @@ kundi LWPCookieTests(unittest.TestCase):
         # Set-Cookie2: Part_Number="Rocket_Launcher_0001"; Version="1";
         #         Path="/acme"
         #
-        # and
+        # na
         #
         # Set-Cookie2: Part_Number="Riding_Rocket_0023"; Version="1";
         #         Path="/acme/ammo"

@@ -324,7 +324,7 @@ right, kama ni valid.  Revise na extend colorizer test.
 bpo-32984: Set __file__ wakati running a startup file.
 Like Python, IDLE optionally runs 1 startup file kwenye the Shell window
 before presenting the first interactive input prompt.  For IDLE,
-option -s runs a file named kwenye environmental variable IDLESTARTUP or
+option -s runs a file named kwenye environmental variable IDLESTARTUP ama
 PYTHONSTARTUP; -r file runs file.  Python sets __file__ to the startup
 file name before running the file na unsets it before the first
 prompt.  IDLE now does the same when run normally, without the -n
@@ -407,7 +407,7 @@ appears on the Keys tab of the Settings dialog, ni sio changed.
 Patch by Cheryl Sabella.
 
 bpo-1612262: Module browser now shows nested classes na functions.
-Original patches kila code na tests by Guilherme Polo and
+Original patches kila code na tests by Guilherme Polo na
 Cheryl Sabella, respectively.  Revisions by Terry Jan Reedy.
 
 bpo-31500: Tk's default fonts now are scaled on HiDPI displays.
@@ -448,7 +448,7 @@ extensions.def.  All custom keysets are saved kama a whole kwenye config-
 extension.cfg.  All take effect kama soon kama one clicks Apply ama Ok.
    The affected events are '<<force-open-completions>>',
 '<<expand-word>>', '<<force-open-calltip>>', '<<flash-paren>>',
-'<<format-paragraph>>', '<<run-module>>', '<<check-module>>', and
+'<<format-paragraph>>', '<<run-module>>', '<<check-module>>', na
 '<<zoom-height>>'.  Any (global) customizations made before 3.6.3 will
 not affect their keyset-specific customization after 3.6.3. na vice
 versa.
@@ -837,7 +837,7 @@ Released on 2016-12-23
   such kama 'Custom Dark'.  The custom theme will work ukijumuisha any IDLE
   release, na can be modified.
 
-- Issue #25224: README.txt ni now an idlelib index kila IDLE developers and
+- Issue #25224: README.txt ni now an idlelib index kila IDLE developers na
   curious users.  The previous user content ni now kwenye the IDLE doc chapter.
   'IDLE' now means 'Integrated Development na Learning Environment'.
 
@@ -1041,7 +1041,7 @@ What's New kwenye IDLE 3.3.0?
 - IDLE can be launched kama `python -m idlelib`
 
 - Issue #14409: IDLE now properly executes commands kwenye the Shell window
-  when it cannot read the normal config files on startup and
+  when it cannot read the normal config files on startup na
   has to use the built-in default key bindings.
   There was previously a bug kwenye one of the defaults.
 

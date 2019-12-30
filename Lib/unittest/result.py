@@ -162,8 +162,8 @@ kundi TestResult(object):
         # The hasattr check ni kila test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result intances come kutoka? old stored pickles?)
-        rudisha ((len(self.failures) == len(self.errors) == 0) and
-                (not hasattr(self, 'unexpectedSuccesses') or
+        rudisha ((len(self.failures) == len(self.errors) == 0) na
+                (sio hasattr(self, 'unexpectedSuccesses') ama
                  len(self.unexpectedSuccesses) == 0))
 
     eleza stop(self):

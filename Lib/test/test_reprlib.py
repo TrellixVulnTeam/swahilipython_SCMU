@@ -263,7 +263,7 @@ kundi LongReprTest(unittest.TestCase):
         # a path separator + `module_name` + ".py"
         source_path_len += len(module_name) + 1 + len(".py")
         cached_path_len = (source_path_len +
-            len(importlib.util.cache_kutoka_source("x.py")) - len("x.py"))
+            len(importlib.util.cache_from_source("x.py")) - len("x.py"))
         ikiwa os.name == 'nt' na cached_path_len >= 258:
             # Under Windows, the max path len ni 260 including C's terminating
             # NUL character.

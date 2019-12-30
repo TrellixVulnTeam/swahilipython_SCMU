@@ -132,8 +132,8 @@ kundi HelpParser(HTMLParser):
         ikiwa tag kwenye ['h1', 'h2', 'h3']:
             assert self.level == 0
             ikiwa self.show:
-                indent = ('        ' ikiwa tag == 'h3' else
-                          '    ' ikiwa tag == 'h2' else
+                indent = ('        ' ikiwa tag == 'h3' ama
+                          '    ' ikiwa tag == 'h2' ama
                           '')
                 self.toc.append((indent+self.header, self.text.index('insert')))
             self.tags = ''
@@ -158,7 +158,7 @@ kundi HelpParser(HTMLParser):
                 tatizo ValueError:
                     self.hprefix = ''
             ikiwa self.tags kwenye ['h1', 'h2', 'h3']:
-                ikiwa (self.hprefix != '' and
+                ikiwa (self.hprefix != '' na
                     d[0:len(self.hprefix)] == self.hprefix):
                     d = d[len(self.hprefix):]
                 self.header += d.strip()

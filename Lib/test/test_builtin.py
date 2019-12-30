@@ -319,7 +319,7 @@ kundi BuiltinTest(unittest.TestCase):
         self.assertRaises((OverflowError, ValueError), chr, 2**32)
 
     eleza test_cmp(self):
-        self.assertKweli(not hasattr(builtins, "cmp"))
+        self.assertKweli(sio hasattr(builtins, "cmp"))
 
     eleza test_compile(self):
         compile('andika(1)\n', '', 'exec')
@@ -513,7 +513,7 @@ kundi BuiltinTest(unittest.TestCase):
         # dir(traceback)
         jaribu:
             ashiria IndexError
-        except:
+        tatizo:
             self.assertEqual(len(dir(sys.exc_info()[2])), 4)
 
         # test that object has a __dir__()
@@ -815,9 +815,9 @@ kundi BuiltinTest(unittest.TestCase):
         e = E()
         self.assertKweli(isinstance(c, C))
         self.assertKweli(isinstance(d, C))
-        self.assertKweli(not isinstance(e, C))
-        self.assertKweli(not isinstance(c, D))
-        self.assertKweli(not isinstance('foo', E))
+        self.assertKweli(sio isinstance(e, C))
+        self.assertKweli(sio isinstance(c, D))
+        self.assertKweli(sio isinstance('foo', E))
         self.assertRaises(TypeError, isinstance, E, 'foo')
         self.assertRaises(TypeError, isinstance)
 
@@ -833,7 +833,7 @@ kundi BuiltinTest(unittest.TestCase):
         e = E()
         self.assertKweli(issubclass(D, C))
         self.assertKweli(issubclass(C, C))
-        self.assertKweli(not issubclass(C, D))
+        self.assertKweli(sio issubclass(C, D))
         self.assertRaises(TypeError, issubclass, 'foo', E)
         self.assertRaises(TypeError, issubclass, E, 'foo')
         self.assertRaises(TypeError, issubclass)
@@ -1350,7 +1350,7 @@ kundi BuiltinTest(unittest.TestCase):
     #   http://sources.redhat.com/bugzilla/show_bug.cgi?id=5350
     #
     # We skip this test on Linux/alpha ikiwa it would fail.
-    linux_alpha = (platform.system().startswith('Linux') and
+    linux_alpha = (platform.system().startswith('Linux') na
                    platform.machine().startswith('alpha'))
     system_round_bug = round(5e15+1) != 5e15+1
     @unittest.skipIf(linux_alpha na system_round_bug,
@@ -1762,7 +1762,7 @@ kundi PtyTests(unittest.TestCase):
                 os.close(r)
                 ukijumuisha open(w, "w") kama wpipe:
                     child(wpipe)
-            except:
+            tatizo:
                 traceback.print_exc()
             mwishowe:
                 # We don't want to rudisha to unittest...
@@ -1924,7 +1924,7 @@ kundi ShutdownTest(unittest.TestCase):
             here = sys.modules[__name__]
             """
         # Issue #20599: Force ASCII encoding to get a codec implemented kwenye C,
-        # otherwise the codec may be unloaded before C.__del__() ni called, and
+        # otherwise the codec may be unloaded before C.__del__() ni called, na
         # so andika("before") fails because the codec cannot be used to encode
         # "before" to sys.stdout.encoding. For example, on Windows,
         # sys.stdout.encoding ni the OEM code page na these code pages are

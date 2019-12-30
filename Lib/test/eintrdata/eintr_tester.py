@@ -29,7 +29,7 @@ def kill_on_error(proc):
     with proc:
         jaribu:
             yield proc
-        except:
+        tatizo:
             proc.kill()
             raise
 
@@ -168,7 +168,7 @@ class OSEINTRTest(EINTRBaseTest):
             '',
             'value = read_data.getvalue()',
             'if value != data:',
-            '    raise Exception("read error: %s vs %s bytes"',
+            '    ashiria Exception("read error: %s vs %s bytes"',
             '                    % (len(value), data_len))',
         ))
 
@@ -259,7 +259,7 @@ class SocketEINTRTest(EINTRBaseTest):
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
             'if received_data != data:',
-            '    raise Exception("recv error: %s vs %s bytes"',
+            '    ashiria Exception("recv error: %s vs %s bytes"',
             '                    % (len(received_data), data_len))',
         ))
 
@@ -500,7 +500,7 @@ class FNTLEINTRTest(EINTRBaseTest):
                 wakati True:  # synchronize the subprocess
                     dt = time.monotonic() - start_time
                     if dt > 60.0:
-                        raise Exception("failed to sync child in %.1f sec" % dt)
+                        ashiria Exception("failed to sync child in %.1f sec" % dt)
                     jaribu:
                         lock_func(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
                         lock_func(f, fcntl.LOCK_UN)

@@ -8,7 +8,7 @@ from distutils.tests import support
 from test.support import run_unittest
 
 
-SKIP_MESSAGE = (None if sys.platform == "win32" else
+SKIP_MESSAGE = (None if sys.platform == "win32" ama
                 "These tests are only for win32")
 
 @unittest.skipUnless(SKIP_MESSAGE is None, SKIP_MESSAGE)
@@ -111,7 +111,7 @@ class msvccompilerTestCase(support.TempdirManager,
             self.assertGreaterEqual(version, 15)
             self.assertTrue(os.path.isdir(path))
         isipokua:
-            raise unittest.SkipTest("VS 2017 ni sio installed")
+            ashiria unittest.SkipTest("VS 2017 ni sio installed")
 
     def test_get_vc2015(self):
         import distutils._msvccompiler as _msvccompiler
@@ -123,7 +123,7 @@ class msvccompilerTestCase(support.TempdirManager,
             self.assertGreaterEqual(version, 14)
             self.assertTrue(os.path.isdir(path))
         isipokua:
-            raise unittest.SkipTest("VS 2015 ni sio installed")
+            ashiria unittest.SkipTest("VS 2015 ni sio installed")
 
 def test_suite():
     return unittest.makeSuite(msvccompilerTestCase)

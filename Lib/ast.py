@@ -149,7 +149,7 @@ eleza copy_location(new_node, old_node):
 
 eleza fix_missing_locations(node):
     """
-    When you compile a node tree ukijumuisha compile(), the compiler expects lineno and
+    When you compile a node tree ukijumuisha compile(), the compiler expects lineno na
     col_offset attributes kila every node that supports them.  This ni rather
     tedious to fill kwenye kila generated nodes, so this helper adds these attributes
     recursively where sio already set, by setting them to the values of the
@@ -393,7 +393,7 @@ kundi NodeVisitor(object):
 
 kundi NodeTransformer(NodeVisitor):
     """
-    A :class:`NodeVisitor` subkundi that walks the abstract syntax tree and
+    A :class:`NodeVisitor` subkundi that walks the abstract syntax tree na
     allows modification of nodes.
 
     The `NodeTransformer` will walk the AST na use the rudisha value of the
@@ -474,7 +474,7 @@ kundi _ABC(type):
                 rudisha Uongo
             isipokua:
                 rudisha (
-                    isinstance(value, _const_types[cls]) and
+                    isinstance(value, _const_types[cls]) na
                     sio isinstance(value, _const_types_not.get(cls, ()))
                 )
         rudisha type.__instancecheck__(cls, inst)

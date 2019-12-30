@@ -15,7 +15,7 @@ eleza glob(pathname, *, recursive=Uongo):
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
-    If recursive ni true, the pattern '**' will match any files and
+    If recursive ni true, the pattern '**' will match any files na
     zero ama more directories na subdirectories.
     """
     rudisha list(iglob(pathname, recursive=recursive))
@@ -28,7 +28,7 @@ eleza iglob(pathname, *, recursive=Uongo):
     dot are special cases that are sio matched by '*' na '?'
     patterns.
 
-    If recursive ni true, the pattern '**' will match any files and
+    If recursive ni true, the pattern '**' will match any files na
     zero ama more directories na subdirectories.
     """
     it = _iglob(pathname, recursive, Uongo)

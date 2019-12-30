@@ -74,7 +74,7 @@ kundi Popen(object):
                     python_exe, cmd,
                     Tupu, Tupu, Uongo, 0, env, Tupu, Tupu)
                 _winapi.CloseHandle(ht)
-            except:
+            tatizo:
                 _winapi.CloseHandle(rhandle)
                 ashiria
 

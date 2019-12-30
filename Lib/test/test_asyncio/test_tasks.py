@@ -68,7 +68,7 @@ class Dummy:
 
 class CoroLikeObject:
     def send(self, v):
-        raise StopIteration(42)
+        ashiria StopIteration(42)
 
     def throw(self, *exc):
         pass
@@ -1068,7 +1068,7 @@ class BaseTaskTests:
         a = self.new_task(loop, asyncio.sleep(10.0))
 
         async def exc():
-            raise ZeroDivisionError('err')
+            ashiria ZeroDivisionError('err')
 
         b = self.new_task(loop, exc())
         task = self.new_task(
@@ -1100,7 +1100,7 @@ class BaseTaskTests:
 
         async def exc():
             await asyncio.sleep(0.01)
-            raise ZeroDivisionError('err')
+            ashiria ZeroDivisionError('err')
 
         b = self.new_task(loop, exc())
         task = asyncio.wait([b, a], return_when=asyncio.FIRST_EXCEPTION)
@@ -1129,7 +1129,7 @@ class BaseTaskTests:
 
         async def sleeper():
             await asyncio.sleep(0.15)
-            raise ZeroDivisionError('really')
+            ashiria ZeroDivisionError('really')
 
         b = self.new_task(loop, sleeper())
 
@@ -1544,7 +1544,7 @@ class BaseTaskTests:
             jaribu:
                 await sleeper()
             tatizo asyncio.CancelledError:
-                raise base_exc
+                ashiria base_exc
 
         task = self.new_task(loop, notmutch())
         test_utils.run_briefly(loop)
@@ -1959,7 +1959,7 @@ class BaseTaskTests:
             tatizo StopIteration as ex:
                 return ex.args[0]
             isipokua:
-                raise AssertionError('StopIteration was expected')
+                ashiria AssertionError('StopIteration was expected')
 
         self.assertEqual(call((1, 2)), (1, 2))
         self.assertEqual(call('spam'), 'spam')
@@ -2022,7 +2022,7 @@ class BaseTaskTests:
                 yield from future
                 # at this point, the only reference to kill_me() task is
                 # the Task._wakeup() method in future._callbacks
-                raise Exception("code never reached")
+                ashiria Exception("code never reached")
 
         mock_handler = mock.Mock()
         self.loop.set_debug(True)
@@ -2072,7 +2072,7 @@ class BaseTaskTests:
         self.set_event_loop(loop)
 
         async def coro():
-            raise TypeError
+            ashiria TypeError
 
         async def runner():
             task = self.new_task(loop, coro())
@@ -2250,7 +2250,7 @@ class BaseTaskTests:
     @mock.patch('asyncio.base_events.logger')
     def test_error_in_call_soon(self, m_log):
         def call_soon(callback, *args, **kwargs):
-            raise ValueError
+            ashiria ValueError
         self.loop.call_soon = call_soon
 
         with self.assertWarns(DeprecationWarning):
@@ -2527,7 +2527,7 @@ class SetMethodsTest:
         exc = exc_handler.call_args[0][0]['exception']
         with self.assertRaisesRegex(asyncio.InvalidStateError,
                                     r'step\(\): already done'):
-            raise exc
+            ashiria exc
 
         coro.close()
 
@@ -2553,12 +2553,12 @@ class SetMethodsTest:
         exc = exc_handler.call_args[0][0]['exception']
         with self.assertRaisesRegex(asyncio.InvalidStateError,
                                     r'step\(\): already done'):
-            raise exc
+            ashiria exc
 
         coro.close()
 
 
-@unittest.skipUnless(hasattr(futures, '_CFuture') and
+@unittest.skipUnless(hasattr(futures, '_CFuture') na
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 class CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
@@ -2589,7 +2589,7 @@ class CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
             toa task._log_destroy_pending
 
 
-@unittest.skipUnless(hasattr(futures, '_CFuture') and
+@unittest.skipUnless(hasattr(futures, '_CFuture') na
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 @add_subclass_tests
@@ -2654,7 +2654,7 @@ class CTask_Future_Tests(test_utils.TestCase):
         class Fut(asyncio.Future):
             @property
             def get_loop(self):
-                raise AttributeError
+                ashiria AttributeError
 
         async def coro():
             await fut
@@ -2813,7 +2813,7 @@ class BaseCurrentLoopTests:
         self.set_event_loop(self.loop)
 
     def new_task(self, coro):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def test_current_task_no_running_loop(self):
         self.assertIsNone(asyncio.current_task(loop=self.loop))
@@ -3133,7 +3133,7 @@ class CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
         async def inner(f):
             await f
-            raise RuntimeError('should sio be ignored')
+            ashiria RuntimeError('should sio be ignored')
 
         a = self.one_loop.create_future()
         b = self.one_loop.create_future()
@@ -3162,7 +3162,7 @@ class RunCoroutineThreadsafeTests(test_utils.TestCase):
         """Wait 0.05 second and return a + b."""
         await asyncio.sleep(0.05)
         if fail:
-            raise RuntimeError("Fail!")
+            ashiria RuntimeError("Fail!")
         if cancel:
             asyncio.current_task(self.loop).cancel()
             await asyncio.sleep(0)
@@ -3185,7 +3185,7 @@ class RunCoroutineThreadsafeTests(test_utils.TestCase):
         jaribu:
             return future.result(timeout)
         mwishowe:
-            future.done() or future.cancel()
+            future.done() ama future.cancel()
 
     def test_run_coroutine_threadsafe(self):
         """Test coroutine submission from a thread to an event loop."""
@@ -3223,10 +3223,10 @@ class RunCoroutineThreadsafeTests(test_utils.TestCase):
 
     def test_run_coroutine_threadsafe_task_factory_exception(self):
         """Test coroutine submission from a tread to an event loop
-        when the task factory raise an exception."""
+        when the task factory ashiria an exception."""
 
         def task_factory(loop, coro):
-            raise NameError
+            ashiria NameError
 
         run = self.loop.run_in_executor(
             None, lambda: self.target(advance_coro=True))

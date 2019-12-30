@@ -123,7 +123,7 @@ kundi AutoFileTests:
         # it must also rudisha Tupu ikiwa an exception was given
         jaribu:
             1/0
-        except:
+        tatizo:
             self.assertEqual(self.f.__exit__(*sys.exc_info()), Tupu)
 
     eleza testReadWhenWriting(self):
@@ -257,7 +257,7 @@ kundi OtherFileTests:
             meth(*args)  # This simply shouldn't fail
             f.close()
 
-        # Test to see ikiwa harmless (by accident) mixing of read* and
+        # Test to see ikiwa harmless (by accident) mixing of read* na
         # iteration still works. This depends on the size of the internal
         # iteration buffer (currently 8192,) but we can test it kwenye a
         # flexible manner.  Each line kwenye the bag o' ham ni 4 bytes

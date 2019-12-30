@@ -54,7 +54,7 @@ kundi CodeopTests(unittest.TestCase):
         tatizo SyntaxError:
             self.assertKweli(is_syntax)
         tatizo OverflowError:
-            self.assertKweli(not is_syntax)
+            self.assertKweli(sio is_syntax)
 
     eleza test_valid(self):
         av = self.assertValid
@@ -229,9 +229,9 @@ kundi CodeopTests(unittest.TestCase):
         ai("kila a kwenye b:\n pita\nisipokua:")
 
         ai("jaribu:")
-        ai("jaribu:\n pita\nexcept:")
+        ai("jaribu:\n pita\ntatizo:")
         ai("jaribu:\n pita\nmwishowe:")
-        ai("jaribu:\n pita\nexcept:\n pita\nmwishowe:")
+        ai("jaribu:\n pita\ntatizo:\n pita\nmwishowe:")
 
         ai("ukijumuisha a:")
         ai("ukijumuisha a kama b:")

@@ -858,13 +858,13 @@ kundi FileTestCase(unittest.TestCase):
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5 + COMPRESSED_BOGUS)) kama f:
             self.assertEqual(f.read(), INPUT * 5)
 
-    eleza test_read_kutoka_file(self):
+    eleza test_read_from_file(self):
         ukijumuisha TempFile(TESTFN, COMPRESSED_XZ):
             ukijumuisha LZMAFile(TESTFN) kama f:
                 self.assertEqual(f.read(), INPUT)
                 self.assertEqual(f.read(), b"")
 
-    eleza test_read_kutoka_file_with_bytes_filename(self):
+    eleza test_read_from_file_with_bytes_filename(self):
         jaribu:
             bytes_filename = TESTFN.encode("ascii")
         tatizo UnicodeEncodeError:

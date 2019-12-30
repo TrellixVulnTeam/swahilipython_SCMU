@@ -625,7 +625,7 @@ kundi _pthFileTests(unittest.TestCase):
         env['PYTHONPATH'] = 'kutoka-env'
         env['PATH'] = '{};{}'.format(exe_prefix, os.getenv('PATH'))
         rc = subprocess.call([exe_file, '-c',
-            'agiza sys; sys.exit(not sys.flags.no_site na '
+            'agiza sys; sys.exit(sio sys.flags.no_site na '
             '%r kwenye sys.path na %r kwenye sys.path na %r haiko kwenye sys.path na '
             'all("\\r" haiko kwenye p na "\\n" haiko kwenye p kila p kwenye sys.path))' % (
                 os.path.join(sys_prefix, 'fake-path-name'),

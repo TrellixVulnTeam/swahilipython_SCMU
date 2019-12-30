@@ -49,7 +49,7 @@ bell= Kweli
 # See config-keys.eleza kila notes on specifying keys na extend.txt for
 # information on creating IDLE extensions.
 
-# A fake extension kila testing na example purposes.  When enabled and
+# A fake extension kila testing na example purposes.  When enabled na
 # invoked, inserts ama deletes z-text at beginning of every line.
 [ZzDummy]
 enable= Uongo

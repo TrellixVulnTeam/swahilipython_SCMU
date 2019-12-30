@@ -95,7 +95,7 @@ kundi LegacyBase64TestCase(unittest.TestCase):
 
 kundi BaseXYTestCase(unittest.TestCase):
 
-    # Modern API completely ignores exported dimension na format data and
+    # Modern API completely ignores exported dimension na format data na
     # treats any buffer kama a stream of bytes
     eleza check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
@@ -674,7 +674,7 @@ kundi TestMain(unittest.TestCase):
         output = self.get_output('-e', support.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
-    eleza test_encode_kutoka_stdin(self):
+    eleza test_encode_from_stdin(self):
         ukijumuisha script_helper.spawn_python('-m', 'base64', '-e') kama proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')

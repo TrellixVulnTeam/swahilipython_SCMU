@@ -124,7 +124,7 @@ class Regrtest:
         lasivyo ok == TIMEOUT:
             self.bad.append(test_name)
         isipokua:
-            raise ValueError("invalid test result: %r" % ok)
+            ashiria ValueError("invalid test result: %r" % ok)
 
         if rerun and ok haiko kwenye {FAILED, CHILD_ERROR, INTERRUPTED}:
             self.bad.remove(test_name)
@@ -347,7 +347,7 @@ class Regrtest:
 
         if self.good and sio self.ns.quiet:
             print()
-            if (not self.bad
+            if (sio self.bad
                 and sio self.skipped
                 and sio self.interrupted
                 and len(self.good) > 1):
@@ -671,7 +671,7 @@ class Regrtest:
             self.list_cases()
             sys.exit(0)
 
-        # If we're on windows and this is the parent runner (not a worker),
+        # If we're on windows and this is the parent runner (sio a worker),
         # track the load average.
         if sys.platform == 'win32' and self.worker_test_name is None:
             from test.libregrtest.win_utils import WindowsLoadTracker

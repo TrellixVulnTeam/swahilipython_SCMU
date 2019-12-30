@@ -137,10 +137,10 @@ eleza _type_check(arg, msg, is_argument=Kweli):
         rudisha type(Tupu)
     ikiwa isinstance(arg, str):
         rudisha ForwardRef(arg)
-    ikiwa (isinstance(arg, _GenericAlias) and
+    ikiwa (isinstance(arg, _GenericAlias) na
             arg.__origin__ kwenye invalid_generic_forms):
         ashiria TypeError(f"{arg} ni sio valid kama type argument")
-    ikiwa (isinstance(arg, _SpecialForm) na arg haiko kwenye (Any, NoReturn) or
+    ikiwa (isinstance(arg, _SpecialForm) na arg haiko kwenye (Any, NoReturn) ama
             arg kwenye (Generic, Protocol)):
         ashiria TypeError(f"Plain {arg} ni sio valid kama type argument")
     ikiwa isinstance(arg, (type, TypeVar, ForwardRef)):
@@ -257,7 +257,7 @@ eleza _tp_cache(func):
         jaribu:
             rudisha cached(*args, **kwds)
         tatizo TypeError:
-            pita  # All real errors (not unhashable args) are ashiriad below.
+            pita  # All real errors (sio unhashable args) are ashiriad below.
         rudisha func(*args, **kwds)
     rudisha inner
 
@@ -308,10 +308,10 @@ kundi _SpecialForm(_Final, _Immutable, _root=Kweli):
         """Constructor.
 
         This only exists to give a better error message kwenye case
-        someone tries to subkundi a special typing object (not a good idea).
+        someone tries to subkundi a special typing object (sio a good idea).
         """
-        ikiwa (len(args) == 3 and
-                isinstance(args[0], str) and
+        ikiwa (len(args) == 3 na
+                isinstance(args[0], str) na
                 isinstance(args[1], tuple)):
             # Close enough.
             ashiria TypeError(f"Cannot subkundi {cls!r}")
@@ -399,7 +399,7 @@ ClassVar = _SpecialForm('ClassVar', doc=
     """Special type construct to mark kundi variables.
 
     An annotation wrapped kwenye ClassVar indicates that a given
-    attribute ni intended to be used kama a kundi variable and
+    attribute ni intended to be used kama a kundi variable na
     should sio be set on instances of that class. Usage::
 
       kundi Starship:
@@ -525,7 +525,7 @@ kundi ForwardRef(_Final, _root=Kweli):
         ikiwa sio isinstance(other, ForwardRef):
             rudisha NotImplemented
         ikiwa self.__forward_evaluated__ na other.__forward_evaluated__:
-            rudisha (self.__forward_arg__ == other.__forward_arg__ and
+            rudisha (self.__forward_arg__ == other.__forward_arg__ na
                     self.__forward_value__ == other.__forward_value__)
         rudisha self.__forward_arg__ == other.__forward_arg__
 
@@ -663,8 +663,8 @@ kundi _GenericAlias(_Final, _root=Kweli):
         ikiwa sio isinstance(params, tuple):
             params = (params,)
         self.__origin__ = origin
-        self.__args__ = tuple(... ikiwa a ni _TypingEllipsis else
-                              () ikiwa a ni _TypingEmpty else
+        self.__args__ = tuple(... ikiwa a ni _TypingEllipsis ama
+                              () ikiwa a ni _TypingEmpty ama
                               a kila a kwenye params)
         self.__parameters__ = _collect_type_vars(params)
         self.__slots__ = Tupu  # This ni sio documented.
@@ -688,7 +688,7 @@ kundi _GenericAlias(_Final, _root=Kweli):
         rudisha _GenericAlias(self.__origin__, params, name=self._name, inst=self._inst)
 
     eleza __repr__(self):
-        ikiwa (self._name != 'Callable' or
+        ikiwa (self._name != 'Callable' ama
                 len(self.__args__) == 2 na self.__args__[0] ni Ellipsis):
             ikiwa self._name:
                 name = 'typing.' + self._name
@@ -782,7 +782,7 @@ kundi _GenericAlias(_Final, _root=Kweli):
             origin = globals()[self._name]
         isipokua:
             origin = self.__origin__
-        ikiwa (origin ni Callable and
+        ikiwa (origin ni Callable na
             sio (len(self.__args__) == 2 na self.__args__[0] ni Ellipsis)):
             args = list(self.__args__[:-1]), self.__args__[-1]
         isipokua:
@@ -912,7 +912,7 @@ kundi Generic:
             # na reject multiple Generic[...].
             gvars = Tupu
             kila base kwenye cls.__orig_bases__:
-                ikiwa (isinstance(base, _GenericAlias) and
+                ikiwa (isinstance(base, _GenericAlias) na
                         base.__origin__ ni Generic):
                     ikiwa gvars ni sio Tupu:
                         ashiria TypeError(
@@ -982,7 +982,7 @@ eleza _no_init(self, *args, **kwargs):
 eleza _allow_reckless_class_cheks():
     """Allow instnance na kundi checks kila special stdlib modules.
 
-    The abc na functools modules indiscriminately call isinstance() and
+    The abc na functools modules indiscriminately call isinstance() na
     issubclass() on the whole MRO of a user class, which may contain protocols.
     """
     jaribu:
@@ -1006,14 +1006,14 @@ kundi _ProtocolMeta(ABCMeta):
     eleza __instancecheck__(cls, instance):
         # We need this method kila situations where attributes are
         # assigned kwenye __init__.
-        ikiwa ((not getattr(cls, '_is_protocol', Uongo) or
-                _is_callable_members_only(cls)) and
+        ikiwa ((sio getattr(cls, '_is_protocol', Uongo) ama
+                _is_callable_members_only(cls)) na
                 issubclass(instance.__class__, cls)):
             rudisha Kweli
         ikiwa cls._is_protocol:
-            ikiwa all(hasattr(instance, attr) and
+            ikiwa all(hasattr(instance, attr) na
                     # All *methods* can be blocked by setting them to Tupu.
-                    (not callable(getattr(cls, attr, Tupu)) or
+                    (sio callable(getattr(cls, attr, Tupu)) ama
                      getattr(instance, attr) ni sio Tupu)
                     kila attr kwenye _get_protocol_attrs(cls)):
                 rudisha Kweli
@@ -1092,8 +1092,8 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
 
                     # ...or kwenye annotations, ikiwa it ni a sub-protocol.
                     annotations = getattr(base, '__annotations__', {})
-                    ikiwa (isinstance(annotations, collections.abc.Mapping) and
-                            attr kwenye annotations and
+                    ikiwa (isinstance(annotations, collections.abc.Mapping) na
+                            attr kwenye annotations na
                             issubclass(other, Generic) na other._is_protocol):
                         koma
                 isipokua:
@@ -1109,9 +1109,9 @@ kundi Protocol(Generic, metaclass=_ProtocolMeta):
 
         # ... otherwise check consistency of bases, na prohibit instantiation.
         kila base kwenye cls.__bases__:
-            ikiwa sio (base kwenye (object, Generic) or
-                    base.__module__ kwenye _PROTO_WHITELIST and
-                    base.__name__ kwenye _PROTO_WHITELIST[base.__module__] or
+            ikiwa sio (base kwenye (object, Generic) ama
+                    base.__module__ kwenye _PROTO_WHITELIST na
+                    base.__name__ kwenye _PROTO_WHITELIST[base.__module__] ama
                     issubclass(base, Generic) na base._is_protocol):
                 ashiria TypeError('Protocols can only inherit kutoka other'
                                 ' protocols, got %r' % base)
@@ -1203,10 +1203,10 @@ eleza get_type_hints(obj, globalns=Tupu, localns=Tupu):
       na these are also used kama the locals.  If the object does sio appear
       to have globals, an empty dictionary ni used.
 
-    - If one dict argument ni pitaed, it ni used kila both globals and
+    - If one dict argument ni pitaed, it ni used kila both globals na
       locals.
 
-    - If two dict arguments are pitaed, they specify globals and
+    - If two dict arguments are pitaed, they specify globals na
       locals, respectively.
     """
 

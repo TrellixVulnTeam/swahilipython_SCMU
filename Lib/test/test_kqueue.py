@@ -15,7 +15,7 @@ kundi TestKQueue(unittest.TestCase):
     eleza test_create_queue(self):
         kq = select.kqueue()
         self.assertKweli(kq.fileno() > 0, kq.fileno())
-        self.assertKweli(not kq.closed)
+        self.assertKweli(sio kq.closed)
         kq.close()
         self.assertKweli(kq.closed)
         self.assertRaises(ValueError, kq.fileno)

@@ -34,7 +34,7 @@ agiza warnings
 
 __all__ = ["urlparse", "urlunparse", "urljoin", "urldefrag",
            "urlsplit", "urlunsplit", "urlencode", "parse_qs",
-           "parse_qsl", "quote", "quote_plus", "quote_kutoka_bytes",
+           "parse_qsl", "quote", "quote_plus", "quote_from_bytes",
            "unquote", "unquote_plus", "unquote_to_bytes",
            "DefragResult", "ParseResult", "SplitResult",
            "DefragResultBytes", "ParseResultBytes", "SplitResultBytes"]
@@ -279,7 +279,7 @@ The hierarchical path, such kama the path to a file to download.
 
 _SplitResultBase.query.__doc__ = """
 The query component, that contains non-hierarchical data, that along ukijumuisha data
-in path component, identifies a resource kwenye the scope of URI's scheme and
+in path component, identifies a resource kwenye the scope of URI's scheme na
 network location.
 """
 
@@ -435,7 +435,7 @@ eleza urlsplit(url, scheme='', allow_fragments=Kweli):
             url = url[i+1:]
             ikiwa url[:2] == '//':
                 netloc, url = _splitnetloc(url, 2)
-                ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) or
+                ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) ama
                         (']' kwenye netloc na '[' haiko kwenye netloc)):
                     ashiria ValueError("Invalid IPv6 URL")
             ikiwa allow_fragments na '#' kwenye url:
@@ -459,7 +459,7 @@ eleza urlsplit(url, scheme='', allow_fragments=Kweli):
 
     ikiwa url[:2] == '//':
         netloc, url = _splitnetloc(url, 2)
-        ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) or
+        ikiwa (('[' kwenye netloc na ']' haiko kwenye netloc) ama
                 (']' kwenye netloc na '[' haiko kwenye netloc)):
             ashiria ValueError("Invalid IPv6 URL")
     ikiwa allow_fragments na '#' kwenye url:
@@ -765,7 +765,7 @@ _safe_quoters = {}
 kundi Quoter(collections.defaultdict):
     """A mapping kutoka bytes (in range(0,256)) to strings.
 
-    String values are percent-encoded byte values, unless the key < 128, and
+    String values are percent-encoded byte values, unless the key < 128, na
     kwenye the "safe" set (either the specified safe set, ama default set).
     """
     # Keeps a cache internally, using defaultdict, kila efficiency (lookups
@@ -789,7 +789,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
 
     Each part of a URL, e.g. the path info, the query, etc., has a
     different set of reserved characters that must be quoted. The
-    quote function offers a cautious (not minimal) way to quote a
+    quote function offers a cautious (sio minimal) way to quote a
     string kila most of these parts.
 
     RFC 3986 Uniform Resource Identifier (URI): Generic Syntax lists
@@ -820,7 +820,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
 
     The optional encoding na errors parameters specify how to deal with
     non-ASCII characters, kama accepted by the str.encode method.
-    By default, encoding='utf-8' (characters are encoded ukijumuisha UTF-8), and
+    By default, encoding='utf-8' (characters are encoded ukijumuisha UTF-8), na
     errors='strict' (unsupported characters ashiria a UnicodeEncodeError).
     """
     ikiwa isinstance(string, str):
@@ -836,7 +836,7 @@ eleza quote(string, safe='/', encoding=Tupu, errors=Tupu):
             ashiria TypeError("quote() doesn't support 'encoding' kila bytes")
         ikiwa errors ni sio Tupu:
             ashiria TypeError("quote() doesn't support 'errors' kila bytes")
-    rudisha quote_kutoka_bytes(string, safe)
+    rudisha quote_from_bytes(string, safe)
 
 eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
     """Like quote(), but also replace ' ' ukijumuisha '+', kama required kila quoting
@@ -845,7 +845,7 @@ eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
     """
     # Check ikiwa ' ' kwenye string, where string may either be a str ama bytes.  If
     # there are no spaces, the regular quote will produce the right answer.
-    ikiwa ((isinstance(string, str) na ' ' haiko kwenye string) or
+    ikiwa ((isinstance(string, str) na ' ' haiko kwenye string) ama
         (isinstance(string, bytes) na b' ' haiko kwenye string)):
         rudisha quote(string, safe, encoding, errors)
     ikiwa isinstance(safe, str):
@@ -855,13 +855,13 @@ eleza quote_plus(string, safe='', encoding=Tupu, errors=Tupu):
     string = quote(string, safe + space, encoding, errors)
     rudisha string.replace(' ', '+')
 
-eleza quote_kutoka_bytes(bs, safe='/'):
+eleza quote_from_bytes(bs, safe='/'):
     """Like quote(), but accepts a bytes object rather than a str, na does
     sio perform string-to-bytes encoding.  It always rudishas an ASCII string.
-    quote_kutoka_bytes(b'abc def\x3f') -> 'abc%20def%3f'
+    quote_from_bytes(b'abc def\x3f') -> 'abc%20def%3f'
     """
     ikiwa sio isinstance(bs, (bytes, bytearray)):
-        ashiria TypeError("quote_kutoka_bytes() expected bytes")
+        ashiria TypeError("quote_from_bytes() expected bytes")
     ikiwa sio bs:
         rudisha ''
     ikiwa isinstance(safe, str):

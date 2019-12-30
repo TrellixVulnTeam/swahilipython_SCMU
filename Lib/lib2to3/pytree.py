@@ -4,7 +4,7 @@
 """
 Python parse tree definitions.
 
-This ni a very concrete parse tree; we need to keep every token and
+This ni a very concrete parse tree; we need to keep every token na
 even the comments na whitespace between tokens.
 
 There's also a pattern matching implementation here.
@@ -416,7 +416,7 @@ kundi BasePattern(object):
     """
     A pattern ni a tree matching pattern.
 
-    It looks kila a specific node type (token ama symbol), and
+    It looks kila a specific node type (token ama symbol), na
     optionally kila a specific content.
 
     This ni an abstract base class.  There are three concrete
@@ -654,7 +654,7 @@ kundi WildcardPattern(BasePattern):
     eleza optimize(self):
         """Optimize certain stacked wildcard patterns."""
         subpattern = Tupu
-        ikiwa (self.content ni sio Tupu and
+        ikiwa (self.content ni sio Tupu na
             len(self.content) == 1 na len(self.content[0]) == 1):
             subpattern = self.content[0][0]
         ikiwa self.min == 1 na self.max == 1:
@@ -662,7 +662,7 @@ kundi WildcardPattern(BasePattern):
                 rudisha NodePattern(name=self.name)
             ikiwa subpattern ni sio Tupu na  self.name == subpattern.name:
                 rudisha subpattern.optimize()
-        ikiwa (self.min <= 1 na isinstance(subpattern, WildcardPattern) and
+        ikiwa (self.min <= 1 na isinstance(subpattern, WildcardPattern) na
             subpattern.min <= 1 na self.name == subpattern.name):
             rudisha WildcardPattern(subpattern.content,
                                    self.min*subpattern.min,

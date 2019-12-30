@@ -48,7 +48,7 @@ class _PolicyBase:
             if hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             isipokua:
-                raise TypeError(
+                ashiria TypeError(
                     "{!r} is an invalid keyword argument for {}".format(
                         name, self.__class__.__name__))
 
@@ -69,7 +69,7 @@ class _PolicyBase:
             object.__setattr__(newpolicy, attr, value)
         for attr, value in kw.items():
             if sio hasattr(self, attr):
-                raise TypeError(
+                ashiria TypeError(
                     "{!r} is an invalid keyword argument for {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
@@ -80,7 +80,7 @@ class _PolicyBase:
             msg = "{!r} object attribute {!r} is read-only"
         isipokua:
             msg = "{!r} object has no attribute {!r}"
-        raise AttributeError(msg.format(self.__class__.__name__, name))
+        ashiria AttributeError(msg.format(self.__class__.__name__, name))
 
     def __add__(self, other):
         """Non-default values from right operand override those from left.
@@ -114,7 +114,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
     r"""Controls for how messages are interpreted and formatted.
 
     Most of the classes and many of the methods in the email package accept
-    Policy objects as parameters.  A Policy object contains a set of values and
+    Policy objects as parameters.  A Policy object contains a set of values na
     functions that control how input is interpreted and how output is rendered.
     For example, the parameter 'raise_on_defect' controls whether or sio an RFC
     violation results in an error being raised or not, wakati 'max_line_length'
@@ -167,7 +167,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
     message_factory = None
 
     def handle_defect(self, obj, defect):
-        """Based on policy, either raise defect or call register_defect.
+        """Based on policy, either ashiria defect or call register_defect.
 
             handle_defect(obj, defect)
 
@@ -182,7 +182,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
         """
         if self.raise_on_defect:
-            raise defect
+            ashiria defect
         self.register_defect(obj, defect)
 
     def register_defect(self, obj, defect):
@@ -225,14 +225,14 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         characters.  The lines passed in by the email package may contain
         surrogateescaped binary data.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     def header_store_parse(self, name, value):
         """Given the header name and the value provided by the application
         program, return the (name, value) that should be stored in the model.
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     def header_fetch_parse(self, name, value):
@@ -243,7 +243,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         The returned value should sio contain any surrogateescaped data.
 
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     def fold(self, name, value):
@@ -255,7 +255,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         surrogateescaped data.
 
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     def fold_binary(self, name, value):
@@ -265,7 +265,7 @@ class Policy(_PolicyBase, metaclass=abc.ABCMeta):
         email package may contain surrogateescaped binary data.
 
         """
-        raise NotImplementedError
+        ashiria NotImplementedError
 
 
 @_extend_docstrings
@@ -294,7 +294,7 @@ class Compat32(Policy):
         """+
         The name is parsed as everything up to the ':' and returned unmodified.
         The value is determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, and
+        remainder of the first line, joining all subsequent lines together, na
         stripping any trailing carriage return or linefeed characters.
 
         """

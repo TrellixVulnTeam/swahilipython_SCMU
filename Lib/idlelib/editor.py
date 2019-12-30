@@ -216,7 +216,7 @@ kundi EditorWindow(object):
         text.focus_set()
         self.set_width()
 
-        # usetabs true  -> literal tab characters are used by indent and
+        # usetabs true  -> literal tab characters are used by indent na
         #                  dedent cmds, possibly mixed ukijumuisha spaces if
         #                  indentwidth ni sio a multiple of tabwidth,
         #                  which will cause Tabnanny to nag!
@@ -1080,7 +1080,7 @@ kundi EditorWindow(object):
         kila name kwenye self.get_standard_extension_names():
             jaribu:
                 self.load_extension(name)
-            except:
+            tatizo:
                 andika("Failed to load extension", repr(name))
                 traceback.print_exc()
 
@@ -1578,7 +1578,7 @@ eleza get_accelerator(keydefs, eventname):
     keylist = keydefs.get(eventname)
     # issue10940: temporary workaround to prevent hang ukijumuisha OS X Cocoa Tk 8.5
     # ikiwa sio keylist:
-    ikiwa (not keylist) ama (macosx.isCocoaTk() na eventname kwenye {
+    ikiwa (sio keylist) ama (macosx.isCocoaTk() na eventname kwenye {
                             "<<open-module>>",
                             "<<goto-line>>",
                             "<<change-indentwidth>>"}):

@@ -84,104 +84,104 @@ eleza wraps(wrapped,
 # infinite recursion that could occur when the operator dispatch logic
 # detects a NotImplemented result na then calls a reflected method.
 
-eleza _gt_kutoka_lt(self, other, NotImplemented=NotImplemented):
-    'Return a > b.  Computed by @total_ordering kutoka (not a < b) na (a != b).'
+eleza _gt_from_lt(self, other, NotImplemented=NotImplemented):
+    'Return a > b.  Computed by @total_ordering kutoka (sio a < b) na (a != b).'
     op_result = self.__lt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result na self != other
 
-eleza _le_kutoka_lt(self, other, NotImplemented=NotImplemented):
+eleza _le_from_lt(self, other, NotImplemented=NotImplemented):
     'Return a <= b.  Computed by @total_ordering kutoka (a < b) ama (a == b).'
     op_result = self.__lt__(other)
     rudisha op_result ama self == other
 
-eleza _ge_kutoka_lt(self, other, NotImplemented=NotImplemented):
-    'Return a >= b.  Computed by @total_ordering kutoka (not a < b).'
+eleza _ge_from_lt(self, other, NotImplemented=NotImplemented):
+    'Return a >= b.  Computed by @total_ordering kutoka (sio a < b).'
     op_result = self.__lt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
-eleza _ge_kutoka_le(self, other, NotImplemented=NotImplemented):
-    'Return a >= b.  Computed by @total_ordering kutoka (not a <= b) ama (a == b).'
+eleza _ge_from_le(self, other, NotImplemented=NotImplemented):
+    'Return a >= b.  Computed by @total_ordering kutoka (sio a <= b) ama (a == b).'
     op_result = self.__le__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result ama self == other
 
-eleza _lt_kutoka_le(self, other, NotImplemented=NotImplemented):
+eleza _lt_from_le(self, other, NotImplemented=NotImplemented):
     'Return a < b.  Computed by @total_ordering kutoka (a <= b) na (a != b).'
     op_result = self.__le__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha op_result na self != other
 
-eleza _gt_kutoka_le(self, other, NotImplemented=NotImplemented):
-    'Return a > b.  Computed by @total_ordering kutoka (not a <= b).'
+eleza _gt_from_le(self, other, NotImplemented=NotImplemented):
+    'Return a > b.  Computed by @total_ordering kutoka (sio a <= b).'
     op_result = self.__le__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
-eleza _lt_kutoka_gt(self, other, NotImplemented=NotImplemented):
-    'Return a < b.  Computed by @total_ordering kutoka (not a > b) na (a != b).'
+eleza _lt_from_gt(self, other, NotImplemented=NotImplemented):
+    'Return a < b.  Computed by @total_ordering kutoka (sio a > b) na (a != b).'
     op_result = self.__gt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result na self != other
 
-eleza _ge_kutoka_gt(self, other, NotImplemented=NotImplemented):
+eleza _ge_from_gt(self, other, NotImplemented=NotImplemented):
     'Return a >= b.  Computed by @total_ordering kutoka (a > b) ama (a == b).'
     op_result = self.__gt__(other)
     rudisha op_result ama self == other
 
-eleza _le_kutoka_gt(self, other, NotImplemented=NotImplemented):
-    'Return a <= b.  Computed by @total_ordering kutoka (not a > b).'
+eleza _le_from_gt(self, other, NotImplemented=NotImplemented):
+    'Return a <= b.  Computed by @total_ordering kutoka (sio a > b).'
     op_result = self.__gt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
-eleza _le_kutoka_ge(self, other, NotImplemented=NotImplemented):
-    'Return a <= b.  Computed by @total_ordering kutoka (not a >= b) ama (a == b).'
+eleza _le_from_ge(self, other, NotImplemented=NotImplemented):
+    'Return a <= b.  Computed by @total_ordering kutoka (sio a >= b) ama (a == b).'
     op_result = self.__ge__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result ama self == other
 
-eleza _gt_kutoka_ge(self, other, NotImplemented=NotImplemented):
+eleza _gt_from_ge(self, other, NotImplemented=NotImplemented):
     'Return a > b.  Computed by @total_ordering kutoka (a >= b) na (a != b).'
     op_result = self.__ge__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha op_result na self != other
 
-eleza _lt_kutoka_ge(self, other, NotImplemented=NotImplemented):
-    'Return a < b.  Computed by @total_ordering kutoka (not a >= b).'
+eleza _lt_from_ge(self, other, NotImplemented=NotImplemented):
+    'Return a < b.  Computed by @total_ordering kutoka (sio a >= b).'
     op_result = self.__ge__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
 _convert = {
-    '__lt__': [('__gt__', _gt_kutoka_lt),
-               ('__le__', _le_kutoka_lt),
-               ('__ge__', _ge_kutoka_lt)],
-    '__le__': [('__ge__', _ge_kutoka_le),
-               ('__lt__', _lt_kutoka_le),
-               ('__gt__', _gt_kutoka_le)],
-    '__gt__': [('__lt__', _lt_kutoka_gt),
-               ('__ge__', _ge_kutoka_gt),
-               ('__le__', _le_kutoka_gt)],
-    '__ge__': [('__le__', _le_kutoka_ge),
-               ('__gt__', _gt_kutoka_ge),
-               ('__lt__', _lt_kutoka_ge)]
+    '__lt__': [('__gt__', _gt_from_lt),
+               ('__le__', _le_from_lt),
+               ('__ge__', _ge_from_lt)],
+    '__le__': [('__ge__', _ge_from_le),
+               ('__lt__', _lt_from_le),
+               ('__gt__', _gt_from_le)],
+    '__gt__': [('__lt__', _lt_from_gt),
+               ('__ge__', _ge_from_gt),
+               ('__le__', _le_from_gt)],
+    '__ge__': [('__le__', _le_from_ge),
+               ('__gt__', _gt_from_ge),
+               ('__lt__', _lt_from_ge)]
 }
 
 eleza total_ordering(cls):
     """Class decorator that fills kwenye missing ordering methods"""
-    # Find user-defined comparisons (not those inherited kutoka object).
+    # Find user-defined comparisons (sio those inherited kutoka object).
     roots = {op kila op kwenye _convert ikiwa getattr(cls, op, Tupu) ni sio getattr(object, op, Tupu)}
     ikiwa sio roots:
         ashiria ValueError('must define at least one ordering operation: < > <= >=')
@@ -313,8 +313,8 @@ kundi partial:
         ikiwa len(state) != 4:
             ashiria TypeError(f"expected 4 items kwenye state, got {len(state)}")
         func, args, kwds, namespace = state
-        ikiwa (not callable(func) ama sio isinstance(args, tuple) or
-           (kwds ni sio Tupu na sio isinstance(kwds, dict)) or
+        ikiwa (sio callable(func) ama sio isinstance(args, tuple) ama
+           (kwds ni sio Tupu na sio isinstance(kwds, dict)) ama
            (namespace ni sio Tupu na sio isinstance(namespace, dict))):
             ashiria TypeError("invalid partial state")
 
@@ -505,7 +505,7 @@ eleza lru_cache(maxsize=128, typed=Uongo):
 
     # Users should only access the lru_cache through its public API:
     #       cache_info, cache_clear, na f.__wrapped__
-    # The internals of the lru_cache are encapsulated kila thread safety and
+    # The internals of the lru_cache are encapsulated kila thread safety na
     # to allow the implementation to change (including a possible C version).
 
     ikiwa isinstance(maxsize, int):

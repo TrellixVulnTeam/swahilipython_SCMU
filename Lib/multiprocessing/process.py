@@ -322,7 +322,7 @@ kundi BaseProcess(object):
             isipokua:
                 sys.stderr.write(str(e.args[0]) + '\n')
                 exitcode = 1
-        except:
+        tatizo:
             exitcode = 1
             agiza traceback
             sys.stderr.write('Process %s:\n' % self.name)

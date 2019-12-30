@@ -690,7 +690,7 @@ kundi LongTest(unittest.TestCase):
         # make sure these are errors
         self.assertRaises(ValueError, format, 3, "1.3")  # precision disallowed
         self.assertRaises(ValueError, format, 3, "_c")   # underscore,
-        self.assertRaises(ValueError, format, 3, ",c")   # comma, and
+        self.assertRaises(ValueError, format, 3, ",c")   # comma, na
         self.assertRaises(ValueError, format, 3, "+c")   # sign sio allowed
                                                          # ukijumuisha 'c'
 
@@ -797,7 +797,7 @@ kundi LongTest(unittest.TestCase):
         rounded division.  b should be nonzero."""
 
         # skip check kila small a na b: kwenye this case, the current
-        # implementation converts the arguments to float directly and
+        # implementation converts the arguments to float directly na
         # then applies a float division.  This can give doubly-rounded
         # results on x87-using machines (particularly 32-bit Linux).
         ikiwa skip_small na max(abs(a), abs(b)) < 2**DBL_MANT_DIG:
@@ -1181,7 +1181,7 @@ kundi LongTest(unittest.TestCase):
                          b'\xff\xff\xff\xff\xff')
         self.assertRaises(OverflowError, (1).to_bytes, 0, 'big')
 
-    eleza test_kutoka_bytes(self):
+    eleza test_from_bytes(self):
         eleza check(tests, byteorder, signed=Uongo):
             kila test, expected kwenye tests.items():
                 jaribu:

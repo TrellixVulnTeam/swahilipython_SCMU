@@ -637,13 +637,13 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             FILE.close()
         mwishowe:
             jaribu: FILE.close()
-            except: pita
+            tatizo: pita
 
     eleza tearDown(self):
         # Delete the temporary files.
         kila each kwenye self.tempFiles:
             jaribu: os.remove(each)
-            except: pita
+            tatizo: pita
 
     eleza constructLocalFileUrl(self, filePath):
         filePath = os.path.abspath(filePath)
@@ -655,7 +655,7 @@ kundi urlretrieve_FileTests(unittest.TestCase):
 
     eleza createNewTempFile(self, data=b""):
         """Creates a new temporary file containing the specified data,
-        registers the file kila deletion during the test fixture tear down, and
+        registers the file kila deletion during the test fixture tear down, na
         rudishas the absolute path of the file."""
 
         newFd, newFilePath = tempfile.mkstemp()
@@ -666,14 +666,14 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             newFile.close()
         mwishowe:
             jaribu: newFile.close()
-            except: pita
+            tatizo: pita
         rudisha newFilePath
 
     eleza registerFileForCleanUp(self, fileName):
         self.tempFiles.append(fileName)
 
     eleza test_basic(self):
-        # Make sure that a local file just gets its own location rudishaed and
+        # Make sure that a local file just gets its own location rudishaed na
         # a headers value ni rudishaed.
         result = urllib.request.urlretrieve("file:%s" % support.TESTFN)
         self.assertEqual(result[0], support.TESTFN)
@@ -696,7 +696,7 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             FILE.close()
         mwishowe:
             jaribu: FILE.close()
-            except: pita
+            tatizo: pita
         self.assertEqual(self.text, text)
 
     eleza test_reporthook(self):
@@ -937,10 +937,10 @@ kundi QuotingTests(unittest.TestCase):
         # Encoding argument should ashiria type error on bytes input
         self.assertRaises(TypeError, urllib.parse.quote, given,
                             encoding="latin-1")
-        # quote_kutoka_bytes should work the same
-        result = urllib.parse.quote_kutoka_bytes(given)
+        # quote_from_bytes should work the same
+        result = urllib.parse.quote_from_bytes(given)
         self.assertEqual(expect, result,
-                         "using quote_kutoka_bytes(): %r != %r"
+                         "using quote_from_bytes(): %r != %r"
                          % (expect, result))
 
     eleza test_quote_with_unicode(self):
@@ -1202,7 +1202,7 @@ kundi urlencode_Tests(unittest.TestCase):
             * 2nd, 2
             * 3rd, 3
 
-        Test cannot assume anything about order.  Docs make no guarantee and
+        Test cannot assume anything about order.  Docs make no guarantee na
         have possible dictionary input.
 
         """
@@ -1403,7 +1403,7 @@ kundi Pathname_Tests(unittest.TestCase):
                          (result, expected_path))
 
     eleza test_quoting(self):
-        # Test automatic quoting na unquoting works kila pathnam2url() and
+        # Test automatic quoting na unquoting works kila pathnam2url() na
         # url2pathname() respectively
         given = os.path.join("needs", "quot=ing", "here")
         expect = "needs/%s/here" % urllib.parse.quote("quot=ing")
@@ -1507,7 +1507,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 # Just commented them out.
 # Can't really tell why keep failing kwenye windows na sparc.
 # Everywhere isipokua they work ok, but on those machines, sometimes
-# fail kwenye one of the tests, sometimes kwenye other. I have a linux, and
+# fail kwenye one of the tests, sometimes kwenye other. I have a linux, na
 # the tests go ok.
 # If anybody has one of the problematic environments, please help!
 # .   Facundo

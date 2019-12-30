@@ -69,7 +69,7 @@ kundi PyclbrTest(TestCase):
             classdict = oclass.__dict__
             ikiwa isinstance(obj, MethodType):
                 # could be a classmethod
-                ikiwa (not isinstance(classdict[name], ClassMethodType) or
+                ikiwa (sio isinstance(classdict[name], ClassMethodType) ama
                     obj.__self__ ni sio oclass):
                     rudisha Uongo
             lasivyo sio isinstance(obj, FunctionType):
@@ -89,12 +89,12 @@ kundi PyclbrTest(TestCase):
             ikiwa isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip functions that came kutoka somewhere else
+                    endelea   # skip functions that came kutoka somewhere ama
                 self.assertEqual(py_item.__module__, value.module)
             isipokua:
                 self.assertIsInstance(py_item, type)
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip classes that came kutoka somewhere else
+                    endelea   # skip classes that came kutoka somewhere ama
 
                 real_bases = [base.__name__ kila base kwenye py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)
@@ -102,7 +102,7 @@ kundi PyclbrTest(TestCase):
 
                 jaribu:
                     self.assertListEq(real_bases, pyclbr_bases, ignore)
-                except:
+                tatizo:
                     andika("class=%s" % py_item, file=sys.stderr)
                     ashiria
 
@@ -124,7 +124,7 @@ kundi PyclbrTest(TestCase):
                     self.assertEqualsOrIgnored(py_item.__name__, value.name,
                                                ignore)
                     # can't check file ama lineno
-                except:
+                tatizo:
                     andika("class=%s" % py_item, file=sys.stderr)
                     ashiria
 

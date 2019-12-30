@@ -19,7 +19,7 @@ RFC 2045 defines a method for including character set information in an
 in To:, From:, Cc:, etc. fields, as well as Subject: lines.
 
 This module does sio do the line wrapping or end-of-line character conversion
-necessary for proper internationalized headers; it only does dumb encoding and
+necessary for proper internationalized headers; it only does dumb encoding na
 decoding.  To deal with the various line wrapping issues, use the email.header
 module.
 """

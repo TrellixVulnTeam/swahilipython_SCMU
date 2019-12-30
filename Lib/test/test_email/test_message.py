@@ -543,7 +543,7 @@ class TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    # outcome is whether xxx_method should raise ValueError error when called
+    # outcome is whether xxx_method should ashiria ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
     # headers but payload is None...this happening in practice would be very
@@ -693,7 +693,7 @@ class TestEmailMessageBase:
 
     class _TestSetRaisingContentManager:
         def set_content(self, msg, content, *args, **kw):
-            raise Exception('test')
+            ashiria Exception('test')
 
     def test_default_content_manager_for_add_comes_from_policy(self):
         cm = self._TestSetRaisingContentManager()

@@ -1084,7 +1084,7 @@ kundi SMTPSimTests(unittest.TestCase):
     #test infrastructure can support it.
 
     # Issue 17498: make sure _rset does sio ashiria SMTPServerDisconnected exception
-    eleza test__rest_kutoka_mail_cmd(self):
+    eleza test__rest_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '451 Requested action aborted'
@@ -1094,7 +1094,7 @@ kundi SMTPSimTests(unittest.TestCase):
         self.assertIsTupu(smtp.sock)
 
     # Issue 5713: make sure close, sio rset, ni called ikiwa we get a 421 error
-    eleza test_421_kutoka_mail_cmd(self):
+    eleza test_421_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.mail_response = '421 closing connection'
@@ -1103,7 +1103,7 @@ kundi SMTPSimTests(unittest.TestCase):
         self.assertIsTupu(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
 
-    eleza test_421_kutoka_rcpt_cmd(self):
+    eleza test_421_from_rcpt_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.rcpt_response = ['250 accepted', '421 closing']
@@ -1113,7 +1113,7 @@ kundi SMTPSimTests(unittest.TestCase):
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
         self.assertDictEqual(r.exception.args[0], {'Frank': (421, b'closing')})
 
-    eleza test_421_kutoka_data_cmd(self):
+    eleza test_421_from_data_cmd(self):
         kundi MySimSMTPChannel(SimSMTPChannel):
             eleza found_terminator(self):
                 ikiwa self.smtp_state == self.DATA:

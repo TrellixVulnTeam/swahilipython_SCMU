@@ -253,7 +253,7 @@ class SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
                 from distutils.core import Distribution
                 config = Distribution().get_command_obj('config')
                 # try_compile may pass or it may fail if no compiler
-                # is found but it should sio raise an exception.
+                # is found but it should sio ashiria an exception.
                 rc = config.try_compile('int x;')
                 '''))
         p = subprocess.Popen([str(sys.executable), TESTFN],

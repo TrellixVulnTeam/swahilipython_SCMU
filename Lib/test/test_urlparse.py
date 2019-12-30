@@ -912,11 +912,11 @@ kundi UrlParseTestCase(unittest.TestCase):
                                         safe='/', quote_via=urllib.parse.quote)
         self.assertEqual(result, "a=some%20value/another")
 
-    eleza test_quote_kutoka_bytes(self):
-        self.assertRaises(TypeError, urllib.parse.quote_kutoka_bytes, 'foo')
-        result = urllib.parse.quote_kutoka_bytes(b'archaeological arcana')
+    eleza test_quote_from_bytes(self):
+        self.assertRaises(TypeError, urllib.parse.quote_from_bytes, 'foo')
+        result = urllib.parse.quote_from_bytes(b'archaeological arcana')
         self.assertEqual(result, 'archaeological%20arcana')
-        result = urllib.parse.quote_kutoka_bytes(b'')
+        result = urllib.parse.quote_from_bytes(b'')
         self.assertEqual(result, '')
 
     eleza test_unquote_to_bytes(self):

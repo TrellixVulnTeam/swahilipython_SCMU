@@ -197,7 +197,7 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
     """makedirs(name [, mode=0o777][, exist_ok=Uongo])
 
     Super-mkdir; create a leaf directory na all intermediate ones.  Works like
-    mkdir, tatizo that any intermediate path segment (not just the rightmost)
+    mkdir, tatizo that any intermediate path segment (sio just the rightmost)
     will be created ikiwa it does sio exist. If the target directory already
     exists, ashiria an OSError ikiwa exist_ok ni Uongo. Otherwise no exception is
     ashiriad.  This ni recursive.
@@ -258,7 +258,7 @@ eleza renames(old, new):
     whole path ni consumed ama a nonempty directory ni found.
 
     Note: this function can fail ukijumuisha the new directory structure made
-    ikiwa you lack permissions needed to unlink the leaf directory or
+    ikiwa you lack permissions needed to unlink the leaf directory ama
     file.
 
     """
@@ -461,7 +461,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
             orig_st = stat(top, follow_symlinks=Uongo, dir_fd=dir_fd)
         topfd = open(top, O_RDONLY, dir_fd=dir_fd)
         jaribu:
-            ikiwa (follow_symlinks ama (st.S_ISDIR(orig_st.st_mode) and
+            ikiwa (follow_symlinks ama (st.S_ISDIR(orig_st.st_mode) na
                                     path.samestat(orig_st, stat(topfd)))):
                 tuma kutoka _fwalk(topfd, top, isinstance(top, bytes),
                                   topdown, onerror, follow_symlinks)
@@ -536,7 +536,7 @@ eleza execl(file, *args):
 eleza execle(file, *args):
     """execle(file, *args, env)
 
-    Execute the executable file ukijumuisha argument list args and
+    Execute the executable file ukijumuisha argument list args na
     environment env, replacing the current process. """
     env = args[-1]
     execve(file, args[:-1], env)
@@ -850,7 +850,7 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
                     func(file, args)
                 isipokua:
                     func(file, args, env)
-            except:
+            tatizo:
                 _exit(127)
         isipokua:
             # Parent
@@ -1098,7 +1098,7 @@ ikiwa name == 'nt':
         extension modules (the module itself ni resolved through sys.path),
         na also by ctypes.
 
-        Remove the directory by calling close() on the rudishaed object or
+        Remove the directory by calling close() on the rudishaed object ama
         using it kwenye a ukijumuisha statement.
         """
         agiza nt

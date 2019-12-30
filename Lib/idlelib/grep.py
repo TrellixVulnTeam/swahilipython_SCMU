@@ -152,7 +152,7 @@ kundi GrepDialog(SearchDialogBase):
     eleza grep_it(self, prog, path):
         """Search kila prog within the lines of the files kwenye path.
 
-        For the each file kwenye the path directory, open the file and
+        For the each file kwenye the path directory, open the file na
         search each line kila the matching pattern.  If the pattern is
         found,  write the file na line information to stdout (which
         ni an OutputWindow).

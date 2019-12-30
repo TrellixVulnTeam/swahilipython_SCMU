@@ -92,7 +92,7 @@ kundi EncodingTestPEP451(EncodingTest):
 
     eleza load(self, loader):
         module = types.ModuleType(self.module_name)
-        module.__spec__ = importlib.util.spec_kutoka_loader(self.module_name, loader)
+        module.__spec__ = importlib.util.spec_from_loader(self.module_name, loader)
         loader.exec_module(module)
         rudisha module
 
@@ -148,7 +148,7 @@ kundi LineEndingTestPEP451(LineEndingTest):
 
     eleza load(self, loader, module_name):
         module = types.ModuleType(module_name)
-        module.__spec__ = importlib.util.spec_kutoka_loader(module_name, loader)
+        module.__spec__ = importlib.util.spec_from_loader(module_name, loader)
         loader.exec_module(module)
         rudisha module
 

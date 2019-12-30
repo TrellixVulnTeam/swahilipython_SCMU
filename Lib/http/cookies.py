@@ -219,7 +219,7 @@ eleza _unquote(str):
             j = o_match.start(0)
         ikiwa q_match:
             k = q_match.start(0)
-        ikiwa q_match na (not o_match ama k < j):     # QuotePatt matched
+        ikiwa q_match na (sio o_match ama k < j):     # QuotePatt matched
             res.append(str[i:k])
             res.append(str[k+1])
             i = k + 2
@@ -320,9 +320,9 @@ kundi Morsel(dict):
     eleza __eq__(self, morsel):
         ikiwa sio isinstance(morsel, Morsel):
             rudisha NotImplemented
-        rudisha (dict.__eq__(self, morsel) and
-                self._value == morsel._value and
-                self._key == morsel._key and
+        rudisha (dict.__eq__(self, morsel) na
+                self._value == morsel._value na
+                self._key == morsel._key na
                 self._coded_value == morsel._coded_value)
 
     __ne__ = object.__ne__
@@ -440,9 +440,9 @@ _CookiePattern = re.compile(r"""
     \s*=\s*                          # Equal Sign
     (?P<val>                         # Start of group 'val'
     "(?:[^\\"]|\\.)*"                  # Any doublequoted string
-    |                                  # or
+    |                                  # ama
     \w{3},\s[\w\d\s-]{9,11}\s[\d:]{8}\sGMT  # Special case kila "expires" attr
-    |                                  # or
+    |                                  # ama
     [""" + _LegalValueChars + r"""]*      # Any word ama empty string
     )                                # End of group 'val'
     )?                             # End of optional value group
@@ -520,7 +520,7 @@ kundi BaseCookie(dict):
         rudisha _nulljoin(result)
 
     eleza load(self, rawdata):
-        """Load cookies kutoka a string (presumably HTTP_COOKIE) or
+        """Load cookies kutoka a string (presumably HTTP_COOKIE) ama
         kutoka a dictionary.  Loading cookies kutoka a dictionary 'd'
         ni equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())

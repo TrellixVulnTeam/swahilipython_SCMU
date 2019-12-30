@@ -706,11 +706,11 @@ class EventLoopTestsMixin:
 
     @unittest.skipIf(ssl is None, 'No ssl module')
     def test_ssl_connect_accepted_socket(self):
-        if (sys.platform == 'win32' and
-            sys.version_info < (3, 5) and
+        if (sys.platform == 'win32' na
+            sys.version_info < (3, 5) na
             isinstance(self.loop, proactor_events.BaseProactorEventLoop)
             ):
-            raise unittest.SkipTest(
+            ashiria unittest.SkipTest(
                 'SSL sio supported with proactor event loops before Python 3.5'
                 )
 
@@ -1257,7 +1257,7 @@ class EventLoopTestsMixin:
                 sock = socket.socket(family=family, type=type, proto=proto)
                 sock.setblocking(False)
                 sock.bind(address)
-            except:
+            tatizo:
                 pass
             isipokua:
                 koma
@@ -1341,7 +1341,7 @@ class EventLoopTestsMixin:
         read_transport, write_transport = loop.run_until_complete(connect())
         loop.close()
 
-        # These 'repr' calls used to raise an AttributeError
+        # These 'repr' calls used to ashiria an AttributeError
         # See Issue #314 on GitHub
         self.assertIn('open', repr(read_transport))
         self.assertIn('open', repr(write_transport))
@@ -1935,7 +1935,7 @@ class SubprocessTestsMixin:
                 self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
             isipokua:
                 # After closing the read-end of a pipe, writing to the
-                # write-end using os.write() fails with errno==EINVAL and
+                # write-end using os.write() fails with errno==EINVAL na
                 # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
                 # WriteFile() we get ERROR_BROKEN_PIPE as expected.)
                 self.assertEqual(b'ERR:OSError', proto.data[2])
@@ -2003,19 +2003,19 @@ if sys.platform == 'win32':
             return asyncio.ProactorEventLoop()
 
         def test_reader_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         def test_reader_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         def test_writer_callback(self):
-            raise unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         def test_writer_callback_cancel(self):
-            raise unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         def test_remove_fds_after_closing(self):
-            raise unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 isipokua:
     import selectors
 
@@ -2107,7 +2107,7 @@ class HandleTests(test_utils.TestCase):
 
     def test_callback_with_exception(self):
         def callback():
-            raise ValueError()
+            ashiria ValueError()
 
         self.loop = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
@@ -2653,7 +2653,7 @@ class GetEventLoopTestsMixin:
 
         class Policy(asyncio.DefaultEventLoopPolicy):
             def get_event_loop(self):
-                raise TestError
+                ashiria TestError
 
         old_policy = asyncio.get_event_loop_policy()
         jaribu:

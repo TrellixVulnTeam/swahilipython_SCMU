@@ -603,7 +603,7 @@ kundi BaseExceptionReportingTests:
         jaribu:
             jaribu:
                 ashiria Exception
-            except:
+            tatizo:
                 ashiria ZeroDivisionError kutoka Tupu
         tatizo ZeroDivisionError kama _:
             e = _
@@ -805,7 +805,7 @@ kundi LimitTests(unittest.TestCase):
             self.last_ashirias5()
         tatizo Exception:
             exc_type, exc_value, tb = sys.exc_info()
-        # [1:-1] to exclude "Traceback (...)" header and
+        # [1:-1] to exclude "Traceback (...)" header na
         # exception type na value
         eleza extract(**kwargs):
             rudisha traceback.format_exception(exc_type, exc_value, tb, **kwargs)[1:-1]
@@ -846,7 +846,7 @@ kundi MiscTracebackCases(unittest.TestCase):
 
         jaribu:
             outer()
-        except:
+        tatizo:
             type_, value, tb = sys.exc_info()
 
         # Initial assertion: there's one local kwenye the inner frame.
@@ -950,13 +950,13 @@ kundi TestStack(unittest.TestCase):
         linecache.updatecache('/foo.py', globals())
         self.assertEqual(s[0].line, "agiza sys")
 
-    eleza test_kutoka_list(self):
+    eleza test_from_list(self):
         s = traceback.StackSummary.kutoka_list([('foo.py', 1, 'fred', 'line')])
         self.assertEqual(
             ['  File "foo.py", line 1, kwenye fred\n    line\n'],
             s.format())
 
-    eleza test_kutoka_list_edited_stack(self):
+    eleza test_from_list_edited_stack(self):
         s = traceback.StackSummary.kutoka_list([('foo.py', 1, 'fred', 'line')])
         s[0] = ('foo.py', 2, 'fred', 'line')
         s2 = traceback.StackSummary.kutoka_list(s)
@@ -1019,7 +1019,7 @@ kundi TestTracebackException(unittest.TestCase):
         self.assertEqual(exc_info[0], exc.exc_type)
         self.assertEqual(str(exc_info[1]), str(exc))
 
-    eleza test_kutoka_exception(self):
+    eleza test_from_exception(self):
         # Check all the parameters are accepted.
         eleza foo():
             1/0

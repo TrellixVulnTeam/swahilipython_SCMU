@@ -59,7 +59,7 @@ kundi MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information kutoka mime.types-style files
-    na supports basic determination of MIME type kutoka a filename or
+    na supports basic determination of MIME type kutoka a filename ama
     URL, na can guess a reasonable extension given a MIME type.
     """
 
@@ -274,7 +274,7 @@ eleza guess_type(url, strict=Kweli):
 
     Return value ni a tuple (type, encoding) where type ni Tupu ikiwa the
     type can't be guessed (no ama unknown suffix) ama a string of the
-    form type/subtype, usable kila a MIME Content-type header; and
+    form type/subtype, usable kila a MIME Content-type header; na
     encoding ni Tupu kila no encoding ama the name of the program used
     to encode (e.g. compress ama gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are

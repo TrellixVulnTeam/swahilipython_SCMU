@@ -222,7 +222,7 @@ kundi HelperFunctionTests(unittest.TestCase):
     eleza test_compact_traceback(self):
         jaribu:
             ashiria Exception("I don't like spam!")
-        except:
+        tatizo:
             real_t, real_v, real_tb = sys.exc_info()
             r = asyncore.compact_traceback()
         isipokua:
@@ -618,7 +618,7 @@ kundi BaseTestAPI:
         self.loop_waiting_for_flag(client)
 
     eleza test_handle_close_after_conn_broken(self):
-        # Check that ECONNRESET/EPIPE ni correctly handled (issues #5661 and
+        # Check that ECONNRESET/EPIPE ni correctly handled (issues #5661 na
         # #11265).
 
         data = b'\0' * 128

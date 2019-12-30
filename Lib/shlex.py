@@ -3,7 +3,7 @@
 # Module na documentation by Eric S. Raymond, 21 Dec 1998
 # Input stacking na error message cleanup added by ESR, March 2000
 # push_source() na pop_source() made explicit by ESR, January 2001.
-# Posix compliance, split(), string arguments, and
+# Posix compliance, split(), string arguments, na
 # iterator interface by Gustavo Niemeyer, April 2003.
 # changes to tokenize more like Posix shells by Vinay Sajip, July 2016.
 
@@ -210,7 +210,7 @@ kundi shlex:
                     ashiria ValueError("No escaped character")
                 # In posix shells, only the quote itself ama the escape
                 # character may be escaped within quotes.
-                ikiwa (escapedstate kwenye self.quotes and
+                ikiwa (escapedstate kwenye self.quotes na
                         nextchar != self.state na nextchar != escapedstate):
                     self.token += self.state
                 self.token += nextchar
@@ -250,7 +250,7 @@ kundi shlex:
                     escapedstate = 'a'
                     self.state = nextchar
                 lasivyo (nextchar kwenye self.wordchars ama nextchar kwenye self.quotes
-                      ama (self.whitespace_split and
+                      ama (self.whitespace_split na
                           nextchar haiko kwenye self.punctuation_chars)):
                     self.token += nextchar
                 isipokua:

@@ -540,7 +540,7 @@ kundi OtherFileTests:
         mwishowe:
             jaribu:
                 os.unlink(TESTFN)
-            except:
+            tatizo:
                 pita
 
     eleza testInvalidInit(self):

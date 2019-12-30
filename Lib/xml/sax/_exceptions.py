@@ -8,7 +8,7 @@ toa sys
 
 kundi SAXException(Exception):
     """Encapsulate an XML error ama warning. This kundi can contain
-    basic error ama warning information kutoka either the XML parser or
+    basic error ama warning information kutoka either the XML parser ama
     the application: you can subkundi it to provide additional
     functionality, ama to add localization. Note that although you will
     receive a SAXException kama the argument to the handlers kwenye the

@@ -26,11 +26,11 @@ kundi ParserBase:
 
     def __init__(self):
         if self.__class__ is ParserBase:
-            raise RuntimeError(
+            ashiria RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
     def error(self, message):
-        raise NotImplementedError(
+        ashiria NotImplementedError(
             "subclasses of ParserBase must override error()")
 
     def reset(self):
@@ -371,7 +371,7 @@ kundi ParserBase:
                 if j < 0:
                     return j
 
-    # Internal -- scan a name token and the new position and the token, or
+    # Internal -- scan a name token and the new position and the token, ama
     # return -1 if we've reached the end of the buffer.
     def _scan_name(self, i, declstartpos):
         rawdata = self.rawdata

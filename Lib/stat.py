@@ -31,7 +31,7 @@ eleza S_IFMT(mode):
     rudisha mode & 0o170000
 
 # Constants used kama S_IFMT() kila various file types
-# (not all are implemented on all systems)
+# (sio all are implemented on all systems)
 
 S_IFDIR  = 0o040000  # directory
 S_IFCHR  = 0o020000  # character device
@@ -104,7 +104,7 @@ S_IRWXG = 0o0070  # mask kila group permissions
 S_IRGRP = 0o0040  # read by group
 S_IWGRP = 0o0020  # write by group
 S_IXGRP = 0o0010  # execute by group
-S_IRWXO = 0o0007  # mask kila others (not kwenye group) permissions
+S_IRWXO = 0o0007  # mask kila others (sio kwenye group) permissions
 S_IROTH = 0o0004  # read by others
 S_IWOTH = 0o0002  # write by others
 S_IXOTH = 0o0001  # execute by others

@@ -106,7 +106,7 @@ kundi NetrcTestCase(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX only test')
     eleza test_security(self):
-        # This test ni incomplete since we are normally sio run kama root and
+        # This test ni incomplete since we are normally sio run kama root na
         # therefore can't test the file ownership being wrong.
         d = support.TESTFN
         os.mkdir(d)

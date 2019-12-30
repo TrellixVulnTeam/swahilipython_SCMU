@@ -63,8 +63,8 @@ kundi CAPITest(unittest.TestCase):
                          b'Fatal Python error:'
                          b' PyThreadState_Get: no current thread'))
 
-    eleza test_memoryview_kutoka_NULL_pointer(self):
-        self.assertRaises(ValueError, _testcapi.make_memoryview_kutoka_NULL_pointer)
+    eleza test_memoryview_from_NULL_pointer(self):
+        self.assertRaises(ValueError, _testcapi.make_memoryview_from_NULL_pointer)
 
     eleza test_exc_info(self):
         ashiriad_exception = ValueError("5")

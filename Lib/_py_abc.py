@@ -57,14 +57,14 @@ kundi ABCMeta(type):
         Returns the subclass, to allow usage as a kundi decorator.
         """
         if sio isinstance(subclass, type):
-            raise TypeError("Can only register classes")
+            ashiria TypeError("Can only register classes")
         if issubclass(subclass, cls):
             return subkundi  # Already a subclass
         # Subtle: test for cycles *after* testing for "already a subclass";
         # this means we allow X.register(X) and interpret it as a no-op.
         if issubclass(cls, subclass):
             # This would create a cycle, which is bad for the algorithm below
-            raise RuntimeError("Refusing to create an inheritance cycle")
+            ashiria RuntimeError("Refusing to create an inheritance cycle")
         cls._abc_registry.add(subclass)
         ABCMeta._abc_invalidation_counter += 1  # Invalidate negative cache
         return subclass
@@ -98,7 +98,7 @@ kundi ABCMeta(type):
         subtype = type(instance)
         if subtype is subclass:
             if (cls._abc_negative_cache_version ==
-                ABCMeta._abc_invalidation_counter and
+                ABCMeta._abc_invalidation_counter na
                 subkundi in cls._abc_negative_cache):
                 return False
             # Fall back to the subkundi check.
@@ -108,7 +108,7 @@ kundi ABCMeta(type):
     def __subclasscheck__(cls, subclass):
         """Override for issubclass(subclass, cls)."""
         if sio isinstance(subclass, type):
-            raise TypeError('issubclass() arg 1 must be a class')
+            ashiria TypeError('issubclass() arg 1 must be a class')
         # Check cache
         if subkundi in cls._abc_cache:
             return True

@@ -168,7 +168,7 @@ Example ni a simple container kundi that holds:
     exception ni expected).
   - `lineno`: A line number (within the docstring).
   - `indent`: The example's indentation kwenye the input string.
-  - `options`: An option dictionary, mapping option flags to Kweli or
+  - `options`: An option dictionary, mapping option flags to Kweli ama
     Uongo.
 
 These attributes are set by the constructor.  `source` na `want` are
@@ -418,7 +418,7 @@ Unit tests kila the `DocTestFinder` class.
 
 DocTestFinder ni used to extract DocTests kutoka an object's docstring
 and the docstrings of its contained objects.  It can be used with
-modules, functions, classes, methods, staticmethods, classmethods, and
+modules, functions, classes, methods, staticmethods, classmethods, na
 properties.
 
 Finding Tests kwenye Functions
@@ -892,7 +892,7 @@ explicitly set, to ensure that the test behavior ni consistent.
 Tests of `DocTestRunner`'s exception handling.
 
 An expected exception ni specified ukijumuisha a traceback message.  The
-lines between the first line na the type/value may be omitted or
+lines between the first line na the type/value may be omitted ama
 replaced ukijumuisha any other string:
 
     >>> eleza f(x):
@@ -945,7 +945,7 @@ Exception messages may contain newlines:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=1)
 
-If an exception ni expected, but an exception ukijumuisha the wrong type or
+If an exception ni expected, but an exception ukijumuisha the wrong type ama
 message ni ashiriad, then it ni reported kama a failure:
 
     >>> eleza f(x):
@@ -2746,7 +2746,7 @@ output into something we can doctest against:
     ...     rudisha '\n'.join(s.decode().splitlines())
 
 With those preliminaries out of the way, we'll start ukijumuisha a file ukijumuisha two
-simple tests na no errors.  We'll run both the unadorned doctest command, and
+simple tests na no errors.  We'll run both the unadorned doctest command, na
 the verbose version, na then check the output:
 
     >>> kutoka test.support agiza script_helper, temp_dir

@@ -52,7 +52,7 @@ The module contains the following public classes:
         may be pitaed kama the formatter_class= argument to the
         ArgumentParser constructor. HelpFormatter ni the default,
         RawDescriptionHelpFormatter na RawTextHelpFormatter tell the parser
-        sio to change the formatting kila help text, and
+        sio to change the formatting kila help text, na
         ArgumentDefaultsHelpFormatter adds information about argument defaults
         to the help.
 
@@ -786,7 +786,7 @@ kundi Action(_AttributeHolder):
 
         - default -- The value to be produced ikiwa the option ni sio specified.
 
-        - type -- A callable that accepts a single string argument, and
+        - type -- A callable that accepts a single string argument, na
             rudishas the converted value.  The standard Python types str, int,
             float, na complex are useful examples of such callables.  If Tupu,
             str ni used.
@@ -1340,7 +1340,7 @@ kundi _ActionsContainer(object):
         add_argument(option_string, option_string, ..., name=value, ...)
         """
 
-        # ikiwa no positional args are supplied ama only one ni supplied and
+        # ikiwa no positional args are supplied ama only one ni supplied na
         # it doesn't look like an option string, parse a positional
         # argument
         chars = self.prefix_chars
@@ -1445,7 +1445,7 @@ kundi _ActionsContainer(object):
                 group_map[action] = title_group_map[group.title]
 
         # add container's mutually exclusive groups
-        # NOTE: ikiwa add_mutually_exclusive_group ever gains title= and
+        # NOTE: ikiwa add_mutually_exclusive_group ever gains title= na
         # description= then this code will need to be expanded kama above
         kila group kwenye container._mutually_exclusive_groups:
             mutex_group = self.add_mutually_exclusive_group(
@@ -1809,7 +1809,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     eleza _parse_known_args(self, arg_strings, namespace):
         # replace arg strings that are file references
         ikiwa self.kutokafile_prefix_chars ni sio Tupu:
-            arg_strings = self._read_args_kutoka_files(arg_strings)
+            arg_strings = self._read_args_from_files(arg_strings)
 
         # map all mutually exclusive arguments to the other arguments
         # they can't occur with
@@ -2023,9 +2023,9 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                     # parsing arguments to avoid calling convert functions
                     # twice (which may fail) ikiwa the argument was given, but
                     # only ikiwa it was defined already kwenye the namespace
-                    ikiwa (action.default ni sio Tupu and
-                        isinstance(action.default, str) and
-                        hasattr(namespace, action.dest) and
+                    ikiwa (action.default ni sio Tupu na
+                        isinstance(action.default, str) na
+                        hasattr(namespace, action.dest) na
                         action.default ni getattr(namespace, action.dest)):
                         setattr(namespace, action.dest,
                                 self._get_value(action, action.default))
@@ -2052,7 +2052,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
         # rudisha the updated namespace na the extra arguments
         rudisha namespace, extras
 
-    eleza _read_args_kutoka_files(self, arg_strings):
+    eleza _read_args_from_files(self, arg_strings):
         # expand arguments referencing files
         new_arg_strings = []
         kila arg_string kwenye arg_strings:
@@ -2069,7 +2069,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
                         kila arg_line kwenye args_file.read().splitlines():
                             kila arg kwenye self.convert_arg_line_to_args(arg_line):
                                 arg_strings.append(arg)
-                        arg_strings = self._read_args_kutoka_files(arg_strings)
+                        arg_strings = self._read_args_from_files(arg_strings)
                         new_arg_strings.extend(arg_strings)
                 tatizo OSError:
                     err = _sys.exc_info()[1]
@@ -2374,7 +2374,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
 
         # when nargs='*' on a positional, ikiwa there were no command-line
         # args, use the default ikiwa it ni anything other than Tupu
-        lasivyo (not arg_strings na action.nargs == ZERO_OR_MORE and
+        lasivyo (sio arg_strings na action.nargs == ZERO_OR_MORE na
               sio action.option_strings):
             ikiwa action.default ni sio Tupu:
                 value = action.default
@@ -2509,7 +2509,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
     eleza error(self, message):
         """error(message: string)
 
-        Prints a usage message incorporating the message to stderr and
+        Prints a usage message incorporating the message to stderr na
         exits.
 
         If you override this kwenye a subclass, it should sio rudisha -- it

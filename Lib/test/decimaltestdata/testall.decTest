@@ -24,7 +24,7 @@ dectest: base
 
 dectest: abs
 dectest: add
-dectest: and
+dectest: na
 dectest: clamp
 dectest: class
 dectest: compare
@@ -53,7 +53,7 @@ dectest: multiply
 dectest: nextminus
 dectest: nextplus
 dectest: nexttoward
-dectest: or
+dectest: ama
 dectest: plus
 dectest: power
 dectest: powersqrt
@@ -75,7 +75,7 @@ dectest: tointegralx
 dectest: trim
 dectest: xor
 
--- The next are for the Strawman 4d concrete representations and
+-- The next are for the Strawman 4d concrete representations na
 -- tests at those sizes [including dsEncode, ddEncode, and dqEncode,
 -- which replace decimal32, decimal64, and decimal128]
 dectest: decSingle

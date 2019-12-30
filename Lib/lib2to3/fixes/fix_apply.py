@@ -19,9 +19,9 @@ kundi FixApply(fixer_base.BaseFix):
         trailer<
             '('
             arglist<
-                (not argument<NAME '=' any>) func=any ','
-                (not argument<NAME '=' any>) args=any [','
-                (not argument<NAME '=' any>) kwds=any] [',']
+                (sio argument<NAME '=' any>) func=any ','
+                (sio argument<NAME '=' any>) args=any [','
+                (sio argument<NAME '=' any>) kwds=any] [',']
             >
             ')'
         >
@@ -39,16 +39,16 @@ kundi FixApply(fixer_base.BaseFix):
         ikiwa args:
             ikiwa args.type == self.syms.star_expr:
                 rudisha  # Make no change.
-            ikiwa (args.type == self.syms.argument and
+            ikiwa (args.type == self.syms.argument na
                 args.children[0].value == '**'):
                 rudisha  # Make no change.
-        ikiwa kwds na (kwds.type == self.syms.argument and
+        ikiwa kwds na (kwds.type == self.syms.argument na
                      kwds.children[0].value == '**'):
             rudisha  # Make no change.
         prefix = node.prefix
         func = func.clone()
-        ikiwa (func.type haiko kwenye (token.NAME, syms.atom) and
-            (func.type != syms.power or
+        ikiwa (func.type haiko kwenye (token.NAME, syms.atom) na
+            (func.type != syms.power ama
              func.children[-2].type == token.DOUBLESTAR)):
             # Need to parenthesize
             func = parenthesize(func)

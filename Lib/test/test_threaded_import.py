@@ -191,7 +191,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         # circular agizas, kila example:
         # - thread 1 agizas A (grabbing the lock kila A) which agizas B
         # - thread 2 agizas B (grabbing the lock kila B) which agizas A
-        # Such implementations should be able to detect such situations and
+        # Such implementations should be able to detect such situations na
         # resolve them one way ama the other, without freezing.
         # NOTE: our test constructs a slightly less trivial agiza cycle,
         # kwenye order to better stress the deadlock avoidance mechanism.

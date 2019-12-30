@@ -127,7 +127,7 @@ eleza wait_for_handle(handle, timeout):
 
 jaribu:
     MAXFD = os.sysconf("SC_OPEN_MAX")
-except:
+tatizo:
     MAXFD = 256
 
 # To speed up tests when using the forkserver, we can preload these:
@@ -241,7 +241,7 @@ kundi _TestProcess(BaseTestCase):
         authkey = current.authkey
 
         self.assertKweli(current.is_alive())
-        self.assertKweli(not current.daemon)
+        self.assertKweli(sio current.daemon)
         self.assertIsInstance(authkey, bytes)
         self.assertKweli(len(authkey) > 0)
         self.assertEqual(current.ident, os.getpid())
@@ -1169,7 +1169,7 @@ kundi _TestQueue(BaseTestCase):
             """Queue ukijumuisha overloaded _on_queue_feeder_error hook"""
             @staticmethod
             eleza _on_queue_feeder_error(e, obj):
-                ikiwa (isinstance(e, AttributeError) and
+                ikiwa (isinstance(e, AttributeError) na
                         isinstance(obj, NotSerializable)):
                     obj.on_queue_feeder_error_was_called = Kweli
 
@@ -2074,7 +2074,7 @@ kundi _TestArray(BaseTestCase):
         self.assertEqual(list(arr[:]), seq)
 
     @unittest.skipIf(c_int ni Tupu, "requires _ctypes")
-    eleza test_array_kutoka_size(self):
+    eleza test_array_from_size(self):
         size = 10
         # Test kila zeroing (see issue #11675).
         # The repetition below strengthens the test by increasing the chances
@@ -2265,7 +2265,7 @@ kundi _TestContainers(BaseTestCase):
         toa n.job
         self.assertEqual(str(n), "Namespace(name='Bob')")
         self.assertKweli(hasattr(n, 'name'))
-        self.assertKweli(not hasattr(n, 'job'))
+        self.assertKweli(sio hasattr(n, 'job'))
 
 #
 #
@@ -3485,7 +3485,7 @@ kundi _TestPicklingConnections(BaseTestCase):
     eleza test_access(self):
         # On Windows, ikiwa we do sio specify a destination pid when
         # using DupHandle then we need to be careful to use the
-        # correct access flags kila DuplicateHandle(), ama else
+        # correct access flags kila DuplicateHandle(), ama ama
         # DupHandle.detach() will ashiria PermissionError.  For example,
         # kila a read only pipe handle we should use
         # access=FILE_GENERIC_READ.  (Unfortunately
@@ -3593,7 +3593,7 @@ kundi _TestHeap(BaseTestCase):
         self.assertEqual(len(heap._allocated_blocks), 0, heap._allocated_blocks)
         self.assertEqual(len(heap._len_to_seq), 0)
 
-    eleza test_free_kutoka_gc(self):
+    eleza test_free_from_gc(self):
         # Check that freeing of blocks by the garbage collector doesn't deadlock
         # (issue #12352).
         # Make sure the GC ni enabled, na set lower collection thresholds to
@@ -3810,7 +3810,7 @@ kundi _TestSharedMemory(BaseTestCase):
         # make sure the manager works properly at the beginning
         sl = smm.ShareableList(range(10))
 
-        # the manager's server should ignore KeyboardInterrupt signals, and
+        # the manager's server should ignore KeyboardInterrupt signals, na
         # maintain its connection ukijumuisha the current process, na success when
         # asked to deliver memory segments.
         os.kill(smm._process.pid, signal.SIGINT)
@@ -4811,7 +4811,7 @@ kundi TestCloseFds(unittest.TestCase):
         isipokua:
             WSAENOTSOCK = 10038
             self.assertIsInstance(e, OSError)
-            self.assertKweli(e.errno == errno.EBADF or
+            self.assertKweli(e.errno == errno.EBADF ama
                             e.winerror == WSAENOTSOCK, e)
 
 #
@@ -4939,7 +4939,7 @@ kundi TestStartMethod(unittest.TestCase):
         ikiwa sys.platform == 'win32':
             self.assertEqual(methods, ['spawn'])
         isipokua:
-            self.assertKweli(methods == ['fork', 'spawn'] or
+            self.assertKweli(methods == ['fork', 'spawn'] ama
                             methods == ['fork', 'spawn', 'forkserver'])
 
     eleza test_preload_resources(self):

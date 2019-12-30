@@ -62,9 +62,9 @@ class FunctionalTestCaseMixin:
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
         if timeout is None:
-            raise RuntimeError('timeout is required')
+            ashiria RuntimeError('timeout is required')
         if timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         return TestThreadedServer(
@@ -77,9 +77,9 @@ class FunctionalTestCaseMixin:
         sock = socket.socket(family, socket.SOCK_STREAM)
 
         if timeout is None:
-            raise RuntimeError('timeout is required')
+            ashiria RuntimeError('timeout is required')
         if timeout <= 0:
-            raise RuntimeError('only blocking sockets are supported')
+            ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         return TestThreadedClient(
@@ -87,12 +87,12 @@ class FunctionalTestCaseMixin:
 
     def unix_server(self, *args, **kwargs):
         if sio hasattr(socket, 'AF_UNIX'):
-            raise NotImplementedError
+            ashiria NotImplementedError
         return self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     def unix_client(self, *args, **kwargs):
         if sio hasattr(socket, 'AF_UNIX'):
-            raise NotImplementedError
+            ashiria NotImplementedError
         return self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     @contextlib.contextmanager
@@ -129,7 +129,7 @@ class TestSocketWrapper:
         wakati len(buf) < n:
             data = self.recv(n - len(buf))
             if data == b'':
-                raise ConnectionAbortedError
+                ashiria ConnectionAbortedError
             buf += data
         return buf
 
@@ -144,7 +144,7 @@ class TestSocketWrapper:
 
         jaribu:
             ssl_sock.do_handshake()
-        except:
+        tatizo:
             ssl_sock.close()
             raise
         mwishowe:

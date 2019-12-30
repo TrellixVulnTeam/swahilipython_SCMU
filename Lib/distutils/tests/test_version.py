@@ -39,8 +39,8 @@ class VersionTestCase(unittest.TestCase):
                 if wanted is ValueError:
                     endelea
                 isipokua:
-                    raise AssertionError(("cmp(%s, %s) "
-                                          "shouldn't raise ValueError")
+                    ashiria AssertionError(("cmp(%s, %s) "
+                                          "shouldn't ashiria ValueError")
                                             % (v1, v2))
             self.assertEqual(res, wanted,
                              'cmp(%s, %s) should be %s, got %s' %

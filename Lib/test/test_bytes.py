@@ -69,7 +69,7 @@ kundi BaseBytesTest:
         self.assertRaises(IndexError, lambda: b[-sys.maxsize-2])
         self.assertRaises(IndexError, lambda: b[-10**100])
 
-    eleza test_kutoka_iterable(self):
+    eleza test_from_iterable(self):
         b = self.type2test(range(256))
         self.assertEqual(len(b), 256)
         self.assertEqual(list(b), list(range(256)))
@@ -97,7 +97,7 @@ kundi BaseBytesTest:
         b = self.type2test(S())
         self.assertEqual(b, b"\x01\x02\x03")
 
-    eleza test_kutoka_tuple(self):
+    eleza test_from_tuple(self):
         # There ni a special case kila tuples.
         b = self.type2test(tuple(range(256)))
         self.assertEqual(len(b), 256)
@@ -105,7 +105,7 @@ kundi BaseBytesTest:
         b = self.type2test((1, 2, 3))
         self.assertEqual(b, b"\x01\x02\x03")
 
-    eleza test_kutoka_list(self):
+    eleza test_from_list(self):
         # There ni a special case kila lists.
         b = self.type2test(list(range(256)))
         self.assertEqual(len(b), 256)
@@ -113,7 +113,7 @@ kundi BaseBytesTest:
         b = self.type2test([1, 2, 3])
         self.assertEqual(b, b"\x01\x02\x03")
 
-    eleza test_kutoka_mutating_list(self):
+    eleza test_from_mutating_list(self):
         # Issue #34973: Crash kwenye bytes constructor ukijumuisha mutating list.
         kundi X:
             eleza __index__(self):
@@ -130,14 +130,14 @@ kundi BaseBytesTest:
         a = [Y()]
         self.assertEqual(bytes(a), b'*' * 1000)  # should sio crash
 
-    eleza test_kutoka_index(self):
+    eleza test_from_index(self):
         b = self.type2test([Indexable(), Indexable(1), Indexable(254),
                             Indexable(255)])
         self.assertEqual(list(b), [0, 1, 254, 255])
         self.assertRaises(ValueError, self.type2test, [Indexable(-1)])
         self.assertRaises(ValueError, self.type2test, [Indexable(256)])
 
-    eleza test_kutoka_buffer(self):
+    eleza test_from_buffer(self):
         a = self.type2test(array.array('B', [1, 2, 3]))
         self.assertEqual(a, b"\x01\x02\x03")
         a = self.type2test(b"\x01\x02\x03")
@@ -151,7 +151,7 @@ kundi BaseBytesTest:
 
         self.assertEqual(self.type2test(B(b"foobar")), b"foobar")
 
-    eleza test_kutoka_ssize(self):
+    eleza test_from_ssize(self):
         self.assertEqual(self.type2test(0), b'')
         self.assertEqual(self.type2test(1), b'\x00')
         self.assertEqual(self.type2test(5), b'\x00\x00\x00\x00\x00')
@@ -315,7 +315,7 @@ kundi BaseBytesTest:
         # Default encoding ni utf-8
         self.assertEqual(self.type2test(b'\xe2\x98\x83').decode(), '\u2603')
 
-    eleza test_kutoka_int(self):
+    eleza test_from_int(self):
         b = self.type2test(0)
         self.assertEqual(b, self.type2test())
         b = self.type2test(10)
@@ -952,7 +952,7 @@ kundi BytesTest(BaseBytesTest, unittest.TestCase):
         self.assertIs(type(BytesSubclass(A())), BytesSubclass)
 
     # Test PyBytes_FromFormat()
-    eleza test_kutoka_format(self):
+    eleza test_from_format(self):
         ctypes = test.support.import_module('ctypes')
         _testcapi = test.support.import_module('_testcapi')
         kutoka ctypes agiza pythonapi, py_object
@@ -1654,7 +1654,7 @@ kundi AssortedBytesTest(unittest.TestCase):
         self.assertIsNotTupu(bytes.__doc__)
         self.assertKweli(bytes.__doc__.startswith("bytes("), bytes.__doc__)
 
-    eleza test_kutoka_bytearray(self):
+    eleza test_from_bytearray(self):
         sample = bytes(b"Hello world\n\x80\x81\xfe\xff")
         buf = memoryview(sample)
         b = bytearray(buf)

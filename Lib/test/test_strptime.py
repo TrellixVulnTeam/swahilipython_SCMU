@@ -74,7 +74,7 @@ kundi LocaleTime_Tests(unittest.TestCase):
         # Make sure timezone ni correct
         timezone = time.strftime("%Z", self.time_tuple).lower()
         ikiwa timezone:
-            self.assertKweli(timezone kwenye self.LT_ins.timezone[0] or
+            self.assertKweli(timezone kwenye self.LT_ins.timezone[0] ama
                             timezone kwenye self.LT_ins.timezone[1],
                             "timezone %s sio found kwenye %s" %
                             (timezone, self.LT_ins.timezone))
@@ -149,7 +149,7 @@ kundi TimeRETests(unittest.TestCase):
             "Match failed ukijumuisha '%s' regex na '%s' string" %
              (compiled.pattern, "%s %s" % (self.locale_time.a_weekday[4],
                                            self.locale_time.a_month[4])))
-        self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] and
+        self.assertKweli(found.group('a') == self.locale_time.a_weekday[4] na
                          found.group('b') == self.locale_time.a_month[4],
                         "re object couldn't find the abbreviated weekday month kwenye "
                          "'%s' using '%s'; group 'a' = '%s', group 'b' = %s'" %
@@ -192,7 +192,7 @@ kundi TimeRETests(unittest.TestCase):
 
     eleza test_whitespace_substitution(self):
         # When pattern contains whitespace, make sure it ni taken into account
-        # so kama to sio allow subpatterns to end up next to each other and
+        # so kama to sio allow subpatterns to end up next to each other na
         # "steal" characters kutoka each other.
         pattern = self.time_re.pattern('%j %H')
         self.assertUongo(re.match(pattern, "180"))
@@ -427,7 +427,7 @@ kundi StrptimeTests(unittest.TestCase):
         # Make sure % signs are handled properly
         strf_output = time.strftime("%m %% %Y", self.time_tuple)
         strp_output = _strptime._strptime_time(strf_output, "%m %% %Y")
-        self.assertKweli(strp_output[0] == self.time_tuple[0] and
+        self.assertKweli(strp_output[0] == self.time_tuple[0] na
                          strp_output[1] == self.time_tuple[1],
                         "handling of percent sign failed")
 
@@ -508,8 +508,8 @@ kundi CalculationTests(unittest.TestCase):
         format_string = "%Y %H %M %S %w %j %Z"
         result = _strptime._strptime_time(time.strftime(format_string, self.time_tuple),
                                     format_string)
-        self.assertKweli(result.tm_year == self.time_tuple.tm_year and
-                         result.tm_mon == self.time_tuple.tm_mon and
+        self.assertKweli(result.tm_year == self.time_tuple.tm_year na
+                         result.tm_mon == self.time_tuple.tm_mon na
                          result.tm_mday == self.time_tuple.tm_mday,
                         "Calculation of Gregorian date failed; "
                          "%s-%s-%s != %s-%s-%s" %
@@ -544,7 +544,7 @@ kundi CalculationTests(unittest.TestCase):
         # na day of the week
         eleza test_helper(ymd_tuple, test_reason):
             kila year_week_format kwenye ('%Y %W', '%Y %U', '%G %V'):
-                ikiwa (year_week_format kwenye self._formats_excluded and
+                ikiwa (year_week_format kwenye self._formats_excluded na
                         ymd_tuple kwenye self._ymd_excluded):
                     rudisha
                 kila weekday_format kwenye ('%w', '%u', '%a', '%A'):

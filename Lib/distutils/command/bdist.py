@@ -108,7 +108,7 @@ class bdist(Command):
             jaribu:
                 self.formats = [self.default_format[os.name]]
             tatizo KeyError:
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                       "don't know how to create built distributions "
                       "on platform %s" % os.name)
 
@@ -122,7 +122,7 @@ class bdist(Command):
             jaribu:
                 commands.append(self.format_command[format][0])
             tatizo KeyError:
-                raise DistutilsOptionError("invalid format '%s'" % format)
+                ashiria DistutilsOptionError("invalid format '%s'" % format)
 
         # Reinitialize and run each command.
         for i in range(len(self.formats)):

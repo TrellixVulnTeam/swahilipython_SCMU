@@ -1,5 +1,5 @@
 """Registration facilities kila DOM. This module should sio be used
-directly. Instead, the functions getDOMImplementation and
+directly. Instead, the functions getDOMImplementation na
 registerDOMImplementation should be imported kutoka xml.dom."""
 
 # This ni a list of well-known implementations.  Well-known names

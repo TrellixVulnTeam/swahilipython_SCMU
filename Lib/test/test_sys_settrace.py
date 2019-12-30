@@ -563,7 +563,7 @@ kundi RaisingTraceFuncTestCase(unittest.TestCase):
                 andika(i)  # line tracing will ashiria an exception at this line
 
         eleza g(frame, why, extra):
-            ikiwa (why == 'line' and
+            ikiwa (why == 'line' na
                 frame.f_lineno == f.__code__.co_firstlineno + 2):
                 ashiria RuntimeError("i am crashing")
             rudisha g
@@ -625,10 +625,10 @@ kundi JumpTracer:
         # 'function' ni decorated na the decorator may be written using
         # multiple physical lines when it ni too long. Use the first line
         # trace event kwenye 'function' to find the first line of 'function'.
-        ikiwa (self.firstLine ni Tupu na frame.f_code == self.code and
+        ikiwa (self.firstLine ni Tupu na frame.f_code == self.code na
                 event == 'line'):
             self.firstLine = frame.f_lineno - 1
-        ikiwa (event == self.event na self.firstLine and
+        ikiwa (event == self.event na self.firstLine na
                 frame.f_lineno == self.firstLine + self.jumpFrom):
             f = frame
             wakati f ni sio Tupu na f.f_code != self.code:
@@ -909,7 +909,7 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_jump_forwards_out_of_try_except_block(output):
         jaribu:
             output.append(2)
-        except:
+        tatizo:
             output.append(4)
             ashiria
         output.append(6)
@@ -919,7 +919,7 @@ kundi JumpTestCase(unittest.TestCase):
         output.append(1)
         jaribu:
             output.append(3)
-        except:
+        tatizo:
             output.append(5)
             ashiria
 
@@ -938,7 +938,7 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_jump_within_except_block(output):
         jaribu:
             1/0
-        except:
+        tatizo:
             output.append(4)
             output.append(5)
             output.append(6)
@@ -1114,7 +1114,7 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_no_jump_to_except_1(output):
         jaribu:
             output.append(2)
-        except:
+        tatizo:
             output.append(4)
             ashiria
 
@@ -1211,7 +1211,7 @@ kundi JumpTestCase(unittest.TestCase):
         output.append(1)
         jaribu:
             output.append(3)
-        except:
+        tatizo:
             output.append(5)
             ashiria
 
@@ -1219,7 +1219,7 @@ kundi JumpTestCase(unittest.TestCase):
     eleza test_no_jump_backwards_into_try_except_block(output):
         jaribu:
             output.append(2)
-        except:
+        tatizo:
             output.append(4)
             ashiria
         output.append(6)
@@ -1245,7 +1245,7 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(5)
 
     @jump_test(3, 6, [2, 5, 6], (ValueError, "into a 'finally'"))
-    eleza test_no_jump_into_finally_block_kutoka_try_block(output):
+    eleza test_no_jump_into_finally_block_from_try_block(output):
         jaribu:
             output.append(2)
             output.append(3)
@@ -1267,7 +1267,7 @@ kundi JumpTestCase(unittest.TestCase):
         output.append(1)
         jaribu:
             output.append(3)
-        except:
+        tatizo:
             output.append(5)
 
     @jump_test(1, 5, [], (ValueError, "into an 'except'"))
@@ -1279,18 +1279,18 @@ kundi JumpTestCase(unittest.TestCase):
             output.append(5)
 
     @jump_test(3, 6, [2, 5, 6], (ValueError, "into an 'except'"))
-    eleza test_no_jump_into_bare_except_block_kutoka_try_block(output):
+    eleza test_no_jump_into_bare_except_block_from_try_block(output):
         jaribu:
             output.append(2)
             output.append(3)
-        except:  # executed ikiwa the jump ni failed
+        tatizo:  # executed ikiwa the jump ni failed
             output.append(5)
             output.append(6)
             ashiria
         output.append(8)
 
     @jump_test(3, 6, [2], (ValueError, "into an 'except'"))
-    eleza test_no_jump_into_qualified_except_block_kutoka_try_block(output):
+    eleza test_no_jump_into_qualified_except_block_from_try_block(output):
         jaribu:
             output.append(2)
             output.append(3)
@@ -1306,7 +1306,7 @@ kundi JumpTestCase(unittest.TestCase):
         jaribu:
             output.append(3)
             1/0
-        except:
+        tatizo:
             output.append(6)
             output.append(7)
 
@@ -1411,7 +1411,7 @@ output.append(4)
 
     @jump_test(2, 3, [1], event='call', error=(ValueError, "can't jump kutoka"
                " the 'call' trace event of a new frame"))
-    eleza test_no_jump_kutoka_call(output):
+    eleza test_no_jump_from_call(output):
         output.append(1)
         eleza nested():
             output.append(3)
@@ -1420,19 +1420,19 @@ output.append(4)
 
     @jump_test(2, 1, [1], event='rudisha', error=(ValueError,
                "can only jump kutoka a 'line' trace event"))
-    eleza test_no_jump_kutoka_rudisha_event(output):
+    eleza test_no_jump_from_rudisha_event(output):
         output.append(1)
         rudisha
 
     @jump_test(2, 1, [1], event='exception', error=(ValueError,
                "can only jump kutoka a 'line' trace event"))
-    eleza test_no_jump_kutoka_exception_event(output):
+    eleza test_no_jump_from_exception_event(output):
         output.append(1)
         1 / 0
 
     @jump_test(3, 2, [2], event='rudisha', error=(ValueError,
                "can't jump kutoka a tuma statement"))
-    eleza test_no_jump_kutoka_tuma(output):
+    eleza test_no_jump_from_tuma(output):
         eleza gen():
             output.append(2)
             tuma 3

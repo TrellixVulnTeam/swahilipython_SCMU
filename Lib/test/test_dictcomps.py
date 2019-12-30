@@ -35,7 +35,7 @@ kundi DictComprehensionTest(unittest.TestCase):
         self.assertEqual(k, "Local Variable")
         self.assertEqual(actual, expected)
 
-    eleza test_scope_isolation_kutoka_global(self):
+    eleza test_scope_isolation_from_global(self):
         expected = {0: Tupu, 1: Tupu, 2: Tupu, 3: Tupu, 4: Tupu, 5: Tupu,
                     6: Tupu, 7: Tupu, 8: Tupu, 9: Tupu}
         actual = {g: Tupu kila g kwenye range(10)}

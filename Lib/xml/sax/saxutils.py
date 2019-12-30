@@ -336,7 +336,7 @@ kundi XMLFilterBase(xmlreader.XMLReader):
 # --- Utility functions
 
 eleza prepare_input_source(source, base=""):
-    """This function takes an InputSource na an optional base URL and
+    """This function takes an InputSource na an optional base URL na
     rudishas a fully resolved InputSource object ready kila reading."""
 
     ikiwa isinstance(source, os.PathLike):

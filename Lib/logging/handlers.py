@@ -543,7 +543,7 @@ kundi SocketHandler(logging.Handler):
         """
         now = time.time()
         # Either retryTime ni Tupu, kwenye which case this
-        # ni the first time back after a disconnect, or
+        # ni the first time back after a disconnect, ama
         # we've waited long enough.
         ikiwa self.retryTime ni Tupu:
             attempt = Kweli
@@ -584,7 +584,7 @@ kundi SocketHandler(logging.Handler):
 
     eleza makePickle(self, record):
         """
-        Pickles the record kwenye binary format ukijumuisha a length prefix, and
+        Pickles the record kwenye binary format ukijumuisha a length prefix, na
         rudishas it ready kila transmission across the socket.
         """
         ei = record.exc_info
@@ -682,7 +682,7 @@ kundi DatagramHandler(SocketHandler):
         Send a pickled string to a socket.
 
         This function no longer allows kila partial sends which can happen
-        when the network ni busy - UDP does sio guarantee delivery and
+        when the network ni busy - UDP does sio guarantee delivery na
         can deliver packets out of sequence.
         """
         ikiwa self.sock ni Tupu:
@@ -872,8 +872,8 @@ kundi SysLogHandler(logging.Handler):
 
     eleza encodePriority(self, facility, priority):
         """
-        Encode the facility na priority. You can pita kwenye strings or
-        integers - ikiwa strings are pitaed, the facility_names and
+        Encode the facility na priority. You can pita kwenye strings ama
+        integers - ikiwa strings are pitaed, the facility_names na
         priority_names mapping dictionaries are used to convert them to
         integers.
         """
@@ -960,7 +960,7 @@ kundi SMTPHandler(logging.Handler):
         protocol (TLS), pita kwenye a tuple kila the secure argument. This will
         only be used when authentication credentials are supplied. The tuple
         will be either an empty tuple, ama a single-value tuple ukijumuisha the name
-        of a keyfile, ama a 2-value tuple ukijumuisha the names of the keyfile and
+        of a keyfile, ama a 2-value tuple ukijumuisha the names of the keyfile na
         certificate file. (This tuple ni pitaed to the `starttls` method).
         A timeout kwenye seconds can be specified kila the SMTP connection (the
         default ni one second).
@@ -1123,7 +1123,7 @@ kundi NTEventLogHandler(logging.Handler):
 
 kundi HTTPHandler(logging.Handler):
     """
-    A kundi which sends records to a Web server, using either GET or
+    A kundi which sends records to a Web server, using either GET ama
     POST semantics.
     """
     eleza __init__(self, host, url, method="GET", secure=Uongo, credentials=Tupu,
@@ -1409,7 +1409,7 @@ kundi QueueListener(object):
 
     eleza __init__(self, queue, *handlers, respect_handler_level=Uongo):
         """
-        Initialise an instance ukijumuisha the specified queue and
+        Initialise an instance ukijumuisha the specified queue na
         handlers.
         """
         self.queue = queue
@@ -1442,7 +1442,7 @@ kundi QueueListener(object):
         Prepare a record kila handling.
 
         This method just rudishas the pitaed-in record. You may want to
-        override this method ikiwa you need to do any custom marshalling or
+        override this method ikiwa you need to do any custom marshalling ama
         manipulation of the record before pitaing it to the handlers.
         """
         rudisha record

@@ -82,12 +82,12 @@ def formataddr(pair, charset='utf-8'):
     returned unmodified.
 
     Optional charset if given is the character set that is used to encode
-    realname in case realname ni sio ASCII safe.  Can be an instance of str or
+    realname in case realname ni sio ASCII safe.  Can be an instance of str ama
     a Charset-like object which has a header_encode method.  Default is
     'utf-8'.
     """
     name, address = pair
-    # The address MUST (per RFC) be ascii, so raise a UnicodeError if it isn't.
+    # The address MUST (per RFC) be ascii, so ashiria a UnicodeError if it isn't.
     address.encode('ascii')
     if name:
         jaribu:
@@ -131,7 +131,7 @@ def formatdate(timeval=None, localtime=False, usegmt=False):
     Optional timeval if given is a floating point time value as accepted by
     gmtime() and localtime(), otherwise the current time is used.
 
-    Optional localtime is a flag that when True, interprets timeval, and
+    Optional localtime is a flag that when True, interprets timeval, na
     returns a date relative to the local timezone instead of UTC, properly
     taking daylight savings time into account.
 
@@ -162,7 +162,7 @@ def format_datetime(dt, usegmt=False):
     now = dt.timetuple()
     if usegmt:
         if dt.tzinfo is None or dt.tzinfo != datetime.timezone.utc:
-            raise ValueError("usegmt option requires a UTC datetime")
+            ashiria ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
     lasivyo dt.tzinfo is None:
         zone = '-0000'
@@ -292,7 +292,7 @@ def decode_params(params):
             # And now append all values in numerical order, converting
             # %-encodings for the encoded segments.  If any of the
             # continuation names ends in a *, then the entire string, after
-            # decoding segments and concatenating, must have the charset and
+            # decoding segments and concatenating, must have the charset na
             # language specifiers at the beginning of the string.
             for num, s, encoded in continuations:
                 if encoded:
@@ -312,7 +312,7 @@ def decode_params(params):
 
 def collapse_rfc2231_value(value, errors='replace',
                            fallback_charset='us-ascii'):
-    if sio isinstance(value, tuple) or len(value) != 3:
+    if sio isinstance(value, tuple) ama len(value) != 3:
         return unquote(value)
     # While value comes to us as a unicode string, we need it to be a bytes
     # object.  We do sio want bytes() normal utf-8 decoder, we want a straight

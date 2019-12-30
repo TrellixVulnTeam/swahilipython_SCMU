@@ -1,6 +1,6 @@
 """Python version compatibility support kila minidom.
 
-This module contains internal implementation details and
+This module contains internal implementation details na
 should sio be imported; use xml.dom.minidom instead.
 """
 

@@ -1986,7 +1986,7 @@ kundi TestCounter(unittest.TestCase):
         self.assertRaises(TypeError, Counter.update)
 
     eleza test_copying(self):
-        # Check that counters are copyable, deepcopyable, picklable, and
+        # Check that counters are copyable, deepcopyable, picklable, na
         #have a repr/eval round-trip
         words = Counter('which witch had which witches wrist watch'.split())
         eleza check(dup):

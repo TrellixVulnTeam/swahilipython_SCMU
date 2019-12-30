@@ -67,7 +67,7 @@ kundi ModuleSpecTests:
     eleza setUp(self):
         self.name = 'spam'
         self.path = 'spam.py'
-        self.cached = self.util.cache_kutoka_source(self.path)
+        self.cached = self.util.cache_from_source(self.path)
         self.loader = TestLoader()
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
@@ -200,7 +200,7 @@ kundi ModuleSpecTests:
         self.assertIs(spec.cached, Tupu)
 
     eleza test_cached_source(self):
-        expected = self.util.cache_kutoka_source(self.path)
+        expected = self.util.cache_from_source(self.path)
 
         self.assertEqual(self.loc_spec.cached, expected)
 
@@ -239,7 +239,7 @@ kundi ModuleSpecMethodsTests:
     eleza setUp(self):
         self.name = 'spam'
         self.path = 'spam.py'
-        self.cached = self.util.cache_kutoka_source(self.path)
+        self.cached = self.util.cache_from_source(self.path)
         self.loader = TestLoader()
         self.spec = self.machinery.ModuleSpec(self.name, self.loader)
         self.loc_spec = self.machinery.ModuleSpec(self.name, self.loader,
@@ -250,7 +250,7 @@ kundi ModuleSpecMethodsTests:
 
     eleza test_exec(self):
         self.spec.loader = NewLoader()
-        module = self.util.module_kutoka_spec(self.spec)
+        module = self.util.module_from_spec(self.spec)
         sys.modules[self.name] = module
         self.assertUongo(hasattr(module, 'eggs'))
         self.bootstrap._exec(self.spec, module)
@@ -499,15 +499,15 @@ kundi FactoryTests:
     eleza setUp(self):
         self.name = 'spam'
         self.path = 'spam.py'
-        self.cached = self.util.cache_kutoka_source(self.path)
+        self.cached = self.util.cache_from_source(self.path)
         self.loader = TestLoader()
         self.fileloader = TestLoader(self.path)
         self.pkgloader = TestLoader(self.path, Kweli)
 
-    # spec_kutoka_loader()
+    # spec_from_loader()
 
-    eleza test_spec_kutoka_loader_default(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.loader)
+    eleza test_spec_from_loader_default(self):
+        spec = self.util.spec_from_loader(self.name, self.loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.loader)
@@ -517,12 +517,12 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_default_with_bad_is_package(self):
+    eleza test_spec_from_loader_default_with_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
                 ashiria ImportError
         loader = Loader()
-        spec = self.util.spec_kutoka_loader(self.name, loader)
+        spec = self.util.spec_from_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
@@ -532,9 +532,9 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_origin(self):
+    eleza test_spec_from_loader_origin(self):
         origin = 'somewhere over the rainbow'
-        spec = self.util.spec_kutoka_loader(self.name, self.loader,
+        spec = self.util.spec_from_loader(self.name, self.loader,
                                           origin=origin)
 
         self.assertEqual(spec.name, self.name)
@@ -545,8 +545,8 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_false(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.loader,
+    eleza test_spec_from_loader_is_package_false(self):
+        spec = self.util.spec_from_loader(self.name, self.loader,
                                           is_package=Uongo)
 
         self.assertEqual(spec.name, self.name)
@@ -557,8 +557,8 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_true(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.loader,
+    eleza test_spec_from_loader_is_package_true(self):
+        spec = self.util.spec_from_loader(self.name, self.loader,
                                           is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
@@ -569,9 +569,9 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_origin_and_is_package(self):
+    eleza test_spec_from_loader_origin_and_is_package(self):
         origin = 'where the streets have no name'
-        spec = self.util.spec_kutoka_loader(self.name, self.loader,
+        spec = self.util.spec_from_loader(self.name, self.loader,
                                           origin=origin, is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
@@ -582,9 +582,9 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_with_loader_false(self):
+    eleza test_spec_from_loader_is_package_with_loader_false(self):
         loader = TestLoader(is_package=Uongo)
-        spec = self.util.spec_kutoka_loader(self.name, loader)
+        spec = self.util.spec_from_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
@@ -594,9 +594,9 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_with_loader_true(self):
+    eleza test_spec_from_loader_is_package_with_loader_true(self):
         loader = TestLoader(is_package=Kweli)
-        spec = self.util.spec_kutoka_loader(self.name, loader)
+        spec = self.util.spec_from_loader(self.name, loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
@@ -606,8 +606,8 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertUongo(spec.has_location)
 
-    eleza test_spec_kutoka_loader_default_with_file_loader(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.fileloader)
+    eleza test_spec_from_loader_default_with_file_loader(self):
+        spec = self.util.spec_from_loader(self.name, self.fileloader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, self.fileloader)
@@ -617,8 +617,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_false_with_fileloader(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.fileloader,
+    eleza test_spec_from_loader_is_package_false_with_fileloader(self):
+        spec = self.util.spec_from_loader(self.name, self.fileloader,
                                           is_package=Uongo)
 
         self.assertEqual(spec.name, self.name)
@@ -629,8 +629,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_loader_is_package_true_with_fileloader(self):
-        spec = self.util.spec_kutoka_loader(self.name, self.fileloader,
+    eleza test_spec_from_loader_is_package_true_with_fileloader(self):
+        spec = self.util.spec_from_loader(self.name, self.fileloader,
                                           is_package=Kweli)
 
         self.assertEqual(spec.name, self.name)
@@ -641,10 +641,10 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    # spec_kutoka_file_location()
+    # spec_from_file_location()
 
-    eleza test_spec_kutoka_file_location_default(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path)
+    eleza test_spec_from_file_location_default(self):
+        spec = self.util.spec_from_file_location(self.name, self.path)
 
         self.assertEqual(spec.name, self.name)
         # Need to use a circuitous route to get at importlib.machinery to make
@@ -660,23 +660,23 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_path_like_arg(self):
-        spec = self.util.spec_kutoka_file_location(self.name,
+    eleza test_spec_from_file_location_path_like_arg(self):
+        spec = self.util.spec_from_file_location(self.name,
                                                  pathlib.PurePath(self.path))
         self.assertEqual(spec.origin, self.path)
 
-    eleza test_spec_kutoka_file_location_default_without_location(self):
-        spec = self.util.spec_kutoka_file_location(self.name)
+    eleza test_spec_from_file_location_default_without_location(self):
+        spec = self.util.spec_from_file_location(self.name)
 
         self.assertIs(spec, Tupu)
 
-    eleza test_spec_kutoka_file_location_default_bad_suffix(self):
-        spec = self.util.spec_kutoka_file_location(self.name, 'spam.eggs')
+    eleza test_spec_from_file_location_default_bad_suffix(self):
+        spec = self.util.spec_from_file_location(self.name, 'spam.eggs')
 
         self.assertIs(spec, Tupu)
 
-    eleza test_spec_kutoka_file_location_loader_no_location(self):
-        spec = self.util.spec_kutoka_file_location(self.name,
+    eleza test_spec_from_file_location_loader_no_location(self):
+        spec = self.util.spec_from_file_location(self.name,
                                                  loader=self.fileloader)
 
         self.assertEqual(spec.name, self.name)
@@ -687,8 +687,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_loader_no_location_no_get_filename(self):
-        spec = self.util.spec_kutoka_file_location(self.name,
+    eleza test_spec_from_file_location_loader_no_location_no_get_filename(self):
+        spec = self.util.spec_from_file_location(self.name,
                                                  loader=self.loader)
 
         self.assertEqual(spec.name, self.name)
@@ -699,12 +699,12 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_loader_no_location_bad_get_filename(self):
+    eleza test_spec_from_file_location_loader_no_location_bad_get_filename(self):
         kundi Loader:
             eleza get_filename(self, name):
                 ashiria ImportError
         loader = Loader()
-        spec = self.util.spec_kutoka_file_location(self.name, loader=loader)
+        spec = self.util.spec_from_file_location(self.name, loader=loader)
 
         self.assertEqual(spec.name, self.name)
         self.assertEqual(spec.loader, loader)
@@ -714,8 +714,8 @@ kundi FactoryTests:
         self.assertIs(spec.cached, Tupu)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_none(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+    eleza test_spec_from_file_location_smsl_none(self):
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.fileloader,
                                        submodule_search_locations=Tupu)
 
@@ -727,8 +727,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_empty(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+    eleza test_spec_from_file_location_smsl_empty(self):
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.fileloader,
                                        submodule_search_locations=[])
 
@@ -740,8 +740,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_not_empty(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+    eleza test_spec_from_file_location_smsl_not_empty(self):
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.fileloader,
                                        submodule_search_locations=['eggs'])
 
@@ -753,8 +753,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_default(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+    eleza test_spec_from_file_location_smsl_default(self):
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.pkgloader)
 
         self.assertEqual(spec.name, self.name)
@@ -765,12 +765,12 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_default_not_package(self):
+    eleza test_spec_from_file_location_smsl_default_not_package(self):
         kundi Loader:
             eleza is_package(self, name):
                 rudisha Uongo
         loader = Loader()
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)
 
         self.assertEqual(spec.name, self.name)
@@ -781,8 +781,8 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_default_no_is_package(self):
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+    eleza test_spec_from_file_location_smsl_default_no_is_package(self):
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                        loader=self.fileloader)
 
         self.assertEqual(spec.name, self.name)
@@ -793,12 +793,12 @@ kundi FactoryTests:
         self.assertEqual(spec.cached, self.cached)
         self.assertKweli(spec.has_location)
 
-    eleza test_spec_kutoka_file_location_smsl_default_bad_is_package(self):
+    eleza test_spec_from_file_location_smsl_default_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
                 ashiria ImportError
         loader = Loader()
-        spec = self.util.spec_kutoka_file_location(self.name, self.path,
+        spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)
 
         self.assertEqual(spec.name, self.name)

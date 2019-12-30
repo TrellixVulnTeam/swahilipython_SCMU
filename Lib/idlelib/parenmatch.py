@@ -32,7 +32,7 @@ kundi ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual rudisha and
+    # We want the restore event be called before the usual rudisha na
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
@@ -101,7 +101,7 @@ kundi ParenMatch:
         # self.create_tag(indices)
         self.tagfuncs.get(self.STYLE, self.create_tag_expression)(self, indices)
         # self.set_timeout()
-        (self.set_timeout_last ikiwa self.FLASH_DELAY else
+        (self.set_timeout_last ikiwa self.FLASH_DELAY ama
                             self.set_timeout_none)()
 
     eleza restore_event(self, event=Tupu):

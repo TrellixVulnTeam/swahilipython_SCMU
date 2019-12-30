@@ -5,14 +5,14 @@ The problem:
 
 Suppose you have some data that you want to convert to another format,
 such kama kutoka GIF image format to PPM image format.  Maybe the
-conversion involves several steps (e.g. piping it through compress or
+conversion involves several steps (e.g. piping it through compress ama
 uuencode).  Some of the conversion steps may require that their input
 is a disk file, others may be able to read standard input; similar for
 their output.  The input to the entire conversion may also be read
 kutoka a disk file ama kutoka an open file, na similar kila its output.
 
-The module lets you construct a pipeline template by sticking one or
-more conversion steps together.  It will take care of creating and
+The module lets you construct a pipeline template by sticking one ama
+more conversion steps together.  It will take care of creating na
 removing temporary files ikiwa they are necessary to hold intermediate
 data.  You can then use the template to do conversions kutoka many
 different sources to many different destinations.  The temporary
@@ -43,7 +43,7 @@ To add a conversion step at the beginning:
 
 To convert a file to another file using a template:
   sts = t.copy(infile, outfile)
-If infile ama outfile are the empty string, standard input ni read or
+If infile ama outfile are the empty string, standard input ni read ama
 standard output ni written, respectively.  The rudisha value ni the
 exit status of the conversion pipeline.
 

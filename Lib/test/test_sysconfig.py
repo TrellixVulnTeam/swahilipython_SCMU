@@ -243,7 +243,7 @@ kundi TestSysConfig(unittest.TestCase):
         # ni similar to the global posix_prefix one
         base = get_config_var('base')
         user = get_config_var('userbase')
-        # the global scheme mirrors the distinction between prefix and
+        # the global scheme mirrors the distinction between prefix na
         # exec-prefix but sio the user scheme, so we have to adapt the paths
         # before comparing (issue #9100)
         adapt = sys.base_prefix != sys.base_exec_prefix
@@ -297,7 +297,7 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test ukijumuisha MACOSX_DEPLOYMENT_TARGET kwenye the environment, and
+        # Test ukijumuisha MACOSX_DEPLOYMENT_TARGET kwenye the environment, na
         # using a value that ni unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
@@ -363,7 +363,7 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertIsNotTupu(vars['SO'])
         self.assertEqual(vars['SO'], vars['EXT_SUFFIX'])
 
-    @unittest.skipUnless(sys.platform == 'linux' and
+    @unittest.skipUnless(sys.platform == 'linux' na
                          hasattr(sys.implementation, '_multiarch'),
                          'multiarch-specific test')
     eleza test_triplet_in_ext_suffix(self):
@@ -375,7 +375,7 @@ kundi TestSysConfig(unittest.TestCase):
             self.assertKweli('linux' kwenye suffix, suffix)
         ikiwa re.match('(i[3-6]86|x86_64)$', machine):
             ikiwa ctypes.sizeof(ctypes.c_char_p()) == 4:
-                self.assertKweli(suffix.endswith('i386-linux-gnu.so') or
+                self.assertKweli(suffix.endswith('i386-linux-gnu.so') ama
                                 suffix.endswith('x86_64-linux-gnux32.so'),
                                 suffix)
             isipokua: # 8 byte pointer size

@@ -1,5 +1,5 @@
 # Access WeakSet through the weakref module.
-# This code is separated-out because it is needed
+# This code ni separated-out because it ni needed
 # by abc.py to load everything isipokua at startup.
 
 kutoka _weakref agiza ref
@@ -8,37 +8,37 @@ __all__ = ['WeakSet']
 
 
 kundi _IterationGuard:
-    # This context manager registers itself in the current iterators of the
+    # This context manager registers itself kwenye the current iterators of the
     # weak container, such as to delay all removals until the context manager
     # exits.
     # This technique should be relatively thread-safe (since sets are).
 
-    def __init__(self, weakcontainer):
+    eleza __init__(self, weakcontainer):
         # Don't create cycles
         self.weakcontainer = ref(weakcontainer)
 
-    def __enter__(self):
+    eleza __enter__(self):
         w = self.weakcontainer()
-        if w ni sio None:
+        ikiwa w ni sio Tupu:
             w._iterating.add(self)
-        return self
+        rudisha self
 
-    def __exit__(self, e, t, b):
+    eleza __exit__(self, e, t, b):
         w = self.weakcontainer()
-        if w ni sio None:
+        ikiwa w ni sio Tupu:
             s = w._iterating
             s.remove(self)
-            if sio s:
+            ikiwa sio s:
                 w._commit_removals()
 
 
 kundi WeakSet:
-    def __init__(self, data=None):
+    eleza __init__(self, data=Tupu):
         self.data = set()
-        def _remove(item, selfref=ref(self)):
+        eleza _remove(item, selfref=ref(self)):
             self = selfref()
-            if self ni sio None:
-                if self._iterating:
+            ikiwa self ni sio Tupu:
+                ikiwa self._iterating:
                     self._pending_removals.append(item)
                 isipokua:
                     self.data.discard(item)
@@ -46,154 +46,154 @@ kundi WeakSet:
         # A list of keys to be removed
         self._pending_removals = []
         self._iterating = set()
-        if data ni sio None:
+        ikiwa data ni sio Tupu:
             self.update(data)
 
-    def _commit_removals(self):
+    eleza _commit_removals(self):
         l = self._pending_removals
         discard = self.data.discard
         wakati l:
             discard(l.pop())
 
-    def __iter__(self):
-        with _IterationGuard(self):
-            for itemref in self.data:
+    eleza __iter__(self):
+        ukijumuisha _IterationGuard(self):
+            kila itemref kwenye self.data:
                 item = itemref()
-                if item ni sio None:
+                ikiwa item ni sio Tupu:
                     # Caveat: the iterator will keep a strong reference to
-                    # `item` until it is resumed or closed.
-                    yield item
+                    # `item` until it ni resumed or closed.
+                    tuma item
 
-    def __len__(self):
-        return len(self.data) - len(self._pending_removals)
+    eleza __len__(self):
+        rudisha len(self.data) - len(self._pending_removals)
 
-    def __contains__(self, item):
+    eleza __contains__(self, item):
         jaribu:
             wr = ref(item)
         tatizo TypeError:
-            return False
-        return wr in self.data
+            rudisha False
+        rudisha wr kwenye self.data
 
-    def __reduce__(self):
-        return (self.__class__, (list(self),),
-                getattr(self, '__dict__', None))
+    eleza __reduce__(self):
+        rudisha (self.__class__, (list(self),),
+                getattr(self, '__dict__', Tupu))
 
-    def add(self, item):
-        if self._pending_removals:
+    eleza add(self, item):
+        ikiwa self._pending_removals:
             self._commit_removals()
         self.data.add(ref(item, self._remove))
 
-    def clear(self):
-        if self._pending_removals:
+    eleza clear(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         self.data.clear()
 
-    def copy(self):
-        return self.__class__(self)
+    eleza copy(self):
+        rudisha self.__class__(self)
 
-    def pop(self):
-        if self._pending_removals:
+    eleza pop(self):
+        ikiwa self._pending_removals:
             self._commit_removals()
         wakati True:
             jaribu:
                 itemref = self.data.pop()
             tatizo KeyError:
-                raise KeyError('pop kutoka empty WeakSet') kutoka None
+                ashiria KeyError('pop kutoka empty WeakSet') kutoka Tupu
             item = itemref()
-            if item ni sio None:
-                return item
+            ikiwa item ni sio Tupu:
+                rudisha item
 
-    def remove(self, item):
-        if self._pending_removals:
+    eleza remove(self, item):
+        ikiwa self._pending_removals:
             self._commit_removals()
         self.data.remove(ref(item))
 
-    def discard(self, item):
-        if self._pending_removals:
+    eleza discard(self, item):
+        ikiwa self._pending_removals:
             self._commit_removals()
         self.data.discard(ref(item))
 
-    def update(self, other):
-        if self._pending_removals:
+    eleza update(self, other):
+        ikiwa self._pending_removals:
             self._commit_removals()
-        for element in other:
+        kila element kwenye other:
             self.add(element)
 
-    def __ior__(self, other):
+    eleza __ior__(self, other):
         self.update(other)
-        return self
+        rudisha self
 
-    def difference(self, other):
+    eleza difference(self, other):
         newset = self.copy()
         newset.difference_update(other)
-        return newset
+        rudisha newset
     __sub__ = difference
 
-    def difference_update(self, other):
+    eleza difference_update(self, other):
         self.__isub__(other)
-    def __isub__(self, other):
-        if self._pending_removals:
+    eleza __isub__(self, other):
+        ikiwa self._pending_removals:
             self._commit_removals()
-        if self is other:
+        ikiwa self ni other:
             self.data.clear()
         isipokua:
-            self.data.difference_update(ref(item) for item in other)
-        return self
+            self.data.difference_update(ref(item) kila item kwenye other)
+        rudisha self
 
-    def intersection(self, other):
-        return self.__class__(item for item in other if item in self)
+    eleza intersection(self, other):
+        rudisha self.__class__(item kila item kwenye other ikiwa item kwenye self)
     __and__ = intersection
 
-    def intersection_update(self, other):
+    eleza intersection_update(self, other):
         self.__iand__(other)
-    def __iand__(self, other):
-        if self._pending_removals:
+    eleza __iand__(self, other):
+        ikiwa self._pending_removals:
             self._commit_removals()
-        self.data.intersection_update(ref(item) for item in other)
-        return self
+        self.data.intersection_update(ref(item) kila item kwenye other)
+        rudisha self
 
-    def issubset(self, other):
-        return self.data.issubset(ref(item) for item in other)
+    eleza issubset(self, other):
+        rudisha self.data.issubset(ref(item) kila item kwenye other)
     __le__ = issubset
 
-    def __lt__(self, other):
-        return self.data < set(map(ref, other))
+    eleza __lt__(self, other):
+        rudisha self.data < set(map(ref, other))
 
-    def issuperset(self, other):
-        return self.data.issuperset(ref(item) for item in other)
+    eleza issuperset(self, other):
+        rudisha self.data.issuperset(ref(item) kila item kwenye other)
     __ge__ = issuperset
 
-    def __gt__(self, other):
-        return self.data > set(map(ref, other))
+    eleza __gt__(self, other):
+        rudisha self.data > set(map(ref, other))
 
-    def __eq__(self, other):
-        if sio isinstance(other, self.__class__):
-            return NotImplemented
-        return self.data == set(map(ref, other))
+    eleza __eq__(self, other):
+        ikiwa sio isinstance(other, self.__class__):
+            rudisha NotImplemented
+        rudisha self.data == set(map(ref, other))
 
-    def symmetric_difference(self, other):
+    eleza symmetric_difference(self, other):
         newset = self.copy()
         newset.symmetric_difference_update(other)
-        return newset
+        rudisha newset
     __xor__ = symmetric_difference
 
-    def symmetric_difference_update(self, other):
+    eleza symmetric_difference_update(self, other):
         self.__ixor__(other)
-    def __ixor__(self, other):
-        if self._pending_removals:
+    eleza __ixor__(self, other):
+        ikiwa self._pending_removals:
             self._commit_removals()
-        if self is other:
+        ikiwa self ni other:
             self.data.clear()
         isipokua:
-            self.data.symmetric_difference_update(ref(item, self._remove) for item in other)
-        return self
+            self.data.symmetric_difference_update(ref(item, self._remove) kila item kwenye other)
+        rudisha self
 
-    def union(self, other):
-        return self.__class__(e for s in (self, other) for e in s)
+    eleza union(self, other):
+        rudisha self.__class__(e kila s kwenye (self, other) kila e kwenye s)
     __or__ = union
 
-    def isdisjoint(self, other):
-        return len(self.intersection(other)) == 0
+    eleza isdisjoint(self, other):
+        rudisha len(self.intersection(other)) == 0
 
-    def __repr__(self):
-        return repr(self.data)
+    eleza __repr__(self):
+        rudisha repr(self.data)

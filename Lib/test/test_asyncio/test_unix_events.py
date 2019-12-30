@@ -17,7 +17,7 @@ from unittest import mock
 from test import support
 
 if sys.platform == 'win32':
-    raise unittest.SkipTest('UNIX only')
+    ashiria unittest.SkipTest('UNIX only')
 
 
 import asyncio
@@ -114,7 +114,7 @@ class SelectorEventLoopSignalTests(test_utils.TestCase):
 
         def set_wakeup_fd(fd):
             if fd == -1:
-                raise ValueError()
+                ashiria ValueError()
         m_signal.set_wakeup_fd = set_wakeup_fd
 
         class Err(OSError):
@@ -1149,7 +1149,7 @@ class ChildWatcherTestsMixin:
             self.watcher.attach_loop(self.loop)
 
     def waitpid(self, pid, flags):
-        if isinstance(self.watcher, asyncio.SafeChildWatcher) or pid != -1:
+        if isinstance(self.watcher, asyncio.SafeChildWatcher) ama pid != -1:
             self.assertGreater(pid, 0)
         jaribu:
             if pid < 0:
@@ -1161,7 +1161,7 @@ class ChildWatcherTestsMixin:
         if self.running:
             return 0, 0
         isipokua:
-            raise ChildProcessError()
+            ashiria ChildProcessError()
 
     def add_zombie(self, pid, returncode):
         self.zombies[pid] = returncode + 32768
@@ -1621,7 +1621,7 @@ class ChildWatcherTestsMixin:
             self.running = True
             self.watcher.add_child_handler(57, callback)
 
-        # raise an exception
+        # ashiria an exception
         m.waitpid.side_effect = ValueError
 
         with mock.patch.object(log.logger,

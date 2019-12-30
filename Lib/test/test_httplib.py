@@ -1359,7 +1359,7 @@ kundi Readliner:
             data.append(read[:idx])
             self.remainder = read[idx:]
             rudisha b"".join(data)
-        except:
+        tatizo:
             self.remainder = b"".join(data)
             ashiria
 
@@ -1467,7 +1467,7 @@ kundi SourceAddressTest(TestCase):
         self.conn.connect()
         self.assertEqual(self.conn.sock.getsockname()[1], self.source_port)
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
+    @unittest.skipIf(sio hasattr(client, 'HTTPSConnection'),
                      'http.client.HTTPSConnection sio defined')
     eleza testHTTPSConnectionSourceAddress(self):
         self.conn = client.HTTPSConnection(HOST, self.port,
@@ -1756,7 +1756,7 @@ kundi HTTPSTest(TestCase):
         ukijumuisha self.assertRaises(ssl.CertificateError):
             h.request('GET', '/')
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
+    @unittest.skipIf(sio hasattr(client, 'HTTPSConnection'),
                      'http.client.HTTPSConnection sio available')
     eleza test_host_port(self):
         # Check invalid host_port

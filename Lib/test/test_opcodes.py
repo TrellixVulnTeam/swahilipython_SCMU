@@ -14,7 +14,7 @@ kundi OpcodeTest(unittest.TestCase):
             tatizo ZeroDivisionError: pita
             tatizo TypeError: pita
             jaribu: pita
-            except: pita
+            tatizo: pita
             jaribu: pita
             mwishowe: pita
             n = n+i
@@ -60,7 +60,7 @@ kundi OpcodeTest(unittest.TestCase):
                 pita
 
         jaribu: ashiria AClass()
-        except: pita
+        tatizo: pita
 
         jaribu: ashiria AClass()
         tatizo AClass: pita
@@ -70,7 +70,7 @@ kundi OpcodeTest(unittest.TestCase):
 
         jaribu: ashiria BClass()
         tatizo CClass: self.fail()
-        except: pita
+        tatizo: pita
 
         a = AClass()
         b = BClass()

@@ -78,7 +78,7 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     def test_run_setup_provides_file(self):
         # Make sure the script can use __file__; if that's missing, the test
-        # setup.py script will raise NameError.
+        # setup.py script will ashiria NameError.
         distutils.core.run_setup(
             self.write_setup(setup_using___file__))
 
@@ -91,7 +91,7 @@ class CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     def test_run_setup_defines_subclass(self):
         # Make sure the script can use __file__; if that's missing, the test
-        # setup.py script will raise NameError.
+        # setup.py script will ashiria NameError.
         dist = distutils.core.run_setup(
             self.write_setup(setup_defines_subclass))
         install = dist.get_command_obj('install')

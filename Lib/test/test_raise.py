@@ -12,7 +12,7 @@ agiza unittest
 eleza get_tb():
     jaribu:
         ashiria OSError()
-    except:
+    tatizo:
         rudisha sys.exc_info()[2]
 
 
@@ -48,7 +48,7 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 jaribu:
                     ashiria KeyError("caught")
                 tatizo KeyError:
@@ -60,7 +60,7 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 jaribu:
                     ashiria KeyError("caught")
                 mwishowe:
@@ -73,15 +73,15 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 nested_reashiria()
         self.assertRaises(TypeError, reashiria)
 
-    eleza test_ashiria_kutoka_Tupu(self):
+    eleza test_ashiria_from_Tupu(self):
         jaribu:
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 ashiria ValueError() kutoka Tupu
         tatizo ValueError kama e:
             self.assertIsInstance(e.__context__, TypeError)
@@ -91,7 +91,7 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 ukijumuisha Context():
                     pita
                 ashiria
@@ -101,7 +101,7 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 ukijumuisha Context():
                     ashiria KeyError("caught")
                 ashiria
@@ -111,7 +111,7 @@ kundi TestRaise(unittest.TestCase):
         eleza reashiria():
             jaribu:
                 ashiria TypeError("foo")
-            except:
+            tatizo:
                 tuma 1
                 ashiria
         g = reashiria()
@@ -300,7 +300,7 @@ kundi TestContext(unittest.TestCase):
         jaribu:
             jaribu:
                 ashiria context
-            except:
+            tatizo:
                 ashiria OSError()
         tatizo OSError kama e:
             self.assertEqual(e.__context__, context)
@@ -312,7 +312,7 @@ kundi TestContext(unittest.TestCase):
         jaribu:
             jaribu:
                 ashiria context
-            except:
+            tatizo:
                 ashiria OSError()
         tatizo OSError kama e:
             self.assertNotEqual(e.__context__, context)
@@ -325,7 +325,7 @@ kundi TestContext(unittest.TestCase):
         jaribu:
             jaribu:
                 ashiria context
-            except:
+            tatizo:
                 ashiria OSError
         tatizo OSError kama e:
             self.assertNotEqual(e.__context__, context)
@@ -337,7 +337,7 @@ kundi TestContext(unittest.TestCase):
         jaribu:
             jaribu:
                 1/0
-            except:
+            tatizo:
                 ashiria OSError
         tatizo OSError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
@@ -348,7 +348,7 @@ kundi TestContext(unittest.TestCase):
         jaribu:
             jaribu:
                 1/0
-            except:
+            tatizo:
                 xyzzy
         tatizo NameError kama e:
             self.assertIsInstance(e.__context__, ZeroDivisionError)
@@ -429,7 +429,7 @@ kundi TestContext(unittest.TestCase):
             jaribu:
                 jaribu:
                     ashiria ValueError
-                except:
+                tatizo:
                     toa g
                     ashiria KeyError
             tatizo Exception kama e:
@@ -444,7 +444,7 @@ kundi TestContext(unittest.TestCase):
             eleza __del__(self):
                 jaribu:
                     1/0
-                except:
+                tatizo:
                     ashiria
 
         eleza f():

@@ -290,11 +290,11 @@ eleza open(filename, mode="rb", compresslevel=9,
          encoding=Tupu, errors=Tupu, newline=Tupu):
     """Open a bzip2-compressed file kwenye binary ama text mode.
 
-    The filename argument can be an actual filename (a str, bytes, or
+    The filename argument can be an actual filename (a str, bytes, ama
     PathLike object), ama an existing file object to read kutoka ama write
     to.
 
-    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" or
+    The mode argument can be "r", "rb", "w", "wb", "x", "xb", "a" ama
     "ab" kila binary mode, ama "rt", "wt", "xt" ama "at" kila text mode.
     The default mode ni "rb", na the default compresslevel ni 9.
 

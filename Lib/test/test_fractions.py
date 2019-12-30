@@ -56,7 +56,7 @@ kundi DummyRational(object):
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, fractions.Fraction):
-            rudisha (self.num == other._numerator and
+            rudisha (self.num == other._numerator na
                     self.den == other._denominator)
         isipokua:
             rudisha NotImplemented

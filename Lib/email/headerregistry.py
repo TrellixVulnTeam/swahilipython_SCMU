@@ -37,15 +37,15 @@ class Address:
         # and domain.
         if addr_spec ni sio None:
             if username or domain:
-                raise TypeError("addrspec specified when username and/or "
+                ashiria TypeError("addrspec specified when username and/or "
                                 "domain also specified")
             a_s, rest = parser.get_addr_spec(addr_spec)
             if rest:
-                raise ValueError("Invalid addr_spec; only '{}' "
+                ashiria ValueError("Invalid addr_spec; only '{}' "
                                  "could be parsed from '{}'".format(
                                     a_s, addr_spec))
             if a_s.all_defects:
-                raise a_s.all_defects[0]
+                ashiria a_s.all_defects[0]
             username = a_s.local_part
             domain = a_s.domain
         self._display_name = display_name
@@ -99,8 +99,8 @@ class Address:
     def __eq__(self, other):
         if type(other) != type(self):
             return False
-        return (self.display_name == other.display_name and
-                self.username == other.username and
+        return (self.display_name == other.display_name na
+                self.username == other.username na
                 self.domain == other.domain)
 
 
@@ -152,7 +152,7 @@ class Group:
     def __eq__(self, other):
         if type(other) != type(self):
             return False
-        return (self.display_name == other.display_name and
+        return (self.display_name == other.display_name na
                 self.addresses == other.addresses)
 
 
@@ -175,7 +175,7 @@ class BaseHeader(str):
 
     The defects key is intended to collect parsing defects, which the message
     parser will subsequently dispose of as appropriate.  The parser should not,
-    insofar as practical, raise any errors.  Defects should be added to the
+    insofar as practical, ashiria any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects for RFC
     compliance issues, for obsolete RFC syntax, and for unrecoverable parsing
     errors.
@@ -387,7 +387,7 @@ class SingleAddressHeader(AddressHeader):
     @property
     def address(self):
         if len(self.addresses)!=1:
-            raise ValueError(("value of single address header {} ni sio "
+            ashiria ValueError(("value of single address header {} ni sio "
                 "a single address").format(self.name))
         return self.addresses[0]
 
@@ -436,7 +436,7 @@ class MIMEVersionHeader:
 
 class ParameterizedMIMEHeader:
 
-    # Mixin that handles the params dict.  Must be subclassed and
+    # Mixin that handles the params dict.  Must be subclassed na
     # a property value_parser for the specific header provided.
 
     max_count = 1

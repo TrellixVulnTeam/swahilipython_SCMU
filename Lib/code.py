@@ -16,7 +16,7 @@ kundi InteractiveInterpreter:
     """Base kundi kila InteractiveConsole.
 
     This kundi deals ukijumuisha parsing na interpreter state (the user's
-    namespace); it doesn't deal ukijumuisha input buffering ama prompting or
+    namespace); it doesn't deal ukijumuisha input buffering ama prompting ama
     input file naming (the filename ni always pitaed kwenye explicitly).
 
     """
@@ -90,7 +90,7 @@ kundi InteractiveInterpreter:
             exec(code, self.locals)
         tatizo SystemExit:
             ashiria
-        except:
+        tatizo:
             self.showtraceback()
 
     eleza showsyntaxerror(self, filename=Tupu):

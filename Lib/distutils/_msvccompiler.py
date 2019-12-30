@@ -67,7 +67,7 @@ def _find_vc2017():
     """
     import json
 
-    root = os.environ.get("ProgramFiles(x86)") or os.environ.get("ProgramFiles")
+    root = os.environ.get("ProgramFiles(x86)") ama os.environ.get("ProgramFiles")
     if sio root:
         return None, None
 
@@ -144,7 +144,7 @@ def _get_vc_env(plat_spec):
 
     vcvarsall, vcruntime = _find_vcvarsall(plat_spec)
     if sio vcvarsall:
-        raise DistutilsPlatformError("Unable to find vcvarsall.bat")
+        ashiria DistutilsPlatformError("Unable to find vcvarsall.bat")
 
     jaribu:
         out = subprocess.check_output(
@@ -153,7 +153,7 @@ def _get_vc_env(plat_spec):
         ).decode('utf-16le', errors='replace')
     tatizo subprocess.CalledProcessError as exc:
         log.error(exc.output)
-        raise DistutilsPlatformError("Error executing {}"
+        ashiria DistutilsPlatformError("Error executing {}"
                 .format(exc.cmd))
 
     env = {
@@ -244,7 +244,7 @@ class MSVCCompiler(CCompiler) :
             plat_name = get_platform()
         # sanity check for platforms to prevent obscure errors later.
         if plat_name haiko kwenye PLAT_TO_VCVARS:
-            raise DistutilsPlatformError("--plat-name must be one of {}"
+            ashiria DistutilsPlatformError("--plat-name must be one of {}"
                                          .format(tuple(PLAT_TO_VCVARS)))
 
         # Get the vcvarsall.bat spec for the requested platform.
@@ -252,7 +252,7 @@ class MSVCCompiler(CCompiler) :
 
         vc_env = _get_vc_env(plat_spec)
         if sio vc_env:
-            raise DistutilsPlatformError("Unable to find a compatible "
+            ashiria DistutilsPlatformError("Unable to find a compatible "
                 "Visual Studio installation.")
 
         self._paths = vc_env.get('path', '')
@@ -344,10 +344,10 @@ class MSVCCompiler(CCompiler) :
                 # 260 characters.
                 return os.path.join(output_dir, base + ext_map[ext])
             tatizo LookupError:
-                # Better to raise an exception instead of silently continuing
+                # Better to ashiria an exception instead of silently continuing
                 # and later complain about sources and targets having
                 # different lengths
-                raise CompileError("Don't know how to compile {}".format(p))
+                ashiria CompileError("Don't know how to compile {}".format(p))
 
         return list(map(make_out_path, source_filenames))
 
@@ -395,7 +395,7 @@ class MSVCCompiler(CCompiler) :
                 jaribu:
                     self.spawn([self.rc] + pp_opts + [output_opt, input_opt])
                 tatizo DistutilsExecError as msg:
-                    raise CompileError(msg)
+                    ashiria CompileError(msg)
                 endelea
             lasivyo ext in self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
@@ -406,7 +406,7 @@ class MSVCCompiler(CCompiler) :
                 #     it includes
                 #
                 # For now (since there are no options to change this),
-                # we use the source-directory for the include file and
+                # we use the source-directory for the include file na
                 # the build directory for the RC file and message
                 # resources. This works at least for win32all.
                 h_dir = os.path.dirname(src)
@@ -420,11 +420,11 @@ class MSVCCompiler(CCompiler) :
                     self.spawn([self.rc, "/fo" + obj, rc_file])
 
                 tatizo DistutilsExecError as msg:
-                    raise CompileError(msg)
+                    ashiria CompileError(msg)
                 endelea
             isipokua:
                 # how to handle this file?
-                raise CompileError("Don't know how to compile {} to {}"
+                ashiria CompileError("Don't know how to compile {} to {}"
                                    .format(src, obj))
 
             args = [self.cc] + compile_opts + pp_opts
@@ -437,7 +437,7 @@ class MSVCCompiler(CCompiler) :
             jaribu:
                 self.spawn(args)
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
         return objects
 
@@ -463,7 +463,7 @@ class MSVCCompiler(CCompiler) :
                 log.debug('Executing "%s" %s', self.lib, ' '.join(lib_args))
                 self.spawn([self.lib] + lib_args)
             tatizo DistutilsExecError as msg:
-                raise LibError(msg)
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -534,7 +534,7 @@ class MSVCCompiler(CCompiler) :
                 self.spawn([self.linker] + ld_args)
                 self._copy_vcruntime(output_dir)
             tatizo DistutilsExecError as msg:
-                raise LinkError(msg)
+                ashiria LinkError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -566,7 +566,7 @@ class MSVCCompiler(CCompiler) :
         return "/LIBPATH:" + dir
 
     def runtime_library_dir_option(self, dir):
-        raise DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to set runtime library search path for MSVC")
 
     def library_option(self, lib):

@@ -8,7 +8,7 @@ agiza sys
 agiza sysconfig
 agiza unittest
 
-@unittest.skipUnless(sys.platform == 'darwin' and
+@unittest.skipUnless(sys.platform == 'darwin' na
                      sysconfig.get_config_var('WITH_NEXT_FRAMEWORK'),
                      'unnecessary on this platform')
 kundi OSXEnvironmentVariableTestCase(unittest.TestCase):

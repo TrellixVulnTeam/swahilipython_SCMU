@@ -257,7 +257,7 @@ kundi SMTP:
         ikiwa local_hostname ni sio Tupu:
             self.local_hostname = local_hostname
         isipokua:
-            # RFC 2821 says we should use the fqdn kwenye the EHLO/HELO verb, and
+            # RFC 2821 says we should use the fqdn kwenye the EHLO/HELO verb, na
             # ikiwa that can't be calculated, that we should use a domain literal
             # instead (essentially an encoded IP address like [A.B.C.D]).
             fqdn = socket.getfqdn()
@@ -311,7 +311,7 @@ kundi SMTP:
     eleza connect(self, host='localhost', port=0, source_address=Tupu):
         """Connect to a host on a given port.
 
-        If the hostname ends ukijumuisha a colon (`:') followed by a number, and
+        If the hostname ends ukijumuisha a colon (`:') followed by a number, na
         there ni no port specified, that suffix will be stripped off na the
         number interpreted kama the port number to use.
 
@@ -655,12 +655,12 @@ kundi SMTP:
             self.pitaword.encode('ascii'), challenge, 'md5').hexdigest()
 
     eleza auth_plain(self, challenge=Tupu):
-        """ Authobject to use ukijumuisha PLAIN authentication. Requires self.user and
+        """ Authobject to use ukijumuisha PLAIN authentication. Requires self.user na
         self.pitaword to be set."""
         rudisha "\0%s\0%s" % (self.user, self.pitaword)
 
     eleza auth_login(self, challenge=Tupu):
-        """ Authobject to use ukijumuisha LOGIN authentication. Requires self.user and
+        """ Authobject to use ukijumuisha LOGIN authentication. Requires self.user na
         self.pitaword to be set."""
         ikiwa challenge ni Tupu:
             rudisha self.user
@@ -901,10 +901,10 @@ kundi SMTP:
         email.message.Message object.  If kutoka_addr ni Tupu ama to_addrs is
         Tupu, these arguments are taken kutoka the headers of the Message as
         described kwenye RFC 2822 (a ValueError ni ashiriad ikiwa there ni more than
-        one set of 'Resent-' headers).  Regardless of the values of kutoka_addr and
+        one set of 'Resent-' headers).  Regardless of the values of kutoka_addr na
         to_addr, any Bcc field (or Resent-Bcc field, when the Message ni a
         resent) of the Message object won't be transmitted.  The Message
-        object ni then serialized using email.generator.BytesGenerator and
+        object ni then serialized using email.generator.BytesGenerator na
         sendmail ni called to transmit the message.  If the sender ama any of
         the recipient addresses contain non-ASCII na the server advertises the
         SMTPUTF8 capability, the policy ni cloned ukijumuisha utf8 set to Kweli kila the

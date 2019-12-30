@@ -126,7 +126,7 @@ kundi MiscTests(unittest.TestCase):
                         # even ikiwa mkdir() succeeded
                         os.chdir(path)
                     tatizo FileNotFoundError:
-                        # On Windows, catch ERROR_PATH_NOT_FOUND (3) and
+                        # On Windows, catch ERROR_PATH_NOT_FOUND (3) na
                         # ERROR_FILENAME_EXCED_RANGE (206) errors
                         # ("The filename ama extension ni too long")
                         koma
@@ -1438,7 +1438,7 @@ kundi ChownFileTests(unittest.TestCase):
         uid = os.stat(support.TESTFN).st_uid
         self.assertEqual(uid, uid_2)
 
-    @unittest.skipUnless(not root_in_posix na len(all_users) > 1,
+    @unittest.skipUnless(sio root_in_posix na len(all_users) > 1,
                          "test needs non-root account na more than one user")
     eleza test_chown_without_permission(self):
         uid_1, uid_2 = all_users[:2]
@@ -2079,7 +2079,7 @@ kundi Pep383Tests(unittest.TestCase):
                 ikiwa fn kwenye self.unicodefn:
                     ashiria ValueError("duplicate filename")
                 self.unicodefn.add(fn)
-        except:
+        tatizo:
             shutil.rmtree(self.dir)
             ashiria
 
@@ -2656,7 +2656,7 @@ kundi DeviceEncodingTests(unittest.TestCase):
         # Return Tupu when an fd doesn't actually exist.
         self.assertIsTupu(os.device_encoding(123456))
 
-    @unittest.skipUnless(os.isatty(0) na sio win32_is_iot() na (sys.platform.startswith('win') or
+    @unittest.skipUnless(os.isatty(0) na sio win32_is_iot() na (sys.platform.startswith('win') ama
             (hasattr(locale, 'nl_langinfo') na hasattr(locale, 'CODESET'))),
             'test requires a tty na either Windows ama nl_langinfo(CODESET)')
     eleza test_device_encoding(self):

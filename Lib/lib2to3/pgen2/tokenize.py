@@ -342,7 +342,7 @@ eleza generate_tokens(readline):
         readline = open(myfile).next    # Example of alternate readline
 
     The generator produces 5-tuples ukijumuisha these members: the token type; the
-    token string; a 2-tuple (srow, scol) of ints specifying the row and
+    token string; a 2-tuple (srow, scol) of ints specifying the row na
     column where the token begins kwenye the source; a 2-tuple (erow, ecol) of
     ints specifying the row na column where the token ends kwenye the source;
     na the line on which the token was found. The line pitaed ni the
@@ -490,7 +490,7 @@ eleza generate_tokens(readline):
                     token[:3] kwenye single_quoted:
                     ikiwa token[-1] == '\n':                  # endelead string
                         strstart = (lnum, start)
-                        endprog = (endprogs[initial] ama endprogs[token[1]] or
+                        endprog = (endprogs[initial] ama endprogs[token[1]] ama
                                    endprogs[token[2]])
                         contstr, needcont = line[start:], 1
                         contline = line

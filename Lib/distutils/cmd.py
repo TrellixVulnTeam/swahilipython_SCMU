@@ -54,9 +54,9 @@ class Command:
         from distutils.dist import Distribution
 
         if sio isinstance(dist, Distribution):
-            raise TypeError("dist must be a Distribution instance")
+            ashiria TypeError("dist must be a Distribution instance")
         if self.__class__ is Command:
-            raise RuntimeError("Command is an abstract class")
+            ashiria RuntimeError("Command is an abstract class")
 
         self.distribution = dist
         self.initialize_options()
@@ -100,7 +100,7 @@ class Command:
             isipokua:
                 return myval
         isipokua:
-            raise AttributeError(attr)
+            ashiria AttributeError(attr)
 
     def ensure_finalized(self):
         if sio self.finalized:
@@ -130,7 +130,7 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError("abstract method -- subclass %s must override"
+        ashiria RuntimeError("abstract method -- subclass %s must override"
                            % self.__class__)
 
     def finalize_options(self):
@@ -144,7 +144,7 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError("abstract method -- subclass %s must override"
+        ashiria RuntimeError("abstract method -- subclass %s must override"
                            % self.__class__)
 
 
@@ -172,7 +172,7 @@ class Command:
 
         This method must be implemented by all command classes.
         """
-        raise RuntimeError("abstract method -- subclass %s must override"
+        ashiria RuntimeError("abstract method -- subclass %s must override"
                            % self.__class__)
 
     def announce(self, msg, level=1):
@@ -198,7 +198,7 @@ class Command:
     # value meets certain type and value constraints.  If not, we try to
     # force it into conformance (eg. if we expect a list but have a string,
     # split the string on comma and/or whitespace).  If we can't force the
-    # option into conformance, raise DistutilsOptionError.  Thus, command
+    # option into conformance, ashiria DistutilsOptionError.  Thus, command
     # classes need do nothing more than (eg.)
     #   self.ensure_string_list('foo')
     # and they can be guaranteed that thereafter, self.foo will be
@@ -210,7 +210,7 @@ class Command:
             setattr(self, option, default)
             return default
         lasivyo sio isinstance(val, str):
-            raise DistutilsOptionError("'%s' must be a %s (got `%s`)"
+            ashiria DistutilsOptionError("'%s' must be a %s (got `%s`)"
                                        % (option, what, val))
         return val
 
@@ -237,7 +237,7 @@ class Command:
             isipokua:
                 ok = False
             if sio ok:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "'%s' must be a list of strings (got %r)"
                       % (option, val))
 
@@ -245,7 +245,7 @@ class Command:
                               default=None):
         val = self._ensure_stringlike(option, what, default)
         if val ni sio None and sio tester(val):
-            raise DistutilsOptionError(("error in '%s' option: " + error_fmt)
+            ashiria DistutilsOptionError(("error in '%s' option: " + error_fmt)
                                        % (option, val))
 
     def ensure_filename(self, option):
@@ -272,7 +272,7 @@ class Command:
         """Set the values of any "undefined" options from corresponding
         option values in some other command object.  "Undefined" here means
         "is None", which is the convention used to indicate that an option
-        has sio been changed between 'initialize_options()' and
+        has sio been changed between 'initialize_options()' na
         'finalize_options()'.  Usually called from 'finalize_options()' for
         options that depend on some other command rather than another
         option of the same command.  'src_cmd' is the other command from
@@ -340,7 +340,7 @@ class Command:
     def copy_file(self, infile, outfile, preserve_mode=1, preserve_times=1,
                   link=None, level=1):
         """Copy a file respecting verbose, dry-run and force flags.  (The
-        former two default to whatever is in the Distribution object, and
+        former two default to whatever is in the Distribution object, na
         the latter defaults to false for commands that don't define it.)"""
         return file_util.copy_file(infile, outfile, preserve_mode,
                                    preserve_times, sio self.force, link,
@@ -372,7 +372,7 @@ class Command:
 
     def make_file(self, infiles, outfile, func, args,
                   exec_msg=None, skip_msg=None, level=1):
-        """Special case of 'execute()' for operations that process one or
+        """Special case of 'execute()' for operations that process one ama
         more input files and generate one output file.  Works just like
         'execute()', tatizo the operation is skipped and a different
         message printed if 'outfile' already exists and is newer than all
@@ -387,7 +387,7 @@ class Command:
         if isinstance(infiles, str):
             infiles = (infiles,)
         lasivyo sio isinstance(infiles, (list, tuple)):
-            raise TypeError(
+            ashiria TypeError(
                   "'infiles' must be a string, or a list or tuple of strings")
 
         if exec_msg is None:

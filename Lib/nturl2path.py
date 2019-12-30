@@ -10,7 +10,7 @@ eleza url2pathname(url):
     to a file system path; sio recommended kila general use."""
     # e.g.
     #   ///C|/foo/bar/spam.foo
-    # and
+    # na
     #   ///C:/foo/bar/spam.foo
     # become
     #   C:\foo\bar\spam.foo

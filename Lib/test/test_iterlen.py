@@ -36,7 +36,7 @@ to confusion na possibly rudishaing the same item more than once.
 The iterators sio listed above, such kama enumerate na the other itertools,
 are sio length transparent because they have no way to distinguish between
 iterables that report static length na iterators whose length changes with
-each call (i.e. the difference between enumerate('abc') and
+each call (i.e. the difference between enumerate('abc') na
 enumerate(iter('abc')).
 
 """

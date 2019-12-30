@@ -47,7 +47,7 @@ kundi Bunch(object):
         jaribu:
             kila i kwenye range(n):
                 start_new_thread(task, ())
-        except:
+        tatizo:
             self._can_exit = Kweli
             ashiria
 
@@ -679,7 +679,7 @@ kundi BaseSemaphoreTests(BaseTestCase):
             results.append(sem.acquire(Uongo))
             results.append(sem.acquire(Uongo))
         Bunch(f, 5).wait_for_finished()
-        # There can be a thread switch between acquiring the semaphore and
+        # There can be a thread switch between acquiring the semaphore na
         # appending the result, therefore results will sio necessarily be
         # ordered.
         self.assertEqual(sorted(results), [Uongo] * 7 + [Kweli] *  3 )

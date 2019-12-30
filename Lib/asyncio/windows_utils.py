@@ -67,7 +67,7 @@ eleza pipe(*, duplex=Uongo, overlapped=(Kweli, Kweli), bufsize=BUFSIZE):
         ov = _winapi.ConnectNamedPipe(h1, overlapped=Kweli)
         ov.GetOverlappedResult(Kweli)
         rudisha h1, h2
-    except:
+    tatizo:
         ikiwa h1 ni sio Tupu:
             _winapi.CloseHandle(h1)
         ikiwa h2 ni sio Tupu:
@@ -152,7 +152,7 @@ kundi Popen(subprocess.Popen):
         jaribu:
             super().__init__(args, stdin=stdin_rfd, stdout=stdout_wfd,
                              stderr=stderr_wfd, **kwds)
-        except:
+        tatizo:
             kila h kwenye (stdin_wh, stdout_rh, stderr_rh):
                 ikiwa h ni sio Tupu:
                     _winapi.CloseHandle(h)

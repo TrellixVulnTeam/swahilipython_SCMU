@@ -2,7 +2,7 @@ kutoka test.support agiza run_unittest, unload, check_warnings, CleanImport
 agiza unittest
 agiza sys
 agiza importlib
-kutoka importlib.util agiza spec_kutoka_file_location
+kutoka importlib.util agiza spec_from_file_location
 agiza pkgutil
 agiza os
 agiza os.path
@@ -203,7 +203,7 @@ kundi PkgutilPEP302Tests(unittest.TestCase):
     kundi MyTestImporter(object):
         eleza find_spec(self, fullname, path=Tupu, target=Tupu):
             loader = PkgutilPEP302Tests.MyTestLoader()
-            rudisha spec_kutoka_file_location(fullname,
+            rudisha spec_from_file_location(fullname,
                                            '<%s>' % loader.__class__.__name__,
                                            loader=loader,
                                            submodule_search_locations=[])

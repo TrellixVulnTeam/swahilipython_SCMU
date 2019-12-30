@@ -75,7 +75,7 @@ class PolicyAPITests(unittest.TestCase):
         for policy, expected in self.policies.items():
             for attr in dir(policy):
                 with self.subTest(policy=policy, attr=attr):
-                    if (attr.startswith('_') or
+                    if (attr.startswith('_') ama
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
                         endelea
@@ -292,7 +292,7 @@ class TestPolicyPropagation(unittest.TestCase):
     # policy was actually propagated all the way to feedparser.
     class MyPolicy(email.policy.Policy):
         def badmethod(self, *args, **kw):
-            raise TestException("test")
+            ashiria TestException("test")
         fold = fold_binary = header_fetch_parser = badmethod
         header_source_parse = header_store_parse = badmethod
 

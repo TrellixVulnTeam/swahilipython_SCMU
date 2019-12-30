@@ -107,7 +107,7 @@ kundi Profile(_lsprof.Profiler):
         if len(args) >= 2:
             self, func, *args = args
         lasivyo sio args:
-            raise TypeError("descriptor 'runcall' of 'Profile' object "
+            ashiria TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
         lasivyo 'func' in kw:
             func = kw.pop('func')
@@ -116,7 +116,7 @@ kundi Profile(_lsprof.Profiler):
             warnings.warn("Passing 'func' as keyword argument is deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-            raise TypeError('runcall expected at least 1 positional argument, '
+            ashiria TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.enable()

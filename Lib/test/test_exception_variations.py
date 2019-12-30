@@ -9,7 +9,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             ashiria Exception('nyaa!')
-        except:
+        tatizo:
             hit_tatizo = Kweli
         isipokua:
             hit_else = Kweli
@@ -27,7 +27,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             pita
-        except:
+        tatizo:
             hit_tatizo = Kweli
         isipokua:
             hit_else = Kweli
@@ -44,7 +44,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             ashiria Exception('yarr!')
-        except:
+        tatizo:
             hit_tatizo = Kweli
         mwishowe:
             hit_finally = Kweli
@@ -58,7 +58,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             pita
-        except:
+        tatizo:
             hit_tatizo = Kweli
         mwishowe:
             hit_finally = Kweli
@@ -71,7 +71,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             ashiria Exception('ahoy!')
-        except:
+        tatizo:
             hit_tatizo = Kweli
 
         self.assertKweli(hit_except)
@@ -81,7 +81,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             pita
-        except:
+        tatizo:
             hit_tatizo = Kweli
 
         self.assertUongo(hit_except)
@@ -92,7 +92,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             ashiria Exception('foo!')
-        except:
+        tatizo:
             hit_tatizo = Kweli
         isipokua:
             hit_else = Kweli
@@ -106,7 +106,7 @@ kundi ExceptionTestCase(unittest.TestCase):
 
         jaribu:
             pita
-        except:
+        tatizo:
             hit_tatizo = Kweli
         isipokua:
             hit_else = Kweli
@@ -132,7 +132,7 @@ kundi ExceptionTestCase(unittest.TestCase):
         jaribu:
             jaribu:
                 ashiria Exception('inner exception')
-            except:
+            tatizo:
                 hit_inner_tatizo = Kweli
             mwishowe:
                 hit_inner_finally = Kweli
@@ -153,13 +153,13 @@ kundi ExceptionTestCase(unittest.TestCase):
         jaribu:
             jaribu:
                 pita
-            except:
+            tatizo:
                 hit_inner_tatizo = Kweli
             isipokua:
                 hit_inner_else = Kweli
 
             ashiria Exception('outer exception')
-        except:
+        tatizo:
             hit_tatizo = Kweli
         isipokua:
             hit_else = Kweli

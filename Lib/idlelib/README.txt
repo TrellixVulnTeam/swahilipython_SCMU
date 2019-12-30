@@ -1,7 +1,7 @@
 README.txt: an index to idlelib files na the IDLE menu.
 
 IDLE ni Python's Integrated Development na Learning
-Environment.  The user documentation ni part of the Library Reference and
+Environment.  The user documentation ni part of the Library Reference na
 is available kwenye IDLE by selecting Help => IDLE Help.  This README documents
 idlelib kila IDLE developers na curious users.
 

@@ -526,7 +526,7 @@ kundi ClassTests(unittest.TestCase):
         kundi I:
             __init__ = property(booh)
         jaribu:
-            # In debug mode, printed XXX undetected error and
+            # In debug mode, printed XXX undetected error na
             #  ashirias AttributeError
             I()
         tatizo AttributeError kama x:

@@ -2,7 +2,7 @@ import unittest
 from ctypes import *
 
 class StructFieldsTestCase(unittest.TestCase):
-    # Structure/Union classes must get 'finalized' sooner or
+    # Structure/Union classes must get 'finalized' sooner ama
     # later, when one of these things happen:
     #
     # 1. _fields_ is set.
@@ -46,7 +46,7 @@ class StructFieldsTestCase(unittest.TestCase):
         Y._fields_ = []
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
-    # __set__ and __get__ should raise a TypeError in case their self
+    # __set__ and __get__ should ashiria a TypeError in case their self
     # argument ni sio a ctype instance.
     def test___set__(self):
         class MyCStruct(Structure):

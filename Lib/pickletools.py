@@ -39,7 +39,7 @@ bytes_types = pickle.bytes_types
 # called an unpickling machine).  It's a sequence of opcodes, interpreted by the
 # PM, building an arbitrarily complex Python object.
 #
-# For the most part, the PM ni very simple:  there are no looping, testing, or
+# For the most part, the PM ni very simple:  there are no looping, testing, ama
 # conditional instructions, no arithmetic na no function calls.  Opcodes are
 # executed once each, kutoka first to last, until a STOP opcode ni reached.
 #
@@ -84,7 +84,7 @@ bytes_types = pickle.bytes_types
 #   na LONG), protocol 1 added three more kila more-efficient pickling of short
 #   integers, na protocol 2 added two more kila more-efficient pickling of
 #   long integers (before protocol 2, the only ways to pickle a Python long
-#   took time quadratic kwenye the number of digits, kila both pickling and
+#   took time quadratic kwenye the number of digits, kila both pickling na
 #   unpickling).  "Opcode bloat" isn't so much a subtlety kama a source of
 #   wearying complication.
 #
@@ -176,7 +176,7 @@ kundi ArgumentDescriptor(object):
         # name of descriptor record, also a module global name; a string
         'name',
 
-        # length of argument, kwenye bytes; an int; UP_TO_NEWLINE and
+        # length of argument, kwenye bytes; an int; UP_TO_NEWLINE na
         # TAKEN_FROM_ARGUMENT{1,4,8} are negative values kila variable-length
         # cases
         'n',
@@ -194,7 +194,7 @@ kundi ArgumentDescriptor(object):
         assert isinstance(name, str)
         self.name = name
 
-        assert isinstance(n, int) na (n >= 0 or
+        assert isinstance(n, int) na (n >= 0 ama
                                        n kwenye (UP_TO_NEWLINE,
                                              TAKEN_FROM_ARGUMENT1,
                                              TAKEN_FROM_ARGUMENT4,
@@ -365,7 +365,7 @@ stringnl = ArgumentDescriptor(
                reader=read_stringnl,
                doc="""A newline-terminated string.
 
-                   This ni a repr-style string, ukijumuisha embedded escapes, and
+                   This ni a repr-style string, ukijumuisha embedded escapes, na
                    bracketing quotes.
                    """)
 
@@ -826,7 +826,7 @@ floatnl = ArgumentDescriptor(
               doc="""A newline-terminated decimal floating literal.
 
               In general this requires 17 significant digits kila roundtrip
-              identity, na pickling then unpickling infinities, NaNs, and
+              identity, na pickling then unpickling infinities, NaNs, na
               minus zero doesn't work across boxes, ama on some boxes even
               on itself (e.g., Windows can't read the strings it produces
               kila infinities ama NaNs).
@@ -1482,7 +1482,7 @@ opcodes = [
       IEEE-754 double precision values, which ni what Python float maps to
       on most boxes).
 
-      In general, FLOAT cannot be used to transport infinities, NaNs, or
+      In general, FLOAT cannot be used to transport infinities, NaNs, ama
       minus zero across boxes (or even on a single box, ikiwa the platform C
       library can't read the strings it produces kila such things -- Windows
       ni like that), but may do less damage than BINFLOAT on boxes with
@@ -1498,7 +1498,7 @@ opcodes = [
       doc="""Float stored kwenye binary form, ukijumuisha 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
-      In general, BINFLOAT cannot be used to transport infinities, NaNs, or
+      In general, BINFLOAT cannot be used to transport infinities, NaNs, ama
       minus zero, ashirias an exception ikiwa the exponent exceeds the range of
       an IEEE-754 double, na retains no more than 53 bits of precision (if
       there are more than that, "add a half na chop" rounding ni used to
@@ -1886,7 +1886,7 @@ opcodes = [
 
       This code na the similar EXT2 na EXT4 allow using a registry
       of popular objects that are pickled by name, typically classes.
-      It ni envisioned that through a global negotiation and
+      It ni envisioned that through a global negotiation na
       registration process, third parties can set up a mapping between
       ints na object names.
 
@@ -2000,7 +2000,7 @@ opcodes = [
 
       ni called.
 
-      Else the argument must be a dict, the object must have a __dict__, and
+      Else the argument must be a dict, the object must have a __dict__, na
       the object ni updated via
 
           anyobject.__dict__.update(argument)
@@ -2460,8 +2460,8 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
 
         # See whether a MARK should be popped.
         markmsg = Tupu
-        ikiwa markobject kwenye before ama (opcode.name == "POP" and
-                                    stack and
+        ikiwa markobject kwenye before ama (opcode.name == "POP" na
+                                    stack na
                                     stack[-1] ni markobject):
             assert markobject haiko kwenye after
             ikiwa __debug__:

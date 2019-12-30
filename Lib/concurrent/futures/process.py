@@ -214,7 +214,7 @@ eleza _process_worker(call_queue, result_queue, initializer, initargs):
     This worker ni run kwenye a separate process.
 
     Args:
-        call_queue: A ctx.Queue of _CallItems that will be read and
+        call_queue: A ctx.Queue of _CallItems that will be read na
             evaluated by the worker.
         result_queue: A ctx.Queue of _ResultItems that will written
             to by the worker.
@@ -226,7 +226,7 @@ eleza _process_worker(call_queue, result_queue, initializer, initargs):
             initializer(*initargs)
         tatizo BaseException:
             _base.LOGGER.critical('Exception kwenye initializer:', exc_info=Kweli)
-            # The parent will notice that the process stopped and
+            # The parent will notice that the process stopped na
             # mark the pool broken
             rudisha
     wakati Kweli:
@@ -475,7 +475,7 @@ eleza _check_system_limits():
     ashiria NotImplementedError(_system_limited)
 
 
-eleza _chain_kutoka_iterable_of_lists(iterable):
+eleza _chain_from_iterable_of_lists(iterable):
     """
     Specialized implementation of itertools.chain.kutoka_iterable.
     Each item kwenye *iterable* should be a list.  This function is
@@ -518,7 +518,7 @@ kundi ProcessPoolExecutor(_base.Executor):
         isipokua:
             ikiwa max_workers <= 0:
                 ashiria ValueError("max_workers must be greater than 0")
-            lasivyo (sys.platform == 'win32' and
+            lasivyo (sys.platform == 'win32' na
                 max_workers > _MAX_WINDOWS_WORKERS):
                 ashiria ValueError(
                     f"max_workers must be <= {_MAX_WINDOWS_WORKERS}")
@@ -674,7 +674,7 @@ kundi ProcessPoolExecutor(_base.Executor):
         results = super().map(partial(_process_chunk, fn),
                               _get_chunks(*iterables, chunksize=chunksize),
                               timeout=timeout)
-        rudisha _chain_kutoka_iterable_of_lists(results)
+        rudisha _chain_from_iterable_of_lists(results)
 
     eleza shutdown(self, wait=Kweli):
         ukijumuisha self._shutdown_lock:

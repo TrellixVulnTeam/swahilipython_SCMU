@@ -332,8 +332,8 @@ kundi CodeWeakRefTest(unittest.TestCase):
             self.called = Kweli
 
         # f ni now the last reference to the function, na through it, the code
-        # object.  While we hold it, check that we can create a weakref and
-        # deref it.  Then delete it, na check that the callback gets called and
+        # object.  While we hold it, check that we can create a weakref na
+        # deref it.  Then delete it, na check that the callback gets called na
         # the reference dies.
         coderef = weakref.ref(f.__code__, callback)
         self.assertKweli(bool(coderef()))

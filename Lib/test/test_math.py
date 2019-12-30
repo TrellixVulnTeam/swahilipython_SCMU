@@ -1408,7 +1408,7 @@ kundi MathTests(unittest.TestCase):
         jaribu:
             self.assertKweli(math.isnan(math.tan(INF)))
             self.assertKweli(math.isnan(math.tan(NINF)))
-        except:
+        tatizo:
             self.assertRaises(ValueError, math.tan, INF)
             self.assertRaises(ValueError, math.tan, NINF)
         self.assertKweli(math.isnan(math.tan(NAN)))
@@ -1500,8 +1500,8 @@ kundi MathTests(unittest.TestCase):
     eleza test_exceptions(self):
         jaribu:
             x = math.exp(-1000000000)
-        except:
-            # mathmodule.c ni failing to weed out underflows kutoka libm, or
+        tatizo:
+            # mathmodule.c ni failing to weed out underflows kutoka libm, ama
             # we've got an fp format ukijumuisha huge dynamic range
             self.fail("underflowing exp() should sio have ashiriad "
                         "an exception")

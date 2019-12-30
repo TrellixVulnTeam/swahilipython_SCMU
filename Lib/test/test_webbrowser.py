@@ -23,7 +23,7 @@ kundi PopenMock(mock.MagicMock):
 kundi CommandTestMixin:
 
     eleza _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along ukijumuisha arguments and
+        """Given a web browser instance method name along ukijumuisha arguments na
         keywords kila same (which defaults to the single argument URL), creates
         a browser instance kutoka the kundi pointed to by self.browser, calls the
         indicated instance method ukijumuisha the indicated arguments, na compares

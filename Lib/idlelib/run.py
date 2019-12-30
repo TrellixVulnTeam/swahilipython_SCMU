@@ -109,7 +109,7 @@ eleza main(del_exitfunc=Uongo):
     creates an instance of run.MyHandler na calls its handle() method.
     handle() instantiates a run.Executive object, pitaing it a reference to the
     MyHandler object.  That reference ni saved kama attribute rpchandler of the
-    Executive instance.  The Executive methods have access to the reference and
+    Executive instance.  The Executive methods have access to the reference na
     can pita it on to entities that they command
     (e.g. debugger_r.Debugger.start_debugger()).  The latter, kwenye turn, can
     call MyHandler(SocketIO) register/unregister methods via the reference to
@@ -124,7 +124,7 @@ eleza main(del_exitfunc=Uongo):
     jaribu:
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
-    except:
+    tatizo:
         andika("IDLE Subprocess: no IP port pitaed kwenye sys.argv.",
               file=sys.__stderr__)
         rudisha
@@ -163,12 +163,12 @@ eleza main(del_exitfunc=Uongo):
         tatizo SystemExit:
             capture_warnings(Uongo)
             ashiria
-        except:
+        tatizo:
             type, value, tb = sys.exc_info()
             jaribu:
                 print_exception()
                 rpc.response_queue.put((seq, Tupu))
-            except:
+            tatizo:
                 # Link didn't work, print same exception to __stderr__
                 traceback.print_exception(type, value, tb, file=sys.__stderr__)
                 exit()
@@ -227,8 +227,8 @@ eleza print_exception():
             print_exc(type(cause), cause, cause.__traceback__)
             andika("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        lasivyo (context ni sio Tupu and
-              sio exc.__suppress_context__ and
+        lasivyo (context ni sio Tupu na
+              sio exc.__suppress_context__ na
               id(context) haiko kwenye seen):
             print_exc(type(context), context, context.__traceback__)
             andika("\nDuring handling of the above exception, "
@@ -360,7 +360,7 @@ eleza uninstall_recursionlimit_wrappers():
     this to remove the wrapping.
     """
     ikiwa (
-            getattr(sys.setrecursionlimit, '__wrapped__', Tupu) and
+            getattr(sys.setrecursionlimit, '__wrapped__', Tupu) na
             getattr(sys.getrecursionlimit, '__wrapped__', Tupu)
     ):
         sys.setrecursionlimit = sys.setrecursionlimit.__wrapped__
@@ -385,7 +385,7 @@ kundi MyRPCServer(rpc.RPCServer):
             global exit_now
             exit_now = Kweli
             thread.interrupt_main()
-        except:
+        tatizo:
             erf = sys.__stderr__
             andika('\n' + '-'*40, file=erf)
             andika('Unhandled server exception!', file=erf)
@@ -554,7 +554,7 @@ kundi Executive(object):
                 ikiwa sio isinstance(ob, (type(Tupu), int)):
                     andika('SystemExit: ' + str(ob), file=sys.stderr)
             # Return to the interactive prompt.
-        except:
+        tatizo:
             self.usr_exc_info = sys.exc_info()
             ikiwa quitting:
                 exit()

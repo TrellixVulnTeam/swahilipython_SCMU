@@ -1,5 +1,5 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/userfunctions.py: tests kila user-defined functions and
+# pysqlite2/test/userfunctions.py: tests kila user-defined functions na
 #                                  aggregates.
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>

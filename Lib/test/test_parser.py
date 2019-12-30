@@ -265,7 +265,7 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
                          "@decorator2\n"
                          "kundi foo():pita")
 
-    eleza test_import_kutoka_statement(self):
+    eleza test_import_from_statement(self):
         self.check_suite("kutoka sys.path agiza *")
         self.check_suite("kutoka sys.path agiza dirname")
         self.check_suite("kutoka sys.path agiza (dirname)")
@@ -322,13 +322,13 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("ukijumuisha open('x') kama f, open('y') kama g: pita\n")
 
     eleza test_try_stmt(self):
-        self.check_suite("jaribu: pita\nexcept: pita\n")
+        self.check_suite("jaribu: pita\ntatizo: pita\n")
         self.check_suite("jaribu: pita\nmwishowe: pita\n")
         self.check_suite("jaribu: pita\ntatizo A: pita\nmwishowe: pita\n")
-        self.check_suite("jaribu: pita\ntatizo A: pita\nexcept: pita\n"
+        self.check_suite("jaribu: pita\ntatizo A: pita\ntatizo: pita\n"
                          "mwishowe: pita\n")
-        self.check_suite("jaribu: pita\nexcept: pita\nisipokua: pita\n")
-        self.check_suite("jaribu: pita\nexcept: pita\nisipokua: pita\n"
+        self.check_suite("jaribu: pita\ntatizo: pita\nisipokua: pita\n")
+        self.check_suite("jaribu: pita\ntatizo: pita\nisipokua: pita\n"
                          "mwishowe: pita\n")
 
     eleza test_if_stmt(self):

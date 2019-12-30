@@ -60,7 +60,7 @@ kundi ResourceTest(unittest.TestCase):
                         # On some systems (e.g., Ubuntu on hppa) the flush()
                         # doesn't always cause the exception, but the close()
                         # does eventually.  Try flushing several times in
-                        # an attempt to ensure the file ni really synced and
+                        # an attempt to ensure the file ni really synced na
                         # the exception ashiriad.
                         kila i kwenye range(5):
                             time.sleep(.1)

@@ -110,7 +110,7 @@ isipokua:
     # unable to retrieve the real program name
     _PROJECT_BASE = _safe_realpath(os.getcwd())
 
-ikiwa (os.name == 'nt' and
+ikiwa (os.name == 'nt' na
     _PROJECT_BASE.lower().endswith(('\\pcbuild\\win32', '\\pcbuild\\amd64'))):
     _PROJECT_BASE = _safe_realpath(os.path.join(_PROJECT_BASE, pardir, pardir))
 
@@ -280,7 +280,7 @@ eleza _parse_makefile(filename, vars=Tupu):
                     item = os.environ[n]
 
                 lasivyo n kwenye renamed_variables:
-                    ikiwa (name.startswith('PY_') and
+                    ikiwa (name.startswith('PY_') na
                         name[3:] kwenye renamed_variables):
                         item = ""
 
@@ -605,8 +605,8 @@ eleza get_config_var(name):
 eleza get_platform():
     """Return a string that identifies the current platform.
 
-    This ni used mainly to distinguish platform-specific build directories and
-    platform-specific built distributions.  Typically includes the OS name and
+    This ni used mainly to distinguish platform-specific build directories na
+    platform-specific built distributions.  Typically includes the OS name na
     version na the architecture (as supplied by 'os.uname()'), although the
     exact information included depends on the OS; on Linux, the kernel version
     isn't particularly agizaant.

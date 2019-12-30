@@ -143,14 +143,14 @@ class bdist_msi(Command):
             self.bdist_dir = os.path.join(bdist_base, 'msi')
 
         short_version = get_python_version()
-        if (not self.target_version) and self.distribution.has_ext_modules():
+        if (sio self.target_version) and self.distribution.has_ext_modules():
             self.target_version = short_version
 
         if self.target_version:
             self.versions = [self.target_version]
             if sio self.skip_build and self.distribution.has_ext_modules()\
                and self.target_version != short_version:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "target version can only be %s, or the '--skip-build'"
                       " option must be specified" % (short_version,))
         isipokua:
@@ -162,7 +162,7 @@ class bdist_msi(Command):
                                    )
 
         if self.pre_install_script:
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "the pre-install-script feature ni sio yet implemented")
 
         if self.install_script:
@@ -170,7 +170,7 @@ class bdist_msi(Command):
                 if self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install_script '%s' sio found in scripts"
                       % self.install_script)
         self.install_script_key = None
@@ -310,7 +310,7 @@ class bdist_msi(Command):
                             key = seen[afile] = dir.add_file(file)
                             if file==self.install_script:
                                 if self.install_script_key:
-                                    raise DistutilsOptionError(
+                                    ashiria DistutilsOptionError(
                                           "Multiple files with name %s" % file)
                                 self.install_script_key = '[#%s]' % key
                         isipokua:

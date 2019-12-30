@@ -1,4 +1,4 @@
-"""Test suite kila statistics module, including helper NumericTestCase and
+"""Test suite kila statistics module, including helper NumericTestCase na
 approx_equal function.
 
 """
@@ -100,7 +100,7 @@ eleza approx_equal(x, y, tol=1e-12, rel=1e-7):
     tol, x na y are considered approximately equal.
 
     Relative error ni defined kama abs((x-y)/x) ama abs((x-y)/y), whichever is
-    smaller, provided x ama y are sio zero. If that figure ni less than or
+    smaller, provided x ama y are sio zero. If that figure ni less than ama
     equal to rel, x na y are considered approximately equal.
 
     Complex numbers are sio directly supported. If you wish to compare to
@@ -122,7 +122,7 @@ eleza approx_equal(x, y, tol=1e-12, rel=1e-7):
         # This includes the case of two infinities ukijumuisha the same sign.
         rudisha Kweli
     ikiwa math.isinf(x) ama math.isinf(y):
-        # This includes the case of two infinities of opposite sign, or
+        # This includes the case of two infinities of opposite sign, ama
         # one infinity na one finite number.
         rudisha Uongo
     # Two finite numbers.
@@ -241,7 +241,7 @@ kundi NumericTestCase(unittest.TestCase):
         ikiwa rel ni Tupu:
             rel = self.rel
         ikiwa (
-                isinstance(first, collections.abc.Sequence) and
+                isinstance(first, collections.abc.Sequence) na
                 isinstance(second, collections.abc.Sequence)
             ):
             check = self._check_approx_seq
@@ -1950,7 +1950,7 @@ kundi VarianceStdevMixin(UnivariateCommonMixin):
 
         # This ni an explicit test that iterators na lists are treated the
         # same; justification kila this test over na above the similar test
-        # kwenye UnivariateCommonMixin ni that an earlier design had variance and
+        # kwenye UnivariateCommonMixin ni that an earlier design had variance na
         # friends swap between one- na two-pita algorithms, which would
         # sometimes give different results.
         data = [random.uniform(-3, 8) kila _ kwenye range(1000)]

@@ -77,7 +77,7 @@ kundi FutureTest(unittest.TestCase):
     eleza test_parserhack(self):
         # test that the parser.c::future_hack function works kama expected
         # Note: although this test must pita, it's sio testing the original
-        #       bug kama of 2.6 since the ukijumuisha statement ni sio optional and
+        #       bug kama of 2.6 since the ukijumuisha statement ni sio optional na
         #       the parser hack disabled. If a new keyword ni introduced in
         #       2.6, change this to refer to the new future agiza.
         jaribu:
@@ -176,7 +176,7 @@ kundi AnnotationsFutureTestCase(unittest.TestCase):
         eq('++value')
         eq('-1')
         eq('~int na sio v1 ^ 123 + v2 | Kweli')
-        eq('a + (not b)')
+        eq('a + (sio b)')
         eq('lambda: Tupu')
         eq('lambda arg: Tupu')
         eq('lambda a=Kweli: a')

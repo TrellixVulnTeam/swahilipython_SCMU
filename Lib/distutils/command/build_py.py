@@ -62,7 +62,7 @@ class build_py (Command):
                 self.optimize = int(self.optimize)
                 assert 0 <= self.optimize <= 2
             tatizo (ValueError, AssertionError):
-                raise DistutilsOptionError("optimize must be 0, 1, or 2")
+                ashiria DistutilsOptionError("optimize must be 0, 1, or 2")
 
     def run(self):
         # XXX copy_file by default preserves atime and mtime.  IMHO this is
@@ -187,10 +187,10 @@ class build_py (Command):
         # circumvent them.
         if package_dir != "":
             if sio os.path.exists(package_dir):
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                       "package directory '%s' does sio exist" % package_dir)
             if sio os.path.isdir(package_dir):
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                        "supposed package directory '%s' exists, "
                        "but ni sio a directory" % package_dir)
 
@@ -203,7 +203,7 @@ class build_py (Command):
                 log.warn(("package init file '%s' sio found " +
                           "(or sio a regular file)"), init_py)
 
-        # Either haiko kwenye a package at all (__init__.py sio expected), or
+        # Either haiko kwenye a package at all (__init__.py sio expected), ama
         # __init__.py doesn't exist -- so don't return the filename.
         return None
 
@@ -283,9 +283,9 @@ class build_py (Command):
 
     def find_all_modules(self):
         """Compute the list of all modules that will be built, whether
-        they are specified one-module-at-a-time ('self.py_modules') or
+        they are specified one-module-at-a-time ('self.py_modules') ama
         by whole packages ('self.packages').  Return a list of tuples
-        (package, module, module_file), just like 'find_modules()' and
+        (package, module, module_file), just like 'find_modules()' na
         'find_package_modules()' do."""
         modules = []
         if self.py_modules:
@@ -331,7 +331,7 @@ class build_py (Command):
         if isinstance(package, str):
             package = package.split('.')
         lasivyo sio isinstance(package, (list, tuple)):
-            raise TypeError(
+            ashiria TypeError(
                   "'package' must be a string (dot-separated), list, or tuple")
 
         # Now put the module source file into the "build" area -- this is
@@ -355,7 +355,7 @@ class build_py (Command):
         for package in self.packages:
             # Get list of (package, module, module_file) tuples based on
             # scanning the package directory.  'package' is only included
-            # in the tuple so that 'find_modules()' and
+            # in the tuple so that 'find_modules()' na
             # 'find_package_tuples()' have a consistent interface; it's
             # ignored here (apart from a sanity check).  Also, 'module' is
             # the *unqualified* module name (ie. no dots, no package -- we

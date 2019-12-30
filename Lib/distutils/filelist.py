@@ -82,22 +82,22 @@ class FileList:
         if action in ('include', 'exclude',
                       'global-include', 'global-exclude'):
             if len(words) < 2:
-                raise DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects <pattern1> <pattern2> ..." % action)
             patterns = [convert_path(w) for w in words[1:]]
         lasivyo action in ('recursive-include', 'recursive-exclude'):
             if len(words) < 3:
-                raise DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects <dir> <pattern1> <pattern2> ..." % action)
             dir = convert_path(words[1])
             patterns = [convert_path(w) for w in words[2:]]
         lasivyo action in ('graft', 'prune'):
             if len(words) != 2:
-                raise DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects a single <dir_pattern>" % action)
             dir_pattern = convert_path(words[1])
         isipokua:
-            raise DistutilsTemplateError("unknown action '%s'" % action)
+            ashiria DistutilsTemplateError("unknown action '%s'" % action)
 
         return (action, patterns, dir, dir_pattern)
 
@@ -171,7 +171,7 @@ class FileList:
                 log.warn(("no previously-included directories found "
                           "matching '%s'"), dir_pattern)
         isipokua:
-            raise DistutilsInternalError(
+            ashiria DistutilsInternalError(
                   "this cannot happen: invalid action '%s'" % action)
 
 
@@ -193,7 +193,7 @@ class FileList:
         (itself a pattern) and ending with 'pattern', with anything in between
         them, will match.  'anchor' is ignored in this case.
 
-        If 'is_regex' is true, 'anchor' and 'prefix' are ignored, and
+        If 'is_regex' is true, 'anchor' and 'prefix' are ignored, na
         'pattern' is assumed to be either a string containing a regex or a
         regex object -- no translation is done, the regex is just compiled
         and used as-is.

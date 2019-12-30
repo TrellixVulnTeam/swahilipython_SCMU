@@ -14,7 +14,7 @@ kutoka test agiza support
 kutoka test.support agiza script_helper
 
 # Used kwenye ReferencesTestCase.test_ref_created_during_del() .
-ref_kutoka_toa = Tupu
+ref_from_toa = Tupu
 
 # Used by FinalizeTestCase kama a global that may be replaced by Tupu
 # when the interpreter shuts down.
@@ -300,7 +300,7 @@ kundi ReferencesTestCase(TestBase):
         p @= 5
         self.assertEqual(p, 561)
 
-    # The PyWeakref_* C API ni documented kama allowing either NULL or
+    # The PyWeakref_* C API ni documented kama allowing either NULL ama
     # Tupu kama the value kila the callback, where either means "no
     # callback".  The "no callback" ref na proxy objects are supposed
     # to be shared so long kama they exist by all callers so long as
@@ -654,7 +654,7 @@ kundi ReferencesTestCase(TestBase):
         agiza gc
 
         # Do something nasty kwenye a weakref callback:  resurrect objects
-        # kutoka dead cycles.  For this to be attempted, the weakref and
+        # kutoka dead cycles.  For this to be attempted, the weakref na
         # its callback must also be part of the cyclic trash (else the
         # objects reachable via the callback couldn't be kwenye cyclic trash
         # to begin ukijumuisha -- the callback would act like an external root).
@@ -772,8 +772,8 @@ kundi ReferencesTestCase(TestBase):
         # non-existent memory.  This test should sio segfault the interpreter.
         kundi Target(object):
             eleza __del__(self):
-                global ref_kutoka_del
-                ref_kutoka_toa = weakref.ref(self)
+                global ref_from_del
+                ref_from_toa = weakref.ref(self)
 
         w = Target()
 
@@ -1438,7 +1438,7 @@ kundi MappingTestCase(TestBase):
                 it = Tupu           # should commit all removals
                 gc.collect()
         self.check_weak_destroy_and_mutate_while_iterating(dict, testcontext)
-        # Issue #21173: len() fragile when keys are both implicitly and
+        # Issue #21173: len() fragile when keys are both implicitly na
         # explicitly removed.
         dict, objects = self.make_weak_keyed_dict()
         self.check_weak_del_and_len_while_iterating(dict, testcontext)
@@ -1468,12 +1468,12 @@ kundi MappingTestCase(TestBase):
         dict, objects = self.make_weak_valued_dict()
         self.check_weak_del_and_len_while_iterating(dict, testcontext)
 
-    eleza test_make_weak_keyed_dict_kutoka_dict(self):
+    eleza test_make_weak_keyed_dict_from_dict(self):
         o = Object(3)
         dict = weakref.WeakKeyDictionary({o:364})
         self.assertEqual(dict[o], 364)
 
-    eleza test_make_weak_keyed_dict_kutoka_weak_keyed_dict(self):
+    eleza test_make_weak_keyed_dict_from_weak_keyed_dict(self):
         o = Object(3)
         dict = weakref.WeakKeyDictionary({o:364})
         dict2 = weakref.WeakKeyDictionary(dict)
@@ -1486,12 +1486,12 @@ kundi MappingTestCase(TestBase):
             dict[o] = o.arg
         rudisha dict, objects
 
-    eleza test_make_weak_valued_dict_kutoka_dict(self):
+    eleza test_make_weak_valued_dict_from_dict(self):
         o = Object(3)
         dict = weakref.WeakValueDictionary({364:o})
         self.assertEqual(dict[364], o)
 
-    eleza test_make_weak_valued_dict_kutoka_weak_valued_dict(self):
+    eleza test_make_weak_valued_dict_from_weak_valued_dict(self):
         o = Object(3)
         dict = weakref.WeakValueDictionary({364:o})
         dict2 = weakref.WeakValueDictionary(dict)
@@ -1637,7 +1637,7 @@ kundi MappingTestCase(TestBase):
         self.assertRaises(KeyError, d.__delitem__, o)
         self.assertRaises(KeyError, d.__getitem__, o)
 
-        # If a key isn't of a weakly referencable type, __getitem__ and
+        # If a key isn't of a weakly referencable type, __getitem__ na
         # __setitem__ ashiria TypeError.  __delitem__ should too.
         self.assertRaises(TypeError, d.__delitem__,  13)
         self.assertRaises(TypeError, d.__getitem__,  13)

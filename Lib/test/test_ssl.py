@@ -187,14 +187,14 @@ eleza has_tls_version(version):
     # be compiled kwenye but disabled by a policy ama config option.
     ctx = ssl.SSLContext()
     ikiwa (
-            hasattr(ctx, 'minimum_version') and
-            ctx.minimum_version != ssl.TLSVersion.MINIMUM_SUPPORTED and
+            hasattr(ctx, 'minimum_version') na
+            ctx.minimum_version != ssl.TLSVersion.MINIMUM_SUPPORTED na
             version < ctx.minimum_version
     ):
         rudisha Uongo
     ikiwa (
-        hasattr(ctx, 'maximum_version') and
-        ctx.maximum_version != ssl.TLSVersion.MAXIMUM_SUPPORTED and
+        hasattr(ctx, 'maximum_version') na
+        ctx.maximum_version != ssl.TLSVersion.MAXIMUM_SUPPORTED na
         version > ctx.maximum_version
     ):
         rudisha Uongo
@@ -360,7 +360,7 @@ kundi BasicSocketTests(unittest.TestCase):
         v = ssl.RAND_status()
         ikiwa support.verbose:
             sys.stdout.write("\n RAND_status ni %d (%s)\n"
-                             % (v, (v na "sufficient randomness") or
+                             % (v, (v na "sufficient randomness") ama
                                 "insufficient randomness"))
 
         data, is_cryptographic = ssl.RAND_pseudo_bytes(16)
@@ -2160,7 +2160,7 @@ kundi SimpleBackgroundTests(unittest.TestCase):
                                    ssl.SSL_ERROR_WANT_WRITE):
                     ashiria
                 errno = e.errno
-            # Get any data kutoka the outgoing BIO irrespective of any error, and
+            # Get any data kutoka the outgoing BIO irrespective of any error, na
             # send it to the socket.
             buf = outgoing.read()
             sock.sendall(buf)
@@ -2397,7 +2397,7 @@ kundi ThreadedEchoServer(threading.Thread):
                             sys.stdout.write(" server: client closed connection\n")
                         self.close()
                         rudisha
-                    lasivyo (self.server.starttls_server and
+                    lasivyo (self.server.starttls_server na
                           stripped == b'STARTTLS'):
                         ikiwa support.verbose na self.server.connectionchatty:
                             sys.stdout.write(" server: read STARTTLS kutoka client, sending OK...\n")
@@ -2436,7 +2436,7 @@ kundi ThreadedEchoServer(threading.Thread):
                         cert = self.sslconn.getpeercert()
                         self.write(repr(cert).encode("us-ascii") + b"\n")
                     isipokua:
-                        ikiwa (support.verbose and
+                        ikiwa (support.verbose na
                             self.server.connectionchatty):
                             ctype = (self.sslconn na "encrypted") ama "unencrypted"
                             sys.stdout.write(" server: read %r (%s), sending back %r (%s)...\n"
@@ -2665,7 +2665,7 @@ kundi AsyncoreEchoServer(threading.Thread):
         wakati self.active:
             jaribu:
                 asyncore.loop(1)
-            except:
+            tatizo:
                 pita
 
     eleza stop(self):

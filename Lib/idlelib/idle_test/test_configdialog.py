@@ -181,10 +181,10 @@ kundi FontPageTest(unittest.TestCase):
         self.assertEqual(d.set_samples.called, 2)
         changes.clear()
 
-        d.font_bold.set(not default_bold)
+        d.font_bold.set(sio default_bold)
         expected = {'EditorWindow': {'font': 'Test Font',
                                      'font-size': '20',
-                                     'font-bold': str(not default_bold)}}
+                                     'font-bold': str(sio default_bold)}}
         self.assertEqual(mainpage, expected)
         self.assertEqual(d.set_samples.called, 3)
 

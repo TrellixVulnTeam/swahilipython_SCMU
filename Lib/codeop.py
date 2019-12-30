@@ -12,7 +12,7 @@ and:
 
 Approach:
 
-First, check ikiwa the source consists entirely of blank lines and
+First, check ikiwa the source consists entirely of blank lines na
 comments; ikiwa so, replace it ukijumuisha 'pita', because the built-in
 parser doesn't always do the right thing kila these.
 
@@ -154,7 +154,7 @@ kundi CommandCompiler:
         source -- the source string; may contain \n characters
         filename -- optional filename kutoka which source was read;
                     default "<input>"
-        symbol -- optional grammar start symbol; "single" (default) or
+        symbol -- optional grammar start symbol; "single" (default) ama
                   "eval"
 
         Return value / exceptions ashiriad:

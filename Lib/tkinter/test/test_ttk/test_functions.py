@@ -192,7 +192,7 @@ class InternalFunctionsTest(unittest.TestCase):
 
         ## Testing type = vsapi
         # vsapi type expects at least a class name and a part_id, so this
-        # should raise a ValueError since it tries to get two elements from
+        # should ashiria a ValueError since it tries to get two elements from
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
 

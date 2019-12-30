@@ -140,13 +140,13 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     kwenye strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` ni a non-negative integer, then JSON array elements and
+    If ``indent`` ni a non-negative integer, then JSON array elements na
     object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` na
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
@@ -162,9 +162,9 @@ eleza dump(obj, fp, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
 
     """
     # cached encoder
-    ikiwa (not skipkeys na ensure_ascii and
-        check_circular na allow_nan and
-        cls ni Tupu na indent ni Tupu na separators ni Tupu and
+    ikiwa (sio skipkeys na ensure_ascii na
+        check_circular na allow_nan na
+        cls ni Tupu na indent ni Tupu na separators ni Tupu na
         default ni Tupu na sio sort_keys na sio kw):
         iterable = _default_encoder.iterencode(obj)
     isipokua:
@@ -202,13 +202,13 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` ni a non-negative integer, then JSON array elements and
+    If ``indent`` ni a non-negative integer, then JSON array elements na
     object members will be pretty-printed ukijumuisha that indent level. An indent
     level of 0 will only insert newlines. ``Tupu`` ni the most compact
     representation.
 
     If specified, ``separators`` should be an ``(item_separator, key_separator)``
-    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` and
+    tuple.  The default ni ``(', ', ': ')`` ikiwa *indent* ni ``Tupu`` na
     ``(',', ': ')`` otherwise.  To get the most compact JSON representation,
     you should specify ``(',', ':')`` to eliminate whitespace.
 
@@ -224,9 +224,9 @@ eleza dumps(obj, *, skipkeys=Uongo, ensure_ascii=Kweli, check_circular=Kweli,
 
     """
     # cached encoder
-    ikiwa (not skipkeys na ensure_ascii and
-        check_circular na allow_nan and
-        cls ni Tupu na indent ni Tupu na separators ni Tupu and
+    ikiwa (sio skipkeys na ensure_ascii na
+        check_circular na allow_nan na
+        cls ni Tupu na indent ni Tupu na separators ni Tupu na
         default ni Tupu na sio sort_keys na sio kw):
         rudisha _default_encoder.encode(obj)
     ikiwa cls ni Tupu:
@@ -351,8 +351,8 @@ eleza loads(s, *, cls=Tupu, object_hook=Tupu, parse_float=Tupu,
         )
         toa kw['encoding']
 
-    ikiwa (cls ni Tupu na object_hook ni Tupu and
-            parse_int ni Tupu na parse_float ni Tupu and
+    ikiwa (cls ni Tupu na object_hook ni Tupu na
+            parse_int ni Tupu na parse_float ni Tupu na
             parse_constant ni Tupu na object_pairs_hook ni Tupu na sio kw):
         rudisha _default_decoder.decode(s)
     ikiwa cls ni Tupu:

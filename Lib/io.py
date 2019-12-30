@@ -6,7 +6,7 @@ defines the basic interface to a stream. Note, however, that there ni no
 separation between reading na writing to streams; implementations are
 allowed to ashiria an OSError ikiwa they do sio support a given operation.
 
-Extending IOBase ni RawIOBase which deals simply ukijumuisha the reading and
+Extending IOBase ni RawIOBase which deals simply ukijumuisha the reading na
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 

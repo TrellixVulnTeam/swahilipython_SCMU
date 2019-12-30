@@ -28,7 +28,7 @@ eleza ip_address(address):
     """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string ama integer, the IP address.  Either IPv4 or
+        address: A string ama integer, the IP address.  Either IPv4 ama
           IPv6 addresses may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
@@ -58,7 +58,7 @@ eleza ip_network(address, strict=Kweli):
     """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string ama integer, the IP network.  Either IPv4 or
+        address: A string ama integer, the IP network.  Either IPv4 ama
           IPv6 networks may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
@@ -88,7 +88,7 @@ eleza ip_interface(address):
     """Take an IP string/int na rudisha an object of the correct type.
 
     Args:
-        address: A string ama integer, the IP address.  Either IPv4 or
+        address: A string ama integer, the IP address.  Either IPv4 ama
           IPv6 addresses may be supplied; integers less than 2**32 will
           be considered to be IPv4 by default.
 
@@ -225,7 +225,7 @@ eleza summarize_address_range(first, last):
             If the version of the first address ni sio 4 ama 6.
 
     """
-    ikiwa (not (isinstance(first, _BaseAddress) and
+    ikiwa (sio (isinstance(first, _BaseAddress) na
              isinstance(last, _BaseAddress))):
         ashiria TypeError('first na last must be IP addresses, sio networks')
     ikiwa first.version != last.version:
@@ -431,7 +431,7 @@ kundi _IPAddressBase:
                                            expected_len, self._version))
 
     @classmethod
-    eleza _ip_int_kutoka_prefix(cls, prefixlen):
+    eleza _ip_int_from_prefix(cls, prefixlen):
         """Turn the prefix length into a bitwise netmask
 
         Args:
@@ -444,7 +444,7 @@ kundi _IPAddressBase:
         rudisha cls._ALL_ONES ^ (cls._ALL_ONES >> prefixlen)
 
     @classmethod
-    eleza _prefix_kutoka_ip_int(cls, ip_int):
+    eleza _prefix_from_ip_int(cls, ip_int):
         """Return prefix length kutoka the bitwise netmask.
 
         Args:
@@ -474,7 +474,7 @@ kundi _IPAddressBase:
         ashiria NetmaskValueError(msg) kutoka Tupu
 
     @classmethod
-    eleza _prefix_kutoka_prefix_string(cls, prefixlen_str):
+    eleza _prefix_from_prefix_string(cls, prefixlen_str):
         """Return prefix length kutoka a numeric string
 
         Args:
@@ -499,7 +499,7 @@ kundi _IPAddressBase:
         rudisha prefixlen
 
     @classmethod
-    eleza _prefix_kutoka_ip_string(cls, ip_str):
+    eleza _prefix_from_ip_string(cls, ip_str):
         """Turn a netmask/hostmask string into a prefix length
 
         Args:
@@ -513,7 +513,7 @@ kundi _IPAddressBase:
         """
         # Parse the netmask/hostmask like an IP address.
         jaribu:
-            ip_int = cls._ip_int_kutoka_string(ip_str)
+            ip_int = cls._ip_int_from_string(ip_str)
         tatizo AddressValueError:
             cls._report_invalid_netmask(ip_str)
 
@@ -521,14 +521,14 @@ kundi _IPAddressBase:
         # Note that the two ambiguous cases (all-ones na all-zeroes) are
         # treated kama netmasks.
         jaribu:
-            rudisha cls._prefix_kutoka_ip_int(ip_int)
+            rudisha cls._prefix_from_ip_int(ip_int)
         tatizo ValueError:
             pita
 
         # Invert the bits, na try matching a /0+1+/ hostmask instead.
         ip_int ^= cls._ALL_ONES
         jaribu:
-            rudisha cls._prefix_kutoka_ip_int(ip_int)
+            rudisha cls._prefix_from_ip_int(ip_int)
         tatizo ValueError:
             cls._report_invalid_netmask(ip_str)
 
@@ -607,7 +607,7 @@ kundi _BaseAddress(_IPAddressBase):
         rudisha '%s(%r)' % (self.__class__.__name__, str(self))
 
     eleza __str__(self):
-        rudisha str(self._string_kutoka_ip_int(self._ip))
+        rudisha str(self._string_from_ip_int(self._ip))
 
     eleza __hash__(self):
         rudisha hash(hex(int(self._ip)))
@@ -678,8 +678,8 @@ kundi _BaseNetwork(_IPAddressBase):
 
     eleza __eq__(self, other):
         jaribu:
-            rudisha (self._version == other._version and
-                    self.network_address == other.network_address and
+            rudisha (self._version == other._version na
+                    self.network_address == other.network_address na
                     int(self.netmask) == int(other.netmask))
         tatizo AttributeError:
             rudisha NotImplemented
@@ -870,7 +870,7 @@ kundi _BaseNetwork(_IPAddressBase):
     eleza _get_networks_key(self):
         """Network-only key function.
 
-        Returns an object that identifies this address' network and
+        Returns an object that identifies this address' network na
         netmask. This function ni a suitable "key" argument kila sorted()
         na list.sort().
 
@@ -980,7 +980,7 @@ kundi _BaseNetwork(_IPAddressBase):
             See RFC 2373 2.7 kila details.
 
         """
-        rudisha (self.network_address.is_multicast and
+        rudisha (self.network_address.is_multicast na
                 self.broadcast_address.is_multicast)
 
     @staticmethod
@@ -989,7 +989,7 @@ kundi _BaseNetwork(_IPAddressBase):
             # Always false ikiwa one ni v4 na the other ni v6.
             ikiwa a._version != b._version:
                 ashiria TypeError(f"{a} na {b} are sio of the same version")
-            rudisha (b.network_address <= a.network_address and
+            rudisha (b.network_address <= a.network_address na
                     b.broadcast_address >= a.broadcast_address)
         tatizo AttributeError:
             ashiria TypeError(f"Unable to test subnet containment "
@@ -1012,7 +1012,7 @@ kundi _BaseNetwork(_IPAddressBase):
             reserved IPv6 Network ranges.
 
         """
-        rudisha (self.network_address.is_reserved and
+        rudisha (self.network_address.is_reserved na
                 self.broadcast_address.is_reserved)
 
     @property
@@ -1023,7 +1023,7 @@ kundi _BaseNetwork(_IPAddressBase):
             A boolean, Kweli ikiwa the address ni reserved per RFC 4291.
 
         """
-        rudisha (self.network_address.is_link_local and
+        rudisha (self.network_address.is_link_local na
                 self.broadcast_address.is_link_local)
 
     @property
@@ -1035,7 +1035,7 @@ kundi _BaseNetwork(_IPAddressBase):
             iana-ipv4-special-registry ama iana-ipv6-special-registry.
 
         """
-        rudisha (self.network_address.is_private and
+        rudisha (self.network_address.is_private na
                 self.broadcast_address.is_private)
 
     @property
@@ -1058,7 +1058,7 @@ kundi _BaseNetwork(_IPAddressBase):
             RFC 2373 2.5.2.
 
         """
-        rudisha (self.network_address.is_unspecified and
+        rudisha (self.network_address.is_unspecified na
                 self.broadcast_address.is_unspecified)
 
     @property
@@ -1070,7 +1070,7 @@ kundi _BaseNetwork(_IPAddressBase):
             RFC 2373 2.5.3.
 
         """
-        rudisha (self.network_address.is_loopback and
+        rudisha (self.network_address.is_loopback na
                 self.broadcast_address.is_loopback)
 
 
@@ -1113,17 +1113,17 @@ kundi _BaseV4:
             isipokua:
                 jaribu:
                     # Check kila a netmask kwenye prefix length form
-                    prefixlen = cls._prefix_kutoka_prefix_string(arg)
+                    prefixlen = cls._prefix_from_prefix_string(arg)
                 tatizo NetmaskValueError:
                     # Check kila a netmask ama hostmask kwenye dotted-quad form.
                     # This may ashiria NetmaskValueError.
-                    prefixlen = cls._prefix_kutoka_ip_string(arg)
-            netmask = IPv4Address(cls._ip_int_kutoka_prefix(prefixlen))
+                    prefixlen = cls._prefix_from_ip_string(arg)
+            netmask = IPv4Address(cls._ip_int_from_prefix(prefixlen))
             cls._netmask_cache[arg] = netmask, prefixlen
         rudisha cls._netmask_cache[arg]
 
     @classmethod
-    eleza _ip_int_kutoka_string(cls, ip_str):
+    eleza _ip_int_from_string(cls, ip_str):
         """Turn the given IP string into an integer kila comparison.
 
         Args:
@@ -1180,7 +1180,7 @@ kundi _BaseV4:
         rudisha octet_int
 
     @classmethod
-    eleza _string_kutoka_ip_int(cls, ip_int):
+    eleza _string_from_ip_int(cls, ip_int):
         """Turns a 32-bit integer into dotted decimal notation.
 
         Args:
@@ -1249,7 +1249,7 @@ kundi IPv4Address(_BaseV4, _BaseAddress):
         addr_str = str(address)
         ikiwa '/' kwenye addr_str:
             ashiria AddressValueError("Unexpected '/' kwenye %r" % address)
-        self._ip = self._ip_int_kutoka_string(addr_str)
+        self._ip = self._ip_int_from_string(addr_str)
 
     @property
     eleza packed(self):
@@ -1342,7 +1342,7 @@ kundi IPv4Interface(IPv4Address):
         rudisha self.network.hostmask
 
     eleza __str__(self):
-        rudisha '%s/%d' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%d' % (self._string_from_ip_int(self._ip),
                           self._prefixlen)
 
     eleza __eq__(self, other):
@@ -1362,7 +1362,7 @@ kundi IPv4Interface(IPv4Address):
         ikiwa address_less ni NotImplemented:
             rudisha NotImplemented
         jaribu:
-            rudisha (self.network < other.network or
+            rudisha (self.network < other.network ama
                     self.network == other.network na address_less)
         tatizo AttributeError:
             # We *do* allow addresses na interfaces to be sorted. The
@@ -1380,17 +1380,17 @@ kundi IPv4Interface(IPv4Address):
 
     @property
     eleza with_prefixlen(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self._prefixlen)
 
     @property
     eleza with_netmask(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self.netmask)
 
     @property
     eleza with_hostmask(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self.hostmask)
 
 
@@ -1469,8 +1469,8 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
             iana-ipv4-special-registry.
 
         """
-        rudisha (not (self.network_address kwenye IPv4Network('100.64.0.0/10') and
-                    self.broadcast_address kwenye IPv4Network('100.64.0.0/10')) and
+        rudisha (sio (self.network_address kwenye IPv4Network('100.64.0.0/10') na
+                    self.broadcast_address kwenye IPv4Network('100.64.0.0/10')) na
                 sio self.is_private)
 
 
@@ -1543,13 +1543,13 @@ kundi _BaseV6:
                 ikiwa sio (0 <= prefixlen <= cls._max_prefixlen):
                     cls._report_invalid_netmask(prefixlen)
             isipokua:
-                prefixlen = cls._prefix_kutoka_prefix_string(arg)
-            netmask = IPv6Address(cls._ip_int_kutoka_prefix(prefixlen))
+                prefixlen = cls._prefix_from_prefix_string(arg)
+            netmask = IPv6Address(cls._ip_int_from_prefix(prefixlen))
             cls._netmask_cache[arg] = netmask, prefixlen
         rudisha cls._netmask_cache[arg]
 
     @classmethod
-    eleza _ip_int_kutoka_string(cls, ip_str):
+    eleza _ip_int_from_string(cls, ip_str):
         """Turn an IPv6 ip_str into an integer.
 
         Args:
@@ -1727,7 +1727,7 @@ kundi _BaseV6:
         rudisha hextets
 
     @classmethod
-    eleza _string_kutoka_ip_int(cls, ip_int=Tupu):
+    eleza _string_from_ip_int(cls, ip_int=Tupu):
         """Turns a 128-bit integer into hexadecimal notation.
 
         Args:
@@ -1769,7 +1769,7 @@ kundi _BaseV6:
         isipokua:
             ip_str = str(self)
 
-        ip_int = self._ip_int_kutoka_string(ip_str)
+        ip_int = self._ip_int_from_string(ip_str)
         hex_str = '%032x' % ip_int
         parts = [hex_str[x:x+4] kila x kwenye range(0, 32, 4)]
         ikiwa isinstance(self, (_BaseNetwork, IPv6Interface)):
@@ -1834,7 +1834,7 @@ kundi IPv6Address(_BaseV6, _BaseAddress):
         addr_str = str(address)
         ikiwa '/' kwenye addr_str:
             ashiria AddressValueError("Unexpected '/' kwenye %r" % address)
-        self._ip = self._ip_int_kutoka_string(addr_str)
+        self._ip = self._ip_int_from_string(addr_str)
 
     @property
     eleza packed(self):
@@ -1989,7 +1989,7 @@ kundi IPv6Interface(IPv6Address):
         rudisha self.network.hostmask
 
     eleza __str__(self):
-        rudisha '%s/%d' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%d' % (self._string_from_ip_int(self._ip),
                           self._prefixlen)
 
     eleza __eq__(self, other):
@@ -2009,7 +2009,7 @@ kundi IPv6Interface(IPv6Address):
         ikiwa address_less ni NotImplemented:
             rudisha NotImplemented
         jaribu:
-            rudisha (self.network < other.network or
+            rudisha (self.network < other.network ama
                     self.network == other.network na address_less)
         tatizo AttributeError:
             # We *do* allow addresses na interfaces to be sorted. The
@@ -2027,17 +2027,17 @@ kundi IPv6Interface(IPv6Address):
 
     @property
     eleza with_prefixlen(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self._prefixlen)
 
     @property
     eleza with_netmask(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self.netmask)
 
     @property
     eleza with_hostmask(self):
-        rudisha '%s/%s' % (self._string_kutoka_ip_int(self._ip),
+        rudisha '%s/%s' % (self._string_from_ip_int(self._ip),
                           self.hostmask)
 
     @property
@@ -2135,7 +2135,7 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
             A boolean, Kweli ikiwa the address ni reserved per RFC 3513 2.5.6.
 
         """
-        rudisha (self.network_address.is_site_local and
+        rudisha (self.network_address.is_site_local na
                 self.broadcast_address.is_site_local)
 
 

@@ -24,7 +24,7 @@ kundi FormatParagraph:
       selection ni sio complete, the block will probably sio be detected
       kama comments, na will have the normal "text formatting" rules
       applied.
-    * If a comment block has leading whitespace that mixes tabs and
+    * If a comment block has leading whitespace that mixes tabs na
       spaces, they will sio be considered part of the same block.
     * Fancy comments, like this bulleted list, aren't handled :-)
     """

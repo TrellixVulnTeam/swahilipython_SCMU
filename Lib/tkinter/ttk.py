@@ -82,14 +82,14 @@ def _mapdict_values(items):
     opt_val = []
     for *state, val in items:
         # hacks for backward compatibility
-        state[0] # raise IndexError if empty
+        state[0] # ashiria IndexError if empty
         if len(state) == 1:
             # if it is empty (something that evaluates to False), then
             # format it to Tcl code to denote the "normal" state
             state = state[0] or ''
         isipokua:
             # group multiple states
-            state = ' '.join(state) # raise TypeError if sio str
+            state = ' '.join(state) # ashiria TypeError if sio str
         opt_val.append(state)
         if val ni sio None:
             opt_val.append(val)
@@ -200,7 +200,7 @@ def _format_layoutlist(layout, indent=0, indent_size=2):
 
 def _script_from_settings(settings):
     """Returns an appropriate script, based on settings, according to
-    theme_settings definition to be used by theme_settings and
+    theme_settings definition to be used by theme_settings na
     theme_create."""
     script = []
     # a script will be generated according to settings passed, which
@@ -351,7 +351,7 @@ def setup_master(master=None):
         if tkinter._support_default_root:
             master = tkinter._default_root or tkinter.Tk()
         isipokua:
-            raise RuntimeError(
+            ashiria RuntimeError(
                     "No master specified and tkinter is "
                     "configured to sio support default root")
     return master
@@ -377,7 +377,7 @@ class Style(object):
         """Query or sets the default value of the specified option(s) in
         style.
 
-        Each key in kw is an option and each value is either a string or
+        Each key in kw is an option and each value is either a string ama
         a sequence identifying the value for that option."""
         if query_opt ni sio None:
             kw[query_opt] = None
@@ -428,7 +428,7 @@ class Style(object):
 
         LAYOUTS
 
-            A layout can contain the value None, if takes no options, or
+            A layout can contain the value None, if takes no options, ama
             a dict of options specifying how to arrange the element.
             The layout mechanism uses a simplified version of the pack
             geometry manager: given an initial cavity, each element is
@@ -482,7 +482,7 @@ class Style(object):
         """Creates a new theme.
 
         It is an error if themename already exists. If parent is
-        specified, the new theme will inherit styles, elements and
+        specified, the new theme will inherit styles, elements na
         layouts from the specified parent theme. If settings are present,
         they are expected to have the same syntax used for theme_settings."""
         script = _script_from_settings(settings) if settings isipokua ''
@@ -594,7 +594,7 @@ class Widget(tkinter.Widget):
 
 
 class Button(Widget):
-    """Ttk Button widget, displays a textual label and/or image, and
+    """Ttk Button widget, displays a textual label and/or image, na
     evaluates a command when pressed."""
 
     def __init__(self, master=None, **kw):
@@ -636,7 +636,7 @@ class Checkbutton(Widget):
 
 
     def invoke(self):
-        """Toggles between the selected and deselected states and
+        """Toggles between the selected and deselected states na
         invokes the associated command. If the widget is currently
         selected, sets the option variable to the offvalue option
         and deselects the widget; otherwise, sets the option variable
@@ -781,7 +781,7 @@ LabelFrame = Labelframe # tkinter name compatibility
 
 
 class Menubutton(Widget):
-    """Ttk Menubutton widget displays a textual label and/or image, and
+    """Ttk Menubutton widget displays a textual label and/or image, na
     displays a menu when pressed."""
 
     def __init__(self, master=None, **kw):
@@ -866,7 +866,7 @@ class Notebook(Widget):
 
 
     def index(self, tab_id):
-        """Returns the numeric index of the tab specified by tab_id, or
+        """Returns the numeric index of the tab specified by tab_id, ama
         the total number of tabs if tab_id is the string "end"."""
         return self.tk.getint(self.tk.call(self._w, "index", tab_id))
 
@@ -903,7 +903,7 @@ class Notebook(Widget):
 
     def tabs(self):
         """Returns a list of windows managed by the notebook."""
-        return self.tk.splitlist(self.tk.call(self._w, "tabs") or ())
+        return self.tk.splitlist(self.tk.call(self._w, "tabs") ama ())
 
 
     def enable_traversal(self):
@@ -994,7 +994,7 @@ PanedWindow = Panedwindow # tkinter name compatibility
 class Progressbar(Widget):
     """Ttk Progressbar widget shows the status of a long-running
     operation. They can operate in two modes: determinate mode shows the
-    amount completed relative to the total amount of work to be done, and
+    amount completed relative to the total amount of work to be done, na
     indeterminate mode provides an animated display to let the user know
     that something is happening."""
 
@@ -1213,7 +1213,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
         If column is specified, returns the bounding box of that cell.
         If the item ni sio visible (i.e., if it is a descendant of a
         closed item or is scrolled offscreen), returns an empty string."""
-        return self._getints(self.tk.call(self._w, "bbox", item, column)) or ''
+        return self._getints(self.tk.call(self._w, "bbox", item, column)) ama ''
 
 
     def get_children(self, item=None):
@@ -1221,7 +1221,7 @@ class Treeview(Widget, tkinter.XView, tkinter.YView):
 
         If item ni sio specified, returns root children."""
         return self.tk.splitlist(
-                self.tk.call(self._w, "children", item or '') or ())
+                self.tk.call(self._w, "children", item or '') ama ())
 
 
     def set_children(self, item, *newchildren):
@@ -1624,7 +1624,7 @@ class OptionMenu(Menubutton):
         self._variable = variable
         self._callback = kwargs.pop('command', None)
         if kwargs:
-            raise tkinter.TclError('unknown option -%s' % (
+            ashiria tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
 
         self.set_menu(default, *values)

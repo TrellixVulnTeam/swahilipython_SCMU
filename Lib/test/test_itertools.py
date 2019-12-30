@@ -170,7 +170,7 @@ kundi TestBasicOps(unittest.TestCase):
             self.assertEqual(take(4, c('abc', 'def')), list('abcd'))
             self.assertRaises(TypeError, list,c(2, 3))
 
-    eleza test_chain_kutoka_iterable(self):
+    eleza test_chain_from_iterable(self):
         self.assertEqual(list(chain.kutoka_iterable(['abc', 'def'])), list('abcdef'))
         self.assertEqual(list(chain.kutoka_iterable(['abc'])), list('abc'))
         self.assertEqual(list(chain.kutoka_iterable([''])), [])
@@ -469,7 +469,7 @@ kundi TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n isipokua (not r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n isipokua (sio r))
                 self.assertEqual(len(perm), 0 ikiwa r>n isipokua fact(n) / fact(n-r))
                 self.assertEqual(len(comb), 0 ikiwa r>n isipokua fact(n) / fact(r) / fact(n-r))
 
@@ -1491,7 +1491,7 @@ kundi TestBasicOps(unittest.TestCase):
         jaribu:
             any(forward)  # exhaust the iterator
             toa backward
-        except:
+        tatizo:
             toa forward, backward
             ashiria
 
@@ -1587,7 +1587,7 @@ kundi TestExamples(unittest.TestCase):
     eleza test_chain(self):
         self.assertEqual(''.join(chain('ABC', 'DEF')), 'ABCDEF')
 
-    eleza test_chain_kutoka_iterable(self):
+    eleza test_chain_from_iterable(self):
         self.assertEqual(''.join(chain.kutoka_iterable(['ABC', 'DEF'])), 'ABCDEF')
 
     eleza test_combinations(self):
@@ -1721,7 +1721,7 @@ kundi TestGC(unittest.TestCase):
         a = []
         self.makecycle(chain(a), a)
 
-    eleza test_chain_kutoka_iterable(self):
+    eleza test_chain_from_iterable(self):
         a = []
         self.makecycle(chain.kutoka_iterable([a]), a)
 

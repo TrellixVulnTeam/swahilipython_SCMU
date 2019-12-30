@@ -18,7 +18,7 @@ eleza requires_load_dynamic(meth):
     """Decorator to skip a test ikiwa sio running under CPython ama lacking
     imp.load_dynamic()."""
     meth = support.cpython_only(meth)
-    rudisha unittest.skipIf(not hasattr(imp, 'load_dynamic'),
+    rudisha unittest.skipIf(sio hasattr(imp, 'load_dynamic'),
                            'imp.load_dynamic() required')(meth)
 
 
@@ -178,7 +178,7 @@ kundi ImportTests(unittest.TestCase):
                 ikiwa sio sys.dont_write_bytecode:
                     mod = imp.load_compiled(
                         temp_mod_name,
-                        imp.cache_kutoka_source(temp_mod_name + '.py'))
+                        imp.cache_from_source(temp_mod_name + '.py'))
             self.assertEqual(mod.a, 1)
 
             ikiwa sio os.path.exists(test_package_name):
@@ -202,7 +202,7 @@ kundi ImportTests(unittest.TestCase):
         self.assertRaises(SyntaxError,
                           imp.find_module, "badsyntax_pep3120", [path])
 
-    eleza test_load_kutoka_source(self):
+    eleza test_load_from_source(self):
         # Verify that the imp module can correctly load na find .py files
         # XXX (ncoghlan): It would be nice to use support.CleanImport
         # here, but that komas because the os module registers some
@@ -334,7 +334,7 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_issue_35321(self):
         # Both _frozen_importlib na _frozen_importlib_external
-        # should have a spec origin of "frozen" and
+        # should have a spec origin of "frozen" na
         # no need to clean up agizas kwenye this case.
 
         agiza _frozen_importlib_external
@@ -347,7 +347,7 @@ kundi ImportTests(unittest.TestCase):
         self.assertEqual(_imp.source_hash(42, b'hi'), b'\xc6\xe7Z\r\x03:}\xab')
         self.assertEqual(_imp.source_hash(43, b'hi'), b'\x85\x9765\xf8\x9a\x8b9')
 
-    eleza test_pyc_invalidation_mode_kutoka_cmdline(self):
+    eleza test_pyc_invalidation_mode_from_cmdline(self):
         cases = [
             ([], "default"),
             (["--check-hash-based-pycs", "default"], "default"),
@@ -422,24 +422,24 @@ kundi PEP3147Tests(unittest.TestCase):
 
     @unittest.skipUnless(sys.implementation.cache_tag ni sio Tupu,
                          'requires sys.implementation.cache_tag sio be Tupu')
-    eleza test_cache_kutoka_source(self):
+    eleza test_cache_from_source(self):
         # Given the path to a .py file, rudisha the path to its PEP 3147
         # defined .pyc file (i.e. under __pycache__).
         path = os.path.join('foo', 'bar', 'baz', 'qux.py')
         expect = os.path.join('foo', 'bar', 'baz', '__pycache__',
                               'qux.{}.pyc'.format(self.tag))
-        self.assertEqual(imp.cache_kutoka_source(path, Kweli), expect)
+        self.assertEqual(imp.cache_from_source(path, Kweli), expect)
 
     @unittest.skipUnless(sys.implementation.cache_tag ni sio Tupu,
                          'requires sys.implementation.cache_tag to sio be '
                          'Tupu')
-    eleza test_source_kutoka_cache(self):
+    eleza test_source_from_cache(self):
         # Given the path to a PEP 3147 defined .pyc file, rudisha the path to
         # its source.  This tests the good path.
         path = os.path.join('foo', 'bar', 'baz', '__pycache__',
                             'qux.{}.pyc'.format(self.tag))
         expect = os.path.join('foo', 'bar', 'baz', 'qux.py')
-        self.assertEqual(imp.source_kutoka_cache(path), expect)
+        self.assertEqual(imp.source_from_cache(path), expect)
 
 
 kundi NullImporterTests(unittest.TestCase):

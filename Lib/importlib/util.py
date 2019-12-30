@@ -1,15 +1,15 @@
 """Utility code kila constructing importers, etc."""
 kutoka . agiza abc
-kutoka ._bootstrap agiza module_kutoka_spec
+kutoka ._bootstrap agiza module_from_spec
 kutoka ._bootstrap agiza _resolve_name
-kutoka ._bootstrap agiza spec_kutoka_loader
+kutoka ._bootstrap agiza spec_from_loader
 kutoka ._bootstrap agiza _find_spec
 kutoka ._bootstrap_external agiza MAGIC_NUMBER
 kutoka ._bootstrap_external agiza _RAW_MAGIC_NUMBER
-kutoka ._bootstrap_external agiza cache_kutoka_source
+kutoka ._bootstrap_external agiza cache_from_source
 kutoka ._bootstrap_external agiza decode_source
-kutoka ._bootstrap_external agiza source_kutoka_cache
-kutoka ._bootstrap_external agiza spec_kutoka_file_location
+kutoka ._bootstrap_external agiza source_from_cache
+kutoka ._bootstrap_external agiza spec_from_file_location
 
 kutoka contextlib agiza contextmanager
 agiza _imp
@@ -39,7 +39,7 @@ eleza resolve_name(name, package):
     rudisha _resolve_name(name[level:], package, level)
 
 
-eleza _find_spec_kutoka_path(name, path=Tupu):
+eleza _find_spec_from_path(name, path=Tupu):
     """Return the spec kila the specified module.
 
     First, sys.modules ni checked to see ikiwa the module was already imported. If
@@ -183,7 +183,7 @@ eleza module_for_loader(fxn):
     The decorated function ni pitaed the module to use instead of the module
     name. The module pitaed kwenye to the function ni either kutoka sys.modules if
     it already exists ama ni a new module. If the module ni new, then __name__
-    ni set the first argument to the method, __loader__ ni set to self, and
+    ni set the first argument to the method, __loader__ ni set to self, na
     __package__ ni set accordingly (ikiwa self.is_package() ni defined) will be set
     before it ni pitaed to the decorated function (ikiwa self.is_package() does
     sio work kila the module it will be set post-load).

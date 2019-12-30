@@ -11,7 +11,7 @@
 --   <function> ni the function to be tested (exp, cos, asinh, ...),
 --
 --   <input_value> ni a pair of floats separated by whitespace
---     representing real na imaginary parts of a complex number, and
+--     representing real na imaginary parts of a complex number, na
 --
 --   <output_value> ni the expected (ideal) output value, again
 --     represented kama a pair of floats.
@@ -2380,7 +2380,7 @@ tan1052 tan -inf -inf -> -0.0 -1.0 ignore-real-sign
 --   rect(x, -t) = conj(rect(x, t)) kila all x na t
 --   rect(-x, t) = -rect(x, t) kila all x na t
 --   rect(+0, +0) rudishas +0 + i0
---   rect(+0, inf) rudishas +- 0 +- i0, where the signs of the real and
+--   rect(+0, inf) rudishas +- 0 +- i0, where the signs of the real na
 --     imaginary parts are unspecified.
 --   rect(x, inf) rudishas NaN + i NaN na ashirias the "invalid"
 --     floating-point exception, kila finite nonzero x.
@@ -2397,7 +2397,7 @@ tan1052 tan -inf -inf -> -0.0 -1.0 ignore-real-sign
 --     part ni unspecified
 --   rect(NaN, NaN) rudishas NaN + i NaN
 --   rect(x, NaN) rudishas NaN + i NaN kila finite nonzero x
---   rect(+0, NaN) rudisha +-0 +- i0, where the signs of the real and
+--   rect(+0, NaN) rudisha +-0 +- i0, where the signs of the real na
 --     imaginary parts are unspecified.
 
 -- special values
@@ -2464,7 +2464,7 @@ rect1052 rect -inf -7.0 -> -inf inf
 -- should be interpreted kama a pair of floating-point numbers rather
 -- than the real na imaginary parts of a complex number.
 --
--- Annex G of the C99 standard describes fully both the real and
+-- Annex G of the C99 standard describes fully both the real na
 -- imaginary parts of polar (as cabs na carg, respectively, which kwenye turn
 -- are defined kwenye terms of the functions hypot na atan2).
 

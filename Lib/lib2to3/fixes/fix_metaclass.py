@@ -220,7 +220,7 @@ kundi FixMetaclass(fixer_base.BaseFix):
             node.append_child(Leaf(token.NEWLINE, '\n'))
 
         lasivyo len(suite.children) > 1 na \
-                 (suite.children[-2].type == token.INDENT and
+                 (suite.children[-2].type == token.INDENT na
                   suite.children[-1].type == token.DEDENT):
             # there was only one line kwenye the kundi body na it was __metaclass__
             pita_leaf = Leaf(text_type, 'pita')

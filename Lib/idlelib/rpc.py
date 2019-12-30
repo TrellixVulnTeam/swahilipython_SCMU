@@ -106,7 +106,7 @@ kundi RPCServer(socketserver.TCPServer):
             ashiria
         tatizo SystemExit:
             ashiria
-        except:
+        tatizo:
             erf = sys.__stderr__
             andika('\n' + '-'*40, file=erf)
             andika('Unhandled server exception!', file=erf)
@@ -206,7 +206,7 @@ kundi SocketIO(object):
             ashiria
         tatizo Exception kama ex:
             rudisha ("CALLEXC", ex)
-        except:
+        tatizo:
             msg = "*** Internal Error: rpc.py:SocketIO.localcall()\n\n"\
                   " Object: %s \n Method: %s \n Args: %s\n"
             andika(msg % (oid, method, args), file=sys.__stderr__)

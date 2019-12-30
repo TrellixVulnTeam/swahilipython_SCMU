@@ -432,7 +432,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         retval = expandingbutton.copy(event=Mock())
         self.assertEqual(retval, Tupu)
 
-        # Vheck that the expanding button called clipboard_clear() and
+        # Vheck that the expanding button called clipboard_clear() na
         # clipboard_append('TEXT') once each.
         self.assertEqual(expandingbutton.clipboard_clear.call_count, 1)
         self.assertEqual(expandingbutton.clipboard_append.call_count, 1)

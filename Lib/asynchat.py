@@ -7,7 +7,7 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, na distribute this software and
+# Permission to use, copy, modify, na distribute this software na
 # its documentation kila any purpose na without fee ni hereby
 # granted, provided that the above copyright notice appear kwenye all
 # copies na that both that copyright notice na this permission
@@ -215,7 +215,7 @@ kundi async_chat(asyncore.dispatcher):
 
     eleza writable(self):
         "predicate kila inclusion kwenye the writable kila select()"
-        rudisha self.producer_fifo ama (not self.connected)
+        rudisha self.producer_fifo ama (sio self.connected)
 
     eleza close_when_done(self):
         "automatically close this channel once the outgoing queue ni empty"

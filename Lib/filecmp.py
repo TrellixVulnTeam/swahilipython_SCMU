@@ -96,7 +96,7 @@ kundi dircmp:
     High level usage:
       x = dircmp(dir1, dir2)
       x.report() -> prints a report on the differences between dir1 and dir2
-       or
+       ama
       x.report_partial_closure() -> prints report on differences between dir1
             and dir2, and reports on common immediate subdirectories.
       x.report_full_closure() -> like report_partial_closure,
@@ -243,7 +243,7 @@ kundi dircmp:
 
     def __getattr__(self, attr):
         if attr haiko kwenye self.methodmap:
-            raise AttributeError(attr)
+            ashiria AttributeError(attr)
         self.methodmap[attr](self)
         return getattr(self, attr)
 
@@ -294,7 +294,7 @@ def demo():
     agiza getopt
     options, args = getopt.getopt(sys.argv[1:], 'r')
     if len(args) != 2:
-        raise getopt.GetoptError('need exactly two args', None)
+        ashiria getopt.GetoptError('need exactly two args', None)
     dd = dircmp(args[0], args[1])
     if ('-r', '') in options:
         dd.report_full_closure()

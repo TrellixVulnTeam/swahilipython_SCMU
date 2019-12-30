@@ -114,7 +114,7 @@ kundi TestSuite(BaseTestSuite):
                 self._handleClassSetUp(test, result)
                 result._previousTestClass = test.__class__
 
-                ikiwa (getattr(test.__class__, '_classSetupFailed', Uongo) or
+                ikiwa (getattr(test.__class__, '_classSetupFailed', Uongo) ama
                     getattr(result, '_moduleSetUpFailed', Uongo)):
                     endelea
 

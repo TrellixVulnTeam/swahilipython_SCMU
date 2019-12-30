@@ -1,7 +1,7 @@
 """Manage shelves of pickled objects.
 
 A "shelf" ni a persistent, dictionary-like object.  The difference
-ukijumuisha dbm databases ni that the values (not the keys!) kwenye a shelf can
+ukijumuisha dbm databases ni that the values (sio the keys!) kwenye a shelf can
 be essentially arbitrary Python objects -- anything that the "pickle"
 module can handle.  This includes most kundi instances, recursive data
 types, na objects containing lots of shared sub-objects.  The keys
@@ -151,7 +151,7 @@ kundi Shelf(collections.abc.MutableMapping):
             # because CPython ni kwenye interpreter shutdown.
             jaribu:
                 self.dict = _ClosedDict()
-            except:
+            tatizo:
                 self.dict = Tupu
 
     eleza __del__(self):
@@ -175,11 +175,11 @@ kundi Shelf(collections.abc.MutableMapping):
 kundi BsdDbShelf(Shelf):
     """Shelf implementation using the "BSD" db interface.
 
-    This adds methods first(), next(), previous(), last() and
+    This adds methods first(), next(), previous(), last() na
     set_location() that have no counterpart kwenye [g]dbm databases.
 
     The actual database must be opened using one of the "bsddb"
-    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen or
+    modules "open" routines (i.e. bsddb.hashopen, bsddb.btopen ama
     bsddb.rnopen) na pitaed to the constructor.
 
     See the module's __doc__ string kila an overview of the interface.

@@ -499,8 +499,8 @@ kundi TestShutil(unittest.TestCase):
         self.assertKweli(abs(os.stat(src).st_mtime - os.stat(dst).st_mtime) <
                         00000.1)
 
-    @unittest.skipUnless(hasattr(os, 'chflags') and
-                         hasattr(errno, 'EOPNOTSUPP') and
+    @unittest.skipUnless(hasattr(os, 'chflags') na
+                         hasattr(errno, 'EOPNOTSUPP') na
                          hasattr(errno, 'ENOTSUP'),
                          "requires os.chflags, EOPNOTSUPP & ENOTSUP")
     eleza test_copystat_handles_harmless_chflags_errors(self):
@@ -707,8 +707,8 @@ kundi TestShutil(unittest.TestCase):
 
     eleza test_rmtree_uses_safe_fd_version_if_available(self):
         _use_fd_functions = ({os.open, os.stat, os.unlink, os.rmdir} <=
-                             os.supports_dir_fd and
-                             os.listdir kwenye os.supports_fd and
+                             os.supports_dir_fd na
+                             os.listdir kwenye os.supports_fd na
                              os.stat kwenye os.supports_follow_symlinks)
         ikiwa _use_fd_functions:
             self.assertKweli(shutil._use_fd_functions)
@@ -857,7 +857,7 @@ kundi TestShutil(unittest.TestCase):
                     kila name kwenye names:
                         path = os.path.join(src, name)
 
-                        ikiwa (os.path.isdir(path) and
+                        ikiwa (os.path.isdir(path) na
                             path.split()[-1] == 'subdir'):
                             res.append(name)
                         lasivyo os.path.splitext(path)[-1] kwenye ('.py'):
@@ -1118,7 +1118,7 @@ kundi TestShutil(unittest.TestCase):
 
     @unittest.skipUnless(hasattr(os, 'utime'), 'requires os.utime')
     eleza test_copy2(self):
-        # Ensure that the copied file exists na has the same mode and
+        # Ensure that the copied file exists na has the same mode na
         # modification time bits.
         file1, file2 = self._copy_file(shutil.copy2)
         self.assertKweli(os.path.exists(file2))
@@ -1800,7 +1800,7 @@ kundi TestMove(unittest.TestCase):
             jaribu:
                 ikiwa d:
                     shutil.rmtree(d)
-            except:
+            tatizo:
                 pita
 
     eleza _check_move_file(self, src, dst, real_dst):
@@ -1843,7 +1843,7 @@ kundi TestMove(unittest.TestCase):
         mwishowe:
             jaribu:
                 shutil.rmtree(dst_dir)
-            except:
+            tatizo:
                 pita
 
     @mock_rename
@@ -2274,7 +2274,7 @@ kundi _ZeroCopyFileTest(object):
                 self.assertRaises(OSError, self.zerocopy_fun, src, dst)
 
 
-@unittest.skipIf(not SUPPORTS_SENDFILE, 'os.sendfile() sio supported')
+@unittest.skipIf(sio SUPPORTS_SENDFILE, 'os.sendfile() sio supported')
 kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
     PATCHPOINT = "os.sendfile"
 
@@ -2319,7 +2319,7 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
 
     eleza test_cant_get_size(self):
         # Emulate a case where src file size cannot be determined.
-        # Internally bufsize will be set to a small value and
+        # Internally bufsize will be set to a small value na
         # sendfile() will be called repeatedly.
         ukijumuisha unittest.mock.patch('os.fstat', side_effect=OSError) kama m:
             ukijumuisha self.get_files() kama (src, dst):
@@ -2393,7 +2393,7 @@ kundi TestZeroCopySendfile(_ZeroCopyFileTest, unittest.TestCase):
             shutil._USE_CP_SENDFILE = Kweli
 
 
-@unittest.skipIf(not MACOS, 'macOS only')
+@unittest.skipIf(sio MACOS, 'macOS only')
 kundi TestZeroCopyMACOS(_ZeroCopyFileTest, unittest.TestCase):
     PATCHPOINT = "posix._fcopyfile"
 

@@ -49,7 +49,7 @@ kundi Dialect:
             _Dialect(self)
         tatizo TypeError as e:
             # We do this for compatibility with py2.3
-            raise Error(str(e))
+            ashiria Error(str(e))
 
 kundi excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
@@ -133,7 +133,7 @@ kundi DictWriter:
         self.fieldnames = fieldnames    # list of keys for the dict
         self.restval = restval          # for writing short dicts
         if extrasaction.lower() haiko kwenye ("raise", "ignore"):
-            raise ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
+            ashiria ValueError("extrasaction (%s) must be 'raise' or 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
@@ -146,7 +146,7 @@ kundi DictWriter:
         if self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
             if wrong_fields:
-                raise ValueError("dict contains fields haiko kwenye fieldnames: "
+                ashiria ValueError("dict contains fields haiko kwenye fieldnames: "
                                  + ", ".join([repr(x) for x in wrong_fields]))
         return (rowdict.get(key, self.restval) for key in self.fieldnames)
 
@@ -184,7 +184,7 @@ kundi Sniffer:
                                                                 delimiters)
 
         if sio delimiter:
-            raise Error("Could sio determine delimiter")
+            ashiria Error("Could sio determine delimiter")
 
         kundi dialect(Dialect):
             _name = "sniffed"
@@ -343,7 +343,7 @@ kundi Sniffer:
             wakati len(delims) == 0 and consistency >= threshold:
                 for k, v in modeList:
                     if v[0] > 0 and v[1] > 0:
-                        if ((v[1]/total) >= consistency and
+                        if ((v[1]/total) >= consistency na
                             (delimiters is None or k in delimiters)):
                             delims[k] = v
                 consistency -= 0.01
@@ -387,7 +387,7 @@ kundi Sniffer:
         # can't be determined, it is assumed to be a string in which case
         # the length of the string is the determining factor: if all of the
         # rows tatizo for the first are the same length, it's a header.
-        # Finally, a 'vote' is taken at the end for each column, adding or
+        # Finally, a 'vote' is taken at the end for each column, adding ama
         # subtracting kutoka the likelihood of the first row being a header.
 
         rdr = reader(StringIO(sample), self.sniff(sample))

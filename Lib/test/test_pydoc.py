@@ -728,7 +728,7 @@ kundi PydocDocTest(unittest.TestCase):
     eleza test_synopsis_sourceless_empty_doc(self):
         ukijumuisha test.support.temp_cwd() kama test_dir:
             init_path = os.path.join(test_dir, 'foomod42.py')
-            cached_path = importlib.util.cache_kutoka_source(init_path)
+            cached_path = importlib.util.cache_from_source(init_path)
             ukijumuisha open(init_path, 'w') kama fobj:
                 fobj.write("foo = 1")
             py_compile.compile(init_path)

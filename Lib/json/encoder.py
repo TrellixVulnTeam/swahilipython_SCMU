@@ -134,7 +134,7 @@ kundi JSONEncoder(object):
         Tupu ni the most compact representation.
 
         If specified, separators should be an (item_separator, key_separator)
-        tuple.  The default ni (', ', ': ') ikiwa *indent* ni ``Tupu`` and
+        tuple.  The default ni (', ', ': ') ikiwa *indent* ni ``Tupu`` na
         (',', ': ') otherwise.  To get the most compact JSON representation,
         you should specify (',', ':') to eliminate whitespace.
 

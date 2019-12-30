@@ -21,7 +21,7 @@ that mimic the closest existing terms are used.  Thus, it really helps to have
 a copy of RFC 5322 handy when studying this code.
 
 Input to the parser is a string that has already been unfolded according to
-RFC 5322 rules.  According to the RFC this unfolding is the very first step, and
+RFC 5322 rules.  According to the RFC this unfolding is the very first step, na
 this parser leaves the unfolding step to a higher level message parser, which
 will have already detected the line komas that need unfolding while
 determining the beginning and end of each header.
@@ -38,7 +38,7 @@ all whitespace tokens (no matter how many sub-tokens they may contain) is a
 single space, as per the RFC rules.  This includes 'CFWS', which is herein
 included in the general class of whitespace tokens.  There is one exception to
 the rule that whitespace tokens are collapsed into single spaces in values: in
-the value of a 'bare-quoted-string' (a quoted-string with no leading or
+the value of a 'bare-quoted-string' (a quoted-string with no leading ama
 trailing whitespace), any whitespace that appeared between the quotation marks
 is preserved in the returned value.  Note that in all Terminal strings quoted
 pairs are turned into their unquoted values.
@@ -61,7 +61,7 @@ Each object in a parse tree is called a 'token', and each has a 'token_type'
 attribute that gives the name from the RFC 5322 grammar that it represents.
 Not all RFC 5322 nodes are produced, and there is one non-RFC 5322 node that
 may be produced: 'ptext'.  A 'ptext' is a string of printable ascii characters.
-It is returned in place of lists of (ctext/quoted-pair) and
+It is returned in place of lists of (ctext/quoted-pair) na
 (qtext/quoted-pair).
 
 XXX: provide complete list of token types.
@@ -616,11 +616,11 @@ class LocalPart(TokenList):
         for tok in self[0] + [DOT]:
             if tok.token_type == 'cfws':
                 endelea
-            if (last_is_tl and tok.token_type == 'dot' and
+            if (last_is_tl and tok.token_type == 'dot' na
                     last[-1].token_type == 'cfws'):
                 res[-1] = TokenList(last[:-1])
             is_tl = isinstance(tok, TokenList)
-            if (is_tl and last.token_type == 'dot' and
+            if (is_tl and last.token_type == 'dot' na
                     tok[0].token_type == 'cfws'):
                 res.append(TokenList(tok[1:]))
             isipokua:
@@ -952,7 +952,7 @@ RouteComponentMarker = ValueTerminal('@', 'route-component-marker')
 
 # Parse strings according to RFC822/2047/2822/5322 rules.
 #
-# This is a stateless parser.  Each get_XXX function accepts a string and
+# This is a stateless parser.  Each get_XXX function accepts a string na
 # returns either a Terminal or a TokenList representing the RFC object named
 # by the method and a string containing the remaining unparsed characters
 # from the input.  Thus a parser method consumes the next syntactic construct
@@ -991,9 +991,9 @@ def _validate_xtext(xtext):
 def _get_ptext_to_endchars(value, endchars):
     """Scan printables/quoted-pairs until endchars and return unquoted ptext.
 
-    This function turns a run of qcontent, ccontent-without-comments, or
+    This function turns a run of qcontent, ccontent-without-comments, ama
     dtext-with-quoted-printables into a single string by unquoting any
-    quoted printables.  It returns the string, the remaining value, and
+    quoted printables.  It returns the string, the remaining value, na
     a flag that is True iff there were any quoted printables decoded.
 
     """
@@ -1036,16 +1036,16 @@ def get_encoded_word(value):
     """
     ew = EncodedWord()
     if sio value.startswith('=?'):
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     tok, *remainder = value[2:].split('?=', 1)
     if tok == value[2:]:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     remstr = ''.join(remainder)
-    if (len(remstr) > 1 and
-        remstr[0] in hexdigits and
-        remstr[1] in hexdigits and
+    if (len(remstr) > 1 na
+        remstr[0] in hexdigits na
+        remstr[1] in hexdigits na
         tok.count('?') < 2):
         # The ? after the CTE was followed by an encoded word escape (=XX).
         rest, *remainder = remstr.split('?=', 1)
@@ -1058,7 +1058,7 @@ def get_encoded_word(value):
     jaribu:
         text, charset, lang, defects = _ew.decode('=?' + tok + '?=')
     tatizo (ValueError, KeyError):
-        raise _InvalidEwError(
+        ashiria _InvalidEwError(
             "encoded word format invalid: '{}'".format(ew.cte))
     ew.charset = charset
     ew.lang = lang
@@ -1098,7 +1098,7 @@ def get_unstructured(value):
     parsed TokenList.
 
     """
-    # XXX: but what about bare CR and LF?  They might signal the start or
+    # XXX: but what about bare CR and LF?  They might signal the start ama
     # end of an encoded word.  YAGNI for now, since our current parsers
     # will never send us strings with bare CR or LF.
 
@@ -1186,7 +1186,7 @@ def get_atext(value):
     """
     m = _non_atom_end_matcher(value)
     if sio m:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected atext but found '{}'".format(value))
     atext = m.group()
     value = value[len(atext):]
@@ -1202,7 +1202,7 @@ def get_bare_quoted_string(value):
     preserved and quoted pairs decoded.
     """
     if value[0] != '"':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '\"' but found '{}'".format(value))
     bare_quoted_string = BareQuotedString()
     value = value[1:]
@@ -1235,7 +1235,7 @@ def get_comment(value):
     We handle nested comments here, and quoted-pair in our qp-ctext routine.
     """
     if value and value[0] != '(':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '(' but found '{}'".format(value))
     comment = Comment()
     value = value[1:]
@@ -1294,7 +1294,7 @@ def get_atom(value):
         token, value = get_cfws(value)
         atom.append(token)
     if value and value[0] in ATOM_ENDS:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected atom but found '{}'".format(value))
     if value.startswith('=?'):
         jaribu:
@@ -1317,7 +1317,7 @@ def get_dot_atom_text(value):
     """
     dot_atom_text = DotAtomText()
     if sio value or value[0] in ATOM_ENDS:
-        raise errors.HeaderParseError("expected atom at a start of "
+        ashiria errors.HeaderParseError("expected atom at a start of "
             "dot-atom-text but found '{}'".format(value))
     wakati value and value[0] haiko kwenye ATOM_ENDS:
         token, value = get_atext(value)
@@ -1326,7 +1326,7 @@ def get_dot_atom_text(value):
             dot_atom_text.append(DOT)
             value = value[1:]
     if dot_atom_text[-1] is DOT:
-        raise errors.HeaderParseError("expected atom at end of dot-atom-text "
+        ashiria errors.HeaderParseError("expected atom at end of dot-atom-text "
             "but found '{}'".format('.'+value))
     return dot_atom_text, value
 
@@ -1376,12 +1376,12 @@ def get_word(value):
     isipokua:
         leader = None
     if sio value:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "Expected 'atom' or 'quoted-string' but found nothing.")
     if value[0]=='"':
         token, value = get_quoted_string(value)
     lasivyo value[0] in SPECIALS:
-        raise errors.HeaderParseError("Expected 'atom' or 'quoted-string' "
+        ashiria errors.HeaderParseError("Expected 'atom' or 'quoted-string' "
                                       "but found '{}'".format(value))
     isipokua:
         token, value = get_atom(value)
@@ -1436,7 +1436,7 @@ def get_local_part(value):
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     if sio value:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected local-part but found '{}'".format(value))
     jaribu:
         token, value = get_dot_atom(value)
@@ -1499,13 +1499,13 @@ def get_obs_local_part(value):
                 raise
             token, value = get_cfws(value)
         obs_local_part.append(token)
-    if (obs_local_part[0].token_type == 'dot' or
-            obs_local_part[0].token_type=='cfws' and
+    if (obs_local_part[0].token_type == 'dot' ama
+            obs_local_part[0].token_type=='cfws' na
             obs_local_part[1].token_type=='dot'):
         obs_local_part.defects.append(errors.InvalidHeaderDefect(
             "Invalid leading '.' in local part"))
-    if (obs_local_part[-1].token_type == 'dot' or
-            obs_local_part[-1].token_type=='cfws' and
+    if (obs_local_part[-1].token_type == 'dot' ama
+            obs_local_part[-1].token_type=='cfws' na
             obs_local_part[-2].token_type=='dot'):
         obs_local_part.defects.append(errors.InvalidHeaderDefect(
             "Invalid trailing '.' in local part"))
@@ -1550,9 +1550,9 @@ def get_domain_literal(value):
         token, value = get_cfws(value)
         domain_literal.append(token)
     if sio value:
-        raise errors.HeaderParseError("expected domain-literal")
+        ashiria errors.HeaderParseError("expected domain-literal")
     if value[0] != '[':
-        raise errors.HeaderParseError("expected '[' at start of domain-literal "
+        ashiria errors.HeaderParseError("expected '[' at start of domain-literal "
                 "but found '{}'".format(value))
     value = value[1:]
     if _check_for_early_dl_end(value, domain_literal):
@@ -1571,7 +1571,7 @@ def get_domain_literal(value):
     if _check_for_early_dl_end(value, domain_literal):
         return domain_literal, value
     if value[0] != ']':
-        raise errors.HeaderParseError("expected ']' at end of domain-literal "
+        ashiria errors.HeaderParseError("expected ']' at end of domain-literal "
                 "but found '{}'".format(value))
     domain_literal.append(ValueTerminal(']', 'domain-literal-end'))
     value = value[1:]
@@ -1590,7 +1590,7 @@ def get_domain(value):
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     if sio value:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected domain but found '{}'".format(value))
     if value[0] == '[':
         token, value = get_domain_literal(value)
@@ -1603,7 +1603,7 @@ def get_domain(value):
     tatizo errors.HeaderParseError:
         token, value = get_atom(value)
     if value and value[0] == '@':
-        raise errors.HeaderParseError('Invalid Domain')
+        ashiria errors.HeaderParseError('Invalid Domain')
     if leader ni sio None:
         token[:0] = [leader]
     domain.append(token)
@@ -1650,7 +1650,7 @@ def get_obs_route(value):
             obs_route.append(ListSeparator)
             value = value[1:]
     if sio value or value[0] != '@':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected obs-route domain but found '{}'".format(value))
     obs_route.append(RouteComponentMarker)
     token, value = get_domain(value[1:])
@@ -1668,9 +1668,9 @@ def get_obs_route(value):
             token, value = get_domain(value[1:])
             obs_route.append(token)
     if sio value:
-        raise errors.HeaderParseError("end of header wakati parsing obs-route")
+        ashiria errors.HeaderParseError("end of header wakati parsing obs-route")
     if value[0] != ':':
-        raise errors.HeaderParseError( "expected ':' marking end of "
+        ashiria errors.HeaderParseError( "expected ':' marking end of "
             "obs-route but found '{}'".format(value))
     obs_route.append(ValueTerminal(':', 'end-of-obs-route-marker'))
     return obs_route, value[1:]
@@ -1685,7 +1685,7 @@ def get_angle_addr(value):
         token, value = get_cfws(value)
         angle_addr.append(token)
     if sio value or value[0] != '<':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected angle-addr but found '{}'".format(value))
     angle_addr.append(ValueTerminal('<', 'angle-addr-start'))
     value = value[1:]
@@ -1705,7 +1705,7 @@ def get_angle_addr(value):
             angle_addr.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete route specification in angle-addr"))
         tatizo errors.HeaderParseError:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected addr-spec or obs-route but found '{}'".format(value))
         angle_addr.append(token)
         token, value = get_addr_spec(value)
@@ -1746,15 +1746,15 @@ def get_name_addr(value):
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
         if sio value:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(leader))
     if value[0] != '<':
         if value[0] in PHRASE_ENDS:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(value))
         token, value = get_display_name(value)
         if sio value:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(token))
         if leader ni sio None:
             token[0][:0] = [leader]
@@ -1779,7 +1779,7 @@ def get_mailbox(value):
         jaribu:
             token, value = get_addr_spec(value)
         tatizo errors.HeaderParseError:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected mailbox but found '{}'".format(value))
     if any(isinstance(x, errors.InvalidHeaderDefect)
                        for x in token.all_defects):
@@ -1906,7 +1906,7 @@ def get_group(value):
     group = Group()
     token, value = get_display_name(value)
     if sio value or value[0] != ':':
-        raise errors.HeaderParseError("expected ':' at end of group "
+        ashiria errors.HeaderParseError("expected ':' at end of group "
             "display name but found '{}'".format(value))
     group.append(token)
     group.append(ValueTerminal(':', 'group-display-name-terminator'))
@@ -1920,7 +1920,7 @@ def get_group(value):
         group.defects.append(errors.InvalidHeaderDefect(
             "end of header in group"))
     lasivyo value[0] != ';':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected ';' at end of group but found {}".format(value))
     group.append(ValueTerminal(';', 'group-terminator'))
     value = value[1:]
@@ -1932,7 +1932,7 @@ def get_group(value):
 def get_address(value):
     """ address = mailbox / group
 
-    Note that counter-intuitively, an address can be either a single address or
+    Note that counter-intuitively, an address can be either a single address ama
     a list of addresses (a group).  This is why the returned Address object has
     a 'mailboxes' attribute which treats a single address as a list of length
     one.  When you need to differentiate between to two cases, extract the single
@@ -1953,7 +1953,7 @@ def get_address(value):
         jaribu:
             token, value = get_mailbox(value)
         tatizo errors.HeaderParseError:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected address but found '{}'".format(value))
     address.append(token)
     return address, value
@@ -2018,10 +2018,10 @@ def get_no_fold_literal(value):
     """
     no_fold_literal = NoFoldLiteral()
     if sio value:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected no-fold-literal but found '{}'".format(value))
     if value[0] != '[':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '[' at the start of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal('[', 'no-fold-literal-start'))
@@ -2029,7 +2029,7 @@ def get_no_fold_literal(value):
     token, value = get_dtext(value)
     no_fold_literal.append(token)
     if sio value or value[0] != ']':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected ']' at the end of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal(']', 'no-fold-literal-end'))
@@ -2046,7 +2046,7 @@ def get_msg_id(value):
         token, value = get_cfws(value)
         msg_id.append(token)
     if sio value or value[0] != '<':
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected msg-id but found '{}'".format(value))
     msg_id.append(ValueTerminal('<', 'msg-id-start'))
     value = value[1:]
@@ -2060,7 +2060,7 @@ def get_msg_id(value):
             msg_id.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete id-left in msg-id"))
         tatizo errors.HeaderParseError:
-            raise errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected dot-atom-text or obs-id-left"
                 " but found '{}'".format(value))
     msg_id.append(token)
@@ -2088,7 +2088,7 @@ def get_msg_id(value):
                 msg_id.defects.append(errors.ObsoleteHeaderDefect(
                     "obsolete id-right in msg-id"))
             tatizo errors.HeaderParseError:
-                raise errors.HeaderParseError(
+                ashiria errors.HeaderParseError(
                     "expected dot-atom-text, no-fold-literal or obs-id-right"
                     " but found '{}'".format(value))
     msg_id.append(token)
@@ -2221,7 +2221,7 @@ def get_ttext(value):
     """
     m = _non_token_end_matcher(value)
     if sio m:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected ttext but found '{}'".format(value))
     ttext = m.group()
     value = value[len(ttext):]
@@ -2232,7 +2232,7 @@ def get_ttext(value):
 def get_token(value):
     """token = [CFWS] 1*ttext [CFWS]
 
-    The RFC equivalent of ttext is any US-ASCII chars tatizo space, ctls, or
+    The RFC equivalent of ttext is any US-ASCII chars tatizo space, ctls, ama
     tspecials.  We also exclude tabs even though the RFC doesn't.
 
     The RFC implies the CFWS but ni sio explicit about it in the BNF.
@@ -2243,7 +2243,7 @@ def get_token(value):
         token, value = get_cfws(value)
         mtoken.append(token)
     if value and value[0] in TOKEN_ENDS:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_ttext(value)
     mtoken.append(token)
@@ -2263,7 +2263,7 @@ def get_attrtext(value):
     """
     m = _non_attribute_end_matcher(value)
     if sio m:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2285,7 +2285,7 @@ def get_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     if value and value[0] in ATTRIBUTE_ENDS:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_attrtext(value)
     attribute.append(token)
@@ -2304,7 +2304,7 @@ def get_extended_attrtext(value):
     """
     m = _non_extended_attribute_end_matcher(value)
     if sio m:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected extended attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2325,7 +2325,7 @@ def get_extended_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     if value and value[0] in EXTENDED_ATTRIBUTE_ENDS:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_extended_attrtext(value)
     attribute.append(token)
@@ -2345,12 +2345,12 @@ def get_section(value):
     """
     section = Section()
     if sio value or value[0] != '*':
-        raise errors.HeaderParseError("Expected section but found {}".format(
+        ashiria errors.HeaderParseError("Expected section but found {}".format(
                                         value))
     section.append(ValueTerminal('*', 'section-marker'))
     value = value[1:]
     if sio value or sio value[0].isdigit():
-        raise errors.HeaderParseError("Expected section number but "
+        ashiria errors.HeaderParseError("Expected section number but "
                                       "found {}".format(value))
     digits = ''
     wakati value and value[0].isdigit():
@@ -2370,12 +2370,12 @@ def get_value(value):
     """
     v = Value()
     if sio value:
-        raise errors.HeaderParseError("Expected value but found end of string")
+        ashiria errors.HeaderParseError("Expected value but found end of string")
     leader = None
     if value[0] in CFWS_LEADER:
         leader, value = get_cfws(value)
     if sio value:
-        raise errors.HeaderParseError("Expected value but found "
+        ashiria errors.HeaderParseError("Expected value but found "
                                       "only {}".format(leader))
     if value[0] == '"':
         token, value = get_quoted_string(value)
@@ -2412,13 +2412,13 @@ def get_parameter(value):
         tatizo errors.HeaderParseError:
             pass
         if sio value:
-            raise errors.HeaderParseError("Incomplete parameter")
+            ashiria errors.HeaderParseError("Incomplete parameter")
         if value[0] == '*':
             param.append(ValueTerminal('*', 'extended-parameter-marker'))
             value = value[1:]
             param.extended = True
     if value[0] != '=':
-        raise errors.HeaderParseError("Parameter sio followed by '='")
+        ashiria errors.HeaderParseError("Parameter sio followed by '='")
     param.append(ValueTerminal('=', 'parameter-separator'))
     value = value[1:]
     leader = None
@@ -2444,7 +2444,7 @@ def get_parameter(value):
         isipokua:
             jaribu:
                 token, rest = get_extended_attrtext(inner_value)
-            except:
+            tatizo:
                 pass
             isipokua:
                 if sio rest:
@@ -2494,7 +2494,7 @@ def get_parameter(value):
             appendto.append(t)
             param.charset = t.value
         if value[0] != "'":
-            raise errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+            ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                           "delimiter, but found {!r}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
@@ -2503,7 +2503,7 @@ def get_parameter(value):
             appendto.append(token)
             param.lang = token.value
             if sio value or value[0] != "'":
-                raise errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+                ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                   "delimiter, but found {}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
@@ -2810,7 +2810,7 @@ def _refold_parse_tree(parse_tree, *, policy):
         # This part is too long to fit.  The RFC wants us to koma at
         # "major syntactic komas", so unless we don't consider this
         # to be one, check if it will fit on the next line by itself.
-        if (part.syntactic_koma and
+        if (part.syntactic_koma na
                 len(tstr) + 1 <= maxlen):
             newline = _steal_trailing_WSP_if_exists(lines)
             if newline or part.startswith_fws():
@@ -2877,7 +2877,7 @@ def _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
     chrome_len = len(encode_as) + 7
 
     if (chrome_len + 1) >= maxlen:
-        raise errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "max_line_length is too small to fit an encoded word")
 
     wakati to_encode:
@@ -2952,7 +2952,7 @@ def _fold_mime_parameters(part, lines, maxlen, encoding):
         lasivyo len(tstr) + 2 <= maxlen:
             lines.append(' ' + tstr)
             endelea
-        # We need multiple sections.  We are allowed to mix encoded and
+        # We need multiple sections.  We are allowed to mix encoded na
         # non-encoded sections, but we aren't going to.  We'll encode them all.
         section = 0
         extra_chrome = charset + "''"

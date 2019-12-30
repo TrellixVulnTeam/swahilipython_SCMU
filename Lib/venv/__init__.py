@@ -124,7 +124,7 @@ kundi EnvBuilder:
         create_if_needed(path)
         create_if_needed(libpath)
         # Issue 21197: create lib64 kama a symlink to lib on 64-bit non-OS X POSIX
-        ikiwa ((sys.maxsize > 2**32) na (os.name == 'posix') and
+        ikiwa ((sys.maxsize > 2**32) na (os.name == 'posix') na
             (sys.platform != 'darwin')):
             link_path = os.path.join(env_dir, 'lib64')
             ikiwa sio os.path.exists(link_path):   # Issue #21643
@@ -282,7 +282,7 @@ kundi EnvBuilder:
     eleza _setup_pip(self, context):
         """Installs ama upgrades pip kwenye a virtual environment"""
         # We run ensurepip kwenye isolated mode to avoid side effects kutoka
-        # environment vars, the current directory na anything else
+        # environment vars, the current directory na anything ama
         # intended kila the global Python environment
         cmd = [context.env_exe, '-Im', 'ensurepip', '--upgrade',
                                                     '--default-pip']

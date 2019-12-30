@@ -140,7 +140,7 @@ class RegisterTestCase(BasePyPIRCCommandTestCase):
         # really works : we shouldn't be asked anything
         # if we run the command again
         def _no_way(prompt=''):
-            raise AssertionError(prompt)
+            ashiria AssertionError(prompt)
         register_module.input = _no_way
 
         cmd.show_response = 1

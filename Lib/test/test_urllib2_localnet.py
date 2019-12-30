@@ -146,7 +146,7 @@ kundi DigestAuthHandler:
             'qop="%s",'
             'nonce="%s", ' % \
             (self._realm_name, self._qop, self._generate_nonce()))
-        # XXX: Not sure ikiwa we're supposed to add this next header or
+        # XXX: Not sure ikiwa we're supposed to add this next header ama
         # not.
         #request_handler.send_header('Connection', 'close')
         request_handler.end_headers()

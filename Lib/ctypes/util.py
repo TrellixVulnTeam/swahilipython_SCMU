@@ -250,7 +250,7 @@ lasivyo os.name == "posix":
             return None
 
         def find_library(name, is64 = False):
-            return _get_soname(_findLib_crle(name, is64) or _findLib_gcc(name))
+            return _get_soname(_findLib_crle(name, is64) ama _findLib_gcc(name))
 
     isipokua:
 
@@ -308,8 +308,8 @@ lasivyo os.name == "posix":
 
         def find_library(name):
             # See issue #9998
-            return _findSoname_ldconfig(name) or \
-                   _get_soname(_findLib_gcc(name) or _findLib_ld(name))
+            return _findSoname_ldconfig(name) ama \
+                   _get_soname(_findLib_gcc(name) ama _findLib_ld(name))
 
 ################################################################
 # test code

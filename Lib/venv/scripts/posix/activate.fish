@@ -54,14 +54,14 @@ ikiwa test -z "$VIRTUAL_ENV_DISABLE_PROMPT"
         # Prompt override?
         ikiwa test -n "__VENV_PROMPT__"
             printf "%s%s" "__VENV_PROMPT__" (set_color normal)
-        else
+        ama
             # ...Otherwise, prepend env
             set -l _checkbase (basename "$VIRTUAL_ENV")
             ikiwa test $_checkbase = "__"
                 # special case kila Aspen magic directories
                 # see http://www.zetadev.com/software/aspen/
                 printf "%s[%s]%s " (set_color -b blue white) (basename (dirname "$VIRTUAL_ENV")) (set_color normal)
-            else
+            ama
                 printf "%s(%s)%s" (set_color -b blue white) (basename "$VIRTUAL_ENV") (set_color normal)
             end
         end

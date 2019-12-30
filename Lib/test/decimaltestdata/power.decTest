@@ -1561,7 +1561,7 @@ maxExponent: 96
 minExponent: -95
 
 -- For x=nextfp(1)=1.00..001 (where the number of 0s is precision-2)
---   power(x,y)=x when the rounding is up (e.g., toward_pos_inf or
+--   power(x,y)=x when the rounding is up (e.g., toward_pos_inf ama
 --   ceil) for any y in (0,1].
 rounding: ceiling
 powx4301  power  1.000001 0          -> 1
@@ -1575,7 +1575,7 @@ powx4306  power  1.000001 0.1234567  -> 1.000001   Inexact Rounded
 powx4307  power  1.000001 0.7        -> 1.000001   Inexact Rounded
 powx4308  power  1.000001 0.9999999  -> 1.000001   Inexact Rounded
 powx4309  power  1.000001 1.000000   -> 1.000001
---   power(x,y)=1 when the rounding is down (e.g. toward_zero or
+--   power(x,y)=1 when the rounding is down (e.g. toward_zero ama
 --   floor) for any y in [0,1).
 rounding: floor
 powx4321  power  1.000001 0          -> 1

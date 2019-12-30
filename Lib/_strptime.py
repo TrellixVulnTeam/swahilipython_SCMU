@@ -73,9 +73,9 @@ kundi LocaleTime(object):
         self.__calc_timezone()
         self.__calc_date_time()
         if _getlang() != self.lang:
-            raise ValueError("locale changed during initialization")
+            ashiria ValueError("locale changed during initialization")
         if time.tzname != self.tzname or time.daylight != self.daylight:
-            raise ValueError("timezone changed during initialization")
+            ashiria ValueError("timezone changed during initialization")
 
     def __calc_weekday(self):
         # Set self.a_weekday and self.f_weekday using the calendar
@@ -132,7 +132,7 @@ kundi LocaleTime(object):
             for old, new in replacement_pairs:
                 # Must deal with possible lack of locale info
                 # manifesting itself as the empty string (e.g., Swedish's
-                # lack of AM/PM info) or a platform returning a tuple of empty
+                # lack of AM/PM info) ama a platform returning a tuple of empty
                 # strings (e.g., MacOS 9 having timezone as ('','')).
                 if old:
                     current_format = current_format.replace(old, new)
@@ -269,7 +269,7 @@ _TimeRE_cache = TimeRE()
 _CACHE_MAX_SIZE = 5 # Max number of regexes stored in _regex_cache
 _regex_cache = {}
 
-def _calc_julian_kutoka_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
+def _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon):
     """Calculate the Julian day based on the year, week of the year, and day of
     the week, with week_start_day representing whether the week of the year
     assumes the week starts on Sunday or Monday (6 or 0)."""
@@ -290,7 +290,7 @@ def _calc_julian_kutoka_U_or_W(year, week_of_year, day_of_week, week_starts_Mon)
         return 1 + days_to_week + day_of_week
 
 
-def _calc_julian_kutoka_V(iso_year, iso_week, iso_weekday):
+def _calc_julian_from_V(iso_year, iso_week, iso_weekday):
     """Calculate the Julian day based on the ISO 8601 year, week, and weekday.
     ISO weeks start on Mondays, with week 01 being the week containing 4 Jan.
     ISO week days range kutoka 1 (Monday) to 7 (Sunday).
@@ -314,13 +314,13 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     for index, arg in enumerate([data_string, format]):
         if sio isinstance(arg, str):
             msg = "strptime() argument {} must be str, sio {}"
-            raise TypeError(msg.format(index, type(arg)))
+            ashiria TypeError(msg.format(index, type(arg)))
 
     global _TimeRE_cache, _regex_cache
     with _cache_lock:
         locale_time = _TimeRE_cache.locale_time
-        if (_getlang() != locale_time.lang or
-            time.tzname != locale_time.tzname or
+        if (_getlang() != locale_time.lang ama
+            time.tzname != locale_time.tzname ama
             time.daylight != locale_time.daylight):
             _TimeRE_cache = TimeRE()
             _regex_cache.clear()
@@ -338,18 +338,18 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 if bad_directive == "\\":
                     bad_directive = "%"
                 toa err
-                raise ValueError("'%s' is a bad directive in format '%s'" %
+                ashiria ValueError("'%s' is a bad directive in format '%s'" %
                                     (bad_directive, format)) kutoka None
             # IndexError only occurs when the format string is "%"
             tatizo IndexError:
-                raise ValueError("stray %% in format '%s'" % format) kutoka None
+                ashiria ValueError("stray %% in format '%s'" % format) kutoka None
             _regex_cache[format] = format_regex
     found = format_regex.match(data_string)
     if sio found:
-        raise ValueError("time data %r does sio match format %r" %
+        ashiria ValueError("time data %r does sio match format %r" %
                          (data_string, format))
     if len(data_string) != found.end():
-        raise ValueError("unconverted data remains: %s" %
+        ashiria ValueError("unconverted data remains: %s" %
                           data_string[found.end():])
 
     iso_year = year = None
@@ -455,7 +455,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     if len(z) > 5:
                         if z[5] != ':':
                             msg = f"Inconsistent use of : in {found_dict['z']}"
-                            raise ValueError(msg)
+                            ashiria ValueError(msg)
                         z = z[:5] + z[6:]
                 hours = int(z[1:3])
                 minutes = int(z[3:5])
@@ -477,7 +477,7 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     # Deal with bad locale setup where timezone names are the
                     # same and yet time.daylight is true; too ambiguous to
                     # be able to tell what timezone has daylight savings
-                    if (time.tzname[0] == time.tzname[1] and
+                    if (time.tzname[0] == time.tzname[1] na
                        time.daylight and found_zone haiko kwenye ("utc", "gmt")):
                         koma
                     isipokua:
@@ -487,20 +487,20 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     # don't assume default values for ISO week/year
     if year is None and iso_year ni sio None:
         if iso_week is None or weekday is None:
-            raise ValueError("ISO year directive '%G' must be used with "
+            ashiria ValueError("ISO year directive '%G' must be used with "
                              "the ISO week directive '%V' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
         if julian ni sio None:
-            raise ValueError("Day of the year directive '%j' ni sio "
+            ashiria ValueError("Day of the year directive '%j' ni sio "
                              "compatible with ISO year directive '%G'. "
                              "Use '%Y' instead.")
     lasivyo week_of_year is None and iso_week ni sio None:
         if weekday is None:
-            raise ValueError("ISO week directive '%V' must be used with "
+            ashiria ValueError("ISO week directive '%V' must be used with "
                              "the ISO year directive '%G' and a weekday "
                              "directive ('%A', '%a', '%w', or '%u').")
         isipokua:
-            raise ValueError("ISO week directive '%V' is incompatible with "
+            ashiria ValueError("ISO week directive '%V' is incompatible with "
                              "the year directive '%Y'. Use the ISO year '%G' "
                              "instead.")
 
@@ -517,10 +517,10 @@ def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     if julian is None and weekday ni sio None:
         if week_of_year ni sio None:
             week_starts_Mon = True if week_of_year_start == 0 isipokua False
-            julian = _calc_julian_kutoka_U_or_W(year, week_of_year, weekday,
+            julian = _calc_julian_from_U_or_W(year, week_of_year, weekday,
                                                 week_starts_Mon)
         lasivyo iso_year ni sio None and iso_week ni sio None:
-            year, julian = _calc_julian_kutoka_V(iso_year, iso_week, weekday + 1)
+            year, julian = _calc_julian_from_V(iso_year, iso_week, weekday + 1)
         if julian ni sio None and julian <= 0:
             year -= 1
             yday = 366 if calendar.isleap(year) isipokua 365

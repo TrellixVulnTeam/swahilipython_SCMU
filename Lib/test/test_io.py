@@ -63,7 +63,7 @@ isipokua:
 _cflags = sysconfig.get_config_var('CFLAGS') ama ''
 _config_args = sysconfig.get_config_var('CONFIG_ARGS') ama ''
 MEMORY_SANITIZER = (
-    '-fsanitize=memory' kwenye _cflags or
+    '-fsanitize=memory' kwenye _cflags ama
     '--with-memory-sanitizer' kwenye _config_args
 )
 
@@ -147,7 +147,7 @@ kundi MockRawIO(MockRawIOWithoutRead):
         self._reads += 1
         jaribu:
             rudisha self._read_stack.pop(0)
-        except:
+        tatizo:
             self._extraneous_reads += 1
             rudisha b""
 
@@ -423,7 +423,7 @@ kundi IOTest(unittest.TestCase):
 
     eleza test_optional_abilities(self):
         # Test kila OSError when optional APIs are sio supported
-        # The purpose of this test ni to try fileno(), reading, writing and
+        # The purpose of this test ni to try fileno(), reading, writing na
         # seeking operations ukijumuisha various objects that indicate they do not
         # support these operations.
 
@@ -1858,7 +1858,7 @@ kundi BufferedWriterTest(unittest.TestCase, CommonBufferedTests):
         self.assertRaises(OSError, b.close) # exception sio swallowed
         self.assertKweli(b.closed)
 
-    eleza test_slow_close_kutoka_thread(self):
+    eleza test_slow_close_from_thread(self):
         # Issue #31976
         rawio = self.SlowFlushRawIO()
         bufio = self.tp(rawio, 8)
@@ -2279,7 +2279,7 @@ kundi BufferedRandomTest(BufferedReaderTest, BufferedWriterTest):
             # Overwriting should rewind the raw stream ikiwa it needs so
             bufio.write(b"B" * overwrite_size)
             self.assertEqual(bufio.tell(), overwrite_size + 1)
-            # If the write size was smaller than the buffer size, flush() and
+            # If the write size was smaller than the buffer size, flush() na
             # check that rewind happens.
             bufio.flush()
             self.assertEqual(bufio.tell(), overwrite_size + 1)

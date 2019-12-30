@@ -178,7 +178,7 @@ kundi TestTZInfo(unittest.TestCase):
 
     eleza test_pickling_base(self):
         # There's no point to pickling tzinfo objects on their own (they
-        # carry no data), but they need to be picklable anyway else
+        # carry no data), but they need to be picklable anyway ama
         # concrete subclasses can't be pickled.
         orig = tzinfo.__new__(tzinfo)
         self.assertIs(type(orig), tzinfo)
@@ -420,7 +420,7 @@ kundi TestTimeZone(unittest.TestCase):
         self.assertNotEqual(timezone(timedelta(hours=1)), tzinfo())
 
 #############################################################################
-# Base kundi kila testing a particular aspect of timedelta, time, date and
+# Base kundi kila testing a particular aspect of timedelta, time, date na
 # datetime comparisons.
 
 kundi HarmlessMixedComparison:
@@ -969,7 +969,7 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         self.assertRaises(TypeError, divmod, t, 10)
 
     eleza test_issue31293(self):
-        # The interpreter shouldn't crash kwenye case a timedelta ni divided or
+        # The interpreter shouldn't crash kwenye case a timedelta ni divided ama
         # multiplied by a float ukijumuisha a bad as_integer_ratio() method.
         eleza get_bad_float(bad_ratio):
             kundi BadFloat(float):
@@ -1331,7 +1331,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
             # In any case, wait a little wakati na try again.
             time.sleep(0.1)
 
-        # It worked ama it didn't.  If it didn't, assume it's reason #2, and
+        # It worked ama it didn't.  If it didn't, assume it's reason #2, na
         # let the test pita ikiwa they're within half a second of each other.
         ikiwa today != todayagain:
             self.assertAlmostEqual(todayagain, today,
@@ -1753,7 +1753,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_backdoor_resistance(self):
         # For fast unpickling, the constructor accepts a pickle byte string.
-        # This ni a low-overhead backdoor.  A user can (by intent or
+        # This ni a low-overhead backdoor.  A user can (by intent ama
         # mistake) pita a string directly, which (ikiwa it's the right length)
         # will get treated like a pickle, na bypita the normal sanity
         # checks kwenye the constructor.  This can create insane objects.
@@ -5842,7 +5842,7 @@ kundi ZoneInfoTest(unittest.TestCase):
                 self.assertEqual(ldt.fold, 0)
 
     eleza test_system_transitions(self):
-        ikiwa ('Riyadh8' kwenye self.zonename or
+        ikiwa ('Riyadh8' kwenye self.zonename ama
             # From tzdata NEWS file:
             # The files solar87, solar88, na solar89 are no longer distributed.
             # They were a negative experiment - that is, a demonstration that
@@ -6103,7 +6103,7 @@ kundi CapiTest(unittest.TestCase):
                 ukijumuisha self.subTest(arg=arg, exact=exact):
                     self.assertUongo(is_tzinfo(arg, exact))
 
-    eleza test_date_kutoka_date(self):
+    eleza test_date_from_date(self):
         exp_date = date(1993, 8, 26)
 
         kila macro kwenye [0, 1]:
@@ -6116,7 +6116,7 @@ kundi CapiTest(unittest.TestCase):
 
                 self.assertEqual(c_api_date, exp_date)
 
-    eleza test_datetime_kutoka_dateandtime(self):
+    eleza test_datetime_from_dateandtime(self):
         exp_date = datetime(1993, 8, 26, 22, 12, 55, 99999)
 
         kila macro kwenye [0, 1]:
@@ -6133,7 +6133,7 @@ kundi CapiTest(unittest.TestCase):
 
                 self.assertEqual(c_api_date, exp_date)
 
-    eleza test_datetime_kutoka_dateandtimeandfold(self):
+    eleza test_datetime_from_dateandtimeandfold(self):
         exp_date = datetime(1993, 8, 26, 22, 12, 55, 99999)
 
         kila fold kwenye [0, 1]:
@@ -6153,7 +6153,7 @@ kundi CapiTest(unittest.TestCase):
                     self.assertEqual(c_api_date, exp_date)
                     self.assertEqual(c_api_date.fold, exp_date.fold)
 
-    eleza test_time_kutoka_time(self):
+    eleza test_time_from_time(self):
         exp_time = time(22, 12, 55, 99999)
 
         kila macro kwenye [0, 1]:
@@ -6167,7 +6167,7 @@ kundi CapiTest(unittest.TestCase):
 
                 self.assertEqual(c_api_time, exp_time)
 
-    eleza test_time_kutoka_timeandfold(self):
+    eleza test_time_from_timeandfold(self):
         exp_time = time(22, 12, 55, 99999)
 
         kila fold kwenye [0, 1]:
@@ -6184,7 +6184,7 @@ kundi CapiTest(unittest.TestCase):
                     self.assertEqual(c_api_time, exp_time)
                     self.assertEqual(c_api_time.fold, exp_time.fold)
 
-    eleza test_delta_kutoka_dsu(self):
+    eleza test_delta_from_dsu(self):
         exp_delta = timedelta(26, 55, 99999)
 
         kila macro kwenye [0, 1]:
@@ -6197,7 +6197,7 @@ kundi CapiTest(unittest.TestCase):
 
                 self.assertEqual(c_api_delta, exp_delta)
 
-    eleza test_date_kutoka_timestamp(self):
+    eleza test_date_from_timestamp(self):
         ts = datetime(1995, 4, 12).timestamp()
 
         kila macro kwenye [0, 1]:
@@ -6206,7 +6206,7 @@ kundi CapiTest(unittest.TestCase):
 
                 self.assertEqual(d, date(1995, 4, 12))
 
-    eleza test_datetime_kutoka_timestamp(self):
+    eleza test_datetime_from_timestamp(self):
         cases = [
             ((1995, 4, 12), Tupu, Uongo),
             ((1995, 4, 12), Tupu, Kweli),

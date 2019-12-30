@@ -213,7 +213,7 @@ class BaseEventLoopTests(test_utils.TestCase):
     def test_set_default_executor(self):
         class DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             def submit(self, fn, *args, **kwargs):
-                raise NotImplementedError(
+                ashiria NotImplementedError(
                     'cannot submit into a dummy executor')
 
         executor = DummyExecutor()
@@ -333,13 +333,13 @@ class BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
 
-        # raise RuntimeError if the thread has no event loop
+        # ashiria RuntimeError if the thread has no event loop
         test_thread(self.loop, True)
 
         # check disabled if debug mode is disabled
         test_thread(self.loop, False)
 
-        # raise RuntimeError if the event loop of the thread ni sio the called
+        # ashiria RuntimeError if the event loop of the thread ni sio the called
         # event loop
         test_thread(self.loop, True, create_loop=True)
 
@@ -484,7 +484,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             await asyncio.sleep(delay)
 
         def throw():
-            raise ShowStopper
+            ashiria ShowStopper
 
         self.loop._process_events = mock.Mock()
         self.loop.call_soon(throw)
@@ -646,7 +646,7 @@ class BaseEventLoopTests(test_utils.TestCase):
             self.loop._run_once()
 
         def handler(loop, context):
-            raise AttributeError('spam')
+            ashiria AttributeError('spam')
 
         self.loop._process_events = mock.Mock()
 
@@ -671,7 +671,7 @@ class BaseEventLoopTests(test_utils.TestCase):
                 nonlocal _context
                 _context = context
                 # Simulates custom buggy "default_exception_handler"
-                raise ValueError('spam')
+                ashiria ValueError('spam')
 
         loop = Loop()
         self.addCleanup(loop.close)
@@ -690,7 +690,7 @@ class BaseEventLoopTests(test_utils.TestCase):
                 exc_info=True)
 
         def custom_handler(loop, context):
-            raise ValueError('ham')
+            ashiria ValueError('ham')
 
         _context = None
         loop.set_exception_handler(custom_handler)
@@ -827,7 +827,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         # run_forever() consumes the KeyboardInterrupt and so don't log
         # a warning
         async def raise_keyboard_interrupt():
-            raise KeyboardInterrupt
+            ashiria KeyboardInterrupt
 
         self.loop._process_events = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
@@ -845,7 +845,7 @@ class BaseEventLoopTests(test_utils.TestCase):
         # Python issue #22429: run_until_complete() must sio schedule a pending
         # call to stop() if the future raised a BaseException
         async def raise_keyboard_interrupt():
-            raise KeyboardInterrupt
+            ashiria KeyboardInterrupt
 
         self.loop._process_events = mock.Mock()
 
@@ -1077,7 +1077,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
         def _socket(*args, **kw):
             nonlocal idx, errors
             idx += 1
-            raise OSError(errors[idx])
+            ashiria OSError(errors[idx])
 
         m_socket.socket = _socket
 
@@ -1165,7 +1165,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
         jaribu:
             self.loop.run_until_complete(main())
         tatizo OSError as ex:
-            if (hasattr(errno, 'EADDRNOTAVAIL') and
+            if (hasattr(errno, 'EADDRNOTAVAIL') na
                     ex.errno == errno.EADDRNOTAVAIL):
                 self.skipTest('failed to bind to ::1')
             isipokua:
@@ -1234,7 +1234,7 @@ class BaseEventLoopWithSelectorTests(test_utils.TestCase):
             if addr[0] == '0.0.0.1':
                 err = OSError('Err')
                 err.strerror = 'Err'
-                raise err
+                ashiria err
 
         m_socket.socket.return_value.bind = bind
 

@@ -167,7 +167,7 @@ eleza overrideRootMenu(root, flist):
 
     closeItem = mainmenu.menudefs[0][1][-2]
 
-    # Remove the last 3 items of the file menu: a separator, close window and
+    # Remove the last 3 items of the file menu: a separator, close window na
     # quit. Close window will be reinserted just above the save item, where
     # it should be according to the HIG. Quit ni kwenye the application menu.
     toa mainmenu.menudefs[0][1][-3:]

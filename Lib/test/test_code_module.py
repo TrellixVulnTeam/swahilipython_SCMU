@@ -132,7 +132,7 @@ kundi TestInteractiveConsole(unittest.TestCase):
         self.assertIn(expected, output)
 
     eleza test_context_tb(self):
-        self.infunc.side_effect = ["jaribu: ham\nexcept: eggs\n",
+        self.infunc.side_effect = ["jaribu: ham\ntatizo: eggs\n",
                                     EOFError('Finished')]
         self.console.interact()
         output = ''.join(''.join(call[1]) kila call kwenye self.stderr.method_calls)

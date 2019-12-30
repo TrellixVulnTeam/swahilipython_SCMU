@@ -147,7 +147,7 @@ kundi PtyTest(unittest.TestCase):
                 # Have pty, but sio setsid()?
                 debug("No setsid() available?")
                 pita
-            except:
+            tatizo:
                 # We don't want this error to propagate, escaping the call to
                 # os._exit() na causing very peculiar behavior kwenye the calling
                 # regrtest.py !
@@ -255,7 +255,7 @@ kundi SmallPtyTests(unittest.TestCase):
 
     eleza test__copy_to_each(self):
         """Test the normal data case on both master_fd na stdin."""
-        read_kutoka_stdout_fd, mock_stdout_fd = self._pipe()
+        read_from_stdout_fd, mock_stdout_fd = self._pipe()
         pty.STDOUT_FILENO = mock_stdout_fd
         mock_stdin_fd, write_to_stdin_fd = self._pipe()
         pty.STDIN_FILENO = mock_stdin_fd
@@ -276,14 +276,14 @@ kundi SmallPtyTests(unittest.TestCase):
             pty._copy(masters[0])
 
         # Test that the right data went to the right places.
-        rfds = select.select([read_kutoka_stdout_fd, masters[1]], [], [], 0)[0]
-        self.assertEqual([read_kutoka_stdout_fd, masters[1]], rfds)
-        self.assertEqual(os.read(read_kutoka_stdout_fd, 20), b'kutoka master')
+        rfds = select.select([read_from_stdout_fd, masters[1]], [], [], 0)[0]
+        self.assertEqual([read_from_stdout_fd, masters[1]], rfds)
+        self.assertEqual(os.read(read_from_stdout_fd, 20), b'kutoka master')
         self.assertEqual(os.read(masters[1], 20), b'kutoka stdin')
 
     eleza test__copy_eof_on_all(self):
         """Test the empty read EOF case on both master_fd na stdin."""
-        read_kutoka_stdout_fd, mock_stdout_fd = self._pipe()
+        read_from_stdout_fd, mock_stdout_fd = self._pipe()
         pty.STDOUT_FILENO = mock_stdout_fd
         mock_stdin_fd, write_to_stdin_fd = self._pipe()
         pty.STDIN_FILENO = mock_stdin_fd

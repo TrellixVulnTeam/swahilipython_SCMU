@@ -19,7 +19,7 @@ Some of the things this checks:
     wsgi.multithread, wsgi.multiprocess, wsgi.run_once
 
   - That HTTP_CONTENT_TYPE na HTTP_CONTENT_LENGTH are haiko kwenye the
-    environment (these headers should appear kama CONTENT_LENGTH and
+    environment (these headers should appear kama CONTENT_LENGTH na
     CONTENT_TYPE).
 
   - Warns ikiwa QUERY_STRING ni missing, kama the cgi module acts
@@ -45,7 +45,7 @@ Some of the things this checks:
   - That SCRIPT_NAME ni sio '/' (it should be '', na PATH_INFO should
     be '/').
 
-  - That wsgi.input has the methods read, readline, readlines, and
+  - That wsgi.input has the methods read, readline, readlines, na
     __iter__
 
   - That wsgi.errors has the methods flush, write, writelines
@@ -53,7 +53,7 @@ Some of the things this checks:
 * The status ni a string, contains a space, starts ukijumuisha an integer,
   na that integer ni kwenye range (> 100).
 
-* That the headers ni a list (not a subclass, sio another kind of
+* That the headers ni a list (sio a subclass, sio another kind of
   sequence).
 
 * That the items of the headers are tuples of strings.
@@ -61,7 +61,7 @@ Some of the things this checks:
 * That there ni no 'status' header (that ni used kwenye CGI, but sio in
   WSGI).
 
-* That the headers don't contain newlines ama colons, end kwenye _ ama -, or
+* That the headers don't contain newlines ama colons, end kwenye _ ama -, ama
   contain characters codes below 037.
 
 * That Content-Type ni given ikiwa there ni content (CGI often has a
@@ -147,7 +147,7 @@ eleza validator(application):
 
     eleza lint_app(*args, **kw):
         assert_(len(args) == 2, "Two arguments required")
-        assert_(not kw, "No keyword arguments allowed")
+        assert_(sio kw, "No keyword arguments allowed")
         environ, start_response = args
 
         check_environ(environ)
@@ -159,7 +159,7 @@ eleza validator(application):
         eleza start_response_wrapper(*args, **kw):
             assert_(len(args) == 2 ama len(args) == 3, (
                 "Invalid number of arguments: %s" % (args,)))
-            assert_(not kw, "No keyword arguments allowed")
+            assert_(sio kw, "No keyword arguments allowed")
             status = args[0]
             headers = args[1]
             ikiwa len(args) == 3:
@@ -272,7 +272,7 @@ kundi IteratorWrapper:
         rudisha self
 
     eleza __next__(self):
-        assert_(not self.closed,
+        assert_(sio self.closed,
             "Iterator read after closed")
         v = next(self.iterator)
         ikiwa type(v) ni sio bytes:
@@ -342,10 +342,10 @@ eleza check_environ(environ):
             "Unknown REQUEST_METHOD: %r" % environ['REQUEST_METHOD'],
             WSGIWarning)
 
-    assert_(not environ.get('SCRIPT_NAME')
+    assert_(sio environ.get('SCRIPT_NAME')
             ama environ['SCRIPT_NAME'].startswith('/'),
         "SCRIPT_NAME doesn't start ukijumuisha /: %r" % environ['SCRIPT_NAME'])
-    assert_(not environ.get('PATH_INFO')
+    assert_(sio environ.get('PATH_INFO')
             ama environ['PATH_INFO'].startswith('/'),
         "PATH_INFO doesn't start ukijumuisha /: %r" % environ['PATH_INFO'])
     ikiwa environ.get('CONTENT_LENGTH'):
@@ -405,7 +405,7 @@ eleza check_headers(headers):
         assert_('\n' haiko kwenye name na ':' haiko kwenye name,
             "Header names may sio contain ':' ama '\\n': %r" % name)
         assert_(header_re.search(name), "Bad header name: %r" % name)
-        assert_(not name.endswith('-') na sio name.endswith('_'),
+        assert_(sio name.endswith('-') na sio name.endswith('_'),
             "Names may sio end kwenye '-' ama '_': %r" % name)
         ikiwa bad_header_value_re.search(value):
             assert_(0, "Bad header value: %r (bad char: %r)"
@@ -436,6 +436,6 @@ eleza check_iterator(iterator):
     # Technically a bytestring ni legal, which ni why it's a really bad
     # idea, because it may cause the response to be rudishaed
     # character-by-character
-    assert_(not isinstance(iterator, (str, bytes)),
+    assert_(sio isinstance(iterator, (str, bytes)),
         "You should sio rudisha a string kama your application iterator, "
         "instead rudisha a single-item list containing a bytestring.")

@@ -225,7 +225,7 @@ class install(Command):
         """Finalizes options."""
         # This method (and its helpers, like 'finalize_unix()',
         # 'finalize_other()', and 'select_scheme()') is where the default
-        # installation directories for modules, extension modules, and
+        # installation directories for modules, extension modules, na
         # anything isipokua we care to install from a Python module
         # distribution.  Thus, this code makes a pretty important policy
         # statement about how third-party stuff is added to a Python
@@ -237,19 +237,19 @@ class install(Command):
         # Check for errors/inconsistencies in the options; first, stuff
         # that's wrong on any platform.
 
-        if ((self.prefix or self.exec_prefix or self.home) and
+        if ((self.prefix or self.exec_prefix or self.home) na
             (self.install_base or self.install_platbase)):
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                    "must supply either prefix/exec-prefix/home or " +
                    "install-base/install-platbase -- sio both")
 
         if self.home and (self.prefix or self.exec_prefix):
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "must supply either home or prefix/exec-prefix -- sio both")
 
-        if self.user and (self.prefix or self.exec_prefix or self.home or
+        if self.user and (self.prefix or self.exec_prefix or self.home ama
                 self.install_base or self.install_platbase):
-            raise DistutilsOptionError("can't combine user with prefix, "
+            ashiria DistutilsOptionError("can't combine user with prefix, "
                                        "exec_prefix/home, or install_(plat)base")
 
         # Next, stuff that's wrong (or dubious) only on certain platforms.
@@ -276,7 +276,7 @@ class install(Command):
         self.dump_dirs("post-finalize_{unix,other}()")
 
         # Expand configuration variables, tilde, etc. in self.install_base
-        # and self.install_platbase -- that way, we can use $base or
+        # and self.install_platbase -- that way, we can use $base ama
         # $platbase in the other installation directories and sio worry
         # about needing recursive variable expansion (shudder).
 
@@ -392,20 +392,20 @@ class install(Command):
     def finalize_unix(self):
         """Finalizes options for posix platforms."""
         if self.install_base ni sio None or self.install_platbase ni sio None:
-            if ((self.install_lib is None and
-                 self.install_purelib is None and
-                 self.install_platlib is None) or
-                self.install_headers is None or
-                self.install_scripts is None or
+            if ((self.install_lib is None na
+                 self.install_purelib is None na
+                 self.install_platlib is None) ama
+                self.install_headers is None ama
+                self.install_scripts is None ama
                 self.install_data is None):
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install-base or install-platbase supplied, but "
                       "installation scheme is incomplete")
             return
 
         if self.user:
             if self.install_userbase is None:
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                     "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme("unix_user")
@@ -415,7 +415,7 @@ class install(Command):
         isipokua:
             if self.prefix is None:
                 if self.exec_prefix ni sio None:
-                    raise DistutilsOptionError(
+                    ashiria DistutilsOptionError(
                           "must sio supply exec-prefix without prefix")
 
                 self.prefix = os.path.normpath(sys.prefix)
@@ -433,7 +433,7 @@ class install(Command):
         """Finalizes options for non-posix platforms"""
         if self.user:
             if self.install_userbase is None:
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                     "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme(os.name + "_user")
@@ -448,7 +448,7 @@ class install(Command):
             jaribu:
                 self.select_scheme(os.name)
             tatizo KeyError:
-                raise DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                       "I don't know how to install stuff on '%s'" % os.name)
 
     def select_scheme(self, name):
@@ -470,7 +470,7 @@ class install(Command):
                 setattr(self, attr, val)
 
     def expand_basedirs(self):
-        """Calls `os.path.expanduser` on install_base, install_platbase and
+        """Calls `os.path.expanduser` on install_base, install_platbase na
         root."""
         self._expand_attrs(['install_base', 'install_platbase', 'root'])
 
@@ -504,7 +504,7 @@ class install(Command):
             lasivyo len(self.extra_path) == 2:
                 path_file, extra_dirs = self.extra_path
             isipokua:
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "'extra_path' option must be a list, tuple, or "
                       "comma-separated string with 1 or 2 elements")
 
@@ -549,7 +549,7 @@ class install(Command):
             # internally, and sio to sys.path, so we don't check the platform
             # matches what we are running.
             if self.warn_dir and build_plat != get_platform():
-                raise DistutilsPlatformError("Can't install when "
+                ashiria DistutilsPlatformError("Can't install when "
                                              "cross-compiling")
 
         # Run all sub-commands (at least those that need to be run)
@@ -574,8 +574,8 @@ class install(Command):
         sys_path = map(os.path.normpath, sys.path)
         sys_path = map(os.path.normcase, sys_path)
         install_lib = os.path.normcase(os.path.normpath(self.install_lib))
-        if (self.warn_dir and
-            sio (self.path_file and self.install_path_file) and
+        if (self.warn_dir na
+            sio (self.path_file and self.install_path_file) na
             install_lib haiko kwenye sys_path):
             log.debug(("modules installed to '%s', which is haiko kwenye "
                        "Python's module search path (sys.path) -- "
@@ -628,7 +628,7 @@ class install(Command):
     def has_lib(self):
         """Returns true if the current distribution has any Python
         modules to install."""
-        return (self.distribution.has_pure_modules() or
+        return (self.distribution.has_pure_modules() ama
                 self.distribution.has_ext_modules())
 
     def has_headers(self):

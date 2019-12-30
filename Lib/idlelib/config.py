@@ -338,7 +338,7 @@ kundi IdleConf:
                 'console-background':'#ffffff',
                 }
         kila element kwenye theme:
-            ikiwa sio (cfgParser.has_option(themeName, element) or
+            ikiwa sio (cfgParser.has_option(themeName, element) ama
                     # Skip warning kila new elements.
                     element.startswith(('context-', 'linenumber-'))):
                 # Print warning that will rudisha a default color
@@ -657,7 +657,7 @@ kundi IdleConf:
             }
 
         ikiwa keySetName:
-            ikiwa sio (self.userCfg['keys'].has_section(keySetName) or
+            ikiwa sio (self.userCfg['keys'].has_section(keySetName) ama
                     self.defaultCfg['keys'].has_section(keySetName)):
                 warning = (
                     '\n Warning: config.py - IdleConf.GetCoreKeys -\n'
@@ -873,7 +873,7 @@ kundi ConfigChanges(dict):
 
 
 # TODO Revise test output, write expanded unittest
-eleza _dump():  # htest # (not really, but ignore kwenye coverage)
+eleza _dump():  # htest # (sio really, but ignore kwenye coverage)
     kutoka zlib agiza crc32
     line, crc = 0, 0
 

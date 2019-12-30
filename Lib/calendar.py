@@ -1,7 +1,7 @@
 """Calendar printing functions
 
 Note when comparing these calendars to the ones printed by cal(1): By
-default, these calendars have Monday kama the first day of the week, and
+default, these calendars have Monday kama the first day of the week, na
 Sunday kama the last (the European convention). Use setfirstweekday() to
 set the first day of the week (0=Monday, 6=Sunday)."""
 

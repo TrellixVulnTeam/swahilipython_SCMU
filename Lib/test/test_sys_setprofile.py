@@ -119,7 +119,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_caught_exception(self):
         eleza f(p):
             jaribu: 1/0
-            except: pita
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'rudisha', f_ident),
@@ -128,7 +128,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_caught_nested_exception(self):
         eleza f(p):
             jaribu: 1/0
-            except: pita
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'rudisha', f_ident),
@@ -151,9 +151,9 @@ kundi ProfileHookTestCase(TestCaseBase):
         eleza g(p):
             jaribu:
                 f(p)
-            except:
+            tatizo:
                 jaribu: f(p)
-                except: pita
+                tatizo: pita
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -182,7 +182,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_ashiria_twice(self):
         eleza f(p):
             jaribu: 1/0
-            except: 1/0
+            tatizo: 1/0
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'rudisha', f_ident),
@@ -191,7 +191,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_ashiria_reashiria(self):
         eleza f(p):
             jaribu: 1/0
-            except: ashiria
+            tatizo: ashiria
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'rudisha', f_ident),
@@ -300,7 +300,7 @@ kundi ProfileSimulatorTestCase(TestCaseBase):
     eleza test_caught_exception(self):
         eleza f(p):
             jaribu: 1/0
-            except: pita
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'rudisha', f_ident),
@@ -388,7 +388,7 @@ eleza ident(function):
 
 eleza protect(f, p):
     jaribu: f(p)
-    except: pita
+    tatizo: pita
 
 protect_ident = ident(protect)
 

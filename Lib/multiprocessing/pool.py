@@ -688,7 +688,7 @@ kundi Pool(object):
         util.debug('helping task handler/workers to finish')
         cls._help_stuff_finish(inqueue, task_handler, len(pool))
 
-        ikiwa (not result_handler.is_alive()) na (len(cache) != 0):
+        ikiwa (sio result_handler.is_alive()) na (len(cache) != 0):
             ashiria AssertionError(
                 "Cannot have cache ukijumuisha result_hander sio alive")
 

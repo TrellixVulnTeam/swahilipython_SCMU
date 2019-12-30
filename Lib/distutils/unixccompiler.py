@@ -47,7 +47,7 @@ class UnixCCompiler(CCompiler):
     compiler_type = 'unix'
 
     # These are used by CCompiler in two places: the constructor sets
-    # instance attributes 'preprocessor', 'compiler', etc. from them, and
+    # instance attributes 'preprocessor', 'compiler', etc. from them, na
     # 'set_executable()' allows any of these to be set.  The defaults here
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building
@@ -97,7 +97,7 @@ class UnixCCompiler(CCompiler):
         pp_args.append(source)
 
         # We need to preprocess: either we're being forced to, or we're
-        # generating output to stdout, or there's a target output file and
+        # generating output to stdout, or there's a target output file na
         # the source file is newer than the target (or the target doesn't
         # exist).
         if self.force or output_file is None or newer(source, output_file):
@@ -106,7 +106,7 @@ class UnixCCompiler(CCompiler):
             jaribu:
                 self.spawn(pp_args)
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
     def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
@@ -117,7 +117,7 @@ class UnixCCompiler(CCompiler):
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
         tatizo DistutilsExecError as msg:
-            raise CompileError(msg)
+            ashiria CompileError(msg)
 
     def create_static_lib(self, objects, output_libname,
                           output_dir=None, debug=0, target_lang=None):
@@ -141,7 +141,7 @@ class UnixCCompiler(CCompiler):
                 jaribu:
                     self.spawn(self.ranlib + [output_filename])
                 tatizo DistutilsExecError as msg:
-                    raise LibError(msg)
+                    ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -158,7 +158,7 @@ class UnixCCompiler(CCompiler):
         lib_opts = gen_lib_options(self, library_dirs, runtime_library_dirs,
                                    libraries)
         if sio isinstance(output_dir, (str, type(None))):
-            raise TypeError("'output_dir' must be a string or None")
+            ashiria TypeError("'output_dir' must be a string or None")
         if output_dir ni sio None:
             output_filename = os.path.join(output_dir, output_filename)
 
@@ -203,7 +203,7 @@ class UnixCCompiler(CCompiler):
 
                 self.spawn(linker + ld_args)
             tatizo DistutilsExecError as msg:
-                raise LinkError(msg)
+                ashiria LinkError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -303,7 +303,7 @@ class UnixCCompiler(CCompiler):
             xcode_stub = os.path.join(dir, xcode_stub_f)
 
             if sys.platform == 'darwin' and (
-                dir.startswith('/System/') or (
+                dir.startswith('/System/') ama (
                 dir.startswith('/usr/') and sio dir.startswith('/usr/local/'))):
 
                 shared = os.path.join(sysroot, dir[1:], shared_f)

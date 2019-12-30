@@ -169,7 +169,7 @@ class BuildExtTestCase(TempdirManager,
         cmd = self.build_ext(dist)
         cmd.ensure_finalized()
         self.assertRaises((UnknownFileError, CompileError),
-                          cmd.run)  # should raise an error
+                          cmd.run)  # should ashiria an error
 
         modules = [Extension('foo', ['xxx'], optional=True)]
         dist = Distribution({'name': 'xx', 'ext_modules': modules})
@@ -305,7 +305,7 @@ class BuildExtTestCase(TempdirManager,
         self.assertEqual(cmd.get_source_files(), ['xxx'])
 
     def test_compiler_option(self):
-        # cmd.compiler is an option and
+        # cmd.compiler is an option na
         # should sio be overridden by a compiler instance
         # when the command is run
         dist = Distribution()

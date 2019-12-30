@@ -1,6 +1,6 @@
 """Parse a Python module na describe its classes na functions.
 
-Parse enough of a Python file to recognize agizas na kundi and
+Parse enough of a Python file to recognize agizas na kundi na
 function definitions, na to find out the superclasses of a class.
 
 The interface consists of a single function:
@@ -159,7 +159,7 @@ eleza _readmodule(module, path, inpackage=Tupu):
         search_path = path
     isipokua:
         search_path = path + sys.path
-    spec = importlib.util._find_spec_kutoka_path(fullmodule, search_path)
+    spec = importlib.util._find_spec_from_path(fullmodule, search_path)
     ikiwa spec ni Tupu:
         ashiria ModuleNotFoundError(f"no module named {fullmodule!r}", name=fullmodule)
     _modules[fullmodule] = tree
@@ -289,7 +289,7 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                                 _readmodule(mod, path, inpackage)
                             tatizo ImportError:
                                 _readmodule(mod, [])
-                    except:
+                    tatizo:
                         # If we can't find ama parse the imported module,
                         # too bad -- don't die here.
                         pita
@@ -301,7 +301,7 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                 jaribu:
                     # Recursively read the imported module.
                     d = _readmodule(mod, path, inpackage)
-                except:
+                tatizo:
                     # If we can't find ama parse the imported module,
                     # too bad -- don't die here.
                     endelea
@@ -367,7 +367,7 @@ eleza _main():
     agiza os
     jaribu:
         mod = sys.argv[1]
-    except:
+    tatizo:
         mod = __file__
     ikiwa os.path.exists(mod):
         path = [os.path.dirname(mod)]

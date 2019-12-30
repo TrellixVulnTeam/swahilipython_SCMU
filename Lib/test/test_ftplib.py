@@ -400,7 +400,7 @@ ikiwa ssl ni sio Tupu:
             ashiria Exception
 
         eleza close(self):
-            ikiwa (isinstance(self.socket, ssl.SSLSocket) and
+            ikiwa (isinstance(self.socket, ssl.SSLSocket) na
                     self.socket._sslobj ni sio Tupu):
                 self._do_ssl_shutdown()
             isipokua:

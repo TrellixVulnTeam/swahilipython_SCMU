@@ -47,7 +47,7 @@ class install_egg_info(Command):
         return self.outputs
 
 
-# The following routines are taken from setuptools' pkg_resources module and
+# The following routines are taken from setuptools' pkg_resources module na
 # can be replaced by importing them from pkg_resources once it is included
 # in the stdlib.
 

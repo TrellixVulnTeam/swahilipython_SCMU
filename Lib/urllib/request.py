@@ -6,7 +6,7 @@ below).  It opens the URL na rudishas the results kama file-like
 object; the rudishaed object has some extra methods described below.
 
 The OpenerDirector manages a collection of Handler objects that do
-all the actual work.  Each Handler implements a particular protocol or
+all the actual work.  Each Handler implements a particular protocol ama
 option.  The OpenerDirector ni a composite object that invokes the
 Handlers needed to open the requested URL.  For example, the
 HTTPHandler performs HTTP GET na POST requests na deals with
@@ -15,7 +15,7 @@ HTTP 301, 302, 303 na 307 redirect errors, na the HTTPDigestAuthHandler
 deals ukijumuisha digest authentication.
 
 urlopen(url, data=Tupu) -- Basic usage ni the same kama original
-urllib.  pita the url na optionally data to post to an HTTP URL, and
+urllib.  pita the url na optionally data to post to an HTTP URL, na
 get a file-like object back.  One difference ni that you can also pita
 a Request instance instead of URL.  Raises a URLError (subkundi of
 OSError); kila HTTP errors, ashirias an HTTPError, which can also be
@@ -170,7 +170,7 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
       determine ikiwa a redirect was followed
 
     * info() - rudisha the meta-information of the page, such kama headers, kwenye the
-      form of an email.message_kutoka_string() instance (see Quick Reference to
+      form of an email.message_from_string() instance (see Quick Reference to
       HTTP Headers)
 
     * getcode() - rudisha the HTTP status code of the response.  Raises URLError
@@ -413,7 +413,7 @@ kundi Request:
         self.unredirected_hdrs[key.capitalize()] = val
 
     eleza has_header(self, header_name):
-        rudisha (header_name kwenye self.headers or
+        rudisha (header_name kwenye self.headers ama
                 header_name kwenye self.unredirected_hdrs)
 
     eleza get_header(self, header_name, default=Tupu):
@@ -667,7 +667,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         but another Handler might.
         """
         m = req.get_method()
-        ikiwa (not (code kwenye (301, 302, 303, 307) na m kwenye ("GET", "HEAD")
+        ikiwa (sio (code kwenye (301, 302, 303, 307) na m kwenye ("GET", "HEAD")
             ama code kwenye (301, 302, 303) na m == "POST")):
             ashiria HTTPError(req.full_url, code, msg, headers, fp)
 
@@ -739,7 +739,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         # .redirect_dict has a key url ikiwa url was previously visited.
         ikiwa hasattr(req, 'redirect_dict'):
             visited = new.redirect_dict = req.redirect_dict
-            ikiwa (visited.get(newurl, 0) >= self.max_repeats or
+            ikiwa (visited.get(newurl, 0) >= self.max_repeats ama
                 len(visited) >= self.max_redirections):
                 ashiria HTTPError(req.full_url, code,
                                 self.inf_msg + msg, headers, fp)
@@ -993,7 +993,7 @@ kundi AbstractBasicAuthHandler:
             rudisha Tupu
 
     eleza http_request(self, req):
-        ikiwa (not hasattr(self.pitawd, 'is_authenticated') or
+        ikiwa (sio hasattr(self.pitawd, 'is_authenticated') ama
            sio self.pitawd.is_authenticated(req.full_url)):
             rudisha req
 
@@ -1250,7 +1250,7 @@ kundi AbstractHTTPHandler(BaseHandler):
                 request.add_unredirected_header(
                     'Content-type',
                     'application/x-www-form-urlencoded')
-            ikiwa (not request.has_header('Content-length')
+            ikiwa (sio request.has_header('Content-length')
                     na sio request.has_header('Transfer-encoding')):
                 content_length = self._get_content_length(request)
                 ikiwa content_length ni sio Tupu:
@@ -1319,7 +1319,7 @@ kundi AbstractHTTPHandler(BaseHandler):
             tatizo OSError kama err: # timeout error
                 ashiria URLError(err)
             r = h.getresponse()
-        except:
+        tatizo:
             h.close()
             ashiria
 
@@ -1334,7 +1334,7 @@ kundi AbstractHTTPHandler(BaseHandler):
         # This line replaces the .msg attribute of the HTTPResponse
         # ukijumuisha .headers, because urllib clients expect the response to
         # have the reason kwenye .msg.  It would be good to mark this
-        # attribute ni deprecated na get then to use info() or
+        # attribute ni deprecated na get then to use info() ama
         # .headers.
         r.msg = r.reason
         rudisha r
@@ -1444,7 +1444,7 @@ kundi FileHandler(BaseHandler):
     # Use local file ama FTP depending on form of URL
     eleza file_open(self, req):
         url = req.selector
-        ikiwa url[:2] == '//' na url[2:3] != '/' na (req.host and
+        ikiwa url[:2] == '//' na url[2:3] != '/' na (req.host na
                 req.host != 'localhost'):
             ikiwa sio req.host kwenye self.get_names():
                 ashiria URLError("file:// scheme ni supported only on localhost")
@@ -1475,13 +1475,13 @@ kundi FileHandler(BaseHandler):
             size = stats.st_size
             modified = email.utils.formatdate(stats.st_mtime, usegmt=Kweli)
             mtype = mimetypes.guess_type(filename)[0]
-            headers = email.message_kutoka_string(
+            headers = email.message_from_string(
                 'Content-type: %s\nContent-length: %d\nLast-modified: %s\n' %
                 (mtype ama 'text/plain', size, modified))
             ikiwa host:
                 host, port = _splitport(host)
             ikiwa sio host ama \
-                (not port na _safe_gethostbyname(host) kwenye self.get_names()):
+                (sio port na _safe_gethostbyname(host) kwenye self.get_names()):
                 ikiwa host:
                     origurl = 'file://' + host + filename
                 isipokua:
@@ -1545,7 +1545,7 @@ kundi FTPHandler(BaseHandler):
                 headers += "Content-type: %s\n" % mtype
             ikiwa retrlen ni sio Tupu na retrlen >= 0:
                 headers += "Content-length: %d\n" % retrlen
-            headers = email.message_kutoka_string(headers)
+            headers = email.message_from_string(headers)
             rudisha addinfourl(fp, headers, req.full_url)
         tatizo ftplib.all_errors kama exp:
             exc = URLError('ftp error: %r' % exp)
@@ -1633,7 +1633,7 @@ kundi DataHandler(BaseHandler):
         ikiwa sio mediatype:
             mediatype = "text/plain;charset=US-ASCII"
 
-        headers = email.message_kutoka_string("Content-type: %s\nContent-length: %d\n" %
+        headers = email.message_from_string("Content-type: %s\nContent-length: %d\n" %
             (mediatype, len(data)))
 
         rudisha addinfourl(io.BytesIO(data), headers, url)
@@ -1780,7 +1780,7 @@ kundi URLopener:
         ikiwa self.tempcache na url kwenye self.tempcache:
             rudisha self.tempcache[url]
         type, url1 = _splittype(url)
-        ikiwa filename ni Tupu na (not type ama type == 'file'):
+        ikiwa filename ni Tupu na (sio type ama type == 'file'):
             jaribu:
                 fp = self.open_local_file(url1)
                 hdrs = fp.info()
@@ -1987,7 +1987,7 @@ kundi URLopener:
         size = stats.st_size
         modified = email.utils.formatdate(stats.st_mtime, usegmt=Kweli)
         mtype = mimetypes.guess_type(url)[0]
-        headers = email.message_kutoka_string(
+        headers = email.message_from_string(
             'Content-Type: %s\nContent-Length: %d\nLast-modified: %s\n' %
             (mtype ama 'text/plain', size, modified))
         ikiwa sio host:
@@ -1996,7 +1996,7 @@ kundi URLopener:
                 urlfile = 'file://' + file
             rudisha addinfourl(open(localname, 'rb'), headers, urlfile)
         host, port = _splitport(host)
-        ikiwa (not port
+        ikiwa (sio port
            na socket.gethostbyname(host) kwenye ((localhost(),) + thishost())):
             urlfile = file
             ikiwa file[:1] == '/':
@@ -2059,7 +2059,7 @@ kundi URLopener:
                 headers += "Content-Type: %s\n" % mtype
             ikiwa retrlen ni sio Tupu na retrlen >= 0:
                 headers += "Content-Length: %d\n" % retrlen
-            headers = email.message_kutoka_string(headers)
+            headers = email.message_from_string(headers)
             rudisha addinfourl(fp, headers, "ftp:" + url)
         tatizo ftperrors() kama exp:
             ashiria URLError('ftp error %r' % exp).with_traceback(sys.exc_info()[2])
@@ -2100,7 +2100,7 @@ kundi URLopener:
         msg.append('')
         msg.append(data)
         msg = '\n'.join(msg)
-        headers = email.message_kutoka_string(msg)
+        headers = email.message_from_string(msg)
         f = io.StringIO(msg)
         #f.fileno = Tupu     # needed kila addinfourl
         rudisha addinfourl(f, headers, url)
@@ -2353,7 +2353,7 @@ eleza noheaders():
     """Return an empty email Message object."""
     global _noheaders
     ikiwa _noheaders ni Tupu:
-        _noheaders = email.message_kutoka_string("")
+        _noheaders = email.message_from_string("")
     rudisha _noheaders
 
 
@@ -2374,7 +2374,7 @@ kundi ftpwrapper:
         self.keepalive = persistent
         jaribu:
             self.init()
-        except:
+        tatizo:
             self.close()
             ashiria
 

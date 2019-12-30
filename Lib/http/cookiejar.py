@@ -56,7 +56,7 @@ MISSING_FILENAME_TEXT = ("a filename was sio supplied (nor was the CookieJar "
                          "instance initialised ukijumuisha one)")
 
 eleza _warn_unhandled_exception():
-    # There are a few catch-all except: statements kwenye this module, for
+    # There are a few catch-all tatizo: statements kwenye this module, for
     # catching input that's bad kwenye unexpected ways.  Warn ikiwa any
     # exceptions are caught there.
     agiza io, warnings, traceback
@@ -72,7 +72,7 @@ eleza _warn_unhandled_exception():
 EPOCH_YEAR = 1970
 eleza _timegm(tt):
     year, month, mday, hour, min, sec = tt[:6]
-    ikiwa ((year >= EPOCH_YEAR) na (1 <= month <= 12) na (1 <= mday <= 31) and
+    ikiwa ((year >= EPOCH_YEAR) na (1 <= month <= 12) na (1 <= mday <= 31) na
         (0 <= hour <= 24) na (0 <= min <= 59) na (0 <= sec <= 61)):
         rudisha timegm(tt)
     isipokua:
@@ -126,7 +126,7 @@ eleza time2netscape(t=Tupu):
 UTC_ZONES = {"GMT": Tupu, "UTC": Tupu, "UT": Tupu, "Z": Tupu}
 
 TIMEZONE_RE = re.compile(r"^([-+])?(\d\d?):?(\d\d)?$", re.ASCII)
-eleza offset_kutoka_tz_string(tz):
+eleza offset_from_tz_string(tz):
     offset = Tupu
     ikiwa tz kwenye UTC_ZONES:
         offset = 0
@@ -181,7 +181,7 @@ eleza _str2time(day, mon, yr, hr, min, sec, tz):
             ikiwa m > 0: yr = yr + 100
             isipokua: yr = yr - 100
 
-    # convert UTC time tuple to seconds since epoch (not timezone-adjusted)
+    # convert UTC time tuple to seconds since epoch (sio timezone-adjusted)
     t = _timegm((yr, mon, day, hr, min, sec, tz))
 
     ikiwa t ni sio Tupu:
@@ -189,7 +189,7 @@ eleza _str2time(day, mon, yr, hr, min, sec, tz):
         ikiwa tz ni Tupu:
             tz = "UTC"
         tz = tz.upper()
-        offset = offset_kutoka_tz_string(tz)
+        offset = offset_from_tz_string(tz)
         ikiwa offset ni Tupu:
             rudisha Tupu
         t = t - offset
@@ -364,7 +364,7 @@ eleza split_header_words(header_values):
       value             = token | quoted-string
 
     Each header ni represented by a list of key/value pairs.  The value kila a
-    simple token (not part of a parameter) ni Tupu.  Syntactically incorrect
+    simple token (sio part of a parameter) ni Tupu.  Syntactically incorrect
     headers will sio necessarily be parsed kama you would want.
 
     This ni easier to describe ukijumuisha some examples:
@@ -545,7 +545,7 @@ eleza domain_match(A, B):
     Sometimes we compare one host name ukijumuisha another.  (Such comparisons SHALL
     be case-insensitive.)  Host A's name domain-matches host B's if
 
-         *  their host name strings string-compare equal; or
+         *  their host name strings string-compare equal; ama
 
          * A ni a HDN string na has the form NB, where N ni a non-empty
             name string, B has the form .B', na B' ni a HDN string.  (So,
@@ -684,9 +684,9 @@ eleza reach(h):
 
           -  H ni the host domain name of a host; and,
 
-          -  H has the form A.B; and
+          -  H has the form A.B; na
 
-          -  A has no embedded (that is, interior) dots; and
+          -  A has no embedded (that is, interior) dots; na
 
           -  B has at least one embedded dot, ama B ni the string "local".
              then the reach of H ni .B.
@@ -735,7 +735,7 @@ kundi Cookie:
     This ni deliberately a very simple class.  It just holds attributes.  It's
     possible to construct Cookie instances that don't comply ukijumuisha the cookie
     standards.  CookieJar.make_cookies ni the factory function kila Cookie
-    objects -- it deals ukijumuisha cookie parsing, supplying defaults, and
+    objects -- it deals ukijumuisha cookie parsing, supplying defaults, na
     normalising to the representation used kwenye this class.  CookiePolicy is
     responsible kila checking them to see whether they should be accepted kutoka
     na rudishaed to the server.
@@ -982,7 +982,7 @@ kundi DefaultCookiePolicy(CookiePolicy):
     eleza set_ok_name(self, cookie, request):
         # Try na stop servers setting V0 cookies designed to hack other
         # servers that know both V0 na V1 protocols.
-        ikiwa (cookie.version == 0 na self.strict_ns_set_initial_dollar and
+        ikiwa (cookie.version == 0 na self.strict_ns_set_initial_dollar na
             cookie.name.startswith("$")):
             _debug("   illegal name (starts ukijumuisha '$'): '%s'", cookie.name)
             rudisha Uongo
@@ -991,8 +991,8 @@ kundi DefaultCookiePolicy(CookiePolicy):
     eleza set_ok_path(self, cookie, request):
         ikiwa cookie.path_specified:
             req_path = request_path(request)
-            ikiwa ((cookie.version > 0 or
-                 (cookie.version == 0 na self.strict_ns_set_path)) and
+            ikiwa ((cookie.version > 0 ama
+                 (cookie.version == 0 na self.strict_ns_set_path)) na
                 sio self.path_rudisha_ok(cookie.path, request)):
                 _debug("   path attribute %s ni sio a prefix of request "
                        "path %s", cookie.path, req_path)
@@ -1035,23 +1035,23 @@ kundi DefaultCookiePolicy(CookiePolicy):
                        domain)
                 rudisha Uongo
             ikiwa cookie.version == 0:
-                ikiwa (not erhn.endswith(domain) and
-                    (not erhn.startswith(".") and
+                ikiwa (sio erhn.endswith(domain) na
+                    (sio erhn.startswith(".") na
                      sio ("."+erhn).endswith(domain))):
                     _debug("   effective request-host %s (even ukijumuisha added "
                            "initial dot) does sio end ukijumuisha %s",
                            erhn, domain)
                     rudisha Uongo
-            ikiwa (cookie.version > 0 or
+            ikiwa (cookie.version > 0 ama
                 (self.strict_ns_domain & self.DomainRFC2965Match)):
                 ikiwa sio domain_match(erhn, domain):
                     _debug("   effective request-host %s does sio domain-match "
                            "%s", erhn, domain)
                     rudisha Uongo
-            ikiwa (cookie.version > 0 or
+            ikiwa (cookie.version > 0 ama
                 (self.strict_ns_domain & self.DomainStrictNoDots)):
                 host_prefix = req_host[:-len(domain)]
-                ikiwa (host_prefix.find(".") >= 0 and
+                ikiwa (host_prefix.find(".") >= 0 na
                     sio IPV4_RE.search(req_host)):
                     _debug("   host prefix %s kila domain %s contains a dot",
                            host_prefix, domain)
@@ -1069,7 +1069,7 @@ kundi DefaultCookiePolicy(CookiePolicy):
                 jaribu:
                     int(p)
                 tatizo ValueError:
-                    _debug("   bad port %s (not numeric)", p)
+                    _debug("   bad port %s (sio numeric)", p)
                     rudisha Uongo
                 ikiwa p == req_port:
                     koma
@@ -1154,8 +1154,8 @@ kundi DefaultCookiePolicy(CookiePolicy):
             dotdomain = domain
 
         # strict check of non-domain cookies: Mozilla does this, MSIE5 doesn't
-        ikiwa (cookie.version == 0 and
-            (self.strict_ns_domain & self.DomainStrictNonDomain) and
+        ikiwa (cookie.version == 0 na
+            (self.strict_ns_domain & self.DomainStrictNonDomain) na
             sio cookie.domain_specified na domain != erhn):
             _debug("   cookie ukijumuisha unspecified domain does sio string-compare "
                    "equal to request domain")
@@ -1203,7 +1203,7 @@ kundi DefaultCookiePolicy(CookiePolicy):
         pathlen = len(path)
         ikiwa req_path == path:
             rudisha Kweli
-        lasivyo (req_path.startswith(path) and
+        lasivyo (req_path.startswith(path) na
               (path.endswith("/") ama req_path[pathlen:pathlen+1] == "/")):
             rudisha Kweli
 
@@ -1314,9 +1314,9 @@ kundi CookieJar:
                     attrs.append("$Version=%s" % version)
 
             # quote cookie value ikiwa necessary
-            # (not kila Netscape protocol, which already has any quotes
+            # (sio kila Netscape protocol, which already has any quotes
             #  intact, due to the poorly-specified Netscape Cookie: syntax)
-            ikiwa ((cookie.value ni sio Tupu) and
+            ikiwa ((cookie.value ni sio Tupu) na
                 self.non_word_re.search(cookie.value) na version > 0):
                 value = self.quote_re.sub(r"\\\1", cookie.value)
             isipokua:
@@ -1332,7 +1332,7 @@ kundi CookieJar:
                     attrs.append('$Path="%s"' % cookie.path)
                 ikiwa cookie.domain.startswith("."):
                     domain = cookie.domain
-                    ikiwa (not cookie.domain_initial_dot and
+                    ikiwa (sio cookie.domain_initial_dot na
                         domain.startswith(".")):
                         domain = domain[1:]
                     attrs.append('$Domain="%s"' % domain)
@@ -1365,7 +1365,7 @@ kundi CookieJar:
                         "Cookie", "; ".join(attrs))
 
             # ikiwa necessary, advertise that we know RFC 2965
-            ikiwa (self._policy.rfc2965 na sio self._policy.hide_cookie2 and
+            ikiwa (self._policy.rfc2965 na sio self._policy.hide_cookie2 na
                 sio request.has_header("Cookie2")):
                 kila cookie kwenye cookies:
                     ikiwa cookie.version != 1:
@@ -1401,7 +1401,7 @@ kundi CookieJar:
         kila cookie_attrs kwenye attrs_set:
             name, value = cookie_attrs[0]
 
-            # Build dictionary of standard cookie-attributes (standard) and
+            # Build dictionary of standard cookie-attributes (standard) na
             # dictionary of other cookie-attributes (rest).
 
             # Note: expiry time ni normalised to seconds since epoch.  V0
@@ -1458,7 +1458,7 @@ kundi CookieJar:
                     k = "expires"
                     v = self._now + v
                 ikiwa (k kwenye value_attrs) ama (k kwenye boolean_attrs):
-                    ikiwa (v ni Tupu and
+                    ikiwa (v ni Tupu na
                         k haiko kwenye ("port", "comment", "commenturl")):
                         _debug("   missing value kila %s attribute" % k)
                         bad_cookie = Kweli
@@ -1474,7 +1474,7 @@ kundi CookieJar:
 
         rudisha cookie_tuples
 
-    eleza _cookie_kutoka_cookie_tuple(self, tup, request):
+    eleza _cookie_from_cookie_tuple(self, tup, request):
         # standard ni dict of standard cookie-attributes, rest ni dict of the
         # rest of them
         name, value, standard, rest = tup
@@ -1566,12 +1566,12 @@ kundi CookieJar:
                       comment_url,
                       rest)
 
-    eleza _cookies_kutoka_attrs_set(self, attrs_set, request):
+    eleza _cookies_from_attrs_set(self, attrs_set, request):
         cookie_tuples = self._normalized_cookie_tuples(attrs_set)
 
         cookies = []
         kila tup kwenye cookie_tuples:
-            cookie = self._cookie_kutoka_cookie_tuple(tup, request)
+            cookie = self._cookie_from_cookie_tuple(tup, request)
             ikiwa cookie: cookies.append(cookie)
         rudisha cookies
 
@@ -1598,14 +1598,14 @@ kundi CookieJar:
         rfc2965 = self._policy.rfc2965
         netscape = self._policy.netscape
 
-        ikiwa ((not rfc2965_hdrs na sio ns_hdrs) or
-            (not ns_hdrs na sio rfc2965) or
-            (not rfc2965_hdrs na sio netscape) or
-            (not netscape na sio rfc2965)):
+        ikiwa ((sio rfc2965_hdrs na sio ns_hdrs) ama
+            (sio ns_hdrs na sio rfc2965) ama
+            (sio rfc2965_hdrs na sio netscape) ama
+            (sio netscape na sio rfc2965)):
             rudisha []  # no relevant cookie headers: quick exit
 
         jaribu:
-            cookies = self._cookies_kutoka_attrs_set(
+            cookies = self._cookies_from_attrs_set(
                 split_header_words(rfc2965_hdrs), request)
         tatizo Exception:
             _warn_unhandled_exception()
@@ -1614,7 +1614,7 @@ kundi CookieJar:
         ikiwa ns_hdrs na netscape:
             jaribu:
                 # RFC 2109 na Netscape cookies
-                ns_cookies = self._cookies_kutoka_attrs_set(
+                ns_cookies = self._cookies_from_attrs_set(
                     parse_ns_headers(ns_hdrs), request)
             tatizo Exception:
                 _warn_unhandled_exception()
@@ -1769,7 +1769,7 @@ kundi FileCookieJar(CookieJar):
 
     eleza __init__(self, filename=Tupu, delayload=Uongo, policy=Tupu):
         """
-        Cookies are NOT loaded kutoka the named file until either the .load() or
+        Cookies are NOT loaded kutoka the named file until either the .load() ama
         .revert() method ni called.
 
         """
@@ -1851,7 +1851,7 @@ kundi LWPCookieJar(FileCookieJar):
     """
     The LWPCookieJar saves a sequence of "Set-Cookie3" lines.
     "Set-Cookie3" ni the format used by the libwww-perl library, sio known
-    to be compatible ukijumuisha any browser, but which ni easy to read and
+    to be compatible ukijumuisha any browser, but which ni easy to read na
     doesn't lose information about RFC 2965 cookies.
 
     Additional methods
@@ -1883,7 +1883,7 @@ kundi LWPCookieJar(FileCookieJar):
 
         ukijumuisha open(filename, "w") kama f:
             # There really isn't an LWP Cookies 2.0 format, but this indicates
-            # that there ni extra information kwenye here (domain_dot and
+            # that there ni extra information kwenye here (domain_dot na
             # port_spec) wakati still being compatible ukijumuisha libwww-perl, I hope.
             f.write("#LWP-Cookies-2.0\n")
             f.write(self.as_lwp_str(ignore_discard, ignore_expires))
@@ -1974,7 +1974,7 @@ kundi MozillaCookieJar(FileCookieJar):
     this kundi to save cookies.  I *think* it works, but there have been
     bugs kwenye the past!
 
-    This kundi differs kutoka CookieJar only kwenye the format it uses to save and
+    This kundi differs kutoka CookieJar only kwenye the format it uses to save na
     load cookies to na kutoka a file.  This kundi uses the Mozilla/Netscape
     `cookies.txt' format.  lynx uses this file format, too.
 
@@ -2024,7 +2024,7 @@ kundi MozillaCookieJar(FileCookieJar):
                 ikiwa line.endswith("\n"): line = line[:-1]
 
                 # skip comments na blank lines XXX what ni $ for?
-                ikiwa (line.strip().startswith(("#", "$")) or
+                ikiwa (line.strip().startswith(("#", "$")) ama
                     line.strip() == ""):
                     endelea
 

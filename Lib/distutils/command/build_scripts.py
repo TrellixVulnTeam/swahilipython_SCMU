@@ -89,7 +89,7 @@ class build_scripts(Command):
                 match = first_line_re.match(first_line)
                 if match:
                     adjust = True
-                    post_interp = match.group(1) or b''
+                    post_interp = match.group(1) ama b''
 
             if adjust:
                 log.info("copying and adjusting %s -> %s", script,
@@ -113,7 +113,7 @@ class build_scripts(Command):
                     jaribu:
                         shebang.decode('utf-8')
                     tatizo UnicodeDecodeError:
-                        raise ValueError(
+                        ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
                             "from utf-8".format(shebang))
                     # If the script is encoded to a custom encoding (use a
@@ -122,7 +122,7 @@ class build_scripts(Command):
                     jaribu:
                         shebang.decode(encoding)
                     tatizo UnicodeDecodeError:
-                        raise ValueError(
+                        ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
                             "from the script encoding ({})"
                             .format(shebang, encoding))

@@ -110,7 +110,7 @@ kundi OptParseError (Exception):
 
 kundi OptionError (OptParseError):
     """
-    Raised ikiwa an Option instance ni created ukijumuisha invalid or
+    Raised ikiwa an Option instance ni created ukijumuisha invalid ama
     inconsistent arguments.
     """
 
@@ -189,11 +189,11 @@ kundi HelpFormatter:
         by default.  Set to false value to disable default value expansion.
       option_strings : { Option : str }
         maps Option instances to the snippet of help text explaining
-        the syntax of that option, e.g. "-h, --help" or
+        the syntax of that option, e.g. "-h, --help" ama
         "-fFILE, --file=FILE"
       _short_opt_fmt : str
         format string controlling how short options ukijumuisha values are
-        printed kwenye help text.  Must be either "%s%s" ("-fFILE") or
+        printed kwenye help text.  Must be either "%s%s" ("-fFILE") ama
         "%s %s" ("-f FILE"), because those are the two syntaxes that
         Optik supports.
       _long_opt_fmt : str
@@ -524,7 +524,7 @@ kundi Option:
     # constructor argument validation.
     TYPES = ("string", "int", "long", "float", "complex", "choice")
 
-    # Dictionary of argument checking functions, which convert and
+    # Dictionary of argument checking functions, which convert na
     # validate option arguments according to the option type.
     #
     # Signature of checking functions is:
@@ -675,7 +675,7 @@ kundi Option:
     eleza _check_dest(self):
         # No destination given, na we need one kila this action.  The
         # self.type check ni kila callbacks that take a value.
-        takes_value = (self.action kwenye self.STORE_ACTIONS or
+        takes_value = (self.action kwenye self.STORE_ACTIONS ama
                        self.type ni sio Tupu)
         ikiwa self.dest ni Tupu na takes_value:
 
@@ -707,12 +707,12 @@ kundi Option:
             ikiwa sio callable(self.callback):
                 ashiria OptionError(
                     "callback sio callable: %r" % self.callback, self)
-            ikiwa (self.callback_args ni sio Tupu and
+            ikiwa (self.callback_args ni sio Tupu na
                 sio isinstance(self.callback_args, tuple)):
                 ashiria OptionError(
                     "callback_args, ikiwa supplied, must be a tuple: sio %r"
                     % self.callback_args, self)
-            ikiwa (self.callback_kwargs ni sio Tupu and
+            ikiwa (self.callback_kwargs ni sio Tupu na
                 sio isinstance(self.callback_kwargs, dict)):
                 ashiria OptionError(
                     "callback_kwargs, ikiwa supplied, must be a dict: sio %r"
@@ -904,7 +904,7 @@ kundi OptionContainer:
         has multiple short option strings, it will appear kwenye this
         dictionary multiple times. [1]
       _long_opt : { string : Option }
-        dictionary mapping long option strings, eg. "--file" or
+        dictionary mapping long option strings, eg. "--file" ama
         "--exclude", to the Option instances that implement them.
         Again, a given Option can occur multiple times kwenye this
         dictionary. [1]
@@ -1029,11 +1029,11 @@ kundi OptionContainer:
     # -- Option query/removal methods ----------------------------------
 
     eleza get_option(self, opt_str):
-        rudisha (self._short_opt.get(opt_str) or
+        rudisha (self._short_opt.get(opt_str) ama
                 self._long_opt.get(opt_str))
 
     eleza has_option(self, opt_str):
-        rudisha (opt_str kwenye self._short_opt or
+        rudisha (opt_str kwenye self._short_opt ama
                 opt_str kwenye self._long_opt)
 
     eleza remove_option(self, opt_str):
@@ -1201,7 +1201,7 @@ kundi OptionParser (OptionContainer):
 
         # Populate the option list; initial sources are the
         # standard_option_list kundi attribute, the 'option_list'
-        # argument, na (ikiwa applicable) the _add_version_option() and
+        # argument, na (ikiwa applicable) the _add_version_option() na
         # _add_help_option() methods.
         self._populate_option_list(option_list,
                                    add_help=add_help_option)
@@ -1337,7 +1337,7 @@ kundi OptionParser (OptionContainer):
         rudisha group
 
     eleza get_option_group(self, opt_str):
-        option = (self._short_opt.get(opt_str) or
+        option = (self._short_opt.get(opt_str) ama
                   self._long_opt.get(opt_str))
         ikiwa option na option.container ni sio self:
             rudisha option.container

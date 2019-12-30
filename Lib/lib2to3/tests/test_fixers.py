@@ -766,7 +766,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception, a:
                 pita
-            except:
+            tatizo:
                 pita"""
 
         a = """
@@ -774,7 +774,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception kama a:
                 pita
-            except:
+            tatizo:
                 pita"""
         self.check(b, a)
 
@@ -784,7 +784,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception, a:
                 pita
-            except:
+            tatizo:
                 pita
             isipokua:
                 pita
@@ -796,7 +796,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception kama a:
                 pita
-            except:
+            tatizo:
                 pita
             isipokua:
                 pita
@@ -812,7 +812,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception, a:
                 pita
-            except:
+            tatizo:
                 pita"""
 
         a = """
@@ -822,7 +822,7 @@ kundi Test_except(FixerTestCase):
                 pita
             tatizo Exception kama a:
                 pita
-            except:
+            tatizo:
                 pita"""
         self.check(b, a)
 
@@ -878,7 +878,7 @@ kundi Test_except(FixerTestCase):
         s = """
             jaribu:
                 pita
-            except:
+            tatizo:
                 pita"""
         self.unchanged(s)
 
@@ -1727,7 +1727,7 @@ kundi ImportsFixerTests:
             a = "agiza %s kama foo_bar" % new
             self.check(b, a)
 
-    eleza test_import_kutoka_as(self):
+    eleza test_import_from_as(self):
         kila old, new kwenye self.modules.items():
             b = "kutoka %s agiza foo kama bar" % old
             a = "kutoka %s agiza foo kama bar" % new
@@ -1872,7 +1872,7 @@ kundi Test_urllib(FixerTestCase):
             s = "agiza %s kama foo" % old
             self.warns_unchanged(s, "This module ni now multiple modules")
 
-    eleza test_import_kutoka_as(self):
+    eleza test_import_from_as(self):
         kila old, changes kwenye self.modules.items():
             kila new, members kwenye changes:
                 kila member kwenye members:
@@ -2546,7 +2546,7 @@ kundi Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    eleza test_shadowing_import_kutoka_1(self):
+    eleza test_shadowing_import_from_1(self):
         s = """
             kutoka x agiza next
 
@@ -2556,7 +2556,7 @@ kundi Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    eleza test_shadowing_import_kutoka_2(self):
+    eleza test_shadowing_import_from_2(self):
         s = """
             kutoka x.a agiza next
 
@@ -2566,7 +2566,7 @@ kundi Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    eleza test_shadowing_import_kutoka_3(self):
+    eleza test_shadowing_import_from_3(self):
         s = """
             kutoka x agiza a, next, b
 
@@ -2576,7 +2576,7 @@ kundi Test_next(FixerTestCase):
             """
         self.warns_unchanged(s, "Calls to builtin next() possibly shadowed")
 
-    eleza test_shadowing_import_kutoka_4(self):
+    eleza test_shadowing_import_from_4(self):
         s = """
             kutoka x.a agiza a, next, b
 
@@ -2814,7 +2814,7 @@ kundi Test_renames(FixerTestCase):
             s = "kutoka foo agiza %s" % old
             self.unchanged(s)
 
-    eleza test_import_kutoka_as(self):
+    eleza test_import_from_as(self):
         kila mod, (old, new) kwenye list(self.modules.items()):
             b = "kutoka %s agiza %s kama foo_bar" % (mod, old)
             a = "kutoka %s agiza %s kama foo_bar" % (mod, new)
@@ -2832,7 +2832,7 @@ kundi Test_renames(FixerTestCase):
                 """ % (mod, mod, mod, new)
             self.check(b, a)
 
-    eleza XXX_test_kutoka_import_usage(self):
+    eleza XXX_test_from_import_usage(self):
         # sio implemented yet
         kila mod, (old, new) kwenye list(self.modules.items()):
             b = """
@@ -3486,13 +3486,13 @@ kundi Test_idioms(FixerTestCase):
             jaribu:
                 m = list(s)
                 m.sort()
-            except: pita
+            tatizo: pita
             """
 
         a = r"""
             jaribu:
                 m = sorted(s)
-            except: pita
+            tatizo: pita
             """
         self.check(b, a)
 
@@ -3501,14 +3501,14 @@ kundi Test_idioms(FixerTestCase):
                 m = list(s)
                 # foo
                 m.sort()
-            except: pita
+            tatizo: pita
             """
 
         a = r"""
             jaribu:
                 m = sorted(s)
                 # foo
-            except: pita
+            tatizo: pita
             """
         self.check(b, a)
 
@@ -3864,7 +3864,7 @@ kundi Test_agiza(FixerTestCase):
         self.present_files = set(["__init__.py", "bar.py"])
         self.check(b, a)
 
-    eleza test_import_kutoka_package(self):
+    eleza test_import_from_package(self):
         b = "agiza bar"
         a = "kutoka . agiza bar"
         self.always_exists = Uongo
@@ -3898,7 +3898,7 @@ kundi Test_agiza(FixerTestCase):
         a = "kutoka .green.eggs agiza ham"
         self.check_both(b, a)
 
-    eleza test_kutoka_as(self):
+    eleza test_from_as(self):
         b = "kutoka green.eggs agiza ham kama spam"
         a = "kutoka .green.eggs agiza ham kama spam"
         self.check_both(b, a)

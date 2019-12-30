@@ -659,7 +659,7 @@ kundi TestCopy(unittest.TestCase):
             eleza __reduce__(self):
                 rudisha (C, (), self.__dict__, iter(self))
             eleza __eq__(self, other):
-                rudisha (list(self) == list(other) and
+                rudisha (list(self) == list(other) na
                         self.__dict__ == other.__dict__)
         x = C([[1, 2], 3])
         y = copy.copy(x)
@@ -676,7 +676,7 @@ kundi TestCopy(unittest.TestCase):
             eleza __reduce__(self):
                 rudisha (C, (), self.__dict__, Tupu, self.items())
             eleza __eq__(self, other):
-                rudisha (dict(self) == dict(other) and
+                rudisha (dict(self) == dict(other) na
                         self.__dict__ == other.__dict__)
         x = C([("foo", [1, 2]), ("bar", 3)])
         y = copy.copy(x)

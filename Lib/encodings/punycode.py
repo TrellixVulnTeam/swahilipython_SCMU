@@ -134,7 +134,7 @@ eleza decode_generalized_number(extended, extpos, bias, errors):
             char = ord(extended[extpos])
         tatizo IndexError:
             if errors == "strict":
-                raise UnicodeError("incomplete punicode string")
+                ashiria UnicodeError("incomplete punicode string")
             rudisha extpos + 1, Tupu
         extpos += 1
         if 0x41 <= char <= 0x5A: # A-Z
@@ -142,7 +142,7 @@ eleza decode_generalized_number(extended, extpos, bias, errors):
         lasivyo 0x30 <= char <= 0x39:
             digit = char - 22 # 0x30-26
         lasivyo errors == "strict":
-            raise UnicodeError("Invalid extended code point '%s'"
+            ashiria UnicodeError("Invalid extended code point '%s'"
                                % extended[extpos])
         isipokua:
             rudisha extpos, Tupu
@@ -171,7 +171,7 @@ eleza insertion_sort(base, extended, errors):
         char += pos // (len(base) + 1)
         if char > 0x10FFFF:
             if errors == "strict":
-                raise UnicodeError("Invalid character U+%x" % char)
+                ashiria UnicodeError("Invalid character U+%x" % char)
             char = ord('?')
         pos = pos % (len(base) + 1)
         base = base[:pos] + chr(char) + base[pos:]
@@ -203,7 +203,7 @@ kundi Codec(codecs.Codec):
 
     eleza decode(self, input, errors='strict'):
         if errors haiko kwenye ('strict', 'replace', 'ignore'):
-            raise UnicodeError("Unsupported error handling "+errors)
+            ashiria UnicodeError("Unsupported error handling "+errors)
         res = punycode_decode(input, errors)
         rudisha res, len(input)
 
@@ -214,7 +214,7 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
     eleza decode(self, input, final=Uongo):
         if self.errors haiko kwenye ('strict', 'replace', 'ignore'):
-            raise UnicodeError("Unsupported error handling "+self.errors)
+            ashiria UnicodeError("Unsupported error handling "+self.errors)
         rudisha punycode_decode(input, self.errors)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):

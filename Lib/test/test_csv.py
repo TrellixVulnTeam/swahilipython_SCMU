@@ -687,7 +687,7 @@ kundi TestDictFields(unittest.TestCase):
 
     # Two test cases to make sure existing ways of implicitly setting
     # fieldnames endelea to work.  Both arise kutoka discussion kwenye issue3436.
-    eleza test_read_dict_fieldnames_kutoka_file(self):
+    eleza test_read_dict_fieldnames_from_file(self):
         ukijumuisha TemporaryFile("w+") kama fileobj:
             fileobj.write("f1,f2,f3\r\n1,2,abc\r\n")
             fileobj.seek(0)

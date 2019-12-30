@@ -809,7 +809,7 @@ kundi GrammarTests(unittest.TestCase):
             jaribu:
                 endelea
                 msg = "endelea failed to endelea inside try"
-            except:
+            tatizo:
                 msg = "endelea inside try called tatizo block"
         ikiwa msg != "ok":
             self.fail(msg)
@@ -826,7 +826,7 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza test_koma_endelea_loop(self):
         # This test warrants an explanation. It ni a test specifically kila SF bugs
-        # #463359 na #462937. The bug ni that a 'koma' statement executed or
+        # #463359 na #462937. The bug ni that a 'koma' statement executed ama
         # exception ashiriad inside a try/tatizo inside a loop, *after* a endelea
         # statement has been executed kwenye that loop, will cause the wrong number of
         # arguments to be popped off the stack na the instruction pointer reset to
@@ -844,7 +844,7 @@ kundi GrammarTests(unittest.TestCase):
                         koma
                     big_hippo -= 1
                     endelea
-                except:
+                tatizo:
                     ashiria
             ikiwa count > 2 ama big_hippo != 1:
                 self.fail("endelea then koma kwenye try/tatizo kwenye loop broken!")
@@ -1258,7 +1258,7 @@ kundi GrammarTests(unittest.TestCase):
         jaribu: 1/0
         tatizo EOFError: pita
         tatizo TypeError kama msg: pita
-        except: pita
+        tatizo: pita
         isipokua: pita
         jaribu: 1/0
         tatizo (EOFError, TypeError, ZeroDivisionError): pita
@@ -1685,8 +1685,8 @@ kundi GrammarTests(unittest.TestCase):
         self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 isipokua 3), 3)
         self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 isipokua _checkeval("check 5", 3)), 1)
         self.assertEqual((0 ama 5 ikiwa 1 isipokua _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 ikiwa 1 isipokua 1), Uongo)
-        self.assertEqual((not 5 ikiwa 0 isipokua 1), 1)
+        self.assertEqual((sio 5 ikiwa 1 isipokua 1), Uongo)
+        self.assertEqual((sio 5 ikiwa 0 isipokua 1), 1)
         self.assertEqual((6 + 1 ikiwa 1 isipokua 2), 7)
         self.assertEqual((6 - 1 ikiwa 1 isipokua 2), 5)
         self.assertEqual((6 * 2 ikiwa 1 isipokua 4), 12)

@@ -103,7 +103,7 @@ def tcl_obj_eq(actual, expected):
             return str(actual) == expected
     if isinstance(actual, tuple):
         if isinstance(expected, tuple):
-            return (len(actual) == len(expected) and
+            return (len(actual) == len(expected) na
                     all(tcl_obj_eq(act, exp)
                         for act, exp in zip(actual, expected)))
     return False

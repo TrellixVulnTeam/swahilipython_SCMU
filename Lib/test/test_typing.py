@@ -680,7 +680,7 @@ kundi ProtocolTests(BaseTestCase):
 
         self.assertIsInstance(f, HasCallProtocol)
 
-    eleza test_no_inheritance_kutoka_nominal(self):
+    eleza test_no_inheritance_from_nominal(self):
         kundi C: pita
 
         kundi BP(Protocol): pita
@@ -1192,7 +1192,7 @@ kundi ProtocolTests(BaseTestCase):
         self.assertEqual(P[T, T][Tuple[T, S]][int, str],
                          P[Tuple[int, str], Tuple[int, str]])
 
-    eleza test_generic_protocols_special_kutoka_generic(self):
+    eleza test_generic_protocols_special_from_generic(self):
         T = TypeVar('T')
 
         kundi P(Protocol[T]): pita
@@ -1202,7 +1202,7 @@ kundi ProtocolTests(BaseTestCase):
         self.assertEqual(P[int].__args__, (int,))
         self.assertIs(P[int].__origin__, P)
 
-    eleza test_generic_protocols_special_kutoka_protocol(self):
+    eleza test_generic_protocols_special_from_protocol(self):
         @runtime_checkable
         kundi PR(Protocol):
             x = 1
@@ -2780,8 +2780,8 @@ gth = get_type_hints
 
 
 kundi GetTypeHintTests(BaseTestCase):
-    eleza test_get_type_hints_kutoka_various_objects(self):
-        # For invalid objects should fail ukijumuisha TypeError (not AttributeError etc).
+    eleza test_get_type_hints_from_various_objects(self):
+        # For invalid objects should fail ukijumuisha TypeError (sio AttributeError etc).
         ukijumuisha self.assertRaises(TypeError):
             gth(123)
         ukijumuisha self.assertRaises(TypeError):
@@ -3860,14 +3860,14 @@ kundi AllTests(BaseTestCase):
             # explicitly exported, sio a thing ukijumuisha __module__
             ikiwa k kwenye actual_all ama (
                 # avoid private names
-                sio k.startswith('_') and
+                sio k.startswith('_') na
                 # avoid things kwenye the io / re typing submodules
-                k haiko kwenye typing.io.__all__ and
-                k haiko kwenye typing.re.__all__ and
-                k haiko kwenye {'io', 're'} and
+                k haiko kwenye typing.io.__all__ na
+                k haiko kwenye typing.re.__all__ na
+                k haiko kwenye {'io', 're'} na
                 # there's a few types na metaclasses that aren't exported
-                sio k.endswith(('Meta', '_contra', '_co')) and
-                sio k.upper() == k and
+                sio k.endswith(('Meta', '_contra', '_co')) na
+                sio k.upper() == k na
                 # but export all things that have __module__ == 'typing'
                 getattr(v, '__module__', Tupu) == typing.__name__
             )

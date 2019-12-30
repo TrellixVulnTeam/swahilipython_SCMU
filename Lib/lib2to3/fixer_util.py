@@ -261,7 +261,7 @@ eleza is_probably_builtin(node):
         rudisha Uongo
     ikiwa parent.type == syms.parameters ama \
             (parent.type == syms.typedargslist na (
-            (prev ni sio Tupu na prev.type == token.COMMA) or
+            (prev ni sio Tupu na prev.type == token.COMMA) ama
             parent.children[0] ni node
             )):
         # The name of an argument.
@@ -316,7 +316,7 @@ eleza touch_agiza(package, name, node):
     """ Works like `does_tree_agiza` but adds an agiza statement
         ikiwa it was sio imported. """
     eleza is_import_stmt(node):
-        rudisha (node.type == syms.simple_stmt na node.children and
+        rudisha (node.type == syms.simple_stmt na node.children na
                 is_agiza(node.children[0]))
 
     root = find_root(node)
@@ -340,7 +340,7 @@ eleza touch_agiza(package, name, node):
     # ikiwa that also fails, we stick to the beginning of the file
     ikiwa insert_pos == 0:
         kila idx, node kwenye enumerate(root.children):
-            ikiwa (node.type == syms.simple_stmt na node.children and
+            ikiwa (node.type == syms.simple_stmt na node.children na
                node.children[0].type == token.STRING):
                 insert_pos = idx + 1
                 koma
@@ -438,7 +438,7 @@ eleza _is_import_binding(node, name, package=Tupu):
             rudisha Tupu
         n = node.children[3]
         ikiwa package na _find("as", n):
-            # See test_kutoka_import_as kila explanation
+            # See test_from_import_as kila explanation
             rudisha Tupu
         lasivyo n.type == syms.import_as_names na _find(name, n):
             rudisha node

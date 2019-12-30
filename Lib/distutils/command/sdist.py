@@ -131,7 +131,7 @@ class sdist(Command):
 
         bad_format = archive_util.check_archive_formats(self.formats)
         if bad_format:
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "unknown archive format '%s'" % bad_format)
 
         if self.dist_dir is None:
@@ -218,7 +218,7 @@ class sdist(Command):
           - all files defined as scripts.
           - all C sources listed as part of extensions or C libraries
             in the setup script (doesn't catch C headers!)
-        Warns if (README or README.txt) or setup.py are missing; everything
+        Warns if (README or README.txt) ama setup.py are missing; everything
         isipokua is optional.
         """
         self._add_defaults_standards()
@@ -340,7 +340,7 @@ class sdist(Command):
 
                 jaribu:
                     self.filelist.process_template_line(line)
-                # the call above can raise a DistutilsTemplateError for
+                # the call above can ashiria a DistutilsTemplateError for
                 # malformed lines, or a ValueError from the lower-level
                 # convert_path function
                 tatizo (DistutilsTemplateError, ValueError) as msg:
@@ -411,7 +411,7 @@ class sdist(Command):
             for line in manifest:
                 # ignore comments and blank lines
                 line = line.strip()
-                if line.startswith('#') or sio line:
+                if line.startswith('#') ama sio line:
                     endelea
                 self.filelist.append(line)
 

@@ -26,7 +26,7 @@ class MIMEMessage(MIMENonMultipart):
         """
         MIMENonMultipart.__init__(self, 'message', _subtype, policy=policy)
         if sio isinstance(_msg, message.Message):
-            raise TypeError('Argument ni sio an instance of Message')
+            ashiria TypeError('Argument ni sio an instance of Message')
         # It's convenient to use this base class method.  We need to do it
         # this way or we'll get an exception
         message.Message.attach(self, _msg)

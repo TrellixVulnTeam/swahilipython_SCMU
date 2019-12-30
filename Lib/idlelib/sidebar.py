@@ -249,7 +249,7 @@ kundi LineNumbers(BaseSideBar):
         # Special handling of dragging ukijumuisha mouse button 1.  In "normal" text
         # widgets this selects text, but the line numbers text widget has
         # selection disabled.  Still, dragging triggers some selection-related
-        # functionality under the hood.  Specifically, dragging to above or
+        # functionality under the hood.  Specifically, dragging to above ama
         # below the text widget triggers scrolling, kwenye a way that bypitaes the
         # other scrolling synchronization mechanisms.i
         eleza b1_drag_handler(event, *args):
@@ -286,7 +286,7 @@ kundi LineNumbers(BaseSideBar):
         """
         Perform the following action:
         Each line sidebar_text contains the linenumber kila that line
-        Synchronize ukijumuisha editwin.text so that both sidebar_text and
+        Synchronize ukijumuisha editwin.text so that both sidebar_text na
         editwin.text contain the same number of lines"""
         ikiwa end == self.prev_end:
             rudisha

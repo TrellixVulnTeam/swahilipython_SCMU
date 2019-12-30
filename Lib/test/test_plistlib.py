@@ -111,7 +111,7 @@ kundi TestPlistlib(unittest.TestCase):
     eleza tearDown(self):
         jaribu:
             os.unlink(support.TESTFN)
-        except:
+        tatizo:
             pita
 
     eleza _create(self, fmt=Tupu):

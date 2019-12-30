@@ -102,7 +102,7 @@ kundi BasicTest(BaseTest):
         self.isdir(*self.lib)
         # Issue 21197
         p = self.get_env_file('lib64')
-        conditions = ((struct.calcsize('P') == 8) na (os.name == 'posix') and
+        conditions = ((struct.calcsize('P') == 8) na (os.name == 'posix') na
                       (sys.platform != 'darwin'))
         ikiwa conditions:
             self.assertKweli(os.path.islink(p))

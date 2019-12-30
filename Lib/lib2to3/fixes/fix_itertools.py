@@ -1,4 +1,4 @@
-""" Fixer kila itertools.(imap|ifilter|izip) --> (map|filter|zip) and
+""" Fixer kila itertools.(imap|ifilter|izip) --> (map|filter|zip) na
     itertools.ifilterfalse --> itertools.filterfalse (bugs 2360-2363)
 
     agizas kutoka itertools are fixed kwenye fix_itertools_agiza.py
@@ -28,7 +28,7 @@ kundi FixItertools(fixer_base.BaseFix):
     eleza transform(self, node, results):
         prefix = Tupu
         func = results['func'][0]
-        ikiwa ('it' kwenye results and
+        ikiwa ('it' kwenye results na
             func.value haiko kwenye ('ifilterfalse', 'izip_longest')):
             dot, it = (results['dot'], results['it'])
             # Remove the 'itertools'

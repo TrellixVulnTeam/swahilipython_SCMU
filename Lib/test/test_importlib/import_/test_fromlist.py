@@ -15,14 +15,14 @@ kundi ReturnValue:
 
     """
 
-    eleza test_rudisha_kutoka_agiza(self):
+    eleza test_rudisha_from_agiza(self):
         # [agiza rudisha]
         ukijumuisha util.mock_spec('pkg.__init__', 'pkg.module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertEqual(module.__name__, 'pkg')
 
-    eleza test_rudisha_kutoka_kutoka_agiza(self):
+    eleza test_rudisha_from_kutoka_agiza(self):
         # [kutoka rudisha]
         ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module')as importer:
             ukijumuisha util.import_state(meta_path=[importer]):
@@ -65,7 +65,7 @@ kundi HandlingFromlist:
                 self.assertEqual(module.__name__, 'module')
                 self.assertUongo(hasattr(module, 'non_existent'))
 
-    eleza test_module_kutoka_package(self):
+    eleza test_module_from_package(self):
         # [module]
         ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
@@ -74,14 +74,14 @@ kundi HandlingFromlist:
                 self.assertKweli(hasattr(module, 'module'))
                 self.assertEqual(module.module.__name__, 'pkg.module')
 
-    eleza test_nonexistent_kutoka_package(self):
+    eleza test_nonexistent_from_package(self):
         ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', kutokalist=['non_existent'])
                 self.assertEqual(module.__name__, 'pkg')
                 self.assertUongo(hasattr(module, 'non_existent'))
 
-    eleza test_module_kutoka_package_triggers_ModuleNotFoundError(self):
+    eleza test_module_from_package_triggers_ModuleNotFoundError(self):
         # If a submodule causes an ModuleNotFoundError because it tries
         # to agiza a module which doesn't exist, that should let the
         # ModuleNotFoundError propagate.

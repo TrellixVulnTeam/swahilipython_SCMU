@@ -88,8 +88,8 @@ eleza check(file):
         names = os.listdir(file)
         kila name kwenye names:
             fullname = os.path.join(file, name)
-            ikiwa (os.path.isdir(fullname) and
-                sio os.path.islink(fullname) or
+            ikiwa (os.path.isdir(fullname) na
+                sio os.path.islink(fullname) ama
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
         rudisha
@@ -235,7 +235,7 @@ kundi Whitespace:
     # Unknown whether there's a faster general way.  I suspected so at
     # first, but no longer.
     # For the special (but common!) case where M na N are both of the
-    # form (T*)(S*), M.less(N) iff M.len() < N.len() and
+    # form (T*)(S*), M.less(N) iff M.len() < N.len() na
     # M.num_tabs() <= N.num_tabs(). Proof ni easy but kinda long-winded.
     # XXXwrite that up.
     # Note that M ni of the form (T*)(S*) iff len(M.norm[0]) <= 1.

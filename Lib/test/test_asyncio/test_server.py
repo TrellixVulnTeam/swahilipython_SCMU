@@ -15,7 +15,7 @@ def tearDownModule():
 class BaseStartServer(func_tests.FunctionalTestCaseMixin):
 
     def new_loop(self):
-        raise NotImplementedError
+        ashiria NotImplementedError
 
     def test_start_server_1(self):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
@@ -26,7 +26,7 @@ class BaseStartServer(func_tests.FunctionalTestCaseMixin):
                 if srv.is_serving():
                     koma
             isipokua:
-                raise RuntimeError
+                ashiria RuntimeError
 
             sock.settimeout(2)
             sock.connect(addr)

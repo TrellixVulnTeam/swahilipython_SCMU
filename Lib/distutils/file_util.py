@@ -28,26 +28,26 @@ def _copy_file_contents(src, dst, buffer_size=16*1024):
         jaribu:
             fsrc = open(src, 'rb')
         tatizo OSError as e:
-            raise DistutilsFileError("could sio open '%s': %s" % (src, e.strerror))
+            ashiria DistutilsFileError("could sio open '%s': %s" % (src, e.strerror))
 
         if os.path.exists(dst):
             jaribu:
                 os.unlink(dst)
             tatizo OSError as e:
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                       "could sio delete '%s': %s" % (dst, e.strerror))
 
         jaribu:
             fdst = open(dst, 'wb')
         tatizo OSError as e:
-            raise DistutilsFileError(
+            ashiria DistutilsFileError(
                   "could sio create '%s': %s" % (dst, e.strerror))
 
         wakati True:
             jaribu:
                 buf = fsrc.read(buffer_size)
             tatizo OSError as e:
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                       "could sio read from '%s': %s" % (src, e.strerror))
 
             if sio buf:
@@ -56,7 +56,7 @@ def _copy_file_contents(src, dst, buffer_size=16*1024):
             jaribu:
                 fdst.write(buf)
             tatizo OSError as e:
-                raise DistutilsFileError(
+                ashiria DistutilsFileError(
                       "could sio write to '%s': %s" % (dst, e.strerror))
     mwishowe:
         if fdst:
@@ -69,14 +69,14 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     """Copy a file 'src' to 'dst'.  If 'dst' is a directory, then 'src' is
     copied there with the same name; otherwise, it must be a filename.  (If
     the file exists, it will be ruthlessly clobbered.)  If 'preserve_mode'
-    is true (the default), the file's mode (type and permission bits, or
+    is true (the default), the file's mode (type and permission bits, ama
     whatever is analogous on the current platform) is copied.  If
-    'preserve_times' is true (the default), the last-modified and
+    'preserve_times' is true (the default), the last-modified na
     last-access times are copied as well.  If 'update' is true, 'src' will
     only be copied if 'dst' does sio exist, or if 'dst' does exist but is
     older than 'src'.
 
-    'link' allows you to make hard links (os.link) or symbolic links
+    'link' allows you to make hard links (os.link) ama symbolic links
     (os.symlink) instead of copying: set it to "hard" or "sym"; if it is
     None (the default), files are copied.  Don't set 'link' on systems that
     don't support it: 'copy_file()' doesn't check if hard or symbolic
@@ -92,16 +92,16 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     """
     # XXX if the destination file already exists, we clobber it if
     # copying, but blow up if linking.  Hmmm.  And I don't know what
-    # macostools.copyfile() does.  Should definitely be consistent, and
+    # macostools.copyfile() does.  Should definitely be consistent, na
     # should probably blow up if destination exists and we would be
     # changing it (ie. it's sio already a hard/soft link to src OR
-    # (not update) and (src newer than dst).
+    # (sio update) and (src newer than dst).
 
     from distutils.dep_util import newer
     from stat import ST_ATIME, ST_MTIME, ST_MODE, S_IMODE
 
     if sio os.path.isfile(src):
-        raise DistutilsFileError(
+        ashiria DistutilsFileError(
               "can't copy '%s': doesn't exist or sio a regular file" % src)
 
     if os.path.isdir(dst):
@@ -118,7 +118,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
     jaribu:
         action = _copy_action[link]
     tatizo KeyError:
-        raise ValueError("invalid value '%s' for 'link' argument" % link)
+        ashiria ValueError("invalid value '%s' for 'link' argument" % link)
 
     if verbose >= 1:
         if os.path.basename(dst) == os.path.basename(src):
@@ -146,7 +146,7 @@ def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
             os.symlink(src, dst)
             return (dst, 1)
 
-    # Otherwise (non-Mac, sio linking), copy the file contents and
+    # Otherwise (non-Mac, sio linking), copy the file contents na
     # (optionally) copy the times and mode.
     _copy_file_contents(src, dst)
     if preserve_mode or preserve_times:
@@ -184,17 +184,17 @@ def move_file (src, dst,
         return dst
 
     if sio isfile(src):
-        raise DistutilsFileError("can't move '%s': sio a regular file" % src)
+        ashiria DistutilsFileError("can't move '%s': sio a regular file" % src)
 
     if isdir(dst):
         dst = os.path.join(dst, basename(src))
     lasivyo exists(dst):
-        raise DistutilsFileError(
+        ashiria DistutilsFileError(
               "can't move '%s': destination '%s' already exists" %
               (src, dst))
 
     if sio isdir(dirname(dst)):
-        raise DistutilsFileError(
+        ashiria DistutilsFileError(
               "can't move '%s': destination '%s' sio a valid path" %
               (src, dst))
 
@@ -206,7 +206,7 @@ def move_file (src, dst,
         if num == errno.EXDEV:
             copy_it = True
         isipokua:
-            raise DistutilsFileError(
+            ashiria DistutilsFileError(
                   "couldn't move '%s' to '%s': %s" % (src, dst, msg))
 
     if copy_it:
@@ -219,7 +219,7 @@ def move_file (src, dst,
                 os.unlink(dst)
             tatizo OSError:
                 pass
-            raise DistutilsFileError(
+            ashiria DistutilsFileError(
                   "couldn't move '%s' to '%s' by copy/delete: "
                   "delete '%s' failed: %s"
                   % (src, dst, src, msg))

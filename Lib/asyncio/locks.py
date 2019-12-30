@@ -185,7 +185,7 @@ kundi Lock(_ContextManagerMixin):
         This method blocks until the lock ni unlocked, then sets it to
         locked na rudishas Kweli.
         """
-        ikiwa (not self._locked na (self._waiters ni Tupu or
+        ikiwa (sio self._locked na (self._waiters ni Tupu ama
                 all(w.cancelled() kila w kwenye self._waiters))):
             self._locked = Kweli
             rudisha Kweli
@@ -237,7 +237,7 @@ kundi Lock(_ContextManagerMixin):
         tatizo StopIteration:
             rudisha
 
-        # .done() necessarily means that a waiter will wake up later on and
+        # .done() necessarily means that a waiter will wake up later on na
         # either take the lock, or, ikiwa it was cancelled na lock wasn't
         # taken already, will hit this again na wake up a new waiter.
         ikiwa sio fut.done():
@@ -494,7 +494,7 @@ kundi Semaphore(_ContextManagerMixin):
             self._waiters.append(fut)
             jaribu:
                 await fut
-            except:
+            tatizo:
                 # See the similar code kwenye Queue.get.
                 fut.cancel()
                 ikiwa self._value > 0 na sio fut.cancelled():

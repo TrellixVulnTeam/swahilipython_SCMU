@@ -141,7 +141,7 @@ kundi AsyncContextManagerTestCase(unittest.TestCase):
         async eleza whoo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 tuma
         ctx = whoo()
         await ctx.__aenter__()
@@ -298,7 +298,7 @@ kundi TestAsyncExitStack(TestBaseExitStack, unittest.TestCase):
 
                 jaribu:
                     ashiria exc
-                except:
+                tatizo:
                     exc.__context__ = context
                     ashiria exc
 

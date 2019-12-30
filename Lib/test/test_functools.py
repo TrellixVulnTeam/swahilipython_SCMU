@@ -1813,7 +1813,7 @@ kundi TestSingleDispatch(unittest.TestCase):
                                  c.Collection, c.Sized, c.Iterable, c.Container,
                                  object])
 
-        # Container na Callable are registered on different base classes and
+        # Container na Callable are registered on different base classes na
         # a generic function supporting both should always pick the Callable
         # implementation ikiwa a C instance ni pitaed.
         kundi C(collections.defaultdict):
@@ -2441,7 +2441,7 @@ kundi TestCachedProperty(unittest.TestCase):
         self.assertEqual(item.cost, 2)
         self.assertEqual(item.cost, 2) # sio 3
 
-    eleza test_cached_attribute_name_differs_kutoka_func_name(self):
+    eleza test_cached_attribute_name_differs_from_func_name(self):
         item = OptionallyCachedCostItem()
         self.assertEqual(item.get_cost(), 2)
         self.assertEqual(item.cached_cost, 3)
@@ -2542,7 +2542,7 @@ kundi TestCachedProperty(unittest.TestCase):
         ):
             Foo().cp
 
-    eleza test_access_kutoka_class(self):
+    eleza test_access_from_class(self):
         self.assertIsInstance(CachedCostItem.cost, py_functools.cached_property)
 
     eleza test_doc(self):

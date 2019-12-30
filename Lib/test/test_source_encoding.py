@@ -132,7 +132,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
             unload(TESTFN)
             rmtree('__pycache__')
 
-    eleza test_error_kutoka_string(self):
+    eleza test_error_from_string(self):
         # See http://bugs.python.org/issue6289
         input = "# coding: ascii\n\N{SNOWMAN}".encode('utf-8')
         ukijumuisha self.assertRaises(SyntaxError) kama c:

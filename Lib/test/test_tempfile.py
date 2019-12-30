@@ -86,7 +86,7 @@ kundi BaseTestCase(unittest.TestCase):
             self.assertIs(
                 type(name),
                 str
-                ikiwa type(dir) ni str ama isinstance(dir, os.PathLike) else
+                ikiwa type(dir) ni str ama isinstance(dir, os.PathLike) ama
                 bytes,
                 "unexpected rudisha type",
             )
@@ -696,7 +696,7 @@ kundi TestMkdtemp(TestBadTempdir, BaseTestCase):
         jaribu:
             self.nameCheck(name, dir, pre, suf)
             rudisha name
-        except:
+        tatizo:
             os.rmdir(name)
             ashiria
 
@@ -1247,7 +1247,7 @@ ikiwa tempfile.NamedTemporaryFile ni sio tempfile.TemporaryFile:
             # us kutoka removing the directory it was created in.
             jaribu:
                 os.rmdir(dir)
-            except:
+            tatizo:
                 # cleanup
                 f.close()
                 os.rmdir(dir)

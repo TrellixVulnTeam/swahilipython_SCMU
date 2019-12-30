@@ -309,7 +309,7 @@ logx1343 log10 1000.000000   -> 3
 logx1344 log10 1000.000001   -> 3.000000000434294 Inexact Rounded
 logx1345 log10 1000.000002   -> 3.000000000868589 Inexact Rounded
 
--- suggestions from Ilan Nehama
+-- suggestions from Ilan Neh ama
 logx1400 log10 10E-3    -> -2
 logx1401 log10 10E-2    -> -1
 logx1402 log10 100E-2   ->  0

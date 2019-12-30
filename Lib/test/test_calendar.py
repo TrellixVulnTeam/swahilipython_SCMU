@@ -491,8 +491,8 @@ kundi OutputTestCase(unittest.TestCase):
 
 kundi CalendarTestCase(unittest.TestCase):
     eleza test_isleap(self):
-        # Make sure that the rudisha ni right kila a few years, and
-        # ensure that the rudisha values are 1 ama 0, sio just true or
+        # Make sure that the rudisha ni right kila a few years, na
+        # ensure that the rudisha values are 1 ama 0, sio just true ama
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)

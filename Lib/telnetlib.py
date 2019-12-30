@@ -1,6 +1,6 @@
 r"""TELNET client class.
 
-Based on RFC 854: TELNET Protocol Specification, by J. Postel and
+Based on RFC 854: TELNET Protocol Specification, by J. Postel na
 J. Reynolds
 
 Example:
@@ -525,7 +525,7 @@ kundi Telnet:
         # behavior kwenye process_rawq() above
         buf = self.sock.recv(50)
         self.msg("recv %r", buf)
-        self.eof = (not buf)
+        self.eof = (sio buf)
         self.rawq = self.rawq + buf
 
     eleza sock_avail(self):

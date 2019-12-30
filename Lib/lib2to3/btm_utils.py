@@ -145,15 +145,15 @@ eleza reduce_tree(node, parent=Tupu):
             new_node = reduce_tree(node.children[0], parent)
 
     lasivyo node.type == syms.Unit:
-        ikiwa (isinstance(node.children[0], pytree.Leaf) and
+        ikiwa (isinstance(node.children[0], pytree.Leaf) na
             node.children[0].value == '('):
             #skip parentheses
             rudisha reduce_tree(node.children[1], parent)
-        ikiwa ((isinstance(node.children[0], pytree.Leaf) and
+        ikiwa ((isinstance(node.children[0], pytree.Leaf) na
                node.children[0].value == '[')
-               or
-               (len(node.children)>1 and
-               hasattr(node.children[1], "value") and
+               ama
+               (len(node.children)>1 na
+               hasattr(node.children[1], "value") na
                node.children[1].value == '[')):
             #skip whole unit ikiwa its optional
             rudisha Tupu

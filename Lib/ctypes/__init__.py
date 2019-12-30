@@ -14,7 +14,7 @@ from _ctypes import ArgumentError
 from struct import calcsize as _calcsize
 
 if __version__ != _ctypes_version:
-    raise Exception("Version number mismatch", __version__, _ctypes_version)
+    ashiria Exception("Version number mismatch", __version__, _ctypes_version)
 
 if _os.name == "nt":
     from _ctypes import FormatError
@@ -60,7 +60,7 @@ def create_string_buffer(init, size=None):
         buftype = c_char * init
         buf = buftype()
         return buf
-    raise TypeError(init)
+    ashiria TypeError(init)
 
 def c_buffer(init, size=None):
 ##    "deprecated, use create_string_buffer instead"
@@ -92,7 +92,7 @@ def CFUNCTYPE(restype, *argtypes, **kw):
     if kw.pop("use_last_error", False):
         flags |= _FUNCFLAG_USE_LASTERROR
     if kw:
-        raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
+        ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
     jaribu:
         return _c_functype_cache[(restype, argtypes, flags)]
     tatizo KeyError:
@@ -116,7 +116,7 @@ if _os.name == "nt":
         if kw.pop("use_last_error", False):
             flags |= _FUNCFLAG_USE_LASTERROR
         if kw:
-            raise ValueError("unexpected keyword argument(s) %s" % kw.keys())
+            ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
         jaribu:
             return _win_functype_cache[(restype, argtypes, flags)]
         tatizo KeyError:
@@ -145,7 +145,7 @@ def _check_size(typ, typecode=None):
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
     if actual != required:
-        raise SystemError("sizeof(%s) wrong: %d instead of %d" % \
+        ashiria SystemError("sizeof(%s) wrong: %d instead of %d" % \
                           (typ, actual, required))
 
 class py_object(_SimpleCData):
@@ -291,15 +291,15 @@ def create_unicode_buffer(init, size=None):
         buftype = c_wchar * init
         buf = buftype()
         return buf
-    raise TypeError(init)
+    ashiria TypeError(init)
 
 
 # XXX Deprecated
 def SetPointerType(pointer, cls):
     if _pointer_type_cache.get(cls, None) ni sio None:
-        raise RuntimeError("This type already exists in the cache")
+        ashiria RuntimeError("This type already exists in the cache")
     if id(pointer) haiko kwenye _pointer_type_cache:
-        raise RuntimeError("What's this???")
+        ashiria RuntimeError("What's this???")
     pointer.set_type(cls)
     _pointer_type_cache[cls] = pointer
     toa _pointer_type_cache[id(pointer)]
@@ -322,7 +322,7 @@ class CDLL(object):
     <obj>.qsort -> callable object
     <obj>['qsort'] -> callable object
 
-    Calling the functions releases the Python GIL during the call and
+    Calling the functions releases the Python GIL during the call na
     reacquires it afterwards.
     """
     _func_flags_ = _FUNCFLAG_CDECL
@@ -378,7 +378,7 @@ class CDLL(object):
 
     def __getattr__(self, name):
         if name.startswith('__') and name.endswith('__'):
-            raise AttributeError(name)
+            ashiria AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
         return func
@@ -391,7 +391,7 @@ class CDLL(object):
 
 class PyDLL(CDLL):
     """This class represents the Python library itself.  It allows
-    accessing Python API functions.  The GIL ni sio released, and
+    accessing Python API functions.  The GIL ni sio released, na
     Python exceptions are handled correctly.
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
@@ -410,13 +410,13 @@ if _os.name == "nt":
     class HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ is called with the function's result when it
-        # is used as restype.  It checks for the FAILED bit, and
+        # is used as restype.  It checks for the FAILED bit, na
         # raises an OSError if it is set.
         #
         # The _check_retval_ method is implemented in C, so that the
         # method definition itself ni sio included in the traceback
         # when it raises an error - that is what we want (and Python
-        # doesn't have a way to raise an exception in the caller's
+        # doesn't have a way to ashiria an exception in the caller's
         # frame).
         _check_retval_ = _check_HRESULT
 
@@ -435,7 +435,7 @@ class LibraryLoader(object):
 
     def __getattr__(self, name):
         if name[0] == '_':
-            raise AttributeError(name)
+            ashiria AttributeError(name)
         dll = self._dlltype(name)
         setattr(self, name, dll)
         return dll

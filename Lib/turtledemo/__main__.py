@@ -58,7 +58,7 @@
 
    - Place the file kwenye the same directory kama turtledemo/__main__.py
      IMPORTANT! When imported, the demo should sio modify the system
-     by calling functions kwenye other modules, such kama sys, tkinter, or
+     by calling functions kwenye other modules, such kama sys, tkinter, ama
      turtle. Global variables should be initialized kwenye main().
 
    - The code must contain a main() function which will
@@ -261,7 +261,7 @@ kundi DemoWindow(object):
     eleza update_mousewheel(self, event):
         # For wheel up, event.delta = 120 on Windows, -1 on darwin.
         # X-11 sends Control-Button-4 event instead.
-        ikiwa (event.delta < 0) == (not darwin):
+        ikiwa (event.delta < 0) == (sio darwin):
             rudisha self.decrease_size()
         isipokua:
             rudisha self.increase_size()

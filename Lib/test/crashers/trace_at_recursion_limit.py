@@ -14,7 +14,7 @@ def g(*args):
     if True: # change to True to crash interpreter
         jaribu:
             x()
-        except:
+        tatizo:
             pass
     return g
 

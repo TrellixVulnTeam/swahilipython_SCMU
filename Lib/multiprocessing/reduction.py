@@ -21,9 +21,9 @@ kutoka . agiza context
 __all__ = ['send_handle', 'recv_handle', 'ForkingPickler', 'register', 'dump']
 
 
-HAVE_SEND_HANDLE = (sys.platform == 'win32' or
-                    (hasattr(socket, 'CMSG_LEN') and
-                     hasattr(socket, 'SCM_RIGHTS') and
+HAVE_SEND_HANDLE = (sys.platform == 'win32' ama
+                    (hasattr(socket, 'CMSG_LEN') na
+                     hasattr(socket, 'SCM_RIGHTS') na
                      hasattr(socket.socket, 'sendmsg')))
 
 #
@@ -105,7 +105,7 @@ ikiwa sys.platform == 'win32':
         '''Picklable wrapper kila a handle.'''
         eleza __init__(self, handle, access, pid=Tupu):
             ikiwa pid ni Tupu:
-                # We just duplicate the handle kwenye the current process and
+                # We just duplicate the handle kwenye the current process na
                 # let the receiving process steal the handle.
                 pid = os.getpid()
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Uongo, pid)
@@ -164,7 +164,7 @@ isipokua:
                 ashiria RuntimeError('received %d items of ancdata' %
                                    len(ancdata))
             cmsg_level, cmsg_type, cmsg_data = ancdata[0]
-            ikiwa (cmsg_level == socket.SOL_SOCKET and
+            ikiwa (cmsg_level == socket.SOL_SOCKET na
                 cmsg_type == socket.SCM_RIGHTS):
                 ikiwa len(cmsg_data) % a.itemsize != 0:
                     ashiria ValueError

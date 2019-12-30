@@ -68,7 +68,7 @@ kundi TestEPoll(unittest.TestCase):
         tatizo OSError kama e:
             ashiria AssertionError(str(e))
         self.assertKweli(ep.fileno() > 0, ep.fileno())
-        self.assertKweli(not ep.closed)
+        self.assertKweli(sio ep.closed)
         ep.close()
         self.assertKweli(ep.closed)
         self.assertRaises(ValueError, ep.fileno)

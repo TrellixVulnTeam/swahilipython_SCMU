@@ -56,7 +56,7 @@ TESTPACK2 = "ziptestpackage2"
 TEMP_DIR = os.path.abspath("junk95142")
 TEMP_ZIP = os.path.abspath("junk95142.zip")
 
-pyc_file = importlib.util.cache_kutoka_source(TESTMOD + '.py')
+pyc_file = importlib.util.cache_from_source(TESTMOD + '.py')
 pyc_ext = '.pyc'
 
 
@@ -609,7 +609,7 @@ kundi UncompressedZipImportTestCase(ImportHooksBaseTestCase):
     eleza doTraceback(self, module):
         jaribu:
             module.do_ashiria()
-        except:
+        tatizo:
             tb = sys.exc_info()[2].tb_next
 
             f,lno,n,line = extract_tb(tb, 1)[0]

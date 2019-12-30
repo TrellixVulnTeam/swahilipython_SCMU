@@ -44,7 +44,7 @@ kundi TestDecode:
 
     eleza test_decoder_optimizations(self):
         # Several optimizations were made that skip over calls to
-        # the whitespace regex, so this test ni designed to try and
+        # the whitespace regex, so this test ni designed to try na
         # exercise the uncommon cases. The array cases are already covered.
         rval = self.loads('{   "key"    :    "value"    ,  "k":"v"    }')
         self.assertEqual(rval, {"key":"value", "k":"v"})

@@ -1590,7 +1590,7 @@ test_float_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyFloat_CheckExact(args[0])) {
         a = (float) (PyFloat_AS_DOUBLE(args[0]));
     }
-    else
+    ama
     {
         a = (float) PyFloat_AsDouble(args[0]);
         ikiwa (a == -1.0 && PyErr_Occurred()) {
@@ -1643,7 +1643,7 @@ test_double_converter(PyObject *module, PyObject *const *args, Py_ssize_t nargs)
     ikiwa (PyFloat_CheckExact(args[0])) {
         a = PyFloat_AS_DOUBLE(args[0]);
     }
-    else
+    ama
     {
         a = PyFloat_AsDouble(args[0]);
         ikiwa (a == -1.0 && PyErr_Occurred()) {

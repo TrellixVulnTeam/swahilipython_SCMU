@@ -155,7 +155,7 @@ kundi BinHex:
             self.rlen = rlen
             self._writeinfo(name, finfo)
             self.state = _DID_HEADER
-        except:
+        tatizo:
             ikiwa close_on_error:
                 ofp.close()
             ashiria

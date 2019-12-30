@@ -75,8 +75,8 @@ _C_UTF8_LOCALES = ("C.UTF-8", "C.utf8", "UTF-8")
 # `locale.nl_langinfo(locale.CODESET)` works, kama ikiwa it fails, the interpreter
 # will skip locale coercion kila that particular target locale
 _check_nl_langinfo_CODESET = bool(
-    sys.platform haiko kwenye ("darwin", "linux") and
-    hasattr(locale, "nl_langinfo") and
+    sys.platform haiko kwenye ("darwin", "linux") na
+    hasattr(locale, "nl_langinfo") na
     hasattr(locale, "CODESET")
 )
 
@@ -84,7 +84,7 @@ eleza _set_locale_in_subprocess(locale_name):
     cmd_fmt = "agiza locale; andika(locale.setlocale(locale.LC_CTYPE, '{}'))"
     ikiwa _check_nl_langinfo_CODESET:
         # If there's no valid CODESET, we expect coercion to be skipped
-        cmd_fmt += "; agiza sys; sys.exit(not locale.nl_langinfo(locale.CODESET))"
+        cmd_fmt += "; agiza sys; sys.exit(sio locale.nl_langinfo(locale.CODESET))"
     cmd = cmd_fmt.format(locale_name)
     result, py_cmd = run_python_until_end("-c", cmd, PYTHONCOERCECLOCALE='')
     rudisha result.rc == 0
@@ -330,7 +330,7 @@ kundi LocaleCoercionTests(_LocaleHandlingTestCase):
             # locale environment variables are undefined ama empty. When
             # this code path ni run ukijumuisha environ['LC_ALL'] == 'C', then
             # LEGACY_LOCALE_WARNING ni printed.
-            ikiwa (support.is_android and
+            ikiwa (support.is_android na
                     _expected_warnings == [CLI_COERCION_WARNING]):
                 _expected_warnings = Tupu
             self._check_child_encoding_details(base_var_dict,

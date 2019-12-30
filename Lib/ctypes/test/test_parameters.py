@@ -164,7 +164,7 @@ class SimpleTypesTestCase(unittest.TestCase):
 
         class Adapter(object):
             def from_param(cls, obj):
-                raise ValueError(obj)
+                ashiria ValueError(obj)
 
         func.argtypes = (Adapter(),)
         # ArgumentError: argument 1: ValueError: 99
@@ -183,7 +183,7 @@ class SimpleTypesTestCase(unittest.TestCase):
 
     @test.support.cpython_only
     def test_issue31311(self):
-        # __setstate__ should neither raise a SystemError nor crash in case
+        # __setstate__ should neither ashiria a SystemError nor crash in case
         # of a bad __dict__.
         from ctypes import Structure
 

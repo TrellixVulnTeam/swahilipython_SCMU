@@ -221,7 +221,7 @@ kundi TestTimeit(unittest.TestCase):
         t = timeit.Timer("1/0")
         jaribu:
             t.timeit()
-        except:
+        tatizo:
             t.print_exc(s)
         self.assert_exc_string(s.getvalue(), 'ZeroDivisionError')
 

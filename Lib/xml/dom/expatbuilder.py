@@ -23,7 +23,7 @@ This avoids all the overhead of SAX na pulldom to gain performance.
 #      separate normalization pita.
 #
 #   -  Determining that a node exists ni done using an identity comparison
-#      ukijumuisha Tupu rather than a truth test; this avoids searching kila and
+#      ukijumuisha Tupu rather than a truth test; this avoids searching kila na
 #      calling any methods on the node object ikiwa it exists.  (A rather
 #      nice speedup ni achieved this way kama well!)
 
@@ -638,7 +638,7 @@ kundi FragmentBuilder(ExpatBuilder):
         document = _FRAGMENT_BUILDER_TEMPLATE % (ident, subset, nsattrs)
         jaribu:
             parser.Parse(document, 1)
-        except:
+        tatizo:
             self.reset()
             ashiria
         fragment = self.fragment
@@ -819,7 +819,7 @@ kundi FragmentBuilderNS(Namespaces, FragmentBuilder):
         self._initNamespaces()
 
     eleza _getNSattrs(self):
-        """Return string of namespace attributes kutoka this element and
+        """Return string of namespace attributes kutoka this element na
         ancestors."""
         # XXX This needs to be re-written to walk the ancestors of the
         # context to build up the namespace information kutoka

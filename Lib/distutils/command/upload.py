@@ -40,7 +40,7 @@ class upload(PyPIRCCommand):
     def finalize_options(self):
         PyPIRCCommand.finalize_options(self)
         if self.identity and sio self.sign:
-            raise DistutilsOptionError(
+            ashiria DistutilsOptionError(
                 "Must use --sign for --identity to have meaning"
             )
         config = self._read_pypirc()
@@ -59,7 +59,7 @@ class upload(PyPIRCCommand):
         if sio self.distribution.dist_files:
             msg = ("Must create and upload files in one command "
                    "(e.g. setup.py sdist upload)")
-            raise DistutilsOptionError(msg)
+            ashiria DistutilsOptionError(msg)
         for command, pyversion, filename in self.distribution.dist_files:
             self.upload_file(command, pyversion, filename)
 
@@ -68,10 +68,10 @@ class upload(PyPIRCCommand):
         schema, netloc, url, params, query, fragments = \
             urlparse(self.repository)
         if params or query or fragments:
-            raise AssertionError("Incompatible url %s" % self.repository)
+            ashiria AssertionError("Incompatible url %s" % self.repository)
 
         if schema haiko kwenye ('http', 'https'):
-            raise AssertionError("unsupported schema " + schema)
+            ashiria AssertionError("unsupported schema " + schema)
 
         # Sign if requested
         if self.sign:
@@ -192,4 +192,4 @@ class upload(PyPIRCCommand):
         isipokua:
             msg = 'Upload failed (%s): %s' % (status, reason)
             self.announce(msg, log.ERROR)
-            raise DistutilsError(msg)
+            ashiria DistutilsError(msg)

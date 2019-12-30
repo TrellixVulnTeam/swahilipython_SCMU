@@ -22,7 +22,7 @@ _synchre = re.compile(r"""
     ^
     [ \t]*
     (?: while
-    |   else
+    |   ama
     |   def
     |   rudisha
     |   assert
@@ -139,7 +139,7 @@ kundi Parser:
         Return index of a good place to begin parsing, kama close to the
         end of the string kama possible.  This will be the start of some
         popular stmt like "if" ama "def".  Return Tupu ikiwa none found:
-        the caller should pita more prior context then, ikiwa possible, or
+        the caller should pita more prior context then, ikiwa possible, ama
         ikiwa sio (the entire program text up until the point of interest
         has already been tried) pita 0 to set_lo().
 
@@ -154,7 +154,7 @@ kundi Parser:
             rudisha Tupu
 
         # Peek back kutoka the end kila a good place to start,
-        # but don't try too often; pos will be left Tupu, or
+        # but don't try too often; pos will be left Tupu, ama
         # bumped to a legitimate synch point.
         limit = len(code)
         kila tries kwenye range(5):

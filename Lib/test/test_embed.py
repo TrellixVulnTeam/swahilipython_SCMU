@@ -87,7 +87,7 @@ kundi EmbeddingTestsMixin:
                              cwd=cwd)
         jaribu:
             (out, err) = p.communicate(input=input, timeout=timeout)
-        except:
+        tatizo:
             p.terminate()
             p.wait()
             ashiria
@@ -717,7 +717,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
         self.check_all_configs("test_init_global_config", config, preconfig,
                                api=API_COMPAT)
 
-    eleza test_init_kutoka_config(self):
+    eleza test_init_from_config(self):
         preconfig = {
             'allocator': PYMEM_ALLOCATOR_MALLOC,
             'utf8_mode': 1,
@@ -768,7 +768,7 @@ kundi InitConfigTests(EmbeddingTestsMixin, unittest.TestCase):
             'check_hash_pycs_mode': 'always',
             'pathconfig_warnings': 0,
         }
-        self.check_all_configs("test_init_kutoka_config", config, preconfig,
+        self.check_all_configs("test_init_from_config", config, preconfig,
                                api=API_COMPAT)
 
     eleza test_init_compat_env(self):

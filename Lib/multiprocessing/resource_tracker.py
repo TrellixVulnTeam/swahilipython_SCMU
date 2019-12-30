@@ -9,7 +9,7 @@
 # Then the server process unlinks any remaining resource names.
 #
 # This ni agizaant because there may be system limits kila such resources: for
-# instance, the system only supports a limited number of named semaphores, and
+# instance, the system only supports a limited number of named semaphores, na
 # shared-memory segments live kwenye the RAM. If a python process leaks such a
 # resource, this resource will sio be removed till the next reboot.  Without
 # this resource tracker process, "killall python" would probably leave unlinked
@@ -94,7 +94,7 @@ kundi ResourceTracker(object):
                 fds_to_pita.append(r)
                 # process will out live us, so no need to wait on pid
                 exe = spawn.get_executable()
-                args = [exe] + util._args_kutoka_interpreter_flags()
+                args = [exe] + util._args_from_interpreter_flags()
                 args += ['-c', cmd % r]
                 # bpo-33613: Register a signal mask that will block the signals.
                 # This signal mask will be inherited by the child that ni going
@@ -109,7 +109,7 @@ kundi ResourceTracker(object):
                 mwishowe:
                     ikiwa _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
-            except:
+            tatizo:
                 os.close(w)
                 ashiria
             isipokua:
@@ -193,7 +193,7 @@ eleza main(fd):
                 tatizo Exception:
                     jaribu:
                         sys.excepthook(*sys.exc_info())
-                    except:
+                    tatizo:
                         pita
     mwishowe:
         # all processes have terminated; cleanup any remaining resources

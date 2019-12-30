@@ -292,7 +292,7 @@ kundi UnicodeMiscTest(UnicodeDatabaseTest):
         agiza unicodedata
         # In UCD 5.1.0, a mirrored property changed wrt. UCD 3.2.0
         self.assertKweli(unicodedata.mirrored("\u0f3a"))
-        self.assertKweli(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
+        self.assertKweli(sio unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
         # Also, we now have two ways of representing
         # the upper-case mapping: kama delta, ama kama absolute value
         self.assertKweli("a".upper()=='A')

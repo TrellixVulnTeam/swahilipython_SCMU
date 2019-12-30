@@ -31,7 +31,7 @@ kundi TestTranforms(BytecodeTestCase):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # unconditional jump to RETURN_VALUE
-            ikiwa (instr.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
+            ikiwa (instr.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD') na
                 tgt.opname == 'RETURN_VALUE'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
@@ -200,10 +200,10 @@ kundi TestTranforms(BytecodeTestCase):
             rudisha a haiko kwenye {1, 2, 3}
 
         self.assertKweli(f(3))
-        self.assertKweli(not f(4))
+        self.assertKweli(sio f(4))
         self.check_lnotab(f)
 
-        self.assertKweli(not g(3))
+        self.assertKweli(sio g(3))
         self.assertKweli(g(4))
         self.check_lnotab(g)
 
@@ -222,9 +222,9 @@ kundi TestTranforms(BytecodeTestCase):
             ('a = (12,13)[1]', 13),             # binary subscr
             ('a = 13 << 2', 52),                # binary lshift
             ('a = 13 >> 2', 3),                 # binary rshift
-            ('a = 13 & 7', 5),                  # binary and
+            ('a = 13 & 7', 5),                  # binary na
             ('a = 13 ^ 7', 10),                 # binary xor
-            ('a = 13 | 7', 15),                 # binary or
+            ('a = 13 | 7', 15),                 # binary ama
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)

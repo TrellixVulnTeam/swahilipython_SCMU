@@ -144,7 +144,7 @@ kundi ExceptionTests(unittest.TestCase):
         s = '''ikiwa 1:
         jaribu:
             endelea
-        except:
+        tatizo:
             pita'''
 
         ckmsg(s, "'endelea' sio properly kwenye loop")
@@ -197,7 +197,7 @@ kundi ExceptionTests(unittest.TestCase):
         check('kundi foo:rudisha 1', 1, 11)
         check('eleza f():\n  endelea', 2, 3)
         check('eleza f():\n  koma', 2, 3)
-        check('jaribu:\n  pita\nexcept:\n  pita\ntatizo ValueError:\n  pita', 2, 3)
+        check('jaribu:\n  pita\ntatizo:\n  pita\ntatizo ValueError:\n  pita', 2, 3)
 
         # Errors thrown by tokenizer.c
         check('(0x+1)', 1, 3)
@@ -424,7 +424,7 @@ kundi ExceptionTests(unittest.TestCase):
         kila exc, args, expected kwenye exceptionList:
             jaribu:
                 e = exc(*args)
-            except:
+            tatizo:
                 andika("\nexc=%r, args=%r" % (exc, args), file=sys.stderr)
                 ashiria
             isipokua:
@@ -456,7 +456,7 @@ kundi ExceptionTests(unittest.TestCase):
     eleza testWithTraceback(self):
         jaribu:
             ashiria IndexError(4)
-        except:
+        tatizo:
             tb = sys.exc_info()[2]
 
         e = BaseException().with_traceback(tb)
@@ -491,7 +491,7 @@ kundi ExceptionTests(unittest.TestCase):
     eleza testTupuClearsTracebackAttr(self):
         jaribu:
             ashiria IndexError(4)
-        except:
+        tatizo:
             tb = sys.exc_info()[2]
 
         e = Exception()
@@ -617,7 +617,7 @@ kundi ExceptionTests(unittest.TestCase):
         wr = weakref.ref(obj)
         jaribu:
             inner_raising_func()
-        except:
+        tatizo:
             pita
         obj = Tupu
         obj = wr()
@@ -629,7 +629,7 @@ kundi ExceptionTests(unittest.TestCase):
         kila i kwenye [0]:
             jaribu:
                 inner_raising_func()
-            except:
+            tatizo:
                 koma
         obj = Tupu
         obj = wr()
@@ -641,7 +641,7 @@ kundi ExceptionTests(unittest.TestCase):
         jaribu:
             jaribu:
                 inner_raising_func()
-            except:
+            tatizo:
                 ashiria KeyError
         tatizo KeyError kama e:
             # We want to test that the tatizo block above got rid of
@@ -891,7 +891,7 @@ kundi ExceptionTests(unittest.TestCase):
         e = ()
         jaribu:
             ashiria Exception(MyObject())
-        except:
+        tatizo:
             pita
         self.assertEqual(e, (Tupu, Tupu, Tupu))
 
@@ -955,7 +955,7 @@ kundi ExceptionTests(unittest.TestCase):
                 self.fail("exception should sio be a MyException")
             tatizo KeyError:
                 pita
-            except:
+            tatizo:
                 self.fail("Should have ashiriad KeyError")
             isipokua:
                 self.fail("Should have ashiriad KeyError")
@@ -977,7 +977,7 @@ kundi ExceptionTests(unittest.TestCase):
         # that a ResourceWarning ni printed.
         # Prior to #22898, the recursivity of PyErr_NormalizeException() was
         # controlled by tstate->recursion_depth na a PyExc_RecursionErrorInst
-        # singleton was being used kwenye that case, that held traceback data and
+        # singleton was being used kwenye that case, that held traceback data na
         # locals indefinitely na would cause a segfault kwenye _PyExc_Fini() upon
         # finalization of these locals.
         code = """ikiwa 1:
@@ -1281,7 +1281,7 @@ kundi ExceptionTests(unittest.TestCase):
             i = g()
             jaribu:
                 1/0
-            except:
+            tatizo:
                 next(i)
                 next(i)
 

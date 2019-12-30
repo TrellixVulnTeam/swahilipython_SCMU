@@ -553,7 +553,7 @@ kundi ProcessTestCase(BaseTestCase):
         self.assertStderrEqual(tf.read(), b"strawberry")
 
     eleza test_stderr_redirect_with_no_stdout_redirect(self):
-        # test stderr=STDOUT wakati stdout=Tupu (not set)
+        # test stderr=STDOUT wakati stdout=Tupu (sio set)
 
         # - grandchild prints to stderr
         # - child redirects grandchild's stderr to its stdout
@@ -993,7 +993,7 @@ kundi ProcessTestCase(BaseTestCase):
         # kwenye particular kila encodings kwenye the UTF-16 na UTF-32 families.
         # See issue #15595.
         #
-        # UTF-16 na UTF-32-BE are sufficient to check both ukijumuisha BOM and
+        # UTF-16 na UTF-32-BE are sufficient to check both ukijumuisha BOM na
         # without, na UTF-16 na UTF-32.
         kila encoding kwenye ['utf-16', 'utf-32-be']:
             code = ("agiza sys; "
@@ -1693,7 +1693,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
 
         self.assertIn(repr(error_data), str(e.exception))
 
-    @unittest.skipIf(not os.path.exists('/proc/self/status'),
+    @unittest.skipIf(sio os.path.exists('/proc/self/status'),
                      "need /proc/self/status")
     eleza test_restore_signals(self):
         # Blindly assume that cat exists on systems ukijumuisha /proc/self/status...
@@ -1814,7 +1814,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
                     kila fd kwenye devzero_fds:
                         os.close(fd)
 
-    @unittest.skipIf(not os.path.exists("/dev/zero"), "/dev/zero required.")
+    @unittest.skipIf(sio os.path.exists("/dev/zero"), "/dev/zero required.")
     eleza test_preexec_errpipe_does_not_double_close_pipes(self):
         """Issue16140: Don't double close pipes on preexec error."""
 
@@ -2461,7 +2461,7 @@ kundi POSIXProcessTestCase(BaseTestCase):
         self.assertIn(1, remaining_fds, "Subprocess failed")
 
 
-    @unittest.skipIf(sys.platform.startswith("freebsd") and
+    @unittest.skipIf(sys.platform.startswith("freebsd") na
                      os.stat("/dev").st_dev == os.stat("/dev/fd").st_dev,
                      "Requires fdescfs mounted on /dev/fd on FreeBSD.")
     eleza test_close_fds_when_max_fd_is_lowered(self):
@@ -3352,7 +3352,7 @@ kundi ContextManagerTests(BaseTestCase):
                                 stdin=subprocess.PIPE,
                                 bufsize=support.PIPE_MAX_SIZE*2)
         proc = proc.__enter__()
-        # Prepare to send enough data to overflow any OS pipe buffering and
+        # Prepare to send enough data to overflow any OS pipe buffering na
         # guarantee a broken pipe error. Data ni held kwenye BufferedWriter
         # buffer until closed.
         proc.stdin.write(b'x' * support.PIPE_MAX_SIZE)

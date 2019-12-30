@@ -112,7 +112,7 @@ class BCPPCompiler(CCompiler) :
                 jaribu:
                     self.spawn (["brcc32", "-fo", obj, src])
                 tatizo DistutilsExecError as msg:
-                    raise CompileError(msg)
+                    ashiria CompileError(msg)
                 endelea # the 'for' loop
 
             # The next two are both for the real compiler.
@@ -136,7 +136,7 @@ class BCPPCompiler(CCompiler) :
                             [input_opt, output_opt] +
                             extra_postargs + [src])
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
         return objects
 
@@ -161,7 +161,7 @@ class BCPPCompiler(CCompiler) :
             jaribu:
                 self.spawn ([self.lib] + lib_args)
             tatizo DistutilsExecError as msg:
-                raise LibError(msg)
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -295,7 +295,7 @@ class BCPPCompiler(CCompiler) :
             jaribu:
                 self.spawn ([self.linker] + ld_args)
             tatizo DistutilsExecError as msg:
-                raise LinkError(msg)
+                ashiria LinkError(msg)
 
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
@@ -341,7 +341,7 @@ class BCPPCompiler(CCompiler) :
             # use normcase to make sure '.rc' is really '.rc' and sio '.RC'
             (base, ext) = os.path.splitext (os.path.normcase(src_name))
             if ext haiko kwenye (self.src_extensions + ['.rc','.res']):
-                raise UnknownFileError("unknown file type '%s' (from '%s')" % \
+                ashiria UnknownFileError("unknown file type '%s' (from '%s')" % \
                       (ext, src_name))
             if strip_dir:
                 base = os.path.basename (base)
@@ -388,6 +388,6 @@ class BCPPCompiler(CCompiler) :
                 self.spawn(pp_args)
             tatizo DistutilsExecError as msg:
                 print(msg)
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
     # preprocess()

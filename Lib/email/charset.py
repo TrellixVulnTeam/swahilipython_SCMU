@@ -115,7 +115,7 @@ def add_charset(charset, header_enc=None, body_enc=None, output_charset=None):
     Optional header_enc and body_enc is either Charset.QP for
     quoted-printable, Charset.BASE64 for base64 encoding, Charset.SHORTEST for
     the shortest of qp or base64 encoding, or None for no encoding.  SHORTEST
-    is only valid for header_enc.  It describes how message headers and
+    is only valid for header_enc.  It describes how message headers na
     message bodies in the input charset are to be encoded.  Default is no
     encoding.
 
@@ -130,7 +130,7 @@ def add_charset(charset, header_enc=None, body_enc=None, output_charset=None):
     documentation for more information.
     """
     if body_enc == SHORTEST:
-        raise ValueError('SHORTEST sio allowed for body_enc')
+        ashiria ValueError('SHORTEST sio allowed for body_enc')
     CHARSETS[charset] = (header_enc, body_enc, output_charset)
 
 
@@ -219,7 +219,7 @@ class Charset:
             isipokua:
                 input_charset = str(input_charset, 'ascii')
         tatizo UnicodeError:
-            raise errors.CharsetError(input_charset)
+            ashiria errors.CharsetError(input_charset)
         input_charset = input_charset.lower()
         # Set the input charset after filtering through the aliases
         self.input_charset = ALIASES.get(input_charset, input_charset)

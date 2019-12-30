@@ -28,12 +28,12 @@ drag-and-drop targets.
 Potential drag-and-drop targets are discovered as follows.  Whenever
 the mouse moves, and at the start and end of a drag-and-drop move, the
 Tk widget directly under the mouse is inspected.  This is the target
-widget (not to be confused with the target object, yet to be
+widget (sio to be confused with the target object, yet to be
 determined).  If there is no target widget, there is no dnd target
 object.  If there is a target widget, and it has an attribute
 dnd_accept, this should be a function (or any callable object).  The
 function is called as dnd_accept(source, event), where 'source' is the
-object being dragged (the object passed to dnd_start() above), and
+object being dragged (the object passed to dnd_start() above), na
 'event' is the most recent event object (generally a <Motion> event;
 it can also be <ButtonPress> or <ButtonRelease>).  If the dnd_accept()
 function returns something other than None, this is the new dnd target
@@ -68,7 +68,7 @@ target object's method dnd_enter(source, event) is called.
 
 Once this is done, the new target object replaces the old one, and the
 Tk mainloop proceeds.  The return value of the methods mentioned above
-is ignored; if they raise an exception, the normal exception handling
+is ignored; if they ashiria an exception, the normal exception handling
 mechanisms take over.
 
 The drag-and-drop processes can end in two ways: a final target object

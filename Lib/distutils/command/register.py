@@ -77,7 +77,7 @@ class register(PyPIRCCommand):
             self.has_config = True
         isipokua:
             if self.repository haiko kwenye ('pypi', self.DEFAULT_REPOSITORY):
-                raise ValueError('%s sio found in .pypirc' % self.repository)
+                ashiria ValueError('%s sio found in .pypirc' % self.repository)
             if self.repository == 'pypi':
                 self.repository = self.DEFAULT_REPOSITORY
             self.has_config = False
@@ -120,7 +120,7 @@ class register(PyPIRCCommand):
             choices:
 
              1. use existing login,
-             2. register as a new user, or
+             2. register as a new user, ama
              3. set the password to a random string and email the user.
 
         '''
@@ -141,7 +141,7 @@ class register(PyPIRCCommand):
 We need to know who you are, so please choose either:
  1. use your existing login,
  2. register as a new user,
- 3. have the server generate a new password for you (and email it to you), or
+ 3. have the server generate a new password for you (and email it to you), ama
  4. quit
 Your selection [default 1]: ''', log.INFO)
             choice = input()

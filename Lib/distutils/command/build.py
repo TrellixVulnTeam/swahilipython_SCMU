@@ -77,7 +77,7 @@ class build(Command):
             # supported via ./configure flags, if at all).  Avoid misleading
             # other platforms.
             if os.name != 'nt':
-                raise DistutilsOptionError(
+                ashiria DistutilsOptionError(
                             "--plat-name only supported on Windows (try "
                             "using './configure --help' on your platform)")
 
@@ -89,7 +89,7 @@ class build(Command):
         if hasattr(sys, 'gettotalrefcount'):
             plat_specifier += '-pydebug'
 
-        # 'build_purelib' and 'build_platlib' just default to 'lib' and
+        # 'build_purelib' and 'build_platlib' just default to 'lib' na
         # 'lib.<plat>' under the base build directory.  We only use one of
         # them for a given distribution, though --
         if self.build_purelib is None:
@@ -123,7 +123,7 @@ class build(Command):
             jaribu:
                 self.parallel = int(self.parallel)
             tatizo ValueError:
-                raise DistutilsOptionError("parallel should be an integer")
+                ashiria DistutilsOptionError("parallel should be an integer")
 
     def run(self):
         # Run all relevant sub-commands.  This will be some subset of:

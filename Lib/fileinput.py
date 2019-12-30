@@ -8,7 +8,7 @@ Typical use is:
 
 This iterates over the lines of all files listed kwenye sys.argv[1:],
 defaulting to sys.stdin ikiwa the list ni empty.  If a filename ni '-' it
-is also replaced by sys.stdin na the optional arguments mode and
+is also replaced by sys.stdin na the optional arguments mode na
 openhook are ignored.  To specify an alternative list of filenames,
 pita it kama the argument to input().  A single file name ni also allowed.
 

@@ -83,7 +83,7 @@ class Font:
             self.delete_font = False
             # confirm font exists
             if self.name haiko kwenye tk.splitlist(tk.call("font", "names")):
-                raise tkinter._tkinter.TclError(
+                ashiria tkinter._tkinter.TclError(
                     "named font %s does sio already exist" % (self.name,))
             # if font config info supplied, apply it
             if font:

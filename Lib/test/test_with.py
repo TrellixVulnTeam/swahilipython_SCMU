@@ -65,7 +65,7 @@ kundi Nested(object):
             kila mgr kwenye self.managers:
                 vars.append(mgr.__enter__())
                 self.entered.appendleft(mgr)
-        except:
+        tatizo:
             ikiwa sio self.__exit__(*sys.exc_info()):
                 ashiria
         rudisha vars
@@ -79,7 +79,7 @@ kundi Nested(object):
             jaribu:
                 ikiwa mgr.__exit__(*ex):
                     ex = (Tupu, Tupu, Tupu)
-            except:
+            tatizo:
                 ex = sys.exc_info()
         self.entered = Tupu
         ikiwa ex ni sio exc_info:
@@ -710,7 +710,7 @@ kundi NestedWith(unittest.TestCase):
         jaribu:
             ukijumuisha self.Dummy() kama a, self.InitRaises():
                 pita
-        except:
+        tatizo:
             pita
         self.assertKweli(a.enter_called)
         self.assertKweli(a.exit_called)

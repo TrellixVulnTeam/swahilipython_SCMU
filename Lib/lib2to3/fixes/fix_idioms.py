@@ -48,7 +48,7 @@ kundi FixIdioms(fixer_base.BaseFix):
             any*
             simple_stmt<
               expr_stmt< id1=any '='
-                         power< list='list' trailer< '(' (not arglist<any+>) any ')' > >
+                         power< list='list' trailer< '(' (sio arglist<any+>) any ')' > >
               >
               '\n'
             >
@@ -131,7 +131,7 @@ kundi FixIdioms(fixer_base.BaseFix):
         sort_stmt.remove()
 
         btwn = sort_stmt.prefix
-        # Keep any prefix lines between the sort_stmt na the list_call and
+        # Keep any prefix lines between the sort_stmt na the list_call na
         # shove them right after the sorted() call.
         ikiwa "\n" kwenye btwn:
             ikiwa next_stmt:

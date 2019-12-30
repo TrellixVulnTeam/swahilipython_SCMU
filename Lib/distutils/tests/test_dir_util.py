@@ -124,7 +124,7 @@ class DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     def test_copy_tree_exception_in_listdir(self):
         """
-        An exception in listdir should raise a DistutilsFileError
+        An exception in listdir should ashiria a DistutilsFileError
         """
         with patch("os.listdir", side_effect=OSError()), \
              self.assertRaises(errors.DistutilsFileError):

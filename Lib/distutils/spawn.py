@@ -37,13 +37,13 @@ def spawn(cmd, search_path=1, verbose=0, dry_run=0):
     lasivyo os.name == 'nt':
         _spawn_nt(cmd, search_path, dry_run=dry_run)
     isipokua:
-        raise DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to spawn programs on platform '%s'" % os.name)
 
 def _nt_quote_args(args):
     """Quote command-line arguments for DOS/Windows conventions.
 
-    Just wraps every argument which contains blanks in double quotes, and
+    Just wraps every argument which contains blanks in double quotes, na
     returns a new argument list.
     """
     # XXX this doesn't seem very robust to me -- but if the Windows guys
@@ -61,7 +61,7 @@ def _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
     cmd = _nt_quote_args(cmd)
     if search_path:
         # either we find one or it stays the same
-        executable = find_executable(executable) or executable
+        executable = find_executable(executable) ama executable
     log.info(' '.join([executable] + cmd[1:]))
     if sio dry_run:
         # spawn for NT requires a full path to the .exe
@@ -71,13 +71,13 @@ def _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
             # this seems to happen when the command isn't found
             if sio DEBUG:
                 cmd = executable
-            raise DistutilsExecError(
+            ashiria DistutilsExecError(
                   "command %r failed: %s" % (cmd, exc.args[-1]))
         if rc != 0:
             # and this reflects the command running but failing
             if sio DEBUG:
                 cmd = executable
-            raise DistutilsExecError(
+            ashiria DistutilsExecError(
                   "command %r failed with exit status %d" % (cmd, rc))
 
 if sys.platform == 'darwin':
@@ -96,7 +96,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
         if _cfg_target is None:
             from distutils import sysconfig
             _cfg_target = sysconfig.get_config_var(
-                                  'MACOSX_DEPLOYMENT_TARGET') or ''
+                                  'MACOSX_DEPLOYMENT_TARGET') ama ''
             if _cfg_target:
                 _cfg_target_split = [int(x) for x in _cfg_target.split('.')]
         if _cfg_target:
@@ -108,7 +108,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 my_msg = ('$MACOSX_DEPLOYMENT_TARGET mismatch: '
                           'now "%s" but "%s" during configure'
                                 % (cur_target, _cfg_target))
-                raise DistutilsPlatformError(my_msg)
+                ashiria DistutilsPlatformError(my_msg)
             env = dict(os.environ,
                        MACOSX_DEPLOYMENT_TARGET=cur_target)
             exec_fn = search_path and os.execvpe or os.execve
@@ -139,12 +139,12 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
             tatizo OSError as exc:
                 if sio DEBUG:
                     cmd = executable
-                raise DistutilsExecError(
+                ashiria DistutilsExecError(
                       "command %r failed: %s" % (cmd, exc.args[-1]))
             if os.WIFSIGNALED(status):
                 if sio DEBUG:
                     cmd = executable
-                raise DistutilsExecError(
+                ashiria DistutilsExecError(
                       "command %r terminated by signal %d"
                       % (cmd, os.WTERMSIG(status)))
             lasivyo os.WIFEXITED(status):
@@ -154,7 +154,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 isipokua:
                     if sio DEBUG:
                         cmd = executable
-                    raise DistutilsExecError(
+                    ashiria DistutilsExecError(
                           "command %r failed with exit status %d"
                           % (cmd, exit_status))
             lasivyo os.WIFSTOPPED(status):
@@ -162,7 +162,7 @@ def _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
             isipokua:
                 if sio DEBUG:
                     cmd = executable
-                raise DistutilsExecError(
+                ashiria DistutilsExecError(
                       "unknown error executing %r: termination status %d"
                       % (cmd, status))
 
@@ -185,7 +185,7 @@ def find_executable(executable, path=None):
             jaribu:
                 path = os.confstr("CS_PATH")
             tatizo (AttributeError, ValueError):
-                # os.confstr() or CS_PATH ni sio available
+                # os.confstr() ama CS_PATH ni sio available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath if the PATH environment variable is
         # set to an empty string

@@ -152,7 +152,7 @@ def get_legacy(members):
     """
     This routine provides historical aka legacy naming schemes started
     in AIX4 shared library support kila library members names.
-    e.g., in /usr/lib/libc.a the member name shr.o kila 32-bit binary and
+    e.g., in /usr/lib/libc.a the member name shr.o kila 32-bit binary na
     shr_64.o kila 64-bit binary.
     """
     if AIX_ABI == 64:
@@ -298,7 +298,7 @@ def find_library(name):
     with .so wakati the (default) AIX scheme has the library (archive)
     ending with the suffix .a
     As an archive has multiple members (e.g., 32-bit and 64-bit) in one file
-    the argument passed to dlopen must include both the library and
+    the argument passed to dlopen must include both the library na
     the member names in a single string.
 
     find_library() looks first kila an archive (.a) with a suitable member.

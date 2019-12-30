@@ -178,7 +178,7 @@ kundi PyShellEditorWindow(EditorWindow):
         jaribu:    # update the subprocess debugger
             debug = self.flist.pyshell.interp.debugger
             debug.set_komapoint_here(filename, lineno)
-        except: # but debugger may sio be active right now....
+        tatizo: # but debugger may sio be active right now....
             pita
 
     eleza set_komapoint_here(self, event=Tupu):
@@ -199,14 +199,14 @@ kundi PyShellEditorWindow(EditorWindow):
         lineno = int(float(text.index("insert")))
         jaribu:
             self.komapoints.remove(lineno)
-        except:
+        tatizo:
             pita
         text.tag_remove("BREAK", "insert linestart",\
                         "insert lineend +1char")
         jaribu:
             debug = self.flist.pyshell.interp.debugger
             debug.clear_komapoint_here(filename, lineno)
-        except:
+        tatizo:
             pita
 
     eleza clear_file_komas(self):
@@ -221,7 +221,7 @@ kundi PyShellEditorWindow(EditorWindow):
             jaribu:
                 debug = self.flist.pyshell.interp.debugger
                 debug.clear_file_komas(filename)
-            except:
+            tatizo:
                 pita
 
     eleza store_file_komas(self):
@@ -487,7 +487,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
             jaribu:
                 # Only close subprocess debugger, don't unregister gui_adap!
                 debugger_r.close_subprocess_debugger(self.rpcclt)
-            except:
+            tatizo:
                 pita
         # Kill subprocess, spawn a new one, accept connection.
         self.rpcclt.close()
@@ -782,7 +782,7 @@ kundi ModifiedInterpreter(InteractiveInterpreter):
                     self.showtraceback()
             isipokua:
                 ashiria
-        except:
+        tatizo:
             ikiwa use_subprocess:
                 andika("IDLE internal error kwenye runcode()",
                       file=self.tkconsole.stderr)
@@ -919,7 +919,7 @@ kundi PyShell(OutputWindow):
             agiza pydoc # agiza must be done here to capture i/o rebinding.
             # XXX KBK 27Dec07 use text viewer someday, but must work w/o subproc
             pydoc.pager = pydoc.plainpager
-        except:
+        tatizo:
             sys.stderr = sys.__stderr__
             ashiria
         #
@@ -1102,7 +1102,7 @@ kundi PyShell(OutputWindow):
         jaribu:
             ikiwa self.text.compare("sel.first", "!=", "sel.last"):
                 rudisha # Active selection -- always use default binding
-        except:
+        tatizo:
             pita
         ikiwa sio (self.executing ama self.reading):
             self.resetoutput()
@@ -1123,7 +1123,7 @@ kundi PyShell(OutputWindow):
     eleza eof_callback(self, event):
         ikiwa self.executing na sio self.reading:
             rudisha # Let the default binding (delete next char) take over
-        ikiwa sio (self.text.compare("iomark", "==", "insert") and
+        ikiwa sio (self.text.compare("iomark", "==", "insert") na
                 self.text.compare("insert", "==", "end-1c")):
             rudisha # Let the default binding (delete next char) take over
         ikiwa sio self.executing:
@@ -1155,10 +1155,10 @@ kundi PyShell(OutputWindow):
                 ikiwa self.text.compare("sel.last", "<=", "iomark"):
                     self.recall(sel, event)
                     rudisha "koma"
-        except:
+        tatizo:
             pita
         # If we're strictly before the line containing iomark, recall
-        # the current line, less a leading prompt, less leading or
+        # the current line, less a leading prompt, less leading ama
         # trailing whitespace
         ikiwa self.text.compare("insert", "<", "iomark linestart"):
             # Check ikiwa there's a relevant stdin range -- ikiwa so, use it
@@ -1252,7 +1252,7 @@ kundi PyShell(OutputWindow):
             rudisha self.interp.remote_stack_viewer()
         jaribu:
             sys.last_traceback
-        except:
+        tatizo:
             tkMessageBox.showerror("No stack trace",
                 "There ni no stack trace yet.\n"
                 "(sys.last_traceback ni sio defined)",
@@ -1298,7 +1298,7 @@ kundi PyShell(OutputWindow):
             self.text.mark_gravity("iomark", "right")
             count = OutputWindow.write(self, s, tags, "iomark")
             self.text.mark_gravity("iomark", "left")
-        except:
+        tatizo:
             ashiria ###pita  # ### 11Aug07 KBK ikiwa we are expecting exceptions
                            # let's find out what they are na be specific.
         ikiwa self.canceled:
@@ -1349,11 +1349,11 @@ The following options will override the IDLE 'settings' configuration:
 
 The following options imply -i na will open a shell:
 
-  -c cmd     run the command kwenye a shell, or
+  -c cmd     run the command kwenye a shell, ama
   -r file    run script kutoka file
 
   -d         enable the debugger
-  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything else
+  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything ama
   -t title   set title of shell window
 
 A default edit window will be bypitaed when -c, -r, ama - are used.
@@ -1377,7 +1377,7 @@ idle -c "agiza sys; andika(sys.argv)" "foo"
         na "foo" kwenye sys.argv[1].
 
 idle -d -s -r foo.py "Hello World"
-        Open a shell window, run a startup script, enable the debugger, and
+        Open a shell window, run a startup script, enable the debugger, na
         run foo.py, pitaing "foo.py" kwenye sys.argv[0] na "Hello World" in
         sys.argv[1].
 

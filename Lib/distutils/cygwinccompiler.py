@@ -83,7 +83,7 @@ def get_msvcr():
             # VS2010 / MSVC 10.0
             return ['msvcr100']
         isipokua:
-            raise ValueError("Unknown MS Compiler version %s " % msc_ver)
+            ashiria ValueError("Unknown MS Compiler version %s " % msc_ver)
 
 
 class CygwinCCompiler(UnixCCompiler):
@@ -163,13 +163,13 @@ class CygwinCCompiler(UnixCCompiler):
             jaribu:
                 self.spawn(["windres", "-i", src, "-o", obj])
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
         isipokua: # for other files use the C-compiler
             jaribu:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
                            extra_postargs)
             tatizo DistutilsExecError as msg:
-                raise CompileError(msg)
+                ashiria CompileError(msg)
 
     def link(self, target_desc, objects, output_filename, output_dir=None,
              libraries=None, library_dirs=None, runtime_library_dirs=None,
@@ -186,7 +186,7 @@ class CygwinCCompiler(UnixCCompiler):
 
         # handle export symbols by creating a def-file
         # with executables this only works with gcc/ld as linker
-        if ((export_symbols ni sio None) and
+        if ((export_symbols ni sio None) na
             (target_desc != self.EXECUTABLE or self.linker_dll == "gcc")):
             # (The linker doesn't do anything if output is up-to-date.
             # So it would probably better to check if we really need this,
@@ -228,7 +228,7 @@ class CygwinCCompiler(UnixCCompiler):
                 # for gcc/ld the def-file is specified as any object files
                 objects.append(def_file)
 
-        #end: if ((export_symbols ni sio None) and
+        #end: if ((export_symbols ni sio None) na
         #        (target_desc != self.EXECUTABLE or self.linker_dll == "gcc")):
 
         # who wants symbols and a many times larger output file
@@ -258,7 +258,7 @@ class CygwinCCompiler(UnixCCompiler):
             # use normcase to make sure '.rc' is really '.rc' and sio '.RC'
             base, ext = os.path.splitext(os.path.normcase(src_name))
             if ext haiko kwenye (self.src_extensions + ['.rc','.res']):
-                raise UnknownFileError("unknown file type '%s' (from '%s')" % \
+                ashiria UnknownFileError("unknown file type '%s' (from '%s')" % \
                       (ext, src_name))
             if strip_dir:
                 base = os.path.basename (base)
@@ -296,7 +296,7 @@ class Mingw32CCompiler(CygwinCCompiler):
             entry_point = ''
 
         if is_cygwingcc():
-            raise CCompilerError(
+            ashiria CCompilerError(
                 'Cygwin gcc cannot be used with --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',

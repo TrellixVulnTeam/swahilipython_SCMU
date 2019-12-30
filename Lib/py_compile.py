@@ -126,10 +126,10 @@ eleza compile(file, cfile=Tupu, dfile=Tupu, doashiria=Uongo, optimize=-1,
     ikiwa cfile ni Tupu:
         ikiwa optimize >= 0:
             optimization = optimize ikiwa optimize >= 1 isipokua ''
-            cfile = importlib.util.cache_kutoka_source(file,
+            cfile = importlib.util.cache_from_source(file,
                                                      optimization=optimization)
         isipokua:
-            cfile = importlib.util.cache_kutoka_source(file)
+            cfile = importlib.util.cache_from_source(file)
     ikiwa os.path.islink(cfile):
         msg = ('{} ni a symlink na will be changed into a regular file ikiwa '
                'agiza writes a byte-compiled file to it')

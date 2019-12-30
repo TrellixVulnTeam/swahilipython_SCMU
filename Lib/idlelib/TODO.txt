@@ -39,7 +39,7 @@ TO DO:
 - Add more utility methods kila use by extensions (a la get_selection)
 - Way to run command kwenye totally separate interpreter (fork+os.system?) DONE
 - Way to find definition of fully-qualified name:
-  In other words, select "UserDict.UserDict", hit some magic key and
+  In other words, select "UserDict.UserDict", hit some magic key na
   it loads up UserDict.py na finds the first eleza ama kundi kila UserDict.
 - need a way to force colorization on/off
 - need a way to force auto-indent on/off
@@ -48,7 +48,7 @@ Details:
 
 - ^O (on Unix -- open-line) should honor autoindent
 - after paste, show end of pasted text
-- on Windows, should turn short filename to long filename (not only kwenye argv!)
+- on Windows, should turn short filename to long filename (sio only kwenye argv!)
   (shouldn't this be done -- ama undone -- by ntpath.normpath?)
 - new autoindent after colon even indents when the colon ni kwenye a comment!
 - sometimes forward slashes kwenye pathname remain
@@ -127,7 +127,7 @@ Things I'd like to see:
     - I'd like support kila shift-click extending the selection. There's a
       bug now that it doesn't work the first time you try it.
     - Printing ni needed. How hard can that be on Windows? FIRST CUT DONE
-    - The python-mode trick of autoindenting a line ukijumuisha <tab> ni neat and
+    - The python-mode trick of autoindenting a line ukijumuisha <tab> ni neat na
       very handy.
     - (someday) a spellchecker kila docstrings na comments.
     - a pagedown/up command key which moves to next class/eleza statement (top
@@ -169,7 +169,7 @@ shown together (e.g. kundi browser na source).  (Albert Brandl)
 - A project should invisibly track all symbols, kila instant search,
 replace na cross-ref.  Projects should be allowed to span multiple
 directories, hosts, etc.  Project management files are placed kwenye a
-directory you specify.  A global mapping between project names and
+directory you specify.  A global mapping between project names na
 project directories should exist [not so sure --GvR].  (Tim Peters)
 
 - Merge attr-tips na auto-expand.  (Mark Hammond, Tim Peters)

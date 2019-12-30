@@ -529,7 +529,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -547,7 +547,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -565,7 +565,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -583,7 +583,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -601,7 +601,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -619,7 +619,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -637,7 +637,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []
@@ -656,7 +656,7 @@ kundi ThreadTests(unittest.TestCase):
                 rudisha
             tatizo sqlite.ProgrammingError:
                 rudisha
-            except:
+            tatizo:
                 errors.append("ashiriad wrong exception")
 
         errors = []

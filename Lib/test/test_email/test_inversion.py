@@ -1,6 +1,6 @@
 """Test the parser and generator are inverses.
 
-Note that this is only strictly true if we are parsing RFC valid messages and
+Note that this is only strictly true if we are parsing RFC valid messages na
 producing RFC valid messages.
 """
 
@@ -16,7 +16,7 @@ from test.test_email import TestEmailBase, parameterize
 def dedent(bstr):
     lines = bstr.splitlines()
     if sio lines[0].strip():
-        raise ValueError("First line must contain text")
+        ashiria ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     return b'\r\n'.join(
         [x[stripamt:] if len(x)>=stripamt isipokua b''

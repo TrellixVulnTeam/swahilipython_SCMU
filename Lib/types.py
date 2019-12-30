@@ -46,7 +46,7 @@ BuiltinMethodType = type([].append)     # Same kama BuiltinFunctionType
 WrapperDescriptorType = type(object.__init__)
 MethodWrapperType = type(object().__str__)
 MethodDescriptorType = type(str.join)
-ClassMethodDescriptorType = type(dict.__dict__['kutokakeys'])
+ClassMethodDescriptorType = type(dict.__dict__['fromkeys'])
 
 ModuleType = type(sys)
 
@@ -247,7 +247,7 @@ eleza coroutine(func):
     ikiwa sio callable(func):
         ashiria TypeError('types.coroutine() expects a callable')
 
-    ikiwa (func.__class__ ni FunctionType and
+    ikiwa (func.__class__ ni FunctionType na
         getattr(func, '__code__', Tupu).__class__ ni CodeType):
 
         co_flags = func.__code__.co_flags
@@ -276,17 +276,17 @@ eleza coroutine(func):
     @functools.wraps(func)
     eleza wrapped(*args, **kwargs):
         coro = func(*args, **kwargs)
-        ikiwa (coro.__class__ ni CoroutineType or
+        ikiwa (coro.__class__ ni CoroutineType  ama
             coro.__class__ ni GeneratorType na coro.gi_code.co_flags & 0x100):
             # 'coro' ni a native coroutine object ama an iterable coroutine
             rudisha coro
-        ikiwa (isinstance(coro, _collections_abc.Generator) and
+        ikiwa (isinstance(coro, _collections_abc.Generator) na
             sio isinstance(coro, _collections_abc.Coroutine)):
             # 'coro' ni either a pure Python generator iterator, ama it
             # implements collections.abc.Generator (and does sio implement
             # collections.abc.Coroutine).
             rudisha _GeneratorWrapper(coro)
-        # 'coro' ni either an instance of collections.abc.Coroutine or
+        # 'coro' ni either an instance of collections.abc.Coroutine ama
         # some other object -- pita it through.
         rudisha coro
 

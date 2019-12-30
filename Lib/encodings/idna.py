@@ -26,16 +26,16 @@ eleza nameprep(label):
 
     # Prohibit
     for c in label:
-        if stringprep.in_table_c12(c) or \
-           stringprep.in_table_c22(c) or \
-           stringprep.in_table_c3(c) or \
-           stringprep.in_table_c4(c) or \
-           stringprep.in_table_c5(c) or \
-           stringprep.in_table_c6(c) or \
-           stringprep.in_table_c7(c) or \
-           stringprep.in_table_c8(c) or \
+        if stringprep.in_table_c12(c) ama \
+           stringprep.in_table_c22(c) ama \
+           stringprep.in_table_c3(c) ama \
+           stringprep.in_table_c4(c) ama \
+           stringprep.in_table_c5(c) ama \
+           stringprep.in_table_c6(c) ama \
+           stringprep.in_table_c7(c) ama \
+           stringprep.in_table_c8(c) ama \
            stringprep.in_table_c9(c):
-            raise UnicodeError("Invalid character %r" % c)
+            ashiria UnicodeError("Invalid character %r" % c)
 
     # Check bidi
     RandAL = [stringprep.in_table_d1(x) for x in label]
@@ -48,14 +48,14 @@ eleza nameprep(label):
             # 2) If a string contains any RandALCat character, the string
             # MUST NOT contain any LCat character.
             if any(stringprep.in_table_d2(x) for x in label):
-                raise UnicodeError("Violation of BIDI requirement 2")
+                ashiria UnicodeError("Violation of BIDI requirement 2")
 
             # 3) If a string contains any RandALCat character, a
             # RandALCat character MUST be the first character of the
             # string, and a RandALCat character MUST be the last
             # character of the string.
             if sio RandAL[0] or sio RandAL[-1]:
-                raise UnicodeError("Violation of BIDI requirement 3")
+                ashiria UnicodeError("Violation of BIDI requirement 3")
 
     rudisha label
 
@@ -70,7 +70,7 @@ eleza ToASCII(label):
         # Skip to step 8.
         if 0 < len(label) < 64:
             rudisha label
-        raise UnicodeError("label empty or too long")
+        ashiria UnicodeError("label empty or too long")
 
     # Step 2: nameprep
     label = nameprep(label)
@@ -85,11 +85,11 @@ eleza ToASCII(label):
         # Skip to step 8.
         if 0 < len(label) < 64:
             rudisha label
-        raise UnicodeError("label empty or too long")
+        ashiria UnicodeError("label empty or too long")
 
     # Step 5: Check ACE prefix
     if label.startswith(sace_prefix):
-        raise UnicodeError("Label starts with ACE prefix")
+        ashiria UnicodeError("Label starts with ACE prefix")
 
     # Step 6: Encode with PUNYCODE
     label = label.encode("punycode")
@@ -100,7 +100,7 @@ eleza ToASCII(label):
     # Step 8: Check size
     if 0 < len(label) < 64:
         rudisha label
-    raise UnicodeError("label empty or too long")
+    ashiria UnicodeError("label empty or too long")
 
 eleza ToUnicode(label):
     # Step 1: Check for ASCII
@@ -119,7 +119,7 @@ eleza ToUnicode(label):
         jaribu:
             label = label.encode("ascii")
         tatizo UnicodeError:
-            raise UnicodeError("Invalid character in IDN label")
+            ashiria UnicodeError("Invalid character in IDN label")
     # Step 3: Check for ACE prefix
     if sio label.startswith(ace_prefix):
         rudisha str(label, "ascii")
@@ -136,7 +136,7 @@ eleza ToUnicode(label):
     # Step 7: Compare the result of step 6 with the one of step 3
     # label2 will already be in lower case.
     if str(label, "ascii").lower() != str(label2, "ascii"):
-        raise UnicodeError("IDNA does sio round-trip", label, label2)
+        ashiria UnicodeError("IDNA does sio round-trip", label, label2)
 
     # Step 8: rudisha the result of step 5
     rudisha result
@@ -148,7 +148,7 @@ kundi Codec(codecs.Codec):
 
         if errors != 'strict':
             # IDNA is quite clear that implementations must be strict
-            raise UnicodeError("unsupported error handling "+errors)
+            ashiria UnicodeError("unsupported error handling "+errors)
 
         if sio input:
             rudisha b'', 0
@@ -162,9 +162,9 @@ kundi Codec(codecs.Codec):
             labels = result.split(b'.')
             for label in labels[:-1]:
                 if sio (0 < len(label) < 64):
-                    raise UnicodeError("label empty or too long")
+                    ashiria UnicodeError("label empty or too long")
             if len(labels[-1]) >= 64:
-                raise UnicodeError("label too long")
+                ashiria UnicodeError("label too long")
             rudisha result, len(input)
 
         result = bytearray()
@@ -184,7 +184,7 @@ kundi Codec(codecs.Codec):
     eleza decode(self, input, errors='strict'):
 
         if errors != 'strict':
-            raise UnicodeError("Unsupported error handling "+errors)
+            ashiria UnicodeError("Unsupported error handling "+errors)
 
         if sio input:
             rudisha "", 0
@@ -219,7 +219,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
     eleza _buffer_encode(self, input, errors, final):
         if errors != 'strict':
             # IDNA is quite clear that implementations must be strict
-            raise UnicodeError("unsupported error handling "+errors)
+            ashiria UnicodeError("unsupported error handling "+errors)
 
         if sio input:
             rudisha (b'', 0)
@@ -253,7 +253,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     eleza _buffer_decode(self, input, errors, final):
         if errors != 'strict':
-            raise UnicodeError("Unsupported error handling "+errors)
+            ashiria UnicodeError("Unsupported error handling "+errors)
 
         if sio input:
             rudisha ("", 0)

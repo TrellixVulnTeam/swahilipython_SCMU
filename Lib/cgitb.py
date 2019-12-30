@@ -278,7 +278,7 @@ kundi Hook:
         plain = Uongo
         jaribu:
             doc = formatter(info, self.context)
-        except:                         # just kwenye case something goes wrong
+        tatizo:                         # just kwenye case something goes wrong
             doc = ''.join(traceback.format_exception(*info))
             plain = Kweli
 
@@ -299,7 +299,7 @@ kundi Hook:
                 ukijumuisha os.fdopen(fd, 'w') kama file:
                     file.write(doc)
                 msg = '%s contains the description of this error.' % path
-            except:
+            tatizo:
                 msg = 'Tried to save traceback to %s, but failed.' % path
 
             ikiwa self.format == 'html':
@@ -308,7 +308,7 @@ kundi Hook:
                 self.file.write(msg + '\n')
         jaribu:
             self.file.flush()
-        except: pita
+        tatizo: pita
 
 handler = Hook().handle
 eleza enable(display=1, logdir=Tupu, context=5, format="html"):

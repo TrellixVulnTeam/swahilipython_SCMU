@@ -107,11 +107,11 @@ kundi RequestHdrsTests(unittest.TestCase):
         .title()-case ni done by urllib2 before sending headers to
         http.client).
 
-        Note that e.g. r.has_header("spam-EggS") ni currently Uongo, and
+        Note that e.g. r.has_header("spam-EggS") ni currently Uongo, na
         r.get_header("spam-EggS") rudishas Tupu, but that could be changed in
         future.
 
-        Method r.remove_header should remove items both kutoka r.headers and
+        Method r.remove_header should remove items both kutoka r.headers na
         r.unredirected_hdrs dictionaries
         """
         url = "http://example.com"
@@ -208,7 +208,7 @@ kundi RequestHdrsTests(unittest.TestCase):
     eleza test_pitaword_manager_default_port(self):
         """
         The point to note here ni that we can't guess the default port if
-        there's no scheme.  This applies to both add_pitaword and
+        there's no scheme.  This applies to both add_pitaword na
         find_user_pitaword.
         """
         mgr = urllib.request.HTTPPasswordMgr()
@@ -428,14 +428,14 @@ eleza add_ordered_mock_handlers(opener, meth_spec):
 
     [["http_error", "ftp_open"], ["http_open"]]
 
-    defines methods .http_error() na .ftp_open() on one handler, and
-    .http_open() on another.  These methods just record their arguments and
+    defines methods .http_error() na .ftp_open() on one handler, na
+    .http_open() on another.  These methods just record their arguments na
     rudisha Tupu.  Using a tuple instead of a string causes the method to
     perform some action (see MockHandler.handle()), eg:
 
     [["http_error"], [("http_open", "rudisha request")]]
 
-    defines .http_error() on one handler (which simply rudishas Tupu), and
+    defines .http_error() on one handler (which simply rudishas Tupu), na
     .http_open() on another handler, which rudishas a Request object.
 
     """
@@ -480,12 +480,12 @@ kundi MockHTTPHandler(urllib.request.BaseHandler):
         ikiwa self._count == 0:
             self._count = self._count + 1
             name = http.client.responses[self.code]
-            msg = email.message_kutoka_string(self.headers)
+            msg = email.message_from_string(self.headers)
             rudisha self.parent.error(
                 "http", req, MockFile(), self.code, name, msg)
         isipokua:
             self.req = req
-            msg = email.message_kutoka_string("\r\n\r\n")
+            msg = email.message_from_string("\r\n\r\n")
             rudisha MockResponse(200, "OK", msg, "", req.get_full_url())
 
 
@@ -830,7 +830,7 @@ kundi HandlerTests(unittest.TestCase):
         h = urllib.request.FileHandler()
         o = h.parent = MockOpener()
         # XXXX why does // mean ftp (and /// mean sio ftp!), na where
-        #  ni file: scheme specified?  I think this ni really a bug, and
+        #  ni file: scheme specified?  I think this ni really a bug, na
         #  what was intended was to distinguish between URLs like:
         # file:/blah.txt (a file)
         # file://localhost/blah.txt (a file)

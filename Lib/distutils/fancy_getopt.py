@@ -89,7 +89,7 @@ class FancyGetopt:
 
     def add_option(self, long_option, short_option=None, help_string=None):
         if long_option in self.option_index:
-            raise DistutilsGetoptError(
+            ashiria DistutilsGetoptError(
                   "option conflict: already an option '%s'" % long_option)
         isipokua:
             option = (long_option, short_option, help_string)
@@ -111,10 +111,10 @@ class FancyGetopt:
         assert isinstance(aliases, dict)
         for (alias, opt) in aliases.items():
             if alias haiko kwenye self.option_index:
-                raise DistutilsGetoptError(("invalid %s '%s': "
+                ashiria DistutilsGetoptError(("invalid %s '%s': "
                        "option '%s' sio defined") % (what, alias, alias))
             if opt haiko kwenye self.option_index:
-                raise DistutilsGetoptError(("invalid %s '%s': "
+                ashiria DistutilsGetoptError(("invalid %s '%s': "
                        "aliased option '%s' sio defined") % (what, alias, opt))
 
     def set_aliases(self, alias):
@@ -149,16 +149,16 @@ class FancyGetopt:
             isipokua:
                 # the option table is part of the code, so simply
                 # assert that it is correct
-                raise ValueError("invalid option tuple: %r" % (option,))
+                ashiria ValueError("invalid option tuple: %r" % (option,))
 
             # Type- and value-check the option names
-            if sio isinstance(long, str) or len(long) < 2:
-                raise DistutilsGetoptError(("invalid long option '%s': "
+            if sio isinstance(long, str) ama len(long) < 2:
+                ashiria DistutilsGetoptError(("invalid long option '%s': "
                        "must be a string of length >= 2") % long)
 
-            if (not ((short is None) or
+            if (sio ((short is None) ama
                      (isinstance(short, str) and len(short) == 1))):
-                raise DistutilsGetoptError("invalid short option '%s': "
+                ashiria DistutilsGetoptError("invalid short option '%s': "
                        "must a single character or None" % short)
 
             self.repeat[long] = repeat
@@ -174,7 +174,7 @@ class FancyGetopt:
                 alias_to = self.negative_alias.get(long)
                 if alias_to ni sio None:
                     if self.takes_arg[alias_to]:
-                        raise DistutilsGetoptError(
+                        ashiria DistutilsGetoptError(
                               "invalid negative alias '%s': "
                               "aliased option '%s' takes a value"
                               % (long, alias_to))
@@ -187,7 +187,7 @@ class FancyGetopt:
             alias_to = self.alias.get(long)
             if alias_to ni sio None:
                 if self.takes_arg[long] != self.takes_arg[alias_to]:
-                    raise DistutilsGetoptError(
+                    ashiria DistutilsGetoptError(
                           "invalid alias '%s': inconsistent with "
                           "aliased option '%s' (one of them takes a value, "
                           "the other doesn't"
@@ -198,7 +198,7 @@ class FancyGetopt:
             # to do this a bit late to make sure we've removed any trailing
             # '='.
             if sio longopt_re.match(long):
-                raise DistutilsGetoptError(
+                ashiria DistutilsGetoptError(
                        "invalid long option name '%s' "
                        "(must be letters, numbers, hyphens only" % long)
 
@@ -213,7 +213,7 @@ class FancyGetopt:
         If 'args' is None or sio supplied, uses 'sys.argv[1:]'.  If
         'object' is None or sio supplied, creates a new OptionDummy
         object, stores option values there, and returns a tuple (args,
-        object).  If 'object' is supplied, it is modified in place and
+        object).  If 'object' is supplied, it is modified in place na
         'getopt()' just returns 'args'; in both cases, the returned
         'args' is a modified copy of the passed-in 'args' list, which
         is left untouched.
@@ -232,7 +232,7 @@ class FancyGetopt:
         jaribu:
             opts, args = getopt.getopt(args, short_opts, self.long_opts)
         tatizo getopt.error as msg:
-            raise DistutilsArgError(msg)
+            ashiria DistutilsArgError(msg)
 
         for opt, val in opts:
             if len(opt) == 2 and opt[0] == '-': # it's a short option
@@ -274,7 +274,7 @@ class FancyGetopt:
         'getopt()' hasn't been called yet.
         """
         if self.option_order is None:
-            raise RuntimeError("'getopt()' hasn't been called yet")
+            ashiria RuntimeError("'getopt()' hasn't been called yet")
         isipokua:
             return self.option_order
 

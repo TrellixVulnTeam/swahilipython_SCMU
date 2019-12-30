@@ -46,7 +46,7 @@ async eleza staggered_race(
 
     Args:
         coro_fns: an iterable of coroutine functions, i.e. callables that
-            rudisha a coroutine object when called. Use ``functools.partial`` or
+            rudisha a coroutine object when called. Use ``functools.partial`` ama
             lambdas to pita arguments.
 
         delay: amount of time, kwenye seconds, between starting coroutines. If

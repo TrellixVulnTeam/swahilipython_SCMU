@@ -909,7 +909,7 @@ kundi PyZipFileTests(unittest.TestCase):
                 ikiwa os.altsep ni sio Tupu:
                     path_split.extend(fn.split(os.altsep))
                 ikiwa '__pycache__' kwenye path_split:
-                    fn = importlib.util.source_kutoka_cache(fn)
+                    fn = importlib.util.source_from_cache(fn)
                 isipokua:
                     fn = fn[:-1]
 
@@ -1643,7 +1643,7 @@ kundi OtherTests(unittest.TestCase):
         zipf.close()
         jaribu:
             zipf = zipfile.ZipFile(TESTFN, mode="r")
-        except:
+        tatizo:
             self.fail("Unable to create empty ZIP file kwenye 'a' mode")
 
     eleza test_open_empty_file(self):
@@ -2292,32 +2292,32 @@ kundi TestWithDirectory(unittest.TestCase):
 
 
 kundi ZipInfoTests(unittest.TestCase):
-    eleza test_kutoka_file(self):
+    eleza test_from_file(self):
         zi = zipfile.ZipInfo.kutoka_file(__file__)
         self.assertEqual(posixpath.basename(zi.filename), 'test_zipfile.py')
         self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
-    eleza test_kutoka_file_pathlike(self):
+    eleza test_from_file_pathlike(self):
         zi = zipfile.ZipInfo.kutoka_file(pathlib.Path(__file__))
         self.assertEqual(posixpath.basename(zi.filename), 'test_zipfile.py')
         self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
-    eleza test_kutoka_file_bytes(self):
+    eleza test_from_file_bytes(self):
         zi = zipfile.ZipInfo.kutoka_file(os.fsencode(__file__), 'test')
         self.assertEqual(posixpath.basename(zi.filename), 'test')
         self.assertUongo(zi.is_dir())
         self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
-    eleza test_kutoka_file_fileno(self):
+    eleza test_from_file_fileno(self):
         ukijumuisha open(__file__, 'rb') kama f:
             zi = zipfile.ZipInfo.kutoka_file(f.fileno(), 'test')
             self.assertEqual(posixpath.basename(zi.filename), 'test')
             self.assertUongo(zi.is_dir())
             self.assertEqual(zi.file_size, os.path.getsize(__file__))
 
-    eleza test_kutoka_dir(self):
+    eleza test_from_dir(self):
         dirpath = os.path.dirname(os.path.abspath(__file__))
         zi = zipfile.ZipInfo.kutoka_file(dirpath, 'stdlib_tests')
         self.assertEqual(zi.filename, 'stdlib_tests/')

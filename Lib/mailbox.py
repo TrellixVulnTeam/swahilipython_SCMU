@@ -3,7 +3,7 @@
 # Notes kila authors of new mailbox subclasses:
 #
 # Remember to fsync() changes to disk before closing a modified file
-# ama rudishaing kutoka a flush() method.  See functions _sync_flush() and
+# ama rudishaing kutoka a flush() method.  See functions _sync_flush() na
 # _sync_close().
 
 agiza os
@@ -84,7 +84,7 @@ kundi Mailbox:
 
         Uses email.message.Message to create a 7bit clean string
         representation of the message."""
-        rudisha email.message_kutoka_bytes(self.get_bytes(key)).as_string()
+        rudisha email.message_from_bytes(self.get_bytes(key)).as_string()
 
     eleza get_bytes(self, key):
         """Return a byte string representation ama ashiria a KeyError."""
@@ -206,12 +206,12 @@ kundi Mailbox:
     # Whether each message must end kwenye a newline
     _append_newline = Uongo
 
-    eleza _dump_message(self, message, target, mangle_kutoka_=Uongo):
+    eleza _dump_message(self, message, target, mangle_from_=Uongo):
         # This assumes the target file ni open kwenye binary mode.
         """Dump message contents to target file."""
         ikiwa isinstance(message, email.message.Message):
             buffer = io.BytesIO()
-            gen = email.generator.BytesGenerator(buffer, mangle_kutoka_, 0)
+            gen = email.generator.BytesGenerator(buffer, mangle_from_, 0)
             gen.flatten(message)
             buffer.seek(0)
             data = buffer.read()
@@ -227,7 +227,7 @@ kundi Mailbox:
                 message = message.getvalue()
             ikiwa isinstance(message, str):
                 message = self._string_to_bytes(message)
-            ikiwa mangle_kutoka_:
+            ikiwa mangle_from_:
                 message = message.replace(b'\nFrom ', b'\n>From ')
             message = message.replace(b'\n', linesep)
             target.write(message)
@@ -249,7 +249,7 @@ kundi Mailbox:
                     line = line[:-1] + b'\n'
                 ikiwa sio line:
                     koma
-                ikiwa mangle_kutoka_ na line.startswith(b'From '):
+                ikiwa mangle_from_ na line.startswith(b'From '):
                     line = b'>From ' + line[5:]
                 line = line.replace(b'\n', linesep)
                 target.write(line)
@@ -517,7 +517,7 @@ kundi Maildir(Mailbox):
         # results kwenye a few unnecessary re-reads when _refresh() ni called
         # multiple times kwenye that interval, but once the clock ticks over, we
         # will only re-read kama needed.  Because the filesystem might be being
-        # served by an independent system ukijumuisha its own clock, we record and
+        # served by an independent system ukijumuisha its own clock, we record na
         # compare ukijumuisha the mtimes kutoka the filesystem.  Because the other
         # system's clock might be skewing relative to our clock, we add an
         # extra delta to our wait.  The default ni one tenth second, but ni an
@@ -688,7 +688,7 @@ kundi _singlefileMailbox(Mailbox):
                 new_toc[key] = (new_start, new_file.tell())
                 self._post_message_hook(new_file)
             self._file_length = new_file.tell()
-        except:
+        tatizo:
             new_file.close()
             os.remove(new_file.name)
             ashiria
@@ -769,7 +769,7 @@ kundi _singlefileMailbox(Mailbox):
 kundi _mboxMMDF(_singlefileMailbox):
     """An mbox ama MMDF mailbox."""
 
-    _mangle_kutoka_ = Kweli
+    _mangle_from_ = Kweli
 
     eleza get_message(self, key):
         """Return a Message representation ama ashiria a KeyError."""
@@ -783,7 +783,7 @@ kundi _mboxMMDF(_singlefileMailbox):
 
     eleza get_string(self, key, kutoka_=Uongo):
         """Return a string representation ama ashiria a KeyError."""
-        rudisha email.message_kutoka_bytes(
+        rudisha email.message_from_bytes(
             self.get_bytes(key, kutoka_)).as_string(unixkutoka=kutoka_)
 
     eleza get_bytes(self, key, kutoka_=Uongo):
@@ -827,7 +827,7 @@ kundi _mboxMMDF(_singlefileMailbox):
             kutoka_line = b'From MAILER-DAEMON ' + time.asctime(time.gmtime()).encode()
         start = self._file.tell()
         self._file.write(kutoka_line + linesep)
-        self._dump_message(message, self._file, self._mangle_kutoka_)
+        self._dump_message(message, self._file, self._mangle_from_)
         stop = self._file.tell()
         rudisha (start, stop)
 
@@ -835,9 +835,9 @@ kundi _mboxMMDF(_singlefileMailbox):
 kundi mbox(_mboxMMDF):
     """A classic mbox mailbox."""
 
-    _mangle_kutoka_ = Kweli
+    _mangle_from_ = Kweli
 
-    # All messages must end kwenye a newline character, and
+    # All messages must end kwenye a newline character, na
     # _post_message_hooks outputs an empty line between messages.
     _append_newline = Kweli
 
@@ -1493,13 +1493,13 @@ kundi Message(email.message.Message):
             ikiwa isinstance(message, Message):
                 message._explain_to(self)
         lasivyo isinstance(message, bytes):
-            self._become_message(email.message_kutoka_bytes(message))
+            self._become_message(email.message_from_bytes(message))
         lasivyo isinstance(message, str):
-            self._become_message(email.message_kutoka_string(message))
+            self._become_message(email.message_from_string(message))
         lasivyo isinstance(message, io.TextIOWrapper):
-            self._become_message(email.message_kutoka_file(message))
+            self._become_message(email.message_from_file(message))
         lasivyo hasattr(message, "read"):
-            self._become_message(email.message_kutoka_binary_file(message))
+            self._become_message(email.message_from_binary_file(message))
         lasivyo message ni Tupu:
             email.message.Message.__init__(self)
         isipokua:
@@ -2090,7 +2090,7 @@ eleza _lock_file(f, dotlock=Kweli):
                 os.remove(pre_lock.name)
                 ashiria ExternalClashError('dot lock unavailable: %s' %
                                          f.name)
-    except:
+    tatizo:
         ikiwa fcntl:
             fcntl.lockf(f, fcntl.LOCK_UN)
         ikiwa dotlock_done:

@@ -186,7 +186,7 @@ kundi CmdLineTest(unittest.TestCase):
         ikiwa sio stdout.startswith(pattern):
             ashiria AssertionError("%a doesn't start ukijumuisha %a" % (stdout, pattern))
 
-    @unittest.skipUnless((sys.platform == 'darwin' or
+    @unittest.skipUnless((sys.platform == 'darwin' ama
                 support.is_android), 'test specific to Mac OS X na Android')
     eleza test_osx_android_utf8(self):
         eleza check_output(text):
@@ -512,7 +512,7 @@ kundi CmdLineTest(unittest.TestCase):
             code = (
                 "agiza sys; "
                 "sys.stderr.write(str(sys.flags)); "
-                f"""sys.exit(not (
+                f"""sys.exit(sio (
                     sys.flags.debug == sys.flags.optimize ==
                     sys.flags.verbose ==
                     {expected}
@@ -523,7 +523,7 @@ kundi CmdLineTest(unittest.TestCase):
                 assert_python_ok('-c', code, **env_vars)
 
     eleza test_set_pycache_prefix(self):
-        # sys.pycache_prefix can be set kutoka either -X pycache_prefix or
+        # sys.pycache_prefix can be set kutoka either -X pycache_prefix ama
         # PYTHONPYCACHEPREFIX env var, ukijumuisha the former taking precedence.
         NO_VALUE = object()  # `-X pycache_prefix` ukijumuisha no `=PATH`
         cases = [
@@ -537,7 +537,7 @@ kundi CmdLineTest(unittest.TestCase):
         ]
         kila envval, opt, expected kwenye cases:
             exp_clause = "is Tupu" ikiwa expected ni Tupu isipokua f'== "{expected}"'
-            code = f"agiza sys; sys.exit(not sys.pycache_prefix {exp_clause})"
+            code = f"agiza sys; sys.exit(sio sys.pycache_prefix {exp_clause})"
             args = ['-c', code]
             env = {} ikiwa envval ni Tupu isipokua {'PYTHONPYCACHEPREFIX': envval}
             ikiwa opt ni NO_VALUE:
@@ -749,7 +749,7 @@ kundi IgnoreEnvironmentTest(unittest.TestCase):
         # specific environment variables
         # Logical inversion to match predicate check to a zero rudisha
         # code indicating success
-        code = "agiza sys; sys.stderr.write(str(sys.flags)); sys.exit(not ({}))".format(predicate)
+        code = "agiza sys; sys.stderr.write(str(sys.flags)); sys.exit(sio ({}))".format(predicate)
         rudisha assert_python_ok('-E', '-c', code, **env_vars)
 
     eleza test_ignore_PYTHONPATH(self):

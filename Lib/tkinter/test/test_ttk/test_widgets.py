@@ -510,19 +510,19 @@ class ComboboxTest(EntryTest, unittest.TestCase):
         # testing values with empty string set through configure
         self.combo.configure(values=[1, '', 2])
         self.assertEqual(self.combo['values'],
-                         ('1', '', '2') if self.wantobjects else
+                         ('1', '', '2') if self.wantobjects ama
                          '1 {} 2')
 
         # testing values with spaces
         self.combo['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.combo['values'],
-                         ('a b', 'a\tb', 'a\nb') if self.wantobjects else
+                         ('a b', 'a\tb', 'a\nb') if self.wantobjects ama
                          '{a b} {a\tb} {a\nb}')
 
         # testing values with special characters
         self.combo['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.combo['values'],
-                         (r'a\tb', '"a"', '} {') if self.wantobjects else
+                         (r'a\tb', '"a"', '} {') if self.wantobjects ama
                          r'a\\tb {"a"} \}\ \{')
 
         # out of range
@@ -976,7 +976,7 @@ class NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), tabs)
         self.assertEqual(self.nb.index(self.child2), child2_index)
         self.assertEqual(str(self.child2), self.nb.tabs()[child2_index])
-        # but the tab next to it (not hidden) is the one selected now
+        # but the tab next to it (sio hidden) is the one selected now
         self.assertEqual(self.nb.index('current'), curr + 1)
 
 
@@ -1260,19 +1260,19 @@ class SpinboxTest(EntryTest, unittest.TestCase):
         # testing values with empty string set through configure
         self.spin.configure(values=[1, '', 2])
         self.assertEqual(self.spin['values'],
-                         ('1', '', '2') if self.wantobjects else
+                         ('1', '', '2') if self.wantobjects ama
                          '1 {} 2')
 
         # testing values with spaces
         self.spin['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.spin['values'],
-                         ('a b', 'a\tb', 'a\nb') if self.wantobjects else
+                         ('a b', 'a\tb', 'a\nb') if self.wantobjects ama
                          '{a b} {a\tb} {a\nb}')
 
         # testing values with special characters
         self.spin['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.spin['values'],
-                         (r'a\tb', '"a"', '} {') if self.wantobjects else
+                         (r'a\tb', '"a"', '} {') if self.wantobjects ama
                          r'a\\tb {"a"} \}\ \{')
 
         # testing creating spinbox with empty string in values
@@ -1637,7 +1637,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         # item tags
         item = self.tv.insert('', 'end', tags=[1, 2, value])
         self.assertEqual(self.tv.item(item, tags=None),
-                         ('1', '2', value) if self.wantobjects else
+                         ('1', '2', value) if self.wantobjects ama
                          '1 2 %s' % value)
         self.tv.item(item, tags=[])
         self.assertFalse(self.tv.item(item, tags=None))
@@ -1649,7 +1649,7 @@ class TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         item = self.tv.insert('', 'end', values=('a b c',
             '%s %s' % (value, value)))
         self.assertEqual(self.tv.item(item, values=None),
-            ('a b c', '%s %s' % (value, value)) if self.wantobjects else
+            ('a b c', '%s %s' % (value, value)) if self.wantobjects ama
             '{a b c} {%s %s}' % (value, value))
 
         # text

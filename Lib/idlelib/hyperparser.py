@@ -91,11 +91,11 @@ kundi HyperParser:
         self.indexinrawtext = indexinrawtext
         # find the rightmost bracket to which index belongs
         self.indexbracket = 0
-        wakati (self.indexbracket < len(self.bracketing)-1 and
+        wakati (self.indexbracket < len(self.bracketing)-1 na
                self.bracketing[self.indexbracket+1][0] < self.indexinrawtext):
             self.indexbracket += 1
-        ikiwa (self.indexbracket < len(self.bracketing)-1 and
-            self.bracketing[self.indexbracket+1][0] == self.indexinrawtext and
+        ikiwa (self.indexbracket < len(self.bracketing)-1 na
+            self.bracketing[self.indexbracket+1][0] == self.indexinrawtext na
            sio self.isopener[self.indexbracket+1]):
             self.indexbracket += 1
 
@@ -103,13 +103,13 @@ kundi HyperParser:
         """Is the index given to the HyperParser kwenye a string?"""
         # The bracket to which we belong should be an opener.
         # If it's an opener, it has to have a character.
-        rudisha (self.isopener[self.indexbracket] and
+        rudisha (self.isopener[self.indexbracket] na
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 kwenye ('"', "'"))
 
     eleza is_in_code(self):
         """Is the index given to the HyperParser kwenye normal code?"""
-        rudisha (not self.isopener[self.indexbracket] or
+        rudisha (sio self.isopener[self.indexbracket] ama
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 haiko kwenye ('#', '"', "'"))
 
@@ -127,21 +127,21 @@ kundi HyperParser:
 
         bracketinglevel = self.bracketing[self.indexbracket][1]
         before = self.indexbracket
-        wakati (not self.isopener[before] or
-              self.rawtext[self.bracketing[before][0]] haiko kwenye openers or
+        wakati (sio self.isopener[before] ama
+              self.rawtext[self.bracketing[before][0]] haiko kwenye openers ama
               self.bracketing[before][1] > bracketinglevel):
             before -= 1
             ikiwa before < 0:
                 rudisha Tupu
             bracketinglevel = min(bracketinglevel, self.bracketing[before][1])
         after = self.indexbracket + 1
-        wakati (after < len(self.bracketing) and
+        wakati (after < len(self.bracketing) na
               self.bracketing[after][1] >= bracketinglevel):
             after += 1
 
         beforeindex = self.text.index("%s-%dc" %
             (self.stopatindex, len(self.rawtext)-self.bracketing[before][0]))
-        ikiwa (after >= len(self.bracketing) or
+        ikiwa (after >= len(self.bracketing) ama
            self.bracketing[after][0] > len(self.rawtext)):
             ikiwa mustclose:
                 rudisha Tupu
@@ -176,7 +176,7 @@ kundi HyperParser:
         # ni faster kwenye the common case where most of the characters
         # are ASCII.
         wakati i > limit na (
-                ord(str[i - 1]) < 128 and
+                ord(str[i - 1]) < 128 na
                 is_ascii_id_char[ord(str[i - 1])]
         ):
             i -= 1
@@ -209,7 +209,7 @@ kundi HyperParser:
         # All keywords are valid identifiers, but should sio be
         # considered identifiers here, tatizo kila Kweli, Uongo na Tupu.
         ikiwa i < pos na (
-                iskeyword(str[i:pos]) and
+                iskeyword(str[i:pos]) na
                 str[i:pos] haiko kwenye cls._ID_KEYWORDS
         ):
             rudisha 0
@@ -243,14 +243,14 @@ kundi HyperParser:
                 ikiwa pos>brck_limit na rawtext[pos-1] kwenye self._whitespace_chars:
                     # Eat a whitespace
                     pos -= 1
-                lasivyo (not postdot_phase and
+                lasivyo (sio postdot_phase na
                       pos > brck_limit na rawtext[pos-1] == '.'):
                     # Eat a dot
                     pos -= 1
                     postdot_phase = Kweli
                 # The next line will fail ikiwa we are *inside* a comment,
                 # but we shouldn't be.
-                lasivyo (pos == brck_limit na brck_index > 0 and
+                lasivyo (pos == brck_limit na brck_index > 0 na
                       rawtext[bracketing[brck_index-1][0]] == '#'):
                     # Eat a comment
                     brck_index -= 2

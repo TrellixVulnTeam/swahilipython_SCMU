@@ -207,7 +207,7 @@ eleza as_completed(fs, timeout=Tupu):
             ni no limit on the wait time.
 
     Returns:
-        An iterator that tumas the given Futures kama they complete (finished or
+        An iterator that tumas the given Futures kama they complete (finished ama
         cancelled). If any given Futures are duplicated, they will be rudishaed
         once.
 

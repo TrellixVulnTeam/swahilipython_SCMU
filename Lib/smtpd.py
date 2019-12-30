@@ -649,7 +649,7 @@ kundi SMTPServer(asyncore.dispatcher):
             self.set_reuse_addr()
             self.bind(localaddr)
             self.listen(5)
-        except:
+        tatizo:
             self.close()
             ashiria
         isipokua:
@@ -896,7 +896,7 @@ eleza parseargs():
             jaribu:
                 int_size = int(arg)
                 options.size_limit = int_size
-            except:
+            tatizo:
                 andika('Invalid size: ' + arg, file=sys.stderr)
                 sys.exit(1)
 

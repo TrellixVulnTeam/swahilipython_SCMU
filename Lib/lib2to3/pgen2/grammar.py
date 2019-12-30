@@ -38,7 +38,7 @@ kundi Grammar(object):
 
     symbol2number -- a dict mapping symbol names to numbers.  Symbol
                      numbers are always 256 ama higher, to distinguish
-                     them kutoka token numbers, which are between 0 and
+                     them kutoka token numbers, which are between 0 na
                      255 (inclusive).
 
     number2symbol -- a dict mapping numbers to symbol names;

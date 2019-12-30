@@ -7,7 +7,7 @@ window, etc.)
 Configuration options are passed to the Text widget.
 A Frame widget is inserted between the master and the text, to hold
 the Scrollbar widget.
-Most methods calls are inherited from the Text widget; Pack, Grid and
+Most methods calls are inherited from the Text widget; Pack, Grid na
 Place methods are redirected to the Frame widget however.
 """
 

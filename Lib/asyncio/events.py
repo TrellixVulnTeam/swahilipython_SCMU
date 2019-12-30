@@ -66,7 +66,7 @@ kundi Handle:
         ikiwa sio self._cancelled:
             self._cancelled = Kweli
             ikiwa self._loop.get_debug():
-                # Keep a representation kwenye debug mode to keep callback and
+                # Keep a representation kwenye debug mode to keep callback na
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
                 self._repr = repr(self)
@@ -136,9 +136,9 @@ kundi TimerHandle(Handle):
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, TimerHandle):
-            rudisha (self._when == other._when and
-                    self._callback == other._callback and
-                    self._args == other._args and
+            rudisha (self._when == other._when na
+                    self._callback == other._callback na
+                    self._args == other._args na
                     self._cancelled == other._cancelled)
         rudisha NotImplemented
 
@@ -611,7 +611,7 @@ kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
     thread; other threads by default have no event loop.
 
     Other policies may have different rules (e.g. a single global
-    event loop, ama automatically creating an event loop per thread, or
+    event loop, ama automatically creating an event loop per thread, ama
     using some other notion of context to which an event loop is
     associated).
     """
@@ -630,8 +630,8 @@ kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
 
         Returns an instance of EventLoop ama ashirias an exception.
         """
-        ikiwa (self._local._loop ni Tupu and
-                sio self._local._set_called and
+        ikiwa (self._local._loop ni Tupu na
+                sio self._local._set_called na
                 isinstance(threading.current_thread(), threading._MainThread)):
             self.set_event_loop(self.new_event_loop())
 

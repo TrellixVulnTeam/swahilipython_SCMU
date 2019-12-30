@@ -575,7 +575,7 @@ kundi ModuleFinder:
             pkg = self.modules.get(pkgname)
             ikiwa pkg ni sio Tupu:
                 ikiwa pkgname kwenye self.badmodules[name]:
-                    # The package tried to agiza this module itself and
+                    # The package tried to agiza this module itself na
                     # failed. It's definitely missing.
                     missing.append(name)
                 lasivyo subname kwenye pkg.globalnames:

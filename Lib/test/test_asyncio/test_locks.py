@@ -1008,7 +1008,7 @@ class SemaphoreTests(test_utils.TestCase):
         self.assertRaises(
             asyncio.CancelledError,
             self.loop.run_until_complete, acquire)
-        self.assertTrue((not sem._waiters) or
+        self.assertTrue((sio sem._waiters) ama
                         all(waiter.done() for waiter in sem._waiters))
 
     def test_acquire_cancel_before_awoken(self):

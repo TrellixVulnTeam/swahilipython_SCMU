@@ -71,7 +71,7 @@ eleza make_parser(parser_list=()):
     """Creates na rudishas a SAX parser.
 
     Creates the first parser it ni able to instantiate of the ones
-    given kwenye the iterable created by chaining parser_list and
+    given kwenye the iterable created by chaining parser_list na
     default_parser_list.  The iterables must contain the names of Python
     modules containing both a SAX parser na a create_parser function."""
 

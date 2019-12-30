@@ -172,7 +172,7 @@ kundi AutoCompleteWindow:
             self._change_start(completed)
             i = self._binary_search(completed)
             ikiwa self.completions[i] == completed na \
-               (i == len(self.completions)-1 or
+               (i == len(self.completions)-1 ama
                 self.completions[i+1][:len(completed)] != completed):
                 # There ni exactly one matching completion
                 rudisha completed == start
@@ -280,7 +280,7 @@ kundi AutoCompleteWindow:
             self.hide_window()
 
     eleza hide_event(self, event):
-        # Hide autocomplete list ikiwa it exists na does sio have focus or
+        # Hide autocomplete list ikiwa it exists na does sio have focus ama
         # mouse click on widget / text area.
         ikiwa self.is_active():
             ikiwa event.type == EventType.FocusOut:

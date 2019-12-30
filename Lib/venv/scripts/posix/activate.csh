@@ -19,12 +19,12 @@ set _OLD_VIRTUAL_PROMPT="$prompt"
 ikiwa (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
     ikiwa ("__VENV_NAME__" != "") then
         set env_name = "__VENV_NAME__"
-    else
+    ama
         ikiwa (`basename "VIRTUAL_ENV"` == "__") then
             # special case kila Aspen magic directories
             # see http://www.zetadev.com/software/aspen/
             set env_name = `basename \`dirname "$VIRTUAL_ENV"\``
-        else
+        ama
             set env_name = `basename "$VIRTUAL_ENV"`
         endif
     endif

@@ -40,7 +40,7 @@ kundi FixXrange(fixer_base.BaseFix):
         self.transformed_xranges.add(id(node))
 
     eleza transform_range(self, node, results):
-        ikiwa (id(node) haiko kwenye self.transformed_xranges and
+        ikiwa (id(node) haiko kwenye self.transformed_xranges na
             sio self.in_special_context(node)):
             range_call = Call(Name("range"), [results["args"].clone()])
             # Encase the range call kwenye list().
@@ -64,8 +64,8 @@ kundi FixXrange(fixer_base.BaseFix):
         ikiwa node.parent ni Tupu:
             rudisha Uongo
         results = {}
-        ikiwa (node.parent.parent ni sio Tupu and
-               self.p1.match(node.parent.parent, results) and
+        ikiwa (node.parent.parent ni sio Tupu na
+               self.p1.match(node.parent.parent, results) na
                results["node"] ni node):
             # list(d.keys()) -> list(d.keys()), etc.
             rudisha results["func"].value kwenye consuming_calls

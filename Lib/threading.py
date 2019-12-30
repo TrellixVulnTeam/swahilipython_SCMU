@@ -127,7 +127,7 @@ kundi _RLock:
         When invoked without arguments: if this thread already owns the lock,
         increment the recursion level by one, and return immediately. Otherwise,
         if another thread owns the lock, block until the lock is unlocked. Once
-        the lock is unlocked (not owned by any thread), then grab ownership, set
+        the lock is unlocked (sio owned by any thread), then grab ownership, set
         the recursion level to one, and return. If more than one thread is
         blocked waiting until the lock is unlocked, only one at a time will be
         able to grab ownership of the lock. There is no return value in this
@@ -138,7 +138,7 @@ kundi _RLock:
 
         When invoked with the blocking argument set to false, do sio block. If a
         call without an argument would block, return false immediately;
-        otherwise, do the same thing as when called without arguments, and
+        otherwise, do the same thing as when called without arguments, na
         return true.
 
         When invoked with the floating-point timeout argument set to a positive
@@ -162,7 +162,7 @@ kundi _RLock:
     def release(self):
         """Release a lock, decrementing the recursion level.
 
-        If after the decrement it is zero, reset the lock to unlocked (not owned
+        If after the decrement it is zero, reset the lock to unlocked (sio owned
         by any thread), and if any other threads are blocked waiting for the
         lock to become unlocked, allow exactly one of them to proceed. If after
         the decrement the recursion level is still nonzero, the lock remains
@@ -176,7 +176,7 @@ kundi _RLock:
 
         """
         if self._owner != get_ident():
-            raise RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         self._count = count = self._count - 1
         if sio count:
             self._owner = None
@@ -193,7 +193,7 @@ kundi _RLock:
 
     def _release_save(self):
         if self._count == 0:
-            raise RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         count = self._count
         self._count = 0
         owner = self._owner
@@ -274,7 +274,7 @@ kundi Condition:
         called, a RuntimeError is raised.
 
         This method releases the underlying lock, and then blocks until it is
-        awakened by a notify() or notify_all() call for the same condition
+        awakened by a notify() ama notify_all() call for the same condition
         variable in another thread, or until the optional timeout occurs. Once
         awakened or timed out, it re-acquires the lock and returns.
 
@@ -291,7 +291,7 @@ kundi Condition:
 
         """
         if sio self._is_owned():
-            raise RuntimeError("cannot wait on un-acquired lock")
+            ashiria RuntimeError("cannot wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
@@ -349,7 +349,7 @@ kundi Condition:
 
         """
         if sio self._is_owned():
-            raise RuntimeError("cannot notify on un-acquired lock")
+            ashiria RuntimeError("cannot notify on un-acquired lock")
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
         if sio waiters_to_notify:
@@ -387,7 +387,7 @@ kundi Semaphore:
 
     def __init__(self, value=1):
         if value < 0:
-            raise ValueError("semaphore initial value must be >= 0")
+            ashiria ValueError("semaphore initial value must be >= 0")
         self._cond = Condition(Lock())
         self._value = value
 
@@ -416,7 +416,7 @@ kundi Semaphore:
 
         """
         if sio blocking and timeout ni sio None:
-            raise ValueError("can't specify timeout for non-blocking acquire")
+            ashiria ValueError("can't specify timeout for non-blocking acquire")
         rc = False
         endtime = None
         with self._cond:
@@ -481,12 +481,12 @@ kundi BoundedSemaphore(Semaphore):
         to become larger than zero again, wake up that thread.
 
         If the number of releases exceeds the number of acquires,
-        raise a ValueError.
+        ashiria a ValueError.
 
         """
         with self._cond:
             if self._value >= self._initial_value:
-                raise ValueError("Semaphore released too many times")
+                ashiria ValueError("Semaphore released too many times")
             self._value += 1
             self._cond.notify()
 
@@ -559,9 +559,9 @@ kundi Event:
             return signaled
 
 
-# A barrier class.  Inspired in part by the pthread_barrier_* api and
+# A barrier class.  Inspired in part by the pthread_barrier_* api na
 # the CyclicBarrier kundi kutoka Java.  See
-# http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html and
+# http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html na
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/
 #        CyclicBarrier.html
 # for information.
@@ -623,7 +623,7 @@ kundi Barrier:
                 # Wake up any threads waiting for barrier to drain.
                 self._exit()
 
-    # Block until the barrier is ready for us, or raise an exception
+    # Block until the barrier is ready for us, or ashiria an exception
     # if it is broken.
     def _enter(self):
         wakati self._state in (-1, 1):
@@ -631,7 +631,7 @@ kundi Barrier:
             self._cond.wait()
         #see if the barrier is in a broken state
         if self._state < 0:
-            raise BrokenBarrierError
+            ashiria BrokenBarrierError
         assert self._state == 0
 
     # Optionally run the 'action' and release the threads waiting
@@ -643,7 +643,7 @@ kundi Barrier:
             # enter draining state
             self._state = 1
             self._cond.notify_all()
-        except:
+        tatizo:
             #an exception during the _action handler.  Break and reraise
             self._koma()
             raise
@@ -654,9 +654,9 @@ kundi Barrier:
         if sio self._cond.wait_for(lambda : self._state != 0, timeout):
             #timed out.  Break the barrier
             self._koma()
-            raise BrokenBarrierError
+            ashiria BrokenBarrierError
         if self._state < 0:
-            raise BrokenBarrierError
+            ashiria BrokenBarrierError
         assert self._state == 1
 
     # If we are the last thread to exit the barrier, signal any threads
@@ -751,7 +751,7 @@ kundi Thread:
     """A kundi that represents a thread of control.
 
     This kundi can be safely subclassed in a limited fashion. There are two ways
-    to specify the activity: by passing a callable object to the constructor, or
+    to specify the activity: by passing a callable object to the constructor, ama
     by overriding the run() method in a subclass.
 
     """
@@ -837,15 +837,15 @@ kundi Thread:
         It must be called at most once per thread object. It arranges for the
         object's run() method to be invoked in a separate thread of control.
 
-        This method will raise a RuntimeError if called more than once on the
+        This method will ashiria a RuntimeError if called more than once on the
         same thread object.
 
         """
         if sio self._initialized:
-            raise RuntimeError("thread.__init__() sio called")
+            ashiria RuntimeError("thread.__init__() sio called")
 
         if self._started.is_set():
-            raise RuntimeError("threads can only be started once")
+            ashiria RuntimeError("threads can only be started once")
         with _active_limbo_lock:
             _limbo[self] = self
         jaribu:
@@ -888,7 +888,7 @@ kundi Thread:
         # if a non-daemonic encounters this, something isipokua is wrong.
         jaribu:
             self._bootstrap_inner()
-        except:
+        tatizo:
             if self._daemonic and _sys is None:
                 return
             raise
@@ -930,7 +930,7 @@ kundi Thread:
 
             jaribu:
                 self.run()
-            except:
+            tatizo:
                 self._invoke_excepthook(self)
         mwishowe:
             with _active_limbo_lock:
@@ -938,7 +938,7 @@ kundi Thread:
                     # We don't call self._delete() because it also
                     # grabs _active_limbo_lock.
                     toa _active[get_ident()]
-                except:
+                tatizo:
                     pass
 
     def _stop(self):
@@ -946,12 +946,12 @@ kundi Thread:
         # immediately.  ._tstate_lock must be released before calling ._stop().
         #
         # Normal case:  C code at the end of the thread's life
-        # (release_sentinel in _threadmodule.c) releases ._tstate_lock, and
+        # (release_sentinel in _threadmodule.c) releases ._tstate_lock, na
         # that's detected by our ._wait_for_tstate_lock(), called by .join()
         # and .is_alive().  Any number of threads _may_ call ._stop()
         # simultaneously (for example, if multiple threads are blocked in
         # .join() calls), and they're sio serialized.  That's harmless -
-        # they'll just make redundant rebindings of ._is_stopped and
+        # they'll just make redundant rebindings of ._is_stopped na
         # ._tstate_lock.  Obscure:  we rebind ._tstate_lock last so that the
         # "assert self._is_stopped" in ._wait_for_tstate_lock() always works
         # (the assert is executed only if ._tstate_lock is None).
@@ -1001,11 +1001,11 @@ kundi Thread:
 
         """
         if sio self._initialized:
-            raise RuntimeError("Thread.__init__() sio called")
+            ashiria RuntimeError("Thread.__init__() sio called")
         if sio self._started.is_set():
-            raise RuntimeError("cannot join thread before it is started")
+            ashiria RuntimeError("cannot join thread before it is started")
         if self is current_thread():
-            raise RuntimeError("cannot join current thread")
+            ashiria RuntimeError("cannot join current thread")
 
         if timeout is None:
             self._wait_for_tstate_lock()
@@ -1110,9 +1110,9 @@ kundi Thread:
     @daemon.setter
     def daemon(self, daemonic):
         if sio self._initialized:
-            raise RuntimeError("Thread.__init__() sio called")
+            ashiria RuntimeError("Thread.__init__() sio called")
         if self._started.is_set():
-            raise RuntimeError("cannot set daemon status of active thread")
+            ashiria RuntimeError("cannot set daemon status of active thread")
         self._daemonic = daemonic
 
     def isDaemon(self):
@@ -1182,9 +1182,9 @@ def _make_invoke_excepthook():
     old_excepthook = excepthook
     old_sys_excepthook = _sys.excepthook
     if old_excepthook is None:
-        raise RuntimeError("threading.excepthook is None")
+        ashiria RuntimeError("threading.excepthook is None")
     if old_sys_excepthook is None:
-        raise RuntimeError("sys.excepthook is None")
+        ashiria RuntimeError("sys.excepthook is None")
 
     sys_exc_info = _sys.exc_info
     local_print = print
@@ -1337,7 +1337,7 @@ def enumerate():
     """Return a list of all Thread objects currently alive.
 
     The list includes daemonic threads, dummy thread objects created by
-    current_thread(), and the main thread. It excludes terminated threads and
+    current_thread(), and the main thread. It excludes terminated threads na
     threads that have sio yet been started.
 
     """

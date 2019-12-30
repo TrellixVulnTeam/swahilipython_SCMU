@@ -482,10 +482,10 @@ kundi FontPage(Frame):
     eleza create_page_font_tab(self):
         """Return frame of widgets kila Font/Tabs tab.
 
-        Fonts: Enable users to provisionally change font face, size, or
+        Fonts: Enable users to provisionally change font face, size, ama
         boldness na to see the consequence of proposed choices.  Each
         action set 3 options kwenye changes structuree na changes the
-        corresponding aspect of the font sample on this page and
+        corresponding aspect of the font sample on this page na
         highlight sample on highlight page.
 
         Function load_font_cfg initializes font vars na widgets kutoka
@@ -702,7 +702,7 @@ kundi HighPage(Frame):
 
         Function load_theme_cfg() initializes tk variables na theme
         lists na calls paint_theme_sample() na set_highlight_target()
-        kila the current theme.  Radiobuttons builtin_theme_on and
+        kila the current theme.  Radiobuttons builtin_theme_on na
         custom_theme_on toggle var theme_source, which controls ikiwa the
         current set of colors are kutoka a builtin ama custom theme.
         DynOptionMenus builtinlist na customlist contain lists of the
@@ -722,7 +722,7 @@ kundi HighPage(Frame):
         Note: set_color_sample() ni called kutoka many places na ni often
         called more than once when a change ni made.  It ni invoked when
         foreground ama background ni selected (radiobuttons), kutoka
-        paint_theme_sample() (theme ni changed ama load_cfg ni called), and
+        paint_theme_sample() (theme ni changed ama load_cfg ni called), na
         kutoka set_highlight_target() (target tag ni changed ama load_cfg called).
 
         Button delete_custom invokes delete_custom() to delete
@@ -732,7 +732,7 @@ kundi HighPage(Frame):
         na its colors to idleConf.userCfg['highlight'].
 
         Radiobuttons fg_on na bg_on toggle var fg_bg_toggle to control
-        ikiwa the current selected color kila a tag ni kila the foreground or
+        ikiwa the current selected color kila a tag ni kila the foreground ama
         background.
 
         DynOptionMenu targetlist contains a readable description of the
@@ -749,14 +749,14 @@ kundi HighPage(Frame):
         Note: The font kwenye highlight_sample ni set through the config in
         the fonts tab.
 
-        In other words, a tag can be selected either kutoka targetlist or
+        In other words, a tag can be selected either kutoka targetlist ama
         by clicking on the sample text within highlight_sample.  The
         plane (foreground/background) ni selected via the radiobutton.
         Together, these two (tag na plane) control what color is
         shown kwenye set_color_sample() kila the current theme.  Button set_color
         invokes get_color() which displays a ColorChooser to change the
         color kila the selected tag/plane.  If a new color ni picked,
-        it will be saved to changes na the highlight_sample and
+        it will be saved to changes na the highlight_sample na
         frame background will be updated.
 
         Tk Variables:
@@ -1741,7 +1741,7 @@ kundi KeysPage(Frame):
     eleza delete_custom_keys(self):
         """Handle event to delete a custom key set.
 
-        Applying the delete deactivates the current configuration and
+        Applying the delete deactivates the current configuration na
         reverts to the default.  The custom key set ni permanently
         deleted kutoka the config file.
         """
@@ -2204,7 +2204,7 @@ kundi VarTrace:
         Args:
             var: Tk variable instance.
             callback: Either function name to be used kama a callback
-                ama a tuple ukijumuisha IdleConf config-type, section, and
+                ama a tuple ukijumuisha IdleConf config-type, section, na
                 option names used kwenye the default callback.
 
         Return:

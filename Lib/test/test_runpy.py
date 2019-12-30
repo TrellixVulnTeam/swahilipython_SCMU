@@ -34,7 +34,7 @@ toa f
 agiza sys
 run_argv0 = sys.argv[0]
 run_name_in_sys_modules = __name__ kwenye sys.modules
-module_in_sys_modules = (run_name_in_sys_modules and
+module_in_sys_modules = (run_name_in_sys_modules na
                          globals() ni sys.modules[__name__].__dict__)
 # Check nested operation
 agiza runpy
@@ -116,7 +116,7 @@ kundi CodeExecutionMixin:
     eleza check_code_execution(self, create_namespace, expected_namespace):
         """Check that an interface runs the example code correctly
 
-           First argument ni a callable accepting the initial globals and
+           First argument ni a callable accepting the initial globals na
            using them to create the actual namespace
            Second argument ni the expected result
         """
@@ -241,7 +241,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
             mod_file.write(source)
         ikiwa verbose > 1: andika("  Created:", mod_fname)
         mod_name = (pkg_name+".")*depth + mod_base
-        mod_spec = importlib.util.spec_kutoka_file_location(mod_name,
+        mod_spec = importlib.util.spec_from_file_location(mod_name,
                                                           mod_fname)
         rudisha pkg_dir, mod_fname, mod_name, mod_spec
 
@@ -275,7 +275,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         ns["__file__"] += char_to_add
         ns["__cached__"] = ns["__file__"]
         spec = ns["__spec__"]
-        new_spec = importlib.util.spec_kutoka_file_location(spec.name,
+        new_spec = importlib.util.spec_from_file_location(spec.name,
                                                           ns["__file__"])
         ns["__spec__"] = new_spec
         ikiwa alter_sys:
@@ -334,7 +334,7 @@ kundi RunModuleTestCase(unittest.TestCase, CodeExecutionMixin):
         expected_ns.update({
             "__name__": mod_name,
             "__file__": mod_fname,
-            "__cached__": importlib.util.cache_kutoka_source(mod_fname),
+            "__cached__": importlib.util.cache_from_source(mod_fname),
             "__package__": pkg_name,
             "__spec__": mod_spec,
         })
@@ -539,7 +539,7 @@ kutoka ..uncle.cousin agiza nephew
         expected_ns.update({
             "__name__": run_name,
             "__file__": mod_fname,
-            "__cached__": importlib.util.cache_kutoka_source(mod_fname),
+            "__cached__": importlib.util.cache_from_source(mod_fname),
             "__package__": mod_name.rpartition(".")[0],
             "__spec__": mod_spec,
         })
@@ -608,7 +608,7 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         isipokua:
             spec_name = mod_name
         ikiwa expect_spec:
-            mod_spec = importlib.util.spec_kutoka_file_location(spec_name,
+            mod_spec = importlib.util.spec_from_file_location(spec_name,
                                                               expected_file)
             mod_cached = mod_spec.cached
             ikiwa sio check_loader:
@@ -632,7 +632,7 @@ kundi RunPathTestCase(unittest.TestCase, CodeExecutionMixin):
         eleza create_ns(init_globals):
             rudisha run_path(script_name, init_globals, run_name)
         ikiwa expect_spec na mod_name ni Tupu:
-            mod_spec = importlib.util.spec_kutoka_file_location(run_name,
+            mod_spec = importlib.util.spec_from_file_location(run_name,
                                                               expected_file)
             ikiwa sio check_loader:
                 mod_spec.loader = Tupu

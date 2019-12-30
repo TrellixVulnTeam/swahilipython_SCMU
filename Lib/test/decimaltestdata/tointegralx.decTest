@@ -21,7 +21,7 @@ version: 2.59
 
 -- This set of tests tests the extended specification 'round-to-integral
 -- value' operation (from IEEE 854, later modified in 754r).
--- All non-zero results are defined as being those from either copy or
+-- All non-zero results are defined as being those from either copy ama
 -- quantize, so those are assumed to have been tested.
 
 -- This tests toIntegraExact, which may set Inexact

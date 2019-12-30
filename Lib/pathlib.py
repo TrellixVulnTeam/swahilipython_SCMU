@@ -10,7 +10,7 @@ kutoka _collections_abc agiza Sequence
 kutoka errno agiza EINVAL, ENOENT, ENOTDIR, EBADF, ELOOP
 kutoka operator agiza attrgetter
 kutoka stat agiza S_ISDIR, S_ISLNK, S_ISREG, S_ISSOCK, S_ISBLK, S_ISCHR, S_ISFIFO
-kutoka urllib.parse agiza quote_kutoka_bytes kama urlquote_kutoka_bytes
+kutoka urllib.parse agiza quote_from_bytes kama urlquote_from_bytes
 
 
 supports_symlinks = Kweli
@@ -43,7 +43,7 @@ _IGNORED_WINERRORS = (
 )
 
 eleza _ignore_error(exception):
-    rudisha (getattr(exception, 'errno', Tupu) kwenye _IGNORED_ERROS or
+    rudisha (getattr(exception, 'errno', Tupu) kwenye _IGNORED_ERROS ama
             getattr(exception, 'winerror', Tupu) kwenye _IGNORED_WINERRORS)
 
 
@@ -244,10 +244,10 @@ kundi _WindowsFlavour(_Flavour):
             # It's a path on a local drive => 'file:///c:/a/b'
             rest = path.as_posix()[2:].lstrip('/')
             rudisha 'file:///%s/%s' % (
-                drive, urlquote_kutoka_bytes(rest.encode('utf-8')))
+                drive, urlquote_from_bytes(rest.encode('utf-8')))
         isipokua:
             # It's a path on a network drive => 'file://host/share/a/b'
-            rudisha 'file:' + urlquote_kutoka_bytes(path.as_posix().encode('utf-8'))
+            rudisha 'file:' + urlquote_from_bytes(path.as_posix().encode('utf-8'))
 
     eleza gethomedir(self, username):
         ikiwa 'HOME' kwenye os.environ:
@@ -361,7 +361,7 @@ kundi _PosixFlavour(_Flavour):
         # We represent the path using the local filesystem encoding,
         # kila portability to other applications.
         bpath = bytes(path)
-        rudisha 'file://' + urlquote_kutoka_bytes(bpath)
+        rudisha 'file://' + urlquote_from_bytes(bpath)
 
     eleza gethomedir(self, username):
         ikiwa sio username:
@@ -603,7 +603,7 @@ kundi _PathParents(Sequence):
     eleza __getitem__(self, idx):
         ikiwa idx < 0 ama idx >= len(self):
             ashiria IndexError(idx)
-        rudisha self._pathcls._kutoka_parsed_parts(self._drv, self._root,
+        rudisha self._pathcls._from_parsed_parts(self._drv, self._root,
                                                 self._parts[:-idx - 1])
 
     eleza __repr__(self):
@@ -632,7 +632,7 @@ kundi PurePath(object):
         """
         ikiwa cls ni PurePath:
             cls = PureWindowsPath ikiwa os.name == 'nt' isipokua PurePosixPath
-        rudisha cls._kutoka_parts(args)
+        rudisha cls._from_parts(args)
 
     eleza __reduce__(self):
         # Using the parts tuple helps share interned path parts
@@ -660,7 +660,7 @@ kundi PurePath(object):
         rudisha cls._flavour.parse_parts(parts)
 
     @classmethod
-    eleza _kutoka_parts(cls, args, init=Kweli):
+    eleza _from_parts(cls, args, init=Kweli):
         # We need to call _parse_args on the instance, so kama to get the
         # right flavour.
         self = object.__new__(cls)
@@ -673,7 +673,7 @@ kundi PurePath(object):
         rudisha self
 
     @classmethod
-    eleza _kutoka_parsed_parts(cls, drv, root, parts, init=Kweli):
+    eleza _from_parsed_parts(cls, drv, root, parts, init=Kweli):
         self = object.__new__(cls)
         self._drv = drv
         self._root = root
@@ -697,7 +697,7 @@ kundi PurePath(object):
         drv, root, parts = self._parse_args(args)
         drv, root, parts = self._flavour.join_parsed_parts(
             self._drv, self._root, self._parts, drv, root, parts)
-        rudisha self._kutoka_parsed_parts(drv, root, parts)
+        rudisha self._from_parsed_parts(drv, root, parts)
 
     eleza __str__(self):
         """Return the string representation of the path, suitable for
@@ -827,10 +827,10 @@ kundi PurePath(object):
         ikiwa sio self.name:
             ashiria ValueError("%r has an empty name" % (self,))
         drv, root, parts = self._flavour.parse_parts((name,))
-        ikiwa (not name ama name[-1] kwenye [self._flavour.sep, self._flavour.altsep]
+        ikiwa (sio name ama name[-1] kwenye [self._flavour.sep, self._flavour.altsep]
             ama drv ama root ama len(parts) != 1):
             ashiria ValueError("Invalid name %r" % (name))
-        rudisha self._kutoka_parsed_parts(self._drv, self._root,
+        rudisha self._from_parsed_parts(self._drv, self._root,
                                        self._parts[:-1] + [name])
 
     eleza with_suffix(self, suffix):
@@ -851,7 +851,7 @@ kundi PurePath(object):
             name = name + suffix
         isipokua:
             name = name[:-len(old_suffix)] + suffix
-        rudisha self._kutoka_parsed_parts(self._drv, self._root,
+        rudisha self._from_parsed_parts(self._drv, self._root,
                                        self._parts[:-1] + [name])
 
     eleza relative_to(self, *other):
@@ -883,7 +883,7 @@ kundi PurePath(object):
             formatted = self._format_parsed_parts(to_drv, to_root, to_parts)
             ashiria ValueError("{!r} does sio start ukijumuisha {!r}"
                              .format(str(self), str(formatted)))
-        rudisha self._kutoka_parsed_parts('', root ikiwa n == 1 isipokua '',
+        rudisha self._from_parsed_parts('', root ikiwa n == 1 isipokua '',
                                        abs_parts[n:])
 
     @property
@@ -914,7 +914,7 @@ kundi PurePath(object):
 
     eleza __rtruediv__(self, key):
         jaribu:
-            rudisha self._kutoka_parts([key] + self._parts)
+            rudisha self._from_parts([key] + self._parts)
         tatizo TypeError:
             rudisha NotImplemented
 
@@ -926,7 +926,7 @@ kundi PurePath(object):
         parts = self._parts
         ikiwa len(parts) == 1 na (drv ama root):
             rudisha self
-        rudisha self._kutoka_parsed_parts(drv, root, parts[:-1])
+        rudisha self._from_parsed_parts(drv, root, parts[:-1])
 
     @property
     eleza parents(self):
@@ -1015,7 +1015,7 @@ kundi Path(PurePath):
     eleza __new__(cls, *args, **kwargs):
         ikiwa cls ni Path:
             cls = WindowsPath ikiwa os.name == 'nt' isipokua PosixPath
-        self = cls._kutoka_parts(args, init=Uongo)
+        self = cls._from_parts(args, init=Uongo)
         ikiwa sio self._flavour.is_supported:
             ashiria NotImplementedError("cannot instantiate %r on your system"
                                       % (cls.__name__,))
@@ -1036,7 +1036,7 @@ kundi Path(PurePath):
         # This ni an optimization used kila dir walking.  `part` must be
         # a single part relative to this path.
         parts = self._parts + [part]
-        rudisha self._kutoka_parsed_parts(self._drv, self._root, parts)
+        rudisha self._from_parsed_parts(self._drv, self._root, parts)
 
     eleza __enter__(self):
         ikiwa self._closed:
@@ -1144,7 +1144,7 @@ kundi Path(PurePath):
             rudisha self
         # FIXME this must defer to the specific flavour (and, under Windows,
         # use nt._getfullpathname())
-        obj = self._kutoka_parts([os.getcwd()] + self._parts, init=Uongo)
+        obj = self._from_parts([os.getcwd()] + self._parts, init=Uongo)
         obj._init(template=self)
         rudisha obj
 
@@ -1164,7 +1164,7 @@ kundi Path(PurePath):
             s = str(self.absolute())
         # Now we have no symlinks kwenye the path, it's safe to normalize it.
         normed = self._flavour.pathmod.normpath(s)
-        obj = self._kutoka_parts((normed,), init=Uongo)
+        obj = self._from_parts((normed,), init=Uongo)
         obj._init(template=self)
         rudisha obj
 
@@ -1514,10 +1514,10 @@ kundi Path(PurePath):
         """ Return a new path ukijumuisha expanded ~ na ~user constructs
         (as rudishaed by os.path.expanduser)
         """
-        ikiwa (not (self._drv ama self._root) and
+        ikiwa (sio (self._drv ama self._root) na
             self._parts na self._parts[0][:1] == '~'):
             homedir = self._flavour.gethomedir(self._parts[0][1:])
-            rudisha self._kutoka_parts([homedir] + self._parts[1:])
+            rudisha self._from_parts([homedir] + self._parts[1:])
 
         rudisha self
 

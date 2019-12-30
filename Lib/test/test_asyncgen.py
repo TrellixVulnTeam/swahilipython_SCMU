@@ -497,7 +497,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         eleza foo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
         g = foo()
         g.send(Tupu)
@@ -510,7 +510,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
             DONE = 1
 
@@ -672,7 +672,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         eleza foo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
         g = foo()
         g.send(Tupu)
@@ -684,7 +684,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
             DONE = 1
 
@@ -705,7 +705,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         eleza foo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
             tuma
         g = foo()
@@ -719,7 +719,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
             tuma
             DONE += 1
@@ -949,7 +949,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
         eleza foo():
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
         g = foo()
         g.send(Tupu)
@@ -962,7 +962,7 @@ kundi AsyncGenAsyncioTest(unittest.TestCase):
             nonlocal DONE
             jaribu:
                 tuma
-            except:
+            tatizo:
                 pita
             DONE = 1
 

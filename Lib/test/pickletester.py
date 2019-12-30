@@ -161,7 +161,7 @@ kundi use_metaclass(object, metaclass=metaclass):
 
 kundi pickling_metaclass(type):
     eleza __eq__(self, other):
-        rudisha (type(self) == type(other) and
+        rudisha (type(self) == type(other) na
                 self.reduce_args == other.reduce_args)
 
     eleza __reduce__(self):
@@ -261,10 +261,10 @@ ikiwa _testbuffer ni sio Tupu:
         eleza __eq__(self, other):
             ikiwa sio isinstance(other, PicklableNDArray):
                 rudisha NotImplemented
-            rudisha (other.array.format == self.array.format and
-                    other.array.shape == self.array.shape and
-                    other.array.strides == self.array.strides and
-                    other.array.readonly == self.array.readonly and
+            rudisha (other.array.format == self.array.format na
+                    other.array.shape == self.array.shape na
+                    other.array.strides == self.array.strides na
+                    other.array.readonly == self.array.readonly na
                     other.array.tobytes() == self.array.tobytes())
 
         eleza __ne__(self, other):
@@ -839,19 +839,19 @@ kundi AbstractUnpickleTests(unittest.TestCase):
                           (data, exc.__class__.__name__, exc))
                 ashiria
 
-    eleza test_load_kutoka_data0(self):
+    eleza test_load_from_data0(self):
         self.assert_is_copy(self._testdata, self.loads(DATA0))
 
-    eleza test_load_kutoka_data1(self):
+    eleza test_load_from_data1(self):
         self.assert_is_copy(self._testdata, self.loads(DATA1))
 
-    eleza test_load_kutoka_data2(self):
+    eleza test_load_from_data2(self):
         self.assert_is_copy(self._testdata, self.loads(DATA2))
 
-    eleza test_load_kutoka_data3(self):
+    eleza test_load_from_data3(self):
         self.assert_is_copy(self._testdata, self.loads(DATA3))
 
-    eleza test_load_kutoka_data4(self):
+    eleza test_load_from_data4(self):
         self.assert_is_copy(self._testdata, self.loads(DATA4))
 
     eleza test_load_classic_instance(self):
@@ -921,7 +921,7 @@ kundi AbstractUnpickleTests(unittest.TestCase):
         data = b'I' + str(maxint64).encode("ascii") + b'JUNK\n.'
         self.check_unpickling_error(ValueError, data)
 
-    eleza test_unpickle_kutoka_2x(self):
+    eleza test_unpickle_from_2x(self):
         # Unpickle non-trivial data kutoka Python 2.x.
         loaded = self.loads(DATA_SET)
         self.assertEqual(loaded, set([1, 2]))
@@ -2306,8 +2306,8 @@ kundi AbstractPickleTests(unittest.TestCase):
                     self.assertLessEqual(len(arg), self.FRAME_SIZE_TARGET)
 
             isipokua:  # sio framed
-                ikiwa (op.name == 'FRAME' or
-                    (op.name kwenye frameless_opcodes and
+                ikiwa (op.name == 'FRAME' ama
+                    (op.name kwenye frameless_opcodes na
                      len(arg) > self.FRAME_SIZE_TARGET)):
                     # Frame ama large bytes ama str object
                     ikiwa frameless_start ni sio Tupu:
@@ -2438,7 +2438,7 @@ kundi AbstractPickleTests(unittest.TestCase):
 
             # Protocol 4 packs groups of small objects into frames na issues
             # calls to write only once ama twice per frame:
-            # The C pickler issues one call to write per-frame (header and
+            # The C pickler issues one call to write per-frame (header na
             # contents) wakati Python pickler issues two calls to write: one for
             # the frame header na one kila the frame binary contents.
             writer = ChunkAccumulator()
@@ -3089,7 +3089,7 @@ kundi AbstractPickleModuleTests(unittest.TestCase):
         mwishowe:
             support.unlink(TESTFN)
 
-    eleza test_load_kutoka_and_dump_to_file(self):
+    eleza test_load_from_and_dump_to_file(self):
         stream = io.BytesIO()
         data = [123, {}, 124]
         self.dump(data, stream)
@@ -3445,7 +3445,7 @@ kundi AbstractCustomPicklerClass:
             rudisha str, ('some str',)
 
         lasivyo obj_name == 'g':
-            # kwenye this case, the callback rudishas an invalid result (not a 2-5
+            # kwenye this case, the callback rudishas an invalid result (sio a 2-5
             # tuple ama a string), the pickler should ashiria a proper error.
             rudisha Uongo
 

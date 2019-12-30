@@ -225,7 +225,7 @@ kundi NestedChildrenTest(unittest.TestCase):
         queue = deque()
         actual_names = []
         # The tree items are processed kwenye breadth first order.
-        # Verify that processing each sublist hits every node and
+        # Verify that processing each sublist hits every node na
         # kwenye the right order.
         expected_names = ['f0', 'C0(base)',
                           'f1', 'c1', 'F1', 'C1()',

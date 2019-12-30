@@ -2973,7 +2973,7 @@ sqtx840 squareroot -sNaN1234567890 -> -NaN67890  Invalid_operation
 --
 -- Extra tests for the square root function, dealing with a variety of
 -- corner cases.  In particular, these tests concentrate on
---   (1) cases where the input precision exceeds the context precision, and
+--   (1) cases where the input precision exceeds the context precision, na
 --   (2) cases where the input exponent is outside the current context,
 --       and in particular when the result is subnormal
 --
@@ -3672,7 +3672,7 @@ precision: 1
 sqtx8626 squareroot 1E+18 -> 1E+9
 sqtx8627 squareroot 1E+19 -> 3E+9 Inexact Rounded
 -- in this next one, intermediate result is 9486832980.505137996...
--- so rounds down to 9 (not up to 10 which would cause Infinity overflow)
+-- so rounds down to 9 (sio up to 10 which would cause Infinity overflow)
 sqtx8628 squareroot 9E+19 -> 9E+9 Inexact Rounded
 sqtx8629 squareroot 9.1E+19 -> Infinity Overflow Inexact Rounded
 sqtx8630 squareroot 1E+20 -> Infinity Overflow Inexact Rounded

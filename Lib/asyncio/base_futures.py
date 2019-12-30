@@ -17,7 +17,7 @@ eleza isfuture(obj):
     itself kama duck-type compatible by setting _asyncio_future_blocking.
     See comment kwenye Future kila more details.
     """
-    rudisha (hasattr(obj.__class__, '_asyncio_future_blocking') and
+    rudisha (hasattr(obj.__class__, '_asyncio_future_blocking') na
             obj._asyncio_future_blocking ni sio Tupu)
 
 
