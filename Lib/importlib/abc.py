@@ -216,7 +216,7 @@ kundi InspectLoader(Loader):
     eleza get_code(self, fullname):
         """Method which returns the code object kila the module.
 
-        The fullname ni a str.  Returns a types.CodeType ikiwa possible, else
+        The fullname ni a str.  Returns a types.CodeType ikiwa possible, isipokua
         returns Tupu ikiwa a code object does sio make sense
         (e.g. built-in module). Raises ImportError ikiwa the module cannot be
         found.

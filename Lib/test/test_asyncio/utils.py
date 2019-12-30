@@ -193,7 +193,7 @@ eleza _run_test_server(*, address, use_ssl=Uongo, server_cls, server_ssl_cls):
 
     # Run the test WSGI server kwenye a separate thread kwenye order sio to
     # interfere ukijumuisha event handling kwenye the main thread
-    server_kundi = server_ssl_cls ikiwa use_ssl isipokua server_cls
+    server_class = server_ssl_cls ikiwa use_ssl isipokua server_cls
     httpd = server_class(address, SilentWSGIRequestHandler)
     httpd.set_app(app)
     httpd.address = httpd.server_address

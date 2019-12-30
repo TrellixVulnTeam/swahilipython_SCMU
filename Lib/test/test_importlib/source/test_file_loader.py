@@ -573,7 +573,7 @@ kundi SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     eleza test_partial_timestamp(self):
-        # When the timestamp ni partial, regenerate the .pyc, else
+        # When the timestamp ni partial, regenerate the .pyc, isipokua
         # ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)
@@ -604,7 +604,7 @@ kundi SourceLoaderBadBytecodeTest:
 
     @util.writes_bytecode_files
     eleza test_partial_size(self):
-        # When the size ni partial, regenerate the .pyc, else
+        # When the size ni partial, regenerate the .pyc, isipokua
         # ashiria EOFError.
         eleza test(name, mapping, bc_path):
             self.import_(mapping[name], name)

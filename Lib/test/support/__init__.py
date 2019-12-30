@@ -759,7 +759,7 @@ eleza bind_port(sock, host=HOST):
     multicasting via multiple UDP sockets.
 
     Additionally, ikiwa the SO_EXCLUSIVEADDRUSE socket option ni available (i.e.
-    on Windows), it will be set on the socket.  This will prevent anyone else
+    on Windows), it will be set on the socket.  This will prevent anyone isipokua
     kutoka bind()'ing to our host/port kila the duration of the test.
     """
 

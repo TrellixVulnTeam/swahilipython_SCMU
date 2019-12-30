@@ -282,7 +282,7 @@ kundi EnvBuilder:
     eleza _setup_pip(self, context):
         """Installs ama upgrades pip kwenye a virtual environment"""
         # We run ensurepip kwenye isolated mode to avoid side effects from
-        # environment vars, the current directory na anything else
+        # environment vars, the current directory na anything isipokua
         # intended kila the global Python environment
         cmd = [context.env_exe, '-Im', 'ensurepip', '--upgrade',
                                                     '--default-pip']

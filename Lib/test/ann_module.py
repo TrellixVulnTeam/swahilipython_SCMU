@@ -27,8 +27,8 @@ kundi D(C):
     j: str = 'hi'; k: str= 'bye'
 
 kutoka types agiza new_class
-h_kundi = new_class('H', (C,))
-j_kundi = new_class('J')
+h_class = new_class('H', (C,))
+j_class = new_class('J')
 
 kundi F():
     z: int = 5

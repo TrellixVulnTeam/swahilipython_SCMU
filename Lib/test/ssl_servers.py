@@ -121,7 +121,7 @@ kundi HTTPSServerThread(threading.Thread):
     eleza __init__(self, context, host=HOST, handler_class=Tupu):
         self.flag = Tupu
         self.server = HTTPSServer((host, 0),
-                                  handler_kundi ama RootedHTTPRequestHandler,
+                                  handler_class ama RootedHTTPRequestHandler,
                                   context)
         self.port = self.server.server_port
         threading.Thread.__init__(self)
@@ -189,9 +189,9 @@ ikiwa __name__ == "__main__":
 
     support.verbose = args.verbose
     ikiwa args.use_stats_handler:
-        handler_kundi = StatsRequestHandler
+        handler_class = StatsRequestHandler
     isipokua:
-        handler_kundi = RootedHTTPRequestHandler
+        handler_class = RootedHTTPRequestHandler
         handler_class.root = os.getcwd()
     context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     context.load_cert_chain(CERTFILE)

@@ -89,12 +89,12 @@ kundi PyclbrTest(TestCase):
             ikiwa isinstance(value, pyclbr.Function):
                 self.assertIsInstance(py_item, (FunctionType, BuiltinFunctionType))
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip functions that came kutoka somewhere else
+                    endelea   # skip functions that came kutoka somewhere isipokua
                 self.assertEqual(py_item.__module__, value.module)
             isipokua:
                 self.assertIsInstance(py_item, type)
                 ikiwa py_item.__module__ != moduleName:
-                    endelea   # skip classes that came kutoka somewhere else
+                    endelea   # skip classes that came kutoka somewhere isipokua
 
                 real_bases = [base.__name__ kila base kwenye py_item.__bases__]
                 pyclbr_bases = [ getattr(base, 'name', base)

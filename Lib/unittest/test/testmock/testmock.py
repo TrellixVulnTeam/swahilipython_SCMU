@@ -1359,7 +1359,7 @@ kundi MockTest(unittest.TestCase):
                 eleza __init__(self, a): pita
                 eleza meth1(self, a, b): pita
 
-        mock_kundi = create_autospec(Something)
+        mock_class = create_autospec(Something)
 
         kila m kwenye [mock_class, mock_class()]:
             m.meth(1, 2, 3, d=1)

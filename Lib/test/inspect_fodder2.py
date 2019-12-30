@@ -96,7 +96,7 @@ eleza f():
             "doc"
             rudisha 42
     rudisha X
-method_in_dynamic_kundi = f().g
+method_in_dynamic_class = f().g
 
 #line 101
 eleza keyworded(*arg1, arg2=1):

@@ -242,7 +242,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
        Returns the resulting top level namespace dictionary
 
        The file path may refer directly to a Python script (i.e.
-       one that could be directly executed ukijumuisha execfile) ama else
+       one that could be directly executed ukijumuisha execfile) ama isipokua
        it may refer to a zipfile ama directory containing a top
        level __main__.py script.
     """

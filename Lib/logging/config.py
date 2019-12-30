@@ -535,7 +535,7 @@ kundi DictConfigurator(BaseConfigurator):
 
                 _clearExistingHandlers()
 
-                # Do formatters first - they don't refer to anything else
+                # Do formatters first - they don't refer to anything isipokua
                 formatters = config.get('formatters', EMPTY_DICT)
                 kila name kwenye formatters:
                     jaribu:

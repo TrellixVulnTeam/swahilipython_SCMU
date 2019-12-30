@@ -1276,7 +1276,7 @@ kundi AbstractHTTPHandler(BaseHandler):
     eleza do_open(self, http_class, req, **http_conn_args):
         """Return an HTTPResponse object kila the request, using http_class.
 
-        http_kundi must implement the HTTPConnection API kutoka http.client.
+        http_class must implement the HTTPConnection API kutoka http.client.
         """
         host = req.host
         ikiwa sio host:

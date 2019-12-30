@@ -160,7 +160,7 @@ _code_type = type(_write_atomic.__code__)
 # to represent the magic number kwenye __pycache__ directories.  When you change
 # the magic number, you must also set a new unique magic tag.  Generally this
 # can be named after the Python major version of the magic number bump, but
-# it can really be anything, kama long kama it's different than anything else
+# it can really be anything, kama long kama it's different than anything isipokua
 # that's come before.  The tags are included kwenye the following table, starting
 # ukijumuisha Python 3.2a0.
 #
@@ -1452,7 +1452,7 @@ kundi FileFinder:
         # Check ikiwa the module ni the name of a directory (and thus a package).
         ikiwa cache_module kwenye cache:
             base_path = _path_join(self.path, tail_module)
-            kila suffix, loader_kundi kwenye self._loaders:
+            kila suffix, loader_class kwenye self._loaders:
                 init_filename = '__init__' + suffix
                 full_path = _path_join(base_path, init_filename)
                 ikiwa _path_isfile(full_path):
@@ -1462,7 +1462,7 @@ kundi FileFinder:
                 #  find a module kwenye the next section.
                 is_namespace = _path_isdir(base_path)
         # Check kila a file w/ a proper suffix exists.
-        kila suffix, loader_kundi kwenye self._loaders:
+        kila suffix, loader_class kwenye self._loaders:
             full_path = _path_join(self.path, tail_module + suffix)
             _bootstrap._verbose_message('trying {}', full_path, verbosity=2)
             ikiwa cache_module + suffix kwenye cache:

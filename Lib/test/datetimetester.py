@@ -178,7 +178,7 @@ kundi TestTZInfo(unittest.TestCase):
 
     eleza test_pickling_base(self):
         # There's no point to pickling tzinfo objects on their own (they
-        # carry no data), but they need to be picklable anyway else
+        # carry no data), but they need to be picklable anyway isipokua
         # concrete subclasses can't be pickled.
         orig = tzinfo.__new__(tzinfo)
         self.assertIs(type(orig), tzinfo)
@@ -1496,9 +1496,9 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
     eleza test_resolution_info(self):
         # XXX: Should min na max respect subclassing?
         ikiwa issubclass(self.theclass, datetime):
-            expected_kundi = datetime
+            expected_class = datetime
         isipokua:
-            expected_kundi = date
+            expected_class = date
         self.assertIsInstance(self.theclass.min, expected_class)
         self.assertIsInstance(self.theclass.max, expected_class)
         self.assertIsInstance(self.theclass.resolution, timedelta)

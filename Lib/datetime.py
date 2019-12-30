@@ -1131,7 +1131,7 @@ kundi date:
     eleza __reduce__(self):
         rudisha (self.__class__, self._getstate())
 
-_date_kundi = date  # so functions w/ args named "date" can get at the class
+_date_class = date  # so functions w/ args named "date" can get at the class
 
 date.min = date(1, 1, 1)
 date.max = date(9999, 12, 31)
@@ -1206,7 +1206,7 @@ kundi tzinfo:
         isipokua:
             rudisha (self.__class__, args, state)
 
-_tzinfo_kundi = tzinfo
+_tzinfo_class = tzinfo
 
 kundi time:
     """Time ukijumuisha time zone.
@@ -1549,7 +1549,7 @@ kundi time:
     eleza __reduce__(self):
         rudisha self.__reduce_ex__(2)
 
-_time_kundi = time  # so functions w/ args named "time" can get at the class
+_time_class = time  # so functions w/ args named "time" can get at the class
 
 time.min = time(0, 0, 0)
 time.max = time(23, 59, 59, 999999)

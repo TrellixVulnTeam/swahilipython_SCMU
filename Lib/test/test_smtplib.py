@@ -886,7 +886,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
 
 kundi SimSMTPServer(smtpd.SMTPServer):
 
-    channel_kundi = SimSMTPChannel
+    channel_class = SimSMTPChannel
 
     eleza __init__(self, *args, **kw):
         self._extra_features = []
@@ -1120,7 +1120,7 @@ kundi SMTPSimTests(unittest.TestCase):
                     self.push('421 closing')
                 isipokua:
                     super().found_terminator()
-        self.serv.channel_kundi = MySimSMTPChannel
+        self.serv.channel_class = MySimSMTPChannel
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         ukijumuisha self.assertRaises(smtplib.SMTPDataError):
@@ -1330,7 +1330,7 @@ kundi SimSMTPAUTHInitialResponseChannel(SimSMTPChannel):
         self.push('571 Bad authentication')
 
 kundi SimSMTPAUTHInitialResponseServer(SimSMTPServer):
-    channel_kundi = SimSMTPAUTHInitialResponseChannel
+    channel_class = SimSMTPAUTHInitialResponseChannel
 
 
 kundi SMTPAUTHInitialResponseSimTests(unittest.TestCase):

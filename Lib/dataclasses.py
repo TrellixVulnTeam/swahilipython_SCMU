@@ -252,7 +252,7 @@ kundi Field:
         self.hash = hash
         self.compare = compare
         self.metadata = (_EMPTY_METADATA
-                         ikiwa metadata ni Tupu else
+                         ikiwa metadata ni Tupu isipokua
                          types.MappingProxyType(metadata))
         self._field_type = Tupu
 
@@ -681,7 +681,7 @@ eleza _get_field(cls, a_name, a_type):
     f.type = a_type
 
     # Assume it's a normal field until proven otherwise.  We're next
-    # going to decide ikiwa it's a ClassVar ama InitVar, everything else
+    # going to decide ikiwa it's a ClassVar ama InitVar, everything isipokua
     # ni just a normal field.
     f._field_type = _FIELD
 

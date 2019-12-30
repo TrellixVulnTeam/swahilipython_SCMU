@@ -880,12 +880,12 @@ boolean {0[0]} NO
 
 
 kundi StrictTestCase(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.RawConfigParser
+    config_class = configparser.RawConfigParser
     strict = Kweli
 
 
 kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
 
     eleza test_interpolation(self):
         cf = self.get_interpolation_config()
@@ -983,7 +983,7 @@ kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
 
 
 kundi ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
     interpolation = Tupu
     ini = textwrap.dedent("""
         [numbers]
@@ -1019,7 +1019,7 @@ kundi ConfigParserTestCaseNoInterpolation(BasicTestCase, unittest.TestCase):
 
 
 kundi ConfigParserTestCaseLegacyInterpolation(ConfigParserTestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
     interpolation = configparser.LegacyInterpolation()
 
     eleza test_set_malformatted_interpolation(self):
@@ -1051,7 +1051,7 @@ kundi ConfigParserTestCaseNonStandardDefaultSection(ConfigParserTestCase):
 
 
 kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
     wonderful_spam = ("I'm having spam spam spam spam "
                       "spam spam spam beaked beans spam "
                       "spam spam na spam!").replace(' ', '\t\n')
@@ -1080,7 +1080,7 @@ kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
 
 
 kundi RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.RawConfigParser
+    config_class = configparser.RawConfigParser
 
     eleza test_interpolation(self):
         cf = self.get_interpolation_config()
@@ -1137,7 +1137,7 @@ kundi RawConfigParserTestCaseNonStandardDelimiters(RawConfigParserTestCase):
 
 
 kundi RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
-    config_kundi = configparser.RawConfigParser
+    config_class = configparser.RawConfigParser
     comment_prefixes = ('#', ';', '----')
     inline_comment_prefixes = ('//',)
     empty_lines_in_values = Uongo
@@ -1157,7 +1157,7 @@ kundi RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
         self.assertEqual(cf.get("tmp", "echo command"), "cat %s; rm %s")
 
 kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
     interpolation = configparser.ExtendedInterpolation()
     default_section = 'common'
     strict = Kweli
@@ -1246,7 +1246,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         self.assertEqual(cf['dollars']['$var'], '$value')
         self.assertEqual(cf['interpolated']['$other'], '$value')
         self.assertEqual(cf['dollars']['${sick}'], 'cannot interpolate me')
-        exception_kundi = configparser.InterpolationMissingOptionError
+        exception_class = configparser.InterpolationMissingOptionError
         ukijumuisha self.assertRaises(exception_class) kama cm:
             cf['interpolated']['$trying']
         self.assertEqual(cm.exception.reference, 'dollars:${sick')
@@ -1332,7 +1332,7 @@ kundi ConfigParserTestCaseNoValue(ConfigParserTestCase):
 
 
 kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
     delimiters = {'='}
     comment_prefixes = {'#'}
     allow_no_value = Kweli
@@ -1429,7 +1429,7 @@ kundi SortedTestCase(RawConfigParserTestCase):
 
 
 kundi CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
-    config_kundi = configparser.RawConfigParser
+    config_class = configparser.RawConfigParser
     comment_prefixes = '#;'
     inline_comment_prefixes = ';'
 
@@ -1451,7 +1451,7 @@ kundi CompatibleTestCase(CfgParserTestCaseClass, unittest.TestCase):
                          'this;is sio a comment')
 
 kundi CopyTestCase(BasicTestCase, unittest.TestCase):
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
 
     eleza fromstring(self, string, defaults=Tupu):
         cf = self.newconfig(defaults)
@@ -1935,7 +1935,7 @@ kundi ExceptionContextTestCase(unittest.TestCase):
 kundi ConvertersTestCase(BasicTestCase, unittest.TestCase):
     """Introduced kwenye 3.5, issue #18159."""
 
-    config_kundi = configparser.ConfigParser
+    config_class = configparser.ConfigParser
 
     eleza newconfig(self, defaults=Tupu):
         instance = super().newconfig(defaults=defaults)

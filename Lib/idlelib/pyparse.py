@@ -22,7 +22,7 @@ _synchre = re.compile(r"""
     ^
     [ \t]*
     (?: while
-    |   else
+    |   isipokua
     |   def
     |   return
     |   assert

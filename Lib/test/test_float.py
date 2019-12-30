@@ -613,7 +613,7 @@ kundi UnknownFormatTestCase(unittest.TestCase):
 
 
 # on an IEEE platform, all we guarantee ni that bit patterns
-# representing infinities ama NaNs do sio ashiria an exception; all else
+# representing infinities ama NaNs do sio ashiria an exception; all isipokua
 # ni accident (today).
 # let's also try to guarantee that -0.0 na 0.0 don't get confused.
 

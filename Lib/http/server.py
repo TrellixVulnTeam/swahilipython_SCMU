@@ -1276,8 +1276,8 @@ ikiwa __name__ == '__main__':
                         help='Specify alternate port [default: 8000]')
     args = parser.parse_args()
     ikiwa args.cgi:
-        handler_kundi = CGIHTTPRequestHandler
+        handler_class = CGIHTTPRequestHandler
     isipokua:
-        handler_kundi = partial(SimpleHTTPRequestHandler,
+        handler_class = partial(SimpleHTTPRequestHandler,
                                 directory=args.directory)
     test(HandlerClass=handler_class, port=args.port, bind=args.bind)

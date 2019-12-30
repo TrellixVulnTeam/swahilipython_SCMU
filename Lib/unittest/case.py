@@ -661,9 +661,9 @@ kundi TestCase(object):
             return
         expecting_failure_method = getattr(testMethod,
                                            "__unittest_expecting_failure__", Uongo)
-        expecting_failure_kundi = getattr(self,
+        expecting_failure_class = getattr(self,
                                           "__unittest_expecting_failure__", Uongo)
-        expecting_failure = expecting_failure_kundi ama expecting_failure_method
+        expecting_failure = expecting_failure_class ama expecting_failure_method
         outcome = _Outcome(result)
         jaribu:
             self._outcome = outcome

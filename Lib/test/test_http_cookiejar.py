@@ -356,7 +356,7 @@ kundi FileCookieJarTests(unittest.TestCase):
     eleza test_bad_magic(self):
         # OSErrors (eg. file doesn't exist) are allowed to propagate
         filename = test.support.TESTFN
-        kila cookiejar_kundi kwenye LWPCookieJar, MozillaCookieJar:
+        kila cookiejar_class kwenye LWPCookieJar, MozillaCookieJar:
             c = cookiejar_class()
             jaribu:
                 c.load(filename="kila this test to work, a file ukijumuisha this "
@@ -372,7 +372,7 @@ kundi FileCookieJarTests(unittest.TestCase):
         jaribu:
             ukijumuisha open(filename, "w") kama f:
                 f.write("oops\n")
-                kila cookiejar_kundi kwenye LWPCookieJar, MozillaCookieJar:
+                kila cookiejar_class kwenye LWPCookieJar, MozillaCookieJar:
                     c = cookiejar_class()
                     self.assertRaises(LoadError, c.load, filename)
         mwishowe:

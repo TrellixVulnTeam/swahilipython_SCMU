@@ -402,7 +402,7 @@ eleza make_mock_file(handler):
 
 kundi MockedNNTPTestsMixin:
     # Override kwenye derived classes
-    handler_kundi = Tupu
+    handler_class = Tupu
 
     eleza setUp(self):
         super().setUp()
@@ -1222,7 +1222,7 @@ kundi NNTPv1Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
     """Tests an NNTP v1 server (no capabilities)."""
 
     nntp_version = 1
-    handler_kundi = NNTPv1Handler
+    handler_class = NNTPv1Handler
 
     eleza test_caps(self):
         caps = self.server.getcapabilities()
@@ -1235,7 +1235,7 @@ kundi NNTPv2Tests(NNTPv1v2TestsMixin, MockedNNTPTestsMixin, unittest.TestCase):
     """Tests an NNTP v2 server (ukijumuisha capabilities)."""
 
     nntp_version = 2
-    handler_kundi = NNTPv2Handler
+    handler_class = NNTPv2Handler
 
     eleza test_caps(self):
         caps = self.server.getcapabilities()
@@ -1258,7 +1258,7 @@ kundi CapsAfterLoginNNTPv2Tests(MockedNNTPTestsMixin, unittest.TestCase):
     """Tests a probably NNTP v2 server ukijumuisha capabilities only after login."""
 
     nntp_version = 2
-    handler_kundi = CapsAfterLoginNNTPv2Handler
+    handler_class = CapsAfterLoginNNTPv2Handler
 
     eleza test_caps_only_after_login(self):
         self.assertEqual(self.server._caps, {})
@@ -1272,7 +1272,7 @@ kundi SendReaderNNTPv2Tests(MockedNNTPWithReaderModeMixin,
     that isn't kwenye READER mode by default."""
 
     nntp_version = 2
-    handler_kundi = ModeSwitchingNNTPv2Handler
+    handler_class = ModeSwitchingNNTPv2Handler
 
     eleza test_we_are_in_reader_mode_after_connect(self):
         self.assertIn('READER', self.server._caps)
@@ -1457,7 +1457,7 @@ kundi MockSocketTests(unittest.TestCase):
 
     Used where the _NNTPServerIO file object ni sio enough."""
 
-    nntp_kundi = nntplib.NNTP
+    nntp_class = nntplib.NNTP
 
     eleza check_constructor_error_conditions(
             self, handler_class,

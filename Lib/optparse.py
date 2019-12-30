@@ -924,7 +924,7 @@ kundi OptionContainer:
         # option_list, _short_opt, _long_opt, defaults.
         self._create_option_list()
 
-        self.option_kundi = option_class
+        self.option_class = option_class
         self.set_conflict_handler(conflict_handler)
         self.set_description(description)
 

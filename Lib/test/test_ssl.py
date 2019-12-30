@@ -1719,8 +1719,8 @@ kundi ContextTests(unittest.TestCase):
             pita
 
         ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        ctx.sslsocket_kundi = MySSLSocket
-        ctx.sslobject_kundi = MySSLObject
+        ctx.sslsocket_class = MySSLSocket
+        ctx.sslobject_class = MySSLObject
 
         ukijumuisha ctx.wrap_socket(socket.socket(), server_side=Kweli) kama sock:
             self.assertIsInstance(sock, MySSLSocket)

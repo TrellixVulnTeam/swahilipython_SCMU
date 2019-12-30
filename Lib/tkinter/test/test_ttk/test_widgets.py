@@ -510,19 +510,19 @@ kundi ComboboxTest(EntryTest, unittest.TestCase):
         # testing values ukijumuisha empty string set through configure
         self.combo.configure(values=[1, '', 2])
         self.assertEqual(self.combo['values'],
-                         ('1', '', '2') ikiwa self.wantobjects else
+                         ('1', '', '2') ikiwa self.wantobjects isipokua
                          '1 {} 2')
 
         # testing values ukijumuisha spaces
         self.combo['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.combo['values'],
-                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects else
+                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects isipokua
                          '{a b} {a\tb} {a\nb}')
 
         # testing values ukijumuisha special characters
         self.combo['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.combo['values'],
-                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects else
+                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects isipokua
                          r'a\\tb {"a"} \}\ \{')
 
         # out of range
@@ -1260,19 +1260,19 @@ kundi SpinboxTest(EntryTest, unittest.TestCase):
         # testing values ukijumuisha empty string set through configure
         self.spin.configure(values=[1, '', 2])
         self.assertEqual(self.spin['values'],
-                         ('1', '', '2') ikiwa self.wantobjects else
+                         ('1', '', '2') ikiwa self.wantobjects isipokua
                          '1 {} 2')
 
         # testing values ukijumuisha spaces
         self.spin['values'] = ['a b', 'a\tb', 'a\nb']
         self.assertEqual(self.spin['values'],
-                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects else
+                         ('a b', 'a\tb', 'a\nb') ikiwa self.wantobjects isipokua
                          '{a b} {a\tb} {a\nb}')
 
         # testing values ukijumuisha special characters
         self.spin['values'] = [r'a\tb', '"a"', '} {']
         self.assertEqual(self.spin['values'],
-                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects else
+                         (r'a\tb', '"a"', '} {') ikiwa self.wantobjects isipokua
                          r'a\\tb {"a"} \}\ \{')
 
         # testing creating spinbox ukijumuisha empty string kwenye values
@@ -1637,7 +1637,7 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         # item tags
         item = self.tv.insert('', 'end', tags=[1, 2, value])
         self.assertEqual(self.tv.item(item, tags=Tupu),
-                         ('1', '2', value) ikiwa self.wantobjects else
+                         ('1', '2', value) ikiwa self.wantobjects isipokua
                          '1 2 %s' % value)
         self.tv.item(item, tags=[])
         self.assertUongo(self.tv.item(item, tags=Tupu))
@@ -1649,7 +1649,7 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         item = self.tv.insert('', 'end', values=('a b c',
             '%s %s' % (value, value)))
         self.assertEqual(self.tv.item(item, values=Tupu),
-            ('a b c', '%s %s' % (value, value)) ikiwa self.wantobjects else
+            ('a b c', '%s %s' % (value, value)) ikiwa self.wantobjects isipokua
             '{a b c} {%s %s}' % (value, value))
 
         # text

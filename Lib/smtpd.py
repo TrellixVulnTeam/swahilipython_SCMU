@@ -627,7 +627,7 @@ kundi SMTPChannel(asynchat.async_chat):
 
 kundi SMTPServer(asyncore.dispatcher):
     # SMTPChannel kundi to use kila managing client connections
-    channel_kundi = SMTPChannel
+    channel_class = SMTPChannel
 
     eleza __init__(self, localaddr, remoteaddr,
                  data_size_limit=DATA_SIZE_DEFAULT, map=Tupu,

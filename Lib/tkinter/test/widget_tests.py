@@ -526,7 +526,7 @@ eleza add_standard_options(*source_classes):
         kila option kwenye cls.OPTIONS:
             methodname = 'test_' + option
             ikiwa sio hasattr(cls, methodname):
-                kila source_kundi kwenye source_classes:
+                kila source_class kwenye source_classes:
                     ikiwa hasattr(source_class, methodname):
                         setattr(cls, methodname,
                                 getattr(source_class, methodname))

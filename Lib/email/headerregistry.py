@@ -565,8 +565,8 @@ kundi HeaderRegisjaribu:
                        use_default_map=Kweli):
         """Create a header_factory that works ukijumuisha the Policy API.
 
-        base_kundi ni the kundi that will be the last kundi kwenye the created
-        header class's __bases__ list.  default_kundi ni the kundi that will be
+        base_class ni the kundi that will be the last kundi kwenye the created
+        header class's __bases__ list.  default_class ni the kundi that will be
         used ikiwa "name" (see __call__) does sio appear kwenye the registry.
         use_default_map controls whether ama sio the default mapping of names to
         specialized classes ni copied kwenye to the registry when the factory is
@@ -574,8 +574,8 @@ kundi HeaderRegisjaribu:
 
         """
         self.registry = {}
-        self.base_kundi = base_class
-        self.default_kundi = default_class
+        self.base_class = base_class
+        self.default_class = default_class
         ikiwa use_default_map:
             self.registry.update(_default_header_map)
 
@@ -594,7 +594,7 @@ kundi HeaderRegisjaribu:
 
         Creates a header instance by creating a specialized kundi kila parsing
         na representing the specified header by combining the factory
-        base_kundi ukijumuisha a specialized kundi kutoka the registry ama the
+        base_class ukijumuisha a specialized kundi kutoka the registry ama the
         default_class, na pitaing the name na value to the constructed
         class's constructor.
 

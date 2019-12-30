@@ -769,7 +769,7 @@ kundi HTTPConnection:
     _http_vsn = 11
     _http_vsn_str = 'HTTP/1.1'
 
-    response_kundi = HTTPResponse
+    response_class = HTTPResponse
     default_port = HTTP_PORT
     auto_open = 1
     debuglevel = 0
@@ -1280,7 +1280,7 @@ kundi HTTPConnection:
 
         If the HTTPConnection ni kwenye the correct state, returns an
         instance of HTTPResponse ama of whatever object ni returned by
-        the response_kundi variable.
+        the response_class variable.
 
         If a request has sio been sent ama ikiwa a previous response has
         sio be handled, ResponseNotReady ni raised.  If the HTTP

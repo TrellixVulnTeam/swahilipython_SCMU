@@ -3249,8 +3249,8 @@ kundi AbstractIdentityPersistentPicklerTests(unittest.TestCase):
 
 kundi AbstractPicklerUnpicklerObjectTests(unittest.TestCase):
 
-    pickler_kundi = Tupu
-    unpickler_kundi = Tupu
+    pickler_class = Tupu
+    unpickler_class = Tupu
 
     eleza setUp(self):
         assert self.pickler_class

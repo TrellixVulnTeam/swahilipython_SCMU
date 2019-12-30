@@ -620,7 +620,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.addTypeEqualityFunc(SadSnake, AllSnakesCreatedEqual)
         self.assertEqual(s1, s2)
         # No this doesn't clean up na remove the SadSnake equality func
-        # kutoka this TestCase instance but since it's local nothing else
+        # kutoka this TestCase instance but since it's local nothing isipokua
         # will ever notice that.
 
     eleza testAssertIs(self):

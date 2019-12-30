@@ -183,13 +183,13 @@ kundi PyIdPersPicklerTests(AbstractIdentityPersistentPicklerTests,
 
 kundi PyPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests):
 
-    pickler_kundi = pickle._Pickler
-    unpickler_kundi = pickle._Unpickler
+    pickler_class = pickle._Pickler
+    unpickler_class = pickle._Unpickler
 
 
 kundi PyDispatchTableTests(AbstractDispatchTableTests):
 
-    pickler_kundi = pickle._Pickler
+    pickler_class = pickle._Pickler
 
     eleza get_dispatch_table(self):
         rudisha pickle.dispatch_table.copy()
@@ -197,7 +197,7 @@ kundi PyDispatchTableTests(AbstractDispatchTableTests):
 
 kundi PyChainDispatchTableTests(AbstractDispatchTableTests):
 
-    pickler_kundi = pickle._Pickler
+    pickler_class = pickle._Pickler
 
     eleza get_dispatch_table(self):
         rudisha collections.ChainMap({}, pickle.dispatch_table)
@@ -207,7 +207,7 @@ kundi PyPicklerHookTests(AbstractHookTests):
     kundi CustomPyPicklerClass(pickle._Pickler,
                                AbstractCustomPicklerClass):
         pita
-    pickler_kundi = CustomPyPicklerClass
+    pickler_class = CustomPyPicklerClass
 
 
 ikiwa has_c_implementation:
@@ -240,8 +240,8 @@ ikiwa has_c_implementation:
         unpickler = _pickle.Unpickler
 
     kundi CPicklerUnpicklerObjectTests(AbstractPicklerUnpicklerObjectTests):
-        pickler_kundi = _pickle.Pickler
-        unpickler_kundi = _pickle.Unpickler
+        pickler_class = _pickle.Pickler
+        unpickler_class = _pickle.Unpickler
 
         eleza test_issue18339(self):
             unpickler = self.unpickler_class(io.BytesIO())
@@ -253,19 +253,19 @@ ikiwa has_c_implementation:
             unpickler.memo = {1: Tupu}
 
     kundi CDispatchTableTests(AbstractDispatchTableTests):
-        pickler_kundi = pickle.Pickler
+        pickler_class = pickle.Pickler
         eleza get_dispatch_table(self):
             rudisha pickle.dispatch_table.copy()
 
     kundi CChainDispatchTableTests(AbstractDispatchTableTests):
-        pickler_kundi = pickle.Pickler
+        pickler_class = pickle.Pickler
         eleza get_dispatch_table(self):
             rudisha collections.ChainMap({}, pickle.dispatch_table)
 
     kundi CPicklerHookTests(AbstractHookTests):
         kundi CustomCPicklerClass(_pickle.Pickler, AbstractCustomPicklerClass):
             pita
-        pickler_kundi = CustomCPicklerClass
+        pickler_class = CustomCPicklerClass
 
     @support.cpython_only
     kundi SizeofTests(unittest.TestCase):

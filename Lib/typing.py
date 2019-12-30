@@ -663,8 +663,8 @@ kundi _GenericAlias(_Final, _root=Kweli):
         ikiwa sio isinstance(params, tuple):
             params = (params,)
         self.__origin__ = origin
-        self.__args__ = tuple(... ikiwa a ni _TypingEllipsis else
-                              () ikiwa a ni _TypingEmpty else
+        self.__args__ = tuple(... ikiwa a ni _TypingEllipsis isipokua
+                              () ikiwa a ni _TypingEmpty isipokua
                               a kila a kwenye params)
         self.__parameters__ = _collect_type_vars(params)
         self.__slots__ = Tupu  # This ni sio documented.

@@ -185,7 +185,7 @@ kundi BaseQueueTestMixin(BlockingTestMixin):
             self.fail("Did sio detect task count going negative")
 
     eleza test_queue_join(self):
-        # Test that a queue join()s successfully, na before anything else
+        # Test that a queue join()s successfully, na before anything isipokua
         # (done twice kila insurance).
         q = self.type2test()
         self.queue_join_test(q)

@@ -91,7 +91,7 @@ kundi FakeClinic:
     eleza directive(self, name, args):
         self.called_directives[name] = args
 
-    _module_and_kundi = clinic.Clinic._module_and_class
+    _module_and_class = clinic.Clinic._module_and_class
 
 kundi ClinicWholeFileTest(TestCase):
     eleza test_eol(self):

@@ -132,8 +132,8 @@ kundi HelpParser(HTMLParser):
         ikiwa tag kwenye ['h1', 'h2', 'h3']:
             assert self.level == 0
             ikiwa self.show:
-                indent = ('        ' ikiwa tag == 'h3' else
-                          '    ' ikiwa tag == 'h2' else
+                indent = ('        ' ikiwa tag == 'h3' isipokua
+                          '    ' ikiwa tag == 'h2' isipokua
                           '')
                 self.toc.append((indent+self.header, self.text.index('insert')))
             self.tags = ''

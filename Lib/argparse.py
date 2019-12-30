@@ -1093,7 +1093,7 @@ kundi _SubParsersAction(Action):
                  metavar=Tupu):
 
         self._prog_prefix = prog
-        self._parser_kundi = parser_class
+        self._parser_class = parser_class
         self._name_parser_map = {}
         self._choices_actions = []
 
@@ -1362,7 +1362,7 @@ kundi _ActionsContainer(object):
                 kwargs['default'] = self.argument_default
 
         # create the action object, na add it to the parser
-        action_kundi = self._pop_action_class(kwargs)
+        action_class = self._pop_action_class(kwargs)
         ikiwa sio callable(action_class):
             ashiria ValueError('unknown action "%s"' % (action_class,))
         action = action_class(**kwargs)
@@ -1625,7 +1625,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
         - description -- A description of what the program does
         - epilog -- Text following the argument descriptions
         - parents -- Parsers whose arguments should be copied into this one
-        - formatter_kundi -- HelpFormatter kundi kila printing help messages
+        - formatter_class -- HelpFormatter kundi kila printing help messages
         - prefix_chars -- Characters that prefix optional arguments
         - fromfile_prefix_chars -- Characters that prefix files containing
             additional arguments
@@ -1662,7 +1662,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
         self.prog = prog
         self.usage = usage
         self.epilog = epilog
-        self.formatter_kundi = formatter_class
+        self.formatter_class = formatter_class
         self.fromfile_prefix_chars = fromfile_prefix_chars
         self.add_help = add_help
         self.allow_abbrev = allow_abbrev
@@ -1737,7 +1737,7 @@ kundi ArgumentParser(_AttributeHolder, _ActionsContainer):
             kwargs['prog'] = formatter.format_help().strip()
 
         # create the parsers action na add it to the positionals list
-        parsers_kundi = self._pop_action_class(kwargs, 'parsers')
+        parsers_class = self._pop_action_class(kwargs, 'parsers')
         action = parsers_class(option_strings=[], **kwargs)
         self._subparsers._add_action(action)
 

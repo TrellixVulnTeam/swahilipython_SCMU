@@ -558,7 +558,7 @@ kundi _Pickler:
                 f(self, obj)  # Call unbound method ukijumuisha explicit self
                 return
 
-            # Check private dispatch table ikiwa any, ama else
+            # Check private dispatch table ikiwa any, ama isipokua
             # copyreg.dispatch_table
             reduce = getattr(self, 'dispatch_table', dispatch_table).get(t)
             ikiwa reduce ni sio Tupu:

@@ -30,13 +30,13 @@ kundi TestLog(unittest.TestCase):
 
                 stdout.seek(0)
                 self.assertEqual(stdout.read().rstrip(),
-                        'Dεbug\tM?ss?ge' ikiwa errors == 'replace' else
-                        'Dεbug\tMssge' ikiwa errors == 'ignore' else
+                        'Dεbug\tM?ss?ge' ikiwa errors == 'replace' isipokua
+                        'Dεbug\tMssge' ikiwa errors == 'ignore' isipokua
                         'Dεbug\tM\\u0117ss\\xe3ge')
                 stderr.seek(0)
                 self.assertEqual(stderr.read().rstrip(),
-                        'Fαtal\t?rr?r' ikiwa errors == 'replace' else
-                        'Fαtal\trrr' ikiwa errors == 'ignore' else
+                        'Fαtal\t?rr?r' ikiwa errors == 'replace' isipokua
+                        'Fαtal\trrr' ikiwa errors == 'ignore' isipokua
                         'Fαtal\t\\xc8rr\\u014dr')
 
 eleza test_suite():

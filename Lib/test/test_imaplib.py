@@ -489,14 +489,14 @@ kundi NewIMAPTestsMixin():
 
 
 kundi NewIMAPTests(NewIMAPTestsMixin, unittest.TestCase):
-    imap_kundi = imaplib.IMAP4
-    server_kundi = socketserver.TCPServer
+    imap_class = imaplib.IMAP4
+    server_class = socketserver.TCPServer
 
 
 @unittest.skipUnless(ssl, "SSL sio available")
 kundi NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
-    imap_kundi = IMAP4_SSL
-    server_kundi = SecureTCPServer
+    imap_class = IMAP4_SSL
+    server_class = SecureTCPServer
 
     eleza test_ssl_raises(self):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -531,8 +531,8 @@ kundi NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
                     self.imap_class('localhost', 143, certfile=CERTFILE)
 
 kundi ThreadedNetworkedTests(unittest.TestCase):
-    server_kundi = socketserver.TCPServer
-    imap_kundi = imaplib.IMAP4
+    server_class = socketserver.TCPServer
+    imap_class = imaplib.IMAP4
 
     eleza make_server(self, addr, hdlr):
 
@@ -886,8 +886,8 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
 @unittest.skipUnless(ssl, "SSL sio available")
 kundi ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
-    server_kundi = SecureTCPServer
-    imap_kundi = IMAP4_SSL
+    server_class = SecureTCPServer
+    imap_class = IMAP4_SSL
 
     @reap_threads
     eleza test_ssl_verified(self):
@@ -916,7 +916,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
     port = 143
     username = 'anonymous'
     pitaword = 'pita'
-    imap_kundi = imaplib.IMAP4
+    imap_class = imaplib.IMAP4
 
     eleza setUp(self):
         ukijumuisha transient_internet(self.host):
@@ -963,7 +963,7 @@ kundi RemoteIMAP_STARTTLSTest(RemoteIMAPTest):
 @unittest.skipUnless(ssl, "SSL sio available")
 kundi RemoteIMAP_SSLTest(RemoteIMAPTest):
     port = 993
-    imap_kundi = IMAP4_SSL
+    imap_class = IMAP4_SSL
 
     eleza setUp(self):
         pita

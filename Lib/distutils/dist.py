@@ -536,7 +536,7 @@ Common commands: (see '--help-commands' kila more)
         # 1) know that it's a valid command, na 2) know which options
         # it takes.
         jaribu:
-            cmd_kundi = self.get_command_class(command)
+            cmd_class = self.get_command_class(command)
         tatizo DistutilsModuleError kama msg:
             ashiria DistutilsArgError(msg)
 

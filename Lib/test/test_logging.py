@@ -1639,7 +1639,7 @@ kundi SocketHandlerTest(BaseTest):
 
     """Test kila SocketHandler objects."""
 
-    server_kundi = TestTCPServer
+    server_class = TestTCPServer
     address = ('localhost', 0)
 
     eleza setUp(self):
@@ -1738,7 +1738,7 @@ kundi UnixSocketHandlerTest(SocketHandlerTest):
     """Test kila SocketHandler ukijumuisha unix sockets."""
 
     ikiwa hasattr(socket, "AF_UNIX"):
-        server_kundi = TestUnixStreamServer
+        server_class = TestUnixStreamServer
 
     eleza setUp(self):
         # override the definition kwenye the base class
@@ -1753,7 +1753,7 @@ kundi DatagramHandlerTest(BaseTest):
 
     """Test kila DatagramHandler."""
 
-    server_kundi = TestUDPServer
+    server_class = TestUDPServer
     address = ('localhost', 0)
 
     eleza setUp(self):
@@ -1819,7 +1819,7 @@ kundi UnixDatagramHandlerTest(DatagramHandlerTest):
     """Test kila DatagramHandler using Unix sockets."""
 
     ikiwa hasattr(socket, "AF_UNIX"):
-        server_kundi = TestUnixDatagramServer
+        server_class = TestUnixDatagramServer
 
     eleza setUp(self):
         # override the definition kwenye the base class
@@ -1834,7 +1834,7 @@ kundi SysLogHandlerTest(BaseTest):
 
     """Test kila SysLogHandler using UDP."""
 
-    server_kundi = TestUDPServer
+    server_class = TestUDPServer
     address = ('localhost', 0)
 
     eleza setUp(self):
@@ -1903,7 +1903,7 @@ kundi UnixSysLogHandlerTest(SysLogHandlerTest):
     """Test kila SysLogHandler ukijumuisha Unix sockets."""
 
     ikiwa hasattr(socket, "AF_UNIX"):
-        server_kundi = TestUnixDatagramServer
+        server_class = TestUnixDatagramServer
 
     eleza setUp(self):
         # override the definition kwenye the base class
@@ -1920,7 +1920,7 @@ kundi IPv6SysLogHandlerTest(SysLogHandlerTest):
 
     """Test kila SysLogHandler ukijumuisha IPv6 host."""
 
-    server_kundi = TestUDPServer
+    server_class = TestUDPServer
     address = ('::1', 0)
 
     eleza setUp(self):
@@ -2092,7 +2092,7 @@ kundi EncodingTest(BaseTest):
         # Get a message kwenye Unicode: Do svidanya kwenye Cyrillic (meaning goodbye)
         message = '\u0434\u043e \u0441\u0432\u0438\u0434\u0430\u043d\u0438\u044f'
         # Ensure it's written kwenye a Cyrillic encoding
-        writer_kundi = codecs.getwriter('cp1251')
+        writer_class = codecs.getwriter('cp1251')
         writer_class.encoding = 'cp1251'
         stream = io.BytesIO()
         writer = writer_class(stream, 'strict')

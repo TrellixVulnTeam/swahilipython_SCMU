@@ -89,7 +89,7 @@ Also pita another keyword.
     Kweli
     >>>
 
-Check that build_kundi doesn't mutate the kwds dict.
+Check that build_class doesn't mutate the kwds dict.
 
     >>> kwds = {'metaclass': type}
     >>> kundi C(**kwds): pita

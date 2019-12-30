@@ -161,7 +161,7 @@ kundi EnumMeta(type):
             classdict['__doc__'] = 'An enumeration.'
 
         # create our new Enum type
-        enum_kundi = super().__new__(metacls, cls, bases, classdict)
+        enum_class = super().__new__(metacls, cls, bases, classdict)
         enum_class._member_names_ = []               # names kwenye definition order
         enum_class._member_map_ = {}                 # name->value map
         enum_class._member_type_ = member_type
@@ -413,7 +413,7 @@ kundi EnumMeta(type):
             isipokua:
                 member_name, member_value = item
             classdict[member_name] = member_value
-        enum_kundi = metacls.__new__(metacls, class_name, bases, classdict)
+        enum_class = metacls.__new__(metacls, class_name, bases, classdict)
 
         # TODO: replace the frame hack ikiwa a blessed way to know the calling
         # module ni ever developed

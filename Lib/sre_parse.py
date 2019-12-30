@@ -557,9 +557,9 @@ eleza _parse(source, state, verbose, nested, first=Uongo):
                         agiza warnings
                         warnings.warn(
                             'Possible set %s at position %d' % (
-                                'difference' ikiwa this == '-' else
-                                'intersection' ikiwa this == '&' else
-                                'symmetric difference' ikiwa this == '~' else
+                                'difference' ikiwa this == '-' isipokua
+                                'intersection' ikiwa this == '&' isipokua
+                                'symmetric difference' ikiwa this == '~' isipokua
                                 'union',
                                 source.tell() - 1),
                             FutureWarning, stacklevel=nested + 6

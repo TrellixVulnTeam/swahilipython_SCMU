@@ -3485,7 +3485,7 @@ kundi _TestPicklingConnections(BaseTestCase):
     eleza test_access(self):
         # On Windows, ikiwa we do sio specify a destination pid when
         # using DupHandle then we need to be careful to use the
-        # correct access flags kila DuplicateHandle(), ama else
+        # correct access flags kila DuplicateHandle(), ama isipokua
         # DupHandle.detach() will ashiria PermissionError.  For example,
         # kila a read only pipe handle we should use
         # access=FILE_GENERIC_READ.  (Unfortunately
@@ -5211,7 +5211,7 @@ kundi TestSyncManagerTypes(unittest.TestCase):
         self.run_worker(self._test_list, o)
         assert o[1] == 6
     """
-    manager_kundi = multiprocessing.managers.SyncManager
+    manager_class = multiprocessing.managers.SyncManager
 
     eleza setUp(self):
         self.manager = self.manager_class()

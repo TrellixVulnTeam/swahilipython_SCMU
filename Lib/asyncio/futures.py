@@ -286,12 +286,12 @@ eleza _set_result_unless_cancelled(fut, result):
 
 
 eleza _convert_future_exc(exc):
-    exc_kundi = type(exc)
-    ikiwa exc_kundi ni concurrent.futures.CancelledError:
+    exc_class = type(exc)
+    ikiwa exc_class ni concurrent.futures.CancelledError:
         rudisha exceptions.CancelledError(*exc.args)
-    lasivyo exc_kundi ni concurrent.futures.TimeoutError:
+    lasivyo exc_class ni concurrent.futures.TimeoutError:
         rudisha exceptions.TimeoutError(*exc.args)
-    lasivyo exc_kundi ni concurrent.futures.InvalidStateError:
+    lasivyo exc_class ni concurrent.futures.InvalidStateError:
         rudisha exceptions.InvalidStateError(*exc.args)
     isipokua:
         rudisha exc

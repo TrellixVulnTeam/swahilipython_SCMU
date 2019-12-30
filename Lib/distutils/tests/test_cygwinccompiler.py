@@ -13,7 +13,7 @@ kutoka distutils.cygwinccompiler agiza (check_config_h,
 kutoka distutils.tests agiza support
 
 kundi FakePopen(object):
-    test_kundi = Tupu
+    test_class = Tupu
 
     eleza __init__(self, cmd, shell, stdout):
         self.cmd = cmd.split()[0]
@@ -39,7 +39,7 @@ kundi CygwinCCompilerTestCase(support.TempdirManager,
         cygwinccompiler.find_executable = self._find_executable
         self._exes = {}
         self.old_popen = cygwinccompiler.Popen
-        FakePopen.test_kundi = self
+        FakePopen.test_class = self
         cygwinccompiler.Popen = FakePopen
 
     eleza tearDown(self):

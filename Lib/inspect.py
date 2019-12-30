@@ -366,7 +366,7 @@ eleza getmembers(object, predicate=Tupu):
     results.sort(key=lambda pair: pair[0])
     rudisha results
 
-Attribute = namedtuple('Attribute', 'name kind defining_kundi object')
+Attribute = namedtuple('Attribute', 'name kind defining_class object')
 
 eleza classify_class_attrs(cls):
     """Return list of attribute-descriptor tuples.

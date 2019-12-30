@@ -1011,7 +1011,7 @@ kundi BasicTest(TestCase):
                 nonlocal response
                 response = self  # Avoid garbage collector closing the socket
                 client.HTTPResponse.__init__(self, *pos, **kw)
-        conn.response_kundi = Response
+        conn.response_class = Response
         conn.sock = FakeSocket('Invalid status line')
         conn.request('GET', '/')
         self.assertRaises(client.BadStatusLine, conn.getresponse)

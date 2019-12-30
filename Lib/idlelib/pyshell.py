@@ -1353,7 +1353,7 @@ The following options imply -i na will open a shell:
   -r file    run script kutoka file
 
   -d         enable the debugger
-  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything else
+  -s         run $IDLESTARTUP ama $PYTHONSTARTUP before anything isipokua
   -t title   set title of shell window
 
 A default edit window will be bypitaed when -c, -r, ama - are used.

@@ -1407,7 +1407,7 @@ kundi IPv4Network(_BaseV4, _BaseNetwork):
 
     """
     # Class to use when creating address objects
-    _address_kundi = IPv4Address
+    _address_class = IPv4Address
 
     eleza __init__(self, address, strict=Kweli):
         """Instantiate a new IPv4 network object.
@@ -2063,7 +2063,7 @@ kundi IPv6Network(_BaseV6, _BaseNetwork):
     """
 
     # Class to use when creating address objects
-    _address_kundi = IPv6Address
+    _address_class = IPv6Address
 
     eleza __init__(self, address, strict=Kweli):
         """Instantiate a new IPv6 Network object.

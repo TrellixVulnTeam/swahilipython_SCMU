@@ -150,7 +150,7 @@ kundi ParserTesterMetaclass(type):
         ikiwa sio hasattr(cls, 'parser_signature'):
             cls.parser_signature = Sig()
         ikiwa sio hasattr(cls, 'parser_class'):
-            cls.parser_kundi = ErrorRaisingArgumentParser
+            cls.parser_class = ErrorRaisingArgumentParser
 
         # ---------------------------------------
         # functions kila adding optional arguments
@@ -1437,7 +1437,7 @@ kundi TestArgumentsFromFileConverter(TempDirMixin, ParserTestCase):
                 ikiwa sio arg.strip():
                     endelea
                 tuma arg
-    parser_kundi = FromFileConverterArgumentParser
+    parser_class = FromFileConverterArgumentParser
     parser_signature = Sig(fromfile_prefix_chars='@')
     argument_signatures = [
         Sig('y', nargs='+'),

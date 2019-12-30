@@ -1290,7 +1290,7 @@ kundi HandlerTests(unittest.TestCase):
 
     eleza test_redirect_no_path(self):
         # Issue 14132: Relative redirect strips original path
-        real_kundi = http.client.HTTPConnection
+        real_class = http.client.HTTPConnection
         response1 = b"HTTP/1.1 302 Found\r\nLocation: ?query\r\n\r\n"
         http.client.HTTPConnection = test_urllib.fakehttp(response1)
         self.addCleanup(setattr, http.client, "HTTPConnection", real_class)

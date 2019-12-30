@@ -26,7 +26,7 @@ kundi Parser:
         header block ni terminated either by the end of the string ama by a
         blank line.
 
-        _kundi ni the kundi to instantiate kila new message objects when they
+        _class ni the kundi to instantiate kila new message objects when they
         must be created.  This kundi must have a constructor that can take
         zero arguments.  Default ni Message.Message.
 
@@ -35,7 +35,7 @@ kundi Parser:
         backward compatibility.
 
         """
-        self._kundi = _class
+        self._class = _class
         self.policy = policy
 
     eleza parse(self, fp, headersonly=Uongo):
@@ -90,7 +90,7 @@ kundi BytesParser:
         header block ni terminated either by the end of the input ama by a
         blank line.
 
-        _kundi ni the kundi to instantiate kila new message objects when they
+        _class ni the kundi to instantiate kila new message objects when they
         must be created.  This kundi must have a constructor that can take
         zero arguments.  Default ni Message.Message.
         """

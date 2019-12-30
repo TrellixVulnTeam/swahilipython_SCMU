@@ -133,7 +133,7 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
 
     ukijumuisha _maybe_open(target, 'wb') kama fd:
         _write_file_prefix(fd, interpreter)
-        compression = (zipfile.ZIP_DEFLATED ikiwa compressed else
+        compression = (zipfile.ZIP_DEFLATED ikiwa compressed isipokua
                        zipfile.ZIP_STORED)
         ukijumuisha zipfile.ZipFile(fd, 'w', compression=compression) kama z:
             kila child kwenye source.rglob('*'):

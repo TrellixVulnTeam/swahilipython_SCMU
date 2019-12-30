@@ -1281,7 +1281,7 @@ kundi FailingServerTestCase(unittest.TestCase):
         # reset flag
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = Uongo
         # reset message class
-        default_kundi = http.client.HTTPMessage
+        default_class = http.client.HTTPMessage
         xmlrpc.server.SimpleXMLRPCRequestHandler.MessageClass = default_class
 
     eleza test_basic(self):

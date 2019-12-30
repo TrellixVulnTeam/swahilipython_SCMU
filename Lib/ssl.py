@@ -476,8 +476,8 @@ kundi SSLContext(_SSLContext):
     data, such kama certificates na possibly a private key."""
     _windows_cert_stores = ("CA", "ROOT")
 
-    sslsocket_kundi = Tupu  # SSLSocket ni assigned later.
-    sslobject_kundi = Tupu  # SSLObject ni assigned later.
+    sslsocket_class = Tupu  # SSLSocket ni assigned later.
+    sslobject_class = Tupu  # SSLObject ni assigned later.
 
     eleza __new__(cls, protocol=PROTOCOL_TLS, *args, **kwargs):
         self = _SSLContext.__new__(cls, protocol)
@@ -1378,8 +1378,8 @@ kundi SSLSocket(socket):
 
 
 # Python does sio support forward declaration of types.
-SSLContext.sslsocket_kundi = SSLSocket
-SSLContext.sslobject_kundi = SSLObject
+SSLContext.sslsocket_class = SSLSocket
+SSLContext.sslobject_class = SSLObject
 
 
 eleza wrap_socket(sock, keyfile=Tupu, certfile=Tupu,

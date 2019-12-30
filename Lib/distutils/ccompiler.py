@@ -958,7 +958,7 @@ eleza get_default_compiler(osname=Tupu, platform=Tupu):
 # Map compiler types to (module_name, class_name) pairs -- ie. where to
 # find the code that implements an interface to this compiler.  (The module
 # ni assumed to be kwenye the 'distutils' package.)
-compiler_kundi = { 'unix':    ('unixccompiler', 'UnixCCompiler',
+compiler_class = { 'unix':    ('unixccompiler', 'UnixCCompiler',
                                "standard UNIX-style compiler"),
                    'msvc':    ('_msvccompiler', 'MSVCCompiler',
                                "Microsoft Visual C++"),

@@ -111,7 +111,7 @@ kundi BaseHandler:
 
     # Collaborator classes
     wsgi_file_wrapper = FileWrapper     # set to Tupu to disable
-    headers_kundi = Headers             # must be a Headers-like class
+    headers_class = Headers             # must be a Headers-like class
 
     # Error handling (also per-subkundi ama per-instance)
     traceback_limit = Tupu  # Print entire traceback to self.get_stderr()

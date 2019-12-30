@@ -973,7 +973,7 @@ kundi UnraisableHookTest(unittest.TestCase):
                 # The following line ni included kwenye the traceback report:
                 ashiria exc
 
-        kila test_kundi kwenye (BrokenDel, BrokenExceptionDel):
+        kila test_class kwenye (BrokenDel, BrokenExceptionDel):
             ukijumuisha self.subTest(test_class):
                 obj = test_class()
                 ukijumuisha test.support.captured_stderr() kama stderr, \
@@ -987,7 +987,7 @@ kundi UnraisableHookTest(unittest.TestCase):
                 self.assertIn(test_class.__del__.__qualname__, report)
                 self.assertIn("test_sys.py", report)
                 self.assertIn("ashiria exc", report)
-                ikiwa test_kundi ni BrokenExceptionDel:
+                ikiwa test_class ni BrokenExceptionDel:
                     self.assertIn("BrokenStrException", report)
                     self.assertIn("<exception str() failed>", report)
                 isipokua:

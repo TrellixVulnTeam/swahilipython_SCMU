@@ -105,8 +105,8 @@ eleza fakehttp(fakedata, mock_close=Uongo):
 
 kundi FakeHTTPMixin(object):
     eleza fakehttp(self, fakedata, mock_close=Uongo):
-        fake_http_kundi = fakehttp(fakedata, mock_close=mock_close)
-        self._connection_kundi = http.client.HTTPConnection
+        fake_http_class = fakehttp(fakedata, mock_close=mock_close)
+        self._connection_class = http.client.HTTPConnection
         http.client.HTTPConnection = fake_http_class
 
     eleza unfakehttp(self):
@@ -126,7 +126,7 @@ kundi FakeFTPMixin(object):
             eleza close(self):
                 pita
 
-        self._ftpwrapper_kundi = urllib.request.ftpwrapper
+        self._ftpwrapper_class = urllib.request.ftpwrapper
         urllib.request.ftpwrapper = FakeFtpWrapper
 
     eleza unfakeftp(self):

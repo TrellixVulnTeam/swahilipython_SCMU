@@ -48,7 +48,7 @@ kundi CommandTestMixin:
 
 kundi GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.GenericBrowser
+    browser_class = webbrowser.GenericBrowser
 
     eleza test_open(self):
         self._test('open',
@@ -58,7 +58,7 @@ kundi GenericBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.BackgroundBrowser
+    browser_class = webbrowser.BackgroundBrowser
 
     eleza test_open(self):
         self._test('open',
@@ -68,7 +68,7 @@ kundi BackgroundBrowserCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi ChromeCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Chrome
+    browser_class = webbrowser.Chrome
 
     eleza test_open(self):
         self._test('open',
@@ -93,7 +93,7 @@ kundi ChromeCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi MozillaCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Mozilla
+    browser_class = webbrowser.Mozilla
 
     eleza test_open(self):
         self._test('open',
@@ -118,7 +118,7 @@ kundi MozillaCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi NetscapeCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Netscape
+    browser_class = webbrowser.Netscape
 
     eleza test_open(self):
         self._test('open',
@@ -143,7 +143,7 @@ kundi NetscapeCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi GaleonCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Galeon
+    browser_class = webbrowser.Galeon
 
     eleza test_open(self):
         self._test('open',
@@ -168,7 +168,7 @@ kundi GaleonCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi OperaCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Opera
+    browser_class = webbrowser.Opera
 
     eleza test_open(self):
         self._test('open',
@@ -193,7 +193,7 @@ kundi OperaCommandTest(CommandTestMixin, unittest.TestCase):
 
 kundi ELinksCommandTest(CommandTestMixin, unittest.TestCase):
 
-    browser_kundi = webbrowser.Elinks
+    browser_class = webbrowser.Elinks
 
     eleza test_open(self):
         self._test('open', options=['-remote'],

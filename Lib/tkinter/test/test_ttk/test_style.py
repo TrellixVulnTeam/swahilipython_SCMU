@@ -25,7 +25,7 @@ kundi StyleTest(AbstractTkTest, unittest.TestCase):
         style = self.style
         style.map('TButton', background=[('active', 'background', 'blue')])
         self.assertEqual(style.map('TButton', 'background'),
-            [('active', 'background', 'blue')] ikiwa self.wantobjects else
+            [('active', 'background', 'blue')] ikiwa self.wantobjects isipokua
             [('active background', 'blue')])
         self.assertIsInstance(style.map('TButton'), dict)
 

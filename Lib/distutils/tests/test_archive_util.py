@@ -252,7 +252,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         patch(self, archive_util.zipfile, 'zlib', Tupu)  # force zlib ImportError
 
         called = []
-        zipfile_kundi = zipfile.ZipFile
+        zipfile_class = zipfile.ZipFile
         eleza fake_zipfile(*a, **kw):
             ikiwa kw.get('compression', Tupu) == zipfile.ZIP_STORED:
                 called.append((a, kw))

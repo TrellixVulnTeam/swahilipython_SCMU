@@ -549,7 +549,7 @@ kundi TclTest(unittest.TestCase):
             ([], ()),
             (['a', ['b', 'c']], ('a', ['b', 'c'])),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects else
+                (1, '2', (3.4,)) ikiwa self.wantobjects isipokua
                 ('1', '2', '3.4')),
         ]
         tk_patchlevel = get_tk_patchlevel()
@@ -603,7 +603,7 @@ kundi TclTest(unittest.TestCase):
             (['a', 'b c'], ('a', ('b', 'c'))),
             (['a', ['b', 'c']], ('a', ('b', 'c'))),
             (call('list', 1, '2', (3.4,)),
-                (1, '2', (3.4,)) ikiwa self.wantobjects else
+                (1, '2', (3.4,)) ikiwa self.wantobjects isipokua
                 ('1', '2', '3.4')),
         ]
         ikiwa tcl_version >= (8, 5):

@@ -2551,7 +2551,7 @@ kundi TestFrozen(unittest.TestCase):
     # Test both ways: ukijumuisha an intermediate normal (non-dataclass)
     #  kundi na without an intermediate class.
     eleza test_inherit_nonfrozen_from_frozen(self):
-        kila intermediate_kundi kwenye [Kweli, Uongo]:
+        kila intermediate_class kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 @dataclass(frozen=Kweli)
                 kundi C:
@@ -2569,7 +2569,7 @@ kundi TestFrozen(unittest.TestCase):
                         pita
 
     eleza test_inherit_frozen_from_nonfrozen(self):
-        kila intermediate_kundi kwenye [Kweli, Uongo]:
+        kila intermediate_class kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 @dataclass
                 kundi C:
@@ -2587,7 +2587,7 @@ kundi TestFrozen(unittest.TestCase):
                         pita
 
     eleza test_inherit_from_normal_class(self):
-        kila intermediate_kundi kwenye [Kweli, Uongo]:
+        kila intermediate_class kwenye [Kweli, Uongo]:
             ukijumuisha self.subTest(intermediate_class=intermediate_class):
                 kundi C:
                     pita
@@ -3085,7 +3085,7 @@ kundi TestMakeDataclass(unittest.TestCase):
 
     eleza test_funny_class_names_names(self):
         # No reason to prevent weird kundi names, since
-        # types.new_kundi allows them.
+        # types.new_class allows them.
         kila classname kwenye ['()', 'x,y', '*', '2@3', '']:
             ukijumuisha self.subTest(classname=classname):
                 C = make_dataclass(classname, ['a', 'b'])

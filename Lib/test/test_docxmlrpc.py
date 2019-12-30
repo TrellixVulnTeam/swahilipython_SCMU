@@ -184,7 +184,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
         """ Test that annotations works kama expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
-        docstring = (b'' ikiwa sys.flags.optimize >= 2 else
+        docstring = (b'' ikiwa sys.flags.optimize >= 2 isipokua
                      b'<dd><tt>Use&nbsp;function&nbsp;annotations.</tt></dd>')
         self.assertIn(
             (b'<dl><dt><a name="-annotation"><strong>annotation</strong></a>'

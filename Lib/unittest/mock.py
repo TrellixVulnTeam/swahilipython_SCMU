@@ -489,7 +489,7 @@ kundi NonCallableMock(Base):
 
     eleza _mock_add_spec(self, spec, spec_set, _spec_as_instance=Uongo,
                        _eat_self=Uongo):
-        _spec_kundi = Tupu
+        _spec_class = Tupu
         _spec_signature = Tupu
         _spec_asyncs = []
 
@@ -499,9 +499,9 @@ kundi NonCallableMock(Base):
 
         ikiwa spec ni sio Tupu na sio _is_list(spec):
             ikiwa isinstance(spec, type):
-                _spec_kundi = spec
+                _spec_class = spec
             isipokua:
-                _spec_kundi = type(spec)
+                _spec_class = type(spec)
             res = _get_signature_object(spec,
                                         _spec_as_instance, _eat_self)
             _spec_signature = res na res[1]
@@ -542,7 +542,7 @@ kundi NonCallableMock(Base):
 
     @property
     eleza __class__(self):
-        ikiwa self._spec_kundi ni Tupu:
+        ikiwa self._spec_class ni Tupu:
             rudisha type(self)
         rudisha self._spec_class
 
@@ -701,7 +701,7 @@ kundi NonCallableMock(Base):
             name_string = ' name=%r' % name
 
         spec_string = ''
-        ikiwa self._spec_kundi ni sio Tupu:
+        ikiwa self._spec_class ni sio Tupu:
             spec_string = ' spec=%r'
             ikiwa self._spec_set:
                 spec_string = ' spec_set=%r'
@@ -758,7 +758,7 @@ kundi NonCallableMock(Base):
                 setattr(type(self), name, value)
                 self._mock_children[name] = value
         lasivyo name == '__class__':
-            self._spec_kundi = value
+            self._spec_class = value
             return
         isipokua:
             ikiwa _check_and_set_parent(self, value, name, name):

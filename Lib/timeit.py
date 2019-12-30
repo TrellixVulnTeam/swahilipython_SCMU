@@ -155,7 +155,7 @@ kundi Timer:
                                                Tupu,
                                                self.src.split("\n"),
                                                dummy_src_name)
-        # isipokua the source ni already stored somewhere else
+        # isipokua the source ni already stored somewhere isipokua
 
         traceback.print_exc(file=file)
 

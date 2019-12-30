@@ -637,7 +637,7 @@ kundi PriorityQueueTests(_QueueTestBase):
 
 kundi _QueueJoinTestMixin:
 
-    q_kundi = Tupu
+    q_class = Tupu
 
     eleza test_task_done_underflow(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
@@ -684,7 +684,7 @@ kundi _QueueJoinTestMixin:
         ukijumuisha self.assertWarns(DeprecationWarning):
             q = self.q_class(loop=self.loop)
 
-        # Test that a queue join()s successfully, na before anything else
+        # Test that a queue join()s successfully, na before anything isipokua
         # (done twice kila insurance).
 
         async eleza join():
@@ -703,15 +703,15 @@ kundi _QueueJoinTestMixin:
 
 
 kundi QueueJoinTests(_QueueJoinTestMixin, _QueueTestBase):
-    q_kundi = asyncio.Queue
+    q_class = asyncio.Queue
 
 
 kundi LifoQueueJoinTests(_QueueJoinTestMixin, _QueueTestBase):
-    q_kundi = asyncio.LifoQueue
+    q_class = asyncio.LifoQueue
 
 
 kundi PriorityQueueJoinTests(_QueueJoinTestMixin, _QueueTestBase):
-    q_kundi = asyncio.PriorityQueue
+    q_class = asyncio.PriorityQueue
 
 
 ikiwa __name__ == '__main__':

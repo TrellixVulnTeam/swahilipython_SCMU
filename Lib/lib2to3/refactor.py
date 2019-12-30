@@ -230,7 +230,7 @@ kundi RefactoringTool(object):
             parts = fix_name.split("_")
             class_name = self.CLASS_PREFIX + "".join([p.title() kila p kwenye parts])
             jaribu:
-                fix_kundi = getattr(mod, class_name)
+                fix_class = getattr(mod, class_name)
             tatizo AttributeError:
                 ashiria FixerError("Can't find %s.%s" % (fix_name, class_name)) kutoka Tupu
             fixer = fix_class(self.options, self.fixer_log)

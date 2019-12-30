@@ -270,10 +270,10 @@ eleza _create_tree(fullmodule, path, fname, source, tree, inpackage):
                     inherit = names
                 ikiwa stack:
                     cur_obj = stack[-1][0]
-                    cur_kundi = _nest_class(
+                    cur_class = _nest_class(
                             cur_obj, class_name, lineno, inherit)
                 isipokua:
-                    cur_kundi = Class(fullmodule, class_name, inherit,
+                    cur_class = Class(fullmodule, class_name, inherit,
                                       fname, lineno)
                     tree[class_name] = cur_class
                 stack.append((cur_class, thisindent))

@@ -3523,7 +3523,7 @@ kundi RFC3542AncillaryTest(SendrecvmsgServerTimeoutBase):
 
     # Test value to use when setting traffic kundi of packet.
     # -1 means "use kernel default".
-    traffic_kundi = -1
+    traffic_class = -1
 
     eleza ancillaryMapping(self, ancdata):
         # Given ancillary data list ancdata, rudisha a mapping from

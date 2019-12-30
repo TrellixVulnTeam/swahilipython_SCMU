@@ -8,7 +8,7 @@ kutoka distutils.tests agiza support
 kutoka test.support agiza run_unittest
 
 
-SKIP_MESSAGE = (Tupu ikiwa sys.platform == "win32" else
+SKIP_MESSAGE = (Tupu ikiwa sys.platform == "win32" isipokua
                 "These tests are only kila win32")
 
 @unittest.skipUnless(SKIP_MESSAGE ni Tupu, SKIP_MESSAGE)

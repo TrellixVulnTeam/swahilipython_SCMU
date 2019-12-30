@@ -141,7 +141,7 @@ kundi MultiPhaseExtensionModuleTests(abc.LoaderTests):
         '''Test that reload didn't re-set the module's attributes'''
         ukijumuisha util.uncache(self.name):
             module = self.load_module()
-            ex_kundi = module.Example
+            ex_class = module.Example
             importlib.reload(module)
             self.assertIs(ex_class, module.Example)
 

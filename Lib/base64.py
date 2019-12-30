@@ -286,8 +286,8 @@ eleza _85encode(b, chars, chars2, pad=Uongo, foldnuls=Uongo, foldspaces=Uongo):
         b = b + b'\0' * padding
     words = struct.Struct('!%dI' % (len(b) // 4)).unpack(b)
 
-    chunks = [b'z' ikiwa foldnuls na sio word else
-              b'y' ikiwa foldspaces na word == 0x20202020 else
+    chunks = [b'z' ikiwa foldnuls na sio word isipokua
+              b'y' ikiwa foldspaces na word == 0x20202020 isipokua
               (chars2[word // 614125] +
                chars2[word // 85 % 7225] +
                chars[word % 85])

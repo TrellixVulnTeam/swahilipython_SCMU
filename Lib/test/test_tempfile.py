@@ -86,7 +86,7 @@ kundi BaseTestCase(unittest.TestCase):
             self.assertIs(
                 type(name),
                 str
-                ikiwa type(dir) ni str ama isinstance(dir, os.PathLike) else
+                ikiwa type(dir) ni str ama isinstance(dir, os.PathLike) isipokua
                 bytes,
                 "unexpected rudisha type",
             )

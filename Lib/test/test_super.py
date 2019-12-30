@@ -145,13 +145,13 @@ kundi TestSuper(unittest.TestCase):
     eleza test___class___new(self):
         # See issue #23722
         # Ensure zero-arg super() works kama soon kama type.__new__() ni completed
-        test_kundi = Tupu
+        test_class = Tupu
 
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
                 nonlocal test_class
                 self = super().__new__(cls, name, bases, namespace)
-                test_kundi = self.f()
+                test_class = self.f()
                 rudisha self
 
         kundi A(metaclass=Meta):
@@ -183,7 +183,7 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___class___mro(self):
         # See issue #23722
-        test_kundi = Tupu
+        test_class = Tupu
 
         kundi Meta(type):
             eleza mro(self):
@@ -194,7 +194,7 @@ kundi TestSuper(unittest.TestCase):
         kundi A(metaclass=Meta):
             eleza f():
                 nonlocal test_class
-                test_kundi = __class__
+                test_class = __class__
 
         self.assertIs(test_class, A)
 

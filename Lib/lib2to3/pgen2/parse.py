@@ -151,7 +151,7 @@ kundi Parser(object):
                         koma # To endelea the outer wakati loop
             isipokua:
                 ikiwa (0, state) kwenye arcs:
-                    # An accepting state, pop it na try something else
+                    # An accepting state, pop it na try something isipokua
                     self.pop()
                     ikiwa sio self.stack:
                         # Done parsing, but another token ni input

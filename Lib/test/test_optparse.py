@@ -505,7 +505,7 @@ kundi TestDefaultValues(BaseTest):
         self.assertEqual(self.parser.get_default_values(), self.expected)
 
     eleza test_process_default(self):
-        self.parser.option_kundi = DurationOption
+        self.parser.option_class = DurationOption
         self.parser.add_option("-d", type="duration", default=300)
         self.parser.add_option("-e", type="duration", default="6m")
         self.parser.set_defaults(n="42")
