@@ -10,19 +10,19 @@ cur = con.cursor()
 cur.execute(SELECT)
 
 # Print a header.
-for fieldDesc in cur.description:
-    print(fieldDesc[0].ljust(FIELD_MAX_WIDTH), end=' ')
-print() # Finish the header with a newline.
-print('-' * 78)
+kila fieldDesc kwenye cur.description:
+    andika(fieldDesc[0].ljust(FIELD_MAX_WIDTH), end=' ')
+andika() # Finish the header ukijumuisha a newline.
+andika('-' * 78)
 
 # For each row, print the value of each field left-justified within
 # the maximum possible width of that field.
 fieldIndices = range(len(cur.description))
-for row in cur:
-    for fieldIndex in fieldIndices:
+kila row kwenye cur:
+    kila fieldIndex kwenye fieldIndices:
         fieldValue = str(row[fieldIndex])
-        print(fieldValue.ljust(FIELD_MAX_WIDTH), end=' ')
+        andika(fieldValue.ljust(FIELD_MAX_WIDTH), end=' ')
 
-    print() # Finish the row with a newline.
+    andika() # Finish the row ukijumuisha a newline.
 
 con.close()

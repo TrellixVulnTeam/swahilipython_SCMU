@@ -1,19 +1,19 @@
 """
-File generation for catalog signing non-binary contents.
+File generation kila catalog signing non-binary contents.
 """
 
 __author__ = "Steve Dower <steve.dower@python.org>"
 __version__ = "3.8"
 
 
-import sys
+agiza sys
 
 __all__ = ["PYTHON_CAT_NAME", "PYTHON_CDF_NAME"]
 
 
-def public(f):
+eleza public(f):
     __all__.append(f.__name__)
-    return f
+    rudisha f
 
 
 PYTHON_CAT_NAME = "python.cat"
@@ -33,12 +33,12 @@ EncodingType=
 """
 
 
-def can_sign(file):
-    return file.is_file() and file.stat().st_size
+eleza can_sign(file):
+    rudisha file.is_file() na file.stat().st_size
 
 
 @public
-def write_catalog(target, files):
-    with target.open("w", encoding="utf-8") as cat:
+eleza write_catalog(target, files):
+    ukijumuisha target.open("w", encoding="utf-8") kama cat:
         cat.write(CATALOG_TEMPLATE.format(target=target))
-        cat.writelines("<HASH>{}={}\n".format(n, f) for n, f in files if can_sign(f))
+        cat.writelines("<HASH>{}={}\n".format(n, f) kila n, f kwenye files ikiwa can_sign(f))

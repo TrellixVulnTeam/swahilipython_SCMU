@@ -23,8 +23,8 @@ Cela ressemble à un excellent recipie[1] déjeuner.
 """)
 
 # Add the html version.  This converts the message into a multipart/alternative
-# container, with the original text message as the first part and the new html
-# message as the second part.
+# container, ukijumuisha the original text message kama the first part na the new html
+# message kama the second part.
 asparagus_cid = make_msgid()
 msg.add_alternative("""\
 <html>
@@ -40,17 +40,17 @@ msg.add_alternative("""\
   </body>
 </html>
 """.format(asparagus_cid=asparagus_cid[1:-1]), subtype='html')
-# note that we needed to peel the <> off the msgid for use in the html.
+# note that we needed to peel the <> off the msgid kila use kwenye the html.
 
 # Now add the related image to the html part.
-with open("roasted-asparagus.jpg", 'rb') as img:
+ukijumuisha open("roasted-asparagus.jpg", 'rb') kama img:
     msg.get_payload()[1].add_related(img.read(), 'image', 'jpeg',
                                      cid=asparagus_cid)
 
 # Make a local copy of what we are going to send.
-with open('outgoing.msg', 'wb') as f:
+ukijumuisha open('outgoing.msg', 'wb') kama f:
     f.write(bytes(msg))
 
 # Send the message via local SMTP server.
-with smtplib.SMTP('localhost') as s:
+ukijumuisha smtplib.SMTP('localhost') kama s:
     s.send_message(msg)

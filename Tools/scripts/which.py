@@ -1,60 +1,60 @@
 #! /usr/bin/env python3
 
 # Variant of "which".
-# On stderr, near and total misses are reported.
+# On stderr, near na total misses are reported.
 # '-l<flags>' argument adds ls -l<flags> of each file found.
 
-import sys
-if sys.path[0] in (".", ""): del sys.path[0]
+agiza sys
+ikiwa sys.path[0] kwenye (".", ""): toa sys.path[0]
 
-import sys, os
-from stat import *
+agiza sys, os
+kutoka stat agiza *
 
-def msg(str):
+eleza msg(str):
     sys.stderr.write(str + '\n')
 
-def main():
+eleza main():
     pathlist = os.environ['PATH'].split(os.pathsep)
 
     sts = 0
     longlist = ''
 
-    if sys.argv[1:] and sys.argv[1][:2] == '-l':
+    ikiwa sys.argv[1:] na sys.argv[1][:2] == '-l':
         longlist = sys.argv[1]
-        del sys.argv[1]
+        toa sys.argv[1]
 
-    for prog in sys.argv[1:]:
+    kila prog kwenye sys.argv[1:]:
         ident = ()
-        for dir in pathlist:
+        kila dir kwenye pathlist:
             filename = os.path.join(dir, prog)
-            try:
+            jaribu:
                 st = os.stat(filename)
-            except OSError:
-                continue
-            if not S_ISREG(st[ST_MODE]):
-                msg(filename + ': not a disk file')
-            else:
+            tatizo OSError:
+                endelea
+            ikiwa sio S_ISREG(st[ST_MODE]):
+                msg(filename + ': sio a disk file')
+            isipokua:
                 mode = S_IMODE(st[ST_MODE])
-                if mode & 0o111:
-                    if not ident:
-                        print(filename)
+                ikiwa mode & 0o111:
+                    ikiwa sio ident:
+                        andika(filename)
                         ident = st[:3]
-                    else:
-                        if st[:3] == ident:
+                    isipokua:
+                        ikiwa st[:3] == ident:
                             s = 'same as: '
-                        else:
+                        isipokua:
                             s = 'also: '
                         msg(s + filename)
-                else:
-                    msg(filename + ': not executable')
-            if longlist:
+                isipokua:
+                    msg(filename + ': sio executable')
+            ikiwa longlist:
                 sts = os.system('ls ' + longlist + ' ' + filename)
-                if sts: msg('"ls -l" exit status: ' + repr(sts))
-        if not ident:
-            msg(prog + ': not found')
+                ikiwa sts: msg('"ls -l" exit status: ' + repr(sts))
+        ikiwa sio ident:
+            msg(prog + ': sio found')
             sts = 1
 
     sys.exit(sts)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

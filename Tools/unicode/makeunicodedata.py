@@ -1,14 +1,14 @@
 #
-# (re)generate unicode property and type databases
+# (re)generate unicode property na type databases
 #
 # This script converts Unicode database files to Modules/unicodedata_db.h,
-# Modules/unicodename_db.h, and Objects/unicodetype_db.h
+# Modules/unicodename_db.h, na Objects/unicodetype_db.h
 #
 # history:
-# 2000-09-24 fl   created (based on bits and pieces from unidb)
+# 2000-09-24 fl   created (based on bits na pieces kutoka unidb)
 # 2000-09-25 fl   merged tim's splitbin fixes, separate decomposition table
 # 2000-09-25 fl   added character type table
-# 2000-09-26 fl   added LINEBREAK, DECIMAL, and DIGIT flags/fields (2.0)
+# 2000-09-26 fl   added LINEBREAK, DECIMAL, na DIGIT flags/fields (2.0)
 # 2000-11-03 fl   expand first/last ranges
 # 2001-01-19 fl   added character name tables (2.1)
 # 2001-01-21 fl   added decomp compression; dynamic phrasebook threshold
@@ -19,19 +19,19 @@
 # 2002-11-25 mvl  add UNIDATA_VERSION
 # 2004-05-29 perky add east asian width information
 # 2006-03-10 mvl  update to Unicode 4.1; add UCD 3.2 delta
-# 2008-06-11 gb   add PRINTABLE_MASK for Atsuo Ishimoto's ascii() patch
-# 2011-10-21 ezio add support for name aliases and named sequences
+# 2008-06-11 gb   add PRINTABLE_MASK kila Atsuo Ishimoto's ascii() patch
+# 2011-10-21 ezio add support kila name aliases na named sequences
 # 2012-01    benjamin add full case mappings
 #
 # written by Fredrik Lundh (fredrik@pythonware.com)
 #
 
-import os
-import sys
-import zipfile
+agiza os
+agiza sys
+agiza zipfile
 
-from textwrap import dedent
-from functools import partial
+kutoka textwrap agiza dedent
+kutoka functools agiza partial
 
 SCRIPT = sys.argv[0]
 VERSION = "3.3"
@@ -39,7 +39,7 @@ VERSION = "3.3"
 # The Unicode Database
 # --------------------
 # When changing UCD version please update
-#   * Doc/library/stdtypes.rst, and
+#   * Doc/library/stdtypes.rst, na
 #   * Doc/library/unicodedata.rst
 #   * Doc/reference/lexical_analysis.rst (two occurrences)
 UNIDATA_VERSION = "12.1.0"
@@ -55,12 +55,12 @@ NAMED_SEQUENCES = "NamedSequences%s.txt"
 SPECIAL_CASING = "SpecialCasing%s.txt"
 CASE_FOLDING = "CaseFolding%s.txt"
 
-# Private Use Areas -- in planes 1, 15, 16
+# Private Use Areas -- kwenye planes 1, 15, 16
 PUA_1 = range(0xE000, 0xF900)
 PUA_15 = range(0xF0000, 0xFFFFE)
 PUA_16 = range(0x100000, 0x10FFFE)
 
-# we use this ranges of PUA_15 to store name aliases and named sequences
+# we use this ranges of PUA_15 to store name aliases na named sequences
 NAME_ALIASES_START = 0xF0000
 NAMED_SEQUENCES_START = 0xF0200
 
@@ -79,7 +79,7 @@ EASTASIANWIDTH_NAMES = [ "F", "H", "W", "Na", "A", "N" ]
 
 MANDATORY_LINE_BREAKS = [ "BK", "CR", "LF", "NL" ]
 
-# note: should match definitions in Objects/unicodectype.c
+# note: should match definitions kwenye Objects/unicodectype.c
 ALPHA_MASK = 0x01
 DECIMAL_MASK = 0x02
 DIGIT_MASK = 0x04
@@ -108,18 +108,18 @@ cjk_ranges = [
 ]
 
 
-def maketables(trace=0):
+eleza maketables(trace=0):
 
-    print("--- Reading", UNICODE_DATA % "", "...")
+    andika("--- Reading", UNICODE_DATA % "", "...")
 
     unicode = UnicodeData(UNIDATA_VERSION)
 
-    print(len(list(filter(None, unicode.table))), "characters")
+    andika(len(list(filter(Tupu, unicode.table))), "characters")
 
-    for version in old_versions:
-        print("--- Reading", UNICODE_DATA % ("-"+version), "...")
-        old_unicode = UnicodeData(version, cjk_check=False)
-        print(len(list(filter(None, old_unicode.table))), "characters")
+    kila version kwenye old_versions:
+        andika("--- Reading", UNICODE_DATA % ("-"+version), "...")
+        old_unicode = UnicodeData(version, cjk_check=Uongo)
+        andika(len(list(filter(Tupu, old_unicode.table))), "characters")
         merge_old_version(version, unicode, old_unicode)
 
     makeunicodename(unicode, trace)
@@ -130,7 +130,7 @@ def maketables(trace=0):
 # --------------------------------------------------------------------
 # unicode character properties
 
-def makeunicodedata(unicode, trace):
+eleza makeunicodedata(unicode, trace):
 
     dummy = (0, 0, 0, 0, 0, 0)
     table = [dummy]
@@ -139,13 +139,13 @@ def makeunicodedata(unicode, trace):
 
     FILE = "Modules/unicodedata_db.h"
 
-    print("--- Preparing", FILE, "...")
+    andika("--- Preparing", FILE, "...")
 
     # 1) database properties
 
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         record = unicode.table[char]
-        if record:
+        ikiwa record:
             # extract database properties
             category = CATEGORY_NAMES.index(record[2])
             combining = int(record[3])
@@ -157,9 +157,9 @@ def makeunicodedata(unicode, trace):
                 category, combining, bidirectional, mirrored, eastasianwidth,
                 normalizationquickcheck
                 )
-            # add entry to index and item tables
+            # add entry to index na item tables
             i = cache.get(item)
-            if i is None:
+            ikiwa i ni Tupu:
                 cache[item] = i = len(table)
                 table.append(item)
             index[char] = i
@@ -172,71 +172,71 @@ def makeunicodedata(unicode, trace):
     decomp_size = 0
 
     comp_pairs = []
-    comp_first = [None] * len(unicode.chars)
-    comp_last = [None] * len(unicode.chars)
+    comp_first = [Tupu] * len(unicode.chars)
+    comp_last = [Tupu] * len(unicode.chars)
 
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         record = unicode.table[char]
-        if record:
-            if record[5]:
+        ikiwa record:
+            ikiwa record[5]:
                 decomp = record[5].split()
-                if len(decomp) > 19:
-                    raise Exception("character %x has a decomposition too large for nfd_nfkd" % char)
+                ikiwa len(decomp) > 19:
+                    ashiria Exception("character %x has a decomposition too large kila nfd_nfkd" % char)
                 # prefix
-                if decomp[0][0] == "<":
+                ikiwa decomp[0][0] == "<":
                     prefix = decomp.pop(0)
-                else:
+                isipokua:
                     prefix = ""
-                try:
+                jaribu:
                     i = decomp_prefix.index(prefix)
-                except ValueError:
+                tatizo ValueError:
                     i = len(decomp_prefix)
                     decomp_prefix.append(prefix)
                 prefix = i
                 assert prefix < 256
                 # content
-                decomp = [prefix + (len(decomp)<<8)] + [int(s, 16) for s in decomp]
+                decomp = [prefix + (len(decomp)<<8)] + [int(s, 16) kila s kwenye decomp]
                 # Collect NFC pairs
-                if not prefix and len(decomp) == 3 and \
-                   char not in unicode.exclusions and \
+                ikiwa sio prefix na len(decomp) == 3 na \
+                   char haiko kwenye unicode.exclusions na \
                    unicode.table[decomp[1]][3] == "0":
                     p, l, r = decomp
                     comp_first[l] = 1
                     comp_last[r] = 1
                     comp_pairs.append((l,r,char))
-                try:
+                jaribu:
                     i = decomp_data.index(decomp)
-                except ValueError:
+                tatizo ValueError:
                     i = len(decomp_data)
                     decomp_data.extend(decomp)
                     decomp_size = decomp_size + len(decomp) * 2
-            else:
+            isipokua:
                 i = 0
             decomp_index[char] = i
 
     f = l = 0
     comp_first_ranges = []
     comp_last_ranges = []
-    prev_f = prev_l = None
-    for i in unicode.chars:
-        if comp_first[i] is not None:
+    prev_f = prev_l = Tupu
+    kila i kwenye unicode.chars:
+        ikiwa comp_first[i] ni sio Tupu:
             comp_first[i] = f
             f += 1
-            if prev_f is None:
+            ikiwa prev_f ni Tupu:
                 prev_f = (i,i)
-            elif prev_f[1]+1 == i:
+            lasivyo prev_f[1]+1 == i:
                 prev_f = prev_f[0],i
-            else:
+            isipokua:
                 comp_first_ranges.append(prev_f)
                 prev_f = (i,i)
-        if comp_last[i] is not None:
+        ikiwa comp_last[i] ni sio Tupu:
             comp_last[i] = l
             l += 1
-            if prev_l is None:
+            ikiwa prev_l ni Tupu:
                 prev_l = (i,i)
-            elif prev_l[1]+1 == i:
+            lasivyo prev_l[1]+1 == i:
                 prev_l = prev_l[0],i
-            else:
+            isipokua:
                 comp_last_ranges.append(prev_l)
                 prev_l = (i,i)
     comp_first_ranges.append(prev_f)
@@ -245,149 +245,149 @@ def makeunicodedata(unicode, trace):
     total_last = l
 
     comp_data = [0]*(total_first*total_last)
-    for f,l,char in comp_pairs:
+    kila f,l,char kwenye comp_pairs:
         f = comp_first[f]
         l = comp_last[l]
         comp_data[f*total_last+l] = char
 
-    print(len(table), "unique properties")
-    print(len(decomp_prefix), "unique decomposition prefixes")
-    print(len(decomp_data), "unique decomposition entries:", end=' ')
-    print(decomp_size, "bytes")
-    print(total_first, "first characters in NFC")
-    print(total_last, "last characters in NFC")
-    print(len(comp_pairs), "NFC pairs")
+    andika(len(table), "unique properties")
+    andika(len(decomp_prefix), "unique decomposition prefixes")
+    andika(len(decomp_data), "unique decomposition entries:", end=' ')
+    andika(decomp_size, "bytes")
+    andika(total_first, "first characters kwenye NFC")
+    andika(total_last, "last characters kwenye NFC")
+    andika(len(comp_pairs), "NFC pairs")
 
-    print("--- Writing", FILE, "...")
+    andika("--- Writing", FILE, "...")
 
-    with open(FILE, "w") as fp:
+    ukijumuisha open(FILE, "w") kama fp:
         fprint = partial(print, file=fp)
 
-        fprint("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
-        fprint()
-        fprint('#define UNIDATA_VERSION "%s"' % UNIDATA_VERSION)
-        fprint("/* a list of unique database records */")
-        fprint("const _PyUnicode_DatabaseRecord _PyUnicode_Database_Records[] = {")
-        for item in table:
-            fprint("    {%d, %d, %d, %d, %d, %d}," % item)
-        fprint("};")
-        fprint()
+        fandika("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
+        fandika()
+        fandika('#define UNIDATA_VERSION "%s"' % UNIDATA_VERSION)
+        fandika("/* a list of unique database records */")
+        fandika("const _PyUnicode_DatabaseRecord _PyUnicode_Database_Records[] = {")
+        kila item kwenye table:
+            fandika("    {%d, %d, %d, %d, %d, %d}," % item)
+        fandika("};")
+        fandika()
 
-        fprint("/* Reindexing of NFC first characters. */")
-        fprint("#define TOTAL_FIRST",total_first)
-        fprint("#define TOTAL_LAST",total_last)
-        fprint("struct reindex{int start;short count,index;};")
-        fprint("static struct reindex nfc_first[] = {")
-        for start,end in comp_first_ranges:
-            fprint("    { %d, %d, %d}," % (start,end-start,comp_first[start]))
-        fprint("    {0,0,0}")
-        fprint("};\n")
-        fprint("static struct reindex nfc_last[] = {")
-        for start,end in comp_last_ranges:
-            fprint("  { %d, %d, %d}," % (start,end-start,comp_last[start]))
-        fprint("  {0,0,0}")
-        fprint("};\n")
+        fandika("/* Reindexing of NFC first characters. */")
+        fandika("#define TOTAL_FIRST",total_first)
+        fandika("#define TOTAL_LAST",total_last)
+        fandika("struct reindex{int start;short count,index;};")
+        fandika("static struct reindex nfc_first[] = {")
+        kila start,end kwenye comp_first_ranges:
+            fandika("    { %d, %d, %d}," % (start,end-start,comp_first[start]))
+        fandika("    {0,0,0}")
+        fandika("};\n")
+        fandika("static struct reindex nfc_last[] = {")
+        kila start,end kwenye comp_last_ranges:
+            fandika("  { %d, %d, %d}," % (start,end-start,comp_last[start]))
+        fandika("  {0,0,0}")
+        fandika("};\n")
 
-        # FIXME: <fl> the following tables could be made static, and
+        # FIXME: <fl> the following tables could be made static, na
         # the support code moved into unicodedatabase.c
 
-        fprint("/* string literals */")
-        fprint("const char *_PyUnicode_CategoryNames[] = {")
-        for name in CATEGORY_NAMES:
-            fprint("    \"%s\"," % name)
-        fprint("    NULL")
-        fprint("};")
+        fandika("/* string literals */")
+        fandika("const char *_PyUnicode_CategoryNames[] = {")
+        kila name kwenye CATEGORY_NAMES:
+            fandika("    \"%s\"," % name)
+        fandika("    NULL")
+        fandika("};")
 
-        fprint("const char *_PyUnicode_BidirectionalNames[] = {")
-        for name in BIDIRECTIONAL_NAMES:
-            fprint("    \"%s\"," % name)
-        fprint("    NULL")
-        fprint("};")
+        fandika("const char *_PyUnicode_BidirectionalNames[] = {")
+        kila name kwenye BIDIRECTIONAL_NAMES:
+            fandika("    \"%s\"," % name)
+        fandika("    NULL")
+        fandika("};")
 
-        fprint("const char *_PyUnicode_EastAsianWidthNames[] = {")
-        for name in EASTASIANWIDTH_NAMES:
-            fprint("    \"%s\"," % name)
-        fprint("    NULL")
-        fprint("};")
+        fandika("const char *_PyUnicode_EastAsianWidthNames[] = {")
+        kila name kwenye EASTASIANWIDTH_NAMES:
+            fandika("    \"%s\"," % name)
+        fandika("    NULL")
+        fandika("};")
 
-        fprint("static const char *decomp_prefix[] = {")
-        for name in decomp_prefix:
-            fprint("    \"%s\"," % name)
-        fprint("    NULL")
-        fprint("};")
+        fandika("static const char *decomp_prefix[] = {")
+        kila name kwenye decomp_prefix:
+            fandika("    \"%s\"," % name)
+        fandika("    NULL")
+        fandika("};")
 
         # split record index table
         index1, index2, shift = splitbins(index, trace)
 
-        fprint("/* index tables for the database records */")
-        fprint("#define SHIFT", shift)
+        fandika("/* index tables kila the database records */")
+        fandika("#define SHIFT", shift)
         Array("index1", index1).dump(fp, trace)
         Array("index2", index2).dump(fp, trace)
 
         # split decomposition index table
         index1, index2, shift = splitbins(decomp_index, trace)
 
-        fprint("/* decomposition data */")
+        fandika("/* decomposition data */")
         Array("decomp_data", decomp_data).dump(fp, trace)
 
-        fprint("/* index tables for the decomposition data */")
-        fprint("#define DECOMP_SHIFT", shift)
+        fandika("/* index tables kila the decomposition data */")
+        fandika("#define DECOMP_SHIFT", shift)
         Array("decomp_index1", index1).dump(fp, trace)
         Array("decomp_index2", index2).dump(fp, trace)
 
         index, index2, shift = splitbins(comp_data, trace)
-        fprint("/* NFC pairs */")
-        fprint("#define COMP_SHIFT", shift)
+        fandika("/* NFC pairs */")
+        fandika("#define COMP_SHIFT", shift)
         Array("comp_index", index).dump(fp, trace)
         Array("comp_data", index2).dump(fp, trace)
 
-        # Generate delta tables for old versions
-        for version, table, normalization in unicode.changed:
+        # Generate delta tables kila old versions
+        kila version, table, normalization kwenye unicode.changed:
             cversion = version.replace(".","_")
             records = [table[0]]
             cache = {table[0]:0}
             index = [0] * len(table)
-            for i, record in enumerate(table):
-                try:
+            kila i, record kwenye enumerate(table):
+                jaribu:
                     index[i] = cache[record]
-                except KeyError:
+                tatizo KeyError:
                     index[i] = cache[record] = len(records)
                     records.append(record)
             index1, index2, shift = splitbins(index, trace)
-            fprint("static const change_record change_records_%s[] = {" % cversion)
-            for record in records:
-                fprint("    { %s }," % ", ".join(map(str,record)))
-            fprint("};")
+            fandika("static const change_record change_records_%s[] = {" % cversion)
+            kila record kwenye records:
+                fandika("    { %s }," % ", ".join(map(str,record)))
+            fandika("};")
             Array("changes_%s_index" % cversion, index1).dump(fp, trace)
             Array("changes_%s_data" % cversion, index2).dump(fp, trace)
-            fprint("static const change_record* get_change_%s(Py_UCS4 n)" % cversion)
-            fprint("{")
-            fprint("    int index;")
-            fprint("    if (n >= 0x110000) index = 0;")
-            fprint("    else {")
-            fprint("        index = changes_%s_index[n>>%d];" % (cversion, shift))
-            fprint("        index = changes_%s_data[(index<<%d)+(n & %d)];" % \
+            fandika("static const change_record* get_change_%s(Py_UCS4 n)" % cversion)
+            fandika("{")
+            fandika("    int index;")
+            fandika("    ikiwa (n >= 0x110000) index = 0;")
+            fandika("    isipokua {")
+            fandika("        index = changes_%s_index[n>>%d];" % (cversion, shift))
+            fandika("        index = changes_%s_data[(index<<%d)+(n & %d)];" % \
                    (cversion, shift, ((1<<shift)-1)))
-            fprint("    }")
-            fprint("    return change_records_%s+index;" % cversion)
-            fprint("}\n")
-            fprint("static Py_UCS4 normalization_%s(Py_UCS4 n)" % cversion)
-            fprint("{")
-            fprint("    switch(n) {")
-            for k, v in normalization:
-                fprint("    case %s: return 0x%s;" % (hex(k), v))
-            fprint("    default: return 0;")
-            fprint("    }\n}\n")
+            fandika("    }")
+            fandika("    rudisha change_records_%s+index;" % cversion)
+            fandika("}\n")
+            fandika("static Py_UCS4 normalization_%s(Py_UCS4 n)" % cversion)
+            fandika("{")
+            fandika("    switch(n) {")
+            kila k, v kwenye normalization:
+                fandika("    case %s: rudisha 0x%s;" % (hex(k), v))
+            fandika("    default: rudisha 0;")
+            fandika("    }\n}\n")
 
 
 # --------------------------------------------------------------------
 # unicode character type tables
 
-def makeunicodetype(unicode, trace):
+eleza makeunicodetype(unicode, trace):
 
     FILE = "Objects/unicodetype_db.h"
 
-    print("--- Preparing", FILE, "...")
+    andika("--- Preparing", FILE, "...")
 
     # extract unicode types
     dummy = (0, 0, 0, 0, 0, 0)
@@ -396,279 +396,279 @@ def makeunicodetype(unicode, trace):
     index = [0] * len(unicode.chars)
     numeric = {}
     spaces = []
-    linebreaks = []
+    linekomas = []
     extra_casing = []
 
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         record = unicode.table[char]
-        if record:
+        ikiwa record:
             # extract database properties
             category = record[2]
             bidirectional = record[4]
             properties = record[16]
             flags = 0
-            if category in ["Lm", "Lt", "Lu", "Ll", "Lo"]:
+            ikiwa category kwenye ["Lm", "Lt", "Lu", "Ll", "Lo"]:
                 flags |= ALPHA_MASK
-            if "Lowercase" in properties:
+            ikiwa "Lowercase" kwenye properties:
                 flags |= LOWER_MASK
-            if 'Line_Break' in properties or bidirectional == "B":
+            ikiwa 'Line_Break' kwenye properties ama bidirectional == "B":
                 flags |= LINEBREAK_MASK
-                linebreaks.append(char)
-            if category == "Zs" or bidirectional in ("WS", "B", "S"):
+                linekomas.append(char)
+            ikiwa category == "Zs" ama bidirectional kwenye ("WS", "B", "S"):
                 flags |= SPACE_MASK
                 spaces.append(char)
-            if category == "Lt":
+            ikiwa category == "Lt":
                 flags |= TITLE_MASK
-            if "Uppercase" in properties:
+            ikiwa "Uppercase" kwenye properties:
                 flags |= UPPER_MASK
-            if char == ord(" ") or category[0] not in ("C", "Z"):
+            ikiwa char == ord(" ") ama category[0] haiko kwenye ("C", "Z"):
                 flags |= PRINTABLE_MASK
-            if "XID_Start" in properties:
+            ikiwa "XID_Start" kwenye properties:
                 flags |= XID_START_MASK
-            if "XID_Continue" in properties:
+            ikiwa "XID_Continue" kwenye properties:
                 flags |= XID_CONTINUE_MASK
-            if "Cased" in properties:
+            ikiwa "Cased" kwenye properties:
                 flags |= CASED_MASK
-            if "Case_Ignorable" in properties:
+            ikiwa "Case_Ignorable" kwenye properties:
                 flags |= CASE_IGNORABLE_MASK
             sc = unicode.special_casing.get(char)
             cf = unicode.case_folding.get(char, [char])
-            if record[12]:
+            ikiwa record[12]:
                 upper = int(record[12], 16)
-            else:
+            isipokua:
                 upper = char
-            if record[13]:
+            ikiwa record[13]:
                 lower = int(record[13], 16)
-            else:
+            isipokua:
                 lower = char
-            if record[14]:
+            ikiwa record[14]:
                 title = int(record[14], 16)
-            else:
+            isipokua:
                 title = upper
-            if sc is None and cf != [lower]:
+            ikiwa sc ni Tupu na cf != [lower]:
                 sc = ([lower], [title], [upper])
-            if sc is None:
-                if upper == lower == title:
+            ikiwa sc ni Tupu:
+                ikiwa upper == lower == title:
                     upper = lower = title = 0
-                else:
+                isipokua:
                     upper = upper - char
                     lower = lower - char
                     title = title - char
-                    assert (abs(upper) <= 2147483647 and
-                            abs(lower) <= 2147483647 and
+                    assert (abs(upper) <= 2147483647 na
+                            abs(lower) <= 2147483647 na
                             abs(title) <= 2147483647)
-            else:
+            isipokua:
                 # This happens either when some character maps to more than one
-                # character in uppercase, lowercase, or titlecase or the
-                # casefolded version of the character is different from the
-                # lowercase. The extra characters are stored in a different
+                # character kwenye uppercase, lowercase, ama titlecase ama the
+                # casefolded version of the character ni different kutoka the
+                # lowercase. The extra characters are stored kwenye a different
                 # array.
                 flags |= EXTENDED_CASE_MASK
                 lower = len(extra_casing) | (len(sc[0]) << 24)
                 extra_casing.extend(sc[0])
-                if cf != sc[0]:
+                ikiwa cf != sc[0]:
                     lower |= len(cf) << 20
                     extra_casing.extend(cf)
                 upper = len(extra_casing) | (len(sc[2]) << 24)
                 extra_casing.extend(sc[2])
-                # Title is probably equal to upper.
-                if sc[1] == sc[2]:
+                # Title ni probably equal to upper.
+                ikiwa sc[1] == sc[2]:
                     title = upper
-                else:
+                isipokua:
                     title = len(extra_casing) | (len(sc[1]) << 24)
                     extra_casing.extend(sc[1])
             # decimal digit, integer digit
             decimal = 0
-            if record[6]:
+            ikiwa record[6]:
                 flags |= DECIMAL_MASK
                 decimal = int(record[6])
             digit = 0
-            if record[7]:
+            ikiwa record[7]:
                 flags |= DIGIT_MASK
                 digit = int(record[7])
-            if record[8]:
+            ikiwa record[8]:
                 flags |= NUMERIC_MASK
                 numeric.setdefault(record[8], []).append(char)
             item = (
                 upper, lower, title, decimal, digit, flags
                 )
-            # add entry to index and item tables
+            # add entry to index na item tables
             i = cache.get(item)
-            if i is None:
+            ikiwa i ni Tupu:
                 cache[item] = i = len(table)
                 table.append(item)
             index[char] = i
 
-    print(len(table), "unique character type entries")
-    print(sum(map(len, numeric.values())), "numeric code points")
-    print(len(spaces), "whitespace code points")
-    print(len(linebreaks), "linebreak code points")
-    print(len(extra_casing), "extended case array")
+    andika(len(table), "unique character type entries")
+    andika(sum(map(len, numeric.values())), "numeric code points")
+    andika(len(spaces), "whitespace code points")
+    andika(len(linekomas), "linekoma code points")
+    andika(len(extra_casing), "extended case array")
 
-    print("--- Writing", FILE, "...")
+    andika("--- Writing", FILE, "...")
 
-    with open(FILE, "w") as fp:
+    ukijumuisha open(FILE, "w") kama fp:
         fprint = partial(print, file=fp)
 
-        fprint("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
-        fprint()
-        fprint("/* a list of unique character type descriptors */")
-        fprint("const _PyUnicode_TypeRecord _PyUnicode_TypeRecords[] = {")
-        for item in table:
-            fprint("    {%d, %d, %d, %d, %d, %d}," % item)
-        fprint("};")
-        fprint()
+        fandika("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
+        fandika()
+        fandika("/* a list of unique character type descriptors */")
+        fandika("const _PyUnicode_TypeRecord _PyUnicode_TypeRecords[] = {")
+        kila item kwenye table:
+            fandika("    {%d, %d, %d, %d, %d, %d}," % item)
+        fandika("};")
+        fandika()
 
-        fprint("/* extended case mappings */")
-        fprint()
-        fprint("const Py_UCS4 _PyUnicode_ExtendedCase[] = {")
-        for c in extra_casing:
-            fprint("    %d," % c)
-        fprint("};")
-        fprint()
+        fandika("/* extended case mappings */")
+        fandika()
+        fandika("const Py_UCS4 _PyUnicode_ExtendedCase[] = {")
+        kila c kwenye extra_casing:
+            fandika("    %d," % c)
+        fandika("};")
+        fandika()
 
         # split decomposition index table
         index1, index2, shift = splitbins(index, trace)
 
-        fprint("/* type indexes */")
-        fprint("#define SHIFT", shift)
+        fandika("/* type indexes */")
+        fandika("#define SHIFT", shift)
         Array("index1", index1).dump(fp, trace)
         Array("index2", index2).dump(fp, trace)
 
-        # Generate code for _PyUnicode_ToNumeric()
+        # Generate code kila _PyUnicode_ToNumeric()
         numeric_items = sorted(numeric.items())
-        fprint('/* Returns the numeric value as double for Unicode characters')
-        fprint(' * having this property, -1.0 otherwise.')
-        fprint(' */')
-        fprint('double _PyUnicode_ToNumeric(Py_UCS4 ch)')
-        fprint('{')
-        fprint('    switch (ch) {')
-        for value, codepoints in numeric_items:
+        fandika('/* Returns the numeric value kama double kila Unicode characters')
+        fandika(' * having this property, -1.0 otherwise.')
+        fandika(' */')
+        fandika('double _PyUnicode_ToNumeric(Py_UCS4 ch)')
+        fandika('{')
+        fandika('    switch (ch) {')
+        kila value, codepoints kwenye numeric_items:
             # Turn text into float literals
             parts = value.split('/')
-            parts = [repr(float(part)) for part in parts]
+            parts = [repr(float(part)) kila part kwenye parts]
             value = '/'.join(parts)
 
             codepoints.sort()
-            for codepoint in codepoints:
-                fprint('    case 0x%04X:' % (codepoint,))
-            fprint('        return (double) %s;' % (value,))
-        fprint('    }')
-        fprint('    return -1.0;')
-        fprint('}')
-        fprint()
+            kila codepoint kwenye codepoints:
+                fandika('    case 0x%04X:' % (codepoint,))
+            fandika('        rudisha (double) %s;' % (value,))
+        fandika('    }')
+        fandika('    rudisha -1.0;')
+        fandika('}')
+        fandika()
 
-        # Generate code for _PyUnicode_IsWhitespace()
-        fprint("/* Returns 1 for Unicode characters having the bidirectional")
-        fprint(" * type 'WS', 'B' or 'S' or the category 'Zs', 0 otherwise.")
-        fprint(" */")
-        fprint('int _PyUnicode_IsWhitespace(const Py_UCS4 ch)')
-        fprint('{')
-        fprint('    switch (ch) {')
+        # Generate code kila _PyUnicode_IsWhitespace()
+        fandika("/* Returns 1 kila Unicode characters having the bidirectional")
+        fandika(" * type 'WS', 'B' ama 'S' ama the category 'Zs', 0 otherwise.")
+        fandika(" */")
+        fandika('int _PyUnicode_IsWhitespace(const Py_UCS4 ch)')
+        fandika('{')
+        fandika('    switch (ch) {')
 
-        for codepoint in sorted(spaces):
-            fprint('    case 0x%04X:' % (codepoint,))
-        fprint('        return 1;')
+        kila codepoint kwenye sorted(spaces):
+            fandika('    case 0x%04X:' % (codepoint,))
+        fandika('        rudisha 1;')
 
-        fprint('    }')
-        fprint('    return 0;')
-        fprint('}')
-        fprint()
+        fandika('    }')
+        fandika('    rudisha 0;')
+        fandika('}')
+        fandika()
 
-        # Generate code for _PyUnicode_IsLinebreak()
-        fprint("/* Returns 1 for Unicode characters having the line break")
-        fprint(" * property 'BK', 'CR', 'LF' or 'NL' or having bidirectional")
-        fprint(" * type 'B', 0 otherwise.")
-        fprint(" */")
-        fprint('int _PyUnicode_IsLinebreak(const Py_UCS4 ch)')
-        fprint('{')
-        fprint('    switch (ch) {')
-        for codepoint in sorted(linebreaks):
-            fprint('    case 0x%04X:' % (codepoint,))
-        fprint('        return 1;')
+        # Generate code kila _PyUnicode_IsLinekoma()
+        fandika("/* Returns 1 kila Unicode characters having the line koma")
+        fandika(" * property 'BK', 'CR', 'LF' ama 'NL' ama having bidirectional")
+        fandika(" * type 'B', 0 otherwise.")
+        fandika(" */")
+        fandika('int _PyUnicode_IsLinekoma(const Py_UCS4 ch)')
+        fandika('{')
+        fandika('    switch (ch) {')
+        kila codepoint kwenye sorted(linekomas):
+            fandika('    case 0x%04X:' % (codepoint,))
+        fandika('        rudisha 1;')
 
-        fprint('    }')
-        fprint('    return 0;')
-        fprint('}')
-        fprint()
+        fandika('    }')
+        fandika('    rudisha 0;')
+        fandika('}')
+        fandika()
 
 
 # --------------------------------------------------------------------
 # unicode name database
 
-def makeunicodename(unicode, trace):
+eleza makeunicodename(unicode, trace):
 
     FILE = "Modules/unicodename_db.h"
 
-    print("--- Preparing", FILE, "...")
+    andika("--- Preparing", FILE, "...")
 
     # collect names
-    names = [None] * len(unicode.chars)
+    names = [Tupu] * len(unicode.chars)
 
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         record = unicode.table[char]
-        if record:
+        ikiwa record:
             name = record[1].strip()
-            if name and name[0] != "<":
+            ikiwa name na name[0] != "<":
                 names[char] = name + chr(0)
 
-    print(len([n for n in names if n is not None]), "distinct names")
+    andika(len([n kila n kwenye names ikiwa n ni sio Tupu]), "distinct names")
 
-    # collect unique words from names (note that we differ between
-    # words inside a sentence, and words ending a sentence.  the
+    # collect unique words kutoka names (note that we differ between
+    # words inside a sentence, na words ending a sentence.  the
     # latter includes the trailing null byte.
 
     words = {}
     n = b = 0
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         name = names[char]
-        if name:
+        ikiwa name:
             w = name.split()
             b = b + len(name)
             n = n + len(w)
-            for w in w:
+            kila w kwenye w:
                 l = words.get(w)
-                if l:
-                    l.append(None)
-                else:
+                ikiwa l:
+                    l.append(Tupu)
+                isipokua:
                     words[w] = [len(words)]
 
-    print(n, "words in text;", b, "bytes")
+    andika(n, "words kwenye text;", b, "bytes")
 
     wordlist = list(words.items())
 
     # sort on falling frequency, then by name
-    def word_key(a):
+    eleza word_key(a):
         aword, alist = a
-        return -len(alist), aword
+        rudisha -len(alist), aword
     wordlist.sort(key=word_key)
 
     # figure out how many phrasebook escapes we need
     escapes = 0
-    while escapes * 256 < len(wordlist):
+    wakati escapes * 256 < len(wordlist):
         escapes = escapes + 1
-    print(escapes, "escapes")
+    andika(escapes, "escapes")
 
     short = 256 - escapes
 
     assert short > 0
 
-    print(short, "short indexes in lexicon")
+    andika(short, "short indexes kwenye lexicon")
 
     # statistics
     n = 0
-    for i in range(short):
+    kila i kwenye range(short):
         n = n + len(wordlist[i][1])
-    print(n, "short indexes in phrasebook")
+    andika(n, "short indexes kwenye phrasebook")
 
-    # pick the most commonly used words, and sort the rest on falling
+    # pick the most commonly used words, na sort the rest on falling
     # length (to maximize overlap)
 
     wordlist, wordtail = wordlist[:short], wordlist[short:]
-    wordtail.sort(key=lambda a: a[0], reverse=True)
+    wordtail.sort(key=lambda a: a[0], reverse=Kweli)
     wordlist.extend(wordtail)
 
-    # generate lexicon from words
+    # generate lexicon kutoka words
 
     lexicon_offset = [0]
     lexicon = ""
@@ -676,13 +676,13 @@ def makeunicodename(unicode, trace):
 
     # build a lexicon string
     offset = 0
-    for w, x in wordlist:
-        # encoding: bit 7 indicates last character in word (chr(128)
-        # indicates the last character in an entire string)
+    kila w, x kwenye wordlist:
+        # encoding: bit 7 indicates last character kwenye word (chr(128)
+        # indicates the last character kwenye an entire string)
         ww = w[:-1] + chr(ord(w[-1])+128)
         # reuse string tails, when possible
         o = lexicon.find(ww)
-        if o < 0:
+        ikiwa o < 0:
             o = offset
             lexicon = lexicon + ww
             offset = offset + len(w)
@@ -691,20 +691,20 @@ def makeunicodename(unicode, trace):
 
     lexicon = list(map(ord, lexicon))
 
-    # generate phrasebook from names and lexicon
+    # generate phrasebook kutoka names na lexicon
     phrasebook = [0]
     phrasebook_offset = [0] * len(unicode.chars)
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         name = names[char]
-        if name:
+        ikiwa name:
             w = name.split()
             phrasebook_offset[char] = len(phrasebook)
-            for w in w:
+            kila w kwenye w:
                 i = words[w]
-                if i < short:
+                ikiwa i < short:
                     phrasebook.append(i)
-                else:
-                    # store as two bytes
+                isipokua:
+                    # store kama two bytes
                     phrasebook.append((i>>8) + short)
                     phrasebook.append(i&255)
 
@@ -715,84 +715,84 @@ def makeunicodename(unicode, trace):
 
     # extract names
     data = []
-    for char in unicode.chars:
+    kila char kwenye unicode.chars:
         record = unicode.table[char]
-        if record:
+        ikiwa record:
             name = record[1].strip()
-            if name and name[0] != "<":
+            ikiwa name na name[0] != "<":
                 data.append((name, char))
 
     # the magic number 47 was chosen to minimize the number of
-    # collisions on the current data set.  if you like, change it
-    # and see what happens...
+    # collisions on the current data set.  ikiwa you like, change it
+    # na see what happens...
 
     codehash = Hash("code", data, 47)
 
-    print("--- Writing", FILE, "...")
+    andika("--- Writing", FILE, "...")
 
-    with open(FILE, "w") as fp:
+    ukijumuisha open(FILE, "w") kama fp:
         fprint = partial(print, file=fp)
 
-        fprint("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
-        fprint()
-        fprint("#define NAME_MAXLEN", 256)
-        fprint()
-        fprint("/* lexicon */")
+        fandika("/* this file was generated by %s %s */" % (SCRIPT, VERSION))
+        fandika()
+        fandika("#define NAME_MAXLEN", 256)
+        fandika()
+        fandika("/* lexicon */")
         Array("lexicon", lexicon).dump(fp, trace)
         Array("lexicon_offset", lexicon_offset).dump(fp, trace)
 
         # split decomposition index table
         offset1, offset2, shift = splitbins(phrasebook_offset, trace)
 
-        fprint("/* code->name phrasebook */")
-        fprint("#define phrasebook_shift", shift)
-        fprint("#define phrasebook_short", short)
+        fandika("/* code->name phrasebook */")
+        fandika("#define phrasebook_shift", shift)
+        fandika("#define phrasebook_short", short)
 
         Array("phrasebook", phrasebook).dump(fp, trace)
         Array("phrasebook_offset1", offset1).dump(fp, trace)
         Array("phrasebook_offset2", offset2).dump(fp, trace)
 
-        fprint("/* name->code dictionary */")
+        fandika("/* name->code dictionary */")
         codehash.dump(fp, trace)
 
-        fprint()
-        fprint('static const unsigned int aliases_start = %#x;' %
+        fandika()
+        fandika('static const unsigned int aliases_start = %#x;' %
                NAME_ALIASES_START)
-        fprint('static const unsigned int aliases_end = %#x;' %
+        fandika('static const unsigned int aliases_end = %#x;' %
                (NAME_ALIASES_START + len(unicode.aliases)))
 
-        fprint('static const unsigned int name_aliases[] = {')
-        for name, codepoint in unicode.aliases:
-            fprint('    0x%04X,' % codepoint)
-        fprint('};')
+        fandika('static const unsigned int name_aliases[] = {')
+        kila name, codepoint kwenye unicode.aliases:
+            fandika('    0x%04X,' % codepoint)
+        fandika('};')
 
         # In Unicode 6.0.0, the sequences contain at most 4 BMP chars,
-        # so we are using Py_UCS2 seq[4].  This needs to be updated if longer
-        # sequences or sequences with non-BMP chars are added.
+        # so we are using Py_UCS2 seq[4].  This needs to be updated ikiwa longer
+        # sequences ama sequences ukijumuisha non-BMP chars are added.
         # unicodedata_lookup should be adapted too.
-        fprint(dedent("""
-            typedef struct NamedSequence {
+        fandika(dedent("""
+            typeeleza struct NamedSequence {
                 int seqlen;
                 Py_UCS2 seq[4];
             } named_sequence;
             """))
 
-        fprint('static const unsigned int named_sequences_start = %#x;' %
+        fandika('static const unsigned int named_sequences_start = %#x;' %
                NAMED_SEQUENCES_START)
-        fprint('static const unsigned int named_sequences_end = %#x;' %
+        fandika('static const unsigned int named_sequences_end = %#x;' %
                (NAMED_SEQUENCES_START + len(unicode.named_sequences)))
 
-        fprint('static const named_sequence named_sequences[] = {')
-        for name, sequence in unicode.named_sequences:
-            seq_str = ', '.join('0x%04X' % cp for cp in sequence)
-            fprint('    {%d, {%s}},' % (len(sequence), seq_str))
-        fprint('};')
+        fandika('static const named_sequence named_sequences[] = {')
+        kila name, sequence kwenye unicode.named_sequences:
+            seq_str = ', '.join('0x%04X' % cp kila cp kwenye sequence)
+            fandika('    {%d, {%s}},' % (len(sequence), seq_str))
+        fandika('};')
 
 
-def merge_old_version(version, new, old):
-    # Changes to exclusion file not implemented yet
-    if old.exclusions != new.exclusions:
-        raise NotImplementedError("exclusions differ")
+eleza merge_old_version(version, new, old):
+    # Changes to exclusion file sio implemented yet
+    ikiwa old.exclusions != new.exclusions:
+        ashiria NotImplementedError("exclusions differ")
 
     # In these change records, 0xFF means "no change"
     bidir_changes = [0xFF]*0x110000
@@ -801,84 +801,84 @@ def merge_old_version(version, new, old):
     mirrored_changes = [0xFF]*0x110000
     east_asian_width_changes = [0xFF]*0x110000
     # In numeric data, 0 means "no change",
-    # -1 means "did not have a numeric value
+    # -1 means "did sio have a numeric value
     numeric_changes = [0] * 0x110000
-    # normalization_changes is a list of key-value pairs
+    # normalization_changes ni a list of key-value pairs
     normalization_changes = []
-    for i in range(0x110000):
-        if new.table[i] is None:
-            # Characters unassigned in the new version ought to
-            # be unassigned in the old one
-            assert old.table[i] is None
-            continue
-        # check characters unassigned in the old version
-        if old.table[i] is None:
-            # category 0 is "unassigned"
+    kila i kwenye range(0x110000):
+        ikiwa new.table[i] ni Tupu:
+            # Characters unassigned kwenye the new version ought to
+            # be unassigned kwenye the old one
+            assert old.table[i] ni Tupu
+            endelea
+        # check characters unassigned kwenye the old version
+        ikiwa old.table[i] ni Tupu:
+            # category 0 ni "unassigned"
             category_changes[i] = 0
-            continue
+            endelea
         # check characters that differ
-        if old.table[i] != new.table[i]:
-            for k in range(len(old.table[i])):
-                if old.table[i][k] != new.table[i][k]:
+        ikiwa old.table[i] != new.table[i]:
+            kila k kwenye range(len(old.table[i])):
+                ikiwa old.table[i][k] != new.table[i][k]:
                     value = old.table[i][k]
-                    if k == 1 and i in PUA_15:
-                        # the name is not set in the old.table, but in the
-                        # new.table we are using it for aliases and named seq
+                    ikiwa k == 1 na i kwenye PUA_15:
+                        # the name ni sio set kwenye the old.table, but kwenye the
+                        # new.table we are using it kila aliases na named seq
                         assert value == ''
-                    elif k == 2:
+                    lasivyo k == 2:
                         #print "CATEGORY",hex(i), old.table[i][k], new.table[i][k]
                         category_changes[i] = CATEGORY_NAMES.index(value)
-                    elif k == 4:
+                    lasivyo k == 4:
                         #print "BIDIR",hex(i), old.table[i][k], new.table[i][k]
                         bidir_changes[i] = BIDIRECTIONAL_NAMES.index(value)
-                    elif k == 5:
+                    lasivyo k == 5:
                         #print "DECOMP",hex(i), old.table[i][k], new.table[i][k]
-                        # We assume that all normalization changes are in 1:1 mappings
-                        assert " " not in value
+                        # We assume that all normalization changes are kwenye 1:1 mappings
+                        assert " " haiko kwenye value
                         normalization_changes.append((i, value))
-                    elif k == 6:
+                    lasivyo k == 6:
                         #print "DECIMAL",hex(i), old.table[i][k], new.table[i][k]
-                        # we only support changes where the old value is a single digit
-                        assert value in "0123456789"
+                        # we only support changes where the old value ni a single digit
+                        assert value kwenye "0123456789"
                         decimal_changes[i] = int(value)
-                    elif k == 8:
+                    lasivyo k == 8:
                         # print "NUMERIC",hex(i), `old.table[i][k]`, new.table[i][k]
-                        # Since 0 encodes "no change", the old value is better not 0
-                        if not value:
+                        # Since 0 encodes "no change", the old value ni better sio 0
+                        ikiwa sio value:
                             numeric_changes[i] = -1
-                        else:
+                        isipokua:
                             numeric_changes[i] = float(value)
-                            assert numeric_changes[i] not in (0, -1)
-                    elif k == 9:
-                        if value == 'Y':
+                            assert numeric_changes[i] haiko kwenye (0, -1)
+                    lasivyo k == 9:
+                        ikiwa value == 'Y':
                             mirrored_changes[i] = '1'
-                        else:
+                        isipokua:
                             mirrored_changes[i] = '0'
-                    elif k == 11:
+                    lasivyo k == 11:
                         # change to ISO comment, ignore
-                        pass
-                    elif k == 12:
+                        pita
+                    lasivyo k == 12:
                         # change to simple uppercase mapping; ignore
-                        pass
-                    elif k == 13:
+                        pita
+                    lasivyo k == 13:
                         # change to simple lowercase mapping; ignore
-                        pass
-                    elif k == 14:
+                        pita
+                    lasivyo k == 14:
                         # change to simple titlecase mapping; ignore
-                        pass
-                    elif k == 15:
+                        pita
+                    lasivyo k == 15:
                         # change to east asian width
                         east_asian_width_changes[i] = EASTASIANWIDTH_NAMES.index(value)
-                    elif k == 16:
-                        # derived property changes; not yet
-                        pass
-                    elif k == 17:
-                        # normalization quickchecks are not performed
-                        # for older versions
-                        pass
-                    else:
-                        class Difference(Exception):pass
-                        raise Difference(hex(i), k, old.table[i], new.table[i])
+                    lasivyo k == 16:
+                        # derived property changes; sio yet
+                        pita
+                    lasivyo k == 17:
+                        # normalization quickchecks are sio performed
+                        # kila older versions
+                        pita
+                    isipokua:
+                        kundi Difference(Exception):pita
+                        ashiria Difference(hex(i), k, old.table[i], new.table[i])
     new.changed.append((version, list(zip(bidir_changes, category_changes,
                                           decimal_changes, mirrored_changes,
                                           east_asian_width_changes,
@@ -886,47 +886,47 @@ def merge_old_version(version, new, old):
                         normalization_changes))
 
 
-def open_data(template, version):
+eleza open_data(template, version):
     local = template % ('-'+version,)
-    if not os.path.exists(local):
-        import urllib.request
-        if version == '3.2.0':
+    ikiwa sio os.path.exists(local):
+        agiza urllib.request
+        ikiwa version == '3.2.0':
             # irregular url structure
             url = 'http://www.unicode.org/Public/3.2-Update/' + local
-        else:
+        isipokua:
             url = ('http://www.unicode.org/Public/%s/ucd/'+template) % (version, '')
         urllib.request.urlretrieve(url, filename=local)
-    if local.endswith('.txt'):
-        return open(local, encoding='utf-8')
-    else:
+    ikiwa local.endswith('.txt'):
+        rudisha open(local, encoding='utf-8')
+    isipokua:
         # Unihan.zip
-        return open(local, 'rb')
+        rudisha open(local, 'rb')
 
 
 # --------------------------------------------------------------------
-# the following support code is taken from the unidb utilities
+# the following support code ni taken kutoka the unidb utilities
 # Copyright (c) 1999-2000 by Secret Labs AB
 
-# load a unicode-data file from disk
+# load a unicode-data file kutoka disk
 
-class UnicodeData:
+kundi UnicodeData:
     # Record structure:
     # [ID, name, category, combining, bidi, decomp,  (6)
     #  decimal, digit, numeric, bidi-mirrored, Unicode-1-name, (11)
     #  ISO-comment, uppercase, lowercase, titlecase, ea-width, (16)
     #  derived-props] (17)
 
-    def __init__(self, version,
-                 linebreakprops=False,
+    eleza __init__(self, version,
+                 linekomaprops=Uongo,
                  expand=1,
-                 cjk_check=True):
+                 cjk_check=Kweli):
         self.changed = []
-        table = [None] * 0x110000
-        with open_data(UNICODE_DATA, version) as file:
-            while 1:
+        table = [Tupu] * 0x110000
+        ukijumuisha open_data(UNICODE_DATA, version) kama file:
+            wakati 1:
                 s = file.readline()
-                if not s:
-                    break
+                ikiwa sio s:
+                    koma
                 s = s.strip().split(";")
                 char = int(s[0], 16)
                 table[char] = s
@@ -934,242 +934,242 @@ class UnicodeData:
         cjk_ranges_found = []
 
         # expand first-last ranges
-        if expand:
-            field = None
-            for i in range(0, 0x110000):
+        ikiwa expand:
+            field = Tupu
+            kila i kwenye range(0, 0x110000):
                 s = table[i]
-                if s:
-                    if s[1][-6:] == "First>":
+                ikiwa s:
+                    ikiwa s[1][-6:] == "First>":
                         s[1] = ""
                         field = s
-                    elif s[1][-5:] == "Last>":
-                        if s[1].startswith("<CJK Ideograph"):
+                    lasivyo s[1][-5:] == "Last>":
+                        ikiwa s[1].startswith("<CJK Ideograph"):
                             cjk_ranges_found.append((field[0],
                                                      s[0]))
                         s[1] = ""
-                        field = None
-                elif field:
+                        field = Tupu
+                lasivyo field:
                     f2 = field[:]
                     f2[0] = "%X" % i
                     table[i] = f2
-            if cjk_check and cjk_ranges != cjk_ranges_found:
-                raise ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
+            ikiwa cjk_check na cjk_ranges != cjk_ranges_found:
+                ashiria ValueError("CJK ranges deviate: have %r" % cjk_ranges_found)
 
         # public attributes
         self.filename = UNICODE_DATA % ''
         self.table = table
         self.chars = list(range(0x110000)) # unicode 3.2
 
-        # check for name aliases and named sequences, see #12753
-        # aliases and named sequences are not in 3.2.0
-        if version != '3.2.0':
+        # check kila name aliases na named sequences, see #12753
+        # aliases na named sequences are haiko kwenye 3.2.0
+        ikiwa version != '3.2.0':
             self.aliases = []
-            # store aliases in the Private Use Area 15, in range U+F0000..U+F00FF,
-            # in order to take advantage of the compression and lookup
-            # algorithms used for the other characters
+            # store aliases kwenye the Private Use Area 15, kwenye range U+F0000..U+F00FF,
+            # kwenye order to take advantage of the compression na lookup
+            # algorithms used kila the other characters
             pua_index = NAME_ALIASES_START
-            with open_data(NAME_ALIASES, version) as file:
-                for s in file:
+            ukijumuisha open_data(NAME_ALIASES, version) kama file:
+                kila s kwenye file:
                     s = s.strip()
-                    if not s or s.startswith('#'):
-                        continue
+                    ikiwa sio s ama s.startswith('#'):
+                        endelea
                     char, name, abbrev = s.split(';')
                     char = int(char, 16)
                     self.aliases.append((name, char))
-                    # also store the name in the PUA 1
+                    # also store the name kwenye the PUA 1
                     self.table[pua_index][1] = name
                     pua_index += 1
             assert pua_index - NAME_ALIASES_START == len(self.aliases)
 
             self.named_sequences = []
-            # store named sequences in the PUA 1, in range U+F0100..,
-            # in order to take advantage of the compression and lookup
-            # algorithms used for the other characters.
+            # store named sequences kwenye the PUA 1, kwenye range U+F0100..,
+            # kwenye order to take advantage of the compression na lookup
+            # algorithms used kila the other characters.
 
             assert pua_index < NAMED_SEQUENCES_START
             pua_index = NAMED_SEQUENCES_START
-            with open_data(NAMED_SEQUENCES, version) as file:
-                for s in file:
+            ukijumuisha open_data(NAMED_SEQUENCES, version) kama file:
+                kila s kwenye file:
                     s = s.strip()
-                    if not s or s.startswith('#'):
-                        continue
+                    ikiwa sio s ama s.startswith('#'):
+                        endelea
                     name, chars = s.split(';')
-                    chars = tuple(int(char, 16) for char in chars.split())
-                    # check that the structure defined in makeunicodename is OK
+                    chars = tuple(int(char, 16) kila char kwenye chars.split())
+                    # check that the structure defined kwenye makeunicodename ni OK
                     assert 2 <= len(chars) <= 4, "change the Py_UCS2 array size"
-                    assert all(c <= 0xFFFF for c in chars), ("use Py_UCS4 in "
-                        "the NamedSequence struct and in unicodedata_lookup")
+                    assert all(c <= 0xFFFF kila c kwenye chars), ("use Py_UCS4 kwenye "
+                        "the NamedSequence struct na kwenye unicodedata_lookup")
                     self.named_sequences.append((name, chars))
-                    # also store these in the PUA 1
+                    # also store these kwenye the PUA 1
                     self.table[pua_index][1] = name
                     pua_index += 1
             assert pua_index - NAMED_SEQUENCES_START == len(self.named_sequences)
 
         self.exclusions = {}
-        with open_data(COMPOSITION_EXCLUSIONS, version) as file:
-            for s in file:
+        ukijumuisha open_data(COMPOSITION_EXCLUSIONS, version) kama file:
+            kila s kwenye file:
                 s = s.strip()
-                if not s:
-                    continue
-                if s[0] == '#':
-                    continue
+                ikiwa sio s:
+                    endelea
+                ikiwa s[0] == '#':
+                    endelea
                 char = int(s.split()[0],16)
                 self.exclusions[char] = 1
 
-        widths = [None] * 0x110000
-        with open_data(EASTASIAN_WIDTH, version) as file:
-            for s in file:
+        widths = [Tupu] * 0x110000
+        ukijumuisha open_data(EASTASIAN_WIDTH, version) kama file:
+            kila s kwenye file:
                 s = s.strip()
-                if not s:
-                    continue
-                if s[0] == '#':
-                    continue
+                ikiwa sio s:
+                    endelea
+                ikiwa s[0] == '#':
+                    endelea
                 s = s.split()[0].split(';')
-                if '..' in s[0]:
-                    first, last = [int(c, 16) for c in s[0].split('..')]
+                ikiwa '..' kwenye s[0]:
+                    first, last = [int(c, 16) kila c kwenye s[0].split('..')]
                     chars = list(range(first, last+1))
-                else:
+                isipokua:
                     chars = [int(s[0], 16)]
-                for char in chars:
+                kila char kwenye chars:
                     widths[char] = s[1]
 
-        for i in range(0, 0x110000):
-            if table[i] is not None:
+        kila i kwenye range(0, 0x110000):
+            ikiwa table[i] ni sio Tupu:
                 table[i].append(widths[i])
 
-        for i in range(0, 0x110000):
-            if table[i] is not None:
+        kila i kwenye range(0, 0x110000):
+            ikiwa table[i] ni sio Tupu:
                 table[i].append(set())
 
-        with open_data(DERIVED_CORE_PROPERTIES, version) as file:
-            for s in file:
+        ukijumuisha open_data(DERIVED_CORE_PROPERTIES, version) kama file:
+            kila s kwenye file:
                 s = s.split('#', 1)[0].strip()
-                if not s:
-                    continue
+                ikiwa sio s:
+                    endelea
 
                 r, p = s.split(";")
                 r = r.strip()
                 p = p.strip()
-                if ".." in r:
-                    first, last = [int(c, 16) for c in r.split('..')]
+                ikiwa ".." kwenye r:
+                    first, last = [int(c, 16) kila c kwenye r.split('..')]
                     chars = list(range(first, last+1))
-                else:
+                isipokua:
                     chars = [int(r, 16)]
-                for char in chars:
-                    if table[char]:
+                kila char kwenye chars:
+                    ikiwa table[char]:
                         # Some properties (e.g. Default_Ignorable_Code_Point)
                         # apply to unassigned code points; ignore them
                         table[char][-1].add(p)
 
-        with open_data(LINE_BREAK, version) as file:
-            for s in file:
+        ukijumuisha open_data(LINE_BREAK, version) kama file:
+            kila s kwenye file:
                 s = s.partition('#')[0]
-                s = [i.strip() for i in s.split(';')]
-                if len(s) < 2 or s[1] not in MANDATORY_LINE_BREAKS:
-                    continue
-                if '..' not in s[0]:
+                s = [i.strip() kila i kwenye s.split(';')]
+                ikiwa len(s) < 2 ama s[1] haiko kwenye MANDATORY_LINE_BREAKS:
+                    endelea
+                ikiwa '..' haiko kwenye s[0]:
                     first = last = int(s[0], 16)
-                else:
-                    first, last = [int(c, 16) for c in s[0].split('..')]
-                for char in range(first, last+1):
+                isipokua:
+                    first, last = [int(c, 16) kila c kwenye s[0].split('..')]
+                kila char kwenye range(first, last+1):
                     table[char][-1].add('Line_Break')
 
         # We only want the quickcheck properties
         # Format: NF?_QC; Y(es)/N(o)/M(aybe)
-        # Yes is the default, hence only N and M occur
+        # Yes ni the default, hence only N na M occur
         # In 3.2.0, the format was different (NF?_NO)
         # The parsing will incorrectly determine these as
-        # "yes", however, unicodedata.c will not perform quickchecks
-        # for older versions, and no delta records will be created.
+        # "yes", however, unicodedata.c will sio perform quickchecks
+        # kila older versions, na no delta records will be created.
         quickchecks = [0] * 0x110000
         qc_order = 'NFD_QC NFKD_QC NFC_QC NFKC_QC'.split()
-        with open_data(DERIVEDNORMALIZATION_PROPS, version) as file:
-            for s in file:
-                if '#' in s:
+        ukijumuisha open_data(DERIVEDNORMALIZATION_PROPS, version) kama file:
+            kila s kwenye file:
+                ikiwa '#' kwenye s:
                     s = s[:s.index('#')]
-                s = [i.strip() for i in s.split(';')]
-                if len(s) < 2 or s[1] not in qc_order:
-                    continue
-                quickcheck = 'MN'.index(s[2]) + 1 # Maybe or No
+                s = [i.strip() kila i kwenye s.split(';')]
+                ikiwa len(s) < 2 ama s[1] haiko kwenye qc_order:
+                    endelea
+                quickcheck = 'MN'.index(s[2]) + 1 # Maybe ama No
                 quickcheck_shift = qc_order.index(s[1])*2
                 quickcheck <<= quickcheck_shift
-                if '..' not in s[0]:
+                ikiwa '..' haiko kwenye s[0]:
                     first = last = int(s[0], 16)
-                else:
-                    first, last = [int(c, 16) for c in s[0].split('..')]
-                for char in range(first, last+1):
-                    assert not (quickchecks[char]>>quickcheck_shift)&3
+                isipokua:
+                    first, last = [int(c, 16) kila c kwenye s[0].split('..')]
+                kila char kwenye range(first, last+1):
+                    assert sio (quickchecks[char]>>quickcheck_shift)&3
                     quickchecks[char] |= quickcheck
-        for i in range(0, 0x110000):
-            if table[i] is not None:
+        kila i kwenye range(0, 0x110000):
+            ikiwa table[i] ni sio Tupu:
                 table[i].append(quickchecks[i])
 
-        with open_data(UNIHAN, version) as file:
+        ukijumuisha open_data(UNIHAN, version) kama file:
             zip = zipfile.ZipFile(file)
-            if version == '3.2.0':
+            ikiwa version == '3.2.0':
                 data = zip.open('Unihan-3.2.0.txt').read()
-            else:
+            isipokua:
                 data = zip.open('Unihan_NumericValues.txt').read()
-        for line in data.decode("utf-8").splitlines():
-            if not line.startswith('U+'):
-                continue
-            code, tag, value = line.split(None, 3)[:3]
-            if tag not in ('kAccountingNumeric', 'kPrimaryNumeric',
+        kila line kwenye data.decode("utf-8").splitlines():
+            ikiwa sio line.startswith('U+'):
+                endelea
+            code, tag, value = line.split(Tupu, 3)[:3]
+            ikiwa tag haiko kwenye ('kAccountingNumeric', 'kPrimaryNumeric',
                            'kOtherNumeric'):
-                continue
+                endelea
             value = value.strip().replace(',', '')
             i = int(code[2:], 16)
             # Patch the numeric field
-            if table[i] is not None:
+            ikiwa table[i] ni sio Tupu:
                 table[i][8] = value
         sc = self.special_casing = {}
-        with open_data(SPECIAL_CASING, version) as file:
-            for s in file:
+        ukijumuisha open_data(SPECIAL_CASING, version) kama file:
+            kila s kwenye file:
                 s = s[:-1].split('#', 1)[0]
-                if not s:
-                    continue
+                ikiwa sio s:
+                    endelea
                 data = s.split("; ")
-                if data[4]:
+                ikiwa data[4]:
                     # We ignore all conditionals (since they depend on
-                    # languages) except for one, which is hardcoded. See
-                    # handle_capital_sigma in unicodeobject.c.
-                    continue
+                    # languages) tatizo kila one, which ni hardcoded. See
+                    # handle_capital_sigma kwenye unicodeobject.c.
+                    endelea
                 c = int(data[0], 16)
-                lower = [int(char, 16) for char in data[1].split()]
-                title = [int(char, 16) for char in data[2].split()]
-                upper = [int(char, 16) for char in data[3].split()]
+                lower = [int(char, 16) kila char kwenye data[1].split()]
+                title = [int(char, 16) kila char kwenye data[2].split()]
+                upper = [int(char, 16) kila char kwenye data[3].split()]
                 sc[c] = (lower, title, upper)
         cf = self.case_folding = {}
-        if version != '3.2.0':
-            with open_data(CASE_FOLDING, version) as file:
-                for s in file:
+        ikiwa version != '3.2.0':
+            ukijumuisha open_data(CASE_FOLDING, version) kama file:
+                kila s kwenye file:
                     s = s[:-1].split('#', 1)[0]
-                    if not s:
-                        continue
+                    ikiwa sio s:
+                        endelea
                     data = s.split("; ")
-                    if data[1] in "CF":
+                    ikiwa data[1] kwenye "CF":
                         c = int(data[0], 16)
-                        cf[c] = [int(char, 16) for char in data[2].split()]
+                        cf[c] = [int(char, 16) kila char kwenye data[2].split()]
 
-    def uselatin1(self):
+    eleza uselatin1(self):
         # restrict character range to ISO Latin 1
         self.chars = list(range(256))
 
 
 # hash table tools
 
-# this is a straight-forward reimplementation of Python's built-in
-# dictionary type, using a static data structure, and a custom string
+# this ni a straight-forward reimplementation of Python's built-in
+# dictionary type, using a static data structure, na a custom string
 # hash algorithm.
 
-def myhash(s, magic):
+eleza myhash(s, magic):
     h = 0
-    for c in map(ord, s.upper()):
+    kila c kwenye map(ord, s.upper()):
         h = (h * magic) + c
         ix = h & 0xff000000
-        if ix:
+        ikiwa ix:
             h = (h ^ ((ix>>24) & 0xff)) & 0x00ffffff
-    return h
+    rudisha h
 
 
 SIZES = [
@@ -1180,21 +1180,21 @@ SIZES = [
 ]
 
 
-class Hash:
-    def __init__(self, name, data, magic):
+kundi Hash:
+    eleza __init__(self, name, data, magic):
         # turn a (key, value) list into a static hash table structure
 
         # determine table size
-        for size, poly in SIZES:
-            if size > len(data):
+        kila size, poly kwenye SIZES:
+            ikiwa size > len(data):
                 poly = size + poly
-                break
-        else:
-            raise AssertionError("ran out of polynomials")
+                koma
+        isipokua:
+            ashiria AssertionError("ran out of polynomials")
 
-        print(size, "slots in hash table")
+        andika(size, "slots kwenye hash table")
 
-        table = [None] * size
+        table = [Tupu] * size
 
         mask = size-1
 
@@ -1203,32 +1203,32 @@ class Hash:
         hash = myhash
 
         # initialize hash table
-        for key, value in data:
+        kila key, value kwenye data:
             h = hash(key, magic)
             i = (~h) & mask
             v = table[i]
-            if v is None:
+            ikiwa v ni Tupu:
                 table[i] = value
-                continue
+                endelea
             incr = (h ^ (h >> 3)) & mask
-            if not incr:
+            ikiwa sio incr:
                 incr = mask
-            while 1:
+            wakati 1:
                 n = n + 1
                 i = (i + incr) & mask
                 v = table[i]
-                if v is None:
+                ikiwa v ni Tupu:
                     table[i] = value
-                    break
+                    koma
                 incr = incr << 1
-                if incr > mask:
+                ikiwa incr > mask:
                     incr = incr ^ poly
 
-        print(n, "collisions")
+        andika(n, "collisions")
         self.collisions = n
 
-        for i in range(len(table)):
-            if table[i] is None:
+        kila i kwenye range(len(table)):
+            ikiwa table[i] ni Tupu:
                 table[i] = 0
 
         self.data = Array(name + "_hash", table)
@@ -1237,121 +1237,121 @@ class Hash:
         self.size = size
         self.poly = poly
 
-    def dump(self, file, trace):
-        # write data to file, as a C array
+    eleza dump(self, file, trace):
+        # write data to file, kama a C array
         self.data.dump(file, trace)
         file.write("#define %s_magic %d\n" % (self.name, self.magic))
         file.write("#define %s_size %d\n" % (self.name, self.size))
         file.write("#define %s_poly %d\n" % (self.name, self.poly))
 
 
-# stuff to deal with arrays of unsigned integers
+# stuff to deal ukijumuisha arrays of unsigned integers
 
-class Array:
+kundi Array:
 
-    def __init__(self, name, data):
+    eleza __init__(self, name, data):
         self.name = name
         self.data = data
 
-    def dump(self, file, trace=0):
-        # write data to file, as a C array
+    eleza dump(self, file, trace=0):
+        # write data to file, kama a C array
         size = getsize(self.data)
-        if trace:
-            print(self.name+":", size*len(self.data), "bytes", file=sys.stderr)
+        ikiwa trace:
+            andika(self.name+":", size*len(self.data), "bytes", file=sys.stderr)
         file.write("static const ")
-        if size == 1:
+        ikiwa size == 1:
             file.write("unsigned char")
-        elif size == 2:
+        lasivyo size == 2:
             file.write("unsigned short")
-        else:
+        isipokua:
             file.write("unsigned int")
         file.write(" " + self.name + "[] = {\n")
-        if self.data:
+        ikiwa self.data:
             s = "    "
-            for item in self.data:
+            kila item kwenye self.data:
                 i = str(item) + ", "
-                if len(s) + len(i) > 78:
+                ikiwa len(s) + len(i) > 78:
                     file.write(s.rstrip() + "\n")
                     s = "    " + i
-                else:
+                isipokua:
                     s = s + i
-            if s.strip():
+            ikiwa s.strip():
                 file.write(s.rstrip() + "\n")
         file.write("};\n\n")
 
 
-def getsize(data):
-    # return smallest possible integer size for the given array
+eleza getsize(data):
+    # rudisha smallest possible integer size kila the given array
     maxdata = max(data)
-    if maxdata < 256:
-        return 1
-    elif maxdata < 65536:
-        return 2
-    else:
-        return 4
+    ikiwa maxdata < 256:
+        rudisha 1
+    lasivyo maxdata < 65536:
+        rudisha 2
+    isipokua:
+        rudisha 4
 
 
-def splitbins(t, trace=0):
+eleza splitbins(t, trace=0):
     """t, trace=0 -> (t1, t2, shift).  Split a table to save space.
 
-    t is a sequence of ints.  This function can be useful to save space if
-    many of the ints are the same.  t1 and t2 are lists of ints, and shift
-    is an int, chosen to minimize the combined size of t1 and t2 (in C
-    code), and where for each i in range(len(t)),
+    t ni a sequence of ints.  This function can be useful to save space if
+    many of the ints are the same.  t1 na t2 are lists of ints, na shift
+    ni an int, chosen to minimize the combined size of t1 na t2 (in C
+    code), na where kila each i kwenye range(len(t)),
         t[i] == t2[(t1[i >> shift] << shift) + (i & mask)]
-    where mask is a bitmask isolating the last "shift" bits.
+    where mask ni a bitmask isolating the last "shift" bits.
 
-    If optional arg trace is non-zero (default zero), progress info
-    is printed to sys.stderr.  The higher the value, the more info
+    If optional arg trace ni non-zero (default zero), progress info
+    ni printed to sys.stderr.  The higher the value, the more info
     you'll get.
     """
 
-    if trace:
-        def dump(t1, t2, shift, bytes):
-            print("%d+%d bins at shift %d; %d bytes" % (
+    ikiwa trace:
+        eleza dump(t1, t2, shift, bytes):
+            andika("%d+%d bins at shift %d; %d bytes" % (
                 len(t1), len(t2), shift, bytes), file=sys.stderr)
-        print("Size of original table:", len(t)*getsize(t), "bytes",
+        andika("Size of original table:", len(t)*getsize(t), "bytes",
               file=sys.stderr)
     n = len(t)-1    # last valid index
-    maxshift = 0    # the most we can shift n and still have something left
-    if n > 0:
-        while n >> 1:
+    maxshift = 0    # the most we can shift n na still have something left
+    ikiwa n > 0:
+        wakati n >> 1:
             n >>= 1
             maxshift += 1
-    del n
+    toa n
     bytes = sys.maxsize  # smallest total size so far
     t = tuple(t)    # so slices can be dict keys
-    for shift in range(maxshift + 1):
+    kila shift kwenye range(maxshift + 1):
         t1 = []
         t2 = []
         size = 2**shift
         bincache = {}
-        for i in range(0, len(t), size):
+        kila i kwenye range(0, len(t), size):
             bin = t[i:i+size]
             index = bincache.get(bin)
-            if index is None:
+            ikiwa index ni Tupu:
                 index = len(t2)
                 bincache[bin] = index
                 t2.extend(bin)
             t1.append(index >> shift)
         # determine memory size
         b = len(t1)*getsize(t1) + len(t2)*getsize(t2)
-        if trace > 1:
+        ikiwa trace > 1:
             dump(t1, t2, shift, b)
-        if b < bytes:
+        ikiwa b < bytes:
             best = t1, t2, shift
             bytes = b
     t1, t2, shift = best
-    if trace:
-        print("Best:", end=' ', file=sys.stderr)
+    ikiwa trace:
+        andika("Best:", end=' ', file=sys.stderr)
         dump(t1, t2, shift, bytes)
-    if __debug__:
-        # exhaustively verify that the decomposition is correct
+    ikiwa __debug__:
+        # exhaustively verify that the decomposition ni correct
         mask = ~((~0) << shift) # i.e., low-bit mask of shift bits
-        for i in range(len(t)):
+        kila i kwenye range(len(t)):
             assert t[i] == t2[(t1[i >> shift] << shift) + (i & mask)]
-    return best
+    rudisha best
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     maketables(1)

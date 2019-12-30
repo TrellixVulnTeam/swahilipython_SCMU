@@ -7,19 +7,19 @@ example.
 By Guido van Rossum, demystified after a version by Fredrik Lundh.
 """
 
-import sys
+agiza sys
 
 n = 100
-if sys.argv[1:]:
+ikiwa sys.argv[1:]:
     n = int(sys.argv[1])
 
-def bottle(n):
-    if n == 0: return "no more bottles of beer"
-    if n == 1: return "one bottle of beer"
-    return str(n) + " bottles of beer"
+eleza bottle(n):
+    ikiwa n == 0: rudisha "no more bottles of beer"
+    ikiwa n == 1: rudisha "one bottle of beer"
+    rudisha str(n) + " bottles of beer"
 
-for i in range(n, 0, -1):
-    print(bottle(i), "on the wall,")
-    print(bottle(i) + ".")
-    print("Take one down, pass it around,")
-    print(bottle(i-1), "on the wall.")
+kila i kwenye range(n, 0, -1):
+    andika(bottle(i), "on the wall,")
+    andika(bottle(i) + ".")
+    andika("Take one down, pita it around,")
+    andika(bottle(i-1), "on the wall.")

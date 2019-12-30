@@ -1,81 +1,81 @@
 #!/usr/bin/env python3
 #
-# fetch the certificate that the server(s) are providing in PEM form
+# fetch the certificate that the server(s) are providing kwenye PEM form
 #
 # args are HOST:PORT [, HOST:PORT...]
 #
 # By Bill Janssen.
 
-import re
-import os
-import sys
-import tempfile
+agiza re
+agiza os
+agiza sys
+agiza tempfile
 
 
-def fetch_server_certificate (host, port):
+eleza fetch_server_certificate (host, port):
 
-    def subproc(cmd):
-        from subprocess import Popen, PIPE, STDOUT
-        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=True)
+    eleza subproc(cmd):
+        kutoka subprocess agiza Popen, PIPE, STDOUT
+        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=Kweli)
         status = proc.wait()
         output = proc.stdout.read()
-        return status, output
+        rudisha status, output
 
-    def strip_to_x509_cert(certfile_contents, outfile=None):
+    eleza strip_to_x509_cert(certfile_contents, outfile=Tupu):
         m = re.search(br"^([-]+BEGIN CERTIFICATE[-]+[\r]*\n"
                       br".*[\r]*^[-]+END CERTIFICATE[-]+)$",
                       certfile_contents, re.MULTILINE | re.DOTALL)
-        if not m:
-            return None
-        else:
+        ikiwa sio m:
+            rudisha Tupu
+        isipokua:
             tn = tempfile.mktemp()
-            with open(tn, "wb") as fp:
+            ukijumuisha open(tn, "wb") kama fp:
                 fp.write(m.group(1) + b"\n")
-            try:
-                tn2 = (outfile or tempfile.mktemp())
+            jaribu:
+                tn2 = (outfile ama tempfile.mktemp())
                 status, output = subproc(r'openssl x509 -in "%s" -out "%s"' %
                                          (tn, tn2))
-                if status != 0:
-                    raise RuntimeError('OpenSSL x509 failed with status %s and '
+                ikiwa status != 0:
+                    ashiria RuntimeError('OpenSSL x509 failed ukijumuisha status %s na '
                                        'output: %r' % (status, output))
-                with open(tn2, 'rb') as fp:
+                ukijumuisha open(tn2, 'rb') kama fp:
                     data = fp.read()
                 os.unlink(tn2)
-                return data
-            finally:
+                rudisha data
+            mwishowe:
                 os.unlink(tn)
 
-    if sys.platform.startswith("win"):
+    ikiwa sys.platform.startswith("win"):
         tfile = tempfile.mktemp()
-        with open(tfile, "w") as fp:
+        ukijumuisha open(tfile, "w") kama fp:
             fp.write("quit\n")
-        try:
+        jaribu:
             status, output = subproc(
                 'openssl s_client -connect "%s:%s" -showcerts < "%s"' %
                 (host, port, tfile))
-        finally:
+        mwishowe:
             os.unlink(tfile)
-    else:
+    isipokua:
         status, output = subproc(
             'openssl s_client -connect "%s:%s" -showcerts < /dev/null' %
             (host, port))
-    if status != 0:
-        raise RuntimeError('OpenSSL connect failed with status %s and '
+    ikiwa status != 0:
+        ashiria RuntimeError('OpenSSL connect failed ukijumuisha status %s na '
                            'output: %r' % (status, output))
     certtext = strip_to_x509_cert(output)
-    if not certtext:
-        raise ValueError("Invalid response received from server at %s:%s" %
+    ikiwa sio certtext:
+        ashiria ValueError("Invalid response received kutoka server at %s:%s" %
                          (host, port))
-    return certtext
+    rudisha certtext
 
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
+ikiwa __name__ == "__main__":
+    ikiwa len(sys.argv) < 2:
         sys.stderr.write(
             "Usage:  %s HOSTNAME:PORTNUMBER [, HOSTNAME:PORTNUMBER...]\n" %
             sys.argv[0])
         sys.exit(1)
-    for arg in sys.argv[1:]:
+    kila arg kwenye sys.argv[1:]:
         host, port = arg.split(":")
         sys.stdout.buffer.write(fetch_server_certificate(host, int(port)))
     sys.exit(0)

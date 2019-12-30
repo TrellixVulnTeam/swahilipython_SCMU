@@ -1,14 +1,14 @@
-"""This script generates a Python codec module from a Windows Code Page.
+"""This script generates a Python codec module kutoka a Windows Code Page.
 
 It uses the function MultiByteToWideChar to generate a decoding table.
 """
 
-import ctypes
-from ctypes import wintypes
-from gencodec import codegen
-import unicodedata
+agiza ctypes
+kutoka ctypes agiza wintypes
+kutoka gencodec agiza codegen
+agiza unicodedata
 
-def genwinmap(codepage):
+eleza genwinmap(codepage):
     MultiByteToWideChar = ctypes.windll.kernel32.MultiByteToWideChar
     MultiByteToWideChar.argtypes = [wintypes.UINT, wintypes.DWORD,
                                     wintypes.LPCSTR, ctypes.c_int,
@@ -17,10 +17,10 @@ def genwinmap(codepage):
 
     enc2uni = {}
 
-    for i in list(range(32)) + [127]:
+    kila i kwenye list(range(32)) + [127]:
         enc2uni[i] = (i, 'CONTROL CHARACTER')
 
-    for i in range(256):
+    kila i kwenye range(256):
         buf = ctypes.create_unicode_buffer(2)
         ret = MultiByteToWideChar(
             codepage, 0,
@@ -28,34 +28,34 @@ def genwinmap(codepage):
             buf, 2)
         assert ret == 1, "invalid code page"
         assert buf[1] == '\x00'
-        try:
+        jaribu:
             name = unicodedata.name(buf[0])
-        except ValueError:
-            try:
+        tatizo ValueError:
+            jaribu:
                 name = enc2uni[i][1]
-            except KeyError:
+            tatizo KeyError:
                 name = ''
 
         enc2uni[i] = (ord(buf[0]), name)
 
-    return enc2uni
+    rudisha enc2uni
 
-def genwincodec(codepage):
-    import platform
+eleza genwincodec(codepage):
+    agiza platform
     map = genwinmap(codepage)
     encodingname = 'cp%d' % codepage
     code = codegen("", map, encodingname)
-    # Replace first lines with our own docstring
+    # Replace first lines ukijumuisha our own docstring
     code = '''\
 """Python Character Mapping Codec %s generated on Windows:
-%s with the command:
+%s ukijumuisha the command:
   python Tools/unicode/genwincodec.py %s
 """#"
 ''' % (encodingname, ' '.join(platform.win32_ver()), codepage
       ) + code.split('"""#"', 1)[1]
 
-    print(code)
+    andika(code)
 
-if __name__ == '__main__':
-    import sys
+ikiwa __name__ == '__main__':
+    agiza sys
     genwincodec(int(sys.argv[1]))

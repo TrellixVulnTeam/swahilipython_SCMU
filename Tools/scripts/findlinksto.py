@@ -4,40 +4,40 @@
 #
 # find symbolic links to a path matching a regular expression
 
-import os
-import sys
-import re
-import getopt
+agiza os
+agiza sys
+agiza re
+agiza getopt
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], '')
-        if len(args) < 2:
-            raise getopt.GetoptError('not enough arguments', None)
-    except getopt.GetoptError as msg:
+        ikiwa len(args) < 2:
+            ashiria getopt.GetoptError('not enough arguments', Tupu)
+    tatizo getopt.GetoptError kama msg:
         sys.stdout = sys.stderr
-        print(msg)
-        print('usage: findlinksto pattern directory ...')
+        andika(msg)
+        andika('usage: findlinksto pattern directory ...')
         sys.exit(2)
     pat, dirs = args[0], args[1:]
     prog = re.compile(pat)
-    for dirname in dirs:
+    kila dirname kwenye dirs:
         os.walk(dirname, visit, prog)
 
-def visit(prog, dirname, names):
-    if os.path.islink(dirname):
+eleza visit(prog, dirname, names):
+    ikiwa os.path.islink(dirname):
         names[:] = []
-        return
-    if os.path.ismount(dirname):
-        print('descend into', dirname)
-    for name in names:
+        rudisha
+    ikiwa os.path.ismount(dirname):
+        andika('descend into', dirname)
+    kila name kwenye names:
         name = os.path.join(dirname, name)
-        try:
+        jaribu:
             linkto = os.readlink(name)
-            if prog.search(linkto) is not None:
-                print(name, '->', linkto)
-        except OSError:
-            pass
+            ikiwa prog.search(linkto) ni sio Tupu:
+                andika(name, '->', linkto)
+        tatizo OSError:
+            pita
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

@@ -1,25 +1,25 @@
 #! /usr/bin/env python3
 
-"""Script to search with Google
+"""Script to search ukijumuisha Google
 
 Usage:
     python3 google.py [search terms]
 """
 
-import sys
-import urllib.parse
-import webbrowser
+agiza sys
+agiza urllib.parse
+agiza webbrowser
 
 
-def main(args):
-    def quote(arg):
-        if ' ' in arg:
+eleza main(args):
+    eleza quote(arg):
+        ikiwa ' ' kwenye arg:
             arg = '"%s"' % arg
-        return urllib.parse.quote_plus(arg)
+        rudisha urllib.parse.quote_plus(arg)
 
-    qstring = '+'.join(quote(arg) for arg in args)
+    qstring = '+'.join(quote(arg) kila arg kwenye args)
     url = urllib.parse.urljoin('https://www.google.com/search', '?q=' + qstring)
     webbrowser.open(url)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main(sys.argv[1:])

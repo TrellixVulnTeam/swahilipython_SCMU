@@ -6,14 +6,14 @@ cur = con.cursor()
 SELECT = "select name_last, age kutoka people order by age, name_last"
 
 # 1. Iterate over the rows available kutoka the cursor, unpacking the
-# resulting sequences to yield their elements (name_last, age):
+# resulting sequences to tuma their elements (name_last, age):
 cur.execute(SELECT)
-for (name_last, age) in cur:
-    print('%s is %d years old.' % (name_last, age))
+kila (name_last, age) kwenye cur:
+    andika('%s ni %d years old.' % (name_last, age))
 
 # 2. Equivalently:
 cur.execute(SELECT)
-for row in cur:
-    print('%s is %d years old.' % (row[0], row[1]))
+kila row kwenye cur:
+    andika('%s ni %d years old.' % (row[0], row[1]))
 
 con.close()

@@ -1,168 +1,168 @@
 """Color Database.
 
-This file contains one class, called ColorDB, and several utility functions.
-The class must be instantiated by the get_colordb() function in this file,
-passing it a filename to read a database out of.
+This file contains one class, called ColorDB, na several utility functions.
+The kundi must be instantiated by the get_colordb() function kwenye this file,
+pitaing it a filename to read a database out of.
 
 The get_colordb() function will try to examine the file to figure out what the
-format of the file is.  If it can't figure out the file format, or it has
-trouble reading the file, None is returned.  You can pass get_colordb() an
+format of the file is.  If it can't figure out the file format, ama it has
+trouble reading the file, Tupu ni returned.  You can pita get_colordb() an
 optional filetype argument.
 
 Supporte file types are:
 
     X_RGB_TXT -- X Consortium rgb.txt format files.  Three columns of numbers
-                 from 0 .. 255 separated by whitespace.  Arbitrary trailing
-                 columns used as the color name.
+                 kutoka 0 .. 255 separated by whitespace.  Arbitrary trailing
+                 columns used kama the color name.
 
-The utility functions are useful for converting between the various expected
-color formats, and for calculating other color values.
+The utility functions are useful kila converting between the various expected
+color formats, na kila calculating other color values.
 
 """
 
-import sys
-import re
-from types import *
+agiza sys
+agiza re
+kutoka types agiza *
 
-class BadColor(Exception):
-    pass
+kundi BadColor(Exception):
+    pita
 
-DEFAULT_DB = None
+DEFAULT_DB = Tupu
 SPACE = ' '
 COMMASPACE = ', '
 
 
 
 # generic class
-class ColorDB:
-    def __init__(self, fp):
+kundi ColorDB:
+    eleza __init__(self, fp):
         lineno = 2
         self.__name = fp.name
-        # Maintain several dictionaries for indexing into the color database.
-        # Note that while Tk supports RGB intensities of 4, 8, 12, or 16 bits,
-        # for now we only support 8 bit intensities.  At least on OpenWindows,
-        # all intensities in the /usr/openwin/lib/rgb.txt file are 8-bit
+        # Maintain several dictionaries kila indexing into the color database.
+        # Note that wakati Tk supports RGB intensities of 4, 8, 12, ama 16 bits,
+        # kila now we only support 8 bit intensities.  At least on OpenWindows,
+        # all intensities kwenye the /usr/openwin/lib/rgb.txt file are 8-bit
         #
-        # key is (red, green, blue) tuple, value is (name, [aliases])
+        # key ni (red, green, blue) tuple, value ni (name, [aliases])
         self.__byrgb = {}
-        # key is name, value is (red, green, blue)
+        # key ni name, value ni (red, green, blue)
         self.__byname = {}
         # all unique names (non-aliases).  built-on demand
-        self.__allnames = None
-        for line in fp:
-            # get this compiled regular expression from derived class
+        self.__allnames = Tupu
+        kila line kwenye fp:
+            # get this compiled regular expression kutoka derived class
             mo = self._re.match(line)
-            if not mo:
-                print('Error in', fp.name, ' line', lineno, file=sys.stderr)
+            ikiwa sio mo:
+                andika('Error in', fp.name, ' line', lineno, file=sys.stderr)
                 lineno += 1
-                continue
-            # extract the red, green, blue, and name
+                endelea
+            # extract the red, green, blue, na name
             red, green, blue = self._extractrgb(mo)
             name = self._extractname(mo)
             keyname = name.lower()
-            # BAW: for now the `name' is just the first named color with the
+            # BAW: kila now the `name' ni just the first named color ukijumuisha the
             # rgb values we find.  Later, we might want to make the two word
-            # version the `name', or the CapitalizedVersion, etc.
+            # version the `name', ama the CapitalizedVersion, etc.
             key = (red, green, blue)
             foundname, aliases = self.__byrgb.get(key, (name, []))
-            if foundname != name and foundname not in aliases:
+            ikiwa foundname != name na foundname haiko kwenye aliases:
                 aliases.append(name)
             self.__byrgb[key] = (foundname, aliases)
             # add to byname lookup
             self.__byname[keyname] = key
             lineno = lineno + 1
 
-    # override in derived classes
-    def _extractrgb(self, mo):
-        return [int(x) for x in mo.group('red', 'green', 'blue')]
+    # override kwenye derived classes
+    eleza _extractrgb(self, mo):
+        rudisha [int(x) kila x kwenye mo.group('red', 'green', 'blue')]
 
-    def _extractname(self, mo):
-        return mo.group('name')
+    eleza _extractname(self, mo):
+        rudisha mo.group('name')
 
-    def filename(self):
-        return self.__name
+    eleza filename(self):
+        rudisha self.__name
 
-    def find_byrgb(self, rgbtuple):
-        """Return name for rgbtuple"""
-        try:
-            return self.__byrgb[rgbtuple]
-        except KeyError:
-            raise BadColor(rgbtuple) from None
+    eleza find_byrgb(self, rgbtuple):
+        """Return name kila rgbtuple"""
+        jaribu:
+            rudisha self.__byrgb[rgbtuple]
+        tatizo KeyError:
+            ashiria BadColor(rgbtuple) kutoka Tupu
 
-    def find_byname(self, name):
-        """Return (red, green, blue) for name"""
+    eleza find_byname(self, name):
+        """Return (red, green, blue) kila name"""
         name = name.lower()
-        try:
-            return self.__byname[name]
-        except KeyError:
-            raise BadColor(name) from None
+        jaribu:
+            rudisha self.__byname[name]
+        tatizo KeyError:
+            ashiria BadColor(name) kutoka Tupu
 
-    def nearest(self, red, green, blue):
+    eleza nearest(self, red, green, blue):
         """Return the name of color nearest (red, green, blue)"""
-        # BAW: should we use Voronoi diagrams, Delaunay triangulation, or
-        # octree for speeding up the locating of nearest point?  Exhaustive
-        # search is inefficient, but seems fast enough.
+        # BAW: should we use Voronoi diagrams, Delaunay triangulation, ama
+        # octree kila speeding up the locating of nearest point?  Exhaustive
+        # search ni inefficient, but seems fast enough.
         nearest = -1
         nearest_name = ''
-        for name, aliases in self.__byrgb.values():
+        kila name, aliases kwenye self.__byrgb.values():
             r, g, b = self.__byname[name.lower()]
             rdelta = red - r
             gdelta = green - g
             bdelta = blue - b
             distance = rdelta * rdelta + gdelta * gdelta + bdelta * bdelta
-            if nearest == -1 or distance < nearest:
+            ikiwa nearest == -1 ama distance < nearest:
                 nearest = distance
                 nearest_name = name
-        return nearest_name
+        rudisha nearest_name
 
-    def unique_names(self):
+    eleza unique_names(self):
         # sorted
-        if not self.__allnames:
+        ikiwa sio self.__allnames:
             self.__allnames = []
-            for name, aliases in self.__byrgb.values():
+            kila name, aliases kwenye self.__byrgb.values():
                 self.__allnames.append(name)
             self.__allnames.sort(key=str.lower)
-        return self.__allnames
+        rudisha self.__allnames
 
-    def aliases_of(self, red, green, blue):
-        try:
+    eleza aliases_of(self, red, green, blue):
+        jaribu:
             name, aliases = self.__byrgb[(red, green, blue)]
-        except KeyError:
-            raise BadColor((red, green, blue)) from None
-        return [name] + aliases
+        tatizo KeyError:
+            ashiria BadColor((red, green, blue)) kutoka Tupu
+        rudisha [name] + aliases
 
 
-class RGBColorDB(ColorDB):
+kundi RGBColorDB(ColorDB):
     _re = re.compile(
         r'\s*(?P<red>\d+)\s+(?P<green>\d+)\s+(?P<blue>\d+)\s+(?P<name>.*)')
 
 
-class HTML40DB(ColorDB):
+kundi HTML40DB(ColorDB):
     _re = re.compile(r'(?P<name>\S+)\s+(?P<hexrgb>#[0-9a-fA-F]{6})')
 
-    def _extractrgb(self, mo):
-        return rrggbb_to_triplet(mo.group('hexrgb'))
+    eleza _extractrgb(self, mo):
+        rudisha rrggbb_to_triplet(mo.group('hexrgb'))
 
-class LightlinkDB(HTML40DB):
+kundi LightlinkDB(HTML40DB):
     _re = re.compile(r'(?P<name>(.+))\s+(?P<hexrgb>#[0-9a-fA-F]{6})')
 
-    def _extractname(self, mo):
-        return mo.group('name').strip()
+    eleza _extractname(self, mo):
+        rudisha mo.group('name').strip()
 
-class WebsafeDB(ColorDB):
+kundi WebsafeDB(ColorDB):
     _re = re.compile('(?P<hexrgb>#[0-9a-fA-F]{6})')
 
-    def _extractrgb(self, mo):
-        return rrggbb_to_triplet(mo.group('hexrgb'))
+    eleza _extractrgb(self, mo):
+        rudisha rrggbb_to_triplet(mo.group('hexrgb'))
 
-    def _extractname(self, mo):
-        return mo.group('hexrgb').upper()
+    eleza _extractname(self, mo):
+        rudisha mo.group('hexrgb').upper()
 
 
 
-# format is a tuple (RE, SCANLINES, CLASS) where RE is a compiled regular
-# expression, SCANLINES is the number of header lines to scan, and CLASS is
-# the class to instantiate if a match is found
+# format ni a tuple (RE, SCANLINES, CLASS) where RE ni a compiled regular
+# expression, SCANLINES ni the number of header lines to scan, na CLASS is
+# the kundi to instantiate ikiwa a match ni found
 
 FILETYPES = [
     (re.compile('Xorg'), RGBColorDB),
@@ -172,100 +172,100 @@ FILETYPES = [
     (re.compile('Websafe'), WebsafeDB),
     ]
 
-def get_colordb(file, filetype=None):
-    colordb = None
+eleza get_colordb(file, filetype=Tupu):
+    colordb = Tupu
     fp = open(file)
-    try:
+    jaribu:
         line = fp.readline()
-        if not line:
-            return None
+        ikiwa sio line:
+            rudisha Tupu
         # try to determine the type of RGB file it is
-        if filetype is None:
+        ikiwa filetype ni Tupu:
             filetypes = FILETYPES
-        else:
+        isipokua:
             filetypes = [filetype]
-        for typere, class_ in filetypes:
+        kila typere, class_ kwenye filetypes:
             mo = typere.search(line)
-            if mo:
-                break
-        else:
+            ikiwa mo:
+                koma
+        isipokua:
             # no matching type
-            return None
-        # we know the type and the class to grok the type, so suck it in
+            rudisha Tupu
+        # we know the type na the kundi to grok the type, so suck it in
         colordb = class_(fp)
-    finally:
+    mwishowe:
         fp.close()
     # save a global copy
     global DEFAULT_DB
     DEFAULT_DB = colordb
-    return colordb
+    rudisha colordb
 
 
 
 _namedict = {}
 
-def rrggbb_to_triplet(color):
+eleza rrggbb_to_triplet(color):
     """Converts a #rrggbb color to the tuple (red, green, blue)."""
     rgbtuple = _namedict.get(color)
-    if rgbtuple is None:
-        if color[0] != '#':
-            raise BadColor(color)
+    ikiwa rgbtuple ni Tupu:
+        ikiwa color[0] != '#':
+            ashiria BadColor(color)
         red = color[1:3]
         green = color[3:5]
         blue = color[5:7]
         rgbtuple = int(red, 16), int(green, 16), int(blue, 16)
         _namedict[color] = rgbtuple
-    return rgbtuple
+    rudisha rgbtuple
 
 
 _tripdict = {}
-def triplet_to_rrggbb(rgbtuple):
+eleza triplet_to_rrggbb(rgbtuple):
     """Converts a (red, green, blue) tuple to #rrggbb."""
     global _tripdict
     hexname = _tripdict.get(rgbtuple)
-    if hexname is None:
+    ikiwa hexname ni Tupu:
         hexname = '#%02x%02x%02x' % rgbtuple
         _tripdict[rgbtuple] = hexname
-    return hexname
+    rudisha hexname
 
 
-def triplet_to_fractional_rgb(rgbtuple):
-    return [x / 256 for x in rgbtuple]
+eleza triplet_to_fractional_rgb(rgbtuple):
+    rudisha [x / 256 kila x kwenye rgbtuple]
 
 
-def triplet_to_brightness(rgbtuple):
-    # return the brightness (grey level) along the scale 0.0==black to
+eleza triplet_to_brightness(rgbtuple):
+    # rudisha the brightness (grey level) along the scale 0.0==black to
     # 1.0==white
     r = 0.299
     g = 0.587
     b = 0.114
-    return r*rgbtuple[0] + g*rgbtuple[1] + b*rgbtuple[2]
+    rudisha r*rgbtuple[0] + g*rgbtuple[1] + b*rgbtuple[2]
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     colordb = get_colordb('/usr/openwin/lib/rgb.txt')
-    if not colordb:
-        print('No parseable color database found')
+    ikiwa sio colordb:
+        andika('No parseable color database found')
         sys.exit(1)
     # on my system, this color matches exactly
     target = 'navy'
     red, green, blue = rgbtuple = colordb.find_byname(target)
-    print(target, ':', red, green, blue, triplet_to_rrggbb(rgbtuple))
+    andika(target, ':', red, green, blue, triplet_to_rrggbb(rgbtuple))
     name, aliases = colordb.find_byrgb(rgbtuple)
-    print('name:', name, 'aliases:', COMMASPACE.join(aliases))
+    andika('name:', name, 'aliases:', COMMASPACE.join(aliases))
     r, g, b = (1, 1, 128)                         # nearest to navy
     r, g, b = (145, 238, 144)                     # nearest to lightgreen
     r, g, b = (255, 251, 250)                     # snow
-    print('finding nearest to', target, '...')
-    import time
+    andika('finding nearest to', target, '...')
+    agiza time
     t0 = time.time()
     nearest = colordb.nearest(r, g, b)
     t1 = time.time()
-    print('found nearest color', nearest, 'in', t1-t0, 'seconds')
+    andika('found nearest color', nearest, 'in', t1-t0, 'seconds')
     # dump the database
-    for n in colordb.unique_names():
+    kila n kwenye colordb.unique_names():
         r, g, b = colordb.find_byname(n)
         aliases = colordb.aliases_of(r, g, b)
-        print('%20s: (%3d/%3d/%3d) == %s' % (n, r, g, b,
+        andika('%20s: (%3d/%3d/%3d) == %s' % (n, r, g, b,
                                              SPACE.join(aliases[1:])))

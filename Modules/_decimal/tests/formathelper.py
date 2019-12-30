@@ -1,16 +1,16 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
+# Redistribution na use kwenye source na binary forms, ukijumuisha ama without
 # modification, are permitted provided that the following conditions
 # are met:
 #
 # 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
+#    notice, this list of conditions na the following disclaimer.
 #
-# 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
+# 2. Redistributions kwenye binary form must reproduce the above copyright
+#    notice, this list of conditions na the following disclaimer kwenye the
+#    documentation and/or other materials provided ukijumuisha the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -29,10 +29,10 @@
 # Generate PEP-3101 format strings.
 
 
-import os, sys, locale, random
-import platform, subprocess
-from test.support import import_fresh_module
-from distutils.spawn import find_executable
+agiza os, sys, locale, random
+agiza platform, subprocess
+kutoka test.support agiza import_fresh_module
+kutoka distutils.spawn agiza find_executable
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
@@ -129,214 +129,214 @@ numbers = [
 ]
 
 # Get the list of available locales.
-if platform.system() == 'Windows':
+ikiwa platform.system() == 'Windows':
     locale_list = windows_lang_strings
-else:
+isipokua:
     locale_list = ['C']
-    if os.path.isfile("/var/lib/locales/supported.d/local"):
-        # On Ubuntu, `locale -a` gives the wrong case for some locales,
+    ikiwa os.path.isfile("/var/lib/locales/supported.d/local"):
+        # On Ubuntu, `locale -a` gives the wrong case kila some locales,
         # so we get the correct names directly:
-        with open("/var/lib/locales/supported.d/local") as f:
-            locale_list = [loc.split()[0] for loc in f.readlines() \
-                           if not loc.startswith('#')]
-    elif find_executable('locale'):
+        ukijumuisha open("/var/lib/locales/supported.d/local") kama f:
+            locale_list = [loc.split()[0] kila loc kwenye f.readlines() \
+                           ikiwa sio loc.startswith('#')]
+    lasivyo find_executable('locale'):
         locale_list = subprocess.Popen(["locale", "-a"],
                           stdout=subprocess.PIPE).communicate()[0]
-        try:
+        jaribu:
             locale_list = locale_list.decode()
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             # Some distributions insist on using latin-1 characters
-            # in their locale names.
+            # kwenye their locale names.
             locale_list = locale_list.decode('latin-1')
         locale_list = locale_list.split('\n')
-try:
+jaribu:
     locale_list.remove('')
-except ValueError:
-    pass
+tatizo ValueError:
+    pita
 
 # Debian
-if os.path.isfile("/etc/locale.alias"):
-    with open("/etc/locale.alias") as f:
-        while 1:
-            try:
+ikiwa os.path.isfile("/etc/locale.alias"):
+    ukijumuisha open("/etc/locale.alias") kama f:
+        wakati 1:
+            jaribu:
                 line = f.readline()
-            except UnicodeDecodeError:
-                continue
-            if line == "":
-                break
-            if line.startswith('#'):
-                continue
+            tatizo UnicodeDecodeError:
+                endelea
+            ikiwa line == "":
+                koma
+            ikiwa line.startswith('#'):
+                endelea
             x = line.split()
-            if len(x) == 2:
-                if x[0] in locale_list:
+            ikiwa len(x) == 2:
+                ikiwa x[0] kwenye locale_list:
                     locale_list.remove(x[0])
 
 # FreeBSD
-if platform.system() == 'FreeBSD':
+ikiwa platform.system() == 'FreeBSD':
     # http://www.freebsd.org/cgi/query-pr.cgi?pr=142173
-    # en_GB.US-ASCII has 163 as the currency symbol.
-    for loc in ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
+    # en_GB.US-ASCII has 163 kama the currency symbol.
+    kila loc kwenye ['it_CH.ISO8859-1', 'it_CH.ISO8859-15', 'it_CH.UTF-8',
                 'it_IT.ISO8859-1', 'it_IT.ISO8859-15', 'it_IT.UTF-8',
                 'sl_SI.ISO8859-2', 'sl_SI.UTF-8',
                 'en_GB.US-ASCII']:
-        try:
+        jaribu:
             locale_list.remove(loc)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
-# Print a testcase in the format of the IBM tests (for runtest.c):
-def get_preferred_encoding():
+# Print a testcase kwenye the format of the IBM tests (kila runtest.c):
+eleza get_preferred_encoding():
     loc = locale.setlocale(locale.LC_CTYPE)
-    if loc in preferred_encoding:
-        return preferred_encoding[loc]
-    else:
-        return locale.getpreferredencoding()
+    ikiwa loc kwenye preferred_encoding:
+        rudisha preferred_encoding[loc]
+    isipokua:
+        rudisha locale.getpreferredencoding()
 
-def printit(testno, s, fmt, encoding=None):
-    if not encoding:
+eleza printit(testno, s, fmt, encoding=Tupu):
+    ikiwa sio encoding:
         encoding = get_preferred_encoding()
-    try:
+    jaribu:
         result = format(P.Decimal(s), fmt)
         fmt = str(fmt.encode(encoding))[2:-1]
         result = str(result.encode(encoding))[2:-1]
-        if "'" in result:
+        ikiwa "'" kwenye result:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  \"%s\"\n"
                              % (testno, s, fmt, result))
-        else:
+        isipokua:
             sys.stdout.write("xfmt%d  format  %s  '%s'  ->  '%s'\n"
                              % (testno, s, fmt, result))
-    except Exception as err:
+    tatizo Exception kama err:
         sys.stderr.write("%s  %s  %s\n" % (err, s, fmt))
 
 
-# Check if an integer can be converted to a valid fill character.
-def check_fillchar(i):
-    try:
+# Check ikiwa an integer can be converted to a valid fill character.
+eleza check_fillchar(i):
+    jaribu:
         c = chr(i)
         c.encode('utf-8').decode()
         format(P.Decimal(0), c + '<19g')
-        return c
-    except:
-        return None
+        rudisha c
+    tatizo:
+        rudisha Tupu
 
 # Generate all unicode characters that are accepted as
 # fill characters by decimal.py.
-def all_fillchars():
-    for i in range(0, 0x110002):
+eleza all_fillchars():
+    kila i kwenye range(0, 0x110002):
         c = check_fillchar(i)
-        if c: yield c
+        ikiwa c: tuma c
 
 # Return random fill character.
-def rand_fillchar():
-    while 1:
+eleza rand_fillchar():
+    wakati 1:
         i = random.randrange(0, 0x110002)
         c = check_fillchar(i)
-        if c: return c
+        ikiwa c: rudisha c
 
 # Generate random format strings
 # [[fill]align][sign][#][0][width][.precision][type]
-def rand_format(fill, typespec='EeGgFfn%'):
+eleza rand_format(fill, typespec='EeGgFfn%'):
     active = sorted(random.sample(range(7), random.randrange(8)))
     have_align = 0
     s = ''
-    for elem in active:
-        if elem == 0: # fill+align
+    kila elem kwenye active:
+        ikiwa elem == 0: # fill+align
             s += fill
             s += random.choice('<>=^')
             have_align = 1
-        elif elem == 1: # sign
+        lasivyo elem == 1: # sign
             s += random.choice('+- ')
-        elif elem == 2 and not have_align: # zeropad
+        lasivyo elem == 2 na sio have_align: # zeropad
             s += '0'
-        elif elem == 3: # width
+        lasivyo elem == 3: # width
             s += str(random.randrange(1, 100))
-        elif elem == 4: # thousands separator
+        lasivyo elem == 4: # thousands separator
             s += ','
-        elif elem == 5: # prec
+        lasivyo elem == 5: # prec
             s += '.'
             s += str(random.randrange(100))
-        elif elem == 6:
-            if 4 in active: c = typespec.replace('n', '')
-            else: c = typespec
+        lasivyo elem == 6:
+            ikiwa 4 kwenye active: c = typespec.replace('n', '')
+            isipokua: c = typespec
             s += random.choice(c)
-    return s
+    rudisha s
 
 # Partially brute force all possible format strings containing a thousands
 # separator. Fall back to random where the runtime would become excessive.
 # [[fill]align][sign][#][0][width][,][.precision][type]
-def all_format_sep():
-    for align in ('', '<', '>', '=', '^'):
-        for fill in ('', 'x'):
-            if align == '': fill = ''
-            for sign in ('', '+', '-', ' '):
-                for zeropad in ('', '0'):
-                    if align != '': zeropad = ''
-                    for width in ['']+[str(y) for y in range(1, 15)]+['101']:
-                        for prec in ['']+['.'+str(y) for y in range(15)]:
-                            # for type in ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
+eleza all_format_sep():
+    kila align kwenye ('', '<', '>', '=', '^'):
+        kila fill kwenye ('', 'x'):
+            ikiwa align == '': fill = ''
+            kila sign kwenye ('', '+', '-', ' '):
+                kila zeropad kwenye ('', '0'):
+                    ikiwa align != '': zeropad = ''
+                    kila width kwenye ['']+[str(y) kila y kwenye range(1, 15)]+['101']:
+                        kila prec kwenye ['']+['.'+str(y) kila y kwenye range(15)]:
+                            # kila type kwenye ('', 'E', 'e', 'G', 'g', 'F', 'f', '%'):
                             type = random.choice(('', 'E', 'e', 'G', 'g', 'F', 'f', '%'))
-                            yield ''.join((fill, align, sign, zeropad, width, ',', prec, type))
+                            tuma ''.join((fill, align, sign, zeropad, width, ',', prec, type))
 
-# Partially brute force all possible format strings with an 'n' specifier.
+# Partially brute force all possible format strings ukijumuisha an 'n' specifier.
 # [[fill]align][sign][#][0][width][,][.precision][type]
-def all_format_loc():
-    for align in ('', '<', '>', '=', '^'):
-        for fill in ('', 'x'):
-            if align == '': fill = ''
-            for sign in ('', '+', '-', ' '):
-                for zeropad in ('', '0'):
-                    if align != '': zeropad = ''
-                    for width in ['']+[str(y) for y in range(1, 20)]+['101']:
-                        for prec in ['']+['.'+str(y) for y in range(1, 20)]:
-                            yield ''.join((fill, align, sign, zeropad, width, prec, 'n'))
+eleza all_format_loc():
+    kila align kwenye ('', '<', '>', '=', '^'):
+        kila fill kwenye ('', 'x'):
+            ikiwa align == '': fill = ''
+            kila sign kwenye ('', '+', '-', ' '):
+                kila zeropad kwenye ('', '0'):
+                    ikiwa align != '': zeropad = ''
+                    kila width kwenye ['']+[str(y) kila y kwenye range(1, 20)]+['101']:
+                        kila prec kwenye ['']+['.'+str(y) kila y kwenye range(1, 20)]:
+                            tuma ''.join((fill, align, sign, zeropad, width, prec, 'n'))
 
-# Generate random format strings with a unicode fill character
+# Generate random format strings ukijumuisha a unicode fill character
 # [[fill]align][sign][#][0][width][,][.precision][type]
-def randfill(fill):
+eleza randfill(fill):
     active = sorted(random.sample(range(5), random.randrange(6)))
     s = ''
     s += str(fill)
     s += random.choice('<>=^')
-    for elem in active:
-        if elem == 0: # sign
+    kila elem kwenye active:
+        ikiwa elem == 0: # sign
             s += random.choice('+- ')
-        elif elem == 1: # width
+        lasivyo elem == 1: # width
             s += str(random.randrange(1, 100))
-        elif elem == 2: # thousands separator
+        lasivyo elem == 2: # thousands separator
             s += ','
-        elif elem == 3: # prec
+        lasivyo elem == 3: # prec
             s += '.'
             s += str(random.randrange(100))
-        elif elem == 4:
-            if 2 in active: c = 'EeGgFf%'
-            else: c = 'EeGgFfn%'
+        lasivyo elem == 4:
+            ikiwa 2 kwenye active: c = 'EeGgFf%'
+            isipokua: c = 'EeGgFfn%'
             s += random.choice(c)
-    return s
+    rudisha s
 
-# Generate random format strings with random locale setting
+# Generate random format strings ukijumuisha random locale setting
 # [[fill]align][sign][#][0][width][,][.precision][type]
-def rand_locale():
-    try:
+eleza rand_locale():
+    jaribu:
         loc = random.choice(locale_list)
         locale.setlocale(locale.LC_ALL, loc)
-    except locale.Error as err:
-        pass
+    tatizo locale.Error kama err:
+        pita
     active = sorted(random.sample(range(5), random.randrange(6)))
     s = ''
     have_align = 0
-    for elem in active:
-        if elem == 0: # fill+align
+    kila elem kwenye active:
+        ikiwa elem == 0: # fill+align
             s += chr(random.randrange(32, 128))
             s += random.choice('<>=^')
             have_align = 1
-        elif elem == 1: # sign
+        lasivyo elem == 1: # sign
             s += random.choice('+- ')
-        elif elem == 2 and not have_align: # zeropad
+        lasivyo elem == 2 na sio have_align: # zeropad
             s += '0'
-        elif elem == 3: # width
+        lasivyo elem == 3: # width
             s += str(random.randrange(1, 100))
-        elif elem == 4: # prec
+        lasivyo elem == 4: # prec
             s += '.'
             s += str(random.randrange(100))
     s += 'n'
-    return s
+    rudisha s

@@ -1,18 +1,18 @@
 agiza sqlite3
 
 kundi Point:
-    def __init__(self, x, y):
+    eleza __init__(self, x, y):
         self.x, self.y = x, y
 
-    def __repr__(self):
-        return "(%f;%f)" % (self.x, self.y)
+    eleza __repr__(self):
+        rudisha "(%f;%f)" % (self.x, self.y)
 
-def adapt_point(point):
-    return ("%f;%f" % (point.x, point.y)).encode('ascii')
+eleza adapt_point(point):
+    rudisha ("%f;%f" % (point.x, point.y)).encode('ascii')
 
-def convert_point(s):
+eleza convert_point(s):
     x, y = list(map(float, s.split(b";")))
-    return Point(x, y)
+    rudisha Point(x, y)
 
 # Register the adapter
 sqlite3.register_adapter(Point, adapt_point)
@@ -30,7 +30,7 @@ cur.execute("create table test(p point)")
 
 cur.execute("insert into test(p) values (?)", (p,))
 cur.execute("select p kutoka test")
-print("with declared types:", cur.fetchone()[0])
+andika("ukijumuisha declared types:", cur.fetchone()[0])
 cur.close()
 con.close()
 
@@ -41,7 +41,7 @@ cur = con.cursor()
 cur.execute("create table test(p)")
 
 cur.execute("insert into test(p) values (?)", (p,))
-cur.execute('select p as "p [point]" kutoka test')
-print("with column names:", cur.fetchone()[0])
+cur.execute('select p kama "p [point]" kutoka test')
+andika("ukijumuisha column names:", cur.fetchone()[0])
 cur.close()
 con.close()

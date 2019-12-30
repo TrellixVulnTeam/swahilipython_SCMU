@@ -1,284 +1,284 @@
-'Show relative speeds of local, nonlocal, global, and built-in access.'
+'Show relative speeds of local, nonlocal, global, na built-in access.'
 
 # Please leave this code so that it runs under older versions of
 # Python 3 (no f-strings).  That will allow benchmarking for
 # cross-version comparisons.  To run the benchmark on Python 2,
-# comment-out the nonlocal reads and writes.
+# comment-out the nonlocal reads na writes.
 
-from collections import deque, namedtuple
+kutoka collections agiza deque, namedtuple
 
-trials = [None] * 500
+trials = [Tupu] * 500
 steps_per_trial = 25
 
-class A(object):
-    def m(self):
-        pass
+kundi A(object):
+    eleza m(self):
+        pita
 
-class B(object):
+kundi B(object):
     __slots__ = 'x'
-    def __init__(self, x):
+    eleza __init__(self, x):
         self.x = x
 
-class C(object):
-    def __init__(self, x):
+kundi C(object):
+    eleza __init__(self, x):
         self.x = x
 
-def read_local(trials=trials):
+eleza read_local(trials=trials):
     v_local = 1
-    for t in trials:
+    kila t kwenye trials:
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
         v_local;    v_local;    v_local;    v_local;    v_local
 
-def make_nonlocal_reader():
+eleza make_nonlocal_reader():
     v_nonlocal = 1
-    def inner(trials=trials):
-        for t in trials:
+    eleza inner(trials=trials):
+        kila t kwenye trials:
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
             v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal; v_nonlocal
     inner.__name__ = 'read_nonlocal'
-    return inner
+    rudisha inner
 
 read_nonlocal = make_nonlocal_reader()
 
 v_global = 1
-def read_global(trials=trials):
-    for t in trials:
+eleza read_global(trials=trials):
+    kila t kwenye trials:
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
         v_global; v_global; v_global; v_global; v_global
 
-def read_builtin(trials=trials):
-    for t in trials:
+eleza read_builtin(trials=trials):
+    kila t kwenye trials:
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
         oct; oct; oct; oct; oct
 
-def read_classvar_from_class(trials=trials, A=A):
+eleza read_classvar_from_class(trials=trials, A=A):
     A.x = 1
-    for t in trials:
+    kila t kwenye trials:
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
         A.x;    A.x;    A.x;    A.x;    A.x
 
-def read_classvar_from_instance(trials=trials, A=A):
+eleza read_classvar_from_instance(trials=trials, A=A):
     A.x = 1
     a = A()
-    for t in trials:
+    kila t kwenye trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
 
-def read_instancevar(trials=trials, a=C(1)):
-    for t in trials:
+eleza read_instancevar(trials=trials, a=C(1)):
+    kila t kwenye trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
 
-def read_instancevar_slots(trials=trials, a=B(1)):
-    for t in trials:
+eleza read_instancevar_slots(trials=trials, a=B(1)):
+    kila t kwenye trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
 
-def read_namedtuple(trials=trials, D=namedtuple('D', ['x'])):
+eleza read_namedtuple(trials=trials, D=namedtuple('D', ['x'])):
     a = D(1)
-    for t in trials:
+    kila t kwenye trials:
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
         a.x;    a.x;    a.x;    a.x;    a.x
 
-def read_boundmethod(trials=trials, a=A()):
-    for t in trials:
+eleza read_boundmethod(trials=trials, a=A()):
+    kila t kwenye trials:
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
         a.m;    a.m;    a.m;    a.m;    a.m
 
-def write_local(trials=trials):
+eleza write_local(trials=trials):
     v_local = 1
-    for t in trials:
+    kila t kwenye trials:
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
         v_local = 1; v_local = 1; v_local = 1; v_local = 1; v_local = 1
 
-def make_nonlocal_writer():
+eleza make_nonlocal_writer():
     v_nonlocal = 1
-    def inner(trials=trials):
+    eleza inner(trials=trials):
         nonlocal v_nonlocal
-        for t in trials:
+        kila t kwenye trials:
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
             v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1; v_nonlocal = 1
     inner.__name__ = 'write_nonlocal'
-    return inner
+    rudisha inner
 
 write_nonlocal = make_nonlocal_writer()
 
-def write_global(trials=trials):
+eleza write_global(trials=trials):
     global v_global
-    for t in trials:
+    kila t kwenye trials:
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
         v_global = 1; v_global = 1; v_global = 1; v_global = 1; v_global = 1
 
-def write_classvar(trials=trials, A=A):
-    for t in trials:
+eleza write_classvar(trials=trials, A=A):
+    kila t kwenye trials:
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
         A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1;    A.x = 1
 
-def write_instancevar(trials=trials, a=C(1)):
-    for t in trials:
+eleza write_instancevar(trials=trials, a=C(1)):
+    kila t kwenye trials:
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
 
-def write_instancevar_slots(trials=trials, a=B(1)):
-    for t in trials:
+eleza write_instancevar_slots(trials=trials, a=B(1)):
+    kila t kwenye trials:
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
         a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1;    a.x = 1
 
-def read_list(trials=trials, a=[1]):
-    for t in trials:
+eleza read_list(trials=trials, a=[1]):
+    kila t kwenye trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
 
-def read_deque(trials=trials, a=deque([1])):
-    for t in trials:
+eleza read_deque(trials=trials, a=deque([1])):
+    kila t kwenye trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
 
-def read_dict(trials=trials, a={0: 1}):
-    for t in trials:
+eleza read_dict(trials=trials, a={0: 1}):
+    kila t kwenye trials:
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
         a[0];   a[0];   a[0];   a[0];   a[0]
 
-def read_strdict(trials=trials, a={'key': 1}):
-    for t in trials:
+eleza read_strdict(trials=trials, a={'key': 1}):
+    kila t kwenye trials:
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
         a['key'];   a['key'];   a['key'];   a['key'];   a['key']
 
-def list_append_pop(trials=trials, a=[1]):
+eleza list_append_pop(trials=trials, a=[1]):
     ap, pop = a.append, a.pop
-    for t in trials:
+    kila t kwenye trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
 
-def deque_append_pop(trials=trials, a=deque([1])):
+eleza deque_append_pop(trials=trials, a=deque([1])):
     ap, pop = a.append, a.pop
-    for t in trials:
+    kila t kwenye trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop()
 
-def deque_append_popleft(trials=trials, a=deque([1])):
+eleza deque_append_popleft(trials=trials, a=deque([1])):
     ap, pop = a.append, a.popleft
-    for t in trials:
+    kila t kwenye trials:
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
         ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop(); ap(1); pop();
 
-def write_list(trials=trials, a=[1]):
-    for t in trials:
+eleza write_list(trials=trials, a=[1]):
+    kila t kwenye trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
-def write_deque(trials=trials, a=deque([1])):
-    for t in trials:
+eleza write_deque(trials=trials, a=deque([1])):
+    kila t kwenye trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
-def write_dict(trials=trials, a={0: 1}):
-    for t in trials:
+eleza write_dict(trials=trials, a={0: 1}):
+    kila t kwenye trials:
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
         a[0]=1; a[0]=1; a[0]=1; a[0]=1; a[0]=1
 
-def write_strdict(trials=trials, a={'key': 1}):
-    for t in trials:
+eleza write_strdict(trials=trials, a={'key': 1}):
+    kila t kwenye trials:
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
         a['key']=1; a['key']=1; a['key']=1; a['key']=1; a['key']=1
 
-def loop_overhead(trials=trials):
-    for t in trials:
-        pass
+eleza loop_overhead(trials=trials):
+    kila t kwenye trials:
+        pita
 
 
-if __name__=='__main__':
+ikiwa __name__=='__main__':
 
-    from timeit import Timer
+    kutoka timeit agiza Timer
 
-    for f in [
-            'Variable and attribute read access:',
+    kila f kwenye [
+            'Variable na attribute read access:',
             read_local, read_nonlocal, read_global, read_builtin,
             read_classvar_from_class, read_classvar_from_instance,
             read_instancevar, read_instancevar_slots,
             read_namedtuple, read_boundmethod,
-            '\nVariable and attribute write access:',
+            '\nVariable na attribute write access:',
             write_local, write_nonlocal, write_global,
             write_classvar, write_instancevar, write_instancevar_slots,
             '\nData structure read access:',
@@ -289,9 +289,9 @@ if __name__=='__main__':
             list_append_pop, deque_append_pop, deque_append_popleft,
             '\nTiming loop overhead:',
             loop_overhead]:
-        if isinstance(f, str):
-            print(f)
-            continue
+        ikiwa isinstance(f, str):
+            andika(f)
+            endelea
         timing = min(Timer(f).repeat(7, 1000))
         timing *= 1000000 / (len(trials) * steps_per_trial)
-        print('{:6.1f} ns\t{}'.format(timing, f.__name__))
+        andika('{:6.1f} ns\t{}'.format(timing, f.__name__))

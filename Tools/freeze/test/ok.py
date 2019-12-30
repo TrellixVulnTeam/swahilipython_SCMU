@@ -1,2 +1,2 @@
-import sys
+agiza sys
 sys.exit(0)

@@ -1,24 +1,24 @@
 #! /usr/bin/env python3
 
-"Replace LF with CRLF in argument files.  Print names of changed files."
+"Replace LF ukijumuisha CRLF kwenye argument files.  Print names of changed files."
 
-import sys, re, os
+agiza sys, re, os
 
-def main():
-    for filename in sys.argv[1:]:
-        if os.path.isdir(filename):
-            print(filename, "Directory!")
-            continue
-        with open(filename, "rb") as f:
+eleza main():
+    kila filename kwenye sys.argv[1:]:
+        ikiwa os.path.isdir(filename):
+            andika(filename, "Directory!")
+            endelea
+        ukijumuisha open(filename, "rb") kama f:
             data = f.read()
-        if b'\0' in data:
-            print(filename, "Binary!")
-            continue
+        ikiwa b'\0' kwenye data:
+            andika(filename, "Binary!")
+            endelea
         newdata = re.sub(b"\r?\n", b"\r\n", data)
-        if newdata != data:
-            print(filename)
-            with open(filename, "wb") as f:
+        ikiwa newdata != data:
+            andika(filename)
+            ukijumuisha open(filename, "wb") kama f:
                 f.write(newdata)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

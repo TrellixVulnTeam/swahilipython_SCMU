@@ -1,12 +1,12 @@
-"""Test module for the custom examples
+"""Test module kila the custom examples
 
 Custom 1:
 
 >>> agiza custom
 >>> c1 = custom.Custom()
 >>> c2 = custom.Custom()
->>> del c1
->>> del c2
+>>> toa c1
+>>> toa c2
 
 
 Custom 2
@@ -27,7 +27,7 @@ Custom 2
 >>> c1.last = 'tell'
 >>> c1.name()
 'will tell'
->>> del c1.first
+>>> toa c1.first
 >>> c1.name()
 Traceback (most recent call last):
 ...
@@ -39,7 +39,7 @@ AttributeError: first
 >>> c1.first = 'drew'
 >>> c1.first
 'drew'
->>> del c1.number
+>>> toa c1.number
 Traceback (most recent call last):
 ...
 TypeError: can't delete numeric/char attribute
@@ -56,7 +56,7 @@ TypeError: can't delete numeric/char attribute
 ''
 >>> c2.last
 ''
->>> del c2.first
+>>> toa c2.first
 >>> c2.first
 Traceback (most recent call last):
 ...
@@ -67,16 +67,16 @@ Traceback (most recent call last):
 AttributeError: first
 >>> c2.name()
 Traceback (most recent call last):
-  File "<stdin>", line 1, in ?
+  File "<stdin>", line 1, kwenye ?
 AttributeError: first
 >>> c2.number
 0
 >>> n3 = custom2.Custom('jim', 'fulton', 'waaa')
 Traceback (most recent call last):
-  File "<stdin>", line 1, in ?
-TypeError: an integer is required (got type str)
->>> del c1
->>> del c2
+  File "<stdin>", line 1, kwenye ?
+TypeError: an integer ni required (got type str)
+>>> toa c1
+>>> toa c2
 
 
 Custom 3
@@ -86,13 +86,13 @@ Custom 3
 >>> c1 = custom3.Custom('jim', 'fulton', 42)
 >>> c1.name()
 'jim fulton'
->>> del c1.first
+>>> toa c1.first
 Traceback (most recent call last):
-  File "<stdin>", line 1, in ?
+  File "<stdin>", line 1, kwenye ?
 TypeError: Cannot delete the first attribute
 >>> c1.first = 42
 Traceback (most recent call last):
-  File "<stdin>", line 1, in ?
+  File "<stdin>", line 1, kwenye ?
 TypeError: The first attribute value must be a string
 >>> c1.first = 'will'
 >>> c1.name()
@@ -102,10 +102,10 @@ TypeError: The first attribute value must be a string
 >>> c2 = custom3.Custom()
 >>> n3 = custom3.Custom('jim', 'fulton', 'waaa')
 Traceback (most recent call last):
-  File "<stdin>", line 1, in ?
-TypeError: an integer is required (got type str)
->>> del c1
->>> del c2
+  File "<stdin>", line 1, kwenye ?
+TypeError: an integer ni required (got type str)
+>>> toa c1
+>>> toa c2
 
 Custom 4
 
@@ -125,7 +125,7 @@ Custom 4
 >>> c1.last = 'tell'
 >>> c1.name()
 'will tell'
->>> del c1.first
+>>> toa c1.first
 Traceback (most recent call last):
 ...
 TypeError: Cannot delete the first attribute
@@ -134,7 +134,7 @@ TypeError: Cannot delete the first attribute
 >>> c1.first = 'drew'
 >>> c1.first
 'drew'
->>> del c1.number
+>>> toa c1.number
 Traceback (most recent call last):
 ...
 TypeError: can't delete numeric/char attribute
@@ -162,7 +162,7 @@ TypeError: The first attribute value must be a string
 >>> n3 = custom4.Custom('jim', 'fulton', 'waaa')
 Traceback (most recent call last):
 ...
-TypeError: an integer is required (got type str)
+TypeError: an integer ni required (got type str)
 
 
 Test cyclic gc(?)
@@ -170,14 +170,14 @@ Test cyclic gc(?)
 >>> agiza gc
 >>> gc.disable()
 
->>> kundi Subclass(custom4.Custom): pass
+>>> kundi Subclass(custom4.Custom): pita
 ...
 >>> s = Subclass()
 >>> s.cycle = [s]
 >>> s.cycle.append(s.cycle)
 >>> x = object()
 >>> s.x = x
->>> del s
+>>> toa s
 >>> sys.getrefcount(x)
 3
 >>> ignore = gc.collect()
@@ -194,6 +194,6 @@ PLAT_SPEC = "%s-%d.%d" % (get_platform(), *sys.version_info[:2])
 src = os.path.join("build", "lib.%s" % PLAT_SPEC)
 sys.path.append(src)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     agiza doctest, __main__
     doctest.testmod(__main__)

@@ -1,55 +1,55 @@
 #! /usr/bin/env python3
 
-"Replace tabs with spaces in argument files.  Print names of changed files."
+"Replace tabs ukijumuisha spaces kwenye argument files.  Print names of changed files."
 
-import os
-import sys
-import getopt
-import tokenize
+agiza os
+agiza sys
+agiza getopt
+agiza tokenize
 
-def main():
+eleza main():
     tabsize = 8
-    try:
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "t:")
-        if not args:
-            raise getopt.error("At least one file argument required")
-    except getopt.error as msg:
-        print(msg)
-        print("usage:", sys.argv[0], "[-t tabwidth] file ...")
-        return
-    for optname, optvalue in opts:
-        if optname == '-t':
+        ikiwa sio args:
+            ashiria getopt.error("At least one file argument required")
+    tatizo getopt.error kama msg:
+        andika(msg)
+        andika("usage:", sys.argv[0], "[-t tabwidth] file ...")
+        rudisha
+    kila optname, optvalue kwenye opts:
+        ikiwa optname == '-t':
             tabsize = int(optvalue)
 
-    for filename in args:
+    kila filename kwenye args:
         process(filename, tabsize)
 
 
-def process(filename, tabsize, verbose=True):
-    try:
-        with tokenize.open(filename) as f:
+eleza process(filename, tabsize, verbose=Kweli):
+    jaribu:
+        ukijumuisha tokenize.open(filename) kama f:
             text = f.read()
             encoding = f.encoding
-    except IOError as msg:
-        print("%r: I/O error: %s" % (filename, msg))
-        return
+    tatizo IOError kama msg:
+        andika("%r: I/O error: %s" % (filename, msg))
+        rudisha
     newtext = text.expandtabs(tabsize)
-    if newtext == text:
-        return
+    ikiwa newtext == text:
+        rudisha
     backup = filename + "~"
-    try:
+    jaribu:
         os.unlink(backup)
-    except OSError:
-        pass
-    try:
+    tatizo OSError:
+        pita
+    jaribu:
         os.rename(filename, backup)
-    except OSError:
-        pass
-    with open(filename, "w", encoding=encoding) as f:
+    tatizo OSError:
+        pita
+    ukijumuisha open(filename, "w", encoding=encoding) kama f:
         f.write(newtext)
-    if verbose:
-        print(filename)
+    ikiwa verbose:
+        andika(filename)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

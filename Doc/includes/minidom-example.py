@@ -4,12 +4,12 @@ document = """\
 <slideshow>
 <title>Demo slideshow</title>
 <slide><title>Slide title</title>
-<point>This is a demo</point>
-<point>Of a program for processing slides</point>
+<point>This ni a demo</point>
+<point>Of a program kila processing slides</point>
 </slide>
 
 <slide><title>Another demo slide</title>
-<point>It is agizaant</point>
+<point>It ni agizaant</point>
 <point>To have more than</point>
 <point>one slide</point>
 </slide>
@@ -18,47 +18,47 @@ document = """\
 
 dom = xml.dom.minidom.parseString(document)
 
-def getText(nodelist):
+eleza getText(nodelist):
     rc = []
-    for node in nodelist:
-        if node.nodeType == node.TEXT_NODE:
+    kila node kwenye nodelist:
+        ikiwa node.nodeType == node.TEXT_NODE:
             rc.append(node.data)
-    return ''.join(rc)
+    rudisha ''.join(rc)
 
-def handleSlideshow(slideshow):
-    print("<html>")
+eleza handleSlideshow(slideshow):
+    andika("<html>")
     handleSlideshowTitle(slideshow.getElementsByTagName("title")[0])
     slides = slideshow.getElementsByTagName("slide")
     handleToc(slides)
     handleSlides(slides)
-    print("</html>")
+    andika("</html>")
 
-def handleSlides(slides):
-    for slide in slides:
+eleza handleSlides(slides):
+    kila slide kwenye slides:
         handleSlide(slide)
 
-def handleSlide(slide):
+eleza handleSlide(slide):
     handleSlideTitle(slide.getElementsByTagName("title")[0])
     handlePoints(slide.getElementsByTagName("point"))
 
-def handleSlideshowTitle(title):
-    print("<title>%s</title>" % getText(title.childNodes))
+eleza handleSlideshowTitle(title):
+    andika("<title>%s</title>" % getText(title.childNodes))
 
-def handleSlideTitle(title):
-    print("<h2>%s</h2>" % getText(title.childNodes))
+eleza handleSlideTitle(title):
+    andika("<h2>%s</h2>" % getText(title.childNodes))
 
-def handlePoints(points):
-    print("<ul>")
-    for point in points:
+eleza handlePoints(points):
+    andika("<ul>")
+    kila point kwenye points:
         handlePoint(point)
-    print("</ul>")
+    andika("</ul>")
 
-def handlePoint(point):
-    print("<li>%s</li>" % getText(point.childNodes))
+eleza handlePoint(point):
+    andika("<li>%s</li>" % getText(point.childNodes))
 
-def handleToc(slides):
-    for slide in slides:
+eleza handleToc(slides):
+    kila slide kwenye slides:
         title = slide.getElementsByTagName("title")[0]
-        print("<p>%s</p>" % getText(title.childNodes))
+        andika("<p>%s</p>" % getText(title.childNodes))
 
 handleSlideshow(dom)

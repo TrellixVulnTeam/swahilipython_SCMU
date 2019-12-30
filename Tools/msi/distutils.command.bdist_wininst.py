@@ -1,23 +1,23 @@
 """distutils.command.bdist_wininst
 
-Suppresses the 'bdist_wininst' command, while still allowing
-setuptools to import it without breaking."""
+Suppresses the 'bdist_wininst' command, wakati still allowing
+setuptools to agiza it without komaing."""
 
-from distutils.core import Command
-from distutils.errors import DistutilsPlatformError
+kutoka distutils.core agiza Command
+kutoka distutils.errors agiza DistutilsPlatformError
 
-class bdist_wininst(Command):
-    description = "create an executable installer for MS Windows"
+kundi bdist_wininst(Command):
+    description = "create an executable installer kila MS Windows"
 
-    # Marker for tests that we have the unsupported bdist_wininst
-    _unsupported = True
+    # Marker kila tests that we have the unsupported bdist_wininst
+    _unsupported = Kweli
 
-    def initialize_options(self):
-        pass
+    eleza initialize_options(self):
+        pita
 
-    def finalize_options(self):
-        pass
+    eleza finalize_options(self):
+        pita
 
-    def run(self):
-        raise DistutilsPlatformError("bdist_wininst is not supported "
+    eleza run(self):
+        ashiria DistutilsPlatformError("bdist_wininst ni sio supported "
             "in this Python distribution")

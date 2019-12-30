@@ -1,29 +1,29 @@
 """TextViewer class.
 
 The TextViewer allows you to see how the selected color would affect various
-characteristics of a Tk text widget.  This is an output viewer only.
+characteristics of a Tk text widget.  This ni an output viewer only.
 
-In the top part of the window is a standard text widget with some sample text
-in it.  You are free to edit this text in any way you want (BAW: allow you to
-change font characteristics).  If you want changes in other viewers to update
+In the top part of the window ni a standard text widget ukijumuisha some sample text
+in it.  You are free to edit this text kwenye any way you want (BAW: allow you to
+change font characteristics).  If you want changes kwenye other viewers to update
 text characteristics, turn on Track color changes.
 
 To select which characteristic tracks the change, select one of the radio
-buttons in the window below.  Text foreground and background affect the text
-in the window above.  The Selection is what you see when you click the middle
-button and drag it through some text.  The Insertion is the insertion cursor
+buttons kwenye the window below.  Text foreground na background affect the text
+in the window above.  The Selection ni what you see when you click the middle
+button na drag it through some text.  The Insertion ni the insertion cursor
 in the text window (which only has a background).
 """
 
-from tkinter import *
-import ColorDB
+kutoka tkinter agiza *
+agiza ColorDB
 
 ADDTOVIEW = 'Text Window...'
 
 
 
-class TextViewer:
-    def __init__(self, switchboard, master=None):
+kundi TextViewer:
+    eleza __init__(self, switchboard, master=Tupu):
         self.__sb = switchboard
         optiondb = switchboard.optiondb()
         root = self.__root = Toplevel(master, class_='Pynche')
@@ -42,18 +42,18 @@ class TextViewer:
                            foreground=optiondb.get('TEXTFG', 'white'),
                            width=35, height=15)
         sfg = optiondb.get('TEXT_SFG')
-        if sfg:
+        ikiwa sfg:
             self.__text.configure(selectforeground=sfg)
         sbg = optiondb.get('TEXT_SBG')
-        if sbg:
+        ikiwa sbg:
             self.__text.configure(selectbackground=sbg)
         ibg = optiondb.get('TEXT_IBG')
-        if ibg:
+        ikiwa ibg:
             self.__text.configure(insertbackground=ibg)
         self.__text.pack()
         self.__text.insert(0.0, optiondb.get('TEXT', '''\
-Insert some stuff here and play
-with the buttons below to see
+Insert some stuff here na play
+ukijumuisha the buttons below to see
 how the colors interact in
 textual displays.
 
@@ -61,14 +61,14 @@ See how the selection can also
 be affected by tickling the buttons
 and choosing a color.'''))
         insert = optiondb.get('TEXTINS')
-        if insert:
+        ikiwa insert:
             self.__text.mark_set(INSERT, insert)
-        try:
+        jaribu:
             start, end = optiondb.get('TEXTSEL', (6.0, END))
             self.__text.tag_add(SEL, start, end)
-        except ValueError:
+        tatizo ValueError:
             # selection wasn't set
-            pass
+            pita
         self.__text.focus_set()
         #
         # variables
@@ -89,13 +89,13 @@ and choosing a color.'''))
         # labels
         self.__labels = []
         row = 2
-        for text in ('Text:', 'Selection:', 'Insertion:'):
+        kila text kwenye ('Text:', 'Selection:', 'Insertion:'):
             l = Label(frame, text=text)
             l.grid(row=row, column=0, sticky=E)
             self.__labels.append(l)
             row += 1
         col = 1
-        for text in ('Foreground', 'Background'):
+        kila text kwenye ('Foreground', 'Background'):
             l = Label(frame, text=text)
             l.grid(row=1, column=col)
             self.__labels.append(l)
@@ -103,11 +103,11 @@ and choosing a color.'''))
         #
         # radios
         self.__radios = []
-        for col in (1, 2):
-            for row in (2, 3, 4):
-                # there is no insertforeground option
-                if row==4 and col==1:
-                    continue
+        kila col kwenye (1, 2):
+            kila row kwenye (2, 3, 4):
+                # there ni no insertforeground option
+                ikiwa row==4 na col==1:
+                    endelea
                 r = Radiobutton(frame, variable=self.__which,
                                 value=(row-2)*2 + col-1,
                                 command=self.__set_color)
@@ -115,67 +115,67 @@ and choosing a color.'''))
                 self.__radios.append(r)
         self.__toggletrack()
 
-    def __quit(self, event=None):
+    eleza __quit(self, event=Tupu):
         self.__root.quit()
 
-    def withdraw(self, event=None):
+    eleza withdraw(self, event=Tupu):
         self.__root.withdraw()
 
-    def deiconify(self, event=None):
+    eleza deiconify(self, event=Tupu):
         self.__root.deiconify()
 
-    def __forceupdate(self, event=None):
+    eleza __forceupdate(self, event=Tupu):
         self.__sb.update_views_current()
 
-    def __toggletrack(self, event=None):
-        if self.__trackp.get():
+    eleza __toggletrack(self, event=Tupu):
+        ikiwa self.__trackp.get():
             state = NORMAL
             fg = self.__radios[0]['foreground']
-        else:
+        isipokua:
             state = DISABLED
             fg = self.__radios[0]['disabledforeground']
-        for r in self.__radios:
+        kila r kwenye self.__radios:
             r.configure(state=state)
-        for l in self.__labels:
+        kila l kwenye self.__labels:
             l.configure(foreground=fg)
 
-    def __set_color(self, event=None):
+    eleza __set_color(self, event=Tupu):
         which = self.__which.get()
         text = self.__text
-        if which == 0:
+        ikiwa which == 0:
             color = text['foreground']
-        elif which == 1:
+        lasivyo which == 1:
             color = text['background']
-        elif which == 2:
+        lasivyo which == 2:
             color = text['selectforeground']
-        elif which == 3:
+        lasivyo which == 3:
             color = text['selectbackground']
-        elif which == 5:
+        lasivyo which == 5:
             color = text['insertbackground']
-        try:
+        jaribu:
             red, green, blue = ColorDB.rrggbb_to_triplet(color)
-        except ColorDB.BadColor:
+        tatizo ColorDB.BadColor:
             # must have been a color name
             red, green, blue = self.__sb.colordb().find_byname(color)
         self.__sb.update_views(red, green, blue)
 
-    def update_yourself(self, red, green, blue):
-        if self.__trackp.get():
+    eleza update_yourself(self, red, green, blue):
+        ikiwa self.__trackp.get():
             colorname = ColorDB.triplet_to_rrggbb((red, green, blue))
             which = self.__which.get()
             text = self.__text
-            if which == 0:
+            ikiwa which == 0:
                 text.configure(foreground=colorname)
-            elif which == 1:
+            lasivyo which == 1:
                 text.configure(background=colorname)
-            elif which == 2:
+            lasivyo which == 2:
                 text.configure(selectforeground=colorname)
-            elif which == 3:
+            lasivyo which == 3:
                 text.configure(selectbackground=colorname)
-            elif which == 5:
+            lasivyo which == 5:
                 text.configure(insertbackground=colorname)
 
-    def save_options(self, optiondb):
+    eleza save_options(self, optiondb):
         optiondb['TRACKP'] = self.__trackp.get()
         optiondb['WHICH'] = self.__which.get()
         optiondb['TEXT'] = self.__text.get(0.0, 'end - 1c')

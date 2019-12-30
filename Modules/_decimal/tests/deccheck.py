@@ -1,16 +1,16 @@
 #
 # Copyright (c) 2008-2012 Stefan Krah. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without
+# Redistribution na use kwenye source na binary forms, ukijumuisha ama without
 # modification, are permitted provided that the following conditions
 # are met:
 #
 # 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
+#    notice, this list of conditions na the following disclaimer.
 #
-# 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
+# 2. Redistributions kwenye binary form must reproduce the above copyright
+#    notice, this list of conditions na the following disclaimer kwenye the
+#    documentation and/or other materials provided ukijumuisha the distribution.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS "AS IS" AND
 # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -29,14 +29,14 @@
 # Usage: python deccheck.py [--short|--medium|--long|--all]
 #
 
-import sys, random
-from copy import copy
-from collections import defaultdict
-from test.support import import_fresh_module
-from randdec import randfloat, all_unary, all_binary, all_ternary
-from randdec import unary_optarg, binary_optarg, ternary_optarg
-from formathelper import rand_format, rand_locale
-from _pydecimal agiza _dec_from_triple
+agiza sys, random
+kutoka copy agiza copy
+kutoka collections agiza defaultdict
+kutoka test.support agiza import_fresh_module
+kutoka randdec agiza randfloat, all_unary, all_binary, all_ternary
+kutoka randdec agiza unary_optarg, binary_optarg, ternary_optarg
+kutoka formathelper agiza rand_format, rand_locale
+kutoka _pydecimal agiza _dec_from_triple
 
 C = import_fresh_module('decimal', fresh=['_decimal'])
 P = import_fresh_module('decimal', blocked=['_decimal'])
@@ -54,13 +54,13 @@ Functions = {
         'copy_abs', 'copy_negate', 'is_canonical', 'is_finite', 'is_infinite',
         'is_nan', 'is_qnan', 'is_signed', 'is_snan', 'is_zero', 'radix'
     ),
-    # Unary with optional context:
+    # Unary ukijumuisha optional context:
     'unary_ctx': (
         'exp', 'is_normal', 'is_subnormal', 'ln', 'log10', 'logb',
         'logical_invert', 'next_minus', 'next_plus', 'normalize',
         'number_class', 'sqrt', 'to_eng_string'
     ),
-    # Unary with optional rounding mode and context:
+    # Unary ukijumuisha optional rounding mode na context:
     'unary_rnd_ctx': ('to_integral', 'to_integral_exact', 'to_integral_value'),
     # Plain binary:
     'binary': (
@@ -71,7 +71,7 @@ Functions = {
         'compare_total', 'compare_total_mag', 'copy_sign', 'quantize',
         'same_quantum'
     ),
-    # Binary with optional context:
+    # Binary ukijumuisha optional context:
     'binary_ctx': (
         'compare', 'compare_signal', 'logical_and', 'logical_or', 'logical_xor',
         'max', 'max_mag', 'min', 'min_mag', 'next_toward', 'remainder_near',
@@ -79,7 +79,7 @@ Functions = {
     ),
     # Plain ternary:
     'ternary': ('__pow__',),
-    # Ternary with optional context:
+    # Ternary ukijumuisha optional context:
     'ternary_ctx': ('fma',),
     # Special:
     'special': ('__format__', '__reduce_ex__', '__round__', 'from_float',
@@ -125,7 +125,7 @@ ContextFunctions = {
     'special': ('context.__reduce_ex__', 'context.create_decimal_from_float')
 }
 
-# Functions that require a restricted exponent range for reasonable runtimes.
+# Functions that require a restricted exponent range kila reasonable runtimes.
 UnaryRestricted = [
   '__ceil__', '__floor__', '__int__', '__trunc__',
   'as_integer_ratio', 'to_integral', 'to_integral_value'
@@ -162,72 +162,72 @@ RoundModes = [C.ROUND_UP, C.ROUND_DOWN, C.ROUND_CEILING, C.ROUND_FLOOR,
               C.ROUND_05UP]
 
 
-class Context(object):
-    """Provides a convenient way of syncing the C and P contexts"""
+kundi Context(object):
+    """Provides a convenient way of syncing the C na P contexts"""
 
     __slots__ = ['c', 'p']
 
-    def __init__(self, c_ctx=None, p_ctx=None):
-        """Initialization is from the C context"""
-        self.c = C.getcontext() if c_ctx is None else c_ctx
-        self.p = P.getcontext() if p_ctx is None else p_ctx
+    eleza __init__(self, c_ctx=Tupu, p_ctx=Tupu):
+        """Initialization ni kutoka the C context"""
+        self.c = C.getcontext() ikiwa c_ctx ni Tupu isipokua c_ctx
+        self.p = P.getcontext() ikiwa p_ctx ni Tupu isipokua p_ctx
         self.p.prec = self.c.prec
         self.p.Emin = self.c.Emin
         self.p.Emax = self.c.Emax
         self.p.rounding = self.c.rounding
         self.p.capitals = self.c.capitals
-        self.settraps([sig for sig in self.c.traps if self.c.traps[sig]])
-        self.setstatus([sig for sig in self.c.flags if self.c.flags[sig]])
+        self.settraps([sig kila sig kwenye self.c.traps ikiwa self.c.traps[sig]])
+        self.setstatus([sig kila sig kwenye self.c.flags ikiwa self.c.flags[sig]])
         self.p.clamp = self.c.clamp
 
-    def __str__(self):
-        return str(self.c) + '\n' + str(self.p)
+    eleza __str__(self):
+        rudisha str(self.c) + '\n' + str(self.p)
 
-    def getprec(self):
+    eleza getprec(self):
         assert(self.c.prec == self.p.prec)
-        return self.c.prec
+        rudisha self.c.prec
 
-    def setprec(self, val):
+    eleza setprec(self, val):
         self.c.prec = val
         self.p.prec = val
 
-    def getemin(self):
+    eleza getemin(self):
         assert(self.c.Emin == self.p.Emin)
-        return self.c.Emin
+        rudisha self.c.Emin
 
-    def setemin(self, val):
+    eleza setemin(self, val):
         self.c.Emin = val
         self.p.Emin = val
 
-    def getemax(self):
+    eleza getemax(self):
         assert(self.c.Emax == self.p.Emax)
-        return self.c.Emax
+        rudisha self.c.Emax
 
-    def setemax(self, val):
+    eleza setemax(self, val):
         self.c.Emax = val
         self.p.Emax = val
 
-    def getround(self):
+    eleza getround(self):
         assert(self.c.rounding == self.p.rounding)
-        return self.c.rounding
+        rudisha self.c.rounding
 
-    def setround(self, val):
+    eleza setround(self, val):
         self.c.rounding = val
         self.p.rounding = val
 
-    def getcapitals(self):
+    eleza getcapitals(self):
         assert(self.c.capitals == self.p.capitals)
-        return self.c.capitals
+        rudisha self.c.capitals
 
-    def setcapitals(self, val):
+    eleza setcapitals(self, val):
         self.c.capitals = val
         self.p.capitals = val
 
-    def getclamp(self):
+    eleza getclamp(self):
         assert(self.c.clamp == self.p.clamp)
-        return self.c.clamp
+        rudisha self.c.clamp
 
-    def setclamp(self, val):
+    eleza setclamp(self, val):
         self.c.clamp = val
         self.p.clamp = val
 
@@ -238,35 +238,35 @@ class Context(object):
     clamp = property(getclamp, setclamp)
     capitals = property(getcapitals, setcapitals)
 
-    def clear_traps(self):
+    eleza clear_traps(self):
         self.c.clear_traps()
-        for trap in self.p.traps:
-            self.p.traps[trap] = False
+        kila trap kwenye self.p.traps:
+            self.p.traps[trap] = Uongo
 
-    def clear_status(self):
+    eleza clear_status(self):
         self.c.clear_flags()
         self.p.clear_flags()
 
-    def settraps(self, lst):
+    eleza settraps(self, lst):
         """lst: C signal list"""
         self.clear_traps()
-        for signal in lst:
-            self.c.traps[signal] = True
-            self.p.traps[CondMap[signal]] = True
+        kila signal kwenye lst:
+            self.c.traps[signal] = Kweli
+            self.p.traps[CondMap[signal]] = Kweli
 
-    def setstatus(self, lst):
+    eleza setstatus(self, lst):
         """lst: C signal list"""
         self.clear_status()
-        for signal in lst:
-            self.c.flags[signal] = True
-            self.p.flags[CondMap[signal]] = True
+        kila signal kwenye lst:
+            self.c.flags[signal] = Kweli
+            self.p.flags[CondMap[signal]] = Kweli
 
-    def assert_eq_status(self):
-        """assert equality of C and P status"""
-        for signal in self.c.flags:
-            if self.c.flags[signal] == (not self.p.flags[CondMap[signal]]):
-                return False
-        return True
+    eleza assert_eq_status(self):
+        """assert equality of C na P status"""
+        kila signal kwenye self.c.flags:
+            ikiwa self.c.flags[signal] == (sio self.p.flags[CondMap[signal]]):
+                rudisha Uongo
+        rudisha Kweli
 
 
 # We don't want exceptions so that we can compare the status flags.
@@ -275,8 +275,8 @@ context.Emin = C.MIN_EMIN
 context.Emax = C.MAX_EMAX
 context.clear_traps()
 
-# When creating decimals, _decimal is ultimately limited by the maximum
-# context values. We emulate this restriction for decimal.py.
+# When creating decimals, _decimal ni ultimately limited by the maximum
+# context values. We emulate this restriction kila decimal.py.
 maxcontext = P.Context(
     prec=C.MAX_PREC,
     Emin=C.MIN_EMIN,
@@ -286,62 +286,62 @@ maxcontext = P.Context(
 )
 maxcontext.clamp = 0
 
-def RestrictedDecimal(value):
+eleza RestrictedDecimal(value):
     maxcontext.traps = copy(context.p.traps)
     maxcontext.clear_flags()
-    if isinstance(value, str):
+    ikiwa isinstance(value, str):
         value = value.strip()
     dec = maxcontext.create_decimal(value)
-    if maxcontext.flags[P.Inexact] or \
-       maxcontext.flags[P.Rounded] or \
-       maxcontext.flags[P.Clamped] or \
+    ikiwa maxcontext.flags[P.Inexact] ama \
+       maxcontext.flags[P.Rounded] ama \
+       maxcontext.flags[P.Clamped] ama \
        maxcontext.flags[P.InvalidOperation]:
-        return context.p._raise_error(P.InvalidOperation)
-    if maxcontext.flags[P.FloatOperation]:
-        context.p.flags[P.FloatOperation] = True
-    return dec
+        rudisha context.p._raise_error(P.InvalidOperation)
+    ikiwa maxcontext.flags[P.FloatOperation]:
+        context.p.flags[P.FloatOperation] = Kweli
+    rudisha dec
 
 
 # ======================================================================
-#      TestSet: Organize data and events during a single test case
+#      TestSet: Organize data na events during a single test case
 # ======================================================================
 
-class RestrictedList(list):
+kundi RestrictedList(list):
     """List that can only be modified by appending items."""
-    def __getattribute__(self, name):
-        if name != 'append':
-            raise AttributeError("unsupported operation")
-        return list.__getattribute__(self, name)
-    def unsupported(self, *_):
-        raise AttributeError("unsupported operation")
+    eleza __getattribute__(self, name):
+        ikiwa name != 'append':
+            ashiria AttributeError("unsupported operation")
+        rudisha list.__getattribute__(self, name)
+    eleza unsupported(self, *_):
+        ashiria AttributeError("unsupported operation")
     __add__ = __delattr__ = __delitem__ = __iadd__ = __imul__ = unsupported
     __mul__ = __reversed__ = __rmul__ = __setattr__ = __setitem__ = unsupported
 
-class TestSet(object):
+kundi TestSet(object):
     """A TestSet contains the original input operands, converted operands,
-       Python exceptions that occurred either during conversion or during
-       execution of the actual function, and the final results.
+       Python exceptions that occurred either during conversion ama during
+       execution of the actual function, na the final results.
 
        For safety, most attributes are lists that only support the append
        operation.
 
-       If a function name is prefixed with 'context.', the corresponding
-       context method is called.
+       If a function name ni prefixed ukijumuisha 'context.', the corresponding
+       context method ni called.
     """
-    def __init__(self, funcname, operands):
-        if funcname.startswith("context."):
+    eleza __init__(self, funcname, operands):
+        ikiwa funcname.startswith("context."):
             self.funcname = funcname.replace("context.", "")
-            self.contextfunc = True
-        else:
+            self.contextfunc = Kweli
+        isipokua:
             self.funcname = funcname
-            self.contextfunc = False
+            self.contextfunc = Uongo
         self.op = operands               # raw operand tuple
-        self.context = context           # context used for the operation
+        self.context = context           # context used kila the operation
         self.cop = RestrictedList()      # converted C.Decimal operands
-        self.cex = RestrictedList()      # Python exceptions for C.Decimal
+        self.cex = RestrictedList()      # Python exceptions kila C.Decimal
         self.cresults = RestrictedList() # C.Decimal results
         self.pop = RestrictedList()      # converted P.Decimal operands
-        self.pex = RestrictedList()      # Python exceptions for P.Decimal
+        self.pex = RestrictedList()      # Python exceptions kila P.Decimal
         self.presults = RestrictedList() # P.Decimal results
 
 
@@ -349,293 +349,293 @@ class TestSet(object):
 #                SkipHandler: skip known discrepancies
 # ======================================================================
 
-class SkipHandler:
-    """Handle known discrepancies between decimal.py and _decimal.so.
-       These are either ULP differences in the power function or
+kundi SkipHandler:
+    """Handle known discrepancies between decimal.py na _decimal.so.
+       These are either ULP differences kwenye the power function ama
        extremely minor issues."""
 
-    def __init__(self):
+    eleza __init__(self):
         self.ulpdiff = 0
         self.powmod_zeros = 0
         self.maxctx = P.Context(Emax=10**18, Emin=-10**18)
 
-    def default(self, t):
-        return False
+    eleza default(self, t):
+        rudisha Uongo
     __ge__ =  __gt__ = __le__ = __lt__ = __ne__ = __eq__ = default
     __reduce__ = __format__ = __repr__ = __str__ = default
 
-    def harrison_ulp(self, dec):
+    eleza harrison_ulp(self, dec):
         """ftp://ftp.inria.fr/INRIA/publication/publi-pdf/RR/RR-5504.pdf"""
         a = dec.next_plus()
         b = dec.next_minus()
-        return abs(a - b)
+        rudisha abs(a - b)
 
-    def standard_ulp(self, dec, prec):
-        return _dec_from_triple(0, '1', dec._exp+len(dec._int)-prec)
+    eleza standard_ulp(self, dec, prec):
+        rudisha _dec_from_triple(0, '1', dec._exp+len(dec._int)-prec)
 
-    def rounding_direction(self, x, mode):
+    eleza rounding_direction(self, x, mode):
         """Determine the effective direction of the rounding when
-           the exact result x is rounded according to mode.
-           Return -1 for downwards, 0 for undirected, 1 for upwards,
-           2 for ROUND_05UP."""
-        cmp = 1 if x.compare_total(P.Decimal("+0")) >= 0 else -1
+           the exact result x ni rounded according to mode.
+           Return -1 kila downwards, 0 kila undirected, 1 kila upwards,
+           2 kila ROUND_05UP."""
+        cmp = 1 ikiwa x.compare_total(P.Decimal("+0")) >= 0 isipokua -1
 
-        if mode in (P.ROUND_HALF_EVEN, P.ROUND_HALF_UP, P.ROUND_HALF_DOWN):
-            return 0
-        elif mode == P.ROUND_CEILING:
-            return 1
-        elif mode == P.ROUND_FLOOR:
-            return -1
-        elif mode == P.ROUND_UP:
-            return cmp
-        elif mode == P.ROUND_DOWN:
-            return -cmp
-        elif mode == P.ROUND_05UP:
-            return 2
-        else:
-            raise ValueError("Unexpected rounding mode: %s" % mode)
+        ikiwa mode kwenye (P.ROUND_HALF_EVEN, P.ROUND_HALF_UP, P.ROUND_HALF_DOWN):
+            rudisha 0
+        lasivyo mode == P.ROUND_CEILING:
+            rudisha 1
+        lasivyo mode == P.ROUND_FLOOR:
+            rudisha -1
+        lasivyo mode == P.ROUND_UP:
+            rudisha cmp
+        lasivyo mode == P.ROUND_DOWN:
+            rudisha -cmp
+        lasivyo mode == P.ROUND_05UP:
+            rudisha 2
+        isipokua:
+            ashiria ValueError("Unexpected rounding mode: %s" % mode)
 
-    def check_ulpdiff(self, exact, rounded):
+    eleza check_ulpdiff(self, exact, rounded):
         # current precision
         p = context.p.prec
 
         # Convert infinities to the largest representable number + 1.
         x = exact
-        if exact.is_infinite():
+        ikiwa exact.is_infinite():
             x = _dec_from_triple(exact._sign, '10', context.p.Emax)
         y = rounded
-        if rounded.is_infinite():
+        ikiwa rounded.is_infinite():
             y = _dec_from_triple(rounded._sign, '10', context.p.Emax)
 
         # err = (rounded - exact) / ulp(rounded)
         self.maxctx.prec = p * 2
         t = self.maxctx.subtract(y, x)
-        if context.c.flags[C.Clamped] or \
+        ikiwa context.c.flags[C.Clamped] ama \
            context.c.flags[C.Underflow]:
-            # The standard ulp does not work in Underflow territory.
+            # The standard ulp does sio work kwenye Underflow territory.
             ulp = self.harrison_ulp(y)
-        else:
+        isipokua:
             ulp = self.standard_ulp(y, p)
-        # Error in ulps.
+        # Error kwenye ulps.
         err = self.maxctx.divide(t, ulp)
 
         dir = self.rounding_direction(x, context.p.rounding)
-        if dir == 0:
-            if P.Decimal("-0.6") < err < P.Decimal("0.6"):
-                return True
-        elif dir == 1: # directed, upwards
-            if P.Decimal("-0.1") < err < P.Decimal("1.1"):
-                return True
-        elif dir == -1: # directed, downwards
-            if P.Decimal("-1.1") < err < P.Decimal("0.1"):
-                return True
-        else: # ROUND_05UP
-            if P.Decimal("-1.1") < err < P.Decimal("1.1"):
-                return True
+        ikiwa dir == 0:
+            ikiwa P.Decimal("-0.6") < err < P.Decimal("0.6"):
+                rudisha Kweli
+        lasivyo dir == 1: # directed, upwards
+            ikiwa P.Decimal("-0.1") < err < P.Decimal("1.1"):
+                rudisha Kweli
+        lasivyo dir == -1: # directed, downwards
+            ikiwa P.Decimal("-1.1") < err < P.Decimal("0.1"):
+                rudisha Kweli
+        isipokua: # ROUND_05UP
+            ikiwa P.Decimal("-1.1") < err < P.Decimal("1.1"):
+                rudisha Kweli
 
-        print("ulp: %s  error: %s  exact: %s  c_rounded: %s"
+        andika("ulp: %s  error: %s  exact: %s  c_rounded: %s"
               % (ulp, err, exact, rounded))
-        return False
+        rudisha Uongo
 
-    def bin_resolve_ulp(self, t):
-        """Check if results of _decimal's power function are within the
+    eleza bin_resolve_ulp(self, t):
+        """Check ikiwa results of _decimal's power function are within the
            allowed ulp ranges."""
         # NaNs are beyond repair.
-        if t.rc.is_nan() or t.rp.is_nan():
-            return False
+        ikiwa t.rc.is_nan() ama t.rp.is_nan():
+            rudisha Uongo
 
         # "exact" result, double precision, half_even
         self.maxctx.prec = context.p.prec * 2
 
         op1, op2 = t.pop[0], t.pop[1]
-        if t.contextfunc:
+        ikiwa t.contextfunc:
             exact = getattr(self.maxctx, t.funcname)(op1, op2)
-        else:
+        isipokua:
             exact = getattr(op1, t.funcname)(op2, context=self.maxctx)
 
         # _decimal's rounded result
         rounded = P.Decimal(t.cresults[0])
 
         self.ulpdiff += 1
-        return self.check_ulpdiff(exact, rounded)
+        rudisha self.check_ulpdiff(exact, rounded)
 
     ############################ Correct rounding #############################
-    def resolve_underflow(self, t):
-        """In extremely rare cases where the infinite precision result is just
-           below etiny, cdecimal does not set Subnormal/Underflow. Example:
+    eleza resolve_underflow(self, t):
+        """In extremely rare cases where the infinite precision result ni just
+           below etiny, cdecimal does sio set Subnormal/Underflow. Example:
 
            setcontext(Context(prec=21, rounding=ROUND_UP, Emin=-55, Emax=85))
            Decimal("1.00000000000000000000000000000000000000000000000"
                    "0000000100000000000000000000000000000000000000000"
                    "0000000000000025").ln()
         """
-        if t.cresults != t.presults:
-            return False # Results must be identical.
-        if context.c.flags[C.Rounded] and \
-           context.c.flags[C.Inexact] and \
-           context.p.flags[P.Rounded] and \
+        ikiwa t.cresults != t.presults:
+            rudisha Uongo # Results must be identical.
+        ikiwa context.c.flags[C.Rounded] na \
+           context.c.flags[C.Inexact] na \
+           context.p.flags[P.Rounded] na \
            context.p.flags[P.Inexact]:
-            return True # Subnormal/Underflow may be missing.
-        return False
+            rudisha Kweli # Subnormal/Underflow may be missing.
+        rudisha Uongo
 
-    def exp(self, t):
-        """Resolve Underflow or ULP difference."""
-        return self.resolve_underflow(t)
+    eleza exp(self, t):
+        """Resolve Underflow ama ULP difference."""
+        rudisha self.resolve_underflow(t)
 
-    def log10(self, t):
-        """Resolve Underflow or ULP difference."""
-        return self.resolve_underflow(t)
+    eleza log10(self, t):
+        """Resolve Underflow ama ULP difference."""
+        rudisha self.resolve_underflow(t)
 
-    def ln(self, t):
-        """Resolve Underflow or ULP difference."""
-        return self.resolve_underflow(t)
+    eleza ln(self, t):
+        """Resolve Underflow ama ULP difference."""
+        rudisha self.resolve_underflow(t)
 
-    def __pow__(self, t):
-        """Always calls the resolve function. C.Decimal does not have correct
-           rounding for the power function."""
-        if context.c.flags[C.Rounded] and \
-           context.c.flags[C.Inexact] and \
-           context.p.flags[P.Rounded] and \
+    eleza __pow__(self, t):
+        """Always calls the resolve function. C.Decimal does sio have correct
+           rounding kila the power function."""
+        ikiwa context.c.flags[C.Rounded] na \
+           context.c.flags[C.Inexact] na \
+           context.p.flags[P.Rounded] na \
            context.p.flags[P.Inexact]:
-            return self.bin_resolve_ulp(t)
-        else:
-            return False
+            rudisha self.bin_resolve_ulp(t)
+        isipokua:
+            rudisha Uongo
     power = __rpow__ = __pow__
 
     ############################## Technicalities #############################
-    def __float__(self, t):
-        """NaN comparison in the verify() function obviously gives an
-           incorrect answer:  nan == nan -> False"""
-        if t.cop[0].is_nan() and t.pop[0].is_nan():
-            return True
-        return False
+    eleza __float__(self, t):
+        """NaN comparison kwenye the verify() function obviously gives an
+           incorrect answer:  nan == nan -> Uongo"""
+        ikiwa t.cop[0].is_nan() na t.pop[0].is_nan():
+            rudisha Kweli
+        rudisha Uongo
     __complex__ = __float__
 
-    def __radd__(self, t):
+    eleza __radd__(self, t):
         """decimal.py gives precedence to the first NaN; this is
-           not important, as __radd__ will not be called for
+           sio important, kama __radd__ will sio be called for
            two decimal arguments."""
-        if t.rc.is_nan() and t.rp.is_nan():
-            return True
-        return False
+        ikiwa t.rc.is_nan() na t.rp.is_nan():
+            rudisha Kweli
+        rudisha Uongo
     __rmul__ = __radd__
 
     ################################ Various ##################################
-    def __round__(self, t):
+    eleza __round__(self, t):
         """Exception: Decimal('1').__round__(-100000000000000000000000000)
            Should it really be InvalidOperation?"""
-        if t.rc is None and t.rp.is_nan():
-            return True
-        return False
+        ikiwa t.rc ni Tupu na t.rp.is_nan():
+            rudisha Kweli
+        rudisha Uongo
 
 shandler = SkipHandler()
-def skip_error(t):
-    return getattr(shandler, t.funcname, shandler.default)(t)
+eleza skip_error(t):
+    rudisha getattr(shandler, t.funcname, shandler.default)(t)
 
 
 # ======================================================================
 #                      Handling verification errors
 # ======================================================================
 
-class VerifyError(Exception):
+kundi VerifyError(Exception):
     """Verification failed."""
-    pass
+    pita
 
-def function_as_string(t):
-    if t.contextfunc:
+eleza function_as_string(t):
+    ikiwa t.contextfunc:
         cargs = t.cop
         pargs = t.pop
         cfunc = "c_func: %s(" % t.funcname
         pfunc = "p_func: %s(" % t.funcname
-    else:
+    isipokua:
         cself, cargs = t.cop[0], t.cop[1:]
         pself, pargs = t.pop[0], t.pop[1:]
         cfunc = "c_func: %s.%s(" % (repr(cself), t.funcname)
         pfunc = "p_func: %s.%s(" % (repr(pself), t.funcname)
 
     err = cfunc
-    for arg in cargs:
+    kila arg kwenye cargs:
         err += "%s, " % repr(arg)
     err = err.rstrip(", ")
     err += ")\n"
 
     err += pfunc
-    for arg in pargs:
+    kila arg kwenye pargs:
         err += "%s, " % repr(arg)
     err = err.rstrip(", ")
     err += ")"
 
-    return err
+    rudisha err
 
-def raise_error(t):
+eleza raise_error(t):
     global EXIT_STATUS
 
-    if skip_error(t):
-        return
+    ikiwa skip_error(t):
+        rudisha
     EXIT_STATUS = 1
 
-    err = "Error in %s:\n\n" % t.funcname
+    err = "Error kwenye %s:\n\n" % t.funcname
     err += "input operands: %s\n\n" % (t.op,)
     err += function_as_string(t)
     err += "\n\nc_result: %s\np_result: %s\n\n" % (t.cresults, t.presults)
     err += "c_exceptions: %s\np_exceptions: %s\n\n" % (t.cex, t.pex)
     err += "%s\n\n" % str(t.context)
 
-    raise VerifyError(err)
+    ashiria VerifyError(err)
 
 
 # ======================================================================
 #                        Main testing functions
 #
-#  The procedure is always (t is the TestSet):
+#  The procedure ni always (t ni the TestSet):
 #
-#   convert(t) -> Initialize the TestSet as necessary.
+#   convert(t) -> Initialize the TestSet kama necessary.
 #
-#                 Return 0 for early abortion (e.g. if a TypeError
-#                 occurs during conversion, there is nothing to test).
+#                 Return 0 kila early abortion (e.g. ikiwa a TypeError
+#                 occurs during conversion, there ni nothing to test).
 #
-#                 Return 1 for continuing with the test case.
+#                 Return 1 kila continuing ukijumuisha the test case.
 #
-#   callfuncs(t) -> Call the relevant function for each implementation
-#                   and record the results in the TestSet.
+#   callfuncs(t) -> Call the relevant function kila each implementation
+#                   na record the results kwenye the TestSet.
 #
 #   verify(t) -> Verify the results. If verification fails, details
 #                are printed to stdout.
 # ======================================================================
 
-def convert(t, convstr=True):
-    """ t is the testset. At this stage the testset contains a tuple of
+eleza convert(t, convstr=Kweli):
+    """ t ni the testset. At this stage the testset contains a tuple of
         operands t.op of various types. For decimal methods the first
-        operand (self) is always converted to Decimal. If 'convstr' is
-        true, string operands are converted as well.
+        operand (self) ni always converted to Decimal. If 'convstr' is
+        true, string operands are converted kama well.
 
         Context operands are of type deccheck.Context, rounding mode
-        operands are given as a tuple (C.rounding, P.rounding).
+        operands are given kama a tuple (C.rounding, P.rounding).
 
         Other types (float, int, etc.) are left unchanged.
     """
-    for i, op in enumerate(t.op):
+    kila i, op kwenye enumerate(t.op):
 
         context.clear_status()
 
-        if op in RoundModes:
+        ikiwa op kwenye RoundModes:
             t.cop.append(op)
             t.pop.append(op)
 
-        elif not t.contextfunc and i == 0 or \
-             convstr and isinstance(op, str):
-            try:
+        lasivyo sio t.contextfunc na i == 0 ama \
+             convstr na isinstance(op, str):
+            jaribu:
                 c = C.Decimal(op)
-                cex = None
-            except (TypeError, ValueError, OverflowError) as e:
-                c = None
+                cex = Tupu
+            tatizo (TypeError, ValueError, OverflowError) kama e:
+                c = Tupu
                 cex = e.__class__
 
-            try:
+            jaribu:
                 p = RestrictedDecimal(op)
-                pex = None
-            except (TypeError, ValueError, OverflowError) as e:
-                p = None
+                pex = Tupu
+            tatizo (TypeError, ValueError, OverflowError) kama e:
+                p = Tupu
                 pex = e.__class__
 
             t.cop.append(c)
@@ -643,78 +643,78 @@ def convert(t, convstr=True):
             t.pop.append(p)
             t.pex.append(pex)
 
-            if cex is pex:
-                if str(c) != str(p) or not context.assert_eq_status():
+            ikiwa cex ni pex:
+                ikiwa str(c) != str(p) ama sio context.assert_eq_status():
                     raise_error(t)
-                if cex and pex:
+                ikiwa cex na pex:
                     # nothing to test
-                    return 0
-            else:
+                    rudisha 0
+            isipokua:
                 raise_error(t)
 
-        elif isinstance(op, Context):
+        lasivyo isinstance(op, Context):
             t.context = op
             t.cop.append(op.c)
             t.pop.append(op.p)
 
-        else:
+        isipokua:
             t.cop.append(op)
             t.pop.append(op)
 
-    return 1
+    rudisha 1
 
-def callfuncs(t):
-    """ t is the testset. At this stage the testset contains operand lists
-        t.cop and t.pop for the C and Python versions of decimal.
-        For Decimal methods, the first operands are of type C.Decimal and
+eleza callfuncs(t):
+    """ t ni the testset. At this stage the testset contains operand lists
+        t.cop na t.pop kila the C na Python versions of decimal.
+        For Decimal methods, the first operands are of type C.Decimal na
         P.Decimal respectively. The remaining operands can have various types.
         For Context methods, all operands can have any type.
 
-        t.rc and t.rp are the results of the operation.
+        t.rc na t.rp are the results of the operation.
     """
     context.clear_status()
 
-    try:
-        if t.contextfunc:
+    jaribu:
+        ikiwa t.contextfunc:
             cargs = t.cop
             t.rc = getattr(context.c, t.funcname)(*cargs)
-        else:
+        isipokua:
             cself = t.cop[0]
             cargs = t.cop[1:]
             t.rc = getattr(cself, t.funcname)(*cargs)
-        t.cex.append(None)
-    except (TypeError, ValueError, OverflowError, MemoryError) as e:
-        t.rc = None
+        t.cex.append(Tupu)
+    tatizo (TypeError, ValueError, OverflowError, MemoryError) kama e:
+        t.rc = Tupu
         t.cex.append(e.__class__)
 
-    try:
-        if t.contextfunc:
+    jaribu:
+        ikiwa t.contextfunc:
             pargs = t.pop
             t.rp = getattr(context.p, t.funcname)(*pargs)
-        else:
+        isipokua:
             pself = t.pop[0]
             pargs = t.pop[1:]
             t.rp = getattr(pself, t.funcname)(*pargs)
-        t.pex.append(None)
-    except (TypeError, ValueError, OverflowError, MemoryError) as e:
-        t.rp = None
+        t.pex.append(Tupu)
+    tatizo (TypeError, ValueError, OverflowError, MemoryError) kama e:
+        t.rp = Tupu
         t.pex.append(e.__class__)
 
-def verify(t, stat):
-    """ t is the testset. At this stage the testset contains the following
+eleza verify(t, stat):
+    """ t ni the testset. At this stage the testset contains the following
         tuples:
 
             t.op: original operands
-            t.cop: C.Decimal operands (see convert for details)
-            t.pop: P.Decimal operands (see convert for details)
+            t.cop: C.Decimal operands (see convert kila details)
+            t.pop: P.Decimal operands (see convert kila details)
             t.rc: C result
             t.rp: Python result
 
-        t.rc and t.rp can have various types.
+        t.rc na t.rp can have various types.
     """
     t.cresults.append(str(t.rc))
     t.presults.append(str(t.rp))
-    if isinstance(t.rc, C.Decimal) and isinstance(t.rp, P.Decimal):
+    ikiwa isinstance(t.rc, C.Decimal) na isinstance(t.rp, P.Decimal):
         # General case: both results are Decimals.
         t.cresults.append(t.rc.to_eng_string())
         t.cresults.append(t.rc.as_tuple())
@@ -727,21 +727,21 @@ def verify(t, stat):
 
         nc = t.rc.number_class().lstrip('+-s')
         stat[nc] += 1
-    else:
-        # Results from e.g. __divmod__ can only be compared as strings.
-        if not isinstance(t.rc, tuple) and not isinstance(t.rp, tuple):
-            if t.rc != t.rp:
+    isipokua:
+        # Results kutoka e.g. __divmod__ can only be compared kama strings.
+        ikiwa sio isinstance(t.rc, tuple) na sio isinstance(t.rp, tuple):
+            ikiwa t.rc != t.rp:
                 raise_error(t)
         stat[type(t.rc).__name__] += 1
 
-    # The return value lists must be equal.
-    if t.cresults != t.presults:
+    # The rudisha value lists must be equal.
+    ikiwa t.cresults != t.presults:
         raise_error(t)
     # The Python exception lists (TypeError, etc.) must be equal.
-    if t.cex != t.pex:
+    ikiwa t.cex != t.pex:
         raise_error(t)
     # The context flags must be equal.
-    if not t.context.assert_eq_status():
+    ikiwa sio t.context.assert_eq_status():
         raise_error(t)
 
 
@@ -751,231 +751,231 @@ def verify(t, stat):
 #  test_method(method, testspecs, testfunc) ->
 #
 #     Loop through various context settings. The degree of
-#     thoroughness is determined by 'testspec'. For each
+#     thoroughness ni determined by 'testspec'. For each
 #     setting, call 'testfunc'. Generally, 'testfunc' itself
 #     a loop, iterating through many test cases generated
-#     by the functions in randdec.py.
+#     by the functions kwenye randdec.py.
 #
 #  test_n-ary(method, prec, exp_range, restricted_range, itr, stat) ->
 #
-#     'test_unary', 'test_binary' and 'test_ternary' are the
-#     main test functions passed to 'test_method'. They deal
-#     with the regular cases. The thoroughness of testing is
+#     'test_unary', 'test_binary' na 'test_ternary' are the
+#     main test functions pitaed to 'test_method'. They deal
+#     ukijumuisha the regular cases. The thoroughness of testing is
 #     determined by 'itr'.
 #
-#     'prec', 'exp_range' and 'restricted_range' are passed
-#     to the test-generating functions and limit the generated
-#     values. In some cases, for reasonable run times a
-#     maximum exponent of 9999 is required.
+#     'prec', 'exp_range' na 'restricted_range' are pitaed
+#     to the test-generating functions na limit the generated
+#     values. In some cases, kila reasonable run times a
+#     maximum exponent of 9999 ni required.
 #
-#     The 'stat' parameter is passed down to the 'verify'
-#     function, which records statistics for the result values.
+#     The 'stat' parameter ni pitaed down to the 'verify'
+#     function, which records statistics kila the result values.
 # ======================================================================
 
-def log(fmt, args=None):
-    if args:
+eleza log(fmt, args=Tupu):
+    ikiwa args:
         sys.stdout.write(''.join((fmt, '\n')) % args)
-    else:
+    isipokua:
         sys.stdout.write(''.join((str(fmt), '\n')))
     sys.stdout.flush()
 
-def test_method(method, testspecs, testfunc):
+eleza test_method(method, testspecs, testfunc):
     """Iterate a test function through many context settings."""
     log("testing %s ...", method)
     stat = defaultdict(int)
-    for spec in testspecs:
-        if 'samples' in spec:
+    kila spec kwenye testspecs:
+        ikiwa 'samples' kwenye spec:
             spec['prec'] = sorted(random.sample(range(1, 101),
                                   spec['samples']))
-        for prec in spec['prec']:
+        kila prec kwenye spec['prec']:
             context.prec = prec
-            for expts in spec['expts']:
+            kila expts kwenye spec['expts']:
                 emin, emax = expts
-                if emin == 'rand':
+                ikiwa emin == 'rand':
                     context.Emin = random.randrange(-1000, 0)
                     context.Emax = random.randrange(prec, 1000)
-                else:
+                isipokua:
                     context.Emin, context.Emax = emin, emax
-                if prec > context.Emax: continue
+                ikiwa prec > context.Emax: endelea
                 log("    prec: %d  emin: %d  emax: %d",
                     (context.prec, context.Emin, context.Emax))
-                restr_range = 9999 if context.Emax > 9999 else context.Emax+99
-                for rounding in RoundModes:
+                restr_range = 9999 ikiwa context.Emax > 9999 isipokua context.Emax+99
+                kila rounding kwenye RoundModes:
                     context.rounding = rounding
                     context.capitals = random.randrange(2)
-                    if spec['clamp'] == 'rand':
+                    ikiwa spec['clamp'] == 'rand':
                         context.clamp = random.randrange(2)
-                    else:
+                    isipokua:
                         context.clamp = spec['clamp']
                     exprange = context.c.Emax
                     testfunc(method, prec, exprange, restr_range,
                              spec['iter'], stat)
-    log("    result types: %s" % sorted([t for t in stat.items()]))
+    log("    result types: %s" % sorted([t kila t kwenye stat.items()]))
 
-def test_unary(method, prec, exp_range, restricted_range, itr, stat):
+eleza test_unary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a unary function through many test cases."""
-    if method in UnaryRestricted:
+    ikiwa method kwenye UnaryRestricted:
         exp_range = restricted_range
-    for op in all_unary(prec, exp_range, itr):
+    kila op kwenye all_unary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
-            if not convert(t):
-                continue
+        jaribu:
+            ikiwa sio convert(t):
+                endelea
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        tatizo VerifyError kama err:
             log(err)
 
-    if not method.startswith('__'):
-        for op in unary_optarg(prec, exp_range, itr):
+    ikiwa sio method.startswith('__'):
+        kila op kwenye unary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
-                if not convert(t):
-                    continue
+            jaribu:
+                ikiwa sio convert(t):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
-def test_binary(method, prec, exp_range, restricted_range, itr, stat):
+eleza test_binary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a binary function through many test cases."""
-    if method in BinaryRestricted:
+    ikiwa method kwenye BinaryRestricted:
         exp_range = restricted_range
-    for op in all_binary(prec, exp_range, itr):
+    kila op kwenye all_binary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
-            if not convert(t):
-                continue
+        jaribu:
+            ikiwa sio convert(t):
+                endelea
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        tatizo VerifyError kama err:
             log(err)
 
-    if not method.startswith('__'):
-        for op in binary_optarg(prec, exp_range, itr):
+    ikiwa sio method.startswith('__'):
+        kila op kwenye binary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
-                if not convert(t):
-                    continue
+            jaribu:
+                ikiwa sio convert(t):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
-def test_ternary(method, prec, exp_range, restricted_range, itr, stat):
+eleza test_ternary(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate a ternary function through many test cases."""
-    if method in TernaryRestricted:
+    ikiwa method kwenye TernaryRestricted:
         exp_range = restricted_range
-    for op in all_ternary(prec, exp_range, itr):
+    kila op kwenye all_ternary(prec, exp_range, itr):
         t = TestSet(method, op)
-        try:
-            if not convert(t):
-                continue
+        jaribu:
+            ikiwa sio convert(t):
+                endelea
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        tatizo VerifyError kama err:
             log(err)
 
-    if not method.startswith('__'):
-        for op in ternary_optarg(prec, exp_range, itr):
+    ikiwa sio method.startswith('__'):
+        kila op kwenye ternary_optarg(prec, exp_range, itr):
             t = TestSet(method, op)
-            try:
-                if not convert(t):
-                    continue
+            jaribu:
+                ikiwa sio convert(t):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
-def test_format(method, prec, exp_range, restricted_range, itr, stat):
+eleza test_format(method, prec, exp_range, restricted_range, itr, stat):
     """Iterate the __format__ method through many test cases."""
-    for op in all_unary(prec, exp_range, itr):
+    kila op kwenye all_unary(prec, exp_range, itr):
         fmt1 = rand_format(chr(random.randrange(0, 128)), 'EeGgn')
         fmt2 = rand_locale()
-        for fmt in (fmt1, fmt2):
+        kila fmt kwenye (fmt1, fmt2):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
-            try:
-                if not convert(t, convstr=False):
-                    continue
+            jaribu:
+                ikiwa sio convert(t, convstr=Uongo):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
-    for op in all_unary(prec, 9999, itr):
+    kila op kwenye all_unary(prec, 9999, itr):
         fmt1 = rand_format(chr(random.randrange(0, 128)), 'Ff%')
         fmt2 = rand_locale()
-        for fmt in (fmt1, fmt2):
+        kila fmt kwenye (fmt1, fmt2):
             fmtop = (op[0], fmt)
             t = TestSet(method, fmtop)
-            try:
-                if not convert(t, convstr=False):
-                    continue
+            jaribu:
+                ikiwa sio convert(t, convstr=Uongo):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
-def test_round(method, prec, exprange, restricted_range, itr, stat):
+eleza test_round(method, prec, exprange, restricted_range, itr, stat):
     """Iterate the __round__ method through many test cases."""
-    for op in all_unary(prec, 9999, itr):
+    kila op kwenye all_unary(prec, 9999, itr):
         n = random.randrange(10)
         roundop = (op[0], n)
         t = TestSet(method, roundop)
-        try:
-            if not convert(t):
-                continue
+        jaribu:
+            ikiwa sio convert(t):
+                endelea
             callfuncs(t)
             verify(t, stat)
-        except VerifyError as err:
+        tatizo VerifyError kama err:
             log(err)
 
-def test_from_float(method, prec, exprange, restricted_range, itr, stat):
+eleza test_from_float(method, prec, exprange, restricted_range, itr, stat):
     """Iterate the __float__ method through many test cases."""
-    for rounding in RoundModes:
+    kila rounding kwenye RoundModes:
         context.rounding = rounding
-        for i in range(1000):
+        kila i kwenye range(1000):
             f = randfloat()
-            op = (f,) if method.startswith("context.") else ("sNaN", f)
+            op = (f,) ikiwa method.startswith("context.") isipokua ("sNaN", f)
             t = TestSet(method, op)
-            try:
-                if not convert(t):
-                    continue
+            jaribu:
+                ikiwa sio convert(t):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
-def randcontext(exprange):
+eleza randcontext(exprange):
     c = Context(C.Context(), P.Context())
     c.Emax = random.randrange(1, exprange+1)
     c.Emin = random.randrange(-exprange, 0)
-    maxprec = 100 if c.Emax >= 100 else c.Emax
+    maxprec = 100 ikiwa c.Emax >= 100 isipokua c.Emax
     c.prec = random.randrange(1, maxprec+1)
     c.clamp = random.randrange(2)
     c.clear_traps()
-    return c
+    rudisha c
 
-def test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
+eleza test_quantize_api(method, prec, exprange, restricted_range, itr, stat):
     """Iterate the 'quantize' method through many test cases, using
        the optional arguments."""
-    for op in all_binary(prec, restricted_range, itr):
-        for rounding in RoundModes:
+    kila op kwenye all_binary(prec, restricted_range, itr):
+        kila rounding kwenye RoundModes:
             c = randcontext(exprange)
             quantizeop = (op[0], op[1], rounding, c)
             t = TestSet(method, quantizeop)
-            try:
-                if not convert(t):
-                    continue
+            jaribu:
+                ikiwa sio convert(t):
+                    endelea
                 callfuncs(t)
                 verify(t, stat)
-            except VerifyError as err:
+            tatizo VerifyError kama err:
                 log(err)
 
 
-def check_untested(funcdict, c_cls, p_cls):
-    """Determine untested, C-only and Python-only attributes.
-       Uncomment print lines for debugging."""
+eleza check_untested(funcdict, c_cls, p_cls):
+    """Determine untested, C-only na Python-only attributes.
+       Uncomment print lines kila debugging."""
     c_attr = set(dir(c_cls))
     p_attr = set(dir(p_cls))
     intersect = c_attr & p_attr
@@ -984,30 +984,30 @@ def check_untested(funcdict, c_cls, p_cls):
     funcdict['p_only'] = tuple(sorted(p_attr-intersect))
 
     tested = set()
-    for lst in funcdict.values():
-        for v in lst:
-            v = v.replace("context.", "") if c_cls == C.Context else v
+    kila lst kwenye funcdict.values():
+        kila v kwenye lst:
+            v = v.replace("context.", "") ikiwa c_cls == C.Context isipokua v
             tested.add(v)
 
     funcdict['untested'] = tuple(sorted(intersect-tested))
 
-    #for key in ('untested', 'c_only', 'p_only'):
-    #    s = 'Context' if c_cls == C.Context else 'Decimal'
-    #    print("\n%s %s:\n%s" % (s, key, funcdict[key]))
+    #kila key kwenye ('untested', 'c_only', 'p_only'):
+    #    s = 'Context' ikiwa c_cls == C.Context isipokua 'Decimal'
+    #    andika("\n%s %s:\n%s" % (s, key, funcdict[key]))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
-    import time
+    agiza time
 
     randseed = int(time.time())
     random.seed(randseed)
 
-    # Set up the testspecs list. A testspec is simply a dictionary
+    # Set up the testspecs list. A testspec ni simply a dictionary
     # that determines the amount of different contexts that 'test_method'
     # will generate.
     base_expts = [(C.MIN_EMIN, C.MAX_EMAX)]
-    if C.MAX_EMAX == 999999999999999999:
+    ikiwa C.MAX_EMAX == 999999999999999999:
         base_expts.append((-999999999, 999999999))
 
     # Basic contexts.
@@ -1015,48 +1015,48 @@ if __name__ == '__main__':
         'expts': base_expts,
         'prec': [],
         'clamp': 'rand',
-        'iter': None,
-        'samples': None,
+        'iter': Tupu,
+        'samples': Tupu,
     }
-    # Contexts with small values for prec, emin, emax.
+    # Contexts ukijumuisha small values kila prec, emin, emax.
     small = {
         'prec': [1, 2, 3, 4, 5],
         'expts': [(-1, 1), (-2, 2), (-3, 3), (-4, 4), (-5, 5)],
         'clamp': 'rand',
-        'iter': None
+        'iter': Tupu
     }
     # IEEE interchange format.
     ieee = [
         # DECIMAL32
-        {'prec': [7], 'expts': [(-95, 96)], 'clamp': 1, 'iter': None},
+        {'prec': [7], 'expts': [(-95, 96)], 'clamp': 1, 'iter': Tupu},
         # DECIMAL64
-        {'prec': [16], 'expts': [(-383, 384)], 'clamp': 1, 'iter': None},
+        {'prec': [16], 'expts': [(-383, 384)], 'clamp': 1, 'iter': Tupu},
         # DECIMAL128
-        {'prec': [34], 'expts': [(-6143, 6144)], 'clamp': 1, 'iter': None}
+        {'prec': [34], 'expts': [(-6143, 6144)], 'clamp': 1, 'iter': Tupu}
     ]
 
-    if '--medium' in sys.argv:
+    ikiwa '--medium' kwenye sys.argv:
         base['expts'].append(('rand', 'rand'))
         # 5 random precisions
         base['samples'] = 5
         testspecs = [small] + ieee + [base]
-    if '--long' in sys.argv:
+    ikiwa '--long' kwenye sys.argv:
         base['expts'].append(('rand', 'rand'))
         # 10 random precisions
         base['samples'] = 10
         testspecs = [small] + ieee + [base]
-    elif '--all' in sys.argv:
+    lasivyo '--all' kwenye sys.argv:
         base['expts'].append(('rand', 'rand'))
-        # All precisions in [1, 100]
+        # All precisions kwenye [1, 100]
         base['samples'] = 100
         testspecs = [small] + ieee + [base]
-    else: # --short
+    isipokua: # --short
         rand_ieee = random.choice(ieee)
         base['iter'] = small['iter'] = rand_ieee['iter'] = 1
-        # 1 random precision and exponent pair
+        # 1 random precision na exponent pair
         base['samples'] = 1
         base['expts'] = [random.choice(base_expts)]
-        # 1 random precision and exponent pair
+        # 1 random precision na exponent pair
         prec = random.randrange(1, 6)
         small['prec'] = [prec]
         small['expts'] = [(-prec, prec)]
@@ -1069,14 +1069,14 @@ if __name__ == '__main__':
     log("\n\nRandom seed: %d\n\n", randseed)
 
     # Decimal methods:
-    for method in Functions['unary'] + Functions['unary_ctx'] + \
+    kila method kwenye Functions['unary'] + Functions['unary_ctx'] + \
                   Functions['unary_rnd_ctx']:
         test_method(method, testspecs, test_unary)
 
-    for method in Functions['binary'] + Functions['binary_ctx']:
+    kila method kwenye Functions['binary'] + Functions['binary_ctx']:
         test_method(method, testspecs, test_binary)
 
-    for method in Functions['ternary'] + Functions['ternary_ctx']:
+    kila method kwenye Functions['ternary'] + Functions['ternary_ctx']:
         test_method(method, testspecs, test_ternary)
 
     test_method('__format__', testspecs, test_format)
@@ -1085,13 +1085,13 @@ if __name__ == '__main__':
     test_method('quantize', testspecs, test_quantize_api)
 
     # Context methods:
-    for method in ContextFunctions['unary']:
+    kila method kwenye ContextFunctions['unary']:
         test_method(method, testspecs, test_unary)
 
-    for method in ContextFunctions['binary']:
+    kila method kwenye ContextFunctions['binary']:
         test_method(method, testspecs, test_binary)
 
-    for method in ContextFunctions['ternary']:
+    kila method kwenye ContextFunctions['ternary']:
         test_method(method, testspecs, test_ternary)
 
     test_method('context.create_decimal_from_float', testspecs, test_from_float)

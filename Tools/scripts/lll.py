@@ -1,27 +1,27 @@
 #! /usr/bin/env python3
 
-# Find symbolic links and show where they point to.
-# Arguments are directories to search; default is current directory.
+# Find symbolic links na show where they point to.
+# Arguments are directories to search; default ni current directory.
 # No recursion.
-# (This is a totally different program from "findsymlinks.py"!)
+# (This ni a totally different program kutoka "findsymlinks.py"!)
 
-import sys, os
+agiza sys, os
 
-def lll(dirname):
-    for name in os.listdir(dirname):
-        if name not in (os.curdir, os.pardir):
+eleza lll(dirname):
+    kila name kwenye os.listdir(dirname):
+        ikiwa name haiko kwenye (os.curdir, os.pardir):
             full = os.path.join(dirname, name)
-            if os.path.islink(full):
-                print(name, '->', os.readlink(full))
-def main(args):
-    if not args: args = [os.curdir]
+            ikiwa os.path.islink(full):
+                andika(name, '->', os.readlink(full))
+eleza main(args):
+    ikiwa sio args: args = [os.curdir]
     first = 1
-    for arg in args:
-        if len(args) > 1:
-            if not first: print()
+    kila arg kwenye args:
+        ikiwa len(args) > 1:
+            ikiwa sio first: andika()
             first = 0
-            print(arg + ':')
+            andika(arg + ':')
         lll(arg)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main(sys.argv[1:])

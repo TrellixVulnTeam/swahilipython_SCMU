@@ -7,147 +7,147 @@ agiza sys
 # Functions used by test code
 #
 
-def calculate(func, args):
+eleza calculate(func, args):
     result = func(*args)
-    return '%s says that %s%s = %s' % (
+    rudisha '%s says that %s%s = %s' % (
         multiprocessing.current_process().name,
         func.__name__, args, result
         )
 
-def calculatestar(args):
-    return calculate(*args)
+eleza calculatestar(args):
+    rudisha calculate(*args)
 
-def mul(a, b):
+eleza mul(a, b):
     time.sleep(0.5 * random.random())
-    return a * b
+    rudisha a * b
 
-def plus(a, b):
+eleza plus(a, b):
     time.sleep(0.5 * random.random())
-    return a + b
+    rudisha a + b
 
-def f(x):
-    return 1.0 / (x - 5.0)
+eleza f(x):
+    rudisha 1.0 / (x - 5.0)
 
-def pow3(x):
-    return x ** 3
+eleza pow3(x):
+    rudisha x ** 3
 
-def noop(x):
-    pass
+eleza noop(x):
+    pita
 
 #
 # Test code
 #
 
-def test():
+eleza test():
     PROCESSES = 4
-    print('Creating pool with %d processes\n' % PROCESSES)
+    andika('Creating pool ukijumuisha %d processes\n' % PROCESSES)
 
-    with multiprocessing.Pool(PROCESSES) as pool:
+    ukijumuisha multiprocessing.Pool(PROCESSES) kama pool:
         #
         # Tests
         #
 
-        TASKS = [(mul, (i, 7)) for i in range(10)] + \
-                [(plus, (i, 8)) for i in range(10)]
+        TASKS = [(mul, (i, 7)) kila i kwenye range(10)] + \
+                [(plus, (i, 8)) kila i kwenye range(10)]
 
-        results = [pool.apply_async(calculate, t) for t in TASKS]
+        results = [pool.apply_async(calculate, t) kila t kwenye TASKS]
         imap_it = pool.imap(calculatestar, TASKS)
         imap_unordered_it = pool.imap_unordered(calculatestar, TASKS)
 
-        print('Ordered results using pool.apply_async():')
-        for r in results:
-            print('\t', r.get())
-        print()
+        andika('Ordered results using pool.apply_async():')
+        kila r kwenye results:
+            andika('\t', r.get())
+        andika()
 
-        print('Ordered results using pool.imap():')
-        for x in imap_it:
-            print('\t', x)
-        print()
+        andika('Ordered results using pool.imap():')
+        kila x kwenye imap_it:
+            andika('\t', x)
+        andika()
 
-        print('Unordered results using pool.imap_unordered():')
-        for x in imap_unordered_it:
-            print('\t', x)
-        print()
+        andika('Unordered results using pool.imap_unordered():')
+        kila x kwenye imap_unordered_it:
+            andika('\t', x)
+        andika()
 
-        print('Ordered results using pool.map() --- will block till complete:')
-        for x in pool.map(calculatestar, TASKS):
-            print('\t', x)
-        print()
+        andika('Ordered results using pool.map() --- will block till complete:')
+        kila x kwenye pool.map(calculatestar, TASKS):
+            andika('\t', x)
+        andika()
 
         #
         # Test error handling
         #
 
-        print('Testing error handling:')
+        andika('Testing error handling:')
 
-        try:
-            print(pool.apply(f, (5,)))
-        except ZeroDivisionError:
-            print('\tGot ZeroDivisionError as expected kutoka pool.apply()')
-        else:
-            raise AssertionError('expected ZeroDivisionError')
+        jaribu:
+            andika(pool.apply(f, (5,)))
+        tatizo ZeroDivisionError:
+            andika('\tGot ZeroDivisionError kama expected kutoka pool.apply()')
+        isipokua:
+            ashiria AssertionError('expected ZeroDivisionError')
 
-        try:
-            print(pool.map(f, list(range(10))))
-        except ZeroDivisionError:
-            print('\tGot ZeroDivisionError as expected kutoka pool.map()')
-        else:
-            raise AssertionError('expected ZeroDivisionError')
+        jaribu:
+            andika(pool.map(f, list(range(10))))
+        tatizo ZeroDivisionError:
+            andika('\tGot ZeroDivisionError kama expected kutoka pool.map()')
+        isipokua:
+            ashiria AssertionError('expected ZeroDivisionError')
 
-        try:
-            print(list(pool.imap(f, list(range(10)))))
-        except ZeroDivisionError:
-            print('\tGot ZeroDivisionError as expected kutoka list(pool.imap())')
-        else:
-            raise AssertionError('expected ZeroDivisionError')
+        jaribu:
+            andika(list(pool.imap(f, list(range(10)))))
+        tatizo ZeroDivisionError:
+            andika('\tGot ZeroDivisionError kama expected kutoka list(pool.imap())')
+        isipokua:
+            ashiria AssertionError('expected ZeroDivisionError')
 
         it = pool.imap(f, list(range(10)))
-        for i in range(10):
-            try:
+        kila i kwenye range(10):
+            jaribu:
                 x = next(it)
-            except ZeroDivisionError:
-                if i == 5:
-                    pass
-            except StopIteration:
-                break
-            else:
-                if i == 5:
-                    raise AssertionError('expected ZeroDivisionError')
+            tatizo ZeroDivisionError:
+                ikiwa i == 5:
+                    pita
+            tatizo StopIteration:
+                koma
+            isipokua:
+                ikiwa i == 5:
+                    ashiria AssertionError('expected ZeroDivisionError')
 
         assert i == 9
-        print('\tGot ZeroDivisionError as expected kutoka IMapIterator.next()')
-        print()
+        andika('\tGot ZeroDivisionError kama expected kutoka IMapIterator.next()')
+        andika()
 
         #
         # Testing timeouts
         #
 
-        print('Testing ApplyResult.get() with timeout:', end=' ')
+        andika('Testing ApplyResult.get() ukijumuisha timeout:', end=' ')
         res = pool.apply_async(calculate, TASKS[0])
-        while 1:
+        wakati 1:
             sys.stdout.flush()
-            try:
+            jaribu:
                 sys.stdout.write('\n\t%s' % res.get(0.02))
-                break
-            except multiprocessing.TimeoutError:
+                koma
+            tatizo multiprocessing.TimeoutError:
                 sys.stdout.write('.')
-        print()
-        print()
+        andika()
+        andika()
 
-        print('Testing IMapIterator.next() with timeout:', end=' ')
+        andika('Testing IMapIterator.next() ukijumuisha timeout:', end=' ')
         it = pool.imap(calculatestar, TASKS)
-        while 1:
+        wakati 1:
             sys.stdout.flush()
-            try:
+            jaribu:
                 sys.stdout.write('\n\t%s' % it.next(0.02))
-            except StopIteration:
-                break
-            except multiprocessing.TimeoutError:
+            tatizo StopIteration:
+                koma
+            tatizo multiprocessing.TimeoutError:
                 sys.stdout.write('.')
-        print()
-        print()
+        andika()
+        andika()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     multiprocessing.freeze_support()
     test()

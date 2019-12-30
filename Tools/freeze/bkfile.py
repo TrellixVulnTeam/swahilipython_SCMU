@@ -1,26 +1,26 @@
-from builtins import open as _orig_open
+kutoka builtins agiza open kama _orig_open
 
-def open(file, mode='r', bufsize=-1):
-    if 'w' not in mode:
-        return _orig_open(file, mode, bufsize)
-    import os
+eleza open(file, mode='r', bufsize=-1):
+    ikiwa 'w' haiko kwenye mode:
+        rudisha _orig_open(file, mode, bufsize)
+    agiza os
     backup = file + '~'
-    try:
+    jaribu:
         os.unlink(backup)
-    except OSError:
-        pass
-    try:
+    tatizo OSError:
+        pita
+    jaribu:
         os.rename(file, backup)
-    except OSError:
-        return _orig_open(file, mode, bufsize)
+    tatizo OSError:
+        rudisha _orig_open(file, mode, bufsize)
     f = _orig_open(file, mode, bufsize)
     _orig_close = f.close
-    def close():
+    eleza close():
         _orig_close()
-        import filecmp
-        if filecmp.cmp(backup, file, shallow=False):
-            import os
+        agiza filecmp
+        ikiwa filecmp.cmp(backup, file, shallow=Uongo):
+            agiza os
             os.unlink(file)
             os.rename(backup, file)
     f.close = close
-    return f
+    rudisha f

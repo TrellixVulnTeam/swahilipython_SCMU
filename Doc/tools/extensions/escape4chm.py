@@ -11,42 +11,42 @@ kutoka html.entities agiza codepoint2name
 kutoka sphinx.util.logging agiza getLogger
 
 # escape the characters which codepoint > 0x7F
-def _process(string):
-    def escape(matchobj):
+eleza _process(string):
+    eleza escape(matchobj):
         codepoint = ord(matchobj.group(0))
 
         name = codepoint2name.get(codepoint)
-        if name is None:
-            return '&#%d;' % codepoint
-        else:
-            return '&%s;' % name
+        ikiwa name ni Tupu:
+            rudisha '&#%d;' % codepoint
+        isipokua:
+            rudisha '&%s;' % name
 
-    return re.sub(r'[^\x00-\x7F]', escape, string)
+    rudisha re.sub(r'[^\x00-\x7F]', escape, string)
 
-def escape_for_chm(app, pagename, templatename, context, doctree):
-    # only works for .chm output
-    if getattr(app.builder, 'name', '') != 'htmlhelp':
-        return
+eleza escape_for_chm(app, pagename, templatename, context, doctree):
+    # only works kila .chm output
+    ikiwa getattr(app.builder, 'name', '') != 'htmlhelp':
+        rudisha
 
     # escape the `body` part to 7-bit ASCII
     body = context.get('body')
-    if body is not None:
+    ikiwa body ni sio Tupu:
         context['body'] = _process(body)
 
-def fixup_keywords(app, exception):
-    # only works for .chm output
-    if getattr(app.builder, 'name', '') != 'htmlhelp' or exception:
-        return
+eleza fixup_keywords(app, exception):
+    # only works kila .chm output
+    ikiwa getattr(app.builder, 'name', '') != 'htmlhelp' ama exception:
+        rudisha
 
-    getLogger(__name__).info('fixing HTML escapes in keywords file...')
+    getLogger(__name__).info('fixing HTML escapes kwenye keywords file...')
     outdir = app.builder.outdir
     outname = app.builder.config.htmlhelp_basename
-    with app.builder.open_file(outdir, outname + '.hhk', 'r') as f:
+    ukijumuisha app.builder.open_file(outdir, outname + '.hhk', 'r') kama f:
         index = f.read()
-    with app.builder.open_file(outdir, outname + '.hhk', 'w') as f:
+    ukijumuisha app.builder.open_file(outdir, outname + '.hhk', 'w') kama f:
         f.write(index.replace('&#x27;', '&#39;'))
 
-def setup(app):
+eleza setup(app):
     # `html-page-context` event emitted when the HTML builder has
     # created a context dictionary to render a template with.
     app.connect('html-page-context', escape_for_chm)
@@ -54,4 +54,4 @@ def setup(app):
     # output.
     app.connect('build-finished', fixup_keywords)
 
-    return {'version': '1.0', 'parallel_read_safe': Kweli}
+    rudisha {'version': '1.0', 'parallel_read_safe': Kweli}

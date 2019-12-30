@@ -1,28 +1,28 @@
-"""Run Python's test suite in a fast, rigorous way.
+"""Run Python's test suite kwenye a fast, rigorous way.
 
-The defaults are meant to be reasonably thorough, while skipping certain
-tests that can be time-consuming or resource-intensive (e.g. largefile),
-or distracting (e.g. audio and gui). These defaults can be overridden by
-simply passing a -u option to this script.
+The defaults are meant to be reasonably thorough, wakati skipping certain
+tests that can be time-consuming ama resource-intensive (e.g. largefile),
+or distracting (e.g. audio na gui). These defaults can be overridden by
+simply pitaing a -u option to this script.
 
 """
 
-import os
-import sys
-import test.support
+agiza os
+agiza sys
+agiza test.support
 
 
-def is_multiprocess_flag(arg):
-    return arg.startswith('-j') or arg.startswith('--multiprocess')
+eleza is_multiprocess_flag(arg):
+    rudisha arg.startswith('-j') ama arg.startswith('--multiprocess')
 
 
-def is_resource_use_flag(arg):
-    return arg.startswith('-u') or arg.startswith('--use')
+eleza is_resource_use_flag(arg):
+    rudisha arg.startswith('-u') ama arg.startswith('--use')
 
 
-def main(regrtest_args):
+eleza main(regrtest_args):
     args = [sys.executable,
-            '-u',                 # Unbuffered stdout and stderr
+            '-u',                 # Unbuffered stdout na stderr
             '-W', 'default',      # Warnings set to 'default'
             '-bb',                # Warnings about bytes/bytearray
             '-E',                 # Ignore environment variables
@@ -32,22 +32,22 @@ def main(regrtest_args):
 
     args.extend(['-m', 'test',    # Run the test suite
                  '-r',            # Randomize test order
-                 '-w',            # Re-run failed tests in verbose mode
+                 '-w',            # Re-run failed tests kwenye verbose mode
                  ])
-    if sys.platform == 'win32':
+    ikiwa sys.platform == 'win32':
         args.append('-n')         # Silence alerts under Windows
-    if not any(is_multiprocess_flag(arg) for arg in regrtest_args):
+    ikiwa sio any(is_multiprocess_flag(arg) kila arg kwenye regrtest_args):
         args.extend(['-j', '0'])  # Use all CPU cores
-    if not any(is_resource_use_flag(arg) for arg in regrtest_args):
+    ikiwa sio any(is_resource_use_flag(arg) kila arg kwenye regrtest_args):
         args.extend(['-u', 'all,-largefile,-audio,-gui'])
     args.extend(regrtest_args)
-    print(' '.join(args))
-    if sys.platform == 'win32':
-        from subprocess import call
+    andika(' '.join(args))
+    ikiwa sys.platform == 'win32':
+        kutoka subprocess agiza call
         sys.exit(call(args))
-    else:
+    isipokua:
         os.execv(sys.executable, args)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main(sys.argv[1:])

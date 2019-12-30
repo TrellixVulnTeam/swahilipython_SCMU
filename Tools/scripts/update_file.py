@@ -1,28 +1,28 @@
 """
-A script that replaces an old file with a new one, only if the contents
-actually changed.  If not, the new file is simply deleted.
+A script that replaces an old file ukijumuisha a new one, only ikiwa the contents
+actually changed.  If not, the new file ni simply deleted.
 
 This avoids wholesale rebuilds when a code (re)generation phase does not
 actually change the in-tree generated code.
 """
 
-import os
-import sys
+agiza os
+agiza sys
 
 
-def main(old_path, new_path):
-    with open(old_path, 'rb') as f:
+eleza main(old_path, new_path):
+    ukijumuisha open(old_path, 'rb') kama f:
         old_contents = f.read()
-    with open(new_path, 'rb') as f:
+    ukijumuisha open(new_path, 'rb') kama f:
         new_contents = f.read()
-    if old_contents != new_contents:
+    ikiwa old_contents != new_contents:
         os.replace(new_path, old_path)
-    else:
+    isipokua:
         os.unlink(new_path)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: %s <path to be updated> <path with new contents>" % (sys.argv[0],))
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) != 3:
+        andika("Usage: %s <path to be updated> <path ukijumuisha new contents>" % (sys.argv[0],))
         sys.exit(1)
     main(sys.argv[1], sys.argv[2])

@@ -1,26 +1,26 @@
 #! /usr/bin/env python3
 
-# Copy one file's atime and mtime to another
+# Copy one file's atime na mtime to another
 
-import sys
-import os
-from stat import ST_ATIME, ST_MTIME # Really constants 7 and 8
+agiza sys
+agiza os
+kutoka stat agiza ST_ATIME, ST_MTIME # Really constants 7 na 8
 
-def main():
-    if len(sys.argv) != 3:
+eleza main():
+    ikiwa len(sys.argv) != 3:
         sys.stderr.write('usage: copytime source destination\n')
         sys.exit(2)
     file1, file2 = sys.argv[1], sys.argv[2]
-    try:
+    jaribu:
         stat1 = os.stat(file1)
-    except OSError:
+    tatizo OSError:
         sys.stderr.write(file1 + ': cannot stat\n')
         sys.exit(1)
-    try:
+    jaribu:
         os.utime(file2, (stat1[ST_ATIME], stat1[ST_MTIME]))
-    except OSError:
+    tatizo OSError:
         sys.stderr.write(file2 + ': cannot change time\n')
         sys.exit(2)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

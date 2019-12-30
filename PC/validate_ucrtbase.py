@@ -1,15 +1,15 @@
 '''
-This script gets the version number from ucrtbased.dll and checks
-whether it is a version with a known issue.
+This script gets the version number kutoka ucrtbased.dll na checks
+whether it ni a version ukijumuisha a known issue.
 '''
 
-import sys
+agiza sys
 
-from ctypes import (c_buffer, POINTER, byref, create_unicode_buffer,
+kutoka ctypes agiza (c_buffer, POINTER, byref, create_unicode_buffer,
                     Structure, WinDLL)
-from ctypes.wintypes import DWORD, HANDLE
+kutoka ctypes.wintypes agiza DWORD, HANDLE
 
-class VS_FIXEDFILEINFO(Structure):
+kundi VS_FIXEDFILEINFO(Structure):
     _fields_ = [
         ("dwSignature", DWORD),
         ("dwStrucVersion", DWORD),
@@ -29,16 +29,16 @@ class VS_FIXEDFILEINFO(Structure):
 kernel32 = WinDLL('kernel32')
 version = WinDLL('version')
 
-if len(sys.argv) < 2:
-    print('Usage: validate_ucrtbase.py <ucrtbase|ucrtbased>')
+ikiwa len(sys.argv) < 2:
+    andika('Usage: validate_ucrtbase.py <ucrtbase|ucrtbased>')
     sys.exit(2)
 
-try:
+jaribu:
     ucrtbased = WinDLL(sys.argv[1])
-except OSError:
-    print('Cannot find ucrtbased.dll')
-    # This likely means that VS is not installed, but that is an
-    # obvious enough problem if you're trying to produce a debug
+tatizo OSError:
+    andika('Cannot find ucrtbased.dll')
+    # This likely means that VS ni sio installed, but that ni an
+    # obvious enough problem ikiwa you're trying to produce a debug
     # build that we don't need to fail here.
     sys.exit(0)
 
@@ -46,29 +46,29 @@ except OSError:
 # path may be longer, so we retry until the returned string is
 # shorter than our buffer.
 name_len = actual_len = 130
-while actual_len == name_len:
+wakati actual_len == name_len:
     name_len *= 2
     name = create_unicode_buffer(name_len)
     actual_len = kernel32.GetModuleFileNameW(HANDLE(ucrtbased._handle),
                                              name, len(name))
-    if not actual_len:
-        print('Failed to get full module name.')
+    ikiwa sio actual_len:
+        andika('Failed to get full module name.')
         sys.exit(2)
 
-size = version.GetFileVersionInfoSizeW(name, None)
-if not size:
-    print('Failed to get size of version info.')
+size = version.GetFileVersionInfoSizeW(name, Tupu)
+ikiwa sio size:
+    andika('Failed to get size of version info.')
     sys.exit(2)
 
 ver_block = c_buffer(size)
-if (not version.GetFileVersionInfoW(name, None, size, ver_block) or
-    not ver_block):
-    print('Failed to get version info.')
+ikiwa (sio version.GetFileVersionInfoW(name, Tupu, size, ver_block) ama
+    sio ver_block):
+    andika('Failed to get version info.')
     sys.exit(2)
 
 pvi = POINTER(VS_FIXEDFILEINFO)()
-if not version.VerQueryValueW(ver_block, "", byref(pvi), byref(DWORD())):
-    print('Failed to get version value from info.')
+ikiwa sio version.VerQueryValueW(ver_block, "", byref(pvi), byref(DWORD())):
+    andika('Failed to get version value kutoka info.')
     sys.exit(2)
 
 ver = (
@@ -78,12 +78,12 @@ ver = (
     pvi.contents.dwProductVersionLS & 0xFFFF,
 )
 
-print('{} is version {}.{}.{}.{}'.format(name.value, *ver))
+andika('{} ni version {}.{}.{}.{}'.format(name.value, *ver))
 
-if ver < (10, 0, 10586):
-    print('WARN: ucrtbased contains known issues. '
+ikiwa ver < (10, 0, 10586):
+    andika('WARN: ucrtbased contains known issues. '
           'Please update the Windows 10 SDK.')
-    print('See:')
-    print('  http://bugs.python.org/issue27705')
-    print('  https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk')
+    andika('See:')
+    andika('  http://bugs.python.org/issue27705')
+    andika('  https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk')
     sys.exit(1)

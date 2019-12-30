@@ -1,125 +1,125 @@
 #!/usr/bin/env python3
 
 """
-Markov chain simulation of words or characters.
+Markov chain simulation of words ama characters.
 """
 
-class Markov:
-    def __init__(self, histsize, choice):
+kundi Markov:
+    eleza __init__(self, histsize, choice):
         self.histsize = histsize
         self.choice = choice
         self.trans = {}
 
-    def add(self, state, next):
+    eleza add(self, state, next):
         self.trans.setdefault(state, []).append(next)
 
-    def put(self, seq):
+    eleza put(self, seq):
         n = self.histsize
         add = self.add
-        add(None, seq[:0])
-        for i in range(len(seq)):
+        add(Tupu, seq[:0])
+        kila i kwenye range(len(seq)):
             add(seq[max(0, i-n):i], seq[i:i+1])
-        add(seq[len(seq)-n:], None)
+        add(seq[len(seq)-n:], Tupu)
 
-    def get(self):
+    eleza get(self):
         choice = self.choice
         trans = self.trans
         n = self.histsize
-        seq = choice(trans[None])
-        while True:
+        seq = choice(trans[Tupu])
+        wakati Kweli:
             subseq = seq[max(0, len(seq)-n):]
             options = trans[subseq]
             next = choice(options)
-            if not next:
-                break
+            ikiwa sio next:
+                koma
             seq += next
-        return seq
+        rudisha seq
 
 
-def test():
-    import sys, random, getopt
+eleza test():
+    agiza sys, random, getopt
     args = sys.argv[1:]
-    try:
+    jaribu:
         opts, args = getopt.getopt(args, '0123456789cdwq')
-    except getopt.error:
-        print('Usage: %s [-#] [-cddqw] [file] ...' % sys.argv[0])
-        print('Options:')
-        print('-#: 1-digit history size (default 2)')
-        print('-c: characters (default)')
-        print('-w: words')
-        print('-d: more debugging output')
-        print('-q: no debugging output')
-        print('Input files (default stdin) are split in paragraphs')
-        print('separated blank lines and each paragraph is split')
-        print('in words by whitespace, then reconcatenated with')
-        print('exactly one space separating words.')
-        print('Output consists of paragraphs separated by blank')
-        print('lines, where lines are no longer than 72 characters.')
+    tatizo getopt.error:
+        andika('Usage: %s [-#] [-cddqw] [file] ...' % sys.argv[0])
+        andika('Options:')
+        andika('-#: 1-digit history size (default 2)')
+        andika('-c: characters (default)')
+        andika('-w: words')
+        andika('-d: more debugging output')
+        andika('-q: no debugging output')
+        andika('Input files (default stdin) are split kwenye paragraphs')
+        andika('separated blank lines na each paragraph ni split')
+        andika('in words by whitespace, then reconcatenated with')
+        andika('exactly one space separating words.')
+        andika('Output consists of paragraphs separated by blank')
+        andika('lines, where lines are no longer than 72 characters.')
         sys.exit(2)
     histsize = 2
-    do_words = False
+    do_words = Uongo
     debug = 1
-    for o, a in opts:
-        if '-0' <= o <= '-9': histsize = int(o[1:])
-        if o == '-c': do_words = False
-        if o == '-d': debug += 1
-        if o == '-q': debug = 0
-        if o == '-w': do_words = True
-    if not args:
+    kila o, a kwenye opts:
+        ikiwa '-0' <= o <= '-9': histsize = int(o[1:])
+        ikiwa o == '-c': do_words = Uongo
+        ikiwa o == '-d': debug += 1
+        ikiwa o == '-q': debug = 0
+        ikiwa o == '-w': do_words = Kweli
+    ikiwa sio args:
         args = ['-']
 
     m = Markov(histsize, random.choice)
-    try:
-        for filename in args:
-            if filename == '-':
+    jaribu:
+        kila filename kwenye args:
+            ikiwa filename == '-':
                 f = sys.stdin
-                if f.isatty():
-                    print('Sorry, need stdin from file')
-                    continue
-            else:
+                ikiwa f.isatty():
+                    andika('Sorry, need stdin kutoka file')
+                    endelea
+            isipokua:
                 f = open(filename, 'r')
-            with f:
-                if debug: print('processing', filename, '...')
+            ukijumuisha f:
+                ikiwa debug: andika('processing', filename, '...')
                 text = f.read()
             paralist = text.split('\n\n')
-            for para in paralist:
-                if debug > 1: print('feeding ...')
+            kila para kwenye paralist:
+                ikiwa debug > 1: andika('feeding ...')
                 words = para.split()
-                if words:
-                    if do_words:
+                ikiwa words:
+                    ikiwa do_words:
                         data = tuple(words)
-                    else:
+                    isipokua:
                         data = ' '.join(words)
                     m.put(data)
-    except KeyboardInterrupt:
-        print('Interrupted -- continue with data read so far')
-    if not m.trans:
-        print('No valid input files')
-        return
-    if debug: print('done.')
+    tatizo KeyboardInterrupt:
+        andika('Interrupted -- endelea ukijumuisha data read so far')
+    ikiwa sio m.trans:
+        andika('No valid input files')
+        rudisha
+    ikiwa debug: andika('done.')
 
-    if debug > 1:
-        for key in m.trans.keys():
-            if key is None or len(key) < histsize:
-                print(repr(key), m.trans[key])
-        if histsize == 0: print(repr(''), m.trans[''])
-        print()
-    while True:
+    ikiwa debug > 1:
+        kila key kwenye m.trans.keys():
+            ikiwa key ni Tupu ama len(key) < histsize:
+                andika(repr(key), m.trans[key])
+        ikiwa histsize == 0: andika(repr(''), m.trans[''])
+        andika()
+    wakati Kweli:
         data = m.get()
-        if do_words:
+        ikiwa do_words:
             words = data
-        else:
+        isipokua:
             words = data.split()
         n = 0
         limit = 72
-        for w in words:
-            if n + len(w) > limit:
-                print()
+        kila w kwenye words:
+            ikiwa n + len(w) > limit:
+                andika()
                 n = 0
-            print(w, end=' ')
+            andika(w, end=' ')
             n += len(w) + 1
-        print()
-        print()
+        andika()
+        andika()
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     test()

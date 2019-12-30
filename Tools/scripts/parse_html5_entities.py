@@ -1,105 +1,105 @@
 #!/usr/bin/env python3
 """
-Utility for parsing HTML5 entity definitions available from:
+Utility kila parsing HTML5 entity definitions available from:
 
     http://dev.w3.org/html5/spec/entities.json
 
-Written by Ezio Melotti and Iuliia Proskurnia.
+Written by Ezio Melotti na Iuliia Proskurnia.
 
 """
 
-import os
-import sys
-import json
-from urllib.request import urlopen
-from html.entities import html5
+agiza os
+agiza sys
+agiza json
+kutoka urllib.request agiza urlopen
+kutoka html.entities agiza html5
 
 entities_url = 'http://dev.w3.org/html5/spec/entities.json'
 
-def get_json(url):
-    """Download the json file from the url and returns a decoded object."""
-    with urlopen(url) as f:
+eleza get_json(url):
+    """Download the json file kutoka the url na returns a decoded object."""
+    ukijumuisha urlopen(url) kama f:
         data = f.read().decode('utf-8')
-    return json.loads(data)
+    rudisha json.loads(data)
 
-def create_dict(entities):
-    """Create the html5 dict from the decoded json object."""
+eleza create_dict(entities):
+    """Create the html5 dict kutoka the decoded json object."""
     new_html5 = {}
-    for name, value in entities.items():
+    kila name, value kwenye entities.items():
         new_html5[name.lstrip('&')] = value['characters']
-    return new_html5
+    rudisha new_html5
 
-def compare_dicts(old, new):
-    """Compare the old and new dicts and print the differences."""
+eleza compare_dicts(old, new):
+    """Compare the old na new dicts na print the differences."""
     added = new.keys() - old.keys()
-    if added:
-        print('{} entitie(s) have been added:'.format(len(added)))
-        for name in sorted(added):
-            print('  {!r}: {!r}'.format(name, new[name]))
+    ikiwa added:
+        andika('{} entitie(s) have been added:'.format(len(added)))
+        kila name kwenye sorted(added):
+            andika('  {!r}: {!r}'.format(name, new[name]))
     removed = old.keys() - new.keys()
-    if removed:
-        print('{} entitie(s) have been removed:'.format(len(removed)))
-        for name in sorted(removed):
-            print('  {!r}: {!r}'.format(name, old[name]))
+    ikiwa removed:
+        andika('{} entitie(s) have been removed:'.format(len(removed)))
+        kila name kwenye sorted(removed):
+            andika('  {!r}: {!r}'.format(name, old[name]))
     changed = set()
-    for name in (old.keys() & new.keys()):
-        if old[name] != new[name]:
+    kila name kwenye (old.keys() & new.keys()):
+        ikiwa old[name] != new[name]:
             changed.add((name, old[name], new[name]))
-    if changed:
-        print('{} entitie(s) have been modified:'.format(len(changed)))
-        for item in sorted(changed):
-            print('  {!r}: {!r} -> {!r}'.format(*item))
+    ikiwa changed:
+        andika('{} entitie(s) have been modified:'.format(len(changed)))
+        kila item kwenye sorted(changed):
+            andika('  {!r}: {!r} -> {!r}'.format(*item))
 
-def write_items(entities, file=sys.stdout):
-    """Write the items of the dictionary in the specified file."""
-    # The keys in the generated dictionary should be sorted
-    # in a case-insensitive way, however, when two keys are equal,
+eleza write_items(entities, file=sys.stdout):
+    """Write the items of the dictionary kwenye the specified file."""
+    # The keys kwenye the generated dictionary should be sorted
+    # kwenye a case-insensitive way, however, when two keys are equal,
     # the uppercase version should come first so that the result
     # looks like: ['Aacute', 'aacute', 'Aacute;', 'aacute;', ...]
-    # To do this we first sort in a case-sensitive way (so all the
-    # uppercase chars come first) and then sort with key=str.lower.
-    # Since the sorting is stable the uppercase keys will eventually
+    # To do this we first sort kwenye a case-sensitive way (so all the
+    # uppercase chars come first) na then sort ukijumuisha key=str.lower.
+    # Since the sorting ni stable the uppercase keys will eventually
     # be before their equivalent lowercase version.
     keys = sorted(entities.keys())
     keys = sorted(keys, key=str.lower)
-    print('html5 = {', file=file)
-    for name in keys:
-        print('    {!r}: {!a},'.format(name, entities[name]), file=file)
-    print('}', file=file)
+    andika('html5 = {', file=file)
+    kila name kwenye keys:
+        andika('    {!r}: {!a},'.format(name, entities[name]), file=file)
+    andika('}', file=file)
 
 
-if __name__ == '__main__':
-    # without args print a diff between html.entities.html5 and new_html5
-    # with --create print the new html5 dict
-    # with --patch patch the Lib/html/entities.py file
+ikiwa __name__ == '__main__':
+    # without args print a diff between html.entities.html5 na new_html5
+    # ukijumuisha --create print the new html5 dict
+    # ukijumuisha --patch patch the Lib/html/entities.py file
     new_html5 = create_dict(get_json(entities_url))
-    if '--create' in sys.argv:
-        print('# map the HTML5 named character references to the '
+    ikiwa '--create' kwenye sys.argv:
+        andika('# map the HTML5 named character references to the '
               'equivalent Unicode character(s)')
-        print('# Generated by {}.  Do not edit manually.'.format(__file__))
+        andika('# Generated by {}.  Do sio edit manually.'.format(__file__))
         write_items(new_html5)
-    elif '--patch' in sys.argv:
+    lasivyo '--patch' kwenye sys.argv:
         fname = 'Lib/html/entities.py'
         temp_fname = fname + '.temp'
-        with open(fname) as f1, open(temp_fname, 'w') as f2:
-            skip = False
-            for line in f1:
-                if line.startswith('html5 = {'):
+        ukijumuisha open(fname) kama f1, open(temp_fname, 'w') kama f2:
+            skip = Uongo
+            kila line kwenye f1:
+                ikiwa line.startswith('html5 = {'):
                     write_items(new_html5, file=f2)
-                    skip = True
-                    continue
-                if skip:
+                    skip = Kweli
+                    endelea
+                ikiwa skip:
                     # skip the old items until the }
-                    if line.startswith('}'):
-                        skip = False
-                    continue
+                    ikiwa line.startswith('}'):
+                        skip = Uongo
+                    endelea
                 f2.write(line)
         os.remove(fname)
         os.rename(temp_fname, fname)
-    else:
-        if html5 == new_html5:
-            print('The current dictionary is updated.')
-        else:
+    isipokua:
+        ikiwa html5 == new_html5:
+            andika('The current dictionary ni updated.')
+        isipokua:
             compare_dicts(html5, new_html5)
-            print('Run "./python {0} --patch" to update Lib/html/entities.html '
+            andika('Run "./python {0} --patch" to update Lib/html/entities.html '
                   'or "./python {0} --create" to see the generated ' 'dictionary.'.format(__file__))

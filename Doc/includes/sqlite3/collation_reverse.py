@@ -1,12 +1,12 @@
 agiza sqlite3
 
-def collate_reverse(string1, string2):
-    if string1 == string2:
-        return 0
-    elif string1 < string2:
-        return 1
-    else:
-        return -1
+eleza collate_reverse(string1, string2):
+    ikiwa string1 == string2:
+        rudisha 0
+    lasivyo string1 < string2:
+        rudisha 1
+    isipokua:
+        rudisha -1
 
 con = sqlite3.connect(":memory:")
 con.create_collation("reverse", collate_reverse)
@@ -15,6 +15,6 @@ cur = con.cursor()
 cur.execute("create table test(x)")
 cur.executemany("insert into test(x) values (?)", [("a",), ("b",)])
 cur.execute("select x kutoka test order by x collate reverse")
-for row in cur:
-    print(row)
+kila row kwenye cur:
+    andika(row)
 con.close()

@@ -2,98 +2,98 @@
 
 """Show file statistics by extension."""
 
-import os
-import sys
+agiza os
+agiza sys
 
 
-class Stats:
+kundi Stats:
 
-    def __init__(self):
+    eleza __init__(self):
         self.stats = {}
 
-    def statargs(self, args):
-        for arg in args:
-            if os.path.isdir(arg):
+    eleza statargs(self, args):
+        kila arg kwenye args:
+            ikiwa os.path.isdir(arg):
                 self.statdir(arg)
-            elif os.path.isfile(arg):
+            lasivyo os.path.isfile(arg):
                 self.statfile(arg)
-            else:
+            isipokua:
                 sys.stderr.write("Can't find %s\n" % arg)
                 self.addstats("<???>", "unknown", 1)
 
-    def statdir(self, dir):
+    eleza statdir(self, dir):
         self.addstats("<dir>", "dirs", 1)
-        try:
+        jaribu:
             names = os.listdir(dir)
-        except OSError as err:
+        tatizo OSError kama err:
             sys.stderr.write("Can't list %s: %s\n" % (dir, err))
             self.addstats("<dir>", "unlistable", 1)
-            return
-        for name in sorted(names):
-            if name.startswith(".#"):
-                continue  # Skip CVS temp files
-            if name.endswith("~"):
-                continue  # Skip Emacs backup files
+            rudisha
+        kila name kwenye sorted(names):
+            ikiwa name.startswith(".#"):
+                endelea  # Skip CVS temp files
+            ikiwa name.endswith("~"):
+                endelea  # Skip Emacs backup files
             full = os.path.join(dir, name)
-            if os.path.islink(full):
+            ikiwa os.path.islink(full):
                 self.addstats("<lnk>", "links", 1)
-            elif os.path.isdir(full):
+            lasivyo os.path.isdir(full):
                 self.statdir(full)
-            else:
+            isipokua:
                 self.statfile(full)
 
-    def statfile(self, filename):
+    eleza statfile(self, filename):
         head, ext = os.path.splitext(filename)
         head, base = os.path.split(filename)
-        if ext == base:
-            ext = ""  # E.g. .cvsignore is deemed not to have an extension
+        ikiwa ext == base:
+            ext = ""  # E.g. .cvsignore ni deemed sio to have an extension
         ext = os.path.normcase(ext)
-        if not ext:
+        ikiwa sio ext:
             ext = "<none>"
         self.addstats(ext, "files", 1)
-        try:
-            with open(filename, "rb") as f:
+        jaribu:
+            ukijumuisha open(filename, "rb") kama f:
                 data = f.read()
-        except IOError as err:
+        tatizo IOError kama err:
             sys.stderr.write("Can't open %s: %s\n" % (filename, err))
             self.addstats(ext, "unopenable", 1)
-            return
+            rudisha
         self.addstats(ext, "bytes", len(data))
-        if b'\0' in data:
+        ikiwa b'\0' kwenye data:
             self.addstats(ext, "binary", 1)
-            return
-        if not data:
+            rudisha
+        ikiwa sio data:
             self.addstats(ext, "empty", 1)
         # self.addstats(ext, "chars", len(data))
         lines = str(data, "latin-1").splitlines()
         self.addstats(ext, "lines", len(lines))
-        del lines
+        toa lines
         words = data.split()
         self.addstats(ext, "words", len(words))
 
-    def addstats(self, ext, key, n):
+    eleza addstats(self, ext, key, n):
         d = self.stats.setdefault(ext, {})
         d[key] = d.get(key, 0) + n
 
-    def report(self):
+    eleza report(self):
         exts = sorted(self.stats)
         # Get the column keys
         columns = {}
-        for ext in exts:
+        kila ext kwenye exts:
             columns.update(self.stats[ext])
         cols = sorted(columns)
         colwidth = {}
         colwidth["ext"] = max(map(len, exts))
         minwidth = 6
         self.stats["TOTAL"] = {}
-        for col in cols:
+        kila col kwenye cols:
             total = 0
             cw = max(minwidth, len(col))
-            for ext in exts:
+            kila ext kwenye exts:
                 value = self.stats[ext].get(col)
-                if value is None:
+                ikiwa value ni Tupu:
                     w = 0
-                else:
+                isipokua:
                     w = len("%d" % value)
                     total += value
                 cw = max(cw, w)
@@ -101,32 +101,32 @@ class Stats:
             colwidth[col] = cw
             self.stats["TOTAL"][col] = total
         exts.append("TOTAL")
-        for ext in exts:
+        kila ext kwenye exts:
             self.stats[ext]["ext"] = ext
         cols.insert(0, "ext")
 
-        def printheader():
-            for col in cols:
-                print("%*s" % (colwidth[col], col), end=' ')
-            print()
+        eleza printheader():
+            kila col kwenye cols:
+                andika("%*s" % (colwidth[col], col), end=' ')
+            andika()
 
         printheader()
-        for ext in exts:
-            for col in cols:
+        kila ext kwenye exts:
+            kila col kwenye cols:
                 value = self.stats[ext].get(col, "")
-                print("%*s" % (colwidth[col], value), end=' ')
-            print()
+                andika("%*s" % (colwidth[col], value), end=' ')
+            andika()
         printheader()  # Another header at the bottom
 
 
-def main():
+eleza main():
     args = sys.argv[1:]
-    if not args:
+    ikiwa sio args:
         args = [os.curdir]
     s = Stats()
     s.statargs(args)
     s.report()
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

@@ -2,79 +2,79 @@
 
 # linktree
 #
-# Make a copy of a directory tree with symbolic links to all files in the
+# Make a copy of a directory tree ukijumuisha symbolic links to all files kwenye the
 # original tree.
 # All symbolic links go to a special symbolic link at the top, so you
-# can easily fix things if the original source tree moves.
+# can easily fix things ikiwa the original source tree moves.
 # See also "mkreal".
 #
 # usage: mklinks oldtree newtree
 
-import sys, os
+agiza sys, os
 
 LINK = '.LINK' # Name of special symlink at the top.
 
 debug = 0
 
-def main():
-    if not 3 <= len(sys.argv) <= 4:
-        print('usage:', sys.argv[0], 'oldtree newtree [linkto]')
-        return 2
+eleza main():
+    ikiwa sio 3 <= len(sys.argv) <= 4:
+        andika('usage:', sys.argv[0], 'oldtree newtree [linkto]')
+        rudisha 2
     oldtree, newtree = sys.argv[1], sys.argv[2]
-    if len(sys.argv) > 3:
+    ikiwa len(sys.argv) > 3:
         link = sys.argv[3]
         link_may_fail = 1
-    else:
+    isipokua:
         link = LINK
         link_may_fail = 0
-    if not os.path.isdir(oldtree):
-        print(oldtree + ': not a directory')
-        return 1
-    try:
+    ikiwa sio os.path.isdir(oldtree):
+        andika(oldtree + ': sio a directory')
+        rudisha 1
+    jaribu:
         os.mkdir(newtree, 0o777)
-    except OSError as msg:
-        print(newtree + ': cannot mkdir:', msg)
-        return 1
+    tatizo OSError kama msg:
+        andika(newtree + ': cannot mkdir:', msg)
+        rudisha 1
     linkname = os.path.join(newtree, link)
-    try:
+    jaribu:
         os.symlink(os.path.join(os.pardir, oldtree), linkname)
-    except OSError as msg:
-        if not link_may_fail:
-            print(linkname + ': cannot symlink:', msg)
-            return 1
-        else:
-            print(linkname + ': warning: cannot symlink:', msg)
+    tatizo OSError kama msg:
+        ikiwa sio link_may_fail:
+            andika(linkname + ': cannot symlink:', msg)
+            rudisha 1
+        isipokua:
+            andika(linkname + ': warning: cannot symlink:', msg)
     linknames(oldtree, newtree, link)
-    return 0
+    rudisha 0
 
-def linknames(old, new, link):
-    if debug: print('linknames', (old, new, link))
-    try:
+eleza linknames(old, new, link):
+    ikiwa debug: andika('linknames', (old, new, link))
+    jaribu:
         names = os.listdir(old)
-    except OSError as msg:
-        print(old + ': warning: cannot listdir:', msg)
-        return
-    for name in names:
-        if name not in (os.curdir, os.pardir):
+    tatizo OSError kama msg:
+        andika(old + ': warning: cannot listdir:', msg)
+        rudisha
+    kila name kwenye names:
+        ikiwa name haiko kwenye (os.curdir, os.pardir):
             oldname = os.path.join(old, name)
             linkname = os.path.join(link, name)
             newname = os.path.join(new, name)
-            if debug > 1: print(oldname, newname, linkname)
-            if os.path.isdir(oldname) and \
-               not os.path.islink(oldname):
-                try:
+            ikiwa debug > 1: andika(oldname, newname, linkname)
+            ikiwa os.path.isdir(oldname) na \
+               sio os.path.islink(oldname):
+                jaribu:
                     os.mkdir(newname, 0o777)
                     ok = 1
-                except:
-                    print(newname + \
+                tatizo:
+                    andika(newname + \
                           ': warning: cannot mkdir:', msg)
                     ok = 0
-                if ok:
+                ikiwa ok:
                     linkname = os.path.join(os.pardir,
                                             linkname)
                     linknames(oldname, newname, linkname)
-            else:
+            isipokua:
                 os.symlink(linkname, newname)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     sys.exit(main())

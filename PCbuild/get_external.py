@@ -1,49 +1,49 @@
 #!/usr/bin/env python3
 
-import argparse
-import os
-import pathlib
-import zipfile
-from urllib.request import urlretrieve
+agiza argparse
+agiza os
+agiza pathlib
+agiza zipfile
+kutoka urllib.request agiza urlretrieve
 
 
-def fetch_zip(commit_hash, zip_dir, *, org='python', binary=False, verbose):
-    repo = f'cpython-{"bin" if binary else "source"}-deps'
+eleza fetch_zip(commit_hash, zip_dir, *, org='python', binary=Uongo, verbose):
+    repo = f'cpython-{"bin" ikiwa binary isipokua "source"}-deps'
     url = f'https://github.com/{org}/{repo}/archive/{commit_hash}.zip'
-    reporthook = None
-    if verbose:
+    reporthook = Tupu
+    ikiwa verbose:
         reporthook = print
-    zip_dir.mkdir(parents=True, exist_ok=True)
+    zip_dir.mkdir(parents=Kweli, exist_ok=Kweli)
     filename, headers = urlretrieve(
         url,
         zip_dir / f'{commit_hash}.zip',
         reporthook=reporthook,
     )
-    return filename
+    rudisha filename
 
 
-def extract_zip(externals_dir, zip_path):
-    with zipfile.ZipFile(os.fspath(zip_path)) as zf:
+eleza extract_zip(externals_dir, zip_path):
+    ukijumuisha zipfile.ZipFile(os.fspath(zip_path)) kama zf:
         zf.extractall(os.fspath(externals_dir))
-        return externals_dir / zf.namelist()[0].split('/')[0]
+        rudisha externals_dir / zf.namelist()[0].split('/')[0]
 
 
-def parse_args():
+eleza parse_args():
     p = argparse.ArgumentParser()
     p.add_argument('-v', '--verbose', action='store_true')
     p.add_argument('-b', '--binary', action='store_true',
-                   help='Is the dependency in the binary repo?')
+                   help='Is the dependency kwenye the binary repo?')
     p.add_argument('-O', '--organization',
                    help='Organization owning the deps repos', default='python')
     p.add_argument('-e', '--externals-dir', type=pathlib.Path,
-                   help='Directory in which to store dependencies',
+                   help='Directory kwenye which to store dependencies',
                    default=pathlib.Path(__file__).parent.parent / 'externals')
     p.add_argument('tag',
                    help='tag of the dependency')
-    return p.parse_args()
+    rudisha p.parse_args()
 
 
-def main():
+eleza main():
     args = parse_args()
     zip_path = fetch_zip(
         args.tag,
@@ -56,5 +56,5 @@ def main():
     extract_zip(args.externals_dir, zip_path).replace(final_name)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

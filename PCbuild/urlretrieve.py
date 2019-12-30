@@ -1,39 +1,39 @@
-# Simple Python script to download a file. Used as a fallback
+# Simple Python script to download a file. Used kama a fallback
 # when other more reliable methods fail.
 #
-from __future__ import print_function
-import sys
+kutoka __future__ agiza print_function
+agiza sys
 
-try:
-    from requests import get
-except ImportError:
-    try:
-        from urllib.request import urlretrieve
+jaribu:
+    kutoka requests agiza get
+tatizo ImportError:
+    jaribu:
+        kutoka urllib.request agiza urlretrieve
         USING = "urllib.request.urlretrieve"
-    except ImportError:
-        try:
-            from urllib import urlretrieve
+    tatizo ImportError:
+        jaribu:
+            kutoka urllib agiza urlretrieve
             USING = "urllib.retrieve"
-        except ImportError:
-            print("Python at", sys.executable, "is not suitable",
-                  "for downloading files.", file=sys.stderr)
+        tatizo ImportError:
+            andika("Python at", sys.executable, "is sio suitable",
+                  "kila downloading files.", file=sys.stderr)
             sys.exit(2)
-else:
+isipokua:
     USING = "requests.get"
 
-    def urlretrieve(url, filename):
-        r = get(url, stream=True)
+    eleza urlretrieve(url, filename):
+        r = get(url, stream=Kweli)
         r.raise_for_status()
-        with open(filename, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=1024):
+        ukijumuisha open(filename, 'wb') kama f:
+            kila chunk kwenye r.iter_content(chunk_size=1024):
                 f.write(chunk)
-        return filename
+        rudisha filename
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: urlretrieve.py [url] [filename]", file=sys.stderr)
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) != 3:
+        andika("Usage: urlretrieve.py [url] [filename]", file=sys.stderr)
         sys.exit(1)
     URL = sys.argv[1]
     FILENAME = sys.argv[2]
-    print("Downloading from", URL, "to", FILENAME, "using", USING)
+    andika("Downloading from", URL, "to", FILENAME, "using", USING)
     urlretrieve(URL, FILENAME)

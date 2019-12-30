@@ -12,7 +12,7 @@ con.execute("select load_extension('./fts3.so')")
 # con.load_extension("./fts3.so")
 
 # disable extension loading again
-con.enable_load_extension(False)
+con.enable_load_extension(Uongo)
 
 # example kutoka SQLite wiki
 con.execute("create virtual table recipe using fts3(name, ingredients)")
@@ -22,7 +22,7 @@ con.executescript("""
     insert into recipe (name, ingredients) values ('broccoli pie', 'broccoli cheese onions flour');
     insert into recipe (name, ingredients) values ('pumpkin pie', 'pumpkin sugar flour butter');
     """)
-for row in con.execute("select rowid, name, ingredients kutoka recipe where name match 'pie'"):
-    print(row)
+kila row kwenye con.execute("select rowid, name, ingredients kutoka recipe where name match 'pie'"):
+    andika(row)
 
 con.close()

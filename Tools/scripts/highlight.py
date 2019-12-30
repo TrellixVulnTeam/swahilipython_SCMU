@@ -3,74 +3,74 @@
 
 __author__ = 'Raymond Hettinger'
 
-import builtins
-import functools
-import html as html_module
-import keyword
-import re
-import tokenize
+agiza builtins
+agiza functools
+agiza html kama html_module
+agiza keyword
+agiza re
+agiza tokenize
 
 #### Analyze Python Source #################################
 
-def is_builtin(s):
-    'Return True if s is the name of a builtin'
-    return hasattr(builtins, s)
+eleza is_builtin(s):
+    'Return Kweli ikiwa s ni the name of a builtin'
+    rudisha hasattr(builtins, s)
 
-def combine_range(lines, start, end):
-    'Join content from a range of lines between start and end'
+eleza combine_range(lines, start, end):
+    'Join content kutoka a range of lines between start na end'
     (srow, scol), (erow, ecol) = start, end
-    if srow == erow:
-        return lines[srow-1][scol:ecol], end
+    ikiwa srow == erow:
+        rudisha lines[srow-1][scol:ecol], end
     rows = [lines[srow-1][scol:]] + lines[srow: erow-1] + [lines[erow-1][:ecol]]
-    return ''.join(rows), end
+    rudisha ''.join(rows), end
 
-def analyze_python(source):
-    '''Generate and classify chunks of Python for syntax highlighting.
-       Yields tuples in the form: (category, categorized_text).
+eleza analyze_python(source):
+    '''Generate na classify chunks of Python kila syntax highlighting.
+       Yields tuples kwenye the form: (category, categorized_text).
     '''
-    lines = source.splitlines(True)
+    lines = source.splitlines(Kweli)
     lines.append('')
     readline = functools.partial(next, iter(lines), '')
     kind = tok_str = ''
     tok_type = tokenize.COMMENT
     written = (1, 0)
-    for tok in tokenize.generate_tokens(readline):
+    kila tok kwenye tokenize.generate_tokens(readline):
         prev_tok_type, prev_tok_str = tok_type, tok_str
         tok_type, tok_str, (srow, scol), (erow, ecol), logical_lineno = tok
         kind = ''
-        if tok_type == tokenize.COMMENT:
+        ikiwa tok_type == tokenize.COMMENT:
             kind = 'comment'
-        elif tok_type == tokenize.OP and tok_str[:1] not in '{}[](),.:;@':
+        lasivyo tok_type == tokenize.OP na tok_str[:1] haiko kwenye '{}[](),.:;@':
             kind = 'operator'
-        elif tok_type == tokenize.STRING:
+        lasivyo tok_type == tokenize.STRING:
             kind = 'string'
-            if prev_tok_type == tokenize.INDENT or scol==0:
+            ikiwa prev_tok_type == tokenize.INDENT ama scol==0:
                 kind = 'docstring'
-        elif tok_type == tokenize.NAME:
-            if tok_str in ('def', 'class', 'import', 'from'):
+        lasivyo tok_type == tokenize.NAME:
+            ikiwa tok_str kwenye ('def', 'class', 'import', 'from'):
                 kind = 'definition'
-            elif prev_tok_str in ('def', 'class'):
+            lasivyo prev_tok_str kwenye ('def', 'class'):
                 kind = 'defname'
-            elif keyword.iskeyword(tok_str):
+            lasivyo keyword.iskeyword(tok_str):
                 kind = 'keyword'
-            elif is_builtin(tok_str) and prev_tok_str != '.':
+            lasivyo is_builtin(tok_str) na prev_tok_str != '.':
                 kind = 'builtin'
-        if kind:
+        ikiwa kind:
             text, written = combine_range(lines, written, (srow, scol))
-            yield '', text
+            tuma '', text
             text, written = tok_str, (erow, ecol)
-            yield kind, text
+            tuma kind, text
     line_upto_token, written = combine_range(lines, written, (erow, ecol))
-    yield '', line_upto_token
+    tuma '', line_upto_token
 
 #### Raw Output  ###########################################
 
-def raw_highlight(classified_text):
+eleza raw_highlight(classified_text):
     'Straight text display of text classifications'
     result = []
-    for kind, text in classified_text:
-        result.append('%15s:  %r\n' % (kind or 'plain', text))
-    return ''.join(result)
+    kila kind, text kwenye classified_text:
+        result.append('%15s:  %r\n' % (kind ama 'plain', text))
+    rudisha ''.join(result)
 
 #### ANSI Output ###########################################
 
@@ -85,28 +85,28 @@ default_ansi = {
     'operator': ('\033[0;33m', '\033[0m'),
 }
 
-def ansi_highlight(classified_text, colors=default_ansi):
+eleza ansi_highlight(classified_text, colors=default_ansi):
     'Add syntax highlighting to source code using ANSI escape sequences'
     # http://en.wikipedia.org/wiki/ANSI_escape_code
     result = []
-    for kind, text in classified_text:
+    kila kind, text kwenye classified_text:
         opener, closer = colors.get(kind, ('', ''))
         result += [opener, text, closer]
-    return ''.join(result)
+    rudisha ''.join(result)
 
 #### HTML Output ###########################################
 
-def html_highlight(classified_text,opener='<pre class="python">\n', closer='</pre>\n'):
+eleza html_highlight(classified_text,opener='<pre class="python">\n', closer='</pre>\n'):
     'Convert classified text to an HTML fragment'
     result = [opener]
-    for kind, text in classified_text:
-        if kind:
+    kila kind, text kwenye classified_text:
+        ikiwa kind:
             result.append('<span class="%s">' % kind)
         result.append(html_module.escape(text))
-        if kind:
+        ikiwa kind:
             result.append('</span>')
     result.append(closer)
-    return ''.join(result)
+    rudisha ''.join(result)
 
 default_css = {
     '.comment': '{color: crimson;}',
@@ -136,13 +136,13 @@ default_html = '''\
 </html>
 '''
 
-def build_html_page(classified_text, title='python',
+eleza build_html_page(classified_text, title='python',
                     css=default_css, html=default_html):
-    'Create a complete HTML page with colorized source code'
-    css_str = '\n'.join(['%s %s' % item for item in css.items()])
+    'Create a complete HTML page ukijumuisha colorized source code'
+    css_str = '\n'.join(['%s %s' % item kila item kwenye css.items()])
     result = html_highlight(classified_text)
     title = html_module.escape(title)
-    return html.format(title=title, css=css_str, body=result)
+    rudisha html.format(title=title, css=css_str, body=result)
 
 #### LaTeX Output ##########################################
 
@@ -173,32 +173,32 @@ default_latex_document = r'''
 \end{document}
 '''
 
-def alltt_escape(s):
-    'Replace backslash and braces with their escaped equivalents'
+eleza alltt_escape(s):
+    'Replace backslash na braces ukijumuisha their escaped equivalents'
     xlat = {'{': r'\{', '}': r'\}', '\\': r'\textbackslash{}'}
-    return re.sub(r'[\\{}]', lambda mo: xlat[mo.group()], s)
+    rudisha re.sub(r'[\\{}]', lambda mo: xlat[mo.group()], s)
 
-def latex_highlight(classified_text, title = 'python',
+eleza latex_highlight(classified_text, title = 'python',
                     commands = default_latex_commands,
                     document = default_latex_document):
-    'Create a complete LaTeX document with colorized source code'
-    macros = '\n'.join(r'\newcommand{\py%s}[1]{%s}' % c for c in commands.items())
+    'Create a complete LaTeX document ukijumuisha colorized source code'
+    macros = '\n'.join(r'\newcommand{\py%s}[1]{%s}' % c kila c kwenye commands.items())
     result = []
-    for kind, text in classified_text:
-        if kind:
+    kila kind, text kwenye classified_text:
+        ikiwa kind:
             result.append(r'\py%s{' % kind)
         result.append(alltt_escape(text))
-        if kind:
+        ikiwa kind:
             result.append('}')
-    return default_latex_document % dict(title=title, macros=macros, body=''.join(result))
+    rudisha default_latex_document % dict(title=title, macros=macros, body=''.join(result))
 
 
-if __name__ == '__main__':
-    import argparse
-    import os.path
-    import sys
-    import textwrap
-    import webbrowser
+ikiwa __name__ == '__main__':
+    agiza argparse
+    agiza os.path
+    agiza sys
+    agiza textwrap
+    agiza webbrowser
 
     parser = argparse.ArgumentParser(
             description = 'Add syntax highlighting to Python source code',
@@ -206,13 +206,13 @@ if __name__ == '__main__':
             epilog = textwrap.dedent('''
                 examples:
 
-                  # Show syntax highlighted code in the terminal window
+                  # Show syntax highlighted code kwenye the terminal window
                   $ ./highlight.py myfile.py
 
-                  # Colorize myfile.py and display in a browser
+                  # Colorize myfile.py na display kwenye a browser
                   $ ./highlight.py -b myfile.py
 
-                  # Create an HTML section to embed in an existing webpage
+                  # Create an HTML section to embed kwenye an existing webpage
                   ./highlight.py -s myfile.py
 
                   # Create a complete HTML file
@@ -236,30 +236,30 @@ if __name__ == '__main__':
             help = 'show an HTML section rather than a complete webpage')
     args = parser.parse_args()
 
-    if args.section and (args.browser or args.complete):
-        parser.error('The -s/--section option is incompatible with '
-                     'the -b/--browser or -c/--complete options')
+    ikiwa args.section na (args.browser ama args.complete):
+        parser.error('The -s/--section option ni incompatible ukijumuisha '
+                     'the -b/--browser ama -c/--complete options')
 
     sourcefile = args.sourcefile
-    with open(sourcefile) as f:
+    ukijumuisha open(sourcefile) kama f:
         source = f.read()
     classified_text = analyze_python(source)
 
-    if args.raw:
+    ikiwa args.raw:
         encoded = raw_highlight(classified_text)
-    elif args.complete or args.browser:
+    lasivyo args.complete ama args.browser:
         encoded = build_html_page(classified_text, title=sourcefile)
-    elif args.section:
+    lasivyo args.section:
         encoded = html_highlight(classified_text)
-    elif args.latex:
+    lasivyo args.latex:
         encoded = latex_highlight(classified_text, title=sourcefile)
-    else:
+    isipokua:
         encoded = ansi_highlight(classified_text)
 
-    if args.browser:
+    ikiwa args.browser:
         htmlfile = os.path.splitext(os.path.basename(sourcefile))[0] + '.html'
-        with open(htmlfile, 'w') as f:
+        ukijumuisha open(htmlfile, 'w') kama f:
             f.write(encoded)
         webbrowser.open('file://' + os.path.abspath(htmlfile))
-    else:
+    isipokua:
         sys.stdout.write(encoded)

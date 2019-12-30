@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This script converts a C file to use the PEP 384 type definition API
 # Usage: abitype.py < old_code > new_code
-import re, sys
+agiza re, sys
 
 ###### Replacement of PyTypeObject static instances ##############
 
@@ -11,76 +11,76 @@ import re, sys
 # I: ident
 # W: whitespace
 # =, {, }, ; : themselves
-def classify():
+eleza classify():
     res = []
-    for t,v in tokens:
-        if t == 'other' and v in "={};":
+    kila t,v kwenye tokens:
+        ikiwa t == 'other' na v kwenye "={};":
             res.append(v)
-        elif t == 'ident':
-            if v == 'PyTypeObject':
+        lasivyo t == 'ident':
+            ikiwa v == 'PyTypeObject':
                 res.append('T')
-            elif v == 'static':
+            lasivyo v == 'static':
                 res.append('S')
-            else:
+            isipokua:
                 res.append('I')
-        elif t == 'ws':
+        lasivyo t == 'ws':
             res.append('W')
-        else:
+        isipokua:
             res.append('.')
-    return ''.join(res)
+    rudisha ''.join(res)
 
-# Obtain a list of fields of a PyTypeObject, in declaration order,
+# Obtain a list of fields of a PyTypeObject, kwenye declaration order,
 # skipping ob_base
-# All comments are dropped from the variable (which are typically
-# just the slot names, anyway), and information is discarded whether
+# All comments are dropped kutoka the variable (which are typically
+# just the slot names, anyway), na information ni discarded whether
 # the original type was static.
-def get_fields(start, real_end):
+eleza get_fields(start, real_end):
     pos = start
     # static?
-    if tokens[pos][1] == 'static':
+    ikiwa tokens[pos][1] == 'static':
         pos += 2
     # PyTypeObject
     pos += 2
     # name
     name = tokens[pos][1]
     pos += 1
-    while tokens[pos][1] != '{':
+    wakati tokens[pos][1] != '{':
         pos += 1
     pos += 1
     # PyVarObject_HEAD_INIT
-    while tokens[pos][0] in ('ws', 'comment'):
+    wakati tokens[pos][0] kwenye ('ws', 'comment'):
         pos += 1
-    if tokens[pos][1] != 'PyVarObject_HEAD_INIT':
-        raise Exception('%s has no PyVarObject_HEAD_INIT' % name)
-    while tokens[pos][1] != ')':
+    ikiwa tokens[pos][1] != 'PyVarObject_HEAD_INIT':
+        ashiria Exception('%s has no PyVarObject_HEAD_INIT' % name)
+    wakati tokens[pos][1] != ')':
         pos += 1
     pos += 1
     # field definitions: various tokens, comma-separated
     fields = []
-    while True:
-        while tokens[pos][0] in ('ws', 'comment'):
+    wakati Kweli:
+        wakati tokens[pos][0] kwenye ('ws', 'comment'):
             pos += 1
         end = pos
-        while tokens[end][1] not in ',}':
-            if tokens[end][1] == '(':
+        wakati tokens[end][1] haiko kwenye ',}':
+            ikiwa tokens[end][1] == '(':
                 nesting = 1
-                while nesting:
+                wakati nesting:
                     end += 1
-                    if tokens[end][1] == '(': nesting+=1
-                    if tokens[end][1] == ')': nesting-=1
+                    ikiwa tokens[end][1] == '(': nesting+=1
+                    ikiwa tokens[end][1] == ')': nesting-=1
             end += 1
         assert end < real_end
-        # join field, excluding separator and trailing ws
+        # join field, excluding separator na trailing ws
         end1 = end-1
-        while tokens[end1][0] in ('ws', 'comment'):
+        wakati tokens[end1][0] kwenye ('ws', 'comment'):
             end1 -= 1
-        fields.append(''.join(t[1] for t in tokens[pos:end1+1]))
-        if tokens[end][1] == '}':
-            break
+        fields.append(''.join(t[1] kila t kwenye tokens[pos:end1+1]))
+        ikiwa tokens[end][1] == '}':
+            koma
         pos = end+1
-    return name, fields
+    rudisha name, fields
 
-# List of type slots as of Python 3.2, omitting ob_base
+# List of type slots kama of Python 3.2, omitting ob_base
 typeslots = [
     'tp_name',
     'tp_basicsize',
@@ -131,18 +131,18 @@ typeslots = [
 ]
 
 # Generate a PyType_Spec definition
-def make_slots(name, fields):
+eleza make_slots(name, fields):
     res = []
     res.append('static PyType_Slot %s_slots[] = {' % name)
-    # defaults for spec
+    # defaults kila spec
     spec = { 'tp_itemsize':'0' }
-    for i, val in enumerate(fields):
-        if val.endswith('0'):
-            continue
-        if typeslots[i] in ('tp_name', 'tp_doc', 'tp_basicsize',
+    kila i, val kwenye enumerate(fields):
+        ikiwa val.endswith('0'):
+            endelea
+        ikiwa typeslots[i] kwenye ('tp_name', 'tp_doc', 'tp_basicsize',
                          'tp_itemsize', 'tp_flags'):
             spec[typeslots[i]] = val
-            continue
+            endelea
         res.append('    {Py_%s, %s},' % (typeslots[i], val))
     res.append('};')
     res.append('static PyType_Spec %s_spec = {' % name)
@@ -152,10 +152,10 @@ def make_slots(name, fields):
     res.append('    %s,' % spec['tp_flags'])
     res.append('    %s_slots,' % name)
     res.append('};\n')
-    return '\n'.join(res)
+    rudisha '\n'.join(res)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
     ############ Simplistic C scanner ##################################
     tokenizer = re.compile(
@@ -169,34 +169,34 @@ if __name__ == '__main__':
     tokens = []
     source = sys.stdin.read()
     pos = 0
-    while pos != len(source):
+    wakati pos != len(source):
         m = tokenizer.match(source, pos)
         tokens.append([m.lastgroup, m.group()])
         pos += len(tokens[-1][1])
-        if tokens[-1][0] == 'preproc':
+        ikiwa tokens[-1][0] == 'preproc':
             # continuation lines are considered
-            # only in preprocess statements
-            while tokens[-1][1].endswith('\\\n'):
+            # only kwenye preprocess statements
+            wakati tokens[-1][1].endswith('\\\n'):
                 nl = source.find('\n', pos)
-                if nl == -1:
+                ikiwa nl == -1:
                     line = source[pos:]
-                else:
+                isipokua:
                     line = source[pos:nl+1]
                 tokens[-1][1] += line
                 pos += len(line)
 
     # Main loop: replace all static PyTypeObjects until
     # there are none left.
-    while 1:
+    wakati 1:
         c = classify()
         m = re.search('(SW)?TWIW?=W?{.*?};', c)
-        if not m:
-            break
+        ikiwa sio m:
+            koma
         start = m.start()
         end = m.end()
         name, fields = get_fields(start, end)
         tokens[start:end] = [('',make_slots(name, fields))]
 
     # Output result to stdout
-    for t, v in tokens:
+    kila t, v kwenye tokens:
         sys.stdout.write(v)

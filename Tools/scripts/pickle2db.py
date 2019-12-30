@@ -3,145 +3,145 @@
 """
 Synopsis: %(prog)s [-h|-b|-g|-r|-a|-d] [ picklefile ] dbfile
 
-Read the given picklefile as a series of key/value pairs and write to a new
+Read the given picklefile kama a series of key/value pairs na write to a new
 database.  If the database already exists, any contents are deleted.  The
 optional flags indicate the type of the output database:
 
     -a - open using dbm (open any supported format)
-    -b - open as bsddb btree file
-    -d - open as dbm.ndbm file
-    -g - open as dbm.gnu file
-    -h - open as bsddb hash file
-    -r - open as bsddb recno file
+    -b - open kama bsddb btree file
+    -d - open kama dbm.ndbm file
+    -g - open kama dbm.gnu file
+    -h - open kama bsddb hash file
+    -r - open kama bsddb recno file
 
-The default is hash.  If a pickle file is named it is opened for read
-access.  If no pickle file is named, the pickle input is read from standard
+The default ni hash.  If a pickle file ni named it ni opened kila read
+access.  If no pickle file ni named, the pickle input ni read kutoka standard
 input.
 
 Note that recno databases can only contain integer keys, so you can't dump a
-hash or btree database using db2pickle.py and reconstitute it to a recno
-database with %(prog)s unless your keys are integers.
+hash ama btree database using db2pickle.py na reconstitute it to a recno
+database ukijumuisha %(prog)s unless your keys are integers.
 
 """
 
-import getopt
-try:
-    import bsddb
-except ImportError:
-    bsddb = None
-try:
-    import dbm.ndbm as dbm
-except ImportError:
-    dbm = None
-try:
-    import dbm.gnu as gdbm
-except ImportError:
-    gdbm = None
-try:
-    import dbm.ndbm as anydbm
-except ImportError:
-    anydbm = None
-import sys
-try:
-    import pickle as pickle
-except ImportError:
-    import pickle
+agiza getopt
+jaribu:
+    agiza bsddb
+tatizo ImportError:
+    bsddb = Tupu
+jaribu:
+    agiza dbm.ndbm kama dbm
+tatizo ImportError:
+    dbm = Tupu
+jaribu:
+    agiza dbm.gnu kama gdbm
+tatizo ImportError:
+    gdbm = Tupu
+jaribu:
+    agiza dbm.ndbm kama anydbm
+tatizo ImportError:
+    anydbm = Tupu
+agiza sys
+jaribu:
+    agiza pickle kama pickle
+tatizo ImportError:
+    agiza pickle
 
 prog = sys.argv[0]
 
-def usage():
+eleza usage():
     sys.stderr.write(__doc__ % globals())
 
-def main(args):
-    try:
+eleza main(args):
+    jaribu:
         opts, args = getopt.getopt(args, "hbrdag",
                                    ["hash", "btree", "recno", "dbm", "anydbm",
                                     "gdbm"])
-    except getopt.error:
+    tatizo getopt.error:
         usage()
-        return 1
+        rudisha 1
 
-    if len(args) == 0 or len(args) > 2:
+    ikiwa len(args) == 0 ama len(args) > 2:
         usage()
-        return 1
-    elif len(args) == 1:
+        rudisha 1
+    lasivyo len(args) == 1:
         pfile = sys.stdin
         dbfile = args[0]
-    else:
-        try:
+    isipokua:
+        jaribu:
             pfile = open(args[0], 'rb')
-        except IOError:
+        tatizo IOError:
             sys.stderr.write("Unable to open %s\n" % args[0])
-            return 1
+            rudisha 1
         dbfile = args[1]
 
-    dbopen = None
-    for opt, arg in opts:
-        if opt in ("-h", "--hash"):
-            try:
+    dbopen = Tupu
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ("-h", "--hash"):
+            jaribu:
                 dbopen = bsddb.hashopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-b", "--btree"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-b", "--btree"):
+            jaribu:
                 dbopen = bsddb.btopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-r", "--recno"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-r", "--recno"):
+            jaribu:
                 dbopen = bsddb.rnopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-a", "--anydbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-a", "--anydbm"):
+            jaribu:
                 dbopen = anydbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm module unavailable.\n")
-                return 1
-        elif opt in ("-g", "--gdbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-g", "--gdbm"):
+            jaribu:
                 dbopen = gdbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm.gnu module unavailable.\n")
-                return 1
-        elif opt in ("-d", "--dbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-d", "--dbm"):
+            jaribu:
                 dbopen = dbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm.ndbm module unavailable.\n")
-                return 1
-    if dbopen is None:
-        if bsddb is None:
+                rudisha 1
+    ikiwa dbopen ni Tupu:
+        ikiwa bsddb ni Tupu:
             sys.stderr.write("bsddb module unavailable - ")
             sys.stderr.write("must specify dbtype.\n")
-            return 1
-        else:
+            rudisha 1
+        isipokua:
             dbopen = bsddb.hashopen
 
-    try:
+    jaribu:
         db = dbopen(dbfile, 'c')
-    except bsddb.error:
+    tatizo bsddb.error:
         sys.stderr.write("Unable to open %s.  " % dbfile)
-        sys.stderr.write("Check for format or version mismatch.\n")
-        return 1
-    else:
-        for k in list(db.keys()):
-            del db[k]
+        sys.stderr.write("Check kila format ama version mismatch.\n")
+        rudisha 1
+    isipokua:
+        kila k kwenye list(db.keys()):
+            toa db[k]
 
-    while 1:
-        try:
+    wakati 1:
+        jaribu:
             (key, val) = pickle.load(pfile)
-        except EOFError:
-            break
+        tatizo EOFError:
+            koma
         db[key] = val
 
     db.close()
     pfile.close()
 
-    return 0
+    rudisha 0
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

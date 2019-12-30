@@ -7,47 +7,47 @@
     Licensed to PSF under a Contributor Agreement.
 
 """
-import sys
+agiza sys
 
-def compare_codecs(encoding1, encoding2):
+eleza compare_codecs(encoding1, encoding2):
 
-    print('Comparing encoding/decoding of   %r and   %r' % (encoding1, encoding2))
+    andika('Comparing encoding/decoding of   %r na   %r' % (encoding1, encoding2))
     mismatch = 0
     # Check encoding
-    for i in range(sys.maxunicode+1):
+    kila i kwenye range(sys.maxunicode+1):
         u = chr(i)
-        try:
+        jaribu:
             c1 = u.encode(encoding1)
-        except UnicodeError as reason:
+        tatizo UnicodeError kama reason:
             c1 = '<undefined>'
-        try:
+        jaribu:
             c2 = u.encode(encoding2)
-        except UnicodeError as reason:
+        tatizo UnicodeError kama reason:
             c2 = '<undefined>'
-        if c1 != c2:
-            print(' * encoding mismatch for 0x%04X: %-14r != %r' % \
+        ikiwa c1 != c2:
+            andika(' * encoding mismatch kila 0x%04X: %-14r != %r' % \
                   (i, c1, c2))
             mismatch += 1
     # Check decoding
-    for i in range(256):
+    kila i kwenye range(256):
         c = bytes([i])
-        try:
+        jaribu:
             u1 = c.decode(encoding1)
-        except UnicodeError:
+        tatizo UnicodeError:
             u1 = '<undefined>'
-        try:
+        jaribu:
             u2 = c.decode(encoding2)
-        except UnicodeError:
+        tatizo UnicodeError:
             u2 = '<undefined>'
-        if u1 != u2:
-            print(' * decoding mismatch for 0x%04X: %-14r != %r' % \
+        ikiwa u1 != u2:
+            andika(' * decoding mismatch kila 0x%04X: %-14r != %r' % \
                   (i, u1, u2))
             mismatch += 1
-    if mismatch:
-        print()
-        print('Found %i mismatches' % mismatch)
-    else:
-        print('-> Codecs are identical.')
+    ikiwa mismatch:
+        andika()
+        andika('Found %i mismatches' % mismatch)
+    isipokua:
+        andika('-> Codecs are identical.')
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     compare_codecs(sys.argv[1], sys.argv[2])

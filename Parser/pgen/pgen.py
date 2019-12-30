@@ -1,21 +1,21 @@
-import collections
-import tokenize  # from stdlib
+agiza collections
+agiza tokenize  # kutoka stdlib
 
-from . import grammar, token
+kutoka . agiza grammar, token
 
 
-class ParserGenerator(object):
+kundi ParserGenerator(object):
 
-    def __init__(self, grammar_file, token_file, stream=None, verbose=False):
-        close_stream = None
-        if stream is None:
+    eleza __init__(self, grammar_file, token_file, stream=Tupu, verbose=Uongo):
+        close_stream = Tupu
+        ikiwa stream ni Tupu:
             stream = open(grammar_file)
             close_stream = stream.close
-        with open(token_file) as tok_file:
+        ukijumuisha open(token_file) kama tok_file:
             token_lines = tok_file.readlines()
         self.tokens = dict(token.generate_tokens(token_lines))
         self.opmap = dict(token.generate_opmap(token_lines))
-        # Manually add <> so it does not collide with !=
+        # Manually add <> so it does sio collide ukijumuisha !=
         self.opmap['<>'] = "NOTEQUAL"
         self.verbose = verbose
         self.filename = grammar_file
@@ -23,384 +23,384 @@ class ParserGenerator(object):
         self.generator = tokenize.generate_tokens(stream.readline)
         self.gettoken() # Initialize lookahead
         self.dfas, self.startsymbol = self.parse()
-        if close_stream is not None:
+        ikiwa close_stream ni sio Tupu:
             close_stream()
-        self.first = {} # map from symbol name to set of tokens
+        self.first = {} # map kutoka symbol name to set of tokens
         self.addfirstsets()
 
-    def make_grammar(self):
+    eleza make_grammar(self):
         c = grammar.Grammar()
         names = list(self.dfas.keys())
         names.remove(self.startsymbol)
         names.insert(0, self.startsymbol)
-        for name in names:
+        kila name kwenye names:
             i = 256 + len(c.symbol2number)
             c.symbol2number[name] = i
             c.number2symbol[i] = name
-        for name in names:
+        kila name kwenye names:
             self.make_label(c, name)
             dfa = self.dfas[name]
             states = []
-            for state in dfa:
+            kila state kwenye dfa:
                 arcs = []
-                for label, next in sorted(state.arcs.items()):
+                kila label, next kwenye sorted(state.arcs.items()):
                     arcs.append((self.make_label(c, label), dfa.index(next)))
-                if state.isfinal:
+                ikiwa state.isfinal:
                     arcs.append((0, dfa.index(state)))
                 states.append(arcs)
             c.states.append(states)
             c.dfas[c.symbol2number[name]] = (states, self.make_first(c, name))
         c.start = c.symbol2number[self.startsymbol]
 
-        if self.verbose:
-            print("")
-            print("Grammar summary")
-            print("===============")
+        ikiwa self.verbose:
+            andika("")
+            andika("Grammar summary")
+            andika("===============")
 
-            print("- {n_labels} labels".format(n_labels=len(c.labels)))
-            print("- {n_dfas} dfas".format(n_dfas=len(c.dfas)))
-            print("- {n_tokens} tokens".format(n_tokens=len(c.tokens)))
-            print("- {n_keywords} keywords".format(n_keywords=len(c.keywords)))
-            print(
+            andika("- {n_labels} labels".format(n_labels=len(c.labels)))
+            andika("- {n_dfas} dfas".format(n_dfas=len(c.dfas)))
+            andika("- {n_tokens} tokens".format(n_tokens=len(c.tokens)))
+            andika("- {n_keywords} keywords".format(n_keywords=len(c.keywords)))
+            andika(
                 "- Start symbol: {start_symbol}".format(
                     start_symbol=c.number2symbol[c.start]
                 )
             )
-        return c
+        rudisha c
 
-    def make_first(self, c, name):
+    eleza make_first(self, c, name):
         rawfirst = self.first[name]
         first = set()
-        for label in sorted(rawfirst):
+        kila label kwenye sorted(rawfirst):
             ilabel = self.make_label(c, label)
-            ##assert ilabel not in first # XXX failed on <> ... !=
+            ##assert ilabel haiko kwenye first # XXX failed on <> ... !=
             first.add(ilabel)
-        return first
+        rudisha first
 
-    def make_label(self, c, label):
-        # XXX Maybe this should be a method on a subclass of converter?
+    eleza make_label(self, c, label):
+        # XXX Maybe this should be a method on a subkundi of converter?
         ilabel = len(c.labels)
-        if label[0].isalpha():
-            # Either a symbol name or a named token
-            if label in c.symbol2number:
+        ikiwa label[0].isalpha():
+            # Either a symbol name ama a named token
+            ikiwa label kwenye c.symbol2number:
                 # A symbol name (a non-terminal)
-                if label in c.symbol2label:
-                    return c.symbol2label[label]
-                else:
-                    c.labels.append((c.symbol2number[label], None))
+                ikiwa label kwenye c.symbol2label:
+                    rudisha c.symbol2label[label]
+                isipokua:
+                    c.labels.append((c.symbol2number[label], Tupu))
                     c.symbol2label[label] = ilabel
-                    return ilabel
-            else:
+                    rudisha ilabel
+            isipokua:
                 # A named token (NAME, NUMBER, STRING)
-                itoken = self.tokens.get(label, None)
+                itoken = self.tokens.get(label, Tupu)
                 assert isinstance(itoken, int), label
-                assert itoken in self.tokens.values(), label
-                if itoken in c.tokens:
-                    return c.tokens[itoken]
-                else:
-                    c.labels.append((itoken, None))
+                assert itoken kwenye self.tokens.values(), label
+                ikiwa itoken kwenye c.tokens:
+                    rudisha c.tokens[itoken]
+                isipokua:
+                    c.labels.append((itoken, Tupu))
                     c.tokens[itoken] = ilabel
-                    return ilabel
-        else:
-            # Either a keyword or an operator
-            assert label[0] in ('"', "'"), label
+                    rudisha ilabel
+        isipokua:
+            # Either a keyword ama an operator
+            assert label[0] kwenye ('"', "'"), label
             value = eval(label)
-            if value[0].isalpha():
+            ikiwa value[0].isalpha():
                 # A keyword
-                if value in c.keywords:
-                    return c.keywords[value]
-                else:
+                ikiwa value kwenye c.keywords:
+                    rudisha c.keywords[value]
+                isipokua:
                     c.labels.append((self.tokens["NAME"], value))
                     c.keywords[value] = ilabel
-                    return ilabel
-            else:
+                    rudisha ilabel
+            isipokua:
                 # An operator (any non-numeric token)
-                tok_name = self.opmap[value] # Fails if unknown token
+                tok_name = self.opmap[value] # Fails ikiwa unknown token
                 itoken = self.tokens[tok_name]
-                if itoken in c.tokens:
-                    return c.tokens[itoken]
-                else:
-                    c.labels.append((itoken, None))
+                ikiwa itoken kwenye c.tokens:
+                    rudisha c.tokens[itoken]
+                isipokua:
+                    c.labels.append((itoken, Tupu))
                     c.tokens[itoken] = ilabel
-                    return ilabel
+                    rudisha ilabel
 
-    def addfirstsets(self):
+    eleza addfirstsets(self):
         names = list(self.dfas.keys())
-        for name in names:
-            if name not in self.first:
+        kila name kwenye names:
+            ikiwa name haiko kwenye self.first:
                 self.calcfirst(name)
 
-            if self.verbose:
-                print("First set for {dfa_name}".format(dfa_name=name))
-                for item in self.first[name]:
-                    print("    - {terminal}".format(terminal=item))
+            ikiwa self.verbose:
+                andika("First set kila {dfa_name}".format(dfa_name=name))
+                kila item kwenye self.first[name]:
+                    andika("    - {terminal}".format(terminal=item))
 
-    def calcfirst(self, name):
+    eleza calcfirst(self, name):
         dfa = self.dfas[name]
-        self.first[name] = None # dummy to detect left recursion
+        self.first[name] = Tupu # dummy to detect left recursion
         state = dfa[0]
         totalset = set()
         overlapcheck = {}
-        for label, next in state.arcs.items():
-            if label in self.dfas:
-                if label in self.first:
+        kila label, next kwenye state.arcs.items():
+            ikiwa label kwenye self.dfas:
+                ikiwa label kwenye self.first:
                     fset = self.first[label]
-                    if fset is None:
-                        raise ValueError("recursion for rule %r" % name)
-                else:
+                    ikiwa fset ni Tupu:
+                        ashiria ValueError("recursion kila rule %r" % name)
+                isipokua:
                     self.calcfirst(label)
                     fset = self.first[label]
                 totalset.update(fset)
                 overlapcheck[label] = fset
-            else:
+            isipokua:
                 totalset.add(label)
                 overlapcheck[label] = {label}
         inverse = {}
-        for label, itsfirst in overlapcheck.items():
-            for symbol in itsfirst:
-                if symbol in inverse:
-                    raise ValueError("rule %s is ambiguous; %s is in the"
-                                     " first sets of %s as well as %s" %
+        kila label, itsfirst kwenye overlapcheck.items():
+            kila symbol kwenye itsfirst:
+                ikiwa symbol kwenye inverse:
+                    ashiria ValueError("rule %s ni ambiguous; %s ni kwenye the"
+                                     " first sets of %s kama well kama %s" %
                                      (name, symbol, label, inverse[symbol]))
                 inverse[symbol] = label
         self.first[name] = totalset
 
-    def parse(self):
+    eleza parse(self):
         dfas = collections.OrderedDict()
-        startsymbol = None
+        startsymbol = Tupu
         # MSTART: (NEWLINE | RULE)* ENDMARKER
-        while self.type != tokenize.ENDMARKER:
-            while self.type == tokenize.NEWLINE:
+        wakati self.type != tokenize.ENDMARKER:
+            wakati self.type == tokenize.NEWLINE:
                 self.gettoken()
             # RULE: NAME ':' RHS NEWLINE
             name = self.expect(tokenize.NAME)
-            if self.verbose:
-                print("Processing rule {dfa_name}".format(dfa_name=name))
+            ikiwa self.verbose:
+                andika("Processing rule {dfa_name}".format(dfa_name=name))
             self.expect(tokenize.OP, ":")
             a, z = self.parse_rhs()
             self.expect(tokenize.NEWLINE)
-            if self.verbose:
+            ikiwa self.verbose:
                 self.dump_nfa(name, a, z)
             dfa = self.make_dfa(a, z)
-            if self.verbose:
+            ikiwa self.verbose:
                 self.dump_dfa(name, dfa)
             self.simplify_dfa(dfa)
             dfas[name] = dfa
-            if startsymbol is None:
+            ikiwa startsymbol ni Tupu:
                 startsymbol = name
-        return dfas, startsymbol
+        rudisha dfas, startsymbol
 
-    def make_dfa(self, start, finish):
+    eleza make_dfa(self, start, finish):
         # To turn an NFA into a DFA, we define the states of the DFA
         # to correspond to *sets* of states of the NFA.  Then do some
-        # state reduction.  Let's represent sets as dicts with 1 for
+        # state reduction.  Let's represent sets kama dicts ukijumuisha 1 for
         # values.
         assert isinstance(start, NFAState)
         assert isinstance(finish, NFAState)
-        def closure(state):
+        eleza closure(state):
             base = set()
             addclosure(state, base)
-            return base
-        def addclosure(state, base):
+            rudisha base
+        eleza addclosure(state, base):
             assert isinstance(state, NFAState)
-            if state in base:
-                return
+            ikiwa state kwenye base:
+                rudisha
             base.add(state)
-            for label, next in state.arcs:
-                if label is None:
+            kila label, next kwenye state.arcs:
+                ikiwa label ni Tupu:
                     addclosure(next, base)
         states = [DFAState(closure(start), finish)]
-        for state in states: # NB states grows while we're iterating
+        kila state kwenye states: # NB states grows wakati we're iterating
             arcs = {}
-            for nfastate in state.nfaset:
-                for label, next in nfastate.arcs:
-                    if label is not None:
+            kila nfastate kwenye state.nfaset:
+                kila label, next kwenye nfastate.arcs:
+                    ikiwa label ni sio Tupu:
                         addclosure(next, arcs.setdefault(label, set()))
-            for label, nfaset in sorted(arcs.items()):
-                for st in states:
-                    if st.nfaset == nfaset:
-                        break
-                else:
+            kila label, nfaset kwenye sorted(arcs.items()):
+                kila st kwenye states:
+                    ikiwa st.nfaset == nfaset:
+                        koma
+                isipokua:
                     st = DFAState(nfaset, finish)
                     states.append(st)
                 state.addarc(st, label)
-        return states # List of DFAState instances; first one is start
+        rudisha states # List of DFAState instances; first one ni start
 
-    def dump_nfa(self, name, start, finish):
-        print("Dump of NFA for", name)
+    eleza dump_nfa(self, name, start, finish):
+        andika("Dump of NFA for", name)
         todo = [start]
-        for i, state in enumerate(todo):
-            print("  State", i, state is finish and "(final)" or "")
-            for label, next in state.arcs:
-                if next in todo:
+        kila i, state kwenye enumerate(todo):
+            andika("  State", i, state ni finish na "(final)" ama "")
+            kila label, next kwenye state.arcs:
+                ikiwa next kwenye todo:
                     j = todo.index(next)
-                else:
+                isipokua:
                     j = len(todo)
                     todo.append(next)
-                if label is None:
-                    print("    -> %d" % j)
-                else:
-                    print("    %s -> %d" % (label, j))
+                ikiwa label ni Tupu:
+                    andika("    -> %d" % j)
+                isipokua:
+                    andika("    %s -> %d" % (label, j))
 
-    def dump_dfa(self, name, dfa):
-        print("Dump of DFA for", name)
-        for i, state in enumerate(dfa):
-            print("  State", i, state.isfinal and "(final)" or "")
-            for label, next in sorted(state.arcs.items()):
-                print("    %s -> %d" % (label, dfa.index(next)))
+    eleza dump_dfa(self, name, dfa):
+        andika("Dump of DFA for", name)
+        kila i, state kwenye enumerate(dfa):
+            andika("  State", i, state.isfinal na "(final)" ama "")
+            kila label, next kwenye sorted(state.arcs.items()):
+                andika("    %s -> %d" % (label, dfa.index(next)))
 
-    def simplify_dfa(self, dfa):
-        # This is not theoretically optimal, but works well enough.
-        # Algorithm: repeatedly look for two states that have the same
-        # set of arcs (same labels pointing to the same nodes) and
+    eleza simplify_dfa(self, dfa):
+        # This ni sio theoretically optimal, but works well enough.
+        # Algorithm: repeatedly look kila two states that have the same
+        # set of arcs (same labels pointing to the same nodes) na
         # unify them, until things stop changing.
 
-        # dfa is a list of DFAState instances
-        changes = True
-        while changes:
-            changes = False
-            for i, state_i in enumerate(dfa):
-                for j in range(i+1, len(dfa)):
+        # dfa ni a list of DFAState instances
+        changes = Kweli
+        wakati changes:
+            changes = Uongo
+            kila i, state_i kwenye enumerate(dfa):
+                kila j kwenye range(i+1, len(dfa)):
                     state_j = dfa[j]
-                    if state_i == state_j:
+                    ikiwa state_i == state_j:
                         #print "  unify", i, j
-                        del dfa[j]
-                        for state in dfa:
+                        toa dfa[j]
+                        kila state kwenye dfa:
                             state.unifystate(state_j, state_i)
-                        changes = True
-                        break
+                        changes = Kweli
+                        koma
 
-    def parse_rhs(self):
+    eleza parse_rhs(self):
         # RHS: ALT ('|' ALT)*
         a, z = self.parse_alt()
-        if self.value != "|":
-            return a, z
-        else:
+        ikiwa self.value != "|":
+            rudisha a, z
+        isipokua:
             aa = NFAState()
             zz = NFAState()
             aa.addarc(a)
             z.addarc(zz)
-            while self.value == "|":
+            wakati self.value == "|":
                 self.gettoken()
                 a, z = self.parse_alt()
                 aa.addarc(a)
                 z.addarc(zz)
-            return aa, zz
+            rudisha aa, zz
 
-    def parse_alt(self):
+    eleza parse_alt(self):
         # ALT: ITEM+
         a, b = self.parse_item()
-        while (self.value in ("(", "[") or
-               self.type in (tokenize.NAME, tokenize.STRING)):
+        wakati (self.value kwenye ("(", "[") ama
+               self.type kwenye (tokenize.NAME, tokenize.STRING)):
             c, d = self.parse_item()
             b.addarc(c)
             b = d
-        return a, b
+        rudisha a, b
 
-    def parse_item(self):
+    eleza parse_item(self):
         # ITEM: '[' RHS ']' | ATOM ['+' | '*']
-        if self.value == "[":
+        ikiwa self.value == "[":
             self.gettoken()
             a, z = self.parse_rhs()
             self.expect(tokenize.OP, "]")
             a.addarc(z)
-            return a, z
-        else:
+            rudisha a, z
+        isipokua:
             a, z = self.parse_atom()
             value = self.value
-            if value not in ("+", "*"):
-                return a, z
+            ikiwa value haiko kwenye ("+", "*"):
+                rudisha a, z
             self.gettoken()
             z.addarc(a)
-            if value == "+":
-                return a, z
-            else:
-                return a, a
+            ikiwa value == "+":
+                rudisha a, z
+            isipokua:
+                rudisha a, a
 
-    def parse_atom(self):
+    eleza parse_atom(self):
         # ATOM: '(' RHS ')' | NAME | STRING
-        if self.value == "(":
+        ikiwa self.value == "(":
             self.gettoken()
             a, z = self.parse_rhs()
             self.expect(tokenize.OP, ")")
-            return a, z
-        elif self.type in (tokenize.NAME, tokenize.STRING):
+            rudisha a, z
+        lasivyo self.type kwenye (tokenize.NAME, tokenize.STRING):
             a = NFAState()
             z = NFAState()
             a.addarc(z, self.value)
             self.gettoken()
-            return a, z
-        else:
-            self.raise_error("expected (...) or NAME or STRING, got %s/%s",
+            rudisha a, z
+        isipokua:
+            self.raise_error("expected (...) ama NAME ama STRING, got %s/%s",
                              self.type, self.value)
 
-    def expect(self, type, value=None):
-        if self.type != type or (value is not None and self.value != value):
+    eleza expect(self, type, value=Tupu):
+        ikiwa self.type != type ama (value ni sio Tupu na self.value != value):
             self.raise_error("expected %s/%s, got %s/%s",
                              type, value, self.type, self.value)
         value = self.value
         self.gettoken()
-        return value
+        rudisha value
 
-    def gettoken(self):
+    eleza gettoken(self):
         tup = next(self.generator)
-        while tup[0] in (tokenize.COMMENT, tokenize.NL):
+        wakati tup[0] kwenye (tokenize.COMMENT, tokenize.NL):
             tup = next(self.generator)
         self.type, self.value, self.begin, self.end, self.line = tup
-        # print(getattr(tokenize, 'tok_name')[self.type], repr(self.value))
+        # andika(getattr(tokenize, 'tok_name')[self.type], repr(self.value))
 
-    def raise_error(self, msg, *args):
-        if args:
-            try:
+    eleza raise_error(self, msg, *args):
+        ikiwa args:
+            jaribu:
                 msg = msg % args
-            except Exception:
+            tatizo Exception:
                 msg = " ".join([msg] + list(map(str, args)))
-        raise SyntaxError(msg, (self.filename, self.end[0],
+        ashiria SyntaxError(msg, (self.filename, self.end[0],
                                 self.end[1], self.line))
 
-class NFAState(object):
+kundi NFAState(object):
 
-    def __init__(self):
+    eleza __init__(self):
         self.arcs = [] # list of (label, NFAState) pairs
 
-    def addarc(self, next, label=None):
-        assert label is None or isinstance(label, str)
+    eleza addarc(self, next, label=Tupu):
+        assert label ni Tupu ama isinstance(label, str)
         assert isinstance(next, NFAState)
         self.arcs.append((label, next))
 
-class DFAState(object):
+kundi DFAState(object):
 
-    def __init__(self, nfaset, final):
+    eleza __init__(self, nfaset, final):
         assert isinstance(nfaset, set)
         assert isinstance(next(iter(nfaset)), NFAState)
         assert isinstance(final, NFAState)
         self.nfaset = nfaset
-        self.isfinal = final in nfaset
-        self.arcs = {} # map from label to DFAState
+        self.isfinal = final kwenye nfaset
+        self.arcs = {} # map kutoka label to DFAState
 
-    def addarc(self, next, label):
+    eleza addarc(self, next, label):
         assert isinstance(label, str)
-        assert label not in self.arcs
+        assert label haiko kwenye self.arcs
         assert isinstance(next, DFAState)
         self.arcs[label] = next
 
-    def unifystate(self, old, new):
-        for label, next in self.arcs.items():
-            if next is old:
+    eleza unifystate(self, old, new):
+        kila label, next kwenye self.arcs.items():
+            ikiwa next ni old:
                 self.arcs[label] = new
 
-    def __eq__(self, other):
+    eleza __eq__(self, other):
         # Equality test -- ignore the nfaset instance variable
         assert isinstance(other, DFAState)
-        if self.isfinal != other.isfinal:
-            return False
-        # Can't just return self.arcs == other.arcs, because that
-        # would invoke this method recursively, with cycles...
-        if len(self.arcs) != len(other.arcs):
-            return False
-        for label, next in self.arcs.items():
-            if next is not other.arcs.get(label):
-                return False
-        return True
+        ikiwa self.isfinal != other.isfinal:
+            rudisha Uongo
+        # Can't just rudisha self.arcs == other.arcs, because that
+        # would invoke this method recursively, ukijumuisha cycles...
+        ikiwa len(self.arcs) != len(other.arcs):
+            rudisha Uongo
+        kila label, next kwenye self.arcs.items():
+            ikiwa next ni sio other.arcs.get(label):
+                rudisha Uongo
+        rudisha Kweli
 
-    __hash__ = None # For Py3 compatibility.
+    __hash__ = Tupu # For Py3 compatibility.

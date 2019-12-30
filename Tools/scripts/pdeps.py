@@ -11,154 +11,154 @@
 # Four tables separated by lines like '--- Closure ---':
 # 1) Direct dependencies, listing which module imports which other modules
 # 2) The inverse of (1)
-# 3) Indirect dependencies, or the closure of the above
+# 3) Indirect dependencies, ama the closure of the above
 # 4) The inverse of (3)
 #
 # To do:
 # - command line options to select output type
-# - option to automatically scan the Python library for referenced modules
+# - option to automatically scan the Python library kila referenced modules
 # - option to limit output to particular modules
 
 
-import sys
-import re
-import os
+agiza sys
+agiza re
+agiza os
 
 
 # Main program
 #
-def main():
+eleza main():
     args = sys.argv[1:]
-    if not args:
-        print('usage: pdeps file.py file.py ...')
-        return 2
+    ikiwa sio args:
+        andika('usage: pdeps file.py file.py ...')
+        rudisha 2
     #
     table = {}
-    for arg in args:
+    kila arg kwenye args:
         process(arg, table)
     #
-    print('--- Uses ---')
+    andika('--- Uses ---')
     printresults(table)
     #
-    print('--- Used By ---')
+    andika('--- Used By ---')
     inv = inverse(table)
     printresults(inv)
     #
-    print('--- Closure of Uses ---')
+    andika('--- Closure of Uses ---')
     reach = closure(table)
     printresults(reach)
     #
-    print('--- Closure of Used By ---')
+    andika('--- Closure of Used By ---')
     invreach = inverse(reach)
     printresults(invreach)
     #
-    return 0
+    rudisha 0
 
 
-# Compiled regular expressions to search for import statements
+# Compiled regular expressions to search kila agiza statements
 #
-m_import = re.compile('^[ \t]*from[ \t]+([^ \t]+)[ \t]+')
-m_from = re.compile('^[ \t]*import[ \t]+([^#]+)')
+m_agiza = re.compile('^[ \t]*from[ \t]+([^ \t]+)[ \t]+')
+m_kutoka = re.compile('^[ \t]*import[ \t]+([^#]+)')
 
 
-# Collect data from one file
+# Collect data kutoka one file
 #
-def process(filename, table):
-    with open(filename) as fp:
+eleza process(filename, table):
+    ukijumuisha open(filename) kama fp:
         mod = os.path.basename(filename)
-        if mod[-3:] == '.py':
+        ikiwa mod[-3:] == '.py':
             mod = mod[:-3]
         table[mod] = list = []
-        while 1:
+        wakati 1:
             line = fp.readline()
-            if not line: break
-            while line[-1:] == '\\':
+            ikiwa sio line: koma
+            wakati line[-1:] == '\\':
                 nextline = fp.readline()
-                if not nextline: break
+                ikiwa sio nextline: koma
                 line = line[:-1] + nextline
-            m_found = m_import.match(line) or m_from.match(line)
-            if m_found:
+            m_found = m_import.match(line) ama m_from.match(line)
+            ikiwa m_found:
                 (a, b), (a1, b1) = m_found.regs[:2]
-            else: continue
+            isipokua: endelea
             words = line[a1:b1].split(',')
             # print '#', line, words
-            for word in words:
+            kila word kwenye words:
                 word = word.strip()
-                if word not in list:
+                ikiwa word haiko kwenye list:
                     list.append(word)
 
 
-# Compute closure (this is in fact totally general)
+# Compute closure (this ni kwenye fact totally general)
 #
-def closure(table):
+eleza closure(table):
     modules = list(table.keys())
     #
-    # Initialize reach with a copy of table
+    # Initialize reach ukijumuisha a copy of table
     #
     reach = {}
-    for mod in modules:
+    kila mod kwenye modules:
         reach[mod] = table[mod][:]
     #
     # Iterate until no more change
     #
     change = 1
-    while change:
+    wakati change:
         change = 0
-        for mod in modules:
-            for mo in reach[mod]:
-                if mo in modules:
-                    for m in reach[mo]:
-                        if m not in reach[mod]:
+        kila mod kwenye modules:
+            kila mo kwenye reach[mod]:
+                ikiwa mo kwenye modules:
+                    kila m kwenye reach[mo]:
+                        ikiwa m haiko kwenye reach[mod]:
                             reach[mod].append(m)
                             change = 1
     #
-    return reach
+    rudisha reach
 
 
-# Invert a table (this is again totally general).
+# Invert a table (this ni again totally general).
 # All keys of the original table are made keys of the inverse,
-# so there may be empty lists in the inverse.
+# so there may be empty lists kwenye the inverse.
 #
-def inverse(table):
+eleza inverse(table):
     inv = {}
-    for key in table.keys():
-        if key not in inv:
+    kila key kwenye table.keys():
+        ikiwa key haiko kwenye inv:
             inv[key] = []
-        for item in table[key]:
+        kila item kwenye table[key]:
             store(inv, item, key)
-    return inv
+    rudisha inv
 
 
-# Store "item" in "dict" under "key".
+# Store "item" kwenye "dict" under "key".
 # The dictionary maps keys to lists of items.
-# If there is no list for the key yet, it is created.
+# If there ni no list kila the key yet, it ni created.
 #
-def store(dict, key, item):
-    if key in dict:
+eleza store(dict, key, item):
+    ikiwa key kwenye dict:
         dict[key].append(item)
-    else:
+    isipokua:
         dict[key] = [item]
 
 
 # Tabulate results neatly
 #
-def printresults(table):
+eleza printresults(table):
     modules = sorted(table.keys())
     maxlen = 0
-    for mod in modules: maxlen = max(maxlen, len(mod))
-    for mod in modules:
+    kila mod kwenye modules: maxlen = max(maxlen, len(mod))
+    kila mod kwenye modules:
         list = sorted(table[mod])
-        print(mod.ljust(maxlen), ':', end=' ')
-        if mod in list:
-            print('(*)', end=' ')
-        for ref in list:
-            print(ref, end=' ')
-        print()
+        andika(mod.ljust(maxlen), ':', end=' ')
+        ikiwa mod kwenye list:
+            andika('(*)', end=' ')
+        kila ref kwenye list:
+            andika(ref, end=' ')
+        andika()
 
 
-# Call main and honor exit status
-if __name__ == '__main__':
-    try:
+# Call main na honor exit status
+ikiwa __name__ == '__main__':
+    jaribu:
         sys.exit(main())
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         sys.exit(1)

@@ -2,195 +2,195 @@
 
 # Perform massive identifier substitution on C source files.
 # This actually tokenizes the files (to some extent) so it can
-# avoid making substitutions inside strings or comments.
+# avoid making substitutions inside strings ama comments.
 # Inside strings, substitutions are never made; inside comments,
-# it is a user option (off by default).
+# it ni a user option (off by default).
 #
-# The substitutions are read from one or more files whose lines,
-# when not empty, after stripping comments starting with #,
+# The substitutions are read kutoka one ama more files whose lines,
+# when sio empty, after stripping comments starting ukijumuisha #,
 # must contain exactly two words separated by whitespace: the
-# old identifier and its replacement.
+# old identifier na its replacement.
 #
 # The option -r reverses the sense of the substitutions (this may be
 # useful to undo a particular substitution).
 #
-# If the old identifier is prefixed with a '*' (with no intervening
-# whitespace), then it will not be substituted inside comments.
+# If the old identifier ni prefixed ukijumuisha a '*' (ukijumuisha no intervening
+# whitespace), then it will sio be substituted inside comments.
 #
-# Command line arguments are files or directories to be processed.
-# Directories are searched recursively for files whose name looks
-# like a C file (ends in .h or .c).  The special filename '-' means
-# operate in filter mode: read stdin, write stdout.
+# Command line arguments are files ama directories to be processed.
+# Directories are searched recursively kila files whose name looks
+# like a C file (ends kwenye .h ama .c).  The special filename '-' means
+# operate kwenye filter mode: read stdin, write stdout.
 #
-# Symbolic links are always ignored (except as explicit directory
+# Symbolic links are always ignored (tatizo kama explicit directory
 # arguments).
 #
-# The original files are kept as back-up with a "~" suffix.
+# The original files are kept kama back-up ukijumuisha a "~" suffix.
 #
-# Changes made are reported to stdout in a diff-like format.
+# Changes made are reported to stdout kwenye a diff-like format.
 #
 # NB: by changing only the function fixline() you can turn this
-# into a program for different changes to C source files; by
+# into a program kila different changes to C source files; by
 # changing the function wanted() you can make a different selection of
 # files.
 
-import sys
-import re
-import os
-from stat import *
-import getopt
+agiza sys
+agiza re
+agiza os
+kutoka stat agiza *
+agiza getopt
 
 err = sys.stderr.write
 dbg = err
 rep = sys.stdout.write
 
-def usage():
+eleza usage():
     progname = sys.argv[0]
     err('Usage: ' + progname +
               ' [-c] [-r] [-s file] ... file-or-directory ...\n')
     err('\n')
     err('-c           : substitute inside comments\n')
-    err('-r           : reverse direction for following -s options\n')
+    err('-r           : reverse direction kila following -s options\n')
     err('-s substfile : add a file of substitutions\n')
     err('\n')
-    err('Each non-empty non-comment line in a substitution file must\n')
-    err('contain exactly two words: an identifier and its replacement.\n')
-    err('Comments start with a # character and end at end of line.\n')
-    err('If an identifier is preceded with a *, it is not substituted\n')
-    err('inside a comment even when -c is specified.\n')
+    err('Each non-empty non-comment line kwenye a substitution file must\n')
+    err('contain exactly two words: an identifier na its replacement.\n')
+    err('Comments start ukijumuisha a # character na end at end of line.\n')
+    err('If an identifier ni preceded ukijumuisha a *, it ni sio substituted\n')
+    err('inside a comment even when -c ni specified.\n')
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'crs:')
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         err('Options error: ' + str(msg) + '\n')
         usage()
         sys.exit(2)
     bad = 0
-    if not args: # No arguments
+    ikiwa sio args: # No arguments
         usage()
         sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-c':
+    kila opt, arg kwenye opts:
+        ikiwa opt == '-c':
             setdocomments()
-        if opt == '-r':
+        ikiwa opt == '-r':
             setreverse()
-        if opt == '-s':
+        ikiwa opt == '-s':
             addsubst(arg)
-    for arg in args:
-        if os.path.isdir(arg):
-            if recursedown(arg): bad = 1
-        elif os.path.islink(arg):
-            err(arg + ': will not process symbolic links\n')
+    kila arg kwenye args:
+        ikiwa os.path.isdir(arg):
+            ikiwa recursedown(arg): bad = 1
+        lasivyo os.path.islink(arg):
+            err(arg + ': will sio process symbolic links\n')
             bad = 1
-        else:
-            if fix(arg): bad = 1
+        isipokua:
+            ikiwa fix(arg): bad = 1
     sys.exit(bad)
 
 # Change this regular expression to select a different set of files
 Wanted = r'^[a-zA-Z0-9_]+\.[ch]$'
-def wanted(name):
-    return re.match(Wanted, name)
+eleza wanted(name):
+    rudisha re.match(Wanted, name)
 
-def recursedown(dirname):
+eleza recursedown(dirname):
     dbg('recursedown(%r)\n' % (dirname,))
     bad = 0
-    try:
+    jaribu:
         names = os.listdir(dirname)
-    except OSError as msg:
+    tatizo OSError kama msg:
         err(dirname + ': cannot list directory: ' + str(msg) + '\n')
-        return 1
+        rudisha 1
     names.sort()
     subdirs = []
-    for name in names:
-        if name in (os.curdir, os.pardir): continue
+    kila name kwenye names:
+        ikiwa name kwenye (os.curdir, os.pardir): endelea
         fullname = os.path.join(dirname, name)
-        if os.path.islink(fullname): pass
-        elif os.path.isdir(fullname):
+        ikiwa os.path.islink(fullname): pita
+        lasivyo os.path.isdir(fullname):
             subdirs.append(fullname)
-        elif wanted(name):
-            if fix(fullname): bad = 1
-    for fullname in subdirs:
-        if recursedown(fullname): bad = 1
-    return bad
+        lasivyo wanted(name):
+            ikiwa fix(fullname): bad = 1
+    kila fullname kwenye subdirs:
+        ikiwa recursedown(fullname): bad = 1
+    rudisha bad
 
-def fix(filename):
+eleza fix(filename):
 ##  dbg('fix(%r)\n' % (filename,))
-    if filename == '-':
+    ikiwa filename == '-':
         # Filter mode
         f = sys.stdin
         g = sys.stdout
-    else:
+    isipokua:
         # File replacement mode
-        try:
+        jaribu:
             f = open(filename, 'r')
-        except IOError as msg:
+        tatizo IOError kama msg:
             err(filename + ': cannot open: ' + str(msg) + '\n')
-            return 1
+            rudisha 1
         head, tail = os.path.split(filename)
         tempname = os.path.join(head, '@' + tail)
-        g = None
-    # If we find a match, we rewind the file and start over but
+        g = Tupu
+    # If we find a match, we rewind the file na start over but
     # now copy everything to a temp file.
     lineno = 0
     initfixline()
-    while 1:
+    wakati 1:
         line = f.readline()
-        if not line: break
+        ikiwa sio line: koma
         lineno = lineno + 1
-        while line[-2:] == '\\\n':
+        wakati line[-2:] == '\\\n':
             nextline = f.readline()
-            if not nextline: break
+            ikiwa sio nextline: koma
             line = line + nextline
             lineno = lineno + 1
         newline = fixline(line)
-        if newline != line:
-            if g is None:
-                try:
+        ikiwa newline != line:
+            ikiwa g ni Tupu:
+                jaribu:
                     g = open(tempname, 'w')
-                except IOError as msg:
+                tatizo IOError kama msg:
                     f.close()
                     err(tempname+': cannot create: '+
                         str(msg)+'\n')
-                    return 1
+                    rudisha 1
                 f.seek(0)
                 lineno = 0
                 initfixline()
                 rep(filename + ':\n')
-                continue # restart from the beginning
+                endelea # restart kutoka the beginning
             rep(repr(lineno) + '\n')
             rep('< ' + line)
             rep('> ' + newline)
-        if g is not None:
+        ikiwa g ni sio Tupu:
             g.write(newline)
 
     # End of file
-    if filename == '-': return 0 # Done in filter mode
+    ikiwa filename == '-': rudisha 0 # Done kwenye filter mode
     f.close()
-    if not g: return 0 # No changes
+    ikiwa sio g: rudisha 0 # No changes
     g.close()
 
     # Finishing touch -- move files
 
     # First copy the file's mode to the temp file
-    try:
+    jaribu:
         statbuf = os.stat(filename)
         os.chmod(tempname, statbuf[ST_MODE] & 0o7777)
-    except OSError as msg:
+    tatizo OSError kama msg:
         err(tempname + ': warning: chmod failed (' + str(msg) + ')\n')
-    # Then make a backup of the original file as filename~
-    try:
+    # Then make a backup of the original file kama filename~
+    jaribu:
         os.rename(filename, filename + '~')
-    except OSError as msg:
+    tatizo OSError kama msg:
         err(filename + ': warning: backup failed (' + str(msg) + ')\n')
     # Now move the temp file to the original file
-    try:
+    jaribu:
         os.rename(tempname, filename)
-    except OSError as msg:
+    tatizo OSError kama msg:
         err(filename + ': rename failed (' + str(msg) + ')\n')
-        return 1
+        rudisha 1
     # Return success
-    return 0
+    rudisha 0
 
 # Tokenizing ANSI C (partly)
 
@@ -210,7 +210,7 @@ Expfloat = '[0-9]+' + Exponent
 Floatnumber = Pointfloat + '|' + Expfloat
 Number = Floatnumber + '|' + Intnumber
 
-# Anything else is an operator -- don't list this explicitly because of '/*'
+# Anything isipokua ni an operator -- don't list this explicitly because of '/*'
 
 OutsideComment = (Identifier, Number, String, Char, CommentStart)
 OutsideCommentPattern = '(' + '|'.join(OutsideComment) + ')'
@@ -220,97 +220,97 @@ InsideComment = (Identifier, Number, CommentEnd)
 InsideCommentPattern = '(' + '|'.join(InsideComment) + ')'
 InsideCommentProgram = re.compile(InsideCommentPattern)
 
-def initfixline():
+eleza initfixline():
     global Program
     Program = OutsideCommentProgram
 
-def fixline(line):
+eleza fixline(line):
     global Program
-##  print('-->', repr(line))
+##  andika('-->', repr(line))
     i = 0
-    while i < len(line):
+    wakati i < len(line):
         match = Program.search(line, i)
-        if match is None: break
+        ikiwa match ni Tupu: koma
         i = match.start()
         found = match.group(0)
-##      if Program is InsideCommentProgram: print(end='... ')
-##      else: print(end='    ')
-##      print(found)
-        if len(found) == 2:
-            if found == '/*':
+##      ikiwa Program ni InsideCommentProgram: andika(end='... ')
+##      isipokua: andika(end='    ')
+##      andika(found)
+        ikiwa len(found) == 2:
+            ikiwa found == '/*':
                 Program = InsideCommentProgram
-            elif found == '*/':
+            lasivyo found == '*/':
                 Program = OutsideCommentProgram
         n = len(found)
-        if found in Dict:
+        ikiwa found kwenye Dict:
             subst = Dict[found]
-            if Program is InsideCommentProgram:
-                if not Docomments:
-                    print('Found in comment:', found)
+            ikiwa Program ni InsideCommentProgram:
+                ikiwa sio Docomments:
+                    andika('Found kwenye comment:', found)
                     i = i + n
-                    continue
-                if found in NotInComment:
-##                  print(end='Ignored in comment: ')
-##                  print(found, '-->', subst)
-##                  print('Line:', line, end='')
+                    endelea
+                ikiwa found kwenye NotInComment:
+##                  andika(end='Ignored kwenye comment: ')
+##                  andika(found, '-->', subst)
+##                  andika('Line:', line, end='')
                     subst = found
-##              else:
-##                  print(end='Substituting in comment: ')
-##                  print(found, '-->', subst)
-##                  print('Line:', line, end='')
+##              isipokua:
+##                  andika(end='Substituting kwenye comment: ')
+##                  andika(found, '-->', subst)
+##                  andika('Line:', line, end='')
             line = line[:i] + subst + line[i+n:]
             n = len(subst)
         i = i + n
-    return line
+    rudisha line
 
 Docomments = 0
-def setdocomments():
+eleza setdocomments():
     global Docomments
     Docomments = 1
 
 Reverse = 0
-def setreverse():
+eleza setreverse():
     global Reverse
-    Reverse = (not Reverse)
+    Reverse = (sio Reverse)
 
 Dict = {}
 NotInComment = {}
-def addsubst(substfile):
-    try:
+eleza addsubst(substfile):
+    jaribu:
         fp = open(substfile, 'r')
-    except IOError as msg:
+    tatizo IOError kama msg:
         err(substfile + ': cannot read substfile: ' + str(msg) + '\n')
         sys.exit(1)
-    with fp:
+    ukijumuisha fp:
         lineno = 0
-        while 1:
+        wakati 1:
             line = fp.readline()
-            if not line: break
+            ikiwa sio line: koma
             lineno = lineno + 1
-            try:
+            jaribu:
                 i = line.index('#')
-            except ValueError:
+            tatizo ValueError:
                 i = -1          # Happens to delete trailing \n
             words = line[:i].split()
-            if not words: continue
-            if len(words) == 3 and words[0] == 'struct':
+            ikiwa sio words: endelea
+            ikiwa len(words) == 3 na words[0] == 'struct':
                 words[:2] = [words[0] + ' ' + words[1]]
-            elif len(words) != 2:
+            lasivyo len(words) != 2:
                 err(substfile + '%s:%r: warning: bad line: %r' % (substfile, lineno, line))
-                continue
-            if Reverse:
+                endelea
+            ikiwa Reverse:
                 [value, key] = words
-            else:
+            isipokua:
                 [key, value] = words
-            if value[0] == '*':
+            ikiwa value[0] == '*':
                 value = value[1:]
-            if key[0] == '*':
+            ikiwa key[0] == '*':
                 key = key[1:]
                 NotInComment[key] = value
-            if key in Dict:
+            ikiwa key kwenye Dict:
                 err('%s:%r: warning: overriding: %r %r\n' % (substfile, lineno, key, value))
                 err('%s:%r: warning: previous: %r\n' % (substfile, lineno, Dict[key]))
             Dict[key] = value
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

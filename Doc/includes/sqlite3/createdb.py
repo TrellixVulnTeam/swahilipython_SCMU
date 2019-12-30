@@ -6,7 +6,7 @@ agiza os
 
 DB_FILE = "mydb"
 
-if os.path.exists(DB_FILE):
+ikiwa os.path.exists(DB_FILE):
     os.remove(DB_FILE)
 
 con = sqlite3.connect(DB_FILE)

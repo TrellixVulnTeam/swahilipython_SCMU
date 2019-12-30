@@ -9,25 +9,25 @@ __version__ = "3.8"
 __all__ = []
 
 
-def public(f):
+eleza public(f):
     __all__.append(f.__name__)
-    return f
+    rudisha f
 
 
 OPTIONS = {
     "stable": {"help": "stable ABI stub"},
     "pip": {"help": "pip"},
-    "pip-user": {"help": "pip.ini file for default --user"},
+    "pip-user": {"help": "pip.ini file kila default --user"},
     "distutils": {"help": "distutils"},
-    "tcltk": {"help": "Tcl, Tk and tkinter"},
+    "tcltk": {"help": "Tcl, Tk na tkinter"},
     "idle": {"help": "Idle"},
     "tests": {"help": "test suite"},
     "tools": {"help": "tools"},
     "venv": {"help": "venv"},
-    "dev": {"help": "headers and libs"},
+    "dev": {"help": "headers na libs"},
     "symbols": {"help": "symbols"},
     "bdist-wininst": {"help": "bdist_wininst support"},
-    "underpth": {"help": "a python._pth file", "not-in-all": True},
+    "underpth": {"help": "a python._pth file", "not-in-all": Kweli},
     "launchers": {"help": "specific launchers"},
     "appxmanifest": {"help": "an appxmanifest"},
     "props": {"help": "a python.props file"},
@@ -51,7 +51,7 @@ PRESETS = {
             "dev",
             "launchers",
             "appxmanifest",
-            # XXX: Disabled for now "precompile",
+            # XXX: Disabled kila now "precompile",
         ],
     },
     "nuget": {
@@ -93,43 +93,43 @@ PRESETS = {
 
 
 @public
-def get_argparse_options():
-    for opt, info in OPTIONS.items():
+eleza get_argparse_options():
+    kila opt, info kwenye OPTIONS.items():
         help = "When specified, includes {}".format(info["help"])
-        if info.get("not-in-all"):
+        ikiwa info.get("not-in-all"):
             help = "{}. Not affected by --include-all".format(help)
 
-        yield "--include-{}".format(opt), help
+        tuma "--include-{}".format(opt), help
 
-    for opt, info in PRESETS.items():
-        help = "When specified, includes default options for {}".format(info["help"])
-        yield "--preset-{}".format(opt), help
-
-
-def ns_get(ns, key, default=False):
-    return getattr(ns, key.replace("-", "_"), default)
+    kila opt, info kwenye PRESETS.items():
+        help = "When specified, includes default options kila {}".format(info["help"])
+        tuma "--preset-{}".format(opt), help
 
 
-def ns_set(ns, key, value=True):
+eleza ns_get(ns, key, default=Uongo):
+    rudisha getattr(ns, key.replace("-", "_"), default)
+
+
+eleza ns_set(ns, key, value=Kweli):
     k1 = key.replace("-", "_")
     k2 = "include_{}".format(k1)
-    if hasattr(ns, k2):
+    ikiwa hasattr(ns, k2):
         setattr(ns, k2, value)
-    elif hasattr(ns, k1):
+    lasivyo hasattr(ns, k1):
         setattr(ns, k1, value)
-    else:
-        raise AttributeError("no argument named '{}'".format(k1))
+    isipokua:
+        ashiria AttributeError("no argument named '{}'".format(k1))
 
 
 @public
-def update_presets(ns):
-    for preset, info in PRESETS.items():
-        if ns_get(ns, "preset-{}".format(preset)):
-            for opt in info["options"]:
+eleza update_presets(ns):
+    kila preset, info kwenye PRESETS.items():
+        ikiwa ns_get(ns, "preset-{}".format(preset)):
+            kila opt kwenye info["options"]:
                 ns_set(ns, opt)
 
-    if ns.include_all:
-        for opt in OPTIONS:
-            if OPTIONS[opt].get("not-in-all"):
-                continue
+    ikiwa ns.include_all:
+        kila opt kwenye OPTIONS:
+            ikiwa OPTIONS[opt].get("not-in-all"):
+                endelea
             ns_set(ns, opt)

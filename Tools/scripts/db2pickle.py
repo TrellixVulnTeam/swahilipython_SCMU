@@ -7,129 +7,129 @@ Convert the database file given on the command line to a pickle
 representation.  The optional flags indicate the type of the database:
 
     -a - open using dbm (any supported format)
-    -b - open as bsddb btree file
-    -d - open as dbm file
-    -g - open as gdbm file
-    -h - open as bsddb hash file
-    -r - open as bsddb recno file
+    -b - open kama bsddb btree file
+    -d - open kama dbm file
+    -g - open kama gdbm file
+    -h - open kama bsddb hash file
+    -r - open kama bsddb recno file
 
-The default is hash.  If a pickle file is named it is opened for write
-access (deleting any existing data).  If no pickle file is named, the pickle
-output is written to standard output.
+The default ni hash.  If a pickle file ni named it ni opened kila write
+access (deleting any existing data).  If no pickle file ni named, the pickle
+output ni written to standard output.
 
 """
 
-import getopt
-try:
-    import bsddb
-except ImportError:
-    bsddb = None
-try:
-    import dbm.ndbm as dbm
-except ImportError:
-    dbm = None
-try:
-    import dbm.gnu as gdbm
-except ImportError:
-    gdbm = None
-try:
-    import dbm.ndbm as anydbm
-except ImportError:
-    anydbm = None
-import sys
-try:
-    import pickle as pickle
-except ImportError:
-    import pickle
+agiza getopt
+jaribu:
+    agiza bsddb
+tatizo ImportError:
+    bsddb = Tupu
+jaribu:
+    agiza dbm.ndbm kama dbm
+tatizo ImportError:
+    dbm = Tupu
+jaribu:
+    agiza dbm.gnu kama gdbm
+tatizo ImportError:
+    gdbm = Tupu
+jaribu:
+    agiza dbm.ndbm kama anydbm
+tatizo ImportError:
+    anydbm = Tupu
+agiza sys
+jaribu:
+    agiza pickle kama pickle
+tatizo ImportError:
+    agiza pickle
 
 prog = sys.argv[0]
 
-def usage():
+eleza usage():
     sys.stderr.write(__doc__ % globals())
 
-def main(args):
-    try:
+eleza main(args):
+    jaribu:
         opts, args = getopt.getopt(args, "hbrdag",
                                    ["hash", "btree", "recno", "dbm",
                                     "gdbm", "anydbm"])
-    except getopt.error:
+    tatizo getopt.error:
         usage()
-        return 1
+        rudisha 1
 
-    if len(args) == 0 or len(args) > 2:
+    ikiwa len(args) == 0 ama len(args) > 2:
         usage()
-        return 1
-    elif len(args) == 1:
+        rudisha 1
+    lasivyo len(args) == 1:
         dbfile = args[0]
         pfile = sys.stdout
-    else:
+    isipokua:
         dbfile = args[0]
-        try:
+        jaribu:
             pfile = open(args[1], 'wb')
-        except IOError:
+        tatizo IOError:
             sys.stderr.write("Unable to open %s\n" % args[1])
-            return 1
+            rudisha 1
 
-    dbopen = None
-    for opt, arg in opts:
-        if opt in ("-h", "--hash"):
-            try:
+    dbopen = Tupu
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ("-h", "--hash"):
+            jaribu:
                 dbopen = bsddb.hashopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-b", "--btree"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-b", "--btree"):
+            jaribu:
                 dbopen = bsddb.btopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-r", "--recno"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-r", "--recno"):
+            jaribu:
                 dbopen = bsddb.rnopen
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("bsddb module unavailable.\n")
-                return 1
-        elif opt in ("-a", "--anydbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-a", "--anydbm"):
+            jaribu:
                 dbopen = anydbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm module unavailable.\n")
-                return 1
-        elif opt in ("-g", "--gdbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-g", "--gdbm"):
+            jaribu:
                 dbopen = gdbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm.gnu module unavailable.\n")
-                return 1
-        elif opt in ("-d", "--dbm"):
-            try:
+                rudisha 1
+        lasivyo opt kwenye ("-d", "--dbm"):
+            jaribu:
                 dbopen = dbm.open
-            except AttributeError:
+            tatizo AttributeError:
                 sys.stderr.write("dbm.ndbm module unavailable.\n")
-                return 1
-    if dbopen is None:
-        if bsddb is None:
+                rudisha 1
+    ikiwa dbopen ni Tupu:
+        ikiwa bsddb ni Tupu:
             sys.stderr.write("bsddb module unavailable - ")
             sys.stderr.write("must specify dbtype.\n")
-            return 1
-        else:
+            rudisha 1
+        isipokua:
             dbopen = bsddb.hashopen
 
-    try:
+    jaribu:
         db = dbopen(dbfile, 'r')
-    except bsddb.error:
+    tatizo bsddb.error:
         sys.stderr.write("Unable to open %s.  " % dbfile)
-        sys.stderr.write("Check for format or version mismatch.\n")
-        return 1
+        sys.stderr.write("Check kila format ama version mismatch.\n")
+        rudisha 1
 
-    for k in db.keys():
+    kila k kwenye db.keys():
         pickle.dump((k, db[k]), pfile, 1==1)
 
     db.close()
     pfile.close()
 
-    return 0
+    rudisha 0
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

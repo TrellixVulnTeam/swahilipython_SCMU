@@ -1,59 +1,59 @@
 """
-Extraction and file list generation for pip.
+Extraction na file list generation kila pip.
 """
 
 __author__ = "Steve Dower <steve.dower@python.org>"
 __version__ = "3.8"
 
 
-import os
-import shutil
-import subprocess
-import sys
+agiza os
+agiza shutil
+agiza subprocess
+agiza sys
 
-from .filesets import *
+kutoka .filesets agiza *
 
 __all__ = ["extract_pip_files", "get_pip_layout"]
 
 
-def get_pip_dir(ns):
-    if ns.copy:
-        if ns.zip_lib:
-            return ns.copy / "packages"
-        return ns.copy / "Lib" / "site-packages"
-    else:
-        return ns.temp / "packages"
+eleza get_pip_dir(ns):
+    ikiwa ns.copy:
+        ikiwa ns.zip_lib:
+            rudisha ns.copy / "packages"
+        rudisha ns.copy / "Lib" / "site-packages"
+    isipokua:
+        rudisha ns.temp / "packages"
 
 
-def get_pip_layout(ns):
+eleza get_pip_layout(ns):
     pip_dir = get_pip_dir(ns)
-    if not pip_dir.is_dir():
-        log_warning("Failed to find {} - pip will not be included", pip_dir)
-    else:
-        pkg_root = "packages/{}" if ns.zip_lib else "Lib/site-packages/{}"
-        for dest, src in rglob(pip_dir, "**/*"):
-            yield pkg_root.format(dest), src
-        if ns.include_pip_user:
+    ikiwa sio pip_dir.is_dir():
+        log_warning("Failed to find {} - pip will sio be included", pip_dir)
+    isipokua:
+        pkg_root = "packages/{}" ikiwa ns.zip_lib isipokua "Lib/site-packages/{}"
+        kila dest, src kwenye rglob(pip_dir, "**/*"):
+            tuma pkg_root.format(dest), src
+        ikiwa ns.include_pip_user:
             content = "\n".join(
                 "[{}]\nuser=yes".format(n)
-                for n in ["install", "uninstall", "freeze", "list"]
+                kila n kwenye ["install", "uninstall", "freeze", "list"]
             )
-            yield "pip.ini", ("pip.ini", content.encode())
+            tuma "pip.ini", ("pip.ini", content.encode())
 
 
-def extract_pip_files(ns):
+eleza extract_pip_files(ns):
     dest = get_pip_dir(ns)
-    try:
-        dest.mkdir(parents=True, exist_ok=False)
-    except IOError:
-        return
+    jaribu:
+        dest.mkdir(parents=Kweli, exist_ok=Uongo)
+    tatizo IOError:
+        rudisha
 
     src = ns.source / "Lib" / "ensurepip" / "_bundled"
 
-    ns.temp.mkdir(parents=True, exist_ok=True)
-    wheels = [shutil.copy(whl, ns.temp) for whl in src.glob("*.whl")]
+    ns.temp.mkdir(parents=Kweli, exist_ok=Kweli)
+    wheels = [shutil.copy(whl, ns.temp) kila whl kwenye src.glob("*.whl")]
     search_path = os.pathsep.join(wheels)
-    if os.environ.get("PYTHONPATH"):
+    ikiwa os.environ.get("PYTHONPATH"):
         search_path += ";" + os.environ["PYTHONPATH"]
 
     env = os.environ.copy()
@@ -82,13 +82,13 @@ def extract_pip_files(ns):
         env=env,
     )
 
-    try:
+    jaribu:
         shutil.rmtree(dest / "bin")
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
 
-    for file in wheels:
-        try:
+    kila file kwenye wheels:
+        jaribu:
             os.remove(file)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita

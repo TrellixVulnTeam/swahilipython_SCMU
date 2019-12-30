@@ -3,7 +3,7 @@
     pyspecific.py
     ~~~~~~~~~~~~~
 
-    Sphinx extension with Python doc-specific markup.
+    Sphinx extension ukijumuisha Python doc-specific markup.
 
     :copyright: 2008-2014 by Georg Brandl.
     :license: Python license.
@@ -22,9 +22,9 @@ kutoka docutils agiza nodes, utils
 
 kutoka sphinx agiza addnodes
 kutoka sphinx.builders agiza Builder
-try:
+jaribu:
     kutoka sphinx.errors agiza NoUri
-except ImportError:
+tatizo ImportError:
     kutoka sphinx.environment agiza NoUri
 kutoka sphinx.locale agiza translators
 kutoka sphinx.util agiza status_iterator, logging
@@ -33,7 +33,7 @@ kutoka sphinx.writers.text agiza TextWriter, TextTranslator
 kutoka sphinx.writers.latex agiza LaTeXTranslator
 kutoka sphinx.domains.python agiza PyModulelevel, PyClassmember
 
-# Support for checking for suspicious markup
+# Support kila checking kila suspicious markup
 
 agiza suspicious
 
@@ -41,34 +41,34 @@ agiza suspicious
 ISSUE_URI = 'https://bugs.python.org/issue%s'
 SOURCE_URI = 'https://github.com/python/cpython/tree/3.8/%s'
 
-# monkey-patch reST parser to disable alphabetic and roman enumerated lists
+# monkey-patch reST parser to disable alphabetic na roman enumerated lists
 kutoka docutils.parsers.rst.states agiza Body
 Body.enum.converters['loweralpha'] = \
     Body.enum.converters['upperalpha'] = \
     Body.enum.converters['lowerroman'] = \
-    Body.enum.converters['upperroman'] = lambda x: None
+    Body.enum.converters['upperroman'] = lambda x: Tupu
 
 
-# Support for marking up and linking to bugs.python.org issues
+# Support kila marking up na linking to bugs.python.org issues
 
-def issue_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+eleza issue_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     issue = utils.unescape(text)
     text = 'bpo-' + issue
     refnode = nodes.reference(text, text, refuri=ISSUE_URI % issue)
-    return [refnode], []
+    rudisha [refnode], []
 
 
-# Support for linking to Python source files easily
+# Support kila linking to Python source files easily
 
-def source_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+eleza source_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     has_t, title, target = split_explicit_title(text)
     title = utils.unescape(title)
     target = utils.unescape(target)
     refnode = nodes.reference(title, title, refuri=SOURCE_URI % target)
-    return [refnode], []
+    rudisha [refnode], []
 
 
-# Support for marking up implementation details
+# Support kila marking up implementation details
 
 kundi ImplementationDetail(Directive):
 
@@ -77,42 +77,42 @@ kundi ImplementationDetail(Directive):
     optional_arguments = 1
     final_argument_whitespace = Kweli
 
-    # This text is copied to templates/dummy.html
+    # This text ni copied to templates/dummy.html
     label_text = 'CPython implementation detail:'
 
-    def run(self):
+    eleza run(self):
         pnode = nodes.compound(classes=['impl-detail'])
         label = translators['sphinx'].gettext(self.label_text)
         content = self.content
         add_text = nodes.strong(label, label)
-        if self.arguments:
+        ikiwa self.arguments:
             n, m = self.state.inline_text(self.arguments[0], self.lineno)
             pnode.append(nodes.paragraph('', '', *(n + m)))
         self.state.nested_parse(content, self.content_offset, pnode)
-        if pnode.children and isinstance(pnode[0], nodes.paragraph):
+        ikiwa pnode.children na isinstance(pnode[0], nodes.paragraph):
             content = nodes.inline(pnode[0].rawsource, translatable=Kweli)
             content.source = pnode[0].source
             content.line = pnode[0].line
             content += pnode[0].children
             pnode[0].replace_self(nodes.paragraph('', '', content,
-                                                  translatable=False))
+                                                  translatable=Uongo))
             pnode[0].insert(0, add_text)
             pnode[0].insert(1, nodes.Text(' '))
-        else:
+        isipokua:
             pnode.insert(0, nodes.paragraph('', '', add_text))
-        return [pnode]
+        rudisha [pnode]
 
 
-# Support for documenting platform availability
+# Support kila documenting platform availability
 
 kundi Availability(Directive):
 
-    has_content = False
+    has_content = Uongo
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = Kweli
 
-    def run(self):
+    eleza run(self):
         availability_ref = ':ref:`Availability <availability>`: '
         pnode = nodes.paragraph(availability_ref + self.arguments[0],
                                 classes=["availability"],)
@@ -120,10 +120,10 @@ kundi Availability(Directive):
         pnode.extend(n + m)
         n, m = self.state.inline_text(self.arguments[0], self.lineno)
         pnode.extend(n + m)
-        return [pnode]
+        rudisha [pnode]
 
 
-# Support for documenting audit event
+# Support kila documenting audit event
 
 kundi AuditEvent(Directive):
 
@@ -133,30 +133,30 @@ kundi AuditEvent(Directive):
     final_argument_whitespace = Kweli
 
     _label = [
-        "Raises an :ref:`auditing event <auditing>` {name} with no arguments.",
-        "Raises an :ref:`auditing event <auditing>` {name} with argument {args}.",
-        "Raises an :ref:`auditing event <auditing>` {name} with arguments {args}.",
+        "Raises an :ref:`auditing event <auditing>` {name} ukijumuisha no arguments.",
+        "Raises an :ref:`auditing event <auditing>` {name} ukijumuisha argument {args}.",
+        "Raises an :ref:`auditing event <auditing>` {name} ukijumuisha arguments {args}.",
     ]
 
     @property
-    def logger(self):
+    eleza logger(self):
         cls = type(self)
-        return logging.getLogger(cls.__module__ + "." + cls.__name__)
+        rudisha logging.getLogger(cls.__module__ + "." + cls.__name__)
 
-    def run(self):
+    eleza run(self):
         name = self.arguments[0]
-        if len(self.arguments) >= 2 and self.arguments[1]:
-            args = (a.strip() for a in self.arguments[1].strip("'\"").split(","))
-            args = [a for a in args if a]
-        else:
+        ikiwa len(self.arguments) >= 2 na self.arguments[1]:
+            args = (a.strip() kila a kwenye self.arguments[1].strip("'\"").split(","))
+            args = [a kila a kwenye args ikiwa a]
+        isipokua:
             args = []
 
         label = translators['sphinx'].gettext(self._label[min(2, len(args))])
         text = label.format(name="``{}``".format(name),
-                            args=", ".join("``{}``".format(a) for a in args if a))
+                            args=", ".join("``{}``".format(a) kila a kwenye args ikiwa a))
 
         env = self.state.document.settings.env
-        if not hasattr(env, 'all_audit_events'):
+        ikiwa sio hasattr(env, 'all_audit_events'):
             env.all_audit_events = {}
 
         new_info = {
@@ -164,19 +164,19 @@ kundi AuditEvent(Directive):
             'args': args
         }
         info = env.all_audit_events.setdefault(name, new_info)
-        if info is not new_info:
-            if not self._do_args_match(info['args'], new_info['args']):
+        ikiwa info ni sio new_info:
+            ikiwa sio self._do_args_match(info['args'], new_info['args']):
                 self.logger.warn(
-                    "Mismatched arguments for audit-event {}: {!r} != {!r}"
+                    "Mismatched arguments kila audit-event {}: {!r} != {!r}"
                     .format(name, info['args'], new_info['args'])
                 )
 
         ids = []
-        try:
+        jaribu:
             target = self.arguments[2].strip("\"'")
-        except (IndexError, TypeError):
-            target = None
-        if not target:
+        tatizo (IndexError, TypeError):
+            target = Tupu
+        ikiwa sio target:
             target = "audit_event_{}_{}".format(
                 re.sub(r'\W', '_', name),
                 len(info['source']),
@@ -186,123 +186,123 @@ kundi AuditEvent(Directive):
         info['source'].append((env.docname, target))
 
         pnode = nodes.paragraph(text, classes=["audit-hook"], ids=ids)
-        if self.content:
+        ikiwa self.content:
             self.state.nested_parse(self.content, self.content_offset, pnode)
-        else:
+        isipokua:
             n, m = self.state.inline_text(text, self.lineno)
             pnode.extend(n + m)
 
-        return [pnode]
+        rudisha [pnode]
 
-    # This list of sets are allowable synonyms for event argument names.
-    # If two names are in the same set, they are treated as equal for the
-    # purposes of warning. This won't help if number of arguments is
+    # This list of sets are allowable synonyms kila event argument names.
+    # If two names are kwenye the same set, they are treated kama equal kila the
+    # purposes of warning. This won't help ikiwa number of arguments is
     # different!
     _SYNONYMS = [
         {"file", "path", "fd"},
     ]
 
-    def _do_args_match(self, args1, args2):
-        if args1 == args2:
-            return Kweli
-        if len(args1) != len(args2):
-            return False
-        for a1, a2 in zip(args1, args2):
-            if a1 == a2:
-                continue
-            if any(a1 in s and a2 in s for s in self._SYNONYMS):
-                continue
-            return False
-        return Kweli
+    eleza _do_args_match(self, args1, args2):
+        ikiwa args1 == args2:
+            rudisha Kweli
+        ikiwa len(args1) != len(args2):
+            rudisha Uongo
+        kila a1, a2 kwenye zip(args1, args2):
+            ikiwa a1 == a2:
+                endelea
+            ikiwa any(a1 kwenye s na a2 kwenye s kila s kwenye self._SYNONYMS):
+                endelea
+            rudisha Uongo
+        rudisha Kweli
 
 
 kundi audit_event_list(nodes.General, nodes.Element):
-    pass
+    pita
 
 
 kundi AuditEventListDirective(Directive):
 
-    def run(self):
-        return [audit_event_list('')]
+    eleza run(self):
+        rudisha [audit_event_list('')]
 
 
-# Support for documenting decorators
+# Support kila documenting decorators
 
 kundi PyDecoratorMixin(object):
-    def handle_signature(self, sig, signode):
+    eleza handle_signature(self, sig, signode):
         ret = super(PyDecoratorMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_addname('@', '@'))
-        return ret
+        rudisha ret
 
-    def needs_arglist(self):
-        return False
+    eleza needs_arglist(self):
+        rudisha Uongo
 
 
 kundi PyDecoratorFunction(PyDecoratorMixin, PyModulelevel):
-    def run(self):
-        # a decorator function is a function after all
+    eleza run(self):
+        # a decorator function ni a function after all
         self.name = 'py:function'
-        return PyModulelevel.run(self)
+        rudisha PyModulelevel.run(self)
 
 
 kundi PyDecoratorMethod(PyDecoratorMixin, PyClassmember):
-    def run(self):
+    eleza run(self):
         self.name = 'py:method'
-        return PyClassmember.run(self)
+        rudisha PyClassmember.run(self)
 
 
 kundi PyCoroutineMixin(object):
-    def handle_signature(self, sig, signode):
+    eleza handle_signature(self, sig, signode):
         ret = super(PyCoroutineMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_annotation('coroutine ', 'coroutine '))
-        return ret
+        rudisha ret
 
 
 kundi PyAwaitableMixin(object):
-    def handle_signature(self, sig, signode):
+    eleza handle_signature(self, sig, signode):
         ret = super(PyAwaitableMixin, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_annotation('awaitable ', 'awaitable '))
-        return ret
+        rudisha ret
 
 
 kundi PyCoroutineFunction(PyCoroutineMixin, PyModulelevel):
-    def run(self):
+    eleza run(self):
         self.name = 'py:function'
-        return PyModulelevel.run(self)
+        rudisha PyModulelevel.run(self)
 
 
 kundi PyCoroutineMethod(PyCoroutineMixin, PyClassmember):
-    def run(self):
+    eleza run(self):
         self.name = 'py:method'
-        return PyClassmember.run(self)
+        rudisha PyClassmember.run(self)
 
 
 kundi PyAwaitableFunction(PyAwaitableMixin, PyClassmember):
-    def run(self):
+    eleza run(self):
         self.name = 'py:function'
-        return PyClassmember.run(self)
+        rudisha PyClassmember.run(self)
 
 
 kundi PyAwaitableMethod(PyAwaitableMixin, PyClassmember):
-    def run(self):
+    eleza run(self):
         self.name = 'py:method'
-        return PyClassmember.run(self)
+        rudisha PyClassmember.run(self)
 
 
 kundi PyAbstractMethod(PyClassmember):
 
-    def handle_signature(self, sig, signode):
+    eleza handle_signature(self, sig, signode):
         ret = super(PyAbstractMethod, self).handle_signature(sig, signode)
         signode.insert(0, addnodes.desc_annotation('abstractmethod ',
                                                    'abstractmethod '))
-        return ret
+        rudisha ret
 
-    def run(self):
+    eleza run(self):
         self.name = 'py:method'
-        return PyClassmember.run(self)
+        rudisha PyClassmember.run(self)
 
 
-# Support for documenting version of removal in deprecations
+# Support kila documenting version of removal kwenye deprecations
 
 kundi DeprecatedRemoved(Directive):
     has_content = Kweli
@@ -311,9 +311,9 @@ kundi DeprecatedRemoved(Directive):
     final_argument_whitespace = Kweli
     option_spec = {}
 
-    _label = 'Deprecated since version {deprecated}, will be removed in version {removed}'
+    _label = 'Deprecated since version {deprecated}, will be removed kwenye version {removed}'
 
-    def run(self):
+    eleza run(self):
         node = addnodes.versionmodified()
         node.document = self.state.document
         node['type'] = 'deprecated-removed'
@@ -321,87 +321,87 @@ kundi DeprecatedRemoved(Directive):
         node['version'] = version
         label = translators['sphinx'].gettext(self._label)
         text = label.format(deprecated=self.arguments[0], removed=self.arguments[1])
-        if len(self.arguments) == 3:
+        ikiwa len(self.arguments) == 3:
             inodes, messages = self.state.inline_text(self.arguments[2],
                                                       self.lineno+1)
-            para = nodes.paragraph(self.arguments[2], '', *inodes, translatable=False)
+            para = nodes.paragraph(self.arguments[2], '', *inodes, translatable=Uongo)
             node.append(para)
-        else:
+        isipokua:
             messages = []
-        if self.content:
+        ikiwa self.content:
             self.state.nested_parse(self.content, self.content_offset, node)
-        if len(node):
-            if isinstance(node[0], nodes.paragraph) and node[0].rawsource:
+        ikiwa len(node):
+            ikiwa isinstance(node[0], nodes.paragraph) na node[0].rawsource:
                 content = nodes.inline(node[0].rawsource, translatable=Kweli)
                 content.source = node[0].source
                 content.line = node[0].line
                 content += node[0].children
-                node[0].replace_self(nodes.paragraph('', '', content, translatable=False))
+                node[0].replace_self(nodes.paragraph('', '', content, translatable=Uongo))
             node[0].insert(0, nodes.inline('', '%s: ' % text,
                                            classes=['versionmodified']))
-        else:
+        isipokua:
             para = nodes.paragraph('', '',
                                    nodes.inline('', '%s.' % text,
                                                 classes=['versionmodified']),
-                                   translatable=False)
+                                   translatable=Uongo)
             node.append(para)
         env = self.state.document.settings.env
         env.get_domain('changeset').note_changeset(node)
-        return [node] + messages
+        rudisha [node] + messages
 
 
-# Support for including Misc/NEWS
+# Support kila including Misc/NEWS
 
 issue_re = re.compile('(?:[Ii]ssue #|bpo-)([0-9]+)')
-whatsnew_re = re.compile(r"(?im)^what's new in (.*?)\??$")
+whatsnew_re = re.compile(r"(?im)^what's new kwenye (.*?)\??$")
 
 
 kundi MiscNews(Directive):
-    has_content = False
+    has_content = Uongo
     required_arguments = 1
     optional_arguments = 0
-    final_argument_whitespace = False
+    final_argument_whitespace = Uongo
     option_spec = {}
 
-    def run(self):
+    eleza run(self):
         fname = self.arguments[0]
         source = self.state_machine.input_lines.source(
             self.lineno - self.state_machine.input_offset - 1)
         source_dir = getenv('PY_MISC_NEWS_DIR')
-        if not source_dir:
+        ikiwa sio source_dir:
             source_dir = path.dirname(path.abspath(source))
         fpath = path.join(source_dir, fname)
         self.state.document.settings.record_dependencies.add(fpath)
-        try:
-            with io.open(fpath, encoding='utf-8') as fp:
+        jaribu:
+            ukijumuisha io.open(fpath, encoding='utf-8') kama fp:
                 content = fp.read()
-        except Exception:
-            text = 'The NEWS file is not available.'
+        tatizo Exception:
+            text = 'The NEWS file ni sio available.'
             node = nodes.strong(text, text)
-            return [node]
+            rudisha [node]
         content = issue_re.sub(r'`bpo-\1 <https://bugs.python.org/issue\1>`__',
                                content)
         content = whatsnew_re.sub(r'\1', content)
-        # remove first 3 lines as they are the main heading
+        # remove first 3 lines kama they are the main heading
         lines = ['.. default-role:: obj', ''] + content.splitlines()[3:]
-        self.state_machine.insert_input(lines, fname)
-        return []
+        self.state_machine.insert_uliza(lines, fname)
+        rudisha []
 
 
-# Support for building "topic help" for pydoc
+# Support kila building "topic help" kila pydoc
 
 pydoc_topic_labels = [
     'assert', 'assignment', 'async', 'atom-identifiers', 'atom-literals',
     'attribute-access', 'attribute-references', 'augassign', 'await',
     'binary', 'bitwise', 'bltin-code-objects', 'bltin-ellipsis-object',
     'bltin-null-object', 'bltin-type-objects', 'booleans',
-    'break', 'callable-types', 'calls', 'class', 'comparisons', 'compound',
-    'context-managers', 'continue', 'conversions', 'customization', 'debugger',
+    'koma', 'callable-types', 'calls', 'class', 'comparisons', 'compound',
+    'context-managers', 'endelea', 'conversions', 'customization', 'debugger',
     'del', 'dict', 'dynamic-features', 'else', 'exceptions', 'execmodel',
     'exprlists', 'floating', 'for', 'formatstrings', 'function', 'global',
     'id-classes', 'identifiers', 'if', 'imaginary', 'agiza', 'in', 'integers',
     'lambda', 'lists', 'naming', 'nonlocal', 'numbers', 'numeric-types',
-    'objects', 'operator-summary', 'pass', 'power', 'raise', 'return',
+    'objects', 'operator-summary', 'pita', 'power', 'raise', 'return',
     'sequence-types', 'shifting', 'slicings', 'specialattrs', 'specialnames',
     'string-methods', 'strings', 'subscriptions', 'truth', 'try', 'types',
     'typesfunctions', 'typesmapping', 'typesmethods', 'typesmodules',
@@ -412,26 +412,26 @@ pydoc_topic_labels = [
 kundi PydocTopicsBuilder(Builder):
     name = 'pydoc-topics'
 
-    default_translator_kundi = TextTranslator
+    default_translator_class = TextTranslator
 
-    def init(self):
+    eleza init(self):
         self.topics = {}
         self.secnumbers = {}
 
-    def get_outdated_docs(self):
-        return 'all pydoc topics'
+    eleza get_outdated_docs(self):
+        rudisha 'all pydoc topics'
 
-    def get_target_uri(self, docname, typ=None):
-        return ''  # no URIs
+    eleza get_target_uri(self, docname, typ=Tupu):
+        rudisha ''  # no URIs
 
-    def write(self, *ignored):
+    eleza write(self, *ignored):
         writer = TextWriter(self)
-        for label in status_iterator(pydoc_topic_labels,
+        kila label kwenye status_iterator(pydoc_topic_labels,
                                      'building topics... ',
                                      length=len(pydoc_topic_labels)):
-            if label not in self.env.domaindata['std']['labels']:
-                self.env.logger.warn('label %r not in documentation' % label)
-                continue
+            ikiwa label haiko kwenye self.env.domaindata['std']['labels']:
+                self.env.logger.warn('label %r haiko kwenye documentation' % label)
+                endelea
             docname, labelid, sectname = self.env.domaindata['std']['labels'][label]
             doctree = self.env.get_and_resolve_doctree(docname, self)
             document = new_document('<section node>')
@@ -440,36 +440,36 @@ kundi PydocTopicsBuilder(Builder):
             writer.write(document, destination)
             self.topics[label] = writer.output
 
-    def finish(self):
+    eleza finish(self):
         f = open(path.join(self.outdir, 'topics.py'), 'wb')
-        try:
+        jaribu:
             f.write('# -*- coding: utf-8 -*-\n'.encode('utf-8'))
             f.write(('# Autogenerated by Sphinx on %s\n' % asctime()).encode('utf-8'))
             f.write(('topics = ' + pformat(self.topics) + '\n').encode('utf-8'))
-        finally:
+        mwishowe:
             f.close()
 
 
-# Support for documenting Opcodes
+# Support kila documenting Opcodes
 
 opcode_sig_re = re.compile(r'(\w+(?:\+\d)?)(?:\s*\((.*)\))?')
 
 
-def parse_opcode_signature(env, sig, signode):
+eleza parse_opcode_signature(env, sig, signode):
     """Transform an opcode signature into RST nodes."""
     m = opcode_sig_re.match(sig)
-    if m is None:
-        raise ValueError
+    ikiwa m ni Tupu:
+        ashiria ValueError
     opname, arglist = m.groups()
     signode += addnodes.desc_name(opname, opname)
-    if arglist is not None:
+    ikiwa arglist ni sio Tupu:
         paramlist = addnodes.desc_parameterlist()
         signode += paramlist
         paramlist += addnodes.desc_parameter(arglist, arglist)
-    return opname.strip()
+    rudisha opname.strip()
 
 
-# Support for documenting pdb commands
+# Support kila documenting pdb commands
 
 pdbcmd_sig_re = re.compile(r'([a-z()!]+)\s*(.*)')
 
@@ -481,24 +481,24 @@ pdbcmd_sig_re = re.compile(r'([a-z()!]+)\s*(.*)')
 #                                   ''', re.X)
 
 
-def parse_pdb_command(env, sig, signode):
+eleza parse_pdb_command(env, sig, signode):
     """Transform a pdb command signature into RST nodes."""
     m = pdbcmd_sig_re.match(sig)
-    if m is None:
-        raise ValueError
+    ikiwa m ni Tupu:
+        ashiria ValueError
     name, args = m.groups()
     fullname = name.replace('(', '').replace(')', '')
     signode += addnodes.desc_name(name, name)
-    if args:
+    ikiwa args:
         signode += addnodes.desc_addname(' '+args, ' '+args)
-    return fullname
+    rudisha fullname
 
 
-def process_audit_events(app, doctree, kutokadocname):
-    for node in doctree.traverse(audit_event_list):
-        break
-    else:
-        return
+eleza process_audit_events(app, doctree, kutokadocname):
+    kila node kwenye doctree.traverse(audit_event_list):
+        koma
+    isipokua:
+        rudisha
 
     env = app.builder.env
 
@@ -523,7 +523,7 @@ def process_audit_events(app, doctree, kutokadocname):
     row += nodes.entry('', nodes.paragraph('', nodes.Text('References')))
     head += row
 
-    for name in sorted(getattr(env, "all_audit_events", ())):
+    kila name kwenye sorted(getattr(env, "all_audit_events", ())):
         audit_event = env.all_audit_events[name]
 
         row = nodes.row()
@@ -531,34 +531,34 @@ def process_audit_events(app, doctree, kutokadocname):
         row += nodes.entry('', node)
 
         node = nodes.paragraph()
-        for i, a in enumerate(audit_event['args']):
-            if i:
+        kila i, a kwenye enumerate(audit_event['args']):
+            ikiwa i:
                 node += nodes.Text(", ")
             node += nodes.literal(a, nodes.Text(a))
         row += nodes.entry('', node)
 
         node = nodes.paragraph()
         backlinks = enumerate(sorted(set(audit_event['source'])), start=1)
-        for i, (doc, label) in backlinks:
-            if isinstance(label, str):
+        kila i, (doc, label) kwenye backlinks:
+            ikiwa isinstance(label, str):
                 ref = nodes.reference("", nodes.Text("[{}]".format(i)), internal=Kweli)
-                try:
+                jaribu:
                     ref['refuri'] = "{}#{}".format(
                         app.builder.get_relative_uri(kutokadocname, doc),
                         label,
                     )
-                except NoUri:
-                    continue
+                tatizo NoUri:
+                    endelea
                 node += ref
         row += nodes.entry('', node)
 
         body += row
 
-    for node in doctree.traverse(audit_event_list):
+    kila node kwenye doctree.traverse(audit_event_list):
         node.replace_self(table)
 
 
-def setup(app):
+eleza setup(app):
     app.add_role('issue', issue_role)
     app.add_role('source', source_role)
     app.add_directive('impl-detail', ImplementationDetail)
@@ -580,4 +580,4 @@ def setup(app):
     app.add_directive_to_domain('py', 'abstractmethod', PyAbstractMethod)
     app.add_directive('miscnews', MiscNews)
     app.connect('doctree-resolved', process_audit_events)
-    return {'version': '1.0', 'parallel_read_safe': Kweli}
+    rudisha {'version': '1.0', 'parallel_read_safe': Kweli}

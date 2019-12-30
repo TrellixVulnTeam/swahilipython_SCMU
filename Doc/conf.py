@@ -1,9 +1,9 @@
 #
 # Python documentation build configuration file
 #
-# This file is execfile()d with the current directory set to its containing dir.
+# This file ni execfile()d ukijumuisha the current directory set to its containing dir.
 #
-# The contents of this file are pickled, so don't put values in the namespace
+# The contents of this file are pickled, so don't put values kwenye the namespace
 # that aren't pickleable (module agizas are okay, they're removed automatically).
 
 agiza sys, os, time
@@ -18,10 +18,10 @@ extensions = ['sphinx.ext.coverage', 'sphinx.ext.doctest',
 
 
 doctest_global_setup = '''
-try:
+jaribu:
     agiza _tkinter
-except ImportError:
-    _tkinter = None
+tatizo ImportError:
+    _tkinter = Tupu
 '''
 
 manpages_url = 'https://manpages.debian.org/{path}'
@@ -30,38 +30,38 @@ manpages_url = 'https://manpages.debian.org/{path}'
 project = 'Python'
 copyright = '2001-%s, Python Software Foundation' % time.strftime('%Y')
 
-# We look for the Include/patchlevel.h file in the current Python source tree
-# and replace the values accordingly.
+# We look kila the Include/patchlevel.h file kwenye the current Python source tree
+# na replace the values accordingly.
 agiza patchlevel
 version, release = patchlevel.get_version_info()
 
-# There are two options for replacing |today|: either, you set today to some
-# non-false value, then it is used:
+# There are two options kila replacing |today|: either, you set today to some
+# non-false value, then it ni used:
 today = ''
-# Else, today_fmt is used as the format for a strftime call.
+# Else, today_fmt ni used kama the format kila a strftime call.
 today_fmt = '%B %d, %Y'
 
-# By default, highlight as Python 3.
+# By default, highlight kama Python 3.
 highlight_language = 'python3'
 
 # Minimum version of sphinx required
 needs_sphinx = '1.8'
 
-# Ignore any .rst files in the venv/ directory.
+# Ignore any .rst files kwenye the venv/ directory.
 exclude_patterns = ['venv/*', 'README.rst']
 venvdir = os.getenv('VENVDIR')
-if venvdir is not None:
+ikiwa venvdir ni sio Tupu:
     exclude_patterns.append(venvdir + '/*')
 
-# Disable Docutils smartquotes for several translations
+# Disable Docutils smartquotes kila several translations
 smartquotes_excludes = {
     'languages': ['ja', 'fr', 'zh_TW', 'zh_CN'], 'builders': ['man', 'text'],
 }
 
-# Avoid a warning with Sphinx >= 2.0
+# Avoid a warning ukijumuisha Sphinx >= 2.0
 master_doc = 'contents'
 
-# Options for HTML output
+# Options kila HTML output
 # -----------------------
 
 # Use our custom theme.
@@ -70,13 +70,13 @@ html_theme_path = ['tools']
 html_theme_options = {
     'collapsiblesidebar': Kweli,
     'issues_url': 'https://docs.python.org/3/bugs.html',
-    'root_include_title': False   # We use the version switcher instead.
+    'root_include_title': Uongo   # We use the version switcher instead.
 }
 
-# Short title used e.g. for <title> HTML tags.
+# Short title used e.g. kila <title> HTML tags.
 html_short_title = '%s Documentation' % release
 
-# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
+# If sio '', a 'Last updated on:' timestamp ni inserted at every page bottom,
 # using the given strftime format.
 html_last_updated_fmt = '%b %d, %Y'
 
@@ -103,14 +103,14 @@ html_use_opensearch = 'https://docs.python.org/' + version
 # Additional static files.
 html_static_path = ['tools/static']
 
-# Output file base name for HTML help builder.
+# Output file base name kila HTML help builder.
 htmlhelp_basename = 'python' + release.replace('.', '')
 
 # Split the index
 html_split_index = Kweli
 
 
-# Options for LaTeX output
+# Options kila LaTeX output
 # ------------------------
 
 latex_engine = 'xelatex'
@@ -119,7 +119,7 @@ latex_engine = 'xelatex'
 latex_elements = {
 }
 
-# Additional stuff for the LaTeX preamble.
+# Additional stuff kila the LaTeX preamble.
 latex_elements['preamble'] = r'''
 \authoraddress{
   \sphinxstrong{Python Software Foundation}\\
@@ -129,10 +129,10 @@ latex_elements['preamble'] = r'''
 \let\endVerbatim=\endOriginalVerbatim
 '''
 
-# The paper size ('letter' or 'a4').
+# The paper size ('letter' ama 'a4').
 latex_elements['papersize'] = 'a4'
 
-# The font size ('10pt', '11pt' or '12pt').
+# The font size ('10pt', '11pt' ama '12pt').
 latex_elements['pointsize'] = '10pt'
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -144,7 +144,7 @@ latex_documents = [
     ('distributing/index', 'distributing.tex',
      'Distributing Python Modules', _stdauthor, 'manual'),
     ('extending/index', 'extending.tex',
-     'Extending and Embedding Python', _stdauthor, 'manual'),
+     'Extending na Embedding Python', _stdauthor, 'manual'),
     ('installing/index', 'installing.tex',
      'Installing Python Modules', _stdauthor, 'manual'),
     ('library/index', 'library.tex',
@@ -154,28 +154,28 @@ latex_documents = [
     ('tutorial/index', 'tutorial.tex',
      'Python Tutorial', _stdauthor, 'manual'),
     ('using/index', 'using.tex',
-     'Python Setup and Usage', _stdauthor, 'manual'),
+     'Python Setup na Usage', _stdauthor, 'manual'),
     ('faq/index', 'faq.tex',
      'Python Frequently Asked Questions', _stdauthor, 'manual'),
     ('whatsnew/' + version, 'whatsnew.tex',
-     'What\'s New in Python', 'A. M. Kuchling', 'howto'),
+     'What\'s New kwenye Python', 'A. M. Kuchling', 'howto'),
 ]
 # Collect all HOWTOs individually
 latex_documents.extend(('howto/' + fn[:-4], 'howto-' + fn[:-4] + '.tex',
                         '', _stdauthor, 'howto')
-                       for fn in os.listdir('howto')
-                       if fn.endswith('.rst') and fn != 'index.rst')
+                       kila fn kwenye os.listdir('howto')
+                       ikiwa fn.endswith('.rst') na fn != 'index.rst')
 
-# Documents to append as an appendix to all manuals.
+# Documents to append kama an appendix to all manuals.
 latex_appendices = ['glossary', 'about', 'license', 'copyright']
 
-# Options for Epub output
+# Options kila Epub output
 # -----------------------
 
 epub_author = 'Python Documentation Authors'
 epub_publisher = 'Python Software Foundation'
 
-# Options for the coverage checker
+# Options kila the coverage checker
 # --------------------------------
 
 # The coverage checker will ignore all modules/functions/classes whose names
@@ -193,12 +193,12 @@ coverage_ignore_functions = [
 coverage_ignore_classes = [
 ]
 
-# Glob patterns for C source files for C API coverage, relative to this directory.
+# Glob patterns kila C source files kila C API coverage, relative to this directory.
 coverage_c_path = [
     '../Include/*.h',
 ]
 
-# Regexes to find C items in the source files.
+# Regexes to find C items kwenye the source files.
 coverage_c_regexes = {
     'cfunction': (r'^PyAPI_FUNC\(.*\)\s+([^_][\w_]+)'),
     'data': (r'^PyAPI_DATA\(.*\)\s+([^_][\w_]+)'),
@@ -206,22 +206,22 @@ coverage_c_regexes = {
 }
 
 # The coverage checker will ignore all C items whose names match these regexes
-# (using re.match) -- the keys must be the same as in coverage_c_regexes.
+# (using re.match) -- the keys must be the same kama kwenye coverage_c_regexes.
 coverage_ignore_c_items = {
 #    'cfunction': [...]
 }
 
 
-# Options for the link checker
+# Options kila the link checker
 # ----------------------------
 
 # Ignore certain URLs.
 linkcheck_ignore = [r'https://bugs.python.org/(issue)?\d+',
-                    # Ignore PEPs for now, they all have permanent redirects.
+                    # Ignore PEPs kila now, they all have permanent redirects.
                     r'http://www.python.org/dev/peps/pep-\d+']
 
 
-# Options for extensions
+# Options kila extensions
 # ----------------------
 
 # Relative filename of the reference count data file.

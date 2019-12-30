@@ -9,10 +9,10 @@ newPeople = (
     ('Zhirinovsky' , 57),
   )
 
-for person in newPeople:
+kila person kwenye newPeople:
     cur.execute("insert into people (name_last, age) values (?, ?)", person)
 
-# The changes will not be saved unless the transaction is committed explicitly:
+# The changes will sio be saved unless the transaction ni committed explicitly:
 con.commit()
 
 con.close()

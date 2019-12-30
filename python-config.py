@@ -1,74 +1,74 @@
 #!/usr/local/bin/python3.8d
 # -*- python -*-
 
-# Keep this script in sync with python-config.sh.in
+# Keep this script kwenye sync ukijumuisha python-config.sh.in
 
-import getopt
-import os
-import sys
-import sysconfig
+agiza getopt
+agiza os
+agiza sys
+agiza sysconfig
 
 valid_opts = ['prefix', 'exec-prefix', 'includes', 'libs', 'cflags',
               'ldflags', 'extension-suffix', 'help', 'abiflags', 'configdir',
               'embed']
 
-def exit_with_usage(code=1):
-    print("Usage: {0} [{1}]".format(
-        sys.argv[0], '|'.join('--'+opt for opt in valid_opts)), file=sys.stderr)
+eleza exit_with_usage(code=1):
+    andika("Usage: {0} [{1}]".format(
+        sys.argv[0], '|'.join('--'+opt kila opt kwenye valid_opts)), file=sys.stderr)
     sys.exit(code)
 
-try:
+jaribu:
     opts, args = getopt.getopt(sys.argv[1:], '', valid_opts)
-except getopt.error:
+tatizo getopt.error:
     exit_with_usage()
 
-if not opts:
+ikiwa sio opts:
     exit_with_usage()
 
 pyver = sysconfig.get_config_var('VERSION')
 getvar = sysconfig.get_config_var
 
-opt_flags = [flag for (flag, val) in opts]
+opt_flags = [flag kila (flag, val) kwenye opts]
 
-if '--help' in opt_flags:
+ikiwa '--help' kwenye opt_flags:
     exit_with_usage(code=0)
 
-for opt in opt_flags:
-    if opt == '--prefix':
-        print(sysconfig.get_config_var('prefix'))
+kila opt kwenye opt_flags:
+    ikiwa opt == '--prefix':
+        andika(sysconfig.get_config_var('prefix'))
 
-    elif opt == '--exec-prefix':
-        print(sysconfig.get_config_var('exec_prefix'))
+    lasivyo opt == '--exec-prefix':
+        andika(sysconfig.get_config_var('exec_prefix'))
 
-    elif opt in ('--includes', '--cflags'):
+    lasivyo opt kwenye ('--includes', '--cflags'):
         flags = ['-I' + sysconfig.get_path('include'),
                  '-I' + sysconfig.get_path('platinclude')]
-        if opt == '--cflags':
+        ikiwa opt == '--cflags':
             flags.extend(getvar('CFLAGS').split())
-        print(' '.join(flags))
+        andika(' '.join(flags))
 
-    elif opt in ('--libs', '--ldflags'):
+    lasivyo opt kwenye ('--libs', '--ldflags'):
         libs = []
-        if '--embed' in opt_flags:
+        ikiwa '--embed' kwenye opt_flags:
             libs.append('-lpython' + pyver + sys.abiflags)
-        else:
+        isipokua:
             libpython = getvar('LIBPYTHON')
-            if libpython:
+            ikiwa libpython:
                 libs.append(libpython)
         libs.extend(getvar('LIBS').split() + getvar('SYSLIBS').split())
 
-        # add the prefix/lib/pythonX.Y/config dir, but only if there is no
-        # shared library in prefix/lib/.
-        if opt == '--ldflags':
-            if not getvar('Py_ENABLE_SHARED'):
+        # add the prefix/lib/pythonX.Y/config dir, but only ikiwa there ni no
+        # shared library kwenye prefix/lib/.
+        ikiwa opt == '--ldflags':
+            ikiwa sio getvar('Py_ENABLE_SHARED'):
                 libs.insert(0, '-L' + getvar('LIBPL'))
-        print(' '.join(libs))
+        andika(' '.join(libs))
 
-    elif opt == '--extension-suffix':
-        print(sysconfig.get_config_var('EXT_SUFFIX'))
+    lasivyo opt == '--extension-suffix':
+        andika(sysconfig.get_config_var('EXT_SUFFIX'))
 
-    elif opt == '--abiflags':
-        print(sys.abiflags)
+    lasivyo opt == '--abiflags':
+        andika(sys.abiflags)
 
-    elif opt == '--configdir':
-        print(sysconfig.get_config_var('LIBPL'))
+    lasivyo opt == '--configdir':
+        andika(sysconfig.get_config_var('LIBPL'))

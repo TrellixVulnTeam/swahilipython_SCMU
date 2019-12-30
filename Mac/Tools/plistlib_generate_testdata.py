@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-from Cocoa import NSMutableDictionary, NSMutableArray, NSString, NSDate, NSNumber
-from Cocoa import NSPropertyListSerialization, NSPropertyListOpenStepFormat
-from Cocoa import NSPropertyListXMLFormat_v1_0, NSPropertyListBinaryFormat_v1_0
-from Cocoa import CFUUIDCreateFromString, NSNull, NSUUID, CFPropertyListCreateData
-from Cocoa import NSURL
-from Cocoa import NSKeyedArchiver
+kutoka Cocoa agiza NSMutableDictionary, NSMutableArray, NSString, NSDate, NSNumber
+kutoka Cocoa agiza NSPropertyListSerialization, NSPropertyListOpenStepFormat
+kutoka Cocoa agiza NSPropertyListXMLFormat_v1_0, NSPropertyListBinaryFormat_v1_0
+kutoka Cocoa agiza CFUUIDCreateFromString, NSNull, NSUUID, CFPropertyListCreateData
+kutoka Cocoa agiza NSURL
+kutoka Cocoa agiza NSKeyedArchiver
 
-import datetime
-from collections import OrderedDict
-import binascii
+agiza datetime
+kutoka collections agiza OrderedDict
+agiza binascii
 
 FORMATS=[
 #    ('openstep', NSPropertyListOpenStepFormat),
@@ -17,17 +17,17 @@ FORMATS=[
     ('plistlib.FMT_BINARY', NSPropertyListBinaryFormat_v1_0),
 ]
 
-def nsstr(value):
-    return NSString.alloc().initWithString_(value)
+eleza nsstr(value):
+    rudisha NSString.alloc().initWithString_(value)
 
 
-def main():
+eleza main():
     pl = OrderedDict()
 
-    # Note: pl is an OrderedDict to control the order
-    # of keys, and hence have some control on the structure
+    # Note: pl ni an OrderedDict to control the order
+    # of keys, na hence have some control on the structure
     # of the output file.
-    # New keys should be added in alphabetical order.
+    # New keys should be added kwenye alphabetical order.
 
     seconds = datetime.datetime(2004, 10, 26, 10, 33, 33, tzinfo=datetime.timezone(datetime.timedelta(0))).timestamp()
     pl[nsstr('aBigInt')] = 2 ** 63 - 44
@@ -35,8 +35,8 @@ def main():
     pl[nsstr('aDate')] = NSDate.dateWithTimeIntervalSince1970_(seconds)
 
     pl[nsstr('aDict')] = d = OrderedDict()
-    d[nsstr('aFalseValue')] = False
-    d[nsstr('aTrueValue')] = True
+    d[nsstr('aUongoValue')] = Uongo
+    d[nsstr('aKweliValue')] = Kweli
     d[nsstr('aUnicodeValue')] = "M\xe4ssig, Ma\xdf"
     d[nsstr('anotherString')] = "<hello & 'hi' there!>"
     d[nsstr('deeperDict')] = dd = OrderedDict()
@@ -80,27 +80,27 @@ def main():
 
     pl[nsstr('\xc5benraa')] = nsstr("That was a unicode key.")
 
-    print("TESTDATA={")
-    for fmt_name, fmt_key in FORMATS:
+    andika("TESTDATA={")
+    kila fmt_name, fmt_key kwenye FORMATS:
         data, error = NSPropertyListSerialization.dataWithPropertyList_format_options_error_(
-            pl, fmt_key, 0, None)
-        if data is None:
-            print("Cannot serialize", fmt_name, error)
+            pl, fmt_key, 0, Tupu)
+        ikiwa data ni Tupu:
+            andika("Cannot serialize", fmt_name, error)
 
-        else:
-            print("    %s: binascii.a2b_base64(b'''\n        %s'''),"%(fmt_name, _encode_base64(bytes(data)).decode('ascii')[:-1]))
+        isipokua:
+            andika("    %s: binascii.a2b_base64(b'''\n        %s'''),"%(fmt_name, _encode_base64(bytes(data)).decode('ascii')[:-1]))
 
     keyed_archive_data = NSKeyedArchiver.archivedDataWithRootObject_("KeyArchive UID Test")
-    print("    'KEYED_ARCHIVE': binascii.a2b_base64(b'''\n        %s''')," % (_encode_base64(bytes(keyed_archive_data)).decode('ascii')[:-1]))
-    print("}")
-    print()
+    andika("    'KEYED_ARCHIVE': binascii.a2b_base64(b'''\n        %s''')," % (_encode_base64(bytes(keyed_archive_data)).decode('ascii')[:-1]))
+    andika("}")
+    andika()
 
-def _encode_base64(s, maxlinelength=60):
+eleza _encode_base64(s, maxlinelength=60):
     maxbinsize = (maxlinelength//4)*3
     pieces = []
-    for i in range(0, len(s), maxbinsize):
+    kila i kwenye range(0, len(s), maxbinsize):
         chunk = s[i : i + maxbinsize]
         pieces.append(binascii.b2a_base64(chunk))
-    return b'        '.join(pieces)
+    rudisha b'        '.join(pieces)
 
 main()

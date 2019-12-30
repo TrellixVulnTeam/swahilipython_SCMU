@@ -1,34 +1,34 @@
-"""Strip viewer and related widgets.
+"""Strip viewer na related widgets.
 
-The classes in this file implement the StripViewer shown in the top two thirds
+The classes kwenye this file implement the StripViewer shown kwenye the top two thirds
 of the main Pynche window.  It consists of three StripWidgets which display
-the variations in red, green, and blue respectively of the currently selected
+the variations kwenye red, green, na blue respectively of the currently selected
 r/g/b color value.
 
 Each StripWidget shows the color variations that are reachable by varying an
-axis of the currently selected color.  So for example, if the color is
+axis of the currently selected color.  So kila example, ikiwa the color is
 
   (R,G,B)=(127,163,196)
 
-then the Red variations show colors from (0,163,196) to (255,163,196), the
-Green variations show colors from (127,0,196) to (127,255,196), and the Blue
-variations show colors from (127,163,0) to (127,163,255).
+then the Red variations show colors kutoka (0,163,196) to (255,163,196), the
+Green variations show colors kutoka (127,0,196) to (127,255,196), na the Blue
+variations show colors kutoka (127,163,0) to (127,163,255).
 
-The selected color is always visible in all three StripWidgets, and in fact
-each StripWidget highlights the selected color, and has an arrow pointing to
+The selected color ni always visible kwenye all three StripWidgets, na kwenye fact
+each StripWidget highlights the selected color, na has an arrow pointing to
 the selected chip, which includes the value along that particular axis.
 
-Clicking on any chip in any StripWidget selects that color, and updates all
-arrows and other windows.  By toggling on Update while dragging, Pynche will
-select the color under the cursor while you drag it, but be forewarned that
+Clicking on any chip kwenye any StripWidget selects that color, na updates all
+arrows na other windows.  By toggling on Update wakati dragging, Pynche will
+select the color under the cursor wakati you drag it, but be forewarned that
 this can be slow.
 """
 
-from tkinter import *
-import ColorDB
+kutoka tkinter agiza *
+agiza ColorDB
 
-# Load this script into the Tcl interpreter and call it in
-# StripWidget.set_color().  This is about as fast as it can be with the
+# Load this script into the Tcl interpreter na call it in
+# StripWidget.set_color().  This ni about kama fast kama it can be ukijumuisha the
 # current _tkinter.c interface, which doesn't support Tcl Objects.
 TCLPROC = '''\
 proc setcolor {canv colors} {
@@ -49,61 +49,61 @@ SPACE = ' '
 
 
 
-def constant(numchips):
+eleza constant(numchips):
     step = 255.0 / (numchips - 1)
     start = 0.0
     seq = []
-    while numchips > 0:
+    wakati numchips > 0:
         seq.append(int(start))
         start = start + step
         numchips = numchips - 1
-    return seq
+    rudisha seq
 
 # red variations, green+blue = cyan constant
-def constant_red_generator(numchips, red, green, blue):
+eleza constant_red_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip([red] * numchips, seq, seq))
+    rudisha list(zip([red] * numchips, seq, seq))
 
 # green variations, red+blue = magenta constant
-def constant_green_generator(numchips, red, green, blue):
+eleza constant_green_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip(seq, [green] * numchips, seq))
+    rudisha list(zip(seq, [green] * numchips, seq))
 
 # blue variations, red+green = yellow constant
-def constant_blue_generator(numchips, red, green, blue):
+eleza constant_blue_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip(seq, seq, [blue] * numchips))
+    rudisha list(zip(seq, seq, [blue] * numchips))
 
 # red variations, green+blue = cyan constant
-def constant_cyan_generator(numchips, red, green, blue):
+eleza constant_cyan_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip(seq, [green] * numchips, [blue] * numchips))
+    rudisha list(zip(seq, [green] * numchips, [blue] * numchips))
 
 # green variations, red+blue = magenta constant
-def constant_magenta_generator(numchips, red, green, blue):
+eleza constant_magenta_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip([red] * numchips, seq, [blue] * numchips))
+    rudisha list(zip([red] * numchips, seq, [blue] * numchips))
 
 # blue variations, red+green = yellow constant
-def constant_yellow_generator(numchips, red, green, blue):
+eleza constant_yellow_generator(numchips, red, green, blue):
     seq = constant(numchips)
-    return list(zip([red] * numchips, [green] * numchips, seq))
+    rudisha list(zip([red] * numchips, [green] * numchips, seq))
 
 
 
-class LeftArrow:
+kundi LeftArrow:
     _ARROWWIDTH = 30
     _ARROWHEIGHT = 15
     _YOFFSET = 13
     _TEXTYOFFSET = 1
     _TAG = ('leftarrow',)
 
-    def __init__(self, canvas, x):
+    eleza __init__(self, canvas, x):
         self._canvas = canvas
         self.__arrow, self.__text = self._create(x)
         self.move_to(x)
 
-    def _create(self, x):
+    eleza _create(self, x):
         arrow = self._canvas.create_line(
             x, self._ARROWHEIGHT + self._YOFFSET,
             x, self._YOFFSET,
@@ -116,25 +116,25 @@ class LeftArrow:
             self._ARROWHEIGHT - self._TEXTYOFFSET,
             tags=self._TAG,
             text='128')
-        return arrow, text
+        rudisha arrow, text
 
-    def _x(self):
+    eleza _x(self):
         coords = list(self._canvas.coords(self._TAG))
         assert coords
-        return coords[0]
+        rudisha coords[0]
 
-    def move_to(self, x):
+    eleza move_to(self, x):
         deltax = x - self._x()
         self._canvas.move(self._TAG, deltax, 0)
 
-    def set_text(self, text):
+    eleza set_text(self, text):
         self._canvas.itemconfigure(self.__text, text=text)
 
 
-class RightArrow(LeftArrow):
+kundi RightArrow(LeftArrow):
     _TAG = ('rightarrow',)
 
-    def _create(self, x):
+    eleza _create(self, x):
         arrow = self._canvas.create_line(
             x, self._YOFFSET,
             x + self._ARROWWIDTH, self._YOFFSET,
@@ -148,45 +148,45 @@ class RightArrow(LeftArrow):
             justify=RIGHT,
             text='128',
             tags=self._TAG)
-        return arrow, text
+        rudisha arrow, text
 
-    def _x(self):
+    eleza _x(self):
         coords = list(self._canvas.coords(self._TAG))
         assert coords
-        return coords[0] + self._ARROWWIDTH
+        rudisha coords[0] + self._ARROWWIDTH
 
 
 
-class StripWidget:
+kundi StripWidget:
     _CHIPHEIGHT = 50
     _CHIPWIDTH = 10
     _NUMCHIPS = 40
 
-    def __init__(self, switchboard,
-                 master     = None,
+    eleza __init__(self, switchboard,
+                 master     = Tupu,
                  chipwidth  = _CHIPWIDTH,
                  chipheight = _CHIPHEIGHT,
                  numchips   = _NUMCHIPS,
-                 generator  = None,
-                 axis       = None,
+                 generator  = Tupu,
+                 axis       = Tupu,
                  label      = '',
-                 uwdvar     = None,
-                 hexvar     = None):
+                 uwdvar     = Tupu,
+                 hexvar     = Tupu):
         # instance variables
         self.__generator = generator
         self.__axis = axis
         self.__numchips = numchips
-        assert self.__axis in (0, 1, 2)
+        assert self.__axis kwenye (0, 1, 2)
         self.__uwd = uwdvar
         self.__hexp = hexvar
         # the last chip selected
-        self.__lastchip = None
+        self.__lastchip = Tupu
         self.__sb = switchboard
 
         canvaswidth = numchips * (chipwidth + 1)
         canvasheight = chipheight + 43            # BAW: Kludge
 
-        # create the canvas and pack it
+        # create the canvas na pack it
         canvas = self.__canvas = Canvas(master,
                                         width=canvaswidth,
                                         height=canvasheight,
@@ -199,7 +199,7 @@ class StripWidget:
         canvas.bind('<ButtonRelease-1>', self.__select_chip)
         canvas.bind('<B1-Motion>', self.__select_chip)
 
-        # Load a proc into the Tcl interpreter.  This is used in the
+        # Load a proc into the Tcl interpreter.  This ni used kwenye the
         # set_color() method to speed up setting the chip colors.
         canvas.tk.eval(TCLPROC)
 
@@ -208,13 +208,13 @@ class StripWidget:
         x = 1
         y = 30
         tags = ('chip',)
-        for c in range(self.__numchips):
+        kila c kwenye range(self.__numchips):
             color = 'grey'
             canvas.create_rectangle(
                 x, y, x+chipwidth, y+chipheight,
                 fill=color, outline=color,
                 tags=tags)
-            x = x + chipwidth + 1                 # for outline
+            x = x + chipwidth + 1                 # kila outline
             chips.append(color)
 
         # create the strip label
@@ -223,83 +223,83 @@ class StripWidget:
             text=label,
             anchor=W)
 
-        # create the arrow and text item
+        # create the arrow na text item
         chipx = self.__arrow_x(0)
         self.__leftarrow = LeftArrow(canvas, chipx)
 
         chipx = self.__arrow_x(len(chips) - 1)
         self.__rightarrow = RightArrow(canvas, chipx)
 
-    def __arrow_x(self, chipnum):
+    eleza __arrow_x(self, chipnum):
         coords = self.__canvas.coords(chipnum+1)
         assert coords
         x0, y0, x1, y1 = coords
-        return (x1 + x0) / 2.0
+        rudisha (x1 + x0) / 2.0
 
-    # Invoked when one of the chips is clicked.  This should just tell the
+    # Invoked when one of the chips ni clicked.  This should just tell the
     # switchboard to set the color on all the output components
-    def __select_chip(self, event=None):
+    eleza __select_chip(self, event=Tupu):
         x = event.x
         y = event.y
         canvas = self.__canvas
         chip = canvas.find_overlapping(x, y, x, y)
-        if chip and (1 <= chip[0] <= self.__numchips):
+        ikiwa chip na (1 <= chip[0] <= self.__numchips):
             color = self.__chips[chip[0]-1]
             red, green, blue = ColorDB.rrggbb_to_triplet(color)
             etype = int(event.type)
-            if (etype == BTNUP or self.__uwd.get()):
+            ikiwa (etype == BTNUP ama self.__uwd.get()):
                 # update everyone
                 self.__sb.update_views(red, green, blue)
-            else:
+            isipokua:
                 # just track the arrows
                 self.__trackarrow(chip[0], (red, green, blue))
 
-    def __trackarrow(self, chip, rgbtuple):
+    eleza __trackarrow(self, chip, rgbtuple):
         # invert the last chip
-        if self.__lastchip is not None:
+        ikiwa self.__lastchip ni sio Tupu:
             color = self.__canvas.itemcget(self.__lastchip, 'fill')
             self.__canvas.itemconfigure(self.__lastchip, outline=color)
         self.__lastchip = chip
         # get the arrow's text
         coloraxis = rgbtuple[self.__axis]
-        if self.__hexp.get():
+        ikiwa self.__hexp.get():
             # hex
             text = hex(coloraxis)
-        else:
+        isipokua:
             # decimal
             text = repr(coloraxis)
-        # move the arrow, and set its text
-        if coloraxis <= 128:
+        # move the arrow, na set its text
+        ikiwa coloraxis <= 128:
             # use the left arrow
             self.__leftarrow.set_text(text)
             self.__leftarrow.move_to(self.__arrow_x(chip-1))
             self.__rightarrow.move_to(-100)
-        else:
+        isipokua:
             # use the right arrow
             self.__rightarrow.set_text(text)
             self.__rightarrow.move_to(self.__arrow_x(chip-1))
             self.__leftarrow.move_to(-100)
-        # and set the chip's outline
+        # na set the chip's outline
         brightness = ColorDB.triplet_to_brightness(rgbtuple)
-        if brightness <= 128:
+        ikiwa brightness <= 128:
             outline = 'white'
-        else:
+        isipokua:
             outline = 'black'
         self.__canvas.itemconfigure(chip, outline=outline)
 
 
-    def update_yourself(self, red, green, blue):
+    eleza update_yourself(self, red, green, blue):
         assert self.__generator
         i = 1
         chip = 0
         chips = self.__chips = []
         tk = self.__canvas.tk
-        # get the red, green, and blue components for all chips
-        for t in self.__generator(self.__numchips, red, green, blue):
+        # get the red, green, na blue components kila all chips
+        kila t kwenye self.__generator(self.__numchips, red, green, blue):
             rrggbb = ColorDB.triplet_to_rrggbb(t)
             chips.append(rrggbb)
             tred, tgreen, tblue = t
-            if tred <= red and tgreen <= green and tblue <= blue:
+            ikiwa tred <= red na tgreen <= green na tblue <= blue:
                 chip = i
             i = i + 1
         # call the raw tcl script
@@ -308,13 +308,13 @@ class StripWidget:
         # move the arrows around
         self.__trackarrow(chip, (red, green, blue))
 
-    def set(self, label, generator):
+    eleza set(self, label, generator):
         self.__canvas.itemconfigure(self.__label, text=label)
         self.__generator = generator
 
 
-class StripViewer:
-    def __init__(self, switchboard, master=None):
+kundi StripViewer:
+    eleza __init__(self, switchboard, master=Tupu):
         self.__sb = switchboard
         optiondb = switchboard.optiondb()
         # create a frame inside the master.
@@ -362,7 +362,7 @@ class StripViewer:
 
         # create the controls
         uwdbtn = Checkbutton(frame2,
-                             text='Update while dragging',
+                             text='Update wakati dragging',
                              variable=uwd)
         uwdbtn.grid(row=0, column=1, sticky=W)
         hexbtn = Checkbutton(frame2,
@@ -371,7 +371,7 @@ class StripViewer:
                              command=self.__togglehex)
         hexbtn.grid(row=1, column=1, sticky=W)
 
-        # XXX: ignore this feature for now; it doesn't work quite right yet
+        # XXX: ignore this feature kila now; it doesn't work quite right yet
 
 ##        gentypevar = self.__gentypevar = IntVar()
 ##        self.__variations = Radiobutton(frame,
@@ -393,41 +393,41 @@ class StripViewer:
                           command=self.__towhite)
         whitebtn.grid(row=0, column=2, rowspan=2, sticky=E, padx=padx)
 
-    def update_yourself(self, red, green, blue):
+    eleza update_yourself(self, red, green, blue):
         self.__reds.update_yourself(red, green, blue)
         self.__greens.update_yourself(red, green, blue)
         self.__blues.update_yourself(red, green, blue)
 
-    def __togglehex(self, event=None):
+    eleza __togglehex(self, event=Tupu):
         red, green, blue = self.__sb.current_rgb()
         self.update_yourself(red, green, blue)
 
-##    def __togglegentype(self, event=None):
+##    eleza __togglegentype(self, event=Tupu):
 ##        which = self.__gentypevar.get()
-##        if which == 0:
+##        ikiwa which == 0:
 ##            self.__reds.set(label='Red Variations',
 ##                            generator=constant_cyan_generator)
 ##            self.__greens.set(label='Green Variations',
 ##                              generator=constant_magenta_generator)
 ##            self.__blues.set(label='Blue Variations',
 ##                             generator=constant_yellow_generator)
-##        elif which == 1:
+##        lasivyo which == 1:
 ##            self.__reds.set(label='Red Constant',
 ##                            generator=constant_red_generator)
 ##            self.__greens.set(label='Green Constant',
 ##                              generator=constant_green_generator)
 ##            self.__blues.set(label='Blue Constant',
 ##                             generator=constant_blue_generator)
-##        else:
+##        isipokua:
 ##            assert 0
 ##        self.__sb.update_views_current()
 
-    def __toblack(self, event=None):
+    eleza __toblack(self, event=Tupu):
         self.__sb.update_views(0, 0, 0)
 
-    def __towhite(self, event=None):
+    eleza __towhite(self, event=Tupu):
         self.__sb.update_views(255, 255, 255)
 
-    def save_options(self, optiondb):
+    eleza save_options(self, optiondb):
         optiondb['UPWHILEDRAG'] = self.__uwdvar.get()
         optiondb['HEXSTRIP'] = self.__hexpvar.get()

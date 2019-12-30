@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-# The above line should get replaced with the path to the Python
+# The above line should get replaced ukijumuisha the path to the Python
 # interpreter; the block below should get 2to3-converted.
 
-try:
-    from test2to3.hello import hello
-except ImportError, e:
+jaribu:
+    kutoka test2to3.hello agiza hello
+tatizo ImportError, e:
     print "Import failed", e
 hello()

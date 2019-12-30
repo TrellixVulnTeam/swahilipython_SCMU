@@ -1,4 +1,4 @@
-import os, string
+agiza os, string
 
 codecs = {
     'cn': ('gb2312', 'gbk', 'gb18030', 'hz'),
@@ -14,36 +14,36 @@ codecs = {
 
 TEMPLATE = string.Template("""\
 #
-# $encoding.py: Python Unicode Codec for $ENCODING
+# $encoding.py: Python Unicode Codec kila $ENCODING
 #
 # Written by Hye-Shik Chang <perky@FreeBSD.org>
 #
 
 agiza _codecs_$owner, codecs
-agiza _multibytecodec as mbc
+agiza _multibytecodec kama mbc
 
 codec = _codecs_$owner.getcodec('$encoding')
 
-class Codec(codecs.Codec):
+kundi Codec(codecs.Codec):
     encode = codec.encode
     decode = codec.decode
 
-class IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
+kundi IncrementalEncoder(mbc.MultibyteIncrementalEncoder,
                          codecs.IncrementalEncoder):
     codec = codec
 
-class IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
+kundi IncrementalDecoder(mbc.MultibyteIncrementalDecoder,
                          codecs.IncrementalDecoder):
     codec = codec
 
-class StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
+kundi StreamReader(Codec, mbc.MultibyteStreamReader, codecs.StreamReader):
     codec = codec
 
-class StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
+kundi StreamWriter(Codec, mbc.MultibyteStreamWriter, codecs.StreamWriter):
     codec = codec
 
-def getregentry():
-    return codecs.CodecInfo(
+eleza getregentry():
+    rudisha codecs.CodecInfo(
         name='$encoding',
         encode=Codec().encode,
         decode=Codec().decode,
@@ -54,16 +54,16 @@ def getregentry():
     )
 """)
 
-def gencodecs(prefix):
-    for loc, encodings in codecs.items():
-        for enc in encodings:
+eleza gencodecs(prefix):
+    kila loc, encodings kwenye codecs.items():
+        kila enc kwenye encodings:
             code = TEMPLATE.substitute(ENCODING=enc.upper(),
                                        encoding=enc.lower(),
                                        owner=loc)
             codecpath = os.path.join(prefix, enc + '.py')
-            with open(codecpath, 'w') as f:
+            ukijumuisha open(codecpath, 'w') kama f:
                 f.write(code)
 
-if __name__ == '__main__':
-    import sys
+ikiwa __name__ == '__main__':
+    agiza sys
     gencodecs(sys.argv[1])

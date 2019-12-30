@@ -1,15 +1,15 @@
-import hashlib
-import os
-import sys
+agiza hashlib
+agiza os
+agiza sys
 
-def main():
+eleza main():
     filenames, hashes, sizes = [], [], []
 
-    for file in sys.argv[1:]:
-        if not os.path.isfile(file):
-            continue
+    kila file kwenye sys.argv[1:]:
+        ikiwa sio os.path.isfile(file):
+            endelea
 
-        with open(file, 'rb') as f:
+        ukijumuisha open(file, 'rb') kama f:
             data = f.read()
             md5 = hashlib.md5()
             md5.update(data)
@@ -17,11 +17,11 @@ def main():
             hashes.append(md5.hexdigest())
             sizes.append(str(len(data)))
 
-    print('{:40s}  {:<32s}  {:<9s}'.format('File', 'MD5', 'Size'))
-    for f, h, s in zip(filenames, hashes, sizes):
-        print('{:40s}  {:>32s}  {:>9s}'.format(f, h, s))
+    andika('{:40s}  {:<32s}  {:<9s}'.format('File', 'MD5', 'Size'))
+    kila f, h, s kwenye zip(filenames, hashes, sizes):
+        andika('{:40s}  {:>32s}  {:>9s}'.format(f, h, s))
 
 
 
-if __name__ == "__main__":
-    sys.exit(int(main() or 0))
+ikiwa __name__ == "__main__":
+    sys.exit(int(main() ama 0))

@@ -1,5 +1,5 @@
-def hello():
-    try:
+eleza hello():
+    jaribu:
         print "Hello, world"
-    except IOError, e:
+    tatizo IOError, e:
         print e.errno

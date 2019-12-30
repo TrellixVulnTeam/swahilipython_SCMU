@@ -1,89 +1,89 @@
 #! /usr/bin/env python3
 
-"""finddiv - a grep-like tool that looks for division operators.
+"""finddiv - a grep-like tool that looks kila division operators.
 
 Usage: finddiv [-l] file_or_directory ...
 
-For directory arguments, all files in the directory whose name ends in
-.py are processed, and subdirectories are processed recursively.
+For directory arguments, all files kwenye the directory whose name ends in
+.py are processed, na subdirectories are processed recursively.
 
-This actually tokenizes the files to avoid false hits in comments or
+This actually tokenizes the files to avoid false hits kwenye comments ama
 strings literals.
 
-By default, this prints all lines containing a / or /= operator, in
+By default, this prints all lines containing a / ama /= operator, in
 grep -n style.  With the -l option specified, it prints the filename
-of files that contain at least one / or /= operator.
+of files that contain at least one / ama /= operator.
 """
 
-import os
-import sys
-import getopt
-import tokenize
+agiza os
+agiza sys
+agiza getopt
+agiza tokenize
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "lh")
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(msg)
-        return 2
-    if not args:
-        usage("at least one file argument is required")
-        return 2
+        rudisha 2
+    ikiwa sio args:
+        usage("at least one file argument ni required")
+        rudisha 2
     listnames = 0
-    for o, a in opts:
-        if o == "-h":
-            print(__doc__)
-            return
-        if o == "-l":
+    kila o, a kwenye opts:
+        ikiwa o == "-h":
+            andika(__doc__)
+            rudisha
+        ikiwa o == "-l":
             listnames = 1
-    exit = None
-    for filename in args:
+    exit = Tupu
+    kila filename kwenye args:
         x = process(filename, listnames)
-        exit = exit or x
-    return exit
+        exit = exit ama x
+    rudisha exit
 
-def usage(msg):
+eleza usage(msg):
     sys.stderr.write("%s: %s\n" % (sys.argv[0], msg))
     sys.stderr.write("Usage: %s [-l] file ...\n" % sys.argv[0])
-    sys.stderr.write("Try `%s -h' for more information.\n" % sys.argv[0])
+    sys.stderr.write("Try `%s -h' kila more information.\n" % sys.argv[0])
 
-def process(filename, listnames):
-    if os.path.isdir(filename):
-        return processdir(filename, listnames)
-    try:
+eleza process(filename, listnames):
+    ikiwa os.path.isdir(filename):
+        rudisha processdir(filename, listnames)
+    jaribu:
         fp = open(filename)
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write("Can't open: %s\n" % msg)
-        return 1
-    with fp:
+        rudisha 1
+    ukijumuisha fp:
         g = tokenize.generate_tokens(fp.readline)
-        lastrow = None
-        for type, token, (row, col), end, line in g:
-            if token in ("/", "/="):
-                if listnames:
-                    print(filename)
-                    break
-                if row != lastrow:
+        lastrow = Tupu
+        kila type, token, (row, col), end, line kwenye g:
+            ikiwa token kwenye ("/", "/="):
+                ikiwa listnames:
+                    andika(filename)
+                    koma
+                ikiwa row != lastrow:
                     lastrow = row
-                    print("%s:%d:%s" % (filename, row, line), end=' ')
+                    andika("%s:%d:%s" % (filename, row, line), end=' ')
 
-def processdir(dir, listnames):
-    try:
+eleza processdir(dir, listnames):
+    jaribu:
         names = os.listdir(dir)
-    except OSError as msg:
+    tatizo OSError kama msg:
         sys.stderr.write("Can't list directory: %s\n" % dir)
-        return 1
+        rudisha 1
     files = []
-    for name in names:
+    kila name kwenye names:
         fn = os.path.join(dir, name)
-        if os.path.normcase(fn).endswith(".py") or os.path.isdir(fn):
+        ikiwa os.path.normcase(fn).endswith(".py") ama os.path.isdir(fn):
             files.append(fn)
     files.sort(key=os.path.normcase)
-    exit = None
-    for fn in files:
+    exit = Tupu
+    kila fn kwenye files:
         x = process(fn, listnames)
-        exit = exit or x
-    return exit
+        exit = exit ama x
+    rudisha exit
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main())

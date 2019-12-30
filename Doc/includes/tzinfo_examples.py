@@ -5,168 +5,168 @@ HOUR = timedelta(hours=1)
 SECOND = timedelta(seconds=1)
 
 # A kundi capturing the platform's idea of local time.
-# (May result in wrong values on historical times in
+# (May result kwenye wrong values on historical times in
 #  timezones where UTC offset and/or the DST rules had
-#  changed in the past.)
-agiza time as _time
+#  changed kwenye the past.)
+agiza time kama _time
 
 STDOFFSET = timedelta(seconds = -_time.timezone)
-if _time.daylight:
+ikiwa _time.daylight:
     DSTOFFSET = timedelta(seconds = -_time.altzone)
-else:
+isipokua:
     DSTOFFSET = STDOFFSET
 
 DSTDIFF = DSTOFFSET - STDOFFSET
 
 kundi LocalTimezone(tzinfo):
 
-    def kutokautc(self, dt):
-        assert dt.tzinfo is self
+    eleza kutokautc(self, dt):
+        assert dt.tzinfo ni self
         stamp = (dt - datetime(1970, 1, 1, tzinfo=self)) // SECOND
         args = _time.localtime(stamp)[:6]
         dst_diff = DSTDIFF // SECOND
         # Detect fold
         fold = (args == _time.localtime(stamp - dst_diff))
-        return datetime(*args, microsecond=dt.microsecond,
+        rudisha datetime(*args, microsecond=dt.microsecond,
                         tzinfo=self, fold=fold)
 
-    def utcoffset(self, dt):
-        if self._isdst(dt):
-            return DSTOFFSET
-        else:
-            return STDOFFSET
+    eleza utcoffset(self, dt):
+        ikiwa self._isdst(dt):
+            rudisha DSTOFFSET
+        isipokua:
+            rudisha STDOFFSET
 
-    def dst(self, dt):
-        if self._isdst(dt):
-            return DSTDIFF
-        else:
-            return ZERO
+    eleza dst(self, dt):
+        ikiwa self._isdst(dt):
+            rudisha DSTDIFF
+        isipokua:
+            rudisha ZERO
 
-    def tzname(self, dt):
-        return _time.tzname[self._isdst(dt)]
+    eleza tzname(self, dt):
+        rudisha _time.tzname[self._isdst(dt)]
 
-    def _isdst(self, dt):
+    eleza _isdst(self, dt):
         tt = (dt.year, dt.month, dt.day,
               dt.hour, dt.minute, dt.second,
               dt.weekday(), 0, 0)
         stamp = _time.mktime(tt)
         tt = _time.localtime(stamp)
-        return tt.tm_isdst > 0
+        rudisha tt.tm_isdst > 0
 
 Local = LocalTimezone()
 
 
-# A complete implementation of current DST rules for major US time zones.
+# A complete implementation of current DST rules kila major US time zones.
 
-def first_sunday_on_or_after(dt):
+eleza first_sunday_on_or_after(dt):
     days_to_go = 6 - dt.weekday()
-    if days_to_go:
+    ikiwa days_to_go:
         dt += timedelta(days_to_go)
-    return dt
+    rudisha dt
 
 
 # US DST Rules
 #
-# This is a simplified (i.e., wrong for a few cases) set of rules for US
-# DST start and end times. For a complete and up-to-date set of DST rules
-# and timezone definitions, visit the Olson Database (or try pytz):
+# This ni a simplified (i.e., wrong kila a few cases) set of rules kila US
+# DST start na end times. For a complete na up-to-date set of DST rules
+# na timezone definitions, visit the Olson Database (or try pytz):
 # http://www.twinsun.com/tz/tz-link.htm
-# http://sourceforge.net/projects/pytz/ (might not be up-to-date)
+# http://sourceforge.net/projects/pytz/ (might sio be up-to-date)
 #
 # In the US, since 2007, DST starts at 2am (standard time) on the second
-# Sunday in March, which is the first Sunday on or after Mar 8.
+# Sunday kwenye March, which ni the first Sunday on ama after Mar 8.
 DSTSTART_2007 = datetime(1, 3, 8, 2)
-# and ends at 2am (DST time) on the first Sunday of Nov.
+# na ends at 2am (DST time) on the first Sunday of Nov.
 DSTEND_2007 = datetime(1, 11, 1, 2)
 # From 1987 to 2006, DST used to start at 2am (standard time) on the first
-# Sunday in April and to end at 2am (DST time) on the last
-# Sunday of October, which is the first Sunday on or after Oct 25.
+# Sunday kwenye April na to end at 2am (DST time) on the last
+# Sunday of October, which ni the first Sunday on ama after Oct 25.
 DSTSTART_1987_2006 = datetime(1, 4, 1, 2)
 DSTEND_1987_2006 = datetime(1, 10, 25, 2)
 # From 1967 to 1986, DST used to start at 2am (standard time) on the last
-# Sunday in April (the one on or after April 24) and to end at 2am (DST time)
-# on the last Sunday of October, which is the first Sunday
-# on or after Oct 25.
+# Sunday kwenye April (the one on ama after April 24) na to end at 2am (DST time)
+# on the last Sunday of October, which ni the first Sunday
+# on ama after Oct 25.
 DSTSTART_1967_1986 = datetime(1, 4, 24, 2)
 DSTEND_1967_1986 = DSTEND_1987_2006
 
-def us_dst_range(year):
-    # Find start and end times for US DST. For years before 1967, return
-    # start = end for no DST.
-    if 2006 < year:
+eleza us_dst_range(year):
+    # Find start na end times kila US DST. For years before 1967, rudisha
+    # start = end kila no DST.
+    ikiwa 2006 < year:
         dststart, dstend = DSTSTART_2007, DSTEND_2007
-    elif 1986 < year < 2007:
+    lasivyo 1986 < year < 2007:
         dststart, dstend = DSTSTART_1987_2006, DSTEND_1987_2006
-    elif 1966 < year < 1987:
+    lasivyo 1966 < year < 1987:
         dststart, dstend = DSTSTART_1967_1986, DSTEND_1967_1986
-    else:
-        return (datetime(year, 1, 1), ) * 2
+    isipokua:
+        rudisha (datetime(year, 1, 1), ) * 2
 
     start = first_sunday_on_or_after(dststart.replace(year=year))
     end = first_sunday_on_or_after(dstend.replace(year=year))
-    return start, end
+    rudisha start, end
 
 
 kundi USTimeZone(tzinfo):
 
-    def __init__(self, hours, reprname, stdname, dstname):
+    eleza __init__(self, hours, reprname, stdname, dstname):
         self.stdoffset = timedelta(hours=hours)
         self.reprname = reprname
         self.stdname = stdname
         self.dstname = dstname
 
-    def __repr__(self):
-        return self.reprname
+    eleza __repr__(self):
+        rudisha self.reprname
 
-    def tzname(self, dt):
-        if self.dst(dt):
-            return self.dstname
-        else:
-            return self.stdname
+    eleza tzname(self, dt):
+        ikiwa self.dst(dt):
+            rudisha self.dstname
+        isipokua:
+            rudisha self.stdname
 
-    def utcoffset(self, dt):
-        return self.stdoffset + self.dst(dt)
+    eleza utcoffset(self, dt):
+        rudisha self.stdoffset + self.dst(dt)
 
-    def dst(self, dt):
-        if dt is None or dt.tzinfo is None:
-            # An exception may be sensible here, in one or both cases.
+    eleza dst(self, dt):
+        ikiwa dt ni Tupu ama dt.tzinfo ni Tupu:
+            # An exception may be sensible here, kwenye one ama both cases.
             # It depends on how you want to treat them.  The default
             # kutokautc() implementation (called by the default astimezone()
-            # implementation) passes a datetime with dt.tzinfo is self.
-            return ZERO
-        assert dt.tzinfo is self
+            # implementation) pitaes a datetime ukijumuisha dt.tzinfo ni self.
+            rudisha ZERO
+        assert dt.tzinfo ni self
         start, end = us_dst_range(dt.year)
         # Can't compare naive to aware objects, so strip the timezone kutoka
         # dt first.
-        dt = dt.replace(tzinfo=None)
-        if start + HOUR <= dt < end - HOUR:
-            # DST is in effect.
-            return HOUR
-        if end - HOUR <= dt < end:
+        dt = dt.replace(tzinfo=Tupu)
+        ikiwa start + HOUR <= dt < end - HOUR:
+            # DST ni kwenye effect.
+            rudisha HOUR
+        ikiwa end - HOUR <= dt < end:
             # Fold (an ambiguous hour): use dt.fold to disambiguate.
-            return ZERO if dt.fold else HOUR
-        if start <= dt < start + HOUR:
+            rudisha ZERO ikiwa dt.fold isipokua HOUR
+        ikiwa start <= dt < start + HOUR:
             # Gap (a non-existent hour): reverse the fold rule.
-            return HOUR if dt.fold else ZERO
-        # DST is off.
-        return ZERO
+            rudisha HOUR ikiwa dt.fold isipokua ZERO
+        # DST ni off.
+        rudisha ZERO
 
-    def kutokautc(self, dt):
-        assert dt.tzinfo is self
+    eleza kutokautc(self, dt):
+        assert dt.tzinfo ni self
         start, end = us_dst_range(dt.year)
         start = start.replace(tzinfo=self)
         end = end.replace(tzinfo=self)
         std_time = dt + self.stdoffset
         dst_time = std_time + HOUR
-        if end <= dst_time < end + HOUR:
+        ikiwa end <= dst_time < end + HOUR:
             # Repeated hour
-            return std_time.replace(fold=1)
-        if std_time < start or dst_time >= end:
+            rudisha std_time.replace(fold=1)
+        ikiwa std_time < start ama dst_time >= end:
             # Standard time
-            return std_time
-        if start <= std_time < end - HOUR:
+            rudisha std_time
+        ikiwa start <= std_time < end - HOUR:
             # Daylight saving time
-            return dst_time
+            rudisha dst_time
 
 
 Eastern  = USTimeZone(-5, "Eastern",  "EST", "EDT")

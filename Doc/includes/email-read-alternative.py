@@ -8,68 +8,68 @@ agiza webbrowser
 kutoka email agiza policy
 kutoka email.parser agiza BytesParser
 
-# An imaginary module that would make this work and be safe.
+# An imaginary module that would make this work na be safe.
 kutoka imaginary agiza magic_html_parser
 
 # In a real program you'd get the filename kutoka the arguments.
-with open('outgoing.msg', 'rb') as fp:
+ukijumuisha open('outgoing.msg', 'rb') kama fp:
     msg = BytesParser(policy=policy.default).parse(fp)
 
-# Now the header items can be accessed as a dictionary, and any non-ASCII will
+# Now the header items can be accessed kama a dictionary, na any non-ASCII will
 # be converted to unicode:
-print('To:', msg['to'])
-print('From:', msg['kutoka'])
-print('Subject:', msg['subject'])
+andika('To:', msg['to'])
+andika('From:', msg['kutoka'])
+andika('Subject:', msg['subject'])
 
 # If we want to print a preview of the message content, we can extract whatever
-# the least formatted payload is and print the first three lines.  Of course,
-# if the message has no plain text part printing the first three lines of html
-# is probably useless, but this is just a conceptual example.
+# the least formatted payload ni na print the first three lines.  Of course,
+# ikiwa the message has no plain text part printing the first three lines of html
+# ni probably useless, but this ni just a conceptual example.
 simplest = msg.get_body(preferencelist=('plain', 'html'))
-print()
-print(''.join(simplest.get_content().splitlines(keepends=Kweli)[:3]))
+andika()
+andika(''.join(simplest.get_content().splitlines(keepends=Kweli)[:3]))
 
-ans = input("View full message?")
-if ans.lower()[0] == 'n':
+ans = uliza("View full message?")
+ikiwa ans.lower()[0] == 'n':
     sys.exit()
 
-# We can extract the richest alternative in order to display it:
+# We can extract the richest alternative kwenye order to display it:
 richest = msg.get_body()
 partfiles = {}
-if richest['content-type'].maintype == 'text':
-    if richest['content-type'].subtype == 'plain':
-        for line in richest.get_content().splitlines():
-            print(line)
+ikiwa richest['content-type'].maintype == 'text':
+    ikiwa richest['content-type'].subtype == 'plain':
+        kila line kwenye richest.get_content().splitlines():
+            andika(line)
         sys.exit()
-    elif richest['content-type'].subtype == 'html':
+    lasivyo richest['content-type'].subtype == 'html':
         body = richest
-    else:
-        print("Don't know how to display {}".format(richest.get_content_type()))
+    isipokua:
+        andika("Don't know how to display {}".format(richest.get_content_type()))
         sys.exit()
-elif richest['content-type'].content_type == 'multipart/related':
+lasivyo richest['content-type'].content_type == 'multipart/related':
     body = richest.get_body(preferencelist=('html'))
-    for part in richest.iter_attachments():
+    kila part kwenye richest.iter_attachments():
         fn = part.get_filename()
-        if fn:
+        ikiwa fn:
             extension = os.path.splitext(part.get_filename())[1]
-        else:
+        isipokua:
             extension = mimetypes.guess_extension(part.get_content_type())
-        with tempfile.NamedTemporaryFile(suffix=extension, delete=False) as f:
+        ukijumuisha tempfile.NamedTemporaryFile(suffix=extension, delete=Uongo) kama f:
             f.write(part.get_content())
             # again strip the <> to go kutoka email form of cid to html form.
             partfiles[part['content-id'][1:-1]] = f.name
-else:
-    print("Don't know how to display {}".format(richest.get_content_type()))
+isipokua:
+    andika("Don't know how to display {}".format(richest.get_content_type()))
     sys.exit()
-with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
+ukijumuisha tempfile.NamedTemporaryFile(mode='w', delete=Uongo) kama f:
     # The magic_html_parser has to rewrite the href="cid:...." attributes to
-    # point to the filenames in partfiles.  It also has to do a safety-sanitize
+    # point to the filenames kwenye partfiles.  It also has to do a safety-sanitize
     # of the html.  It could be written using html.parser.
     f.write(magic_html_parser(body.get_content(), partfiles))
 webbrowser.open(f.name)
 os.remove(f.name)
-for fn in partfiles.values():
+kila fn kwenye partfiles.values():
     os.remove(fn)
 
-# Of course, there are lots of email messages that could break this simple
+# Of course, there are lots of email messages that could koma this simple
 # minded program, but it will handle the most common ones.

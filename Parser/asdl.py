@@ -1,11 +1,11 @@
 #-------------------------------------------------------------------------------
-# Parser for ASDL [1] definition files. Reads in an ASDL description and parses
+# Parser kila ASDL [1] definition files. Reads kwenye an ASDL description na parses
 # it into an AST that describes it.
 #
 # The EBNF we're parsing here: Figure 1 of the paper [1]. Extended to support
-# modules and attributes after a product. Words starting with Capital letters
-# are terminals. Literal tokens are in "double quotes". Others are
-# non-terminals. Id is either TokenId or ConstructorId.
+# modules na attributes after a product. Words starting ukijumuisha Capital letters
+# are terminals. Literal tokens are kwenye "double quotes". Others are
+# non-terminals. Id ni either TokenId ama ConstructorId.
 #
 # module        ::= "module" Id "{" [definitions] "}"
 # definitions   ::= { TypeId "=" type }
@@ -19,189 +19,189 @@
 # [1] "The Zephyr Abstract Syntax Description Language" by Wang, et. al. See
 #     http://asdl.sourceforge.net/
 #-------------------------------------------------------------------------------
-from collections import namedtuple
-import re
+kutoka collections agiza namedtuple
+agiza re
 
 __all__ = [
     'builtin_types', 'parse', 'AST', 'Module', 'Type', 'Constructor',
     'Field', 'Sum', 'Product', 'VisitorBase', 'Check', 'check']
 
-# The following classes define nodes into which the ASDL description is parsed.
-# Note: this is a "meta-AST". ASDL files (such as Python.asdl) describe the AST
+# The following classes define nodes into which the ASDL description ni parsed.
+# Note: this ni a "meta-AST". ASDL files (such kama Python.asdl) describe the AST
 # structure used by a programming language. But ASDL files themselves need to be
-# parsed. This module parses ASDL files and uses a simple AST to represent them.
+# parsed. This module parses ASDL files na uses a simple AST to represent them.
 # See the EBNF at the top of the file to understand the logical connection
 # between the various node types.
 
 builtin_types = {'identifier', 'string', 'bytes', 'int', 'object', 'singleton',
                  'constant'}
 
-class AST:
-    def __repr__(self):
-        raise NotImplementedError
+kundi AST:
+    eleza __repr__(self):
+        ashiria NotImplementedError
 
-class Module(AST):
-    def __init__(self, name, dfns):
+kundi Module(AST):
+    eleza __init__(self, name, dfns):
         self.name = name
         self.dfns = dfns
-        self.types = {type.name: type.value for type in dfns}
+        self.types = {type.name: type.value kila type kwenye dfns}
 
-    def __repr__(self):
-        return 'Module({0.name}, {0.dfns})'.format(self)
+    eleza __repr__(self):
+        rudisha 'Module({0.name}, {0.dfns})'.format(self)
 
-class Type(AST):
-    def __init__(self, name, value):
+kundi Type(AST):
+    eleza __init__(self, name, value):
         self.name = name
         self.value = value
 
-    def __repr__(self):
-        return 'Type({0.name}, {0.value})'.format(self)
+    eleza __repr__(self):
+        rudisha 'Type({0.name}, {0.value})'.format(self)
 
-class Constructor(AST):
-    def __init__(self, name, fields=None):
+kundi Constructor(AST):
+    eleza __init__(self, name, fields=Tupu):
         self.name = name
-        self.fields = fields or []
+        self.fields = fields ama []
 
-    def __repr__(self):
-        return 'Constructor({0.name}, {0.fields})'.format(self)
+    eleza __repr__(self):
+        rudisha 'Constructor({0.name}, {0.fields})'.format(self)
 
-class Field(AST):
-    def __init__(self, type, name=None, seq=False, opt=False):
+kundi Field(AST):
+    eleza __init__(self, type, name=Tupu, seq=Uongo, opt=Uongo):
         self.type = type
         self.name = name
         self.seq = seq
         self.opt = opt
 
-    def __repr__(self):
-        if self.seq:
-            extra = ", seq=True"
-        elif self.opt:
-            extra = ", opt=True"
-        else:
+    eleza __repr__(self):
+        ikiwa self.seq:
+            extra = ", seq=Kweli"
+        lasivyo self.opt:
+            extra = ", opt=Kweli"
+        isipokua:
             extra = ""
-        if self.name is None:
-            return 'Field({0.type}{1})'.format(self, extra)
-        else:
-            return 'Field({0.type}, {0.name}{1})'.format(self, extra)
+        ikiwa self.name ni Tupu:
+            rudisha 'Field({0.type}{1})'.format(self, extra)
+        isipokua:
+            rudisha 'Field({0.type}, {0.name}{1})'.format(self, extra)
 
-class Sum(AST):
-    def __init__(self, types, attributes=None):
+kundi Sum(AST):
+    eleza __init__(self, types, attributes=Tupu):
         self.types = types
-        self.attributes = attributes or []
+        self.attributes = attributes ama []
 
-    def __repr__(self):
-        if self.attributes:
-            return 'Sum({0.types}, {0.attributes})'.format(self)
-        else:
-            return 'Sum({0.types})'.format(self)
+    eleza __repr__(self):
+        ikiwa self.attributes:
+            rudisha 'Sum({0.types}, {0.attributes})'.format(self)
+        isipokua:
+            rudisha 'Sum({0.types})'.format(self)
 
-class Product(AST):
-    def __init__(self, fields, attributes=None):
+kundi Product(AST):
+    eleza __init__(self, fields, attributes=Tupu):
         self.fields = fields
-        self.attributes = attributes or []
+        self.attributes = attributes ama []
 
-    def __repr__(self):
-        if self.attributes:
-            return 'Product({0.fields}, {0.attributes})'.format(self)
-        else:
-            return 'Product({0.fields})'.format(self)
+    eleza __repr__(self):
+        ikiwa self.attributes:
+            rudisha 'Product({0.fields}, {0.attributes})'.format(self)
+        isipokua:
+            rudisha 'Product({0.fields})'.format(self)
 
-# A generic visitor for the meta-AST that describes ASDL. This can be used by
-# emitters. Note that this visitor does not provide a generic visit method, so a
-# subclass needs to define visit methods from visitModule to as deep as the
+# A generic visitor kila the meta-AST that describes ASDL. This can be used by
+# emitters. Note that this visitor does sio provide a generic visit method, so a
+# subkundi needs to define visit methods kutoka visitModule to kama deep kama the
 # interesting node.
-# We also define a Check visitor that makes sure the parsed ASDL is well-formed.
+# We also define a Check visitor that makes sure the parsed ASDL ni well-formed.
 
-class VisitorBase(object):
-    """Generic tree visitor for ASTs."""
-    def __init__(self):
+kundi VisitorBase(object):
+    """Generic tree visitor kila ASTs."""
+    eleza __init__(self):
         self.cache = {}
 
-    def visit(self, obj, *args):
+    eleza visit(self, obj, *args):
         klass = obj.__class__
         meth = self.cache.get(klass)
-        if meth is None:
+        ikiwa meth ni Tupu:
             methname = "visit" + klass.__name__
-            meth = getattr(self, methname, None)
+            meth = getattr(self, methname, Tupu)
             self.cache[klass] = meth
-        if meth:
-            try:
+        ikiwa meth:
+            jaribu:
                 meth(obj, *args)
-            except Exception as e:
-                print("Error visiting %r: %s" % (obj, e))
+            tatizo Exception kama e:
+                andika("Error visiting %r: %s" % (obj, e))
                 raise
 
-class Check(VisitorBase):
-    """A visitor that checks a parsed ASDL tree for correctness.
+kundi Check(VisitorBase):
+    """A visitor that checks a parsed ASDL tree kila correctness.
 
-    Errors are printed and accumulated.
+    Errors are printed na accumulated.
     """
-    def __init__(self):
+    eleza __init__(self):
         super(Check, self).__init__()
         self.cons = {}
         self.errors = 0
         self.types = {}
 
-    def visitModule(self, mod):
-        for dfn in mod.dfns:
+    eleza visitModule(self, mod):
+        kila dfn kwenye mod.dfns:
             self.visit(dfn)
 
-    def visitType(self, type):
+    eleza visitType(self, type):
         self.visit(type.value, str(type.name))
 
-    def visitSum(self, sum, name):
-        for t in sum.types:
+    eleza visitSum(self, sum, name):
+        kila t kwenye sum.types:
             self.visit(t, name)
 
-    def visitConstructor(self, cons, name):
+    eleza visitConstructor(self, cons, name):
         key = str(cons.name)
         conflict = self.cons.get(key)
-        if conflict is None:
+        ikiwa conflict ni Tupu:
             self.cons[key] = name
-        else:
-            print('Redefinition of constructor {}'.format(key))
-            print('Defined in {} and {}'.format(conflict, name))
+        isipokua:
+            andika('Redefinition of constructor {}'.format(key))
+            andika('Defined kwenye {} na {}'.format(conflict, name))
             self.errors += 1
-        for f in cons.fields:
+        kila f kwenye cons.fields:
             self.visit(f, key)
 
-    def visitField(self, field, name):
+    eleza visitField(self, field, name):
         key = str(field.type)
         l = self.types.setdefault(key, [])
         l.append(name)
 
-    def visitProduct(self, prod, name):
-        for f in prod.fields:
+    eleza visitProduct(self, prod, name):
+        kila f kwenye prod.fields:
             self.visit(f, name)
 
-def check(mod):
-    """Check the parsed ASDL tree for correctness.
+eleza check(mod):
+    """Check the parsed ASDL tree kila correctness.
 
-    Return True if success. For failure, the errors are printed out and False
-    is returned.
+    Return Kweli ikiwa success. For failure, the errors are printed out na Uongo
+    ni returned.
     """
     v = Check()
     v.visit(mod)
 
-    for t in v.types:
-        if t not in mod.types and not t in builtin_types:
+    kila t kwenye v.types:
+        ikiwa t haiko kwenye mod.types na sio t kwenye builtin_types:
             v.errors += 1
             uses = ", ".join(v.types[t])
-            print('Undefined type {}, used in {}'.format(t, uses))
-    return not v.errors
+            andika('Undefined type {}, used kwenye {}'.format(t, uses))
+    rudisha sio v.errors
 
 # The ASDL parser itself comes next. The only interesting external interface
-# here is the top-level parse function.
+# here ni the top-level parse function.
 
-def parse(filename):
-    """Parse ASDL from the given file and return a Module node describing it."""
-    with open(filename) as f:
+eleza parse(filename):
+    """Parse ASDL kutoka the given file na rudisha a Module node describing it."""
+    ukijumuisha open(filename) kama f:
         parser = ASDLParser()
-        return parser.parse(f.read())
+        rudisha parser.parse(f.read())
 
-# Types for describing tokens in an ASDL specification.
-class TokenKind:
-    """TokenKind is provides a scope for enumerated token kinds."""
+# Types kila describing tokens kwenye an ASDL specification.
+kundi TokenKind:
+    """TokenKind ni provides a scope kila enumerated token kinds."""
     (ConstructorId, TypeId, Equals, Comma, Question, Pipe, Asterisk,
      LParen, RParen, LBrace, RBrace) = range(11)
 
@@ -211,166 +211,166 @@ class TokenKind:
 
 Token = namedtuple('Token', 'kind value lineno')
 
-class ASDLSyntaxError(Exception):
-    def __init__(self, msg, lineno=None):
+kundi ASDLSyntaxError(Exception):
+    eleza __init__(self, msg, lineno=Tupu):
         self.msg = msg
-        self.lineno = lineno or '<unknown>'
+        self.lineno = lineno ama '<unknown>'
 
-    def __str__(self):
-        return 'Syntax error on line {0.lineno}: {0.msg}'.format(self)
+    eleza __str__(self):
+        rudisha 'Syntax error on line {0.lineno}: {0.msg}'.format(self)
 
-def tokenize_asdl(buf):
+eleza tokenize_asdl(buf):
     """Tokenize the given buffer. Yield Token objects."""
-    for lineno, line in enumerate(buf.splitlines(), 1):
-        for m in re.finditer(r'\s*(\w+|--.*|.)', line.strip()):
+    kila lineno, line kwenye enumerate(buf.splitlines(), 1):
+        kila m kwenye re.finditer(r'\s*(\w+|--.*|.)', line.strip()):
             c = m.group(1)
-            if c[0].isalpha():
+            ikiwa c[0].isalpha():
                 # Some kind of identifier
-                if c[0].isupper():
-                    yield Token(TokenKind.ConstructorId, c, lineno)
-                else:
-                    yield Token(TokenKind.TypeId, c, lineno)
-            elif c[:2] == '--':
+                ikiwa c[0].isupper():
+                    tuma Token(TokenKind.ConstructorId, c, lineno)
+                isipokua:
+                    tuma Token(TokenKind.TypeId, c, lineno)
+            lasivyo c[:2] == '--':
                 # Comment
-                break
-            else:
+                koma
+            isipokua:
                 # Operators
-                try:
+                jaribu:
                     op_kind = TokenKind.operator_table[c]
-                except KeyError:
-                    raise ASDLSyntaxError('Invalid operator %s' % c, lineno)
-                yield Token(op_kind, c, lineno)
+                tatizo KeyError:
+                    ashiria ASDLSyntaxError('Invalid operator %s' % c, lineno)
+                tuma Token(op_kind, c, lineno)
 
-class ASDLParser:
-    """Parser for ASDL files.
+kundi ASDLParser:
+    """Parser kila ASDL files.
 
     Create, then call the parse method on a buffer containing ASDL.
-    This is a simple recursive descent parser that uses tokenize_asdl for the
+    This ni a simple recursive descent parser that uses tokenize_asdl kila the
     lexing.
     """
-    def __init__(self):
-        self._tokenizer = None
-        self.cur_token = None
+    eleza __init__(self):
+        self._tokenizer = Tupu
+        self.cur_token = Tupu
 
-    def parse(self, buf):
-        """Parse the ASDL in the buffer and return an AST with a Module root.
+    eleza parse(self, buf):
+        """Parse the ASDL kwenye the buffer na rudisha an AST ukijumuisha a Module root.
         """
         self._tokenizer = tokenize_asdl(buf)
         self._advance()
-        return self._parse_module()
+        rudisha self._parse_module()
 
-    def _parse_module(self):
-        if self._at_keyword('module'):
+    eleza _parse_module(self):
+        ikiwa self._at_keyword('module'):
             self._advance()
-        else:
-            raise ASDLSyntaxError(
+        isipokua:
+            ashiria ASDLSyntaxError(
                 'Expected "module" (found {})'.format(self.cur_token.value),
                 self.cur_token.lineno)
         name = self._match(self._id_kinds)
         self._match(TokenKind.LBrace)
         defs = self._parse_definitions()
         self._match(TokenKind.RBrace)
-        return Module(name, defs)
+        rudisha Module(name, defs)
 
-    def _parse_definitions(self):
+    eleza _parse_definitions(self):
         defs = []
-        while self.cur_token.kind == TokenKind.TypeId:
+        wakati self.cur_token.kind == TokenKind.TypeId:
             typename = self._advance()
             self._match(TokenKind.Equals)
             type = self._parse_type()
             defs.append(Type(typename, type))
-        return defs
+        rudisha defs
 
-    def _parse_type(self):
-        if self.cur_token.kind == TokenKind.LParen:
+    eleza _parse_type(self):
+        ikiwa self.cur_token.kind == TokenKind.LParen:
             # If we see a (, it's a product
-            return self._parse_product()
-        else:
-            # Otherwise it's a sum. Look for ConstructorId
+            rudisha self._parse_product()
+        isipokua:
+            # Otherwise it's a sum. Look kila ConstructorId
             sumlist = [Constructor(self._match(TokenKind.ConstructorId),
                                    self._parse_optional_fields())]
-            while self.cur_token.kind  == TokenKind.Pipe:
+            wakati self.cur_token.kind  == TokenKind.Pipe:
                 # More constructors
                 self._advance()
                 sumlist.append(Constructor(
                                 self._match(TokenKind.ConstructorId),
                                 self._parse_optional_fields()))
-            return Sum(sumlist, self._parse_optional_attributes())
+            rudisha Sum(sumlist, self._parse_optional_attributes())
 
-    def _parse_product(self):
-        return Product(self._parse_fields(), self._parse_optional_attributes())
+    eleza _parse_product(self):
+        rudisha Product(self._parse_fields(), self._parse_optional_attributes())
 
-    def _parse_fields(self):
+    eleza _parse_fields(self):
         fields = []
         self._match(TokenKind.LParen)
-        while self.cur_token.kind == TokenKind.TypeId:
+        wakati self.cur_token.kind == TokenKind.TypeId:
             typename = self._advance()
             is_seq, is_opt = self._parse_optional_field_quantifier()
-            id = (self._advance() if self.cur_token.kind in self._id_kinds
-                                  else None)
+            id = (self._advance() ikiwa self.cur_token.kind kwenye self._id_kinds
+                                  isipokua Tupu)
             fields.append(Field(typename, id, seq=is_seq, opt=is_opt))
-            if self.cur_token.kind == TokenKind.RParen:
-                break
-            elif self.cur_token.kind == TokenKind.Comma:
+            ikiwa self.cur_token.kind == TokenKind.RParen:
+                koma
+            lasivyo self.cur_token.kind == TokenKind.Comma:
                 self._advance()
         self._match(TokenKind.RParen)
-        return fields
+        rudisha fields
 
-    def _parse_optional_fields(self):
-        if self.cur_token.kind == TokenKind.LParen:
-            return self._parse_fields()
-        else:
-            return None
+    eleza _parse_optional_fields(self):
+        ikiwa self.cur_token.kind == TokenKind.LParen:
+            rudisha self._parse_fields()
+        isipokua:
+            rudisha Tupu
 
-    def _parse_optional_attributes(self):
-        if self._at_keyword('attributes'):
+    eleza _parse_optional_attributes(self):
+        ikiwa self._at_keyword('attributes'):
             self._advance()
-            return self._parse_fields()
-        else:
-            return None
+            rudisha self._parse_fields()
+        isipokua:
+            rudisha Tupu
 
-    def _parse_optional_field_quantifier(self):
-        is_seq, is_opt = False, False
-        if self.cur_token.kind == TokenKind.Asterisk:
-            is_seq = True
+    eleza _parse_optional_field_quantifier(self):
+        is_seq, is_opt = Uongo, Uongo
+        ikiwa self.cur_token.kind == TokenKind.Asterisk:
+            is_seq = Kweli
             self._advance()
-        elif self.cur_token.kind == TokenKind.Question:
-            is_opt = True
+        lasivyo self.cur_token.kind == TokenKind.Question:
+            is_opt = Kweli
             self._advance()
-        return is_seq, is_opt
+        rudisha is_seq, is_opt
 
-    def _advance(self):
-        """ Return the value of the current token and read the next one into
+    eleza _advance(self):
+        """ Return the value of the current token na read the next one into
             self.cur_token.
         """
-        cur_val = None if self.cur_token is None else self.cur_token.value
-        try:
+        cur_val = Tupu ikiwa self.cur_token ni Tupu isipokua self.cur_token.value
+        jaribu:
             self.cur_token = next(self._tokenizer)
-        except StopIteration:
-            self.cur_token = None
-        return cur_val
+        tatizo StopIteration:
+            self.cur_token = Tupu
+        rudisha cur_val
 
     _id_kinds = (TokenKind.ConstructorId, TokenKind.TypeId)
 
-    def _match(self, kind):
+    eleza _match(self, kind):
         """The 'match' primitive of RD parsers.
 
-        * Verifies that the current token is of the given kind (kind can
-          be a tuple, in which the kind must match one of its members).
+        * Verifies that the current token ni of the given kind (kind can
+          be a tuple, kwenye which the kind must match one of its members).
         * Returns the value of the current token
-        * Reads in the next token
+        * Reads kwenye the next token
         """
-        if (isinstance(kind, tuple) and self.cur_token.kind in kind or
+        ikiwa (isinstance(kind, tuple) na self.cur_token.kind kwenye kind ama
             self.cur_token.kind == kind
             ):
             value = self.cur_token.value
             self._advance()
-            return value
-        else:
-            raise ASDLSyntaxError(
+            rudisha value
+        isipokua:
+            ashiria ASDLSyntaxError(
                 'Unmatched {} (found {})'.format(kind, self.cur_token.kind),
                 self.cur_token.lineno)
 
-    def _at_keyword(self, keyword):
-        return (self.cur_token.kind == TokenKind.TypeId and
+    eleza _at_keyword(self, keyword):
+        rudisha (self.cur_token.kind == TokenKind.TypeId na
                 self.cur_token.value == keyword)

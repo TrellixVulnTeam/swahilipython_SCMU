@@ -1,21 +1,21 @@
 """
-File generation for APPX/MSIX manifests.
+File generation kila APPX/MSIX manifests.
 """
 
 __author__ = "Steve Dower <steve.dower@python.org>"
 __version__ = "3.8"
 
 
-import collections
-import ctypes
-import io
-import os
-import sys
+agiza collections
+agiza ctypes
+agiza io
+agiza os
+agiza sys
 
-from pathlib import Path, PureWindowsPath
-from xml.etree import ElementTree as ET
+kutoka pathlib agiza Path, PureWindowsPath
+kutoka xml.etree agiza ElementTree kama ET
 
-from .constants import *
+kutoka .constants agiza *
 
 __all__ = ["get_appx_layout"]
 
@@ -27,8 +27,8 @@ APPX_DATA = dict(
         "APPX_DATA_PUBLISHER", "CN=4975D53F-AA7E-49A5-8B49-EA4FDC1BB66B"
     ),
     DisplayName="Python {}".format(VER_DOT),
-    Description="The Python {} runtime and console.".format(VER_DOT),
-    ProcessorArchitecture="x64" if IS_X64 else "x86",
+    Description="The Python {} runtime na console.".format(VER_DOT),
+    ProcessorArchitecture="x64" ikiwa IS_X64 isipokua "x86",
 )
 
 PYTHON_VE_DATA = dict(
@@ -50,7 +50,7 @@ PYTHONW_VE_DATA = dict(
 
 PIP_VE_DATA = dict(
     DisplayName="pip (Python {})".format(VER_DOT),
-    Description="pip package manager for Python {}".format(VER_DOT),
+    Description="pip package manager kila Python {}".format(VER_DOT),
     Square150x150Logo="_resources/pythonx150.png",
     Square44x44Logo="_resources/pythonx44.png",
     BackgroundColor="transparent",
@@ -59,7 +59,7 @@ PIP_VE_DATA = dict(
 
 IDLE_VE_DATA = dict(
     DisplayName="IDLE (Python {})".format(VER_DOT),
-    Description="IDLE editor for Python {}".format(VER_DOT),
+    Description="IDLE editor kila Python {}".format(VER_DOT),
     Square150x150Logo="_resources/pythonwx150.png",
     Square44x44Logo="_resources/pythonwx44.png",
     BackgroundColor="transparent",
@@ -115,7 +115,7 @@ APPXMANIFEST_TEMPLATE = """<?xml version="1.0" encoding="utf-8"?>
 
 
 RESOURCES_XML_TEMPLATE = r"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!--This file is input for makepri.exe. It should be excluded from the final package.-->
+<!--This file ni input kila makepri.exe. It should be excluded kutoka the final package.-->
 <resources targetOsVersion="10.0.0" majorVersion="1">
     <packaging>
         <autoResourcePackage qualifier="Language"/>
@@ -152,7 +152,7 @@ REGISTRY = {
         VER_DOT: {
             "DisplayName": APPX_DATA["DisplayName"],
             "SupportUrl": "https://www.python.org/",
-            "SysArchitecture": "64bit" if IS_X64 else "32bit",
+            "SysArchitecture": "64bit" ikiwa IS_X64 isipokua "32bit",
             "SysVersion": VER_DOT,
             "Version": "{}.{}.{}".format(VER_MAJOR, VER_MINOR, VER_MICRO),
             "InstallPath": {
@@ -182,8 +182,8 @@ REGISTRY = {
 }
 
 
-def get_packagefamilyname(name, publisher_id):
-    class PACKAGE_ID(ctypes.Structure):
+eleza get_packagefamilyname(name, publisher_id):
+    kundi PACKAGE_ID(ctypes.Structure):
         _fields_ = [
             ("reserved", ctypes.c_uint32),
             ("processorArchitecture", ctypes.c_uint32),
@@ -195,23 +195,23 @@ def get_packagefamilyname(name, publisher_id):
         ]
         _pack_ = 4
 
-    pid = PACKAGE_ID(0, 0, 0, name, publisher_id, None, None)
+    pid = PACKAGE_ID(0, 0, 0, name, publisher_id, Tupu, Tupu)
     result = ctypes.create_unicode_buffer(256)
     result_len = ctypes.c_uint32(256)
     r = ctypes.windll.kernel32.PackageFamilyNameFromId(
         pid, ctypes.byref(result_len), result
     )
-    if r:
-        raise OSError(r, "failed to get package family name")
-    return result.value[: result_len.value]
+    ikiwa r:
+        ashiria OSError(r, "failed to get package family name")
+    rudisha result.value[: result_len.value]
 
 
-def _fixup_sccd(ns, sccd, new_hash=None):
-    if not new_hash:
-        return sccd
+eleza _fixup_sccd(ns, sccd, new_hash=Tupu):
+    ikiwa sio new_hash:
+        rudisha sccd
 
     NS = dict(s="http://schemas.microsoft.com/appx/2016/sccd")
-    with open(sccd, "rb") as f:
+    ukijumuisha open(sccd, "rb") kama f:
         xml = ET.parse(f)
 
     pfn = get_packagefamilyname(APPX_DATA["Name"], APPX_DATA["Publisher"])
@@ -223,55 +223,55 @@ def _fixup_sccd(ns, sccd, new_hash=None):
     e.set("AppPackageFamilyName", pfn)
     e.set("CertificateSignatureHash", new_hash)
 
-    for e in xml.findall("s:Catalog", NS):
+    kila e kwenye xml.findall("s:Catalog", NS):
         e.text = "FFFF"
 
     sccd = ns.temp / sccd.name
-    sccd.parent.mkdir(parents=True, exist_ok=True)
-    with open(sccd, "wb") as f:
+    sccd.parent.mkdir(parents=Kweli, exist_ok=Kweli)
+    ukijumuisha open(sccd, "wb") kama f:
         xml.write(f, encoding="utf-8")
 
-    return sccd
+    rudisha sccd
 
 
-def find_or_add(xml, element, attr=None, always_add=False):
-    if always_add:
-        e = None
-    else:
+eleza find_or_add(xml, element, attr=Tupu, always_add=Uongo):
+    ikiwa always_add:
+        e = Tupu
+    isipokua:
         q = element
-        if attr:
+        ikiwa attr:
             q += "[@{}='{}']".format(*attr)
         e = xml.find(q, APPXMANIFEST_NS)
-    if e is None:
+    ikiwa e ni Tupu:
         prefix, _, name = element.partition(":")
-        name = ET.QName(APPXMANIFEST_NS[prefix or ""], name)
+        name = ET.QName(APPXMANIFEST_NS[prefix ama ""], name)
         e = ET.SubElement(xml, name)
-        if attr:
+        ikiwa attr:
             e.set(*attr)
-    return e
+    rudisha e
 
 
-def _get_app(xml, appid):
-    if appid:
+eleza _get_app(xml, appid):
+    ikiwa appid:
         app = xml.find(
             "m:Applications/m:Application[@Id='{}']".format(appid), APPXMANIFEST_NS
         )
-        if app is None:
-            raise LookupError(appid)
-    else:
+        ikiwa app ni Tupu:
+            ashiria LookupError(appid)
+    isipokua:
         app = xml
-    return app
+    rudisha app
 
 
-def add_visual(xml, appid, data):
+eleza add_visual(xml, appid, data):
     app = _get_app(xml, appid)
     e = find_or_add(app, "uap:VisualElements")
-    for i in data.items():
+    kila i kwenye data.items():
         e.set(*i)
-    return e
+    rudisha e
 
 
-def add_alias(xml, appid, alias, subsystem="windows"):
+eleza add_alias(xml, appid, alias, subsystem="windows"):
     app = _get_app(xml, appid)
     e = find_or_add(app, "m:Extensions")
     e = find_or_add(e, "uap5:Extension", ("Category", "windows.appExecutionAlias"))
@@ -280,28 +280,28 @@ def add_alias(xml, appid, alias, subsystem="windows"):
     e = find_or_add(e, "uap5:ExecutionAlias", ("Alias", alias))
 
 
-def add_file_type(xml, appid, name, suffix, parameters='"%1"', info=None, logo=None):
+eleza add_file_type(xml, appid, name, suffix, parameters='"%1"', info=Tupu, logo=Tupu):
     app = _get_app(xml, appid)
     e = find_or_add(app, "m:Extensions")
     e = find_or_add(e, "uap3:Extension", ("Category", "windows.fileTypeAssociation"))
     e = find_or_add(e, "uap3:FileTypeAssociation", ("Name", name))
     e.set("Parameters", parameters)
-    if info:
+    ikiwa info:
         find_or_add(e, "uap:DisplayName").text = info
-    if logo:
+    ikiwa logo:
         find_or_add(e, "uap:Logo").text = logo
     e = find_or_add(e, "uap:SupportedFileTypes")
-    if isinstance(suffix, str):
+    ikiwa isinstance(suffix, str):
         suffix = [suffix]
-    for s in suffix:
+    kila s kwenye suffix:
         ET.SubElement(e, ET.QName(APPXMANIFEST_NS["uap"], "FileType")).text = s
 
 
-def add_application(
+eleza add_application(
     ns, xml, appid, executable, aliases, visual_element, subsystem, file_types
 ):
     node = xml.find("m:Applications", APPXMANIFEST_NS)
-    suffix = "_d.exe" if ns.debug else ".exe"
+    suffix = "_d.exe" ikiwa ns.debug isipokua ".exe"
     app = ET.SubElement(
         node,
         ET.QName(APPXMANIFEST_NS[""], "Application"),
@@ -312,54 +312,54 @@ def add_application(
             ET.QName(APPXMANIFEST_NS["desktop4"], "SupportsMultipleInstances"): "true",
         },
     )
-    if visual_element:
-        add_visual(app, None, visual_element)
-    for alias in aliases:
-        add_alias(app, None, alias + suffix, subsystem)
-    if file_types:
-        add_file_type(app, None, *file_types)
-    return app
+    ikiwa visual_element:
+        add_visual(app, Tupu, visual_element)
+    kila alias kwenye aliases:
+        add_alias(app, Tupu, alias + suffix, subsystem)
+    ikiwa file_types:
+        add_file_type(app, Tupu, *file_types)
+    rudisha app
 
 
-def _get_registry_entries(ns, root="", d=None):
-    r = root if root else PureWindowsPath("")
-    if d is None:
+eleza _get_registry_entries(ns, root="", d=Tupu):
+    r = root ikiwa root isipokua PureWindowsPath("")
+    ikiwa d ni Tupu:
         d = REGISTRY
-    for key, value in d.items():
-        if key == "_condition":
-            continue
-        elif isinstance(value, dict):
+    kila key, value kwenye d.items():
+        ikiwa key == "_condition":
+            endelea
+        lasivyo isinstance(value, dict):
             cond = value.get("_condition")
-            if cond and not cond(ns):
-                continue
+            ikiwa cond na sio cond(ns):
+                endelea
             fullkey = r
-            for part in PureWindowsPath(key).parts:
+            kila part kwenye PureWindowsPath(key).parts:
                 fullkey /= part
-                if len(fullkey.parts) > 1:
-                    yield str(fullkey), None, None
-            yield from _get_registry_entries(ns, fullkey, value)
-        elif len(r.parts) > 1:
-            yield str(r), key, value
+                ikiwa len(fullkey.parts) > 1:
+                    tuma str(fullkey), Tupu, Tupu
+            tuma kutoka _get_registry_entries(ns, fullkey, value)
+        lasivyo len(r.parts) > 1:
+            tuma str(r), key, value
 
 
-def add_registry_entries(ns, xml):
+eleza add_registry_entries(ns, xml):
     e = find_or_add(xml, "m:Extensions")
     e = find_or_add(e, "rescap4:Extension")
     e.set("Category", "windows.classicAppCompatKeys")
     e.set("EntryPoint", "Windows.FullTrustApplication")
     e = ET.SubElement(e, ET.QName(APPXMANIFEST_NS["rescap4"], "ClassicAppCompatKeys"))
-    for name, valuename, value in _get_registry_entries(ns):
+    kila name, valuename, value kwenye _get_registry_entries(ns):
         k = ET.SubElement(
             e, ET.QName(APPXMANIFEST_NS["rescap4"], "ClassicAppCompatKey")
         )
         k.set("Name", name)
-        if value:
+        ikiwa value:
             k.set("ValueName", valuename)
             k.set("Value", value)
             k.set("ValueType", "REG_SZ")
 
 
-def disable_registry_virtualization(xml):
+eleza disable_registry_virtualization(xml):
     e = find_or_add(xml, "m:Properties")
     e = find_or_add(e, "desktop6:RegistryWriteVirtualization")
     e.text = "disabled"
@@ -367,8 +367,8 @@ def disable_registry_virtualization(xml):
     e = find_or_add(e, "rescap:Capability", ("Name", "unvirtualizedResources"))
 
 
-def get_appxmanifest(ns):
-    for k, v in APPXMANIFEST_NS.items():
+eleza get_appxmanifest(ns):
+    kila k, v kwenye APPXMANIFEST_NS.items():
         ET.register_namespace(k, v)
     ET.register_namespace("", APPXMANIFEST_NS["m"])
 
@@ -377,24 +377,24 @@ def get_appxmanifest(ns):
     QN = ET.QName
 
     node = xml.find("m:Identity", NS)
-    for k in node.keys():
+    kila k kwenye node.keys():
         value = APPX_DATA.get(k)
-        if value:
+        ikiwa value:
             node.set(k, value)
 
-    for node in xml.find("m:Properties", NS):
+    kila node kwenye xml.find("m:Properties", NS):
         value = APPX_DATA.get(node.tag.rpartition("}")[2])
-        if value:
+        ikiwa value:
             node.text = value
 
     winver = sys.getwindowsversion()[:3]
-    if winver < (10, 0, 17763):
+    ikiwa winver < (10, 0, 17763):
         winver = 10, 0, 17763
     find_or_add(xml, "m:Dependencies/m:TargetDeviceFamily").set(
         "MaxVersionTested", "{}.{}.{}.0".format(*winver)
     )
 
-    if winver > (10, 0, 17763):
+    ikiwa winver > (10, 0, 17763):
         disable_registry_virtualization(xml)
 
     app = add_application(
@@ -419,7 +419,7 @@ def get_appxmanifest(ns):
         ("python.windowedfile", [".pyw"], '"%1"', 'Python File (no console)', PY_PNG),
     )
 
-    if ns.include_pip and ns.include_launchers:
+    ikiwa ns.include_pip na ns.include_launchers:
         add_application(
             ns,
             xml,
@@ -431,7 +431,7 @@ def get_appxmanifest(ns):
             ("python.wheel", [".whl"], 'install "%1"', 'Python Wheel'),
         )
 
-    if ns.include_idle and ns.include_launchers:
+    ikiwa ns.include_idle na ns.include_launchers:
         add_application(
             ns,
             xml,
@@ -440,42 +440,42 @@ def get_appxmanifest(ns):
             ["idle", "idle{}".format(VER_MAJOR), "idle{}".format(VER_DOT)],
             IDLE_VE_DATA,
             "windows",
-            None,
+            Tupu,
         )
 
-    if (ns.source / SCCD_FILENAME).is_file():
+    ikiwa (ns.source / SCCD_FILENAME).is_file():
         add_registry_entries(ns, xml)
         node = xml.find("m:Capabilities", NS)
         node = ET.SubElement(node, QN(NS["uap4"], "CustomCapability"))
         node.set("Name", "Microsoft.classicAppCompat_8wekyb3d8bbwe")
 
     buffer = io.BytesIO()
-    xml.write(buffer, encoding="utf-8", xml_declaration=True)
-    return buffer.getbuffer()
+    xml.write(buffer, encoding="utf-8", xml_declaration=Kweli)
+    rudisha buffer.getbuffer()
 
 
-def get_resources_xml(ns):
-    return RESOURCES_XML_TEMPLATE.encode("utf-8")
+eleza get_resources_xml(ns):
+    rudisha RESOURCES_XML_TEMPLATE.encode("utf-8")
 
 
-def get_appx_layout(ns):
-    if not ns.include_appxmanifest:
-        return
+eleza get_appx_layout(ns):
+    ikiwa sio ns.include_appxmanifest:
+        rudisha
 
-    yield "AppxManifest.xml", ("AppxManifest.xml", get_appxmanifest(ns))
-    yield "_resources.xml", ("_resources.xml", get_resources_xml(ns))
+    tuma "AppxManifest.xml", ("AppxManifest.xml", get_appxmanifest(ns))
+    tuma "_resources.xml", ("_resources.xml", get_resources_xml(ns))
     icons = ns.source / "PC" / "icons"
-    for px in [44, 50, 150]:
+    kila px kwenye [44, 50, 150]:
         src = icons / "pythonx{}.png".format(px)
-        yield f"_resources/pythonx{px}.png", src
-        yield f"_resources/pythonx{px}$targetsize-{px}_altform-unplated.png", src
-    for px in [44, 150]:
+        tuma f"_resources/pythonx{px}.png", src
+        tuma f"_resources/pythonx{px}$targetsize-{px}_altform-unplated.png", src
+    kila px kwenye [44, 150]:
         src = icons / "pythonwx{}.png".format(px)
-        yield f"_resources/pythonwx{px}.png", src
-        yield f"_resources/pythonwx{px}$targetsize-{px}_altform-unplated.png", src
-    yield f"_resources/py.png", icons / "py.png"
+        tuma f"_resources/pythonwx{px}.png", src
+        tuma f"_resources/pythonwx{px}$targetsize-{px}_altform-unplated.png", src
+    tuma f"_resources/py.png", icons / "py.png"
     sccd = ns.source / SCCD_FILENAME
-    if sccd.is_file():
-        # This should only be set for side-loading purposes.
+    ikiwa sccd.is_file():
+        # This should only be set kila side-loading purposes.
         sccd = _fixup_sccd(ns, sccd, os.getenv("APPX_DATA_SHA256"))
-        yield sccd.name, sccd
+        tuma sccd.name, sccd

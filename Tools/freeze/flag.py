@@ -1,2 +1,2 @@
-initialized = True
-print("Hello world!")
+initialized = Kweli
+andika("Hello world!")

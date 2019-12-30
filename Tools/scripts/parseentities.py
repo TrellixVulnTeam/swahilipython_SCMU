@@ -1,64 +1,64 @@
 #!/usr/bin/env python3
-""" Utility for parsing HTML entity definitions available from:
+""" Utility kila parsing HTML entity definitions available from:
 
-      http://www.w3.org/ as e.g.
+      http://www.w3.org/ kama e.g.
       http://www.w3.org/TR/REC-html40/HTMLlat1.ent
 
-    Input is read from stdin, output is written to stdout in form of a
+    Input ni read kutoka stdin, output ni written to stdout kwenye form of a
     Python snippet defining a dictionary "entitydefs" mapping literal
-    entity name to character or numeric entity.
+    entity name to character ama numeric entity.
 
     Marc-Andre Lemburg, mal@lemburg.com, 1999.
-    Use as you like. NO WARRANTIES.
+    Use kama you like. NO WARRANTIES.
 
 """
-import re,sys
+agiza re,sys
 
 entityRE = re.compile(r'<!ENTITY +(\w+) +CDATA +"([^"]+)" +-- +((?:.|\n)+?) *-->')
 
-def parse(text,pos=0,endpos=None):
+eleza parse(text,pos=0,endpos=Tupu):
 
     pos = 0
-    if endpos is None:
+    ikiwa endpos ni Tupu:
         endpos = len(text)
     d = {}
-    while 1:
+    wakati 1:
         m = entityRE.search(text,pos,endpos)
-        if not m:
-            break
+        ikiwa sio m:
+            koma
         name,charcode,comment = m.groups()
         d[name] = charcode,comment
         pos = m.end()
-    return d
+    rudisha d
 
-def writefile(f,defs):
+eleza writefile(f,defs):
 
     f.write("entitydefs = {\n")
     items = sorted(defs.items())
-    for name, (charcode,comment) in items:
-        if charcode[:2] == '&#':
+    kila name, (charcode,comment) kwenye items:
+        ikiwa charcode[:2] == '&#':
             code = int(charcode[2:-1])
-            if code < 256:
+            ikiwa code < 256:
                 charcode = r"'\%o'" % code
-            else:
+            isipokua:
                 charcode = repr(charcode)
-        else:
+        isipokua:
             charcode = repr(charcode)
         comment = ' '.join(comment.split())
         f.write("    '%s':\t%s,  \t# %s\n" % (name,charcode,comment))
     f.write('\n}\n')
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        with open(sys.argv[1]) as infile:
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) > 1:
+        ukijumuisha open(sys.argv[1]) kama infile:
             text = infile.read()
-    else:
+    isipokua:
         text = sys.stdin.read()
 
     defs = parse(text)
 
-    if len(sys.argv) > 2:
-        with open(sys.argv[2],'w') as outfile:
+    ikiwa len(sys.argv) > 2:
+        ukijumuisha open(sys.argv[2],'w') kama outfile:
             writefile(outfile, defs)
-    else:
+    isipokua:
         writefile(sys.stdout, defs)

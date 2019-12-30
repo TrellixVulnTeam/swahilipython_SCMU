@@ -2,36 +2,36 @@
 
 """
 Remote python client.
-Execute Python commands remotely and send output back.
+Execute Python commands remotely na send output back.
 """
 
-import sys
-from socket import socket, AF_INET, SOCK_STREAM, SHUT_WR
+agiza sys
+kutoka socket agiza socket, AF_INET, SOCK_STREAM, SHUT_WR
 
 PORT = 4127
 BUFSIZE = 1024
 
-def main():
-    if len(sys.argv) < 3:
-        print("usage: rpython host command")
+eleza main():
+    ikiwa len(sys.argv) < 3:
+        andika("usage: rpython host command")
         sys.exit(2)
     host = sys.argv[1]
     port = PORT
     i = host.find(':')
-    if i >= 0:
+    ikiwa i >= 0:
         port = int(host[i+1:])
         host = host[:i]
     command = ' '.join(sys.argv[2:])
-    with socket(AF_INET, SOCK_STREAM) as s:
+    ukijumuisha socket(AF_INET, SOCK_STREAM) kama s:
         s.connect((host, port))
         s.send(command.encode())
         s.shutdown(SHUT_WR)
         reply = b''
-        while True:
+        wakati Kweli:
             data = s.recv(BUFSIZE)
-            if not data:
-                break
+            ikiwa sio data:
+                koma
             reply += data
-        print(reply.decode(), end=' ')
+        andika(reply.decode(), end=' ')
 
 main()

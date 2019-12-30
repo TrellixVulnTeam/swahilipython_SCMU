@@ -3,376 +3,376 @@
 """fixdiv - tool to fix division operators.
 
 To use this tool, first run `python -Qwarnall yourscript.py 2>warnings'.
-This runs the script `yourscript.py' while writing warning messages
+This runs the script `yourscript.py' wakati writing warning messages
 about all uses of the classic division operator to the file
 `warnings'.  The warnings look like this:
 
   <file>:<line>: DeprecationWarning: classic <type> division
 
-The warnings are written to stderr, so you must use `2>' for the I/O
-redirect.  I know of no way to redirect stderr on Windows in a DOS
+The warnings are written to stderr, so you must use `2>' kila the I/O
+redirect.  I know of no way to redirect stderr on Windows kwenye a DOS
 box, so you will have to modify the script to set sys.stderr to some
-kind of log file if you want to do this on Windows.
+kind of log file ikiwa you want to do this on Windows.
 
-The warnings are not limited to the script; modules imported by the
-script may also trigger warnings.  In fact a useful technique is to
-write a test script specifically intended to exercise all code in a
-particular module or set of modules.
+The warnings are sio limited to the script; modules imported by the
+script may also trigger warnings.  In fact a useful technique ni to
+write a test script specifically intended to exercise all code kwenye a
+particular module ama set of modules.
 
 Then run `python fixdiv.py warnings'.  This first reads the warnings,
-looking for classic division warnings, and sorts them by file name and
-line number.  Then, for each file that received at least one warning,
-it parses the file and tries to match the warnings up to the division
-operators found in the source code.  If it is successful, it writes
-its findings to stdout, preceded by a line of dashes and a line of the
+looking kila classic division warnings, na sorts them by file name na
+line number.  Then, kila each file that received at least one warning,
+it parses the file na tries to match the warnings up to the division
+operators found kwenye the source code.  If it ni successful, it writes
+its findings to stdout, preceded by a line of dashes na a line of the
 form:
 
   Index: <file>
 
 If the only findings found are suggestions to change a / operator into
-a // operator, the output is acceptable input for the Unix 'patch'
+a // operator, the output ni acceptable input kila the Unix 'patch'
 program.
 
-Here are the possible messages on stdout (N stands for a line number):
+Here are the possible messages on stdout (N stands kila a line number):
 
 - A plain-diff-style change ('NcN', a line marked by '<', a line
-  containing '---', and a line marked by '>'):
+  containing '---', na a line marked by '>'):
 
-  A / operator was found that should be changed to //.  This is the
+  A / operator was found that should be changed to //.  This ni the
   recommendation when only int and/or long arguments were seen.
 
-- 'True division / operator at line N' and a line marked by '=':
+- 'Kweli division / operator at line N' na a line marked by '=':
 
-  A / operator was found that can remain unchanged.  This is the
+  A / operator was found that can remain unchanged.  This ni the
   recommendation when only float and/or complex arguments were seen.
 
 - 'Ambiguous / operator (..., ...) at line N', line marked by '?':
 
-  A / operator was found for which int or long as well as float or
-  complex arguments were seen.  This is highly unlikely; if it occurs,
+  A / operator was found kila which int ama long kama well kama float ama
+  complex arguments were seen.  This ni highly unlikely; ikiwa it occurs,
   you may have to restructure the code to keep the classic semantics,
-  or maybe you don't care about the classic semantics.
+  ama maybe you don't care about the classic semantics.
 
 - 'No conclusive evidence on line N', line marked by '*':
 
-  A / operator was found for which no warnings were seen.  This could
-  be code that was never executed, or code that was only executed
-  with user-defined objects as arguments.  You will have to
+  A / operator was found kila which no warnings were seen.  This could
+  be code that was never executed, ama code that was only executed
+  ukijumuisha user-defined objects kama arguments.  You will have to
   investigate further.  Note that // can be overloaded separately from
-  /, using __floordiv__.  True division can also be separately
+  /, using __floordiv__.  Kweli division can also be separately
   overloaded, using __truediv__.  Classic division should be the same
-  as either of those.  (XXX should I add a warning for division on
-  user-defined objects, to disambiguate this case from code that was
+  kama either of those.  (XXX should I add a warning kila division on
+  user-defined objects, to disambiguate this case kutoka code that was
   never executed?)
 
-- 'Phantom ... warnings for line N', line marked by '*':
+- 'Phantom ... warnings kila line N', line marked by '*':
 
-  A warning was seen for a line not containing a / operator.  The most
-  likely cause is a warning about code executed by 'exec' or eval()
-  (see note below), or an indirect invocation of the / operator, for
-  example via the div() function in the operator module.  It could
+  A warning was seen kila a line sio containing a / operator.  The most
+  likely cause ni a warning about code executed by 'exec' ama eval()
+  (see note below), ama an indirect invocation of the / operator, for
+  example via the div() function kwenye the operator module.  It could
   also be caused by a change to the file between the time the test
-  script was run to collect warnings and the time fixdiv was run.
+  script was run to collect warnings na the time fixdiv was run.
 
-- 'More than one / operator in line N'; or
-  'More than one / operator per statement in lines N-N':
+- 'More than one / operator kwenye line N'; ama
+  'More than one / operator per statement kwenye lines N-N':
 
-  The scanner found more than one / operator on a single line, or in a
+  The scanner found more than one / operator on a single line, ama kwenye a
   statement split across multiple lines.  Because the warnings
-  framework doesn't (and can't) show the offset within the line, and
+  framework doesn't (and can't) show the offset within the line, na
   the code generator doesn't always give the correct line number for
-  operations in a multi-line statement, we can't be sure whether all
-  operators in the statement were executed.  To be on the safe side,
-  by default a warning is issued about this case.  In practice, these
-  cases are usually safe, and the -m option suppresses these warning.
+  operations kwenye a multi-line statement, we can't be sure whether all
+  operators kwenye the statement were executed.  To be on the safe side,
+  by default a warning ni issued about this case.  In practice, these
+  cases are usually safe, na the -m option suppresses these warning.
 
-- 'Can't find the / operator in line N', line marked by '*':
+- 'Can't find the / operator kwenye line N', line marked by '*':
 
   This really shouldn't happen.  It means that the tokenize module
   reported a '/' operator but the line it returns didn't contain a '/'
   character at the indicated position.
 
-- 'Bad warning for line N: XYZ', line marked by '*':
+- 'Bad warning kila line N: XYZ', line marked by '*':
 
   This really shouldn't happen.  It means that a 'classic XYZ
-  division' warning was read with XYZ being something other than
-  'int', 'long', 'float', or 'complex'.
+  division' warning was read ukijumuisha XYZ being something other than
+  'int', 'long', 'float', ama 'complex'.
 
 Notes:
 
-- The augmented assignment operator /= is handled the same way as the
+- The augmented assignment operator /= ni handled the same way kama the
   / operator.
 
 - This tool never looks at the // operator; no warnings are ever
-  generated for use of this operator.
+  generated kila use of this operator.
 
 - This tool never looks at the / operator when a future division
-  statement is in effect; no warnings are generated in this case, and
-  because the tool only looks at files for which at least one classic
+  statement ni kwenye effect; no warnings are generated kwenye this case, na
+  because the tool only looks at files kila which at least one classic
   division warning was seen, it will never look at files containing a
   future division statement.
 
-- Warnings may be issued for code not read from a file, but executed
-  using the exec() or eval() functions.  These may have
-  <string> in the filename position, in which case the fixdiv script
-  will attempt and fail to open a file named '<string>' and issue a
-  warning about this failure; or these may be reported as 'Phantom'
-  warnings (see above).  You're on your own to deal with these.  You
-  could make all recommended changes and add a future division
-  statement to all affected files, and then re-run the test script; it
-  should not issue any warnings.  If there are any, and you have a
+- Warnings may be issued kila code sio read kutoka a file, but executed
+  using the exec() ama eval() functions.  These may have
+  <string> kwenye the filename position, kwenye which case the fixdiv script
+  will attempt na fail to open a file named '<string>' na issue a
+  warning about this failure; ama these may be reported kama 'Phantom'
+  warnings (see above).  You're on your own to deal ukijumuisha these.  You
+  could make all recommended changes na add a future division
+  statement to all affected files, na then re-run the test script; it
+  should sio issue any warnings.  If there are any, na you have a
   hard time tracking down where they are generated, you can use the
   -Werror option to force an error instead of a first warning,
   generating a traceback.
 
-- The tool should be run from the same directory as that from which
+- The tool should be run kutoka the same directory kama that kutoka which
   the original script was run, otherwise it won't be able to open
   files given by relative pathnames.
 """
 
-import sys
-import getopt
-import re
-import tokenize
+agiza sys
+agiza getopt
+agiza re
+agiza tokenize
 
 multi_ok = 0
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "hm")
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(msg)
-        return 2
-    for o, a in opts:
-        if o == "-h":
-            print(__doc__)
-            return
-        if o == "-m":
+        rudisha 2
+    kila o, a kwenye opts:
+        ikiwa o == "-h":
+            andika(__doc__)
+            rudisha
+        ikiwa o == "-m":
             global multi_ok
             multi_ok = 1
-    if not args:
-        usage("at least one file argument is required")
-        return 2
-    if args[1:]:
+    ikiwa sio args:
+        usage("at least one file argument ni required")
+        rudisha 2
+    ikiwa args[1:]:
         sys.stderr.write("%s: extra file arguments ignored\n", sys.argv[0])
     warnings = readwarnings(args[0])
-    if warnings is None:
-        return 1
+    ikiwa warnings ni Tupu:
+        rudisha 1
     files = list(warnings.keys())
-    if not files:
-        print("No classic division warnings read from", args[0])
-        return
+    ikiwa sio files:
+        andika("No classic division warnings read from", args[0])
+        rudisha
     files.sort()
-    exit = None
-    for filename in files:
+    exit = Tupu
+    kila filename kwenye files:
         x = process(filename, warnings[filename])
-        exit = exit or x
-    return exit
+        exit = exit ama x
+    rudisha exit
 
-def usage(msg):
+eleza usage(msg):
     sys.stderr.write("%s: %s\n" % (sys.argv[0], msg))
     sys.stderr.write("Usage: %s [-m] warnings\n" % sys.argv[0])
-    sys.stderr.write("Try `%s -h' for more information.\n" % sys.argv[0])
+    sys.stderr.write("Try `%s -h' kila more information.\n" % sys.argv[0])
 
 PATTERN = (r"^(.+?):(\d+): DeprecationWarning: "
            r"classic (int|long|float|complex) division$")
 
-def readwarnings(warningsfile):
+eleza readwarnings(warningsfile):
     prog = re.compile(PATTERN)
     warnings = {}
-    try:
+    jaribu:
         f = open(warningsfile)
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write("can't open: %s\n" % msg)
-        return
-    with f:
-        while 1:
+        rudisha
+    ukijumuisha f:
+        wakati 1:
             line = f.readline()
-            if not line:
-                break
+            ikiwa sio line:
+                koma
             m = prog.match(line)
-            if not m:
-                if line.find("division") >= 0:
+            ikiwa sio m:
+                ikiwa line.find("division") >= 0:
                     sys.stderr.write("Warning: ignored input " + line)
-                continue
+                endelea
             filename, lineno, what = m.groups()
             list = warnings.get(filename)
-            if list is None:
+            ikiwa list ni Tupu:
                 warnings[filename] = list = []
             list.append((int(lineno), sys.intern(what)))
-    return warnings
+    rudisha warnings
 
-def process(filename, list):
-    print("-"*70)
-    assert list # if this fails, readwarnings() is broken
-    try:
+eleza process(filename, list):
+    andika("-"*70)
+    assert list # ikiwa this fails, readwarnings() ni broken
+    jaribu:
         fp = open(filename)
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write("can't open: %s\n" % msg)
-        return 1
-    with fp:
-        print("Index:", filename)
+        rudisha 1
+    ukijumuisha fp:
+        andika("Index:", filename)
         f = FileContext(fp)
         list.sort()
-        index = 0 # list[:index] has been processed, list[index:] is still to do
+        index = 0 # list[:index] has been processed, list[index:] ni still to do
         g = tokenize.generate_tokens(f.readline)
-        while 1:
+        wakati 1:
             startlineno, endlineno, slashes = lineinfo = scanline(g)
-            if startlineno is None:
-                break
-            assert startlineno <= endlineno is not None
+            ikiwa startlineno ni Tupu:
+                koma
+            assert startlineno <= endlineno ni sio Tupu
             orphans = []
-            while index < len(list) and list[index][0] < startlineno:
+            wakati index < len(list) na list[index][0] < startlineno:
                 orphans.append(list[index])
                 index += 1
-            if orphans:
+            ikiwa orphans:
                 reportphantomwarnings(orphans, f)
             warnings = []
-            while index < len(list) and list[index][0] <= endlineno:
+            wakati index < len(list) na list[index][0] <= endlineno:
                 warnings.append(list[index])
                 index += 1
-            if not slashes and not warnings:
-                pass
-            elif slashes and not warnings:
+            ikiwa sio slashes na sio warnings:
+                pita
+            lasivyo slashes na sio warnings:
                 report(slashes, "No conclusive evidence")
-            elif warnings and not slashes:
+            lasivyo warnings na sio slashes:
                 reportphantomwarnings(warnings, f)
-            else:
-                if len(slashes) > 1:
-                    if not multi_ok:
+            isipokua:
+                ikiwa len(slashes) > 1:
+                    ikiwa sio multi_ok:
                         rows = []
-                        lastrow = None
-                        for (row, col), line in slashes:
-                            if row == lastrow:
-                                continue
+                        lastrow = Tupu
+                        kila (row, col), line kwenye slashes:
+                            ikiwa row == lastrow:
+                                endelea
                             rows.append(row)
                             lastrow = row
                         assert rows
-                        if len(rows) == 1:
-                            print("*** More than one / operator in line", rows[0])
-                        else:
-                            print("*** More than one / operator per statement", end=' ')
-                            print("in lines %d-%d" % (rows[0], rows[-1]))
+                        ikiwa len(rows) == 1:
+                            andika("*** More than one / operator kwenye line", rows[0])
+                        isipokua:
+                            andika("*** More than one / operator per statement", end=' ')
+                            andika("in lines %d-%d" % (rows[0], rows[-1]))
                 intlong = []
                 floatcomplex = []
                 bad = []
-                for lineno, what in warnings:
-                    if what in ("int", "long"):
+                kila lineno, what kwenye warnings:
+                    ikiwa what kwenye ("int", "long"):
                         intlong.append(what)
-                    elif what in ("float", "complex"):
+                    lasivyo what kwenye ("float", "complex"):
                         floatcomplex.append(what)
-                    else:
+                    isipokua:
                         bad.append(what)
-                lastrow = None
-                for (row, col), line in slashes:
-                    if row == lastrow:
-                        continue
+                lastrow = Tupu
+                kila (row, col), line kwenye slashes:
+                    ikiwa row == lastrow:
+                        endelea
                     lastrow = row
                     line = chop(line)
-                    if line[col:col+1] != "/":
-                        print("*** Can't find the / operator in line %d:" % row)
-                        print("*", line)
-                        continue
-                    if bad:
-                        print("*** Bad warning for line %d:" % row, bad)
-                        print("*", line)
-                    elif intlong and not floatcomplex:
-                        print("%dc%d" % (row, row))
-                        print("<", line)
-                        print("---")
-                        print(">", line[:col] + "/" + line[col:])
-                    elif floatcomplex and not intlong:
-                        print("True division / operator at line %d:" % row)
-                        print("=", line)
-                    elif intlong and floatcomplex:
-                        print("*** Ambiguous / operator (%s, %s) at line %d:" %
+                    ikiwa line[col:col+1] != "/":
+                        andika("*** Can't find the / operator kwenye line %d:" % row)
+                        andika("*", line)
+                        endelea
+                    ikiwa bad:
+                        andika("*** Bad warning kila line %d:" % row, bad)
+                        andika("*", line)
+                    lasivyo intlong na sio floatcomplex:
+                        andika("%dc%d" % (row, row))
+                        andika("<", line)
+                        andika("---")
+                        andika(">", line[:col] + "/" + line[col:])
+                    lasivyo floatcomplex na sio intlong:
+                        andika("Kweli division / operator at line %d:" % row)
+                        andika("=", line)
+                    lasivyo intlong na floatcomplex:
+                        andika("*** Ambiguous / operator (%s, %s) at line %d:" %
                             ("|".join(intlong), "|".join(floatcomplex), row))
-                        print("?", line)
+                        andika("?", line)
 
-def reportphantomwarnings(warnings, f):
+eleza reportphantomwarnings(warnings, f):
     blocks = []
-    lastrow = None
-    lastblock = None
-    for row, what in warnings:
-        if row != lastrow:
+    lastrow = Tupu
+    lastblock = Tupu
+    kila row, what kwenye warnings:
+        ikiwa row != lastrow:
             lastblock = [row]
             blocks.append(lastblock)
         lastblock.append(what)
-    for block in blocks:
+    kila block kwenye blocks:
         row = block[0]
         whats = "/".join(block[1:])
-        print("*** Phantom %s warnings for line %d:" % (whats, row))
+        andika("*** Phantom %s warnings kila line %d:" % (whats, row))
         f.report(row, mark="*")
 
-def report(slashes, message):
-    lastrow = None
-    for (row, col), line in slashes:
-        if row != lastrow:
-            print("*** %s on line %d:" % (message, row))
-            print("*", chop(line))
+eleza report(slashes, message):
+    lastrow = Tupu
+    kila (row, col), line kwenye slashes:
+        ikiwa row != lastrow:
+            andika("*** %s on line %d:" % (message, row))
+            andika("*", chop(line))
             lastrow = row
 
-class FileContext:
-    def __init__(self, fp, window=5, lineno=1):
+kundi FileContext:
+    eleza __init__(self, fp, window=5, lineno=1):
         self.fp = fp
         self.window = 5
         self.lineno = 1
         self.eoflookahead = 0
         self.lookahead = []
         self.buffer = []
-    def fill(self):
-        while len(self.lookahead) < self.window and not self.eoflookahead:
+    eleza fill(self):
+        wakati len(self.lookahead) < self.window na sio self.eoflookahead:
             line = self.fp.readline()
-            if not line:
+            ikiwa sio line:
                 self.eoflookahead = 1
-                break
+                koma
             self.lookahead.append(line)
-    def readline(self):
+    eleza readline(self):
         self.fill()
-        if not self.lookahead:
-            return ""
+        ikiwa sio self.lookahead:
+            rudisha ""
         line = self.lookahead.pop(0)
         self.buffer.append(line)
         self.lineno += 1
-        return line
-    def __getitem__(self, index):
+        rudisha line
+    eleza __getitem__(self, index):
         self.fill()
         bufstart = self.lineno - len(self.buffer)
         lookend = self.lineno + len(self.lookahead)
-        if bufstart <= index < self.lineno:
-            return self.buffer[index - bufstart]
-        if self.lineno <= index < lookend:
-            return self.lookahead[index - self.lineno]
-        raise KeyError
-    def report(self, first, last=None, mark="*"):
-        if last is None:
+        ikiwa bufstart <= index < self.lineno:
+            rudisha self.buffer[index - bufstart]
+        ikiwa self.lineno <= index < lookend:
+            rudisha self.lookahead[index - self.lineno]
+        ashiria KeyError
+    eleza report(self, first, last=Tupu, mark="*"):
+        ikiwa last ni Tupu:
             last = first
-        for i in range(first, last+1):
-            try:
+        kila i kwenye range(first, last+1):
+            jaribu:
                 line = self[first]
-            except KeyError:
+            tatizo KeyError:
                 line = "<missing line>"
-            print(mark, chop(line))
+            andika(mark, chop(line))
 
-def scanline(g):
+eleza scanline(g):
     slashes = []
-    startlineno = None
-    endlineno = None
-    for type, token, start, end, line in g:
+    startlineno = Tupu
+    endlineno = Tupu
+    kila type, token, start, end, line kwenye g:
         endlineno = end[0]
-        if startlineno is None:
+        ikiwa startlineno ni Tupu:
             startlineno = endlineno
-        if token in ("/", "/="):
+        ikiwa token kwenye ("/", "/="):
             slashes.append((start, line))
-        if type == tokenize.NEWLINE:
-            break
-    return startlineno, endlineno, slashes
+        ikiwa type == tokenize.NEWLINE:
+            koma
+    rudisha startlineno, endlineno, slashes
 
-def chop(line):
-    if line.endswith("\n"):
-        return line[:-1]
-    else:
-        return line
+eleza chop(line):
+    ikiwa line.endswith("\n"):
+        rudisha line[:-1]
+    isipokua:
+        rudisha line
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main())

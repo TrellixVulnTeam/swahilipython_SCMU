@@ -1,83 +1,83 @@
 #!/usr/bin/env python
-# Script checking that all symbols exported by libpython start with Py or _Py
+# Script checking that all symbols exported by libpython start ukijumuisha Py ama _Py
 
-import subprocess
-import sys
-import sysconfig
+agiza subprocess
+agiza sys
+agiza sysconfig
 
 
-def get_exported_symbols():
+eleza get_exported_symbols():
     LIBRARY = sysconfig.get_config_var('LIBRARY')
-    if not LIBRARY:
-        raise Exception("failed to get LIBRARY")
+    ikiwa sio LIBRARY:
+        ashiria Exception("failed to get LIBRARY")
 
     args = ('nm', '-p', LIBRARY)
-    print("+ %s" % ' '.join(args))
-    proc = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=True)
-    if proc.returncode:
+    andika("+ %s" % ' '.join(args))
+    proc = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines=Kweli)
+    ikiwa proc.returncode:
         sys.stdout.write(proc.stdout)
         sys.exit(proc.returncode)
 
     stdout = proc.stdout.rstrip()
-    if not stdout:
-        raise Exception("command output is empty")
-    return stdout
+    ikiwa sio stdout:
+        ashiria Exception("command output ni empty")
+    rudisha stdout
 
 
-def get_smelly_symbols(stdout):
+eleza get_smelly_symbols(stdout):
     symbols = []
     ignored_symtypes = set()
 
     allowed_prefixes = ('Py', '_Py')
-    if sys.platform == 'darwin':
+    ikiwa sys.platform == 'darwin':
         allowed_prefixes += ('__Py',)
 
-    for line in stdout.splitlines():
+    kila line kwenye stdout.splitlines():
         # Split line '0000000000001b80 D PyTextIOWrapper_Type'
-        if not line:
-            continue
+        ikiwa sio line:
+            endelea
 
         parts = line.split(maxsplit=2)
-        if len(parts) < 3:
-            continue
+        ikiwa len(parts) < 3:
+            endelea
 
         symtype = parts[1].strip()
         # Ignore private symbols.
         #
-        # If lowercase, the symbol is usually local; if uppercase, the symbol
-        # is global (external).  There are however a few lowercase symbols that
-        # are shown for special global symbols ("u", "v" and "w").
-        if symtype.islower() and symtype not in "uvw":
+        # If lowercase, the symbol ni usually local; ikiwa uppercase, the symbol
+        # ni global (external).  There are however a few lowercase symbols that
+        # are shown kila special global symbols ("u", "v" na "w").
+        ikiwa symtype.islower() na symtype haiko kwenye "uvw":
             ignored_symtypes.add(symtype)
-            continue
+            endelea
 
         symbol = parts[-1]
-        if symbol.startswith(allowed_prefixes):
-            continue
+        ikiwa symbol.startswith(allowed_prefixes):
+            endelea
         symbol = '%s (type: %s)' % (symbol, symtype)
         symbols.append(symbol)
 
-    if ignored_symtypes:
-        print("Ignored symbol types: %s" % ', '.join(sorted(ignored_symtypes)))
-        print()
-    return symbols
+    ikiwa ignored_symtypes:
+        andika("Ignored symbol types: %s" % ', '.join(sorted(ignored_symtypes)))
+        andika()
+    rudisha symbols
 
 
-def main():
+eleza main():
     nm_output = get_exported_symbols()
     symbols = get_smelly_symbols(nm_output)
 
-    if not symbols:
-        print("OK: no smelly symbol found")
+    ikiwa sio symbols:
+        andika("OK: no smelly symbol found")
         sys.exit(0)
 
     symbols.sort()
-    for symbol in symbols:
-        print("Smelly symbol: %s" % symbol)
-    print()
-    print("ERROR: Found %s smelly symbols!" % len(symbols))
+    kila symbol kwenye symbols:
+        andika("Smelly symbol: %s" % symbol)
+    andika()
+    andika("ERROR: Found %s smelly symbols!" % len(symbols))
     sys.exit(1)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

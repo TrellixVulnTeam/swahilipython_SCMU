@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""Send the contents of a directory as a MIME message."""
+"""Send the contents of a directory kama a MIME message."""
 
 agiza os
 agiza smtplib
@@ -13,17 +13,17 @@ kutoka email.message agiza EmailMessage
 kutoka email.policy agiza SMTP
 
 
-def main():
+eleza main():
     parser = ArgumentParser(description="""\
-Send the contents of a directory as a MIME message.
-Unless the -o option is given, the email is sent by forwarding to your local
+Send the contents of a directory kama a MIME message.
+Unless the -o option ni given, the email ni sent by forwarding to your local
 SMTP server, which then does the normal delivery process.  Your local machine
 must be running an SMTP server.
 """)
     parser.add_argument('-d', '--directory',
                         help="""Mail the contents of the specified directory,
                         otherwise use the current directory.  Only the regular
-                        files in the directory are sent, and we don't recurse to
+                        files kwenye the directory are sent, na we don't recurse to
                         subdirectories.""")
     parser.add_argument('-o', '--output',
                         metavar='FILE',
@@ -37,41 +37,41 @@ must be running an SMTP server.
                         help='A To: header value (at least one required)')
     args = parser.parse_args()
     directory = args.directory
-    if not directory:
+    ikiwa sio directory:
         directory = '.'
     # Create the message
     msg = EmailMessage()
     msg['Subject'] = 'Contents of directory %s' % os.path.abspath(directory)
     msg['To'] = ', '.join(args.recipients)
     msg['From'] = args.sender
-    msg.preamble = 'You will not see this in a MIME-aware mail reader.\n'
+    msg.preamble = 'You will sio see this kwenye a MIME-aware mail reader.\n'
 
-    for filename in os.listdir(directory):
+    kila filename kwenye os.listdir(directory):
         path = os.path.join(directory, filename)
-        if not os.path.isfile(path):
-            continue
+        ikiwa sio os.path.isfile(path):
+            endelea
         # Guess the content type based on the file's extension.  Encoding
-        # will be ignored, although we should check for simple things like
-        # gzip'd or compressed files.
+        # will be ignored, although we should check kila simple things like
+        # gzip'd ama compressed files.
         ctype, encoding = mimetypes.guess_type(path)
-        if ctype is None or encoding is not None:
-            # No guess could be made, or the file is encoded (compressed), so
+        ikiwa ctype ni Tupu ama encoding ni sio Tupu:
+            # No guess could be made, ama the file ni encoded (compressed), so
             # use a generic bag-of-bits type.
             ctype = 'application/octet-stream'
         maintype, subtype = ctype.split('/', 1)
-        with open(path, 'rb') as fp:
+        ukijumuisha open(path, 'rb') kama fp:
             msg.add_attachment(fp.read(),
                                maintype=maintype,
                                subtype=subtype,
                                filename=filename)
-    # Now send or store the message
-    if args.output:
-        with open(args.output, 'wb') as fp:
+    # Now send ama store the message
+    ikiwa args.output:
+        ukijumuisha open(args.output, 'wb') kama fp:
             fp.write(msg.as_bytes(policy=SMTP))
-    else:
-        with smtplib.SMTP('localhost') as s:
+    isipokua:
+        ukijumuisha smtplib.SMTP('localhost') kama s:
             s.send_message(msg)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

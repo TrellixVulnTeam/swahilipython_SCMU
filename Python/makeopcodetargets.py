@@ -1,55 +1,55 @@
 #! /usr/bin/env python
-"""Generate C code for the jump table of the threaded code interpreter
-(for compilers supporting computed gotos or "labels-as-values", such as gcc).
+"""Generate C code kila the jump table of the threaded code interpreter
+(kila compilers supporting computed gotos ama "labels-as-values", such kama gcc).
 """
 
-import os
-import sys
+agiza os
+agiza sys
 
 
-try:
-    from importlib.machinery import SourceFileLoader
-except ImportError:
-    import imp
+jaribu:
+    kutoka importlib.machinery agiza SourceFileLoader
+tatizo ImportError:
+    agiza imp
 
-    def find_module(modname):
-        """Finds and returns a module in the local dist/checkout.
+    eleza find_module(modname):
+        """Finds na returns a module kwenye the local dist/checkout.
         """
         modpath = os.path.join(
             os.path.dirname(os.path.dirname(__file__)), "Lib")
-        return imp.load_module(modname, *imp.find_module(modname, [modpath]))
-else:
-    def find_module(modname):
-        """Finds and returns a module in the local dist/checkout.
+        rudisha imp.load_module(modname, *imp.find_module(modname, [modpath]))
+isipokua:
+    eleza find_module(modname):
+        """Finds na returns a module kwenye the local dist/checkout.
         """
         modpath = os.path.join(
             os.path.dirname(os.path.dirname(__file__)), "Lib", modname + ".py")
-        return SourceFileLoader(modname, modpath).load_module()
+        rudisha SourceFileLoader(modname, modpath).load_module()
 
 
-def write_contents(f):
+eleza write_contents(f):
     """Write C code contents to the target file object.
     """
     opcode = find_module('opcode')
     targets = ['_unknown_opcode'] * 256
-    for opname, op in opcode.opmap.items():
+    kila opname, op kwenye opcode.opmap.items():
         targets[op] = "TARGET_%s" % opname
     f.write("static void *opcode_targets[256] = {\n")
-    f.write(",\n".join(["    &&%s" % s for s in targets]))
+    f.write(",\n".join(["    &&%s" % s kila s kwenye targets]))
     f.write("\n};\n")
 
 
-def main():
-    if len(sys.argv) >= 3:
+eleza main():
+    ikiwa len(sys.argv) >= 3:
         sys.exit("Too many arguments")
-    if len(sys.argv) == 2:
+    ikiwa len(sys.argv) == 2:
         target = sys.argv[1]
-    else:
+    isipokua:
         target = "Python/opcode_targets.h"
-    with open(target, "w") as f:
+    ukijumuisha open(target, "w") kama f:
         write_contents(f)
-    print("Jump table written into %s" % target)
+    andika("Jump table written into %s" % target)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

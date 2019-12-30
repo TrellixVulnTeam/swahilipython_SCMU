@@ -1,75 +1,75 @@
 #! /usr/bin/env python3
 
-# This file contains a class and a main program that perform three
+# This file contains a kundi na a main program that perform three
 # related (though complimentary) formatting operations on Python
-# programs.  When called as "pindent -c", it takes a valid Python
-# program as input and outputs a version augmented with block-closing
-# comments.  When called as "pindent -d", it assumes its input is a
-# Python program with block-closing comments and outputs a commentless
-# version.   When called as "pindent -r" it assumes its input is a
-# Python program with block-closing comments but with its indentation
-# messed up, and outputs a properly indented version.
+# programs.  When called kama "pindent -c", it takes a valid Python
+# program kama input na outputs a version augmented ukijumuisha block-closing
+# comments.  When called kama "pindent -d", it assumes its input ni a
+# Python program ukijumuisha block-closing comments na outputs a commentless
+# version.   When called kama "pindent -r" it assumes its input ni a
+# Python program ukijumuisha block-closing comments but ukijumuisha its indentation
+# messed up, na outputs a properly indented version.
 
-# A "block-closing comment" is a comment of the form '# end <keyword>'
-# where <keyword> is the keyword that opened the block.  If the
-# opening keyword is 'def' or 'class', the function or class name may
-# be repeated in the block-closing comment as well.  Here is an
-# example of a program fully augmented with block-closing comments:
+# A "block-closing comment" ni a comment of the form '# end <keyword>'
+# where <keyword> ni the keyword that opened the block.  If the
+# opening keyword ni 'def' ama 'class', the function ama kundi name may
+# be repeated kwenye the block-closing comment kama well.  Here ni an
+# example of a program fully augmented ukijumuisha block-closing comments:
 
-# def foobar(a, b):
-#    if a == b:
+# eleza foobar(a, b):
+#    ikiwa a == b:
 #        a = a+1
-#    elif a < b:
+#    lasivyo a < b:
 #        b = b-1
-#        if b > a: a = a-1
+#        ikiwa b > a: a = a-1
 #        # end if
-#    else:
+#    isipokua:
 #        print 'oops!'
 #    # end if
-# # end def foobar
+# # end eleza foobar
 
 # Note that only the last part of an if...elif...else... block needs a
-# block-closing comment; the same is true for other compound
+# block-closing comment; the same ni true kila other compound
 # statements (e.g. try...except).  Also note that "short-form" blocks
-# like the second 'if' in the example must be closed as well;
-# otherwise the 'else' in the example would be ambiguous (remember
-# that indentation is not significant when interpreting block-closing
+# like the second 'if' kwenye the example must be closed kama well;
+# otherwise the 'else' kwenye the example would be ambiguous (remember
+# that indentation ni sio significant when interpreting block-closing
 # comments).
 
 # The operations are idempotent (i.e. applied to their own output
-# they yield an identical result).  Running first "pindent -c" and
+# they tuma an identical result).  Running first "pindent -c" na
 # then "pindent -r" on a valid Python program produces a program that
-# is semantically identical to the input (though its indentation may
+# ni semantically identical to the input (though its indentation may
 # be different). Running "pindent -e" on that output produces a
-# program that only differs from the original in indentation.
+# program that only differs kutoka the original kwenye indentation.
 
 # Other options:
 # -s stepsize: set the indentation step size (default 8)
-# -t tabsize : set the number of spaces a tab character is worth (default 8)
+# -t tabsize : set the number of spaces a tab character ni worth (default 8)
 # -e         : expand TABs into spaces
 # file ...   : input file(s) (default standard input)
 # The results always go to standard output
 
 # Caveats:
-# - comments ending in a backslash will be mistaken for continued lines
+# - comments ending kwenye a backslash will be mistaken kila endelead lines
 # - continuations using backslash are always left unchanged
-# - continuations inside parentheses are not extra indented by -r
-#   but must be indented for -c to work correctly (this breaks
+# - continuations inside parentheses are sio extra indented by -r
+#   but must be indented kila -c to work correctly (this komas
 #   idempotency!)
-# - continued lines inside triple-quoted strings are totally garbled
+# - endelead lines inside triple-quoted strings are totally garbled
 
 # Secret feature:
-# - On input, a block may also be closed with an "end statement" --
-#   this is a block-closing comment without the '#' sign.
+# - On input, a block may also be closed ukijumuisha an "end statement" --
+#   this ni a block-closing comment without the '#' sign.
 
 # Possible improvements:
-# - check syntax based on transitions in 'next' table
+# - check syntax based on transitions kwenye 'next' table
 # - better error reporting
 # - better error recovery
 # - check identifier after class/def
 
 # The following wishes need a more complete tokenization of the source:
-# - Don't get fooled by comments ending in backslash
+# - Don't get fooled by comments ending kwenye backslash
 # - reindent continuation lines indicated by backslash
 # - handle continuation lines inside parentheses/braces/brackets
 # - handle triple quoted strings spanning lines
@@ -79,11 +79,11 @@
 # Defaults
 STEPSIZE = 8
 TABSIZE = 8
-EXPANDTABS = False
+EXPANDTABS = Uongo
 
-import io
-import re
-import sys
+agiza io
+agiza re
+agiza sys
 
 next = {}
 next['if'] = next['elif'] = 'elif', 'else', 'end'
@@ -95,9 +95,9 @@ next['else'] = next['finally'] = next['with'] = \
 next['end'] = ()
 start = 'if', 'while', 'for', 'try', 'with', 'def', 'class'
 
-class PythonIndenter:
+kundi PythonIndenter:
 
-    def __init__(self, fpi = sys.stdin, fpo = sys.stdout,
+    eleza __init__(self, fpi = sys.stdin, fpo = sys.stdout,
                  indentsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
         self.fpi = fpi
         self.fpo = fpo
@@ -115,162 +115,162 @@ class PythonIndenter:
                 r'(\s+(?P<id>[a-zA-Z_]\w*))?'
                 r'[^\w]')
         self.wsprog = re.compile(r'^[ \t]*')
-    # end def __init__
+    # end eleza __init__
 
-    def write(self, line):
-        if self.expandtabs:
+    eleza write(self, line):
+        ikiwa self.expandtabs:
             self._write(line.expandtabs(self.tabsize))
-        else:
+        isipokua:
             self._write(line)
         # end if
-    # end def write
+    # end eleza write
 
-    def readline(self):
+    eleza readline(self):
         line = self.fpi.readline()
-        if line: self.lineno += 1
+        ikiwa line: self.lineno += 1
         # end if
-        return line
-    # end def readline
+        rudisha line
+    # end eleza readline
 
-    def error(self, fmt, *args):
-        if args: fmt = fmt % args
+    eleza error(self, fmt, *args):
+        ikiwa args: fmt = fmt % args
         # end if
         sys.stderr.write('Error at line %d: %s\n' % (self.lineno, fmt))
         self.write('### %s ###\n' % fmt)
-    # end def error
+    # end eleza error
 
-    def getline(self):
+    eleza getline(self):
         line = self.readline()
-        while line[-2:] == '\\\n':
+        wakati line[-2:] == '\\\n':
             line2 = self.readline()
-            if not line2: break
+            ikiwa sio line2: koma
             # end if
             line += line2
         # end while
-        return line
-    # end def getline
+        rudisha line
+    # end eleza getline
 
-    def putline(self, line, indent):
+    eleza putline(self, line, indent):
         tabs, spaces = divmod(indent*self.indentsize, self.tabsize)
         i = self.wsprog.match(line).end()
         line = line[i:]
-        if line[:1] not in ('\n', '\r', ''):
+        ikiwa line[:1] haiko kwenye ('\n', '\r', ''):
             line = '\t'*tabs + ' '*spaces + line
         # end if
         self.write(line)
-    # end def putline
+    # end eleza putline
 
-    def reformat(self):
+    eleza reformat(self):
         stack = []
-        while True:
+        wakati Kweli:
             line = self.getline()
-            if not line: break      # EOF
+            ikiwa sio line: koma      # EOF
             # end if
             m = self.endprog.match(line)
-            if m:
+            ikiwa m:
                 kw = 'end'
                 kw2 = m.group('kw')
-                if not stack:
+                ikiwa sio stack:
                     self.error('unexpected end')
-                elif stack.pop()[0] != kw2:
+                lasivyo stack.pop()[0] != kw2:
                     self.error('unmatched end')
                 # end if
                 self.putline(line, len(stack))
-                continue
+                endelea
             # end if
             m = self.kwprog.match(line)
-            if m:
+            ikiwa m:
                 kw = m.group('kw')
-                if kw in start:
+                ikiwa kw kwenye start:
                     self.putline(line, len(stack))
                     stack.append((kw, kw))
-                    continue
+                    endelea
                 # end if
-                if kw in next and stack:
+                ikiwa kw kwenye next na stack:
                     self.putline(line, len(stack)-1)
                     kwa, kwb = stack[-1]
                     stack[-1] = kwa, kw
-                    continue
+                    endelea
                 # end if
             # end if
             self.putline(line, len(stack))
         # end while
-        if stack:
+        ikiwa stack:
             self.error('unterminated keywords')
-            for kwa, kwb in stack:
+            kila kwa, kwb kwenye stack:
                 self.write('\t%s\n' % kwa)
             # end for
         # end if
-    # end def reformat
+    # end eleza reformat
 
-    def delete(self):
+    eleza delete(self):
         begin_counter = 0
         end_counter = 0
-        while True:
+        wakati Kweli:
             line = self.getline()
-            if not line: break      # EOF
+            ikiwa sio line: koma      # EOF
             # end if
             m = self.endprog.match(line)
-            if m:
+            ikiwa m:
                 end_counter += 1
-                continue
+                endelea
             # end if
             m = self.kwprog.match(line)
-            if m:
+            ikiwa m:
                 kw = m.group('kw')
-                if kw in start:
+                ikiwa kw kwenye start:
                     begin_counter += 1
                 # end if
             # end if
             self.write(line)
         # end while
-        if begin_counter - end_counter < 0:
+        ikiwa begin_counter - end_counter < 0:
             sys.stderr.write('Warning: input contained more end tags than expected\n')
-        elif begin_counter - end_counter > 0:
+        lasivyo begin_counter - end_counter > 0:
             sys.stderr.write('Warning: input contained less end tags than expected\n')
         # end if
-    # end def delete
+    # end eleza delete
 
-    def complete(self):
+    eleza complete(self):
         stack = []
         todo = []
         currentws = thisid = firstkw = lastkw = topid = ''
-        while True:
+        wakati Kweli:
             line = self.getline()
             i = self.wsprog.match(line).end()
             m = self.endprog.match(line)
-            if m:
+            ikiwa m:
                 thiskw = 'end'
                 endkw = m.group('kw')
                 thisid = m.group('id')
-            else:
+            isipokua:
                 m = self.kwprog.match(line)
-                if m:
+                ikiwa m:
                     thiskw = m.group('kw')
-                    if thiskw not in next:
+                    ikiwa thiskw haiko kwenye next:
                         thiskw = ''
                     # end if
-                    if thiskw in ('def', 'class'):
+                    ikiwa thiskw kwenye ('def', 'class'):
                         thisid = m.group('id')
-                    else:
+                    isipokua:
                         thisid = ''
                     # end if
-                elif line[i:i+1] in ('\n', '#'):
+                lasivyo line[i:i+1] kwenye ('\n', '#'):
                     todo.append(line)
-                    continue
-                else:
+                    endelea
+                isipokua:
                     thiskw = ''
                 # end if
             # end if
             indentws = line[:i]
             indent = len(indentws.expandtabs(self.tabsize))
             current = len(currentws.expandtabs(self.tabsize))
-            while indent < current:
-                if firstkw:
-                    if topid:
+            wakati indent < current:
+                ikiwa firstkw:
+                    ikiwa topid:
                         s = '# end %s %s\n' % (
                                 firstkw, topid)
-                    else:
+                    isipokua:
                         s = '# end %s\n' % firstkw
                     # end if
                     self.write(currentws + s)
@@ -279,157 +279,157 @@ class PythonIndenter:
                 currentws, firstkw, lastkw, topid = stack.pop()
                 current = len(currentws.expandtabs(self.tabsize))
             # end while
-            if indent == current and firstkw:
-                if thiskw == 'end':
-                    if endkw != firstkw:
+            ikiwa indent == current na firstkw:
+                ikiwa thiskw == 'end':
+                    ikiwa endkw != firstkw:
                         self.error('mismatched end')
                     # end if
                     firstkw = lastkw = ''
-                elif not thiskw or thiskw in start:
-                    if topid:
+                lasivyo sio thiskw ama thiskw kwenye start:
+                    ikiwa topid:
                         s = '# end %s %s\n' % (
                                 firstkw, topid)
-                    else:
+                    isipokua:
                         s = '# end %s\n' % firstkw
                     # end if
                     self.write(currentws + s)
                     firstkw = lastkw = topid = ''
                 # end if
             # end if
-            if indent > current:
+            ikiwa indent > current:
                 stack.append((currentws, firstkw, lastkw, topid))
-                if thiskw and thiskw not in start:
+                ikiwa thiskw na thiskw haiko kwenye start:
                     # error
                     thiskw = ''
                 # end if
                 currentws, firstkw, lastkw, topid = \
                           indentws, thiskw, thiskw, thisid
             # end if
-            if thiskw:
-                if thiskw in start:
+            ikiwa thiskw:
+                ikiwa thiskw kwenye start:
                     firstkw = lastkw = thiskw
                     topid = thisid
-                else:
+                isipokua:
                     lastkw = thiskw
                 # end if
             # end if
-            for l in todo: self.write(l)
+            kila l kwenye todo: self.write(l)
             # end for
             todo = []
-            if not line: break
+            ikiwa sio line: koma
             # end if
             self.write(line)
         # end while
-    # end def complete
-# end class PythonIndenter
+    # end eleza complete
+# end kundi PythonIndenter
 
 # Simplified user interface
-# - xxx_filter(input, output): read and write file objects
-# - xxx_string(s): take and return string object
-# - xxx_file(filename): process file in place, return true iff changed
+# - xxx_filter(input, output): read na write file objects
+# - xxx_string(s): take na rudisha string object
+# - xxx_file(filename): process file kwenye place, rudisha true iff changed
 
-def complete_filter(input = sys.stdin, output = sys.stdout,
+eleza complete_filter(input = sys.stdin, output = sys.stdout,
                     stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.complete()
-# end def complete_filter
+# end eleza complete_filter
 
-def delete_filter(input= sys.stdin, output = sys.stdout,
+eleza delete_filter(input= sys.stdin, output = sys.stdout,
                         stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.delete()
-# end def delete_filter
+# end eleza delete_filter
 
-def reformat_filter(input = sys.stdin, output = sys.stdout,
+eleza reformat_filter(input = sys.stdin, output = sys.stdout,
                     stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.reformat()
-# end def reformat_filter
+# end eleza reformat_filter
 
-def complete_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+eleza complete_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     input = io.StringIO(source)
     output = io.StringIO()
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.complete()
-    return output.getvalue()
-# end def complete_string
+    rudisha output.getvalue()
+# end eleza complete_string
 
-def delete_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+eleza delete_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     input = io.StringIO(source)
     output = io.StringIO()
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.delete()
-    return output.getvalue()
-# end def delete_string
+    rudisha output.getvalue()
+# end eleza delete_string
 
-def reformat_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+eleza reformat_string(source, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
     input = io.StringIO(source)
     output = io.StringIO()
     pi = PythonIndenter(input, output, stepsize, tabsize, expandtabs)
     pi.reformat()
-    return output.getvalue()
-# end def reformat_string
+    rudisha output.getvalue()
+# end eleza reformat_string
 
-def make_backup(filename):
-    import os, os.path
+eleza make_backup(filename):
+    agiza os, os.path
     backup = filename + '~'
-    if os.path.lexists(backup):
-        try:
+    ikiwa os.path.lexists(backup):
+        jaribu:
             os.remove(backup)
-        except OSError:
-            print("Can't remove backup %r" % (backup,), file=sys.stderr)
+        tatizo OSError:
+            andika("Can't remove backup %r" % (backup,), file=sys.stderr)
         # end try
     # end if
-    try:
+    jaribu:
         os.rename(filename, backup)
-    except OSError:
-        print("Can't rename %r to %r" % (filename, backup), file=sys.stderr)
+    tatizo OSError:
+        andika("Can't rename %r to %r" % (filename, backup), file=sys.stderr)
     # end try
-# end def make_backup
+# end eleza make_backup
 
-def complete_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
-    with open(filename, 'r') as f:
+eleza complete_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+    ukijumuisha open(filename, 'r') kama f:
         source = f.read()
     # end with
     result = complete_string(source, stepsize, tabsize, expandtabs)
-    if source == result: return 0
+    ikiwa source == result: rudisha 0
     # end if
     make_backup(filename)
-    with open(filename, 'w') as f:
+    ukijumuisha open(filename, 'w') kama f:
         f.write(result)
     # end with
-    return 1
-# end def complete_file
+    rudisha 1
+# end eleza complete_file
 
-def delete_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
-    with open(filename, 'r') as f:
+eleza delete_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+    ukijumuisha open(filename, 'r') kama f:
         source = f.read()
     # end with
     result = delete_string(source, stepsize, tabsize, expandtabs)
-    if source == result: return 0
+    ikiwa source == result: rudisha 0
     # end if
     make_backup(filename)
-    with open(filename, 'w') as f:
+    ukijumuisha open(filename, 'w') kama f:
         f.write(result)
     # end with
-    return 1
-# end def delete_file
+    rudisha 1
+# end eleza delete_file
 
-def reformat_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
-    with open(filename, 'r') as f:
+eleza reformat_file(filename, stepsize = STEPSIZE, tabsize = TABSIZE, expandtabs = EXPANDTABS):
+    ukijumuisha open(filename, 'r') kama f:
         source = f.read()
     # end with
     result = reformat_string(source, stepsize, tabsize, expandtabs)
-    if source == result: return 0
+    ikiwa source == result: rudisha 0
     # end if
     make_backup(filename)
-    with open(filename, 'w') as f:
+    ukijumuisha open(filename, 'w') kama f:
         f.write(result)
     # end with
-    return 1
-# end def reformat_file
+    rudisha 1
+# end eleza reformat_file
 
-# Test program when called as a script
+# Test program when called kama a script
 
 usage = """
 usage: pindent (-c|-d|-r) [-s stepsize] [-t tabsize] [-e] [file] ...
@@ -437,70 +437,70 @@ usage: pindent (-c|-d|-r) [-s stepsize] [-t tabsize] [-e] [file] ...
 -d         : delete #end directives
 -r         : reformat a completed program (use #end directives)
 -s stepsize: indentation step (default %(STEPSIZE)d)
--t tabsize : the worth in spaces of a tab (default %(TABSIZE)d)
+-t tabsize : the worth kwenye spaces of a tab (default %(TABSIZE)d)
 -e         : expand TABs into spaces (default OFF)
-[file] ... : files are changed in place, with backups in file~
-If no files are specified or a single - is given,
-the program acts as a filter (reads stdin, writes stdout).
+[file] ... : files are changed kwenye place, ukijumuisha backups kwenye file~
+If no files are specified ama a single - ni given,
+the program acts kama a filter (reads stdin, writes stdout).
 """ % vars()
 
-def error_both(op1, op2):
-    sys.stderr.write('Error: You can not specify both '+op1+' and -'+op2[0]+' at the same time\n')
+eleza error_both(op1, op2):
+    sys.stderr.write('Error: You can sio specify both '+op1+' na -'+op2[0]+' at the same time\n')
     sys.stderr.write(usage)
     sys.exit(2)
-# end def error_both
+# end eleza error_both
 
-def test():
-    import getopt
-    try:
+eleza test():
+    agiza getopt
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'cdrs:t:e')
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         sys.stderr.write('Error: %s\n' % msg)
         sys.stderr.write(usage)
         sys.exit(2)
     # end try
-    action = None
+    action = Tupu
     stepsize = STEPSIZE
     tabsize = TABSIZE
     expandtabs = EXPANDTABS
-    for o, a in opts:
-        if o == '-c':
-            if action: error_both(o, action)
+    kila o, a kwenye opts:
+        ikiwa o == '-c':
+            ikiwa action: error_both(o, action)
             # end if
             action = 'complete'
-        elif o == '-d':
-            if action: error_both(o, action)
+        lasivyo o == '-d':
+            ikiwa action: error_both(o, action)
             # end if
             action = 'delete'
-        elif o == '-r':
-            if action: error_both(o, action)
+        lasivyo o == '-r':
+            ikiwa action: error_both(o, action)
             # end if
             action = 'reformat'
-        elif o == '-s':
+        lasivyo o == '-s':
             stepsize = int(a)
-        elif o == '-t':
+        lasivyo o == '-t':
             tabsize = int(a)
-        elif o == '-e':
-            expandtabs = True
+        lasivyo o == '-e':
+            expandtabs = Kweli
         # end if
     # end for
-    if not action:
+    ikiwa sio action:
         sys.stderr.write(
-                'You must specify -c(omplete), -d(elete) or -r(eformat)\n')
+                'You must specify -c(omplete), -d(elete) ama -r(eformat)\n')
         sys.stderr.write(usage)
         sys.exit(2)
     # end if
-    if not args or args == ['-']:
+    ikiwa sio args ama args == ['-']:
         action = eval(action + '_filter')
         action(sys.stdin, sys.stdout, stepsize, tabsize, expandtabs)
-    else:
+    isipokua:
         action = eval(action + '_file')
-        for filename in args:
+        kila filename kwenye args:
             action(filename, stepsize, tabsize, expandtabs)
         # end for
     # end if
-# end def test
+# end eleza test
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     test()
 # end if

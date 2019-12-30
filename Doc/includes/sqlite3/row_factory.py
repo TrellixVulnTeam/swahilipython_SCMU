@@ -1,15 +1,15 @@
 agiza sqlite3
 
-def dict_factory(cursor, row):
+eleza dict_factory(cursor, row):
     d = {}
-    for idx, col in enumerate(cursor.description):
+    kila idx, col kwenye enumerate(cursor.description):
         d[col[0]] = row[idx]
-    return d
+    rudisha d
 
 con = sqlite3.connect(":memory:")
 con.row_factory = dict_factory
 cur = con.cursor()
-cur.execute("select 1 as a")
-print(cur.fetchone()["a"])
+cur.execute("select 1 kama a")
+andika(cur.fetchone()["a"])
 
 con.close()

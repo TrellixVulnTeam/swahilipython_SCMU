@@ -1,12 +1,12 @@
 """Switchboard class.
 
-This class is used to coordinate updates among all Viewers.  Every Viewer must
+This kundi ni used to coordinate updates among all Viewers.  Every Viewer must
 conform to the following interface:
 
     - it must include a method called update_yourself() which takes three
-      arguments; the red, green, and blue values of the selected color.
+      arguments; the red, green, na blue values of the selected color.
 
-    - When a Viewer selects a color and wishes to update all other Views, it
+    - When a Viewer selects a color na wishes to update all other Views, it
       should call update_views() on the Switchboard object.  Note that the
       Viewer typically does *not* update itself before calling update_views(),
       since this would cause it to get updated twice.
@@ -14,42 +14,42 @@ conform to the following interface:
 Optionally, Viewers can also implement:
 
     - save_options() which takes an optiondb (a dictionary).  Store into this
-      dictionary any values the Viewer wants to save in the persistent
-      ~/.pynche file.  This dictionary is saved using marshal.  The namespace
-      for the keys is ad-hoc; make sure you don't clobber some other Viewer's
+      dictionary any values the Viewer wants to save kwenye the persistent
+      ~/.pynche file.  This dictionary ni saved using marshal.  The namespace
+      kila the keys ni ad-hoc; make sure you don't clobber some other Viewer's
       keys!
 
-    - withdraw() which takes no arguments.  This is called when Pynche is
+    - withdraw() which takes no arguments.  This ni called when Pynche is
       unmapped.  All Viewers should implement this.
 
     - colordb_changed() which takes a single argument, an instance of
-      ColorDB.  This is called whenever the color name database is changed and
-      gives a chance for the Viewers to do something on those events.  See
-      ListViewer for details.
+      ColorDB.  This ni called whenever the color name database ni changed na
+      gives a chance kila the Viewers to do something on those events.  See
+      ListViewer kila details.
 
 External Viewers are found dynamically.  Viewer modules should have names such
 as FooViewer.py.  If such a named module has a module global variable called
-ADDTOVIEW and this variable is true, the Viewer will be added dynamically to
-the `View' menu.  ADDTOVIEW contains a string which is used as the menu item
-to display the Viewer (one kludge: if the string contains a `%', this is used
-to indicate that the next character will get an underline in the menu,
-otherwise the first character is underlined).
+ADDTOVIEW na this variable ni true, the Viewer will be added dynamically to
+the `View' menu.  ADDTOVIEW contains a string which ni used kama the menu item
+to display the Viewer (one kludge: ikiwa the string contains a `%', this ni used
+to indicate that the next character will get an underline kwenye the menu,
+otherwise the first character ni underlined).
 
-FooViewer.py should contain a class called FooViewer, and its constructor
-should take two arguments, an instance of Switchboard, and optionally a Tk
+FooViewer.py should contain a kundi called FooViewer, na its constructor
+should take two arguments, an instance of Switchboard, na optionally a Tk
 master window.
 
 """
 
-import sys
-import marshal
+agiza sys
+agiza marshal
 
 
 
-class Switchboard:
-    def __init__(self, initfile):
+kundi Switchboard:
+    eleza __init__(self, initfile):
         self.__initfile = initfile
-        self.__colordb = None
+        self.__colordb = Tupu
         self.__optiondb = {}
         self.__views = []
         self.__red = 0
@@ -57,82 +57,82 @@ class Switchboard:
         self.__blue = 0
         self.__canceled = 0
         # read the initialization file
-        fp = None
-        if initfile:
-            try:
-                try:
+        fp = Tupu
+        ikiwa initfile:
+            jaribu:
+                jaribu:
                     fp = open(initfile, 'rb')
                     self.__optiondb = marshal.load(fp)
-                    if not isinstance(self.__optiondb, dict):
-                        print('Problem reading options from file:', initfile,
+                    ikiwa sio isinstance(self.__optiondb, dict):
+                        andika('Problem reading options kutoka file:', initfile,
                               file=sys.stderr)
                         self.__optiondb = {}
-                except (IOError, EOFError, ValueError):
-                    pass
-            finally:
-                if fp:
+                tatizo (IOError, EOFError, ValueError):
+                    pita
+            mwishowe:
+                ikiwa fp:
                     fp.close()
 
-    def add_view(self, view):
+    eleza add_view(self, view):
         self.__views.append(view)
 
-    def update_views(self, red, green, blue):
+    eleza update_views(self, red, green, blue):
         self.__red = red
         self.__green = green
         self.__blue = blue
-        for v in self.__views:
+        kila v kwenye self.__views:
             v.update_yourself(red, green, blue)
 
-    def update_views_current(self):
+    eleza update_views_current(self):
         self.update_views(self.__red, self.__green, self.__blue)
 
-    def current_rgb(self):
-        return self.__red, self.__green, self.__blue
+    eleza current_rgb(self):
+        rudisha self.__red, self.__green, self.__blue
 
-    def colordb(self):
-        return self.__colordb
+    eleza colordb(self):
+        rudisha self.__colordb
 
-    def set_colordb(self, colordb):
+    eleza set_colordb(self, colordb):
         self.__colordb = colordb
-        for v in self.__views:
-            if hasattr(v, 'colordb_changed'):
+        kila v kwenye self.__views:
+            ikiwa hasattr(v, 'colordb_changed'):
                 v.colordb_changed(colordb)
         self.update_views_current()
 
-    def optiondb(self):
-        return self.__optiondb
+    eleza optiondb(self):
+        rudisha self.__optiondb
 
-    def save_views(self):
+    eleza save_views(self):
         # save the current color
         self.__optiondb['RED'] = self.__red
         self.__optiondb['GREEN'] = self.__green
         self.__optiondb['BLUE'] = self.__blue
-        for v in self.__views:
-            if hasattr(v, 'save_options'):
+        kila v kwenye self.__views:
+            ikiwa hasattr(v, 'save_options'):
                 v.save_options(self.__optiondb)
-        # save the name of the file used for the color database.  we'll try to
+        # save the name of the file used kila the color database.  we'll try to
         # load this first.
         self.__optiondb['DBFILE'] = self.__colordb.filename()
-        fp = None
-        try:
-            try:
+        fp = Tupu
+        jaribu:
+            jaribu:
                 fp = open(self.__initfile, 'wb')
-            except IOError:
-                print('Cannot write options to file:', \
+            tatizo IOError:
+                andika('Cannot write options to file:', \
                       self.__initfile, file=sys.stderr)
-            else:
+            isipokua:
                 marshal.dump(self.__optiondb, fp)
-        finally:
-            if fp:
+        mwishowe:
+            ikiwa fp:
                 fp.close()
 
-    def withdraw_views(self):
-        for v in self.__views:
-            if hasattr(v, 'withdraw'):
+    eleza withdraw_views(self):
+        kila v kwenye self.__views:
+            ikiwa hasattr(v, 'withdraw'):
                 v.withdraw()
 
-    def canceled(self, flag=1):
+    eleza canceled(self, flag=1):
         self.__canceled = flag
 
-    def canceled_p(self):
-        return self.__canceled
+    eleza canceled_p(self):
+        rudisha self.__canceled

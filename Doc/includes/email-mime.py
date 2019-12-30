@@ -1,4 +1,4 @@
-# Import smtplib for the actual sending function
+# Import smtplib kila the actual sending function
 agiza smtplib
 
 # And imghdr to find the types of our images
@@ -14,16 +14,16 @@ msg['Subject'] = 'Our family reunion'
 # family = the list of all recipients' email addresses
 msg['From'] = me
 msg['To'] = ', '.join(family)
-msg.preamble = 'You will not see this in a MIME-aware mail reader.\n'
+msg.preamble = 'You will sio see this kwenye a MIME-aware mail reader.\n'
 
-# Open the files in binary mode.  Use imghdr to figure out the
-# MIME subtype for each specific image.
-for file in pngfiles:
-    with open(file, 'rb') as fp:
+# Open the files kwenye binary mode.  Use imghdr to figure out the
+# MIME subtype kila each specific image.
+kila file kwenye pngfiles:
+    ukijumuisha open(file, 'rb') kama fp:
         img_data = fp.read()
     msg.add_attachment(img_data, maintype='image',
-                                 subtype=imghdr.what(None, img_data))
+                                 subtype=imghdr.what(Tupu, img_data))
 
 # Send the email via our own SMTP server.
-with smtplib.SMTP('localhost') as s:
+ukijumuisha smtplib.SMTP('localhost') kama s:
     s.send_message(msg)

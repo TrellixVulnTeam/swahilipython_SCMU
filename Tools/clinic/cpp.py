@@ -1,90 +1,90 @@
-import re
-import sys
+agiza re
+agiza sys
 
-def negate(condition):
+eleza negate(condition):
     """
-    Returns a CPP conditional that is the opposite of the conditional passed in.
+    Returns a CPP conditional that ni the opposite of the conditional pitaed in.
     """
-    if condition.startswith('!'):
-        return condition[1:]
-    return "!" + condition
+    ikiwa condition.startswith('!'):
+        rudisha condition[1:]
+    rudisha "!" + condition
 
-class Monitor:
+kundi Monitor:
     """
-    A simple C preprocessor that scans C source and computes, line by line,
-    what the current C preprocessor #if state is.
+    A simple C preprocessor that scans C source na computes, line by line,
+    what the current C preprocessor #ikiwa state is.
 
-    Doesn't handle everything--for example, if you have /* inside a C string,
-    without a matching */ (also inside a C string), or with a */ inside a C
-    string but on another line and with preprocessor macros in between...
+    Doesn't handle everything--kila example, ikiwa you have /* inside a C string,
+    without a matching */ (also inside a C string), ama ukijumuisha a */ inside a C
+    string but on another line na ukijumuisha preprocessor macros kwenye between...
     the parser will get lost.
 
-    Anyway this implementation seems to work well enough for the CPython sources.
+    Anyway this implementation seems to work well enough kila the CPython sources.
     """
 
     is_a_simple_defined = re.compile(r'^defined\s*\(\s*[A-Za-z0-9_]+\s*\)$').match
 
-    def __init__(self, filename=None, *, verbose=False):
+    eleza __init__(self, filename=Tupu, *, verbose=Uongo):
         self.stack = []
-        self.in_comment = False
-        self.continuation = None
+        self.in_comment = Uongo
+        self.continuation = Tupu
         self.line_number = 0
         self.filename = filename
         self.verbose = verbose
 
-    def __repr__(self):
-        return ''.join((
+    eleza __repr__(self):
+        rudisha ''.join((
             '<Monitor ',
             str(id(self)),
             " line=", str(self.line_number),
             " condition=", repr(self.condition()),
             ">"))
 
-    def status(self):
-        return str(self.line_number).rjust(4) + ": " + self.condition()
+    eleza status(self):
+        rudisha str(self.line_number).rjust(4) + ": " + self.condition()
 
-    def condition(self):
+    eleza condition(self):
         """
-        Returns the current preprocessor state, as a single #if condition.
+        Returns the current preprocessor state, kama a single #ikiwa condition.
         """
-        return " && ".join(condition for token, condition in self.stack)
+        rudisha " && ".join(condition kila token, condition kwenye self.stack)
 
-    def fail(self, *a):
-        if self.filename:
+    eleza fail(self, *a):
+        ikiwa self.filename:
             filename = " " + self.filename
-        else:
+        isipokua:
             filename = ''
-        print("Error at" + filename, "line", self.line_number, ":")
-        print("   ", ' '.join(str(x) for x in a))
+        andika("Error at" + filename, "line", self.line_number, ":")
+        andika("   ", ' '.join(str(x) kila x kwenye a))
         sys.exit(-1)
 
-    def close(self):
-        if self.stack:
-            self.fail("Ended file while still in a preprocessor conditional block!")
+    eleza close(self):
+        ikiwa self.stack:
+            self.fail("Ended file wakati still kwenye a preprocessor conditional block!")
 
-    def write(self, s):
-        for line in s.split("\n"):
+    eleza write(self, s):
+        kila line kwenye s.split("\n"):
             self.writeline(line)
 
-    def writeline(self, line):
+    eleza writeline(self, line):
         self.line_number += 1
         line = line.strip()
 
-        def pop_stack():
-            if not self.stack:
-                self.fail("#" + token + " without matching #if / #ifdef / #ifndef!")
-            return self.stack.pop()
+        eleza pop_stack():
+            ikiwa sio self.stack:
+                self.fail("#" + token + " without matching #ikiwa / #ifeleza / #ifndef!")
+            rudisha self.stack.pop()
 
-        if self.continuation:
+        ikiwa self.continuation:
             line = self.continuation + line
-            self.continuation = None
+            self.continuation = Tupu
 
-        if not line:
-            return
+        ikiwa sio line:
+            rudisha
 
-        if line.endswith('\\'):
+        ikiwa line.endswith('\\'):
             self.continuation = line[:-1].rstrip() + " "
-            return
+            rudisha
 
         # we have to ignore preprocessor commands inside comments
         #
@@ -94,45 +94,45 @@ class Monitor:
         #     */   /*    <-- tricky!
         #     ...
         #     */
-        # and this:
+        # na this:
         #     /* start
         #     ...
         #     */   /* also tricky! */
-        if self.in_comment:
-            if '*/' in line:
-                # snip out the comment and continue
+        ikiwa self.in_comment:
+            ikiwa '*/' kwenye line:
+                # snip out the comment na endelea
                 #
                 # GCC allows
                 #    /* comment
                 #    */ #include <stdio.h>
                 # maybe other compilers too?
                 _, _, line = line.partition('*/')
-                self.in_comment = False
+                self.in_comment = Uongo
 
-        while True:
-            if '/*' in line:
-                if self.in_comment:
+        wakati Kweli:
+            ikiwa '/*' kwenye line:
+                ikiwa self.in_comment:
                     self.fail("Nested block comment!")
 
                 before, _, remainder = line.partition('/*')
                 comment, comment_ends, after = remainder.partition('*/')
-                if comment_ends:
+                ikiwa comment_ends:
                     # snip out the comment
                     line = before.rstrip() + ' ' + after.lstrip()
-                    continue
-                # comment continues to eol
-                self.in_comment = True
+                    endelea
+                # comment endeleas to eol
+                self.in_comment = Kweli
                 line = before.rstrip()
-            break
+            koma
 
         # we actually have some // comments
         # (but block comments take precedence)
         before, line_comment, comment = line.partition('//')
-        if line_comment:
+        ikiwa line_comment:
             line = before.rstrip()
 
-        if not line.startswith('#'):
-            return
+        ikiwa sio line.startswith('#'):
+            rudisha
 
         line = line[1:].lstrip()
         assert line
@@ -144,48 +144,48 @@ class Monitor:
         if_tokens = {'if', 'ifdef', 'ifndef'}
         all_tokens = if_tokens | {'elif', 'else', 'endif'}
 
-        if token not in all_tokens:
-            return
+        ikiwa token haiko kwenye all_tokens:
+            rudisha
 
         # cheat a little here, to reuse the implementation of if
-        if token == 'elif':
+        ikiwa token == 'elif':
             pop_stack()
             token = 'if'
 
-        if token in if_tokens:
-            if not condition:
-                self.fail("Invalid format for #" + token + " line: no argument!")
-            if token == 'if':
-                if not self.is_a_simple_defined(condition):
+        ikiwa token kwenye if_tokens:
+            ikiwa sio condition:
+                self.fail("Invalid format kila #" + token + " line: no argument!")
+            ikiwa token == 'if':
+                ikiwa sio self.is_a_simple_defined(condition):
                     condition = "(" + condition + ")"
-            else:
+            isipokua:
                 fields = condition.split()
-                if len(fields) != 1:
-                    self.fail("Invalid format for #" + token + " line: should be exactly one argument!")
+                ikiwa len(fields) != 1:
+                    self.fail("Invalid format kila #" + token + " line: should be exactly one argument!")
                 symbol = fields[0]
                 condition = 'defined(' + symbol + ')'
-                if token == 'ifndef':
+                ikiwa token == 'ifndef':
                     condition = '!' + condition
 
             self.stack.append(("if", condition))
-            if self.verbose:
-                print(self.status())
-            return
+            ikiwa self.verbose:
+                andika(self.status())
+            rudisha
 
         previous_token, previous_condition = pop_stack()
 
-        if token == 'else':
+        ikiwa token == 'else':
             self.stack.append(('else', negate(previous_condition)))
-        elif token == 'endif':
-            pass
-        if self.verbose:
-            print(self.status())
+        lasivyo token == 'endif':
+            pita
+        ikiwa self.verbose:
+            andika(self.status())
 
-if __name__ == '__main__':
-    for filename in sys.argv[1:]:
-        with open(filename, "rt") as f:
-            cpp = Monitor(filename, verbose=True)
-            print()
-            print(filename)
-            for line_number, line in enumerate(f.read().split('\n'), 1):
+ikiwa __name__ == '__main__':
+    kila filename kwenye sys.argv[1:]:
+        ukijumuisha open(filename, "rt") kama f:
+            cpp = Monitor(filename, verbose=Kweli)
+            andika()
+            andika(filename)
+            kila line_number, line kwenye enumerate(f.read().split('\n'), 1):
                 cpp.writeline(line)

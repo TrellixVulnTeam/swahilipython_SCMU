@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-GUI framework and application for use with Python unit testing framework.
+GUI framework na application kila use ukijumuisha Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.
 
-Updated for unittest test discovery by Mark Roddy and Python 3
+Updated kila unittest test discovery by Mark Roddy na Python 3
 support by Brian Curtin.
 
 Based on the original by Steve Purcell, from:
@@ -11,9 +11,9 @@ Based on the original by Steve Purcell, from:
   http://pyunit.sourceforge.net/
 
 Copyright (c) 1999, 2000, 2001 Steve Purcell
-This module is free software, and you may redistribute it and/or modify
-it under the same terms as Python itself, so long as this copyright message
-and disclaimer are retained in their original form.
+This module ni free software, na you may redistribute it and/or modify
+it under the same terms kama Python itself, so long kama this copyright message
+and disclaimer are retained kwenye their original form.
 
 IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF
@@ -29,14 +29,14 @@ SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 __author__ = "Steve Purcell (stephen_purcell@yahoo.com)"
 
-import sys
-import traceback
-import unittest
+agiza sys
+agiza traceback
+agiza unittest
 
-import tkinter as tk
-from tkinter import messagebox
-from tkinter import filedialog
-from tkinter import simpledialog
+agiza tkinter kama tk
+kutoka tkinter agiza messagebox
+kutoka tkinter agiza filedialog
+kutoka tkinter agiza simpledialog
 
 
 
@@ -45,18 +45,18 @@ from tkinter import simpledialog
 # GUI framework classes
 ##############################################################################
 
-class BaseGUITestRunner(object):
-    """Subclass this class to create a GUI TestRunner that uses a specific
-    windowing toolkit. The class takes care of running tests in the correct
-    manner, and making callbacks to the derived class to obtain information
-    or signal that events have occurred.
+kundi BaseGUITestRunner(object):
+    """Subkundi this kundi to create a GUI TestRunner that uses a specific
+    windowing toolkit. The kundi takes care of running tests kwenye the correct
+    manner, na making callbacks to the derived kundi to obtain information
+    ama signal that events have occurred.
     """
-    def __init__(self, *args, **kwargs):
-        self.currentResult = None
+    eleza __init__(self, *args, **kwargs):
+        self.currentResult = Tupu
         self.running = 0
-        self.__rollbackImporter = None
+        self.__rollbackImporter = Tupu
         self.__rollbackImporter = RollbackImporter()
-        self.test_suite = None
+        self.test_suite = Tupu
 
         #test discovery variables
         self.directory_to_read = ''
@@ -65,20 +65,20 @@ class BaseGUITestRunner(object):
 
         self.initGUI(*args, **kwargs)
 
-    def errorDialog(self, title, message):
-        "Override to display an error arising from GUI usage"
-        pass
+    eleza errorDialog(self, title, message):
+        "Override to display an error arising kutoka GUI usage"
+        pita
 
-    def getDirectoryToDiscover(self):
-        "Override to prompt user for directory to perform test discovery"
-        pass
+    eleza getDirectoryToDiscover(self):
+        "Override to prompt user kila directory to perform test discovery"
+        pita
 
-    def runClicked(self):
-        "To be called in response to user choosing to run a test"
-        if self.running: return
-        if not self.test_suite:
+    eleza runClicked(self):
+        "To be called kwenye response to user choosing to run a test"
+        ikiwa self.running: rudisha
+        ikiwa sio self.test_suite:
             self.errorDialog("Test Discovery", "You discover some tests first!")
-            return
+            rudisha
         self.currentResult = GUITestResult(self)
         self.totalTests = self.test_suite.countTestCases()
         self.running = 1
@@ -87,115 +87,115 @@ class BaseGUITestRunner(object):
         self.running = 0
         self.notifyStopped()
 
-    def stopClicked(self):
-        "To be called in response to user stopping the running of a test"
-        if self.currentResult:
+    eleza stopClicked(self):
+        "To be called kwenye response to user stopping the running of a test"
+        ikiwa self.currentResult:
             self.currentResult.stop()
 
-    def discoverClicked(self):
+    eleza discoverClicked(self):
         self.__rollbackImporter.rollbackImports()
         directory = self.getDirectoryToDiscover()
-        if not directory:
-            return
+        ikiwa sio directory:
+            rudisha
         self.directory_to_read = directory
-        try:
-            # Explicitly use 'None' value if no top level directory is
-            # specified (indicated by empty string) as discover() explicitly
-            # checks for a 'None' to determine if no tld has been specified
-            top_level_dir = self.top_level_dir or None
+        jaribu:
+            # Explicitly use 'Tupu' value ikiwa no top level directory is
+            # specified (indicated by empty string) kama discover() explicitly
+            # checks kila a 'Tupu' to determine ikiwa no tld has been specified
+            top_level_dir = self.top_level_dir ama Tupu
             tests = unittest.defaultTestLoader.discover(directory, self.test_file_glob_pattern, top_level_dir)
             self.test_suite = tests
-        except:
+        tatizo:
             exc_type, exc_value, exc_tb = sys.exc_info()
             traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % directory,
                              "Error loading specified test: %s, %s" % (exc_type, exc_value))
-            return
+            rudisha
         self.notifyTestsDiscovered(self.test_suite)
 
     # Required callbacks
 
-    def notifyTestsDiscovered(self, test_suite):
+    eleza notifyTestsDiscovered(self, test_suite):
         "Override to display information about the suite of discovered tests"
-        pass
+        pita
 
-    def notifyRunning(self):
-        "Override to set GUI in 'running' mode, enabling 'stop' button etc."
-        pass
+    eleza notifyRunning(self):
+        "Override to set GUI kwenye 'running' mode, enabling 'stop' button etc."
+        pita
 
-    def notifyStopped(self):
-        "Override to set GUI in 'stopped' mode, enabling 'run' button etc."
-        pass
+    eleza notifyStopped(self):
+        "Override to set GUI kwenye 'stopped' mode, enabling 'run' button etc."
+        pita
 
-    def notifyTestFailed(self, test, err):
+    eleza notifyTestFailed(self, test, err):
         "Override to indicate that a test has just failed"
-        pass
+        pita
 
-    def notifyTestErrored(self, test, err):
+    eleza notifyTestErrored(self, test, err):
         "Override to indicate that a test has just errored"
-        pass
+        pita
 
-    def notifyTestSkipped(self, test, reason):
+    eleza notifyTestSkipped(self, test, reason):
         "Override to indicate that test was skipped"
-        pass
+        pita
 
-    def notifyTestFailedExpectedly(self, test, err):
+    eleza notifyTestFailedExpectedly(self, test, err):
         "Override to indicate that test has just failed expectedly"
-        pass
+        pita
 
-    def notifyTestStarted(self, test):
-        "Override to indicate that a test is about to run"
-        pass
+    eleza notifyTestStarted(self, test):
+        "Override to indicate that a test ni about to run"
+        pita
 
-    def notifyTestFinished(self, test):
+    eleza notifyTestFinished(self, test):
         """Override to indicate that a test has finished (it may already have
-           failed or errored)"""
-        pass
+           failed ama errored)"""
+        pita
 
 
-class GUITestResult(unittest.TestResult):
+kundi GUITestResult(unittest.TestResult):
     """A TestResult that makes callbacks to its associated GUI TestRunner.
-    Used by BaseGUITestRunner. Need not be created directly.
+    Used by BaseGUITestRunner. Need sio be created directly.
     """
-    def __init__(self, callback):
+    eleza __init__(self, callback):
         unittest.TestResult.__init__(self)
         self.callback = callback
 
-    def addError(self, test, err):
+    eleza addError(self, test, err):
         unittest.TestResult.addError(self, test, err)
         self.callback.notifyTestErrored(test, err)
 
-    def addFailure(self, test, err):
+    eleza addFailure(self, test, err):
         unittest.TestResult.addFailure(self, test, err)
         self.callback.notifyTestFailed(test, err)
 
-    def addSkip(self, test, reason):
+    eleza addSkip(self, test, reason):
         super(GUITestResult,self).addSkip(test, reason)
         self.callback.notifyTestSkipped(test, reason)
 
-    def addExpectedFailure(self, test, err):
+    eleza addExpectedFailure(self, test, err):
         super(GUITestResult,self).addExpectedFailure(test, err)
         self.callback.notifyTestFailedExpectedly(test, err)
 
-    def stopTest(self, test):
+    eleza stopTest(self, test):
         unittest.TestResult.stopTest(self, test)
         self.callback.notifyTestFinished(test)
 
-    def startTest(self, test):
+    eleza startTest(self, test):
         unittest.TestResult.startTest(self, test)
         self.callback.notifyTestStarted(test)
 
 
-class RollbackImporter:
-    """This tricky little class is used to make sure that modules under test
+kundi RollbackImporter:
+    """This tricky little kundi ni used to make sure that modules under test
     will be reloaded the next time they are imported.
     """
-    def __init__(self):
+    eleza __init__(self):
         self.previousModules = sys.modules.copy()
 
-    def rollbackImports(self):
-        for modname in sys.modules.copy().keys():
-            if not modname in self.previousModules:
+    eleza rollbackImports(self):
+        kila modname kwenye sys.modules.copy().keys():
+            ikiwa sio modname kwenye self.previousModules:
                 # Force reload when modname next imported
                 del(sys.modules[modname])
 
@@ -204,12 +204,12 @@ class RollbackImporter:
 # Tkinter GUI
 ##############################################################################
 
-class DiscoverSettingsDialog(simpledialog.Dialog):
+kundi DiscoverSettingsDialog(simpledialog.Dialog):
     """
-    Dialog box for prompting test discovery settings
+    Dialog box kila prompting test discovery settings
     """
 
-    def __init__(self, master, top_level_dir, test_file_glob_pattern, *args, **kwargs):
+    eleza __init__(self, master, top_level_dir, test_file_glob_pattern, *args, **kwargs):
         self.top_level_dir = top_level_dir
         self.dirVar = tk.StringVar()
         self.dirVar.set(top_level_dir)
@@ -221,7 +221,7 @@ class DiscoverSettingsDialog(simpledialog.Dialog):
         simpledialog.Dialog.__init__(self, master, title="Discover Settings",
                                      *args, **kwargs)
 
-    def body(self, master):
+    eleza body(self, master):
         tk.Label(master, text="Top Level Directory").grid(row=0)
         self.e1 = tk.Entry(master, textvariable=self.dirVar)
         self.e1.grid(row = 0, column=1)
@@ -231,30 +231,30 @@ class DiscoverSettingsDialog(simpledialog.Dialog):
         tk.Label(master, text="Test File Pattern").grid(row=1)
         self.e2 = tk.Entry(master, textvariable = self.testPatternVar)
         self.e2.grid(row = 1, column=1)
-        return None
+        rudisha Tupu
 
-    def selectDirClicked(self, master):
+    eleza selectDirClicked(self, master):
         dir_path = filedialog.askdirectory(parent=master)
-        if dir_path:
+        ikiwa dir_path:
             self.dirVar.set(dir_path)
 
-    def apply(self):
+    eleza apply(self):
         self.top_level_dir = self.dirVar.get()
         self.test_file_glob_pattern = self.testPatternVar.get()
 
-class TkTestRunner(BaseGUITestRunner):
+kundi TkTestRunner(BaseGUITestRunner):
     """An implementation of BaseGUITestRunner using Tkinter.
     """
-    def initGUI(self, root, initialTestName):
+    eleza initGUI(self, root, initialTestName):
         """Set up the GUI inside the given root window. The test name entry
-        field will be pre-filled with the given initialTestName.
+        field will be pre-filled ukijumuisha the given initialTestName.
         """
         self.root = root
 
         self.statusVar = tk.StringVar()
         self.statusVar.set("Idle")
 
-        #tk vars for tracking counts of test result types
+        #tk vars kila tracking counts of test result types
         self.runCountVar = tk.IntVar()
         self.failCountVar = tk.IntVar()
         self.errorCountVar = tk.IntVar()
@@ -266,15 +266,15 @@ class TkTestRunner(BaseGUITestRunner):
         self.top.pack(fill=tk.BOTH, expand=1)
         self.createWidgets()
 
-    def getDirectoryToDiscover(self):
-        return filedialog.askdirectory()
+    eleza getDirectoryToDiscover(self):
+        rudisha filedialog.askdirectory()
 
-    def settingsClicked(self):
+    eleza settingsClicked(self):
         d = DiscoverSettingsDialog(self.top, self.top_level_dir, self.test_file_glob_pattern)
         self.top_level_dir = d.top_level_dir
         self.test_file_glob_pattern = d.test_file_glob_pattern
 
-    def notifyTestsDiscovered(self, test_suite):
+    eleza notifyTestsDiscovered(self, test_suite):
         discovered = test_suite.countTestCases()
         self.runCountVar.set(0)
         self.failCountVar.set(0)
@@ -282,14 +282,14 @@ class TkTestRunner(BaseGUITestRunner):
         self.remainingCountVar.set(discovered)
         self.progressBar.setProgressFraction(0.0)
         self.errorListbox.delete(0, tk.END)
-        self.statusVar.set("Discovering tests from %s. Found: %s" %
+        self.statusVar.set("Discovering tests kutoka %s. Found: %s" %
             (self.directory_to_read, discovered))
         self.stopGoButton['state'] = tk.NORMAL
 
-    def createWidgets(self):
-        """Creates and packs the various widgets.
+    eleza createWidgets(self):
+        """Creates na packs the various widgets.
 
-        Why is it that GUI code always ends up looking a mess, despite all the
+        Why ni it that GUI code always ends up looking a mess, despite all the
         best intentions to keep it tidy? Answers on a postcard, please.
         """
         # Status bar
@@ -312,7 +312,7 @@ class TkTestRunner(BaseGUITestRunner):
         self.progressBar.pack(fill=tk.X, expand=1)
 
 
-        # Area with buttons to start/stop tests and quit
+        # Area ukijumuisha buttons to start/stop tests na quit
         buttonFrame = tk.Frame(self.top, borderwidth=3)
         buttonFrame.pack(side=tk.LEFT, anchor=tk.NW, fill=tk.Y)
 
@@ -329,8 +329,8 @@ class TkTestRunner(BaseGUITestRunner):
         tk.Button(buttonFrame, text="Settings",
                   command=self.settingsClicked).pack(side=tk.BOTTOM, fill=tk.X)
 
-        # Area with labels reporting results
-        for label, var in (('Run:', self.runCountVar),
+        # Area ukijumuisha labels reporting results
+        kila label, var kwenye (('Run:', self.runCountVar),
                            ('Failures:', self.failCountVar),
                            ('Errors:', self.errorCountVar),
                            ('Skipped:', self.skipCountVar),
@@ -342,8 +342,8 @@ class TkTestRunner(BaseGUITestRunner):
                      foreground="blue").pack(side=tk.LEFT, fill=tk.X,
                                              expand=1, anchor=tk.W)
 
-        # List box showing errors and failures
-        tk.Label(leftFrame, text="Failures and errors:").pack(anchor=tk.W)
+        # List box showing errors na failures
+        tk.Label(leftFrame, text="Failures na errors:").pack(anchor=tk.W)
         listFrame = tk.Frame(leftFrame, relief=tk.SUNKEN, borderwidth=2)
         listFrame.pack(fill=tk.BOTH, anchor=tk.NW, expand=1)
         self.errorListbox = tk.Listbox(listFrame, foreground='red',
@@ -357,62 +357,62 @@ class TkTestRunner(BaseGUITestRunner):
                                lambda e, self=self: self.showSelectedError())
         self.errorListbox.configure(yscrollcommand=listScroll.set)
 
-    def errorDialog(self, title, message):
+    eleza errorDialog(self, title, message):
         messagebox.showerror(parent=self.root, title=title,
                              message=message)
 
-    def notifyRunning(self):
+    eleza notifyRunning(self):
         self.runCountVar.set(0)
         self.failCountVar.set(0)
         self.errorCountVar.set(0)
         self.remainingCountVar.set(self.totalTests)
         self.errorInfo = []
-        while self.errorListbox.size():
+        wakati self.errorListbox.size():
             self.errorListbox.delete(0)
-        #Stopping seems not to work, so simply disable the start button
+        #Stopping seems sio to work, so simply disable the start button
         #self.stopGoButton.config(command=self.stopClicked, text="Stop")
         self.stopGoButton.config(state=tk.DISABLED)
         self.progressBar.setProgressFraction(0.0)
         self.top.update_idletasks()
 
-    def notifyStopped(self):
+    eleza notifyStopped(self):
         self.stopGoButton.config(state=tk.DISABLED)
         #self.stopGoButton.config(command=self.runClicked, text="Start")
         self.statusVar.set("Idle")
 
-    def notifyTestStarted(self, test):
+    eleza notifyTestStarted(self, test):
         self.statusVar.set(str(test))
         self.top.update_idletasks()
 
-    def notifyTestFailed(self, test, err):
+    eleza notifyTestFailed(self, test, err):
         self.failCountVar.set(1 + self.failCountVar.get())
         self.errorListbox.insert(tk.END, "Failure: %s" % test)
         self.errorInfo.append((test,err))
 
-    def notifyTestErrored(self, test, err):
+    eleza notifyTestErrored(self, test, err):
         self.errorCountVar.set(1 + self.errorCountVar.get())
         self.errorListbox.insert(tk.END, "Error: %s" % test)
         self.errorInfo.append((test,err))
 
-    def notifyTestSkipped(self, test, reason):
+    eleza notifyTestSkipped(self, test, reason):
         super(TkTestRunner, self).notifyTestSkipped(test, reason)
         self.skipCountVar.set(1 + self.skipCountVar.get())
 
-    def notifyTestFailedExpectedly(self, test, err):
+    eleza notifyTestFailedExpectedly(self, test, err):
         super(TkTestRunner, self).notifyTestFailedExpectedly(test, err)
         self.expectFailCountVar.set(1 + self.expectFailCountVar.get())
 
 
-    def notifyTestFinished(self, test):
+    eleza notifyTestFinished(self, test):
         self.remainingCountVar.set(self.remainingCountVar.get() - 1)
         self.runCountVar.set(1 + self.runCountVar.get())
         fractionDone = float(self.runCountVar.get())/float(self.totalTests)
-        fillColor = len(self.errorInfo) and "red" or "green"
+        fillColor = len(self.errorInfo) na "red" ama "green"
         self.progressBar.setProgressFraction(fractionDone, fillColor)
 
-    def showSelectedError(self):
+    eleza showSelectedError(self):
         selection = self.errorListbox.curselection()
-        if not selection: return
+        ikiwa sio selection: rudisha
         selected = int(selection[0])
         txt = self.errorListbox.get(selected)
         window = tk.Toplevel(self.root)
@@ -431,31 +431,31 @@ class TkTestRunner(BaseGUITestRunner):
         window.destroy()
 
 
-class ProgressBar(tk.Frame):
+kundi ProgressBar(tk.Frame):
     """A simple progress bar that shows a percentage progress in
     the given colour."""
 
-    def __init__(self, *args, **kwargs):
+    eleza __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         self.canvas = tk.Canvas(self, height='20', width='60',
                                 background='white', borderwidth=3)
         self.canvas.pack(fill=tk.X, expand=1)
-        self.rect = self.text = None
+        self.rect = self.text = Tupu
         self.canvas.bind('<Configure>', self.paint)
         self.setProgressFraction(0.0)
 
-    def setProgressFraction(self, fraction, color='blue'):
+    eleza setProgressFraction(self, fraction, color='blue'):
         self.fraction = fraction
         self.color = color
         self.paint()
         self.canvas.update_idletasks()
 
-    def paint(self, *args):
+    eleza paint(self, *args):
         totalWidth = self.canvas.winfo_width()
         width = int(self.fraction * float(totalWidth))
         height = self.canvas.winfo_height()
-        if self.rect is not None: self.canvas.delete(self.rect)
-        if self.text is not None: self.canvas.delete(self.text)
+        ikiwa self.rect ni sio Tupu: self.canvas.delete(self.rect)
+        ikiwa self.text ni sio Tupu: self.canvas.delete(self.text)
         self.rect = self.canvas.create_rectangle(0, 0, width, height,
                                                  fill=self.color)
         percentString = "%3.0f%%" % (100.0 * self.fraction)
@@ -463,7 +463,7 @@ class ProgressBar(tk.Frame):
                                             anchor=tk.CENTER,
                                             text=percentString)
 
-def main(initialTestName=""):
+eleza main(initialTestName=""):
     root = tk.Tk()
     root.title("PyUnit")
     runner = TkTestRunner(root, initialTestName)
@@ -471,8 +471,8 @@ def main(initialTestName=""):
     root.mainloop()
 
 
-if __name__ == '__main__':
-    if len(sys.argv) == 2:
+ikiwa __name__ == '__main__':
+    ikiwa len(sys.argv) == 2:
         main(sys.argv[1])
-    else:
+    isipokua:
         main()

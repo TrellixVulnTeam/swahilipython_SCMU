@@ -6,36 +6,36 @@
 
 """
 
-import os, codecs, encodings
+agiza os, codecs, encodings
 
 _debug = 0
 
-def listcodecs(dir):
+eleza listcodecs(dir):
     names = []
-    for filename in os.listdir(dir):
-        if filename[-3:] != '.py':
-            continue
+    kila filename kwenye os.listdir(dir):
+        ikiwa filename[-3:] != '.py':
+            endelea
         name = filename[:-3]
         # Check whether we've found a true codec
-        try:
+        jaribu:
             codecs.lookup(name)
-        except LookupError:
-            # Codec not found
-            continue
-        except Exception as reason:
-            # Probably an error from importing the codec; still it's
+        tatizo LookupError:
+            # Codec sio found
+            endelea
+        tatizo Exception kama reason:
+            # Probably an error kutoka importing the codec; still it's
             # a valid code name
-            if _debug:
-                print('* problem importing codec %r: %s' % \
+            ikiwa _debug:
+                andika('* problem importing codec %r: %s' % \
                       (name, reason))
         names.append(name)
-    return names
+    rudisha names
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     names = listcodecs(encodings.__path__[0])
     names.sort()
-    print('all_codecs = [')
-    for name in names:
-        print('    %r,' % name)
-    print(']')
+    andika('all_codecs = [')
+    kila name kwenye names:
+        andika('    %r,' % name)
+    andika(']')

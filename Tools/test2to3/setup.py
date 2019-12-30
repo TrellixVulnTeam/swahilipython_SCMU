@@ -1,15 +1,15 @@
 # -*- coding: iso-8859-1 -*-
-from distutils.core import setup
+kutoka distutils.core agiza setup
 
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    from distutils.command.build_py import build_py
+jaribu:
+    kutoka distutils.command.build_py agiza build_py_2to3 kama build_py
+tatizo ImportError:
+    kutoka distutils.command.build_py agiza build_py
 
-try:
-    from distutils.command.build_scripts import build_scripts_2to3 as build_scripts
-except ImportError:
-    from distutils.command.build_scripts import build_scripts
+jaribu:
+    kutoka distutils.command.build_scripts agiza build_scripts_2to3 kama build_scripts
+tatizo ImportError:
+    kutoka distutils.command.build_scripts agiza build_scripts
 
 setup(
     name = "test2to3",
@@ -20,7 +20,7 @@ setup(
     license = "PSF license",
     packages = ["test2to3"],
     scripts = ["maintest.py"],
-    cmdclass = {'build_py': build_py,
+    cmdkundi = {'build_py': build_py,
                 'build_scripts': build_scripts,
                 }
 )

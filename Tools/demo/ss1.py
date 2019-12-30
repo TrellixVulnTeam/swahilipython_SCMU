@@ -4,20 +4,20 @@
 SS1 -- a spreadsheet-like application.
 """
 
-import os
-import re
-import sys
-from xml.parsers import expat
-from xml.sax.saxutils import escape
+agiza os
+agiza re
+agiza sys
+kutoka xml.parsers agiza expat
+kutoka xml.sax.saxutils agiza escape
 
 LEFT, CENTER, RIGHT = "LEFT", "CENTER", "RIGHT"
 
-def ljust(x, n):
-    return x.ljust(n)
-def center(x, n):
-    return x.center(n)
-def rjust(x, n):
-    return x.rjust(n)
+eleza ljust(x, n):
+    rudisha x.ljust(n)
+eleza center(x, n):
+    rudisha x.center(n)
+eleza rjust(x, n):
+    rudisha x.rjust(n)
 align2action = {LEFT: ljust, CENTER: center, RIGHT: rjust}
 
 align2xml = {LEFT: "left", CENTER: "center", RIGHT: "right"}
@@ -25,16 +25,16 @@ xml2align = {"left": LEFT, "center": CENTER, "right": RIGHT}
 
 align2anchor = {LEFT: "w", CENTER: "center", RIGHT: "e"}
 
-def sum(seq):
+eleza sum(seq):
     total = 0
-    for x in seq:
-        if x is not None:
+    kila x kwenye seq:
+        ikiwa x ni sio Tupu:
             total += x
-    return total
+    rudisha total
 
-class Sheet:
+kundi Sheet:
 
-    def __init__(self):
+    eleza __init__(self):
         self.cells = {} # {(x, y): cell, ...}
         self.ns = dict(
             cell = self.cellvalue,
@@ -42,389 +42,389 @@ class Sheet:
             sum = sum,
         )
 
-    def cellvalue(self, x, y):
+    eleza cellvalue(self, x, y):
         cell = self.getcell(x, y)
-        if hasattr(cell, 'recalc'):
-            return cell.recalc(self.ns)
-        else:
-            return cell
+        ikiwa hasattr(cell, 'recalc'):
+            rudisha cell.recalc(self.ns)
+        isipokua:
+            rudisha cell
 
-    def multicellvalue(self, x1, y1, x2, y2):
-        if x1 > x2:
+    eleza multicellvalue(self, x1, y1, x2, y2):
+        ikiwa x1 > x2:
             x1, x2 = x2, x1
-        if y1 > y2:
+        ikiwa y1 > y2:
             y1, y2 = y2, y1
         seq = []
-        for y in range(y1, y2+1):
-            for x in range(x1, x2+1):
+        kila y kwenye range(y1, y2+1):
+            kila x kwenye range(x1, x2+1):
                 seq.append(self.cellvalue(x, y))
-        return seq
+        rudisha seq
 
-    def getcell(self, x, y):
-        return self.cells.get((x, y))
+    eleza getcell(self, x, y):
+        rudisha self.cells.get((x, y))
 
-    def setcell(self, x, y, cell):
-        assert x > 0 and y > 0
+    eleza setcell(self, x, y, cell):
+        assert x > 0 na y > 0
         assert isinstance(cell, BaseCell)
         self.cells[x, y] = cell
 
-    def clearcell(self, x, y):
-        try:
-            del self.cells[x, y]
-        except KeyError:
-            pass
+    eleza clearcell(self, x, y):
+        jaribu:
+            toa self.cells[x, y]
+        tatizo KeyError:
+            pita
 
-    def clearcells(self, x1, y1, x2, y2):
-        for xy in self.selectcells(x1, y1, x2, y2):
-            del self.cells[xy]
+    eleza clearcells(self, x1, y1, x2, y2):
+        kila xy kwenye self.selectcells(x1, y1, x2, y2):
+            toa self.cells[xy]
 
-    def clearrows(self, y1, y2):
+    eleza clearrows(self, y1, y2):
         self.clearcells(0, y1, sys.maxsize, y2)
 
-    def clearcolumns(self, x1, x2):
+    eleza clearcolumns(self, x1, x2):
         self.clearcells(x1, 0, x2, sys.maxsize)
 
-    def selectcells(self, x1, y1, x2, y2):
-        if x1 > x2:
+    eleza selectcells(self, x1, y1, x2, y2):
+        ikiwa x1 > x2:
             x1, x2 = x2, x1
-        if y1 > y2:
+        ikiwa y1 > y2:
             y1, y2 = y2, y1
-        return [(x, y) for x, y in self.cells
-                if x1 <= x <= x2 and y1 <= y <= y2]
+        rudisha [(x, y) kila x, y kwenye self.cells
+                ikiwa x1 <= x <= x2 na y1 <= y <= y2]
 
-    def movecells(self, x1, y1, x2, y2, dx, dy):
-        if dx == 0 and dy == 0:
-            return
-        if x1 > x2:
+    eleza movecells(self, x1, y1, x2, y2, dx, dy):
+        ikiwa dx == 0 na dy == 0:
+            rudisha
+        ikiwa x1 > x2:
             x1, x2 = x2, x1
-        if y1 > y2:
+        ikiwa y1 > y2:
             y1, y2 = y2, y1
-        assert x1+dx > 0 and y1+dy > 0
+        assert x1+dx > 0 na y1+dy > 0
         new = {}
-        for x, y in self.cells:
+        kila x, y kwenye self.cells:
             cell = self.cells[x, y]
-            if hasattr(cell, 'renumber'):
+            ikiwa hasattr(cell, 'renumber'):
                 cell = cell.renumber(x1, y1, x2, y2, dx, dy)
-            if x1 <= x <= x2 and y1 <= y <= y2:
+            ikiwa x1 <= x <= x2 na y1 <= y <= y2:
                 x += dx
                 y += dy
             new[x, y] = cell
         self.cells = new
 
-    def insertrows(self, y, n):
+    eleza insertrows(self, y, n):
         assert n > 0
         self.movecells(0, y, sys.maxsize, sys.maxsize, 0, n)
 
-    def deleterows(self, y1, y2):
-        if y1 > y2:
+    eleza deleterows(self, y1, y2):
+        ikiwa y1 > y2:
             y1, y2 = y2, y1
         self.clearrows(y1, y2)
         self.movecells(0, y2+1, sys.maxsize, sys.maxsize, 0, y1-y2-1)
 
-    def insertcolumns(self, x, n):
+    eleza insertcolumns(self, x, n):
         assert n > 0
         self.movecells(x, 0, sys.maxsize, sys.maxsize, n, 0)
 
-    def deletecolumns(self, x1, x2):
-        if x1 > x2:
+    eleza deletecolumns(self, x1, x2):
+        ikiwa x1 > x2:
             x1, x2 = x2, x1
         self.clearcells(x1, x2)
         self.movecells(x2+1, 0, sys.maxsize, sys.maxsize, x1-x2-1, 0)
 
-    def getsize(self):
+    eleza getsize(self):
         maxx = maxy = 0
-        for x, y in self.cells:
+        kila x, y kwenye self.cells:
             maxx = max(maxx, x)
             maxy = max(maxy, y)
-        return maxx, maxy
+        rudisha maxx, maxy
 
-    def reset(self):
-        for cell in self.cells.values():
-            if hasattr(cell, 'reset'):
+    eleza reset(self):
+        kila cell kwenye self.cells.values():
+            ikiwa hasattr(cell, 'reset'):
                 cell.reset()
 
-    def recalc(self):
+    eleza recalc(self):
         self.reset()
-        for cell in self.cells.values():
-            if hasattr(cell, 'recalc'):
+        kila cell kwenye self.cells.values():
+            ikiwa hasattr(cell, 'recalc'):
                 cell.recalc(self.ns)
 
-    def display(self):
+    eleza display(self):
         maxx, maxy = self.getsize()
         width, height = maxx+1, maxy+1
         colwidth = [1] * width
         full = {}
-        # Add column heading labels in row 0
-        for x in range(1, width):
+        # Add column heading labels kwenye row 0
+        kila x kwenye range(1, width):
             full[x, 0] = text, alignment = colnum2name(x), RIGHT
             colwidth[x] = max(colwidth[x], len(text))
-        # Add row labels in column 0
-        for y in range(1, height):
+        # Add row labels kwenye column 0
+        kila y kwenye range(1, height):
             full[0, y] = text, alignment = str(y), RIGHT
             colwidth[0] = max(colwidth[0], len(text))
-        # Add sheet cells in columns with x>0 and y>0
-        for (x, y), cell in self.cells.items():
-            if x <= 0 or y <= 0:
-                continue
-            if hasattr(cell, 'recalc'):
+        # Add sheet cells kwenye columns ukijumuisha x>0 na y>0
+        kila (x, y), cell kwenye self.cells.items():
+            ikiwa x <= 0 ama y <= 0:
+                endelea
+            ikiwa hasattr(cell, 'recalc'):
                 cell.recalc(self.ns)
-            if hasattr(cell, 'format'):
+            ikiwa hasattr(cell, 'format'):
                 text, alignment = cell.format()
                 assert isinstance(text, str)
-                assert alignment in (LEFT, CENTER, RIGHT)
-            else:
+                assert alignment kwenye (LEFT, CENTER, RIGHT)
+            isipokua:
                 text = str(cell)
-                if isinstance(cell, str):
+                ikiwa isinstance(cell, str):
                     alignment = LEFT
-                else:
+                isipokua:
                     alignment = RIGHT
             full[x, y] = (text, alignment)
             colwidth[x] = max(colwidth[x], len(text))
-        # Calculate the horizontal separator line (dashes and dots)
+        # Calculate the horizontal separator line (dashes na dots)
         sep = ""
-        for x in range(width):
-            if sep:
+        kila x kwenye range(width):
+            ikiwa sep:
                 sep += "+"
             sep += "-"*colwidth[x]
         # Now print The full grid
-        for y in range(height):
+        kila y kwenye range(height):
             line = ""
-            for x in range(width):
-                text, alignment = full.get((x, y)) or ("", LEFT)
+            kila x kwenye range(width):
+                text, alignment = full.get((x, y)) ama ("", LEFT)
                 text = align2action[alignment](text, colwidth[x])
-                if line:
+                ikiwa line:
                     line += '|'
                 line += text
-            print(line)
-            if y == 0:
-                print(sep)
+            andika(line)
+            ikiwa y == 0:
+                andika(sep)
 
-    def xml(self):
+    eleza xml(self):
         out = ['<spreadsheet>']
-        for (x, y), cell in self.cells.items():
-            if hasattr(cell, 'xml'):
+        kila (x, y), cell kwenye self.cells.items():
+            ikiwa hasattr(cell, 'xml'):
                 cellxml = cell.xml()
-            else:
+            isipokua:
                 cellxml = '<value>%s</value>' % escape(cell)
             out.append('<cell row="%s" col="%s">\n  %s\n</cell>' %
                        (y, x, cellxml))
         out.append('</spreadsheet>')
-        return '\n'.join(out)
+        rudisha '\n'.join(out)
 
-    def save(self, filename):
+    eleza save(self, filename):
         text = self.xml()
-        with open(filename, "w", encoding='utf-8') as f:
+        ukijumuisha open(filename, "w", encoding='utf-8') kama f:
             f.write(text)
-            if text and not text.endswith('\n'):
+            ikiwa text na sio text.endswith('\n'):
                 f.write('\n')
 
-    def load(self, filename):
-        with open(filename, 'rb') as f:
+    eleza load(self, filename):
+        ukijumuisha open(filename, 'rb') kama f:
             SheetParser(self).parsefile(f)
 
-class SheetParser:
+kundi SheetParser:
 
-    def __init__(self, sheet):
+    eleza __init__(self, sheet):
         self.sheet = sheet
 
-    def parsefile(self, f):
+    eleza parsefile(self, f):
         parser = expat.ParserCreate()
         parser.StartElementHandler = self.startelement
         parser.EndElementHandler = self.endelement
         parser.CharacterDataHandler = self.data
         parser.ParseFile(f)
 
-    def startelement(self, tag, attrs):
-        method = getattr(self, 'start_'+tag, None)
-        if method:
+    eleza startelement(self, tag, attrs):
+        method = getattr(self, 'start_'+tag, Tupu)
+        ikiwa method:
             method(attrs)
         self.texts = []
 
-    def data(self, text):
+    eleza data(self, text):
         self.texts.append(text)
 
-    def endelement(self, tag):
-        method = getattr(self, 'end_'+tag, None)
-        if method:
+    eleza endelement(self, tag):
+        method = getattr(self, 'end_'+tag, Tupu)
+        ikiwa method:
             method("".join(self.texts))
 
-    def start_cell(self, attrs):
+    eleza start_cell(self, attrs):
         self.y = int(attrs.get("row"))
         self.x = int(attrs.get("col"))
 
-    def start_value(self, attrs):
+    eleza start_value(self, attrs):
         self.fmt = attrs.get('format')
         self.alignment = xml2align.get(attrs.get('align'))
 
     start_formula = start_value
 
-    def end_int(self, text):
-        try:
+    eleza end_int(self, text):
+        jaribu:
             self.value = int(text)
-        except (TypeError, ValueError):
-            self.value = None
+        tatizo (TypeError, ValueError):
+            self.value = Tupu
 
     end_long = end_int
 
-    def end_double(self, text):
-        try:
+    eleza end_double(self, text):
+        jaribu:
             self.value = float(text)
-        except (TypeError, ValueError):
-            self.value = None
+        tatizo (TypeError, ValueError):
+            self.value = Tupu
 
-    def end_complex(self, text):
-        try:
+    eleza end_complex(self, text):
+        jaribu:
             self.value = complex(text)
-        except (TypeError, ValueError):
-            self.value = None
+        tatizo (TypeError, ValueError):
+            self.value = Tupu
 
-    def end_string(self, text):
+    eleza end_string(self, text):
         self.value = text
 
-    def end_value(self, text):
-        if isinstance(self.value, BaseCell):
+    eleza end_value(self, text):
+        ikiwa isinstance(self.value, BaseCell):
             self.cell = self.value
-        elif isinstance(self.value, str):
+        lasivyo isinstance(self.value, str):
             self.cell = StringCell(self.value,
-                                   self.fmt or "%s",
-                                   self.alignment or LEFT)
-        else:
+                                   self.fmt ama "%s",
+                                   self.alignment ama LEFT)
+        isipokua:
             self.cell = NumericCell(self.value,
-                                    self.fmt or "%s",
-                                    self.alignment or RIGHT)
+                                    self.fmt ama "%s",
+                                    self.alignment ama RIGHT)
 
-    def end_formula(self, text):
+    eleza end_formula(self, text):
         self.cell = FormulaCell(text,
-                                self.fmt or "%s",
-                                self.alignment or RIGHT)
+                                self.fmt ama "%s",
+                                self.alignment ama RIGHT)
 
-    def end_cell(self, text):
+    eleza end_cell(self, text):
         self.sheet.setcell(self.x, self.y, self.cell)
 
-class BaseCell:
-    __init__ = None # Must provide
-    """Abstract base class for sheet cells.
+kundi BaseCell:
+    __init__ = Tupu # Must provide
+    """Abstract base kundi kila sheet cells.
 
     Subclasses may but needn't provide the following APIs:
 
-    cell.reset() -- prepare for recalculation
+    cell.reset() -- prepare kila recalculation
     cell.recalc(ns) -> value -- recalculate formula
-    cell.format() -> (value, alignment) -- return formatted value
-    cell.xml() -> string -- return XML
+    cell.format() -> (value, alignment) -- rudisha formatted value
+    cell.xml() -> string -- rudisha XML
     """
 
-class NumericCell(BaseCell):
+kundi NumericCell(BaseCell):
 
-    def __init__(self, value, fmt="%s", alignment=RIGHT):
+    eleza __init__(self, value, fmt="%s", alignment=RIGHT):
         assert isinstance(value, (int, float, complex))
-        assert alignment in (LEFT, CENTER, RIGHT)
+        assert alignment kwenye (LEFT, CENTER, RIGHT)
         self.value = value
         self.fmt = fmt
         self.alignment = alignment
 
-    def recalc(self, ns):
-        return self.value
+    eleza recalc(self, ns):
+        rudisha self.value
 
-    def format(self):
-        try:
+    eleza format(self):
+        jaribu:
             text = self.fmt % self.value
-        except:
+        tatizo:
             text = str(self.value)
-        return text, self.alignment
+        rudisha text, self.alignment
 
-    def xml(self):
+    eleza xml(self):
         method = getattr(self, '_xml_' + type(self.value).__name__)
-        return '<value align="%s" format="%s">%s</value>' % (
+        rudisha '<value align="%s" format="%s">%s</value>' % (
                 align2xml[self.alignment],
                 self.fmt,
                 method())
 
-    def _xml_int(self):
-        if -2**31 <= self.value < 2**31:
-            return '<int>%s</int>' % self.value
-        else:
-            return '<long>%s</long>' % self.value
+    eleza _xml_int(self):
+        ikiwa -2**31 <= self.value < 2**31:
+            rudisha '<int>%s</int>' % self.value
+        isipokua:
+            rudisha '<long>%s</long>' % self.value
 
-    def _xml_float(self):
-        return '<double>%r</double>' % self.value
+    eleza _xml_float(self):
+        rudisha '<double>%r</double>' % self.value
 
-    def _xml_complex(self):
-        return '<complex>%r</complex>' % self.value
+    eleza _xml_complex(self):
+        rudisha '<complex>%r</complex>' % self.value
 
-class StringCell(BaseCell):
+kundi StringCell(BaseCell):
 
-    def __init__(self, text, fmt="%s", alignment=LEFT):
+    eleza __init__(self, text, fmt="%s", alignment=LEFT):
         assert isinstance(text, str)
-        assert alignment in (LEFT, CENTER, RIGHT)
+        assert alignment kwenye (LEFT, CENTER, RIGHT)
         self.text = text
         self.fmt = fmt
         self.alignment = alignment
 
-    def recalc(self, ns):
-        return self.text
+    eleza recalc(self, ns):
+        rudisha self.text
 
-    def format(self):
-        return self.text, self.alignment
+    eleza format(self):
+        rudisha self.text, self.alignment
 
-    def xml(self):
+    eleza xml(self):
         s = '<value align="%s" format="%s"><string>%s</string></value>'
-        return s % (
+        rudisha s % (
             align2xml[self.alignment],
             self.fmt,
             escape(self.text))
 
-class FormulaCell(BaseCell):
+kundi FormulaCell(BaseCell):
 
-    def __init__(self, formula, fmt="%s", alignment=RIGHT):
-        assert alignment in (LEFT, CENTER, RIGHT)
+    eleza __init__(self, formula, fmt="%s", alignment=RIGHT):
+        assert alignment kwenye (LEFT, CENTER, RIGHT)
         self.formula = formula
         self.translated = translate(self.formula)
         self.fmt = fmt
         self.alignment = alignment
         self.reset()
 
-    def reset(self):
-        self.value = None
+    eleza reset(self):
+        self.value = Tupu
 
-    def recalc(self, ns):
-        if self.value is None:
-            try:
+    eleza recalc(self, ns):
+        ikiwa self.value ni Tupu:
+            jaribu:
                 self.value = eval(self.translated, ns)
-            except:
+            tatizo:
                 exc = sys.exc_info()[0]
-                if hasattr(exc, "__name__"):
+                ikiwa hasattr(exc, "__name__"):
                     self.value = exc.__name__
-                else:
+                isipokua:
                     self.value = str(exc)
-        return self.value
+        rudisha self.value
 
-    def format(self):
-        try:
+    eleza format(self):
+        jaribu:
             text = self.fmt % self.value
-        except:
+        tatizo:
             text = str(self.value)
-        return text, self.alignment
+        rudisha text, self.alignment
 
-    def xml(self):
-        return '<formula align="%s" format="%s">%s</formula>' % (
+    eleza xml(self):
+        rudisha '<formula align="%s" format="%s">%s</formula>' % (
             align2xml[self.alignment],
             self.fmt,
             escape(self.formula))
 
-    def renumber(self, x1, y1, x2, y2, dx, dy):
+    eleza renumber(self, x1, y1, x2, y2, dx, dy):
         out = []
-        for part in re.split(r'(\w+)', self.formula):
+        kila part kwenye re.split(r'(\w+)', self.formula):
             m = re.match('^([A-Z]+)([1-9][0-9]*)$', part)
-            if m is not None:
+            ikiwa m ni sio Tupu:
                 sx, sy = m.groups()
                 x = colname2num(sx)
                 y = int(sy)
-                if x1 <= x <= x2 and y1 <= y <= y2:
+                ikiwa x1 <= x <= x2 na y1 <= y <= y2:
                     part = cellname(x+dx, y+dy)
             out.append(part)
-        return FormulaCell("".join(out), self.fmt, self.alignment)
+        rudisha FormulaCell("".join(out), self.fmt, self.alignment)
 
-def translate(formula):
+eleza translate(formula):
     """Translate a formula containing fancy cell names to valid Python code.
 
     Examples:
@@ -432,72 +432,72 @@ def translate(formula):
         B4:Z100 -> cells(2, 4, 26, 100)
     """
     out = []
-    for part in re.split(r"(\w+(?::\w+)?)", formula):
+    kila part kwenye re.split(r"(\w+(?::\w+)?)", formula):
         m = re.match(r"^([A-Z]+)([1-9][0-9]*)(?::([A-Z]+)([1-9][0-9]*))?$", part)
-        if m is None:
+        ikiwa m ni Tupu:
             out.append(part)
-        else:
+        isipokua:
             x1, y1, x2, y2 = m.groups()
             x1 = colname2num(x1)
-            if x2 is None:
+            ikiwa x2 ni Tupu:
                 s = "cell(%s, %s)" % (x1, y1)
-            else:
+            isipokua:
                 x2 = colname2num(x2)
                 s = "cells(%s, %s, %s, %s)" % (x1, y1, x2, y2)
             out.append(s)
-    return "".join(out)
+    rudisha "".join(out)
 
-def cellname(x, y):
+eleza cellname(x, y):
     "Translate a cell coordinate to a fancy cell name (e.g. (1, 1)->'A1')."
     assert x > 0 # Column 0 has an empty name, so can't use that
-    return colnum2name(x) + str(y)
+    rudisha colnum2name(x) + str(y)
 
-def colname2num(s):
+eleza colname2num(s):
     "Translate a column name to number (e.g. 'A'->1, 'Z'->26, 'AA'->27)."
     s = s.upper()
     n = 0
-    for c in s:
+    kila c kwenye s:
         assert 'A' <= c <= 'Z'
         n = n*26 + ord(c) - ord('A') + 1
-    return n
+    rudisha n
 
-def colnum2name(n):
+eleza colnum2name(n):
     "Translate a column number to name (e.g. 1->'A', etc.)."
     assert n > 0
     s = ""
-    while n:
+    wakati n:
         n, m = divmod(n-1, 26)
         s = chr(m+ord('A')) + s
-    return s
+    rudisha s
 
-import tkinter as Tk
+agiza tkinter kama Tk
 
-class SheetGUI:
+kundi SheetGUI:
 
-    """Beginnings of a GUI for a spreadsheet.
+    """Beginnings of a GUI kila a spreadsheet.
 
     TO DO:
     - clear multiple cells
-    - Insert, clear, remove rows or columns
-    - Show new contents while typing
+    - Insert, clear, remove rows ama columns
+    - Show new contents wakati typing
     - Scroll bars
-    - Grow grid when window is grown
+    - Grow grid when window ni grown
     - Proper menus
     - Undo, redo
-    - Cut, copy and paste
-    - Formatting and alignment
+    - Cut, copy na paste
+    - Formatting na alignment
     """
 
-    def __init__(self, filename="sheet1.xml", rows=10, columns=5):
+    eleza __init__(self, filename="sheet1.xml", rows=10, columns=5):
         """Constructor.
 
-        Load the sheet from the filename argument.
+        Load the sheet kutoka the filename argument.
         Set up the Tk widget tree.
         """
-        # Create and load the sheet
+        # Create na load the sheet
         self.filename = filename
         self.sheet = Sheet()
-        if os.path.isfile(filename):
+        ikiwa os.path.isfile(filename):
             self.sheet.load(filename)
         # Calculate the needed grid size
         maxx, maxy = self.sheet.getsize()
@@ -527,41 +527,41 @@ class SheetGUI:
         # Now create the cell grid
         self.makegrid(rows, columns)
         # Select the top-left cell
-        self.currentxy = None
-        self.cornerxy = None
+        self.currentxy = Tupu
+        self.cornerxy = Tupu
         self.setcurrent(1, 1)
         # Copy the sheet cells to the GUI cells
         self.sync()
 
-    def delete_event(self, event):
-        if self.cornerxy != self.currentxy and self.cornerxy is not None:
+    eleza delete_event(self, event):
+        ikiwa self.cornerxy != self.currentxy na self.cornerxy ni sio Tupu:
             self.sheet.clearcells(*(self.currentxy + self.cornerxy))
-        else:
+        isipokua:
             self.sheet.clearcell(*self.currentxy)
         self.sync()
         self.entry.delete(0, 'end')
-        return "break"
+        rudisha "koma"
 
-    def escape_event(self, event):
+    eleza escape_event(self, event):
         x, y = self.currentxy
         self.load_entry(x, y)
 
-    def load_entry(self, x, y):
+    eleza load_entry(self, x, y):
         cell = self.sheet.getcell(x, y)
-        if cell is None:
+        ikiwa cell ni Tupu:
             text = ""
-        elif isinstance(cell, FormulaCell):
+        lasivyo isinstance(cell, FormulaCell):
             text = '=' + cell.formula
-        else:
+        isipokua:
             text, alignment = cell.format()
         self.entry.delete(0, 'end')
         self.entry.insert(0, text)
         self.entry.selection_range(0, 'end')
 
-    def makegrid(self, rows, columns):
+    eleza makegrid(self, rows, columns):
         """Helper to create the grid of GUI cells.
 
-        The edge (x==0 or y==0) is filled with labels; the rest is real cells.
+        The edge (x==0 ama y==0) ni filled ukijumuisha labels; the rest ni real cells.
         """
         self.rows = rows
         self.columns = columns
@@ -570,8 +570,8 @@ class SheetGUI:
         cell = Tk.Label(self.cellgrid, relief='raised')
         cell.grid_configure(column=0, row=0, sticky='NSWE')
         cell.bind("<ButtonPress-1>", self.selectall)
-        # Create the top row of labels, and configure the grid columns
-        for x in range(1, columns+1):
+        # Create the top row of labels, na configure the grid columns
+        kila x kwenye range(1, columns+1):
             self.cellgrid.grid_columnconfigure(x, minsize=64)
             cell = Tk.Label(self.cellgrid, text=colnum2name(x), relief='raised')
             cell.grid_configure(column=x, row=0, sticky='WE')
@@ -583,7 +583,7 @@ class SheetGUI:
             cell.bind("<ButtonRelease-1>", self.extendcolumn)
             cell.bind("<Shift-Button-1>", self.extendcolumn)
         # Create the leftmost column of labels
-        for y in range(1, rows+1):
+        kila y kwenye range(1, rows+1):
             cell = Tk.Label(self.cellgrid, text=str(y), relief='raised')
             cell.grid_configure(column=0, row=y, sticky='WE')
             self.gridcells[0, y] = cell
@@ -594,8 +594,8 @@ class SheetGUI:
             cell.bind("<ButtonRelease-1>", self.extendrow)
             cell.bind("<Shift-Button-1>", self.extendrow)
         # Create the real cells
-        for x in range(1, columns+1):
-            for y in range(1, rows+1):
+        kila x kwenye range(1, columns+1):
+            kila y kwenye range(1, rows+1):
                 cell = Tk.Label(self.cellgrid, relief='sunken',
                                 bg='white', fg='black')
                 cell.grid_configure(column=x, row=y, sticky='NSWE')
@@ -608,222 +608,222 @@ class SheetGUI:
                 cell.bind("<ButtonRelease-1>", self.release)
                 cell.bind("<Shift-Button-1>", self.release)
 
-    def selectall(self, event):
+    eleza selectall(self, event):
         self.setcurrent(1, 1)
         self.setcorner(sys.maxsize, sys.maxsize)
 
-    def selectcolumn(self, event):
+    eleza selectcolumn(self, event):
         x, y = self.whichxy(event)
         self.setcurrent(x, 1)
         self.setcorner(x, sys.maxsize)
 
-    def extendcolumn(self, event):
+    eleza extendcolumn(self, event):
         x, y = self.whichxy(event)
-        if x > 0:
+        ikiwa x > 0:
             self.setcurrent(self.currentxy[0], 1)
             self.setcorner(x, sys.maxsize)
 
-    def selectrow(self, event):
+    eleza selectrow(self, event):
         x, y = self.whichxy(event)
         self.setcurrent(1, y)
         self.setcorner(sys.maxsize, y)
 
-    def extendrow(self, event):
+    eleza extendrow(self, event):
         x, y = self.whichxy(event)
-        if y > 0:
+        ikiwa y > 0:
             self.setcurrent(1, self.currentxy[1])
             self.setcorner(sys.maxsize, y)
 
-    def press(self, event):
+    eleza press(self, event):
         x, y = self.whichxy(event)
-        if x > 0 and y > 0:
+        ikiwa x > 0 na y > 0:
             self.setcurrent(x, y)
 
-    def motion(self, event):
+    eleza motion(self, event):
         x, y = self.whichxy(event)
-        if x > 0 and y > 0:
+        ikiwa x > 0 na y > 0:
             self.setcorner(x, y)
 
     release = motion
 
-    def whichxy(self, event):
+    eleza whichxy(self, event):
         w = self.cellgrid.winfo_containing(event.x_root, event.y_root)
-        if w is not None and isinstance(w, Tk.Label):
-            try:
-                return w.__x, w.__y
-            except AttributeError:
-                pass
-        return 0, 0
+        ikiwa w ni sio Tupu na isinstance(w, Tk.Label):
+            jaribu:
+                rudisha w.__x, w.__y
+            tatizo AttributeError:
+                pita
+        rudisha 0, 0
 
-    def save(self):
+    eleza save(self):
         self.sheet.save(self.filename)
 
-    def setcurrent(self, x, y):
+    eleza setcurrent(self, x, y):
         "Make (x, y) the current cell."
-        if self.currentxy is not None:
+        ikiwa self.currentxy ni sio Tupu:
             self.change_cell()
         self.clearfocus()
         self.beacon['text'] = cellname(x, y)
         self.load_entry(x, y)
         self.entry.focus_set()
         self.currentxy = x, y
-        self.cornerxy = None
+        self.cornerxy = Tupu
         gridcell = self.gridcells.get(self.currentxy)
-        if gridcell is not None:
+        ikiwa gridcell ni sio Tupu:
             gridcell['bg'] = 'yellow'
 
-    def setcorner(self, x, y):
-        if self.currentxy is None or self.currentxy == (x, y):
+    eleza setcorner(self, x, y):
+        ikiwa self.currentxy ni Tupu ama self.currentxy == (x, y):
             self.setcurrent(x, y)
-            return
+            rudisha
         self.clearfocus()
         self.cornerxy = x, y
         x1, y1 = self.currentxy
-        x2, y2 = self.cornerxy or self.currentxy
-        if x1 > x2:
+        x2, y2 = self.cornerxy ama self.currentxy
+        ikiwa x1 > x2:
             x1, x2 = x2, x1
-        if y1 > y2:
+        ikiwa y1 > y2:
             y1, y2 = y2, y1
-        for (x, y), cell in self.gridcells.items():
-            if x1 <= x <= x2 and y1 <= y <= y2:
+        kila (x, y), cell kwenye self.gridcells.items():
+            ikiwa x1 <= x <= x2 na y1 <= y <= y2:
                 cell['bg'] = 'lightBlue'
         gridcell = self.gridcells.get(self.currentxy)
-        if gridcell is not None:
+        ikiwa gridcell ni sio Tupu:
             gridcell['bg'] = 'yellow'
         self.setbeacon(x1, y1, x2, y2)
 
-    def setbeacon(self, x1, y1, x2, y2):
-        if x1 == y1 == 1 and x2 == y2 == sys.maxsize:
+    eleza setbeacon(self, x1, y1, x2, y2):
+        ikiwa x1 == y1 == 1 na x2 == y2 == sys.maxsize:
             name = ":"
-        elif (x1, x2) == (1, sys.maxsize):
-            if y1 == y2:
+        lasivyo (x1, x2) == (1, sys.maxsize):
+            ikiwa y1 == y2:
                 name = "%d" % y1
-            else:
+            isipokua:
                 name = "%d:%d" % (y1, y2)
-        elif (y1, y2) == (1, sys.maxsize):
-            if x1 == x2:
+        lasivyo (y1, y2) == (1, sys.maxsize):
+            ikiwa x1 == x2:
                 name = "%s" % colnum2name(x1)
-            else:
+            isipokua:
                 name = "%s:%s" % (colnum2name(x1), colnum2name(x2))
-        else:
+        isipokua:
             name1 = cellname(*self.currentxy)
             name2 = cellname(*self.cornerxy)
             name = "%s:%s" % (name1, name2)
         self.beacon['text'] = name
 
 
-    def clearfocus(self):
-        if self.currentxy is not None:
+    eleza clearfocus(self):
+        ikiwa self.currentxy ni sio Tupu:
             x1, y1 = self.currentxy
-            x2, y2 = self.cornerxy or self.currentxy
-            if x1 > x2:
+            x2, y2 = self.cornerxy ama self.currentxy
+            ikiwa x1 > x2:
                 x1, x2 = x2, x1
-            if y1 > y2:
+            ikiwa y1 > y2:
                 y1, y2 = y2, y1
-            for (x, y), cell in self.gridcells.items():
-                if x1 <= x <= x2 and y1 <= y <= y2:
+            kila (x, y), cell kwenye self.gridcells.items():
+                ikiwa x1 <= x <= x2 na y1 <= y <= y2:
                     cell['bg'] = 'white'
 
-    def return_event(self, event):
-        "Callback for the Return key."
+    eleza return_event(self, event):
+        "Callback kila the Return key."
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x, y+1)
-        return "break"
+        rudisha "koma"
 
-    def shift_return_event(self, event):
-        "Callback for the Return key with Shift modifier."
+    eleza shift_return_event(self, event):
+        "Callback kila the Return key ukijumuisha Shift modifier."
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x, max(1, y-1))
-        return "break"
+        rudisha "koma"
 
-    def tab_event(self, event):
-        "Callback for the Tab key."
+    eleza tab_event(self, event):
+        "Callback kila the Tab key."
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(x+1, y)
-        return "break"
+        rudisha "koma"
 
-    def shift_tab_event(self, event):
-        "Callback for the Tab key with Shift modifier."
+    eleza shift_tab_event(self, event):
+        "Callback kila the Tab key ukijumuisha Shift modifier."
         self.change_cell()
         x, y = self.currentxy
         self.setcurrent(max(1, x-1), y)
-        return "break"
+        rudisha "koma"
 
-    def change_cell(self):
-        "Set the current cell from the entry widget."
+    eleza change_cell(self):
+        "Set the current cell kutoka the entry widget."
         x, y = self.currentxy
         text = self.entry.get()
-        cell = None
-        if text.startswith('='):
+        cell = Tupu
+        ikiwa text.startswith('='):
             cell = FormulaCell(text[1:])
-        else:
-            for cls in int, float, complex:
-                try:
+        isipokua:
+            kila cls kwenye int, float, complex:
+                jaribu:
                     value = cls(text)
-                except (TypeError, ValueError):
-                    continue
-                else:
+                tatizo (TypeError, ValueError):
+                    endelea
+                isipokua:
                     cell = NumericCell(value)
-                    break
-        if cell is None and text:
+                    koma
+        ikiwa cell ni Tupu na text:
             cell = StringCell(text)
-        if cell is None:
+        ikiwa cell ni Tupu:
             self.sheet.clearcell(x, y)
-        else:
+        isipokua:
             self.sheet.setcell(x, y, cell)
         self.sync()
 
-    def sync(self):
-        "Fill the GUI cells from the sheet cells."
+    eleza sync(self):
+        "Fill the GUI cells kutoka the sheet cells."
         self.sheet.recalc()
-        for (x, y), gridcell in self.gridcells.items():
-            if x == 0 or y == 0:
-                continue
+        kila (x, y), gridcell kwenye self.gridcells.items():
+            ikiwa x == 0 ama y == 0:
+                endelea
             cell = self.sheet.getcell(x, y)
-            if cell is None:
+            ikiwa cell ni Tupu:
                 gridcell['text'] = ""
-            else:
-                if hasattr(cell, 'format'):
+            isipokua:
+                ikiwa hasattr(cell, 'format'):
                     text, alignment = cell.format()
-                else:
+                isipokua:
                     text, alignment = str(cell), LEFT
                 gridcell['text'] = text
                 gridcell['anchor'] = align2anchor[alignment]
 
 
-def test_basic():
+eleza test_basic():
     "Basic non-gui self-test."
     a = Sheet()
-    for x in range(1, 11):
-        for y in range(1, 11):
-            if x == 1:
+    kila x kwenye range(1, 11):
+        kila y kwenye range(1, 11):
+            ikiwa x == 1:
                 cell = NumericCell(y)
-            elif y == 1:
+            lasivyo y == 1:
                 cell = NumericCell(x)
-            else:
+            isipokua:
                 c1 = cellname(x, 1)
                 c2 = cellname(1, y)
                 formula = "%s*%s" % (c1, c2)
                 cell = FormulaCell(formula)
             a.setcell(x, y, cell)
-##    if os.path.isfile("sheet1.xml"):
-##        print "Loading from sheet1.xml"
+##    ikiwa os.path.isfile("sheet1.xml"):
+##        print "Loading kutoka sheet1.xml"
 ##        a.load("sheet1.xml")
     a.display()
     a.save("sheet1.xml")
 
-def test_gui():
+eleza test_gui():
     "GUI test."
-    if sys.argv[1:]:
+    ikiwa sys.argv[1:]:
         filename = sys.argv[1]
-    else:
+    isipokua:
         filename = "sheet1.xml"
     g = SheetGUI(filename)
     g.root.mainloop()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     #test_basic()
     test_gui()

@@ -4,8 +4,8 @@
 #
 # cleanup Keccak sources
 
-import os
-import re
+agiza os
+agiza re
 
 CPP1 = re.compile("^//(.*)")
 CPP2 = re.compile(r"\ //(.*)")
@@ -16,35 +16,35 @@ STATICS = ("void ", "int ", "HashReturn ",
 HERE = os.path.dirname(os.path.abspath(__file__))
 KECCAK = os.path.join(HERE, "kcp")
 
-def getfiles():
-    for name in os.listdir(KECCAK):
+eleza getfiles():
+    kila name kwenye os.listdir(KECCAK):
         name = os.path.join(KECCAK, name)
-        if os.path.isfile(name):
-            yield name
+        ikiwa os.path.isfile(name):
+            tuma name
 
-def cleanup(f):
+eleza cleanup(f):
     buf = []
-    for line in f:
-        # mark all functions and global data as static
-        #if line.startswith(STATICS):
+    kila line kwenye f:
+        # mark all functions na global data kama static
+        #ikiwa line.startswith(STATICS):
         #    buf.append("static " + line)
-        #    continue
+        #    endelea
         # remove UINT64 typedef, we have our own
-        if line.startswith("typedef unsigned long long int"):
+        ikiwa line.startswith("typeeleza unsigned long long int"):
             buf.append("/* %s */\n" % line.strip())
-            continue
+            endelea
         ## remove #include "brg_endian.h"
-        if "brg_endian.h" in line:
+        ikiwa "brg_endian.h" kwenye line:
             buf.append("/* %s */\n" % line.strip())
-            continue
+            endelea
         # transform C++ comments into ANSI C comments
         line = CPP1.sub(r"/*\1 */\n", line)
         line = CPP2.sub(r" /*\1 */\n", line)
         buf.append(line)
-    return "".join(buf)
+    rudisha "".join(buf)
 
-for name in getfiles():
-    with open(name) as f:
+kila name kwenye getfiles():
+    ukijumuisha open(name) kama f:
         res = cleanup(f)
-    with open(name, "w") as f:
+    ukijumuisha open(name, "w") kama f:
         f.write(res)

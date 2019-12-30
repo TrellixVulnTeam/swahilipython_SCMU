@@ -2,8 +2,8 @@ agiza sqlite3
 agiza datetime
 agiza time
 
-def adapt_datetime(ts):
-    return time.mktime(ts.timetuple())
+eleza adapt_datetime(ts):
+    rudisha time.mktime(ts.timetuple())
 
 sqlite3.register_adapter(datetime.datetime, adapt_datetime)
 
@@ -12,6 +12,6 @@ cur = con.cursor()
 
 now = datetime.datetime.now()
 cur.execute("select ?", (now,))
-print(cur.fetchone()[0])
+andika(cur.fetchone()[0])
 
 con.close()

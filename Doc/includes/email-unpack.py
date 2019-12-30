@@ -11,43 +11,43 @@ kutoka email.policy agiza default
 kutoka argparse agiza ArgumentParser
 
 
-def main():
+eleza main():
     parser = ArgumentParser(description="""\
 Unpack a MIME message into a directory of files.
 """)
     parser.add_argument('-d', '--directory', required=Kweli,
                         help="""Unpack the MIME message into the named
-                        directory, which will be created if it doesn't already
+                        directory, which will be created ikiwa it doesn't already
                         exist.""")
     parser.add_argument('msgfile')
     args = parser.parse_args()
 
-    with open(args.msgfile, 'rb') as fp:
+    ukijumuisha open(args.msgfile, 'rb') kama fp:
         msg = email.message_kutoka_binary_file(fp, policy=default)
 
-    try:
+    jaribu:
         os.mkdir(args.directory)
-    except FileExistsError:
-        pass
+    tatizo FileExistsError:
+        pita
 
     counter = 1
-    for part in msg.walk():
+    kila part kwenye msg.walk():
         # multipart/* are just containers
-        if part.get_content_maintype() == 'multipart':
-            continue
+        ikiwa part.get_content_maintype() == 'multipart':
+            endelea
         # Applications should really sanitize the given filename so that an
         # email message can't be used to overwrite agizaant files
         filename = part.get_filename()
-        if not filename:
+        ikiwa sio filename:
             ext = mimetypes.guess_extension(part.get_content_type())
-            if not ext:
+            ikiwa sio ext:
                 # Use a generic bag-of-bits extension
                 ext = '.bin'
             filename = 'part-%03d%s' % (counter, ext)
         counter += 1
-        with open(os.path.join(args.directory, filename), 'wb') as fp:
+        ukijumuisha open(os.path.join(args.directory, filename), 'wb') kama fp:
             fp.write(part.get_payload(decode=Kweli))
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

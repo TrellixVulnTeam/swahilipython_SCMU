@@ -5,39 +5,39 @@ agiza operator
 ##
 
 kundi Foo:
-    def f(self):
-        print('you called Foo.f()')
-    def g(self):
-        print('you called Foo.g()')
-    def _h(self):
-        print('you called Foo._h()')
+    eleza f(self):
+        andika('you called Foo.f()')
+    eleza g(self):
+        andika('you called Foo.g()')
+    eleza _h(self):
+        andika('you called Foo._h()')
 
 # A simple generator function
-def baz():
-    for i in range(10):
-        yield i*i
+eleza baz():
+    kila i kwenye range(10):
+        tuma i*i
 
-# Proxy type for generator objects
+# Proxy type kila generator objects
 kundi GeneratorProxy(BaseProxy):
     _exposed_ = ['__next__']
-    def __iter__(self):
-        return self
-    def __next__(self):
-        return self._callmethod('__next__')
+    eleza __iter__(self):
+        rudisha self
+    eleza __next__(self):
+        rudisha self._callmethod('__next__')
 
-# Function to return the operator module
-def get_operator_module():
-    return operator
+# Function to rudisha the operator module
+eleza get_operator_module():
+    rudisha operator
 
 ##
 
 kundi MyManager(BaseManager):
-    pass
+    pita
 
-# register the Foo class; make `f()` and `g()` accessible via proxy
+# register the Foo class; make `f()` na `g()` accessible via proxy
 MyManager.register('Foo1', Foo)
 
-# register the Foo class; make `g()` and `_h()` accessible via proxy
+# register the Foo class; make `g()` na `_h()` accessible via proxy
 MyManager.register('Foo2', Foo, exposed=('g', '_h'))
 
 # register the generator function baz; use `GeneratorProxy` to make proxies
@@ -48,42 +48,42 @@ MyManager.register('operator', get_operator_module)
 
 ##
 
-def test():
+eleza test():
     manager = MyManager()
     manager.start()
 
-    print('-' * 20)
+    andika('-' * 20)
 
     f1 = manager.Foo1()
     f1.f()
     f1.g()
-    assert not hasattr(f1, '_h')
+    assert sio hasattr(f1, '_h')
     assert sorted(f1._exposed_) == sorted(['f', 'g'])
 
-    print('-' * 20)
+    andika('-' * 20)
 
     f2 = manager.Foo2()
     f2.g()
     f2._h()
-    assert not hasattr(f2, 'f')
+    assert sio hasattr(f2, 'f')
     assert sorted(f2._exposed_) == sorted(['g', '_h'])
 
-    print('-' * 20)
+    andika('-' * 20)
 
     it = manager.baz()
-    for i in it:
-        print('<%d>' % i, end=' ')
-    print()
+    kila i kwenye it:
+        andika('<%d>' % i, end=' ')
+    andika()
 
-    print('-' * 20)
+    andika('-' * 20)
 
     op = manager.operator()
-    print('op.add(23, 45) =', op.add(23, 45))
-    print('op.pow(2, 94) =', op.pow(2, 94))
-    print('op._exposed_ =', op._exposed_)
+    andika('op.add(23, 45) =', op.add(23, 45))
+    andika('op.pow(2, 94) =', op.pow(2, 94))
+    andika('op._exposed_ =', op._exposed_)
 
 ##
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     freeze_support()
     test()

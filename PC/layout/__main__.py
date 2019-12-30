@@ -1,14 +1,14 @@
-import sys
+agiza sys
 
-try:
-    import layout
-except ImportError:
-    # Failed to import our package, which likely means we were started directly
+jaribu:
+    agiza layout
+tatizo ImportError:
+    # Failed to agiza our package, which likely means we were started directly
     # Add the additional search path needed to locate our module.
-    from pathlib import Path
+    kutoka pathlib agiza Path
 
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from layout.main import main
+kutoka layout.main agiza main
 
-sys.exit(int(main() or 0))
+sys.exit(int(main() ama 0))

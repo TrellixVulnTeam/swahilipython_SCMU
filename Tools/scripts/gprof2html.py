@@ -2,11 +2,11 @@
 
 """Transform gprof(1) output into useful HTML."""
 
-import html
-import os
-import re
-import sys
-import webbrowser
+agiza html
+agiza os
+agiza re
+agiza sys
+agiza webbrowser
 
 header = """\
 <html>
@@ -23,65 +23,65 @@ trailer = """\
 </html>
 """
 
-def add_escapes(filename):
-    with open(filename) as fp:
-        for line in fp:
-            yield html.escape(line)
+eleza add_escapes(filename):
+    ukijumuisha open(filename) kama fp:
+        kila line kwenye fp:
+            tuma html.escape(line)
 
-def gprof2html(input, output, filename):
+eleza gprof2html(input, output, filename):
     output.write(header % filename)
-    for line in input:
+    kila line kwenye input:
         output.write(line)
-        if line.startswith(" time"):
-            break
+        ikiwa line.startswith(" time"):
+            koma
     labels = {}
-    for line in input:
+    kila line kwenye input:
         m = re.match(r"(.*  )(\w+)\n", line)
-        if not m:
+        ikiwa sio m:
             output.write(line)
-            break
+            koma
         stuff, fname = m.group(1, 2)
         labels[fname] = fname
         output.write('%s<a name="flat:%s" href="#call:%s">%s</a>\n' %
                      (stuff, fname, fname, fname))
-    for line in input:
+    kila line kwenye input:
         output.write(line)
-        if line.startswith("index % time"):
-            break
-    for line in input:
+        ikiwa line.startswith("index % time"):
+            koma
+    kila line kwenye input:
         m = re.match(r"(.*  )(\w+)(( &lt;cycle.*&gt;)? \[\d+\])\n", line)
-        if not m:
+        ikiwa sio m:
             output.write(line)
-            if line.startswith("Index by function name"):
-                break
-            continue
+            ikiwa line.startswith("Index by function name"):
+                koma
+            endelea
         prefix, fname, suffix = m.group(1, 2, 3)
-        if fname not in labels:
+        ikiwa fname haiko kwenye labels:
             output.write(line)
-            continue
-        if line.startswith("["):
+            endelea
+        ikiwa line.startswith("["):
             output.write('%s<a name="call:%s" href="#flat:%s">%s</a>%s\n' %
                          (prefix, fname, fname, fname, suffix))
-        else:
+        isipokua:
             output.write('%s<a href="#call:%s">%s</a>%s\n' %
                          (prefix, fname, fname, suffix))
-    for line in input:
-        for part in re.findall(r"(\w+(?:\.c)?|\W+)", line):
-            if part in labels:
+    kila line kwenye input:
+        kila part kwenye re.findall(r"(\w+(?:\.c)?|\W+)", line):
+            ikiwa part kwenye labels:
                 part = '<a href="#call:%s">%s</a>' % (part, part)
             output.write(part)
     output.write(trailer)
 
 
-def main():
+eleza main():
     filename = "gprof.out"
-    if sys.argv[1:]:
+    ikiwa sys.argv[1:]:
         filename = sys.argv[1]
     outputfilename = filename + ".html"
     input = add_escapes(filename)
-    with open(outputfilename, "w") as output:
+    ukijumuisha open(outputfilename, "w") kama output:
         gprof2html(input, output, filename)
     webbrowser.open("file:" + os.path.abspath(outputfilename))
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

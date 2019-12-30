@@ -5,30 +5,30 @@
 # Licensed to the PSF under a contributor agreement.
 #
 
-import abc
-import ast
-import collections
-import contextlib
-import copy
-import cpp
-import functools
-import hashlib
-import inspect
-import io
-import itertools
-import os
-import pprint
-import re
-import shlex
-import string
-import sys
-import tempfile
-import textwrap
-import traceback
-import types
+agiza abc
+agiza ast
+agiza collections
+agiza contextlib
+agiza copy
+agiza cpp
+agiza functools
+agiza hashlib
+agiza inspect
+agiza io
+agiza itertools
+agiza os
+agiza pprint
+agiza re
+agiza shlex
+agiza string
+agiza sys
+agiza tempfile
+agiza textwrap
+agiza traceback
+agiza types
 
-from types import *
-NoneType = type(None)
+kutoka types agiza *
+TupuType = type(Tupu)
 
 # TODO:
 #
@@ -36,32 +36,32 @@ NoneType = type(None)
 #
 # * allow mixing any two of {positional-only, positional-or-keyword,
 #   keyword-only}
-#       * dict constructor uses positional-only and keyword-only
-#       * max and min use positional only with an optional group
-#         and keyword-only
+#       * dict constructor uses positional-only na keyword-only
+#       * max na min use positional only ukijumuisha an optional group
+#         na keyword-only
 #
 
 version = '1'
 
-NoneType = type(None)
+TupuType = type(Tupu)
 
-class Unspecified:
-    def __repr__(self):
-        return '<Unspecified>'
+kundi Unspecified:
+    eleza __repr__(self):
+        rudisha '<Unspecified>'
 
 unspecified = Unspecified()
 
 
-class Null:
-    def __repr__(self):
-        return '<Null>'
+kundi Null:
+    eleza __repr__(self):
+        rudisha '<Null>'
 
 NULL = Null()
 
 
-class Unknown:
-    def __repr__(self):
-        return '<Unknown>'
+kundi Unknown:
+    eleza __repr__(self):
+        rudisha '<Unknown>'
 
 unknown = Unknown()
 
@@ -70,18 +70,18 @@ sig_end_marker = '--'
 
 _text_accumulator_nt = collections.namedtuple("_text_accumulator", "text append output")
 
-def _text_accumulator():
+eleza _text_accumulator():
     text = []
-    def output():
+    eleza output():
         s = ''.join(text)
         text.clear()
-        return s
-    return _text_accumulator_nt(text, text.append, output)
+        rudisha s
+    rudisha _text_accumulator_nt(text, text.append, output)
 
 
 text_accumulator_nt = collections.namedtuple("text_accumulator", "text append")
 
-def text_accumulator():
+eleza text_accumulator():
     """
     Creates a simple text accumulator / joiner.
 
@@ -89,302 +89,302 @@ def text_accumulator():
         append, output
     "append" appends a string to the accumulator.
     "output" returns the contents of the accumulator
-       joined together (''.join(accumulator)) and
+       joined together (''.join(accumulator)) na
        empties the accumulator.
     """
     text, append, output = _text_accumulator()
-    return text_accumulator_nt(append, output)
+    rudisha text_accumulator_nt(append, output)
 
 
-def warn_or_fail(fail=False, *args, filename=None, line_number=None):
-    joined = " ".join([str(a) for a in args])
+eleza warn_or_fail(fail=Uongo, *args, filename=Tupu, line_number=Tupu):
+    joined = " ".join([str(a) kila a kwenye args])
     add, output = text_accumulator()
-    if fail:
+    ikiwa fail:
         add("Error")
-    else:
+    isipokua:
         add("Warning")
-    if clinic:
-        if filename is None:
+    ikiwa clinic:
+        ikiwa filename ni Tupu:
             filename = clinic.filename
-        if getattr(clinic, 'block_parser', None) and (line_number is None):
+        ikiwa getattr(clinic, 'block_parser', Tupu) na (line_number ni Tupu):
             line_number = clinic.block_parser.line_number
-    if filename is not None:
-        add(' in file "' + filename + '"')
-    if line_number is not None:
+    ikiwa filename ni sio Tupu:
+        add(' kwenye file "' + filename + '"')
+    ikiwa line_number ni sio Tupu:
         add(" on line " + str(line_number))
     add(':\n')
     add(joined)
-    print(output())
-    if fail:
+    andika(output())
+    ikiwa fail:
         sys.exit(-1)
 
 
-def warn(*args, filename=None, line_number=None):
-    return warn_or_fail(False, *args, filename=filename, line_number=line_number)
+eleza warn(*args, filename=Tupu, line_number=Tupu):
+    rudisha warn_or_fail(Uongo, *args, filename=filename, line_number=line_number)
 
-def fail(*args, filename=None, line_number=None):
-    return warn_or_fail(True, *args, filename=filename, line_number=line_number)
+eleza fail(*args, filename=Tupu, line_number=Tupu):
+    rudisha warn_or_fail(Kweli, *args, filename=filename, line_number=line_number)
 
 
-def quoted_for_c_string(s):
-    for old, new in (
+eleza quoted_for_c_string(s):
+    kila old, new kwenye (
         ('\\', '\\\\'), # must be first!
         ('"', '\\"'),
         ("'", "\\'"),
         ):
         s = s.replace(old, new)
-    return s
+    rudisha s
 
-def c_repr(s):
-    return '"' + s + '"'
+eleza c_repr(s):
+    rudisha '"' + s + '"'
 
 
 is_legal_c_identifier = re.compile('^[A-Za-z_][A-Za-z0-9_]*$').match
 
-def is_legal_py_identifier(s):
-    return all(is_legal_c_identifier(field) for field in s.split('.'))
+eleza is_legal_py_identifier(s):
+    rudisha all(is_legal_c_identifier(field) kila field kwenye s.split('.'))
 
-# identifiers that are okay in Python but aren't a good idea in C.
-# so if they're used Argument Clinic will add "_value" to the end
-# of the name in C.
+# identifiers that are okay kwenye Python but aren't a good idea kwenye C.
+# so ikiwa they're used Argument Clinic will add "_value" to the end
+# of the name kwenye C.
 c_keywords = set("""
-asm auto break case char const continue default do double
-else enum extern float for goto if inline int long
-register return short signed sizeof static struct switch
-typedef typeof union unsigned void volatile while
+asm auto koma case char const endelea default do double
+else enum extern float kila goto ikiwa inline int long
+register rudisha short signed sizeof static struct switch
+typeeleza typeof union unsigned void volatile while
 """.strip().split())
 
-def ensure_legal_c_identifier(s):
-    # for now, just complain if what we're given isn't legal
-    if not is_legal_c_identifier(s):
+eleza ensure_legal_c_identifier(s):
+    # kila now, just complain ikiwa what we're given isn't legal
+    ikiwa sio is_legal_c_identifier(s):
         fail("Illegal C identifier: {}".format(s))
-    # but if we picked a C keyword, pick something else
-    if s in c_keywords:
-        return s + "_value"
-    return s
+    # but ikiwa we picked a C keyword, pick something isipokua
+    ikiwa s kwenye c_keywords:
+        rudisha s + "_value"
+    rudisha s
 
-def rstrip_lines(s):
+eleza rstrip_lines(s):
     text, add, output = _text_accumulator()
-    for line in s.split('\n'):
+    kila line kwenye s.split('\n'):
         add(line.rstrip())
         add('\n')
     text.pop()
-    return output()
+    rudisha output()
 
-def format_escape(s):
+eleza format_escape(s):
     # double up curly-braces, this string will be used
-    # as part of a format_map() template later
+    # kama part of a format_map() template later
     s = s.replace('{', '{{')
     s = s.replace('}', '}}')
-    return s
+    rudisha s
 
-def linear_format(s, **kwargs):
+eleza linear_format(s, **kwargs):
     """
-    Perform str.format-like substitution, except:
+    Perform str.format-like substitution, tatizo:
       * The strings substituted must be on lines by
-        themselves.  (This line is the "source line".)
-      * If the substitution text is empty, the source line
-        is removed in the output.
-      * If the field is not recognized, the original line
-        is passed unmodified through to the output.
-      * If the substitution text is not empty:
-          * Each line of the substituted text is indented
+        themselves.  (This line ni the "source line".)
+      * If the substitution text ni empty, the source line
+        ni removed kwenye the output.
+      * If the field ni sio recognized, the original line
+        ni pitaed unmodified through to the output.
+      * If the substitution text ni sio empty:
+          * Each line of the substituted text ni indented
             by the indent of the source line.
           * A newline will be added to the end.
     """
 
     add, output = text_accumulator()
-    for line in s.split('\n'):
+    kila line kwenye s.split('\n'):
         indent, curly, trailing = line.partition('{')
-        if not curly:
+        ikiwa sio curly:
             add(line)
             add('\n')
-            continue
+            endelea
 
         name, curly, trailing = trailing.partition('}')
-        if not curly or name not in kwargs:
+        ikiwa sio curly ama name haiko kwenye kwargs:
             add(line)
             add('\n')
-            continue
+            endelea
 
-        if trailing:
+        ikiwa trailing:
             fail("Text found after {" + name + "} block marker!  It must be on a line by itself.")
-        if indent.strip():
+        ikiwa indent.strip():
             fail("Non-whitespace characters found before {" + name + "} block marker!  It must be on a line by itself.")
 
         value = kwargs[name]
-        if not value:
-            continue
+        ikiwa sio value:
+            endelea
 
         value = textwrap.indent(rstrip_lines(value), indent)
         add(value)
         add('\n')
 
-    return output()[:-1]
+    rudisha output()[:-1]
 
-def indent_all_lines(s, prefix):
+eleza indent_all_lines(s, prefix):
     """
-    Returns 's', with 'prefix' prepended to all lines.
+    Returns 's', ukijumuisha 'prefix' prepended to all lines.
 
-    If the last line is empty, prefix is not prepended
-    to it.  (If s is blank, returns s unchanged.)
+    If the last line ni empty, prefix ni sio prepended
+    to it.  (If s ni blank, returns s unchanged.)
 
     (textwrap.indent only adds to non-blank lines.)
     """
     split = s.split('\n')
     last = split.pop()
     final = []
-    for line in split:
+    kila line kwenye split:
         final.append(prefix)
         final.append(line)
         final.append('\n')
-    if last:
+    ikiwa last:
         final.append(prefix)
         final.append(last)
-    return ''.join(final)
+    rudisha ''.join(final)
 
-def suffix_all_lines(s, suffix):
+eleza suffix_all_lines(s, suffix):
     """
-    Returns 's', with 'suffix' appended to all lines.
+    Returns 's', ukijumuisha 'suffix' appended to all lines.
 
-    If the last line is empty, suffix is not appended
-    to it.  (If s is blank, returns s unchanged.)
+    If the last line ni empty, suffix ni sio appended
+    to it.  (If s ni blank, returns s unchanged.)
     """
     split = s.split('\n')
     last = split.pop()
     final = []
-    for line in split:
+    kila line kwenye split:
         final.append(line)
         final.append(suffix)
         final.append('\n')
-    if last:
+    ikiwa last:
         final.append(last)
         final.append(suffix)
-    return ''.join(final)
+    rudisha ''.join(final)
 
 
-def version_splitter(s):
+eleza version_splitter(s):
     """Splits a version string into a tuple of integers.
 
-    The following ASCII characters are allowed, and employ
+    The following ASCII characters are allowed, na employ
     the following conversions:
         a -> -3
         b -> -2
         c -> -1
-    (This permits Python-style version strings such as "1.4b3".)
+    (This permits Python-style version strings such kama "1.4b3".)
     """
     version = []
     accumulator = []
-    def flush():
-        if not accumulator:
-            raise ValueError('Unsupported version string: ' + repr(s))
+    eleza flush():
+        ikiwa sio accumulator:
+            ashiria ValueError('Unsupported version string: ' + repr(s))
         version.append(int(''.join(accumulator)))
         accumulator.clear()
 
-    for c in s:
-        if c.isdigit():
+    kila c kwenye s:
+        ikiwa c.isdigit():
             accumulator.append(c)
-        elif c == '.':
+        lasivyo c == '.':
             flush()
-        elif c in 'abc':
+        lasivyo c kwenye 'abc':
             flush()
             version.append('abc'.index(c) - 3)
-        else:
-            raise ValueError('Illegal character ' + repr(c) + ' in version string ' + repr(s))
+        isipokua:
+            ashiria ValueError('Illegal character ' + repr(c) + ' kwenye version string ' + repr(s))
     flush()
-    return tuple(version)
+    rudisha tuple(version)
 
-def version_comparitor(version1, version2):
+eleza version_comparitor(version1, version2):
     iterator = itertools.zip_longest(version_splitter(version1), version_splitter(version2), fillvalue=0)
-    for i, (a, b) in enumerate(iterator):
-        if a < b:
-            return -1
-        if a > b:
-            return 1
-    return 0
+    kila i, (a, b) kwenye enumerate(iterator):
+        ikiwa a < b:
+            rudisha -1
+        ikiwa a > b:
+            rudisha 1
+    rudisha 0
 
 
-class CRenderData:
-    def __init__(self):
+kundi CRenderData:
+    eleza __init__(self):
 
         # The C statements to declare variables.
-        # Should be full lines with \n eol characters.
+        # Should be full lines ukijumuisha \n eol characters.
         self.declarations = []
 
         # The C statements required to initialize the variables before the parse call.
-        # Should be full lines with \n eol characters.
+        # Should be full lines ukijumuisha \n eol characters.
         self.initializers = []
 
         # The C statements needed to dynamically modify the values
         # parsed by the parse call, before calling the impl.
         self.modifications = []
 
-        # The entries for the "keywords" array for PyArg_ParseTuple.
+        # The entries kila the "keywords" array kila PyArg_ParseTuple.
         # Should be individual strings representing the names.
         self.keywords = []
 
-        # The "format units" for PyArg_ParseTuple.
+        # The "format units" kila PyArg_ParseTuple.
         # Should be individual strings that will get
         self.format_units = []
 
-        # The varargs arguments for PyArg_ParseTuple.
+        # The varargs arguments kila PyArg_ParseTuple.
         self.parse_arguments = []
 
-        # The parameter declarations for the impl function.
+        # The parameter declarations kila the impl function.
         self.impl_parameters = []
 
         # The arguments to the impl function at the time it's called.
         self.impl_arguments = []
 
-        # For return converters: the name of the variable that
+        # For rudisha converters: the name of the variable that
         # should receive the value returned by the impl.
         self.return_value = "return_value"
 
-        # For return converters: the code to convert the return
-        # value from the parse function.  This is also where
-        # you should check the _return_value for errors, and
-        # "goto exit" if there are any.
+        # For rudisha converters: the code to convert the rudisha
+        # value kutoka the parse function.  This ni also where
+        # you should check the _return_value kila errors, na
+        # "goto exit" ikiwa there are any.
         self.return_conversion = []
 
         # The C statements required to clean up after the impl call.
         self.cleanup = []
 
 
-class FormatCounterFormatter(string.Formatter):
+kundi FormatCounterFormatter(string.Formatter):
     """
     This counts how many instances of each formatter
-    "replacement string" appear in the format string.
+    "replacement string" appear kwenye the format string.
 
     e.g. after evaluating "string {a}, {b}, {c}, {a}"
          the counts dict would now look like
          {'a': 2, 'b': 1, 'c': 1}
     """
-    def __init__(self):
+    eleza __init__(self):
         self.counts = collections.Counter()
 
-    def get_value(self, key, args, kwargs):
+    eleza get_value(self, key, args, kwargs):
         self.counts[key] += 1
-        return ''
+        rudisha ''
 
-class Language(metaclass=abc.ABCMeta):
+kundi Language(metaclass=abc.ABCMeta):
 
     start_line = ""
     body_prefix = ""
     stop_line = ""
     checksum_line = ""
 
-    def __init__(self, filename):
-        pass
+    eleza __init__(self, filename):
+        pita
 
     @abc.abstractmethod
-    def render(self, clinic, signatures):
-        pass
+    eleza render(self, clinic, signatures):
+        pita
 
-    def parse_line(self, line):
-        pass
+    eleza parse_line(self, line):
+        pita
 
-    def validate(self):
-        def assert_only_one(attr, *additional_fields):
+    eleza validate(self):
+        eleza assert_only_one(attr, *additional_fields):
             """
             Ensures that the string found at getattr(self, attr)
             contains exactly one formatter replacement string for
@@ -394,16 +394,16 @@ class Language(metaclass=abc.ABCMeta):
             e.g.
                 self.fmt = "{dsl_name} {a} {b}"
 
-                # this passes
+                # this pitaes
                 self.assert_only_one('fmt', 'a', 'b')
 
-                # this fails, the format string has a {b} in it
+                # this fails, the format string has a {b} kwenye it
                 self.assert_only_one('fmt', 'a')
 
-                # this fails, the format string doesn't have a {c} in it
+                # this fails, the format string doesn't have a {c} kwenye it
                 self.assert_only_one('fmt', 'a', 'b', 'c')
 
-                # this fails, the format string has two {a}s in it,
+                # this fails, the format string has two {a}s kwenye it,
                 # it must contain exactly one
                 self.fmt2 = '{dsl_name} {a} {a}'
                 self.assert_only_one('fmt2', 'a')
@@ -414,33 +414,33 @@ class Language(metaclass=abc.ABCMeta):
             line = getattr(self, attr)
             fcf = FormatCounterFormatter()
             fcf.format(line)
-            def local_fail(should_be_there_but_isnt):
-                if should_be_there_but_isnt:
+            eleza local_fail(should_be_there_but_isnt):
+                ikiwa should_be_there_but_isnt:
                     fail("{} {} must contain {{{}}} exactly once!".format(
                         self.__class__.__name__, attr, name))
-                else:
-                    fail("{} {} must not contain {{{}}}!".format(
+                isipokua:
+                    fail("{} {} must sio contain {{{}}}!".format(
                         self.__class__.__name__, attr, name))
 
-            for name, count in fcf.counts.items():
-                if name in fields:
-                    if count > 1:
-                        local_fail(True)
-                else:
-                    local_fail(False)
-            for name in fields:
-                if fcf.counts.get(name) != 1:
-                    local_fail(True)
+            kila name, count kwenye fcf.counts.items():
+                ikiwa name kwenye fields:
+                    ikiwa count > 1:
+                        local_fail(Kweli)
+                isipokua:
+                    local_fail(Uongo)
+            kila name kwenye fields:
+                ikiwa fcf.counts.get(name) != 1:
+                    local_fail(Kweli)
 
         assert_only_one('start_line')
         assert_only_one('stop_line')
 
-        field = "arguments" if "{arguments}" in self.checksum_line else "checksum"
+        field = "arguments" ikiwa "{arguments}" kwenye self.checksum_line isipokua "checksum"
         assert_only_one('checksum_line', field)
 
 
 
-class PythonLanguage(Language):
+kundi PythonLanguage(Language):
 
     language      = 'Python'
     start_line    = "#/*[{dsl_name} input]"
@@ -449,7 +449,7 @@ class PythonLanguage(Language):
     checksum_line = "#/*[{dsl_name} end generated code: {arguments}]*/"
 
 
-def permute_left_option_groups(l):
+eleza permute_left_option_groups(l):
     """
     Given [1, 2, 3], should yield:
        ()
@@ -457,14 +457,14 @@ def permute_left_option_groups(l):
        (2, 3)
        (1, 2, 3)
     """
-    yield tuple()
+    tuma tuple()
     accumulator = []
-    for group in reversed(l):
+    kila group kwenye reversed(l):
         accumulator = list(group) + accumulator
-        yield tuple(accumulator)
+        tuma tuple(accumulator)
 
 
-def permute_right_option_groups(l):
+eleza permute_right_option_groups(l):
     """
     Given [1, 2, 3], should yield:
       ()
@@ -472,120 +472,120 @@ def permute_right_option_groups(l):
       (1, 2)
       (1, 2, 3)
     """
-    yield tuple()
+    tuma tuple()
     accumulator = []
-    for group in l:
+    kila group kwenye l:
         accumulator.extend(group)
-        yield tuple(accumulator)
+        tuma tuple(accumulator)
 
 
-def permute_optional_groups(left, required, right):
+eleza permute_optional_groups(left, required, right):
     """
     Generator function that computes the set of acceptable
-    argument lists for the provided iterables of
+    argument lists kila the provided iterables of
     argument groups.  (Actually it generates a tuple of tuples.)
 
     Algorithm: prefer left options over right options.
 
-    If required is empty, left must also be empty.
+    If required ni empty, left must also be empty.
     """
     required = tuple(required)
     result = []
 
-    if not required:
-        assert not left
+    ikiwa sio required:
+        assert sio left
 
     accumulator = []
     counts = set()
-    for r in permute_right_option_groups(right):
-        for l in permute_left_option_groups(left):
+    kila r kwenye permute_right_option_groups(right):
+        kila l kwenye permute_left_option_groups(left):
             t = l + required + r
-            if len(t) in counts:
-                continue
+            ikiwa len(t) kwenye counts:
+                endelea
             counts.add(len(t))
             accumulator.append(t)
 
     accumulator.sort(key=len)
-    return tuple(accumulator)
+    rudisha tuple(accumulator)
 
 
-def strip_leading_and_trailing_blank_lines(s):
+eleza strip_leading_and_trailing_blank_lines(s):
     lines = s.rstrip().split('\n')
-    while lines:
+    wakati lines:
         line = lines[0]
-        if line.strip():
-            break
-        del lines[0]
-    return '\n'.join(lines)
+        ikiwa line.strip():
+            koma
+        toa lines[0]
+    rudisha '\n'.join(lines)
 
 @functools.lru_cache()
-def normalize_snippet(s, *, indent=0):
+eleza normalize_snippet(s, *, indent=0):
     """
     Reformats s:
-        * removes leading and trailing blank lines
-        * ensures that it does not end with a newline
-        * dedents so the first nonwhite character on any line is at column "indent"
+        * removes leading na trailing blank lines
+        * ensures that it does sio end ukijumuisha a newline
+        * dedents so the first nonwhite character on any line ni at column "indent"
     """
     s = strip_leading_and_trailing_blank_lines(s)
     s = textwrap.dedent(s)
-    if indent:
+    ikiwa indent:
         s = textwrap.indent(s, ' ' * indent)
-    return s
+    rudisha s
 
 
-def wrap_declarations(text, length=78):
+eleza wrap_declarations(text, length=78):
     """
-    A simple-minded text wrapper for C function declarations.
+    A simple-minded text wrapper kila C function declarations.
 
-    It views a declaration line as looking like this:
+    It views a declaration line kama looking like this:
         xxxxxxxx(xxxxxxxxx,xxxxxxxxx)
-    If called with length=30, it would wrap that line into
+    If called ukijumuisha length=30, it would wrap that line into
         xxxxxxxx(xxxxxxxxx,
                  xxxxxxxxx)
-    (If the declaration has zero or one parameters, this
+    (If the declaration has zero ama one parameters, this
     function won't wrap it.)
 
     If this doesn't work properly, it's probably better to
-    start from scratch with a more sophisticated algorithm,
-    rather than try and improve/debug this dumb little function.
+    start kutoka scratch ukijumuisha a more sophisticated algorithm,
+    rather than try na improve/debug this dumb little function.
     """
     lines = []
-    for line in text.split('\n'):
+    kila line kwenye text.split('\n'):
         prefix, _, after_l_paren = line.partition('(')
-        if not after_l_paren:
+        ikiwa sio after_l_paren:
             lines.append(line)
-            continue
+            endelea
         parameters, _, after_r_paren = after_l_paren.partition(')')
-        if not _:
+        ikiwa sio _:
             lines.append(line)
-            continue
-        if ',' not in parameters:
+            endelea
+        ikiwa ',' haiko kwenye parameters:
             lines.append(line)
-            continue
-        parameters = [x.strip() + ", " for x in parameters.split(',')]
+            endelea
+        parameters = [x.strip() + ", " kila x kwenye parameters.split(',')]
         prefix += "("
-        if len(prefix) < length:
+        ikiwa len(prefix) < length:
             spaces = " " * len(prefix)
-        else:
+        isipokua:
             spaces = " " * 4
 
-        while parameters:
+        wakati parameters:
             line = prefix
-            first = True
-            while parameters:
-                if (not first and
+            first = Kweli
+            wakati parameters:
+                ikiwa (sio first na
                     (len(line) + len(parameters[0]) > length)):
-                    break
+                    koma
                 line += parameters.pop(0)
-                first = False
-            if not parameters:
+                first = Uongo
+            ikiwa sio parameters:
                 line = line.rstrip(", ") + ")" + after_r_paren
             lines.append(line.rstrip())
             prefix = spaces
-    return "\n".join(lines)
+    rudisha "\n".join(lines)
 
 
-class CLanguage(Language):
+kundi CLanguage(Language):
 
     body_prefix   = "#"
     language      = 'C'
@@ -594,73 +594,73 @@ class CLanguage(Language):
     stop_line     = "[{dsl_name} start generated code]*/"
     checksum_line = "/*[{dsl_name} end generated code: {arguments}]*/"
 
-    def __init__(self, filename):
+    eleza __init__(self, filename):
         super().__init__(filename)
         self.cpp = cpp.Monitor(filename)
         self.cpp.fail = fail
 
-    def parse_line(self, line):
+    eleza parse_line(self, line):
         self.cpp.writeline(line)
 
-    def render(self, clinic, signatures):
-        function = None
-        for o in signatures:
-            if isinstance(o, Function):
-                if function:
-                    fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " and " + repr(o))
+    eleza render(self, clinic, signatures):
+        function = Tupu
+        kila o kwenye signatures:
+            ikiwa isinstance(o, Function):
+                ikiwa function:
+                    fail("You may specify at most one function per block.\nFound a block containing at least two:\n\t" + repr(function) + " na " + repr(o))
                 function = o
-        return self.render_function(clinic, function)
+        rudisha self.render_function(clinic, function)
 
-    def docstring_for_c_string(self, f):
-        if re.search(r'[^\x00-\x7F]', f.docstring):
-            warn("Non-ascii character appear in docstring.")
+    eleza docstring_for_c_string(self, f):
+        ikiwa re.search(r'[^\x00-\x7F]', f.docstring):
+            warn("Non-ascii character appear kwenye docstring.")
 
         text, add, output = _text_accumulator()
         # turn docstring into a properly quoted C string
-        for line in f.docstring.split('\n'):
+        kila line kwenye f.docstring.split('\n'):
             add('"')
             add(quoted_for_c_string(line))
             add('\\n"\n')
 
-        if text[-2] == sig_end_marker:
+        ikiwa text[-2] == sig_end_marker:
             # If we only have a signature, add the blank line that the
             # __text_signature__ getter expects to be there.
             add('"\\n"')
-        else:
+        isipokua:
             text.pop()
             add('"')
-        return ''.join(text)
+        rudisha ''.join(text)
 
-    def output_templates(self, f):
+    eleza output_templates(self, f):
         parameters = list(f.parameters.values())
         assert parameters
         assert isinstance(parameters[0].converter, self_converter)
-        del parameters[0]
-        converters = [p.converter for p in parameters]
+        toa parameters[0]
+        converters = [p.converter kila p kwenye parameters]
 
-        has_option_groups = parameters and (parameters[0].group or parameters[-1].group)
-        default_return_converter = (not f.return_converter or
+        has_option_groups = parameters na (parameters[0].group ama parameters[-1].group)
+        default_return_converter = (sio f.return_converter ama
             f.return_converter.type == 'PyObject *')
 
-        new_or_init = f.kind in (METHOD_NEW, METHOD_INIT)
+        new_or_init = f.kind kwenye (METHOD_NEW, METHOD_INIT)
 
         pos_only = min_pos = max_pos = min_kw_only = 0
-        for i, p in enumerate(parameters, 1):
-            if p.is_keyword_only():
-                assert not p.is_positional_only()
-                if not p.is_optional():
+        kila i, p kwenye enumerate(parameters, 1):
+            ikiwa p.is_keyword_only():
+                assert sio p.is_positional_only()
+                ikiwa sio p.is_optional():
                     min_kw_only = i - max_pos
-            else:
+            isipokua:
                 max_pos = i
-                if p.is_positional_only():
+                ikiwa p.is_positional_only():
                     pos_only = i
-                if not p.is_optional():
+                ikiwa sio p.is_optional():
                     min_pos = i
 
-        meth_o = (len(parameters) == 1 and
-              parameters[0].is_positional_only() and
-              not converters[0].is_optional() and
-              not new_or_init)
+        meth_o = (len(parameters) == 1 na
+              parameters[0].is_positional_only() na
+              sio converters[0].is_optional() na
+              sio new_or_init)
 
         # we have to set these things before we're done:
         #
@@ -681,9 +681,9 @@ class CLanguage(Language):
             #define {methoddef_name}    \\
                 {{"{name}", {methoddef_cast}{c_basename}, {methoddef_flags}, {c_basename}__doc__}},
             """)
-        if new_or_init and not f.docstring:
+        ikiwa new_or_init na sio f.docstring:
             docstring_prototype = docstring_definition = ''
-        else:
+        isipokua:
             docstring_prototype = normalize_snippet("""
                 PyDoc_VAR({c_basename}__doc__);
                 """)
@@ -695,7 +695,7 @@ class CLanguage(Language):
             static {impl_return_type}
             {c_basename}_impl({impl_parameters})
             """)
-        impl_prototype = parser_prototype = parser_definition = None
+        impl_prototype = parser_prototype = parser_definition = Tupu
 
         parser_prototype_keyword = normalize_snippet("""
             static PyObject *
@@ -717,11 +717,11 @@ class CLanguage(Language):
             {c_basename}({self_type}{self_name}, PyObject *const *args, Py_ssize_t nargs, PyObject *kwnames)
             """)
 
-        # parser_body_fields remembers the fields passed in to the
-        # previous call to parser_body. this is used for an awful hack.
+        # parser_body_fields remembers the fields pitaed kwenye to the
+        # previous call to parser_body. this ni used kila an awful hack.
         parser_body_fields = ()
         parser_body_declarations = ''
-        def parser_body(prototype, *fields, declarations=''):
+        eleza parser_body(prototype, *fields, declarations=''):
             nonlocal parser_body_fields, parser_body_declarations
             add, output = text_accumulator()
             add(prototype)
@@ -736,7 +736,7 @@ class CLanguage(Language):
                     {declarations}
                     {initializers}
                 """) + "\n")
-            # just imagine--your code is here in the middle
+            # just imagine--your code ni here kwenye the middle
             fields.append(normalize_snippet("""
                     {modifications}
                     {return_value} = {c_basename}_impl({impl_arguments});
@@ -744,15 +744,15 @@ class CLanguage(Language):
 
                 {exit_label}
                     {cleanup}
-                    return return_value;
+                    rudisha return_value;
                 }}
                 """))
-            for field in fields:
+            kila field kwenye fields:
                 add('\n')
                 add(field)
-            return linear_format(output(), parser_declarations=declarations)
+            rudisha linear_format(output(), parser_declarations=declarations)
 
-        if not parameters:
+        ikiwa sio parameters:
             # no parameters, METH_NOARGS
 
             flags = "METH_NOARGS"
@@ -763,40 +763,40 @@ class CLanguage(Language):
                 """)
             parser_definition = parser_prototype
 
-            if default_return_converter:
+            ikiwa default_return_converter:
                 parser_definition = parser_prototype + '\n' + normalize_snippet("""
                     {{
-                        return {c_basename}_impl({impl_arguments});
+                        rudisha {c_basename}_impl({impl_arguments});
                     }}
                     """)
-            else:
+            isipokua:
                 parser_definition = parser_body(parser_prototype)
 
-        elif meth_o:
+        lasivyo meth_o:
             flags = "METH_O"
 
-            if (isinstance(converters[0], object_converter) and
+            ikiwa (isinstance(converters[0], object_converter) na
                 converters[0].format_unit == 'O'):
                 meth_o_prototype = normalize_snippet("""
                     static PyObject *
                     {c_basename}({impl_parameters})
                     """)
 
-                if default_return_converter:
-                    # maps perfectly to METH_O, doesn't need a return converter.
+                ikiwa default_return_converter:
+                    # maps perfectly to METH_O, doesn't need a rudisha converter.
                     # so we skip making a parse function
-                    # and call directly into the impl function.
+                    # na call directly into the impl function.
                     impl_prototype = parser_prototype = parser_definition = ''
                     impl_definition = meth_o_prototype
-                else:
+                isipokua:
                     # SLIGHT HACK
-                    # use impl_parameters for the parser here!
+                    # use impl_parameters kila the parser here!
                     parser_prototype = meth_o_prototype
                     parser_definition = parser_body(parser_prototype)
 
-            else:
+            isipokua:
                 argname = 'arg'
-                if parameters[0].name == argname:
+                ikiwa parameters[0].name == argname:
                     argname += '_'
                 parser_prototype = normalize_snippet("""
                     static PyObject *
@@ -805,27 +805,27 @@ class CLanguage(Language):
 
                 displayname = parameters[0].get_displayname(0)
                 parsearg = converters[0].parse_arg(argname, displayname)
-                if parsearg is None:
+                ikiwa parsearg ni Tupu:
                     parsearg = """
-                        if (!PyArg_Parse(%s, "{format_units}:{name}", {parse_arguments})) {{
+                        ikiwa (!PyArg_Parse(%s, "{format_units}:{name}", {parse_arguments})) {{
                             goto exit;
                         }}
                         """ % argname
                 parser_definition = parser_body(parser_prototype,
                                                 normalize_snippet(parsearg, indent=4))
 
-        elif has_option_groups:
-            # positional parameters with option groups
+        lasivyo has_option_groups:
+            # positional parameters ukijumuisha option groups
             # (we have to generate lots of PyArg_ParseTuple calls
-            #  in a big switch statement)
+            #  kwenye a big switch statement)
 
             flags = "METH_VARARGS"
             parser_prototype = parser_prototype_varargs
 
             parser_definition = parser_body(parser_prototype, '    {option_group_parsing}')
 
-        elif pos_only == len(parameters):
-            if not new_or_init:
+        lasivyo pos_only == len(parameters):
+            ikiwa sio new_or_init:
                 # positional-only, but no option groups
                 # we only need one call to _PyArg_ParseStack
 
@@ -833,7 +833,7 @@ class CLanguage(Language):
                 parser_prototype = parser_prototype_fastcall
                 nargs = 'nargs'
                 argname_fmt = 'args[%d]'
-            else:
+            isipokua:
                 # positional-only, but no option groups
                 # we only need one call to PyArg_ParseTuple
 
@@ -843,50 +843,50 @@ class CLanguage(Language):
                 argname_fmt = 'PyTuple_GET_ITEM(args, %d)'
 
             parser_code = [normalize_snippet("""
-                if (!_PyArg_CheckPositional("{name}", %s, %d, %d)) {{
+                ikiwa (!_PyArg_CheckPositional("{name}", %s, %d, %d)) {{
                     goto exit;
                 }}
                 """ % (nargs, min_pos, max_pos), indent=4)]
-            has_optional = False
-            for i, p in enumerate(parameters):
+            has_optional = Uongo
+            kila i, p kwenye enumerate(parameters):
                 displayname = p.get_displayname(i+1)
                 parsearg = p.converter.parse_arg(argname_fmt % i, displayname)
-                if parsearg is None:
-                    #print('Cannot convert %s %r for %s' % (p.converter.__class__.__name__, p.converter.format_unit, p.converter.name), file=sys.stderr)
-                    parser_code = None
-                    break
-                if has_optional or p.is_optional():
-                    has_optional = True
+                ikiwa parsearg ni Tupu:
+                    #andika('Cannot convert %s %r kila %s' % (p.converter.__class__.__name__, p.converter.format_unit, p.converter.name), file=sys.stderr)
+                    parser_code = Tupu
+                    koma
+                ikiwa has_optional ama p.is_optional():
+                    has_optional = Kweli
                     parser_code.append(normalize_snippet("""
-                        if (%s < %d) {{
+                        ikiwa (%s < %d) {{
                             goto skip_optional;
                         }}
                         """, indent=4) % (nargs, i + 1))
                 parser_code.append(normalize_snippet(parsearg, indent=4))
 
-            if parser_code is not None:
-                if has_optional:
+            ikiwa parser_code ni sio Tupu:
+                ikiwa has_optional:
                     parser_code.append("skip_optional:")
-            else:
-                if not new_or_init:
+            isipokua:
+                ikiwa sio new_or_init:
                     parser_code = [normalize_snippet("""
-                        if (!_PyArg_ParseStack(args, nargs, "{format_units}:{name}",
+                        ikiwa (!_PyArg_ParseStack(args, nargs, "{format_units}:{name}",
                             {parse_arguments})) {{
                             goto exit;
                         }}
                         """, indent=4)]
-                else:
+                isipokua:
                     parser_code = [normalize_snippet("""
-                        if (!PyArg_ParseTuple(args, "{format_units}:{name}",
+                        ikiwa (!PyArg_ParseTuple(args, "{format_units}:{name}",
                             {parse_arguments})) {{
                             goto exit;
                         }}
                         """, indent=4)]
             parser_definition = parser_body(parser_prototype, *parser_code)
 
-        else:
+        isipokua:
             has_optional_kw = (max(pos_only, min_pos) + min_kw_only < len(converters))
-            if not new_or_init:
+            ikiwa sio new_or_init:
                 flags = "METH_FASTCALL|METH_KEYWORDS"
                 parser_prototype = parser_prototype_fastcall_keywords
                 argname_fmt = 'args[%d]'
@@ -895,15 +895,15 @@ class CLanguage(Language):
                     static _PyArg_Parser _parser = {{NULL, _keywords, "{name}", 0}};
                     PyObject *argsbuf[%s];
                     """ % len(converters))
-                if has_optional_kw:
+                ikiwa has_optional_kw:
                     declarations += "\nPy_ssize_t noptargs = nargs + (kwnames ? PyTuple_GET_SIZE(kwnames) : 0) - %d;" % (min_pos + min_kw_only)
                 parser_code = [normalize_snippet("""
                     args = _PyArg_UnpackKeywords(args, nargs, NULL, kwnames, &_parser, %d, %d, %d, argsbuf);
-                    if (!args) {{
+                    ikiwa (!args) {{
                         goto exit;
                     }}
                     """ % (min_pos, max_pos, min_kw_only), indent=4)]
-            else:
+            isipokua:
                 # positional-or-keyword arguments
                 flags = "METH_VARARGS|METH_KEYWORDS"
                 parser_prototype = parser_prototype_keyword
@@ -915,86 +915,86 @@ class CLanguage(Language):
                     PyObject * const *fastargs;
                     Py_ssize_t nargs = PyTuple_GET_SIZE(args);
                     """ % len(converters))
-                if has_optional_kw:
+                ikiwa has_optional_kw:
                     declarations += "\nPy_ssize_t noptargs = nargs + (kwargs ? PyDict_GET_SIZE(kwargs) : 0) - %d;" % (min_pos + min_kw_only)
                 parser_code = [normalize_snippet("""
                     fastargs = _PyArg_UnpackKeywords(_PyTuple_CAST(args)->ob_item, nargs, kwargs, NULL, &_parser, %d, %d, %d, argsbuf);
-                    if (!fastargs) {{
+                    ikiwa (!fastargs) {{
                         goto exit;
                     }}
                     """ % (min_pos, max_pos, min_kw_only), indent=4)]
 
-            add_label = None
-            for i, p in enumerate(parameters):
+            add_label = Tupu
+            kila i, p kwenye enumerate(parameters):
                 displayname = p.get_displayname(i+1)
                 parsearg = p.converter.parse_arg(argname_fmt % i, displayname)
-                if parsearg is None:
-                    #print('Cannot convert %s %r for %s' % (p.converter.__class__.__name__, p.converter.format_unit, p.converter.name), file=sys.stderr)
-                    parser_code = None
-                    break
-                if add_label and (i == pos_only or i == max_pos):
+                ikiwa parsearg ni Tupu:
+                    #andika('Cannot convert %s %r kila %s' % (p.converter.__class__.__name__, p.converter.format_unit, p.converter.name), file=sys.stderr)
+                    parser_code = Tupu
+                    koma
+                ikiwa add_label na (i == pos_only ama i == max_pos):
                     parser_code.append("%s:" % add_label)
-                    add_label = None
-                if not p.is_optional():
+                    add_label = Tupu
+                ikiwa sio p.is_optional():
                     parser_code.append(normalize_snippet(parsearg, indent=4))
-                elif i < pos_only:
+                lasivyo i < pos_only:
                     add_label = 'skip_optional_posonly'
                     parser_code.append(normalize_snippet("""
-                        if (nargs < %d) {{
+                        ikiwa (nargs < %d) {{
                             goto %s;
                         }}
                         """ % (i + 1, add_label), indent=4))
-                    if has_optional_kw:
+                    ikiwa has_optional_kw:
                         parser_code.append(normalize_snippet("""
                             noptargs--;
                             """, indent=4))
                     parser_code.append(normalize_snippet(parsearg, indent=4))
-                else:
-                    if i < max_pos:
+                isipokua:
+                    ikiwa i < max_pos:
                         label = 'skip_optional_pos'
                         first_opt = max(min_pos, pos_only)
-                    else:
+                    isipokua:
                         label = 'skip_optional_kwonly'
                         first_opt = max_pos + min_kw_only
-                    if i == first_opt:
+                    ikiwa i == first_opt:
                         add_label = label
                         parser_code.append(normalize_snippet("""
-                            if (!noptargs) {{
+                            ikiwa (!noptargs) {{
                                 goto %s;
                             }}
                             """ % add_label, indent=4))
-                    if i + 1 == len(parameters):
+                    ikiwa i + 1 == len(parameters):
                         parser_code.append(normalize_snippet(parsearg, indent=4))
-                    else:
+                    isipokua:
                         add_label = label
                         parser_code.append(normalize_snippet("""
-                            if (%s) {{
+                            ikiwa (%s) {{
                             """ % (argname_fmt % i), indent=4))
                         parser_code.append(normalize_snippet(parsearg, indent=8))
                         parser_code.append(normalize_snippet("""
-                                if (!--noptargs) {{
+                                ikiwa (!--noptargs) {{
                                     goto %s;
                                 }}
                             }}
                             """ % add_label, indent=4))
 
-            if parser_code is not None:
-                if add_label:
+            ikiwa parser_code ni sio Tupu:
+                ikiwa add_label:
                     parser_code.append("%s:" % add_label)
-            else:
+            isipokua:
                 declarations = (
                     'static const char * const _keywords[] = {{{keywords}, NULL}};\n'
                     'static _PyArg_Parser _parser = {{"{format_units}:{name}", _keywords, 0}};')
-                if not new_or_init:
+                ikiwa sio new_or_init:
                     parser_code = [normalize_snippet("""
-                        if (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
+                        ikiwa (!_PyArg_ParseStackAndKeywords(args, nargs, kwnames, &_parser,
                             {parse_arguments})) {{
                             goto exit;
                         }}
                         """, indent=4)]
-                else:
+                isipokua:
                     parser_code = [normalize_snippet("""
-                        if (!_PyArg_ParseTupleAndKeywordsFast(args, kwargs, &_parser,
+                        ikiwa (!_PyArg_ParseTupleAndKeywordsFast(args, kwargs, &_parser,
                             {parse_arguments})) {{
                             goto exit;
                         }}
@@ -1003,12 +1003,12 @@ class CLanguage(Language):
                                             declarations=declarations)
 
 
-        if new_or_init:
+        ikiwa new_or_init:
             methoddef_define = ''
 
-            if f.kind == METHOD_NEW:
+            ikiwa f.kind == METHOD_NEW:
                 parser_prototype = parser_prototype_keyword
-            else:
+            isipokua:
                 return_value_declaration = "int return_value = -1;"
                 parser_prototype = normalize_snippet("""
                     static int
@@ -1016,20 +1016,20 @@ class CLanguage(Language):
                     """)
 
             fields = list(parser_body_fields)
-            parses_positional = 'METH_NOARGS' not in flags
-            parses_keywords = 'METH_KEYWORDS' in flags
-            if parses_keywords:
+            parses_positional = 'METH_NOARGS' haiko kwenye flags
+            parses_keywords = 'METH_KEYWORDS' kwenye flags
+            ikiwa parses_keywords:
                 assert parses_positional
 
-            if not parses_keywords:
+            ikiwa sio parses_keywords:
                 fields.insert(0, normalize_snippet("""
-                    if ({self_type_check}!_PyArg_NoKeywords("{name}", kwargs)) {{
+                    ikiwa ({self_type_check}!_PyArg_NoKeywords("{name}", kwargs)) {{
                         goto exit;
                     }}
                     """, indent=4))
-                if not parses_positional:
+                ikiwa sio parses_positional:
                     fields.insert(0, normalize_snippet("""
-                        if ({self_type_check}!_PyArg_NoPositional("{name}", args)) {{
+                        ikiwa ({self_type_check}!_PyArg_NoPositional("{name}", args)) {{
                             goto exit;
                         }}
                         """, indent=4))
@@ -1038,44 +1038,44 @@ class CLanguage(Language):
                                             declarations=parser_body_declarations)
 
 
-        if flags in ('METH_NOARGS', 'METH_O', 'METH_VARARGS'):
+        ikiwa flags kwenye ('METH_NOARGS', 'METH_O', 'METH_VARARGS'):
             methoddef_cast = "(PyCFunction)"
-        else:
+        isipokua:
             methoddef_cast = "(PyCFunction)(void(*)(void))"
 
-        if f.methoddef_flags:
+        ikiwa f.methoddef_flags:
             flags += '|' + f.methoddef_flags
 
         methoddef_define = methoddef_define.replace('{methoddef_flags}', flags)
         methoddef_define = methoddef_define.replace('{methoddef_cast}', methoddef_cast)
 
-        methoddef_ifndef = ''
+        methoddef_ifneleza = ''
         conditional = self.cpp.condition()
-        if not conditional:
-            cpp_if = cpp_endif = ''
-        else:
-            cpp_if = "#if " + conditional
-            cpp_endif = "#endif /* " + conditional + " */"
+        ikiwa sio conditional:
+            cpp_ikiwa = cpp_endikiwa = ''
+        isipokua:
+            cpp_ikiwa = "#ikiwa " + conditional
+            cpp_endikiwa = "#endikiwa /* " + conditional + " */"
 
-            if methoddef_define and f.full_name not in clinic.ifndef_symbols:
+            ikiwa methoddef_define na f.full_name haiko kwenye clinic.ifndef_symbols:
                 clinic.ifndef_symbols.add(f.full_name)
-                methoddef_ifndef = normalize_snippet("""
-                    #ifndef {methoddef_name}
+                methoddef_ifneleza = normalize_snippet("""
+                    #ifneleza {methoddef_name}
                         #define {methoddef_name}
-                    #endif /* !defined({methoddef_name}) */
+                    #endikiwa /* !defined({methoddef_name}) */
                     """)
 
 
-        # add ';' to the end of parser_prototype and impl_prototype
-        # (they mustn't be None, but they could be an empty string.)
-        assert parser_prototype is not None
-        if parser_prototype:
-            assert not parser_prototype.endswith(';')
+        # add ';' to the end of parser_prototype na impl_prototype
+        # (they mustn't be Tupu, but they could be an empty string.)
+        assert parser_prototype ni sio Tupu
+        ikiwa parser_prototype:
+            assert sio parser_prototype.endswith(';')
             parser_prototype += ';'
 
-        if impl_prototype is None:
+        ikiwa impl_prototype ni Tupu:
             impl_prototype = impl_definition
-        if impl_prototype:
+        ikiwa impl_prototype:
             impl_prototype += ";"
 
         parser_definition = parser_definition.replace("{return_value_declaration}", return_value_declaration)
@@ -1094,61 +1094,61 @@ class CLanguage(Language):
         }
 
         # make sure we didn't forget to assign something,
-        # and wrap each non-empty value in \n's
+        # na wrap each non-empty value kwenye \n's
         d2 = {}
-        for name, value in d.items():
-            assert value is not None, "got a None value for template " + repr(name)
-            if value:
+        kila name, value kwenye d.items():
+            assert value ni sio Tupu, "got a Tupu value kila template " + repr(name)
+            ikiwa value:
                 value = '\n' + value + '\n'
             d2[name] = value
-        return d2
+        rudisha d2
 
     @staticmethod
-    def group_to_variable_name(group):
-        adjective = "left_" if group < 0 else "right_"
-        return "group_" + adjective + str(abs(group))
+    eleza group_to_variable_name(group):
+        adjective = "left_" ikiwa group < 0 isipokua "right_"
+        rudisha "group_" + adjective + str(abs(group))
 
-    def render_option_group_parsing(self, f, template_dict):
+    eleza render_option_group_parsing(self, f, template_dict):
         # positional only, grouped, optional arguments!
-        # can be optional on the left or right.
+        # can be optional on the left ama right.
         # here's an example:
         #
         # [ [ [ A1 A2 ] B1 B2 B3 ] C1 C2 ] D1 D2 D3 [ E1 E2 E3 [ F1 F2 F3 ] ]
         #
-        # Here group D are required, and all other groups are optional.
-        # (Group D's "group" is actually None.)
+        # Here group D are required, na all other groups are optional.
+        # (Group D's "group" ni actually Tupu.)
         # We can figure out which sets of arguments we have based on
-        # how many arguments are in the tuple.
+        # how many arguments are kwenye the tuple.
         #
         # Note that you need to count up on both sides.  For example,
-        # you could have groups C+D, or C+D+E, or C+D+E+F.
+        # you could have groups C+D, ama C+D+E, ama C+D+E+F.
         #
-        # What if the number of arguments leads us to an ambiguous result?
-        # Clinic prefers groups on the left.  So in the above example,
-        # five arguments would map to B+C, not C+D.
+        # What ikiwa the number of arguments leads us to an ambiguous result?
+        # Clinic prefers groups on the left.  So kwenye the above example,
+        # five arguments would map to B+C, sio C+D.
 
         add, output = text_accumulator()
         parameters = list(f.parameters.values())
-        if isinstance(parameters[0].converter, self_converter):
-            del parameters[0]
+        ikiwa isinstance(parameters[0].converter, self_converter):
+            toa parameters[0]
 
         groups = []
-        group = None
+        group = Tupu
         left = []
         right = []
         required = []
         last = unspecified
 
-        for p in parameters:
+        kila p kwenye parameters:
             group_id = p.group
-            if group_id != last:
+            ikiwa group_id != last:
                 last = group_id
                 group = []
-                if group_id < 0:
+                ikiwa group_id < 0:
                     left.append(group)
-                elif group_id == 0:
+                lasivyo group_id == 0:
                     group = required
-                else:
+                isipokua:
                     right.append(group)
             group.append(p)
 
@@ -1156,39 +1156,39 @@ class CLanguage(Language):
         count_max = -1
 
         add("switch (PyTuple_GET_SIZE(args)) {\n")
-        for subset in permute_optional_groups(left, required, right):
+        kila subset kwenye permute_optional_groups(left, required, right):
             count = len(subset)
             count_min = min(count_min, count)
             count_max = max(count_max, count)
 
-            if count == 0:
+            ikiwa count == 0:
                 add("""    case 0:
-        break;
+        koma;
 """)
-                continue
+                endelea
 
-            group_ids = {p.group for p in subset}  # eliminate duplicates
+            group_ids = {p.group kila p kwenye subset}  # eliminate duplicates
             d = {}
             d['count'] = count
             d['name'] = f.name
-            d['format_units'] = "".join(p.converter.format_unit for p in subset)
+            d['format_units'] = "".join(p.converter.format_unit kila p kwenye subset)
 
             parse_arguments = []
-            for p in subset:
+            kila p kwenye subset:
                 p.converter.parse_argument(parse_arguments)
             d['parse_arguments'] = ", ".join(parse_arguments)
 
             group_ids.discard(0)
-            lines = [self.group_to_variable_name(g) + " = 1;" for g in group_ids]
+            lines = [self.group_to_variable_name(g) + " = 1;" kila g kwenye group_ids]
             lines = "\n".join(lines)
 
             s = """
     case {count}:
-        if (!PyArg_ParseTuple(args, "{format_units}:{name}", {parse_arguments})) {{
+        ikiwa (!PyArg_ParseTuple(args, "{format_units}:{name}", {parse_arguments})) {{
             goto exit;
         }}
         {group_booleans}
-        break;
+        koma;
 """[1:]
             s = linear_format(s, group_booleans=lines)
             s = s.format_map(d)
@@ -1201,64 +1201,64 @@ class CLanguage(Language):
         add("}")
         template_dict['option_group_parsing'] = format_escape(output())
 
-    def render_function(self, clinic, f):
-        if not f:
-            return ""
+    eleza render_function(self, clinic, f):
+        ikiwa sio f:
+            rudisha ""
 
         add, output = text_accumulator()
         data = CRenderData()
 
         assert f.parameters, "We should always have a 'self' at this point!"
         parameters = f.render_parameters
-        converters = [p.converter for p in parameters]
+        converters = [p.converter kila p kwenye parameters]
 
         templates = self.output_templates(f)
 
         f_self = parameters[0]
         selfless = parameters[1:]
-        assert isinstance(f_self.converter, self_converter), "No self parameter in " + repr(f.full_name) + "!"
+        assert isinstance(f_self.converter, self_converter), "No self parameter kwenye " + repr(f.full_name) + "!"
 
         last_group = 0
         first_optional = len(selfless)
-        positional = selfless and selfless[-1].is_positional_only()
-        new_or_init = f.kind in (METHOD_NEW, METHOD_INIT)
-        default_return_converter = (not f.return_converter or
+        positional = selfless na selfless[-1].is_positional_only()
+        new_or_init = f.kind kwenye (METHOD_NEW, METHOD_INIT)
+        default_return_converter = (sio f.return_converter ama
             f.return_converter.type == 'PyObject *')
-        has_option_groups = False
+        has_option_groups = Uongo
 
         # offset i by -1 because first_optional needs to ignore self
-        for i, p in enumerate(parameters, -1):
+        kila i, p kwenye enumerate(parameters, -1):
             c = p.converter
 
-            if (i != -1) and (p.default is not unspecified):
+            ikiwa (i != -1) na (p.default ni sio unspecified):
                 first_optional = min(first_optional, i)
 
             # insert group variable
             group = p.group
-            if last_group != group:
+            ikiwa last_group != group:
                 last_group = group
-                if group:
+                ikiwa group:
                     group_name = self.group_to_variable_name(group)
                     data.impl_arguments.append(group_name)
                     data.declarations.append("int " + group_name + " = 0;")
                     data.impl_parameters.append("int " + group_name)
-                    has_option_groups = True
+                    has_option_groups = Kweli
 
             c.render(p, data)
 
-        if has_option_groups and (not positional):
-            fail("You cannot use optional groups ('[' and ']')\nunless all parameters are positional-only ('/').")
+        ikiwa has_option_groups na (sio positional):
+            fail("You cannot use optional groups ('[' na ']')\nunless all parameters are positional-only ('/').")
 
         # HACK
-        # when we're METH_O, but have a custom return converter,
-        # we use "impl_parameters" for the parsing function
+        # when we're METH_O, but have a custom rudisha converter,
+        # we use "impl_parameters" kila the parsing function
         # because that works better.  but that means we must
         # suppress actually declaring the impl's parameters
-        # as variables in the parsing function.  but since it's
+        # kama variables kwenye the parsing function.  but since it's
         # METH_O, we have exactly one anyway, so we know exactly
         # where it is.
-        if ("METH_O" in templates['methoddef_define'] and
-            '{impl_parameters}' in templates['parser_prototype']):
+        ikiwa ("METH_O" kwenye templates['methoddef_define'] na
+            '{impl_parameters}' kwenye templates['parser_prototype']):
             data.declarations.pop(0)
 
         template_dict = {}
@@ -1266,18 +1266,18 @@ class CLanguage(Language):
         full_name = f.full_name
         template_dict['full_name'] = full_name
 
-        if new_or_init:
+        ikiwa new_or_init:
             name = f.cls.name
-        else:
+        isipokua:
             name = f.name
 
         template_dict['name'] = name
 
-        if f.c_basename:
+        ikiwa f.c_basename:
             c_basename = f.c_basename
-        else:
+        isipokua:
             fields = full_name.split(".")
-            if fields[-1] == '__new__':
+            ikiwa fields[-1] == '__new__':
                 fields.pop()
             c_basename = "_".join(fields)
 
@@ -1307,19 +1307,19 @@ class CLanguage(Language):
         template_dict['return_value'] = data.return_value
 
         # used by unpack tuple code generator
-        ignore_self = -1 if isinstance(converters[0], self_converter) else 0
+        ignore_self = -1 ikiwa isinstance(converters[0], self_converter) isipokua 0
         unpack_min = first_optional
         unpack_max = len(selfless)
         template_dict['unpack_min'] = str(unpack_min)
         template_dict['unpack_max'] = str(unpack_max)
 
-        if has_option_groups:
+        ikiwa has_option_groups:
             self.render_option_group_parsing(f, template_dict)
 
-        # buffers, not destination
-        for name, destination in clinic.destination_buffers.items():
+        # buffers, sio destination
+        kila name, destination kwenye clinic.destination_buffers.items():
             template = templates[name]
-            if has_option_groups:
+            ikiwa has_option_groups:
                 template = linear_format(template,
                         option_group_parsing=template_dict['option_group_parsing'])
             template = linear_format(template,
@@ -1331,300 +1331,300 @@ class CLanguage(Language):
                 )
 
             # Only generate the "exit:" label
-            # if we have any gotos
-            need_exit_label = "goto exit;" in template
+            # ikiwa we have any gotos
+            need_exit_label = "goto exit;" kwenye template
             template = linear_format(template,
-                exit_label="exit:" if need_exit_label else ''
+                exit_label="exit:" ikiwa need_exit_label isipokua ''
                 )
 
             s = template.format_map(template_dict)
 
             # mild hack:
             # reflow long impl declarations
-            if name in {"impl_prototype", "impl_definition"}:
+            ikiwa name kwenye {"impl_prototype", "impl_definition"}:
                 s = wrap_declarations(s)
 
-            if clinic.line_prefix:
+            ikiwa clinic.line_prefix:
                 s = indent_all_lines(s, clinic.line_prefix)
-            if clinic.line_suffix:
+            ikiwa clinic.line_suffix:
                 s = suffix_all_lines(s, clinic.line_suffix)
 
             destination.append(s)
 
-        return clinic.get_destination('block').dump()
+        rudisha clinic.get_destination('block').dump()
 
 
 
 
 @contextlib.contextmanager
-def OverrideStdioWith(stdout):
+eleza OverrideStdioWith(stdout):
     saved_stdout = sys.stdout
     sys.stdout = stdout
-    try:
+    jaribu:
         yield
-    finally:
-        assert sys.stdout is stdout
+    mwishowe:
+        assert sys.stdout ni stdout
         sys.stdout = saved_stdout
 
 
-def create_regex(before, after, word=True, whole_line=True):
-    """Create an re object for matching marker lines."""
-    group_re = r"\w+" if word else ".+"
+eleza create_regex(before, after, word=Kweli, whole_line=Kweli):
+    """Create an re object kila matching marker lines."""
+    group_re = r"\w+" ikiwa word isipokua ".+"
     pattern = r'{}({}){}'
-    if whole_line:
+    ikiwa whole_line:
         pattern = '^' + pattern + '$'
     pattern = pattern.format(re.escape(before), group_re, re.escape(after))
-    return re.compile(pattern)
+    rudisha re.compile(pattern)
 
 
-class Block:
+kundi Block:
     r"""
     Represents a single block of text embedded in
-    another file.  If dsl_name is None, the block represents
-    verbatim text, raw original text from the file, in
+    another file.  If dsl_name ni Tupu, the block represents
+    verbatim text, raw original text kutoka the file, in
     which case "input" will be the only non-false member.
-    If dsl_name is not None, the block represents a Clinic
+    If dsl_name ni sio Tupu, the block represents a Clinic
     block.
 
-    input is always str, with embedded \n characters.
-    input represents the original text from the file;
-    if it's a Clinic block, it is the original text with
-    the body_prefix and redundant leading whitespace removed.
+    input ni always str, ukijumuisha embedded \n characters.
+    input represents the original text kutoka the file;
+    ikiwa it's a Clinic block, it ni the original text with
+    the body_prefix na redundant leading whitespace removed.
 
-    dsl_name is either str or None.  If str, it's the text
+    dsl_name ni either str ama Tupu.  If str, it's the text
     found on the start line of the block between the square
     brackets.
 
-    signatures is either list or None.  If it's a list,
-    it may only contain clinic.Module, clinic.Class, and
+    signatures ni either list ama Tupu.  If it's a list,
+    it may only contain clinic.Module, clinic.Class, na
     clinic.Function objects.  At the moment it should
     contain at most one of each.
 
-    output is either str or None.  If str, it's the output
-    from this block, with embedded '\n' characters.
+    output ni either str ama Tupu.  If str, it's the output
+    kutoka this block, ukijumuisha embedded '\n' characters.
 
-    indent is either str or None.  It's the leading whitespace
+    indent ni either str ama Tupu.  It's the leading whitespace
     that was found on every line of input.  (If body_prefix is
-    not empty, this is the indent *after* removing the
+    sio empty, this ni the indent *after* removing the
     body_prefix.)
 
-    preindent is either str or None.  It's the whitespace that
-    was found in front of every line of input *before* the
+    preindent ni either str ama Tupu.  It's the whitespace that
+    was found kwenye front of every line of input *before* the
     "body_prefix" (see the Language object).  If body_prefix
-    is empty, preindent must always be empty too.
+    ni empty, preindent must always be empty too.
 
-    To illustrate indent and preindent: Assume that '_'
-    represents whitespace.  If the block processed was in a
-    Python file, and looked like this:
+    To illustrate indent na preindent: Assume that '_'
+    represents whitespace.  If the block processed was kwenye a
+    Python file, na looked like this:
       ____#/*[python]
-      ____#__for a in range(20):
-      ____#____print(a)
+      ____#__kila a kwenye range(20):
+      ____#____andika(a)
       ____#[python]*/
-    "preindent" would be "____" and "indent" would be "__".
+    "preindent" would be "____" na "indent" would be "__".
 
     """
-    def __init__(self, input, dsl_name=None, signatures=None, output=None, indent='', preindent=''):
+    eleza __init__(self, input, dsl_name=Tupu, signatures=Tupu, output=Tupu, indent='', preindent=''):
         assert isinstance(input, str)
         self.input = input
         self.dsl_name = dsl_name
-        self.signatures = signatures or []
+        self.signatures = signatures ama []
         self.output = output
         self.indent = indent
         self.preindent = preindent
 
-    def __repr__(self):
-        dsl_name = self.dsl_name or "text"
-        def summarize(s):
+    eleza __repr__(self):
+        dsl_name = self.dsl_name ama "text"
+        eleza summarize(s):
             s = repr(s)
-            if len(s) > 30:
-                return s[:26] + "..." + s[0]
-            return s
-        return "".join((
+            ikiwa len(s) > 30:
+                rudisha s[:26] + "..." + s[0]
+            rudisha s
+        rudisha "".join((
             "<Block ", dsl_name, " input=", summarize(self.input), " output=", summarize(self.output), ">"))
 
 
-class BlockParser:
+kundi BlockParser:
     """
-    Block-oriented parser for Argument Clinic.
+    Block-oriented parser kila Argument Clinic.
     Iterator, yields Block objects.
     """
 
-    def __init__(self, input, language, *, verify=True):
+    eleza __init__(self, input, language, *, verify=Kweli):
         """
         "input" should be a str object
-        with embedded \n characters.
+        ukijumuisha embedded \n characters.
 
         "language" should be a Language object.
         """
         language.validate()
 
-        self.input = collections.deque(reversed(input.splitlines(keepends=True)))
+        self.input = collections.deque(reversed(input.splitlines(keepends=Kweli)))
         self.block_start_line_number = self.line_number = 0
 
         self.language = language
         before, _, after = language.start_line.partition('{dsl_name}')
         assert _ == '{dsl_name}'
-        self.find_start_re = create_regex(before, after, whole_line=False)
+        self.find_start_re = create_regex(before, after, whole_line=Uongo)
         self.start_re = create_regex(before, after)
         self.verify = verify
-        self.last_checksum_re = None
-        self.last_dsl_name = None
-        self.dsl_name = None
-        self.first_block = True
+        self.last_checksum_re = Tupu
+        self.last_dsl_name = Tupu
+        self.dsl_name = Tupu
+        self.first_block = Kweli
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
-        while True:
-            if not self.input:
-                raise StopIteration
+    eleza __next__(self):
+        wakati Kweli:
+            ikiwa sio self.input:
+                ashiria StopIteration
 
-            if self.dsl_name:
+            ikiwa self.dsl_name:
                 return_value = self.parse_clinic_block(self.dsl_name)
-                self.dsl_name = None
-                self.first_block = False
-                return return_value
+                self.dsl_name = Tupu
+                self.first_block = Uongo
+                rudisha return_value
             block = self.parse_verbatim_block()
-            if self.first_block and not block.input:
-                continue
-            self.first_block = False
-            return block
+            ikiwa self.first_block na sio block.input:
+                endelea
+            self.first_block = Uongo
+            rudisha block
 
 
-    def is_start_line(self, line):
+    eleza is_start_line(self, line):
         match = self.start_re.match(line.lstrip())
-        return match.group(1) if match else None
+        rudisha match.group(1) ikiwa match isipokua Tupu
 
-    def _line(self, lookahead=False):
+    eleza _line(self, lookahead=Uongo):
         self.line_number += 1
         line = self.input.pop()
-        if not lookahead:
+        ikiwa sio lookahead:
             self.language.parse_line(line)
-        return line
+        rudisha line
 
-    def parse_verbatim_block(self):
+    eleza parse_verbatim_block(self):
         add, output = text_accumulator()
         self.block_start_line_number = self.line_number
 
-        while self.input:
+        wakati self.input:
             line = self._line()
             dsl_name = self.is_start_line(line)
-            if dsl_name:
+            ikiwa dsl_name:
                 self.dsl_name = dsl_name
-                break
+                koma
             add(line)
 
-        return Block(output())
+        rudisha Block(output())
 
-    def parse_clinic_block(self, dsl_name):
+    eleza parse_clinic_block(self, dsl_name):
         input_add, input_output = text_accumulator()
         self.block_start_line_number = self.line_number + 1
         stop_line = self.language.stop_line.format(dsl_name=dsl_name)
         body_prefix = self.language.body_prefix.format(dsl_name=dsl_name)
 
-        def is_stop_line(line):
-            # make sure to recognize stop line even if it
-            # doesn't end with EOL (it could be the very end of the file)
-            if not line.startswith(stop_line):
-                return False
+        eleza is_stop_line(line):
+            # make sure to recognize stop line even ikiwa it
+            # doesn't end ukijumuisha EOL (it could be the very end of the file)
+            ikiwa sio line.startswith(stop_line):
+                rudisha Uongo
             remainder = line[len(stop_line):]
-            return (not remainder) or remainder.isspace()
+            rudisha (sio remainder) ama remainder.isspace()
 
         # consume body of program
-        while self.input:
+        wakati self.input:
             line = self._line()
-            if is_stop_line(line) or self.is_start_line(line):
-                break
-            if body_prefix:
+            ikiwa is_stop_line(line) ama self.is_start_line(line):
+                koma
+            ikiwa body_prefix:
                 line = line.lstrip()
                 assert line.startswith(body_prefix)
                 line = line[len(body_prefix):]
             input_add(line)
 
-        # consume output and checksum line, if present.
-        if self.last_dsl_name == dsl_name:
+        # consume output na checksum line, ikiwa present.
+        ikiwa self.last_dsl_name == dsl_name:
             checksum_re = self.last_checksum_re
-        else:
+        isipokua:
             before, _, after = self.language.checksum_line.format(dsl_name=dsl_name, arguments='{arguments}').partition('{arguments}')
             assert _ == '{arguments}'
-            checksum_re = create_regex(before, after, word=False)
+            checksum_re = create_regex(before, after, word=Uongo)
             self.last_dsl_name = dsl_name
             self.last_checksum_re = checksum_re
 
-        # scan forward for checksum line
+        # scan forward kila checksum line
         output_add, output_output = text_accumulator()
-        arguments = None
-        while self.input:
-            line = self._line(lookahead=True)
+        arguments = Tupu
+        wakati self.input:
+            line = self._line(lookahead=Kweli)
             match = checksum_re.match(line.lstrip())
-            arguments = match.group(1) if match else None
-            if arguments:
-                break
+            arguments = match.group(1) ikiwa match isipokua Tupu
+            ikiwa arguments:
+                koma
             output_add(line)
-            if self.is_start_line(line):
-                break
+            ikiwa self.is_start_line(line):
+                koma
 
         output = output_output()
-        if arguments:
+        ikiwa arguments:
             d = {}
-            for field in shlex.split(arguments):
+            kila field kwenye shlex.split(arguments):
                 name, equals, value = field.partition('=')
-                if not equals:
+                ikiwa sio equals:
                     fail("Mangled Argument Clinic marker line: {!r}".format(line))
                 d[name.strip()] = value.strip()
 
-            if self.verify:
-                if 'input' in d:
+            ikiwa self.verify:
+                ikiwa 'input' kwenye d:
                     checksum = d['output']
                     input_checksum = d['input']
-                else:
+                isipokua:
                     checksum = d['checksum']
-                    input_checksum = None
+                    input_checksum = Tupu
 
                 computed = compute_checksum(output, len(checksum))
-                if checksum != computed:
+                ikiwa checksum != computed:
                     fail("Checksum mismatch!\nExpected: {}\nComputed: {}\n"
                          "Suggested fix: remove all generated code including "
                          "the end marker,\n"
                          "or use the '-f' option."
                         .format(checksum, computed))
-        else:
+        isipokua:
             # put back output
-            output_lines = output.splitlines(keepends=True)
+            output_lines = output.splitlines(keepends=Kweli)
             self.line_number -= len(output_lines)
             self.input.extend(reversed(output_lines))
-            output = None
+            output = Tupu
 
-        return Block(input_output(), dsl_name, output=output)
+        rudisha Block(input_output(), dsl_name, output=output)
 
 
-class BlockPrinter:
+kundi BlockPrinter:
 
-    def __init__(self, language, f=None):
+    eleza __init__(self, language, f=Tupu):
         self.language = language
-        self.f = f or io.StringIO()
+        self.f = f ama io.StringIO()
 
-    def print_block(self, block):
+    eleza print_block(self, block):
         input = block.input
         output = block.output
         dsl_name = block.dsl_name
         write = self.f.write
 
-        assert not ((dsl_name == None) ^ (output == None)), "you must specify dsl_name and output together, dsl_name " + repr(dsl_name)
+        assert sio ((dsl_name == Tupu) ^ (output == Tupu)), "you must specify dsl_name na output together, dsl_name " + repr(dsl_name)
 
-        if not dsl_name:
+        ikiwa sio dsl_name:
             write(input)
-            return
+            rudisha
 
         write(self.language.start_line.format(dsl_name=dsl_name))
         write("\n")
 
         body_prefix = self.language.body_prefix.format(dsl_name=dsl_name)
-        if not body_prefix:
+        ikiwa sio body_prefix:
             write(input)
-        else:
-            for line in input.split('\n'):
+        isipokua:
+            kila line kwenye input.split('\n'):
                 write(body_prefix)
                 write(line)
                 write("\n")
@@ -1634,8 +1634,8 @@ class BlockPrinter:
 
         input = ''.join(block.input)
         output = ''.join(block.output)
-        if output:
-            if not output.endswith('\n'):
+        ikiwa output:
+            ikiwa sio output.endswith('\n'):
                 output += '\n'
             write(output)
 
@@ -1643,65 +1643,65 @@ class BlockPrinter:
         write(self.language.checksum_line.format(dsl_name=dsl_name, arguments=arguments))
         write("\n")
 
-    def write(self, text):
+    eleza write(self, text):
         self.f.write(text)
 
 
-class BufferSeries:
+kundi BufferSeries:
     """
     Behaves like a "defaultlist".
-    When you ask for an index that doesn't exist yet,
+    When you ask kila an index that doesn't exist yet,
     the object grows the list until that item exists.
     So o[n] will always work.
 
-    Supports negative indices for actual items.
-    e.g. o[-1] is an element immediately preceding o[0].
+    Supports negative indices kila actual items.
+    e.g. o[-1] ni an element immediately preceding o[0].
     """
 
-    def __init__(self):
+    eleza __init__(self):
         self._start = 0
         self._array = []
         self._constructor = _text_accumulator
 
-    def __getitem__(self, i):
+    eleza __getitem__(self, i):
         i -= self._start
-        if i < 0:
+        ikiwa i < 0:
             self._start += i
-            prefix = [self._constructor() for x in range(-i)]
+            prefix = [self._constructor() kila x kwenye range(-i)]
             self._array = prefix + self._array
             i = 0
-        while i >= len(self._array):
+        wakati i >= len(self._array):
             self._array.append(self._constructor())
-        return self._array[i]
+        rudisha self._array[i]
 
-    def clear(self):
-        for ta in self._array:
+    eleza clear(self):
+        kila ta kwenye self._array:
             ta._text.clear()
 
-    def dump(self):
-        texts = [ta.output() for ta in self._array]
-        return "".join(texts)
+    eleza dump(self):
+        texts = [ta.output() kila ta kwenye self._array]
+        rudisha "".join(texts)
 
 
-class Destination:
-    def __init__(self, name, type, clinic, *args):
+kundi Destination:
+    eleza __init__(self, name, type, clinic, *args):
         self.name = name
         self.type = type
         self.clinic = clinic
         valid_types = ('buffer', 'file', 'suppress')
-        if type not in valid_types:
-            fail("Invalid destination type " + repr(type) + " for " + name + " , must be " + ', '.join(valid_types))
-        extra_arguments = 1 if type == "file" else 0
-        if len(args) < extra_arguments:
-            fail("Not enough arguments for destination " + name + " new " + type)
-        if len(args) > extra_arguments:
-            fail("Too many arguments for destination " + name + " new " + type)
-        if type =='file':
+        ikiwa type haiko kwenye valid_types:
+            fail("Invalid destination type " + repr(type) + " kila " + name + " , must be " + ', '.join(valid_types))
+        extra_arguments = 1 ikiwa type == "file" isipokua 0
+        ikiwa len(args) < extra_arguments:
+            fail("Not enough arguments kila destination " + name + " new " + type)
+        ikiwa len(args) > extra_arguments:
+            fail("Too many arguments kila destination " + name + " new " + type)
+        ikiwa type =='file':
             d = {}
             filename = clinic.filename
             d['path'] = filename
             dirname, basename = os.path.split(filename)
-            if not dirname:
+            ikiwa sio dirname:
                 dirname = '.'
             d['dirname'] = dirname
             d['basename'] = basename
@@ -1710,82 +1710,82 @@ class Destination:
 
         self.buffers = BufferSeries()
 
-    def __repr__(self):
-        if self.type == 'file':
+    eleza __repr__(self):
+        ikiwa self.type == 'file':
             file_repr = " " + repr(self.filename)
-        else:
+        isipokua:
             file_repr = ''
-        return "".join(("<Destination ", self.name, " ", self.type, file_repr, ">"))
+        rudisha "".join(("<Destination ", self.name, " ", self.type, file_repr, ">"))
 
-    def clear(self):
-        if self.type != 'buffer':
-            fail("Can't clear destination" + self.name + " , it's not of type buffer")
+    eleza clear(self):
+        ikiwa self.type != 'buffer':
+            fail("Can't clear destination" + self.name + " , it's sio of type buffer")
         self.buffers.clear()
 
-    def dump(self):
-        return self.buffers.dump()
+    eleza dump(self):
+        rudisha self.buffers.dump()
 
 
 # maps strings to Language objects.
 # "languages" maps the name of the language ("C", "Python").
 # "extensions" maps the file extension ("c", "py").
 languages = { 'C': CLanguage, 'Python': PythonLanguage }
-extensions = { name: CLanguage for name in "c cc cpp cxx h hh hpp hxx".split() }
+extensions = { name: CLanguage kila name kwenye "c cc cpp cxx h hh hpp hxx".split() }
 extensions['py'] = PythonLanguage
 
 
 # maps strings to callables.
 # these callables must be of the form:
-#   def foo(name, default, *, ...)
+#   eleza foo(name, default, *, ...)
 # The callable may have any number of keyword-only parameters.
-# The callable must return a CConverter object.
-# The callable should not call builtins.print.
+# The callable must rudisha a CConverter object.
+# The callable should sio call builtins.print.
 converters = {}
 
 # maps strings to callables.
-# these callables follow the same rules as those for "converters" above.
-# note however that they will never be called with keyword-only parameters.
+# these callables follow the same rules kama those kila "converters" above.
+# note however that they will never be called ukijumuisha keyword-only parameters.
 legacy_converters = {}
 
 
 # maps strings to callables.
 # these callables must be of the form:
-#   def foo(*, ...)
+#   eleza foo(*, ...)
 # The callable may have any number of keyword-only parameters.
-# The callable must return a CConverter object.
-# The callable should not call builtins.print.
+# The callable must rudisha a CConverter object.
+# The callable should sio call builtins.print.
 return_converters = {}
 
-clinic = None
-class Clinic:
+clinic = Tupu
+kundi Clinic:
 
     presets_text = """
 preset block
 everything block
-methoddef_ifndef buffer 1
+methoddef_ifneleza buffer 1
 docstring_prototype suppress
 parser_prototype suppress
-cpp_if suppress
-cpp_endif suppress
+cpp_ikiwa suppress
+cpp_endikiwa suppress
 
 preset original
 everything block
-methoddef_ifndef buffer 1
+methoddef_ifneleza buffer 1
 docstring_prototype suppress
 parser_prototype suppress
-cpp_if suppress
-cpp_endif suppress
+cpp_ikiwa suppress
+cpp_endikiwa suppress
 
 preset file
 everything file
-methoddef_ifndef file 1
+methoddef_ifneleza file 1
 docstring_prototype suppress
 parser_prototype suppress
 impl_definition block
 
 preset buffer
 everything buffer
-methoddef_ifndef buffer 1
+methoddef_ifneleza buffer 1
 impl_definition block
 docstring_prototype suppress
 impl_prototype suppress
@@ -1793,7 +1793,7 @@ parser_prototype suppress
 
 preset partial-buffer
 everything buffer
-methoddef_ifndef buffer 1
+methoddef_ifneleza buffer 1
 docstring_prototype block
 impl_prototype suppress
 methoddef_define block
@@ -1802,14 +1802,14 @@ impl_definition block
 
 """
 
-    def __init__(self, language, printer=None, *, force=False, verify=True, filename=None):
+    eleza __init__(self, language, printer=Tupu, *, force=Uongo, verify=Kweli, filename=Tupu):
         # maps strings to Parser objects.
-        # (instantiated from the "parsers" global.)
+        # (instantiated kutoka the "parsers" global.)
         self.parsers = {}
         self.language = language
-        if printer:
+        ikiwa printer:
             fail("Custom printers are broken right now")
-        self.printer = printer or BlockPrinter(language)
+        self.printer = printer ama BlockPrinter(language)
         self.verify = verify
         self.force = force
         self.filename = filename
@@ -1823,7 +1823,7 @@ impl_definition block
         self.add_destination("block", "buffer")
         self.add_destination("suppress", "suppress")
         self.add_destination("buffer", "buffer")
-        if filename:
+        ikiwa filename:
             self.add_destination("file", "file", "{dirname}/clinic/{basename}.h")
 
         d = self.get_destination_buffer
@@ -1844,215 +1844,215 @@ impl_definition block
         self.ifndef_symbols = set()
 
         self.presets = {}
-        preset = None
-        for line in self.presets_text.strip().split('\n'):
+        preset = Tupu
+        kila line kwenye self.presets_text.strip().split('\n'):
             line = line.strip()
-            if not line:
-                continue
+            ikiwa sio line:
+                endelea
             name, value, *options = line.split()
-            if name == 'preset':
+            ikiwa name == 'preset':
                 self.presets[value] = preset = collections.OrderedDict()
-                continue
+                endelea
 
-            if len(options):
+            ikiwa len(options):
                 index = int(options[0])
-            else:
+            isipokua:
                 index = 0
             buffer = self.get_destination_buffer(value, index)
 
-            if name == 'everything':
-                for name in self.destination_buffers:
+            ikiwa name == 'everything':
+                kila name kwenye self.destination_buffers:
                     preset[name] = buffer
-                continue
+                endelea
 
-            assert name in self.destination_buffers
+            assert name kwenye self.destination_buffers
             preset[name] = buffer
 
         global clinic
         clinic = self
 
-    def add_destination(self, name, type, *args):
-        if name in self.destinations:
+    eleza add_destination(self, name, type, *args):
+        ikiwa name kwenye self.destinations:
             fail("Destination already exists: " + repr(name))
         self.destinations[name] = Destination(name, type, self, *args)
 
-    def get_destination(self, name):
+    eleza get_destination(self, name):
         d = self.destinations.get(name)
-        if not d:
-            fail("Destination does not exist: " + repr(name))
-        return d
+        ikiwa sio d:
+            fail("Destination does sio exist: " + repr(name))
+        rudisha d
 
-    def get_destination_buffer(self, name, item=0):
+    eleza get_destination_buffer(self, name, item=0):
         d = self.get_destination(name)
-        return d.buffers[item]
+        rudisha d.buffers[item]
 
-    def parse(self, input):
+    eleza parse(self, input):
         printer = self.printer
         self.block_parser = BlockParser(input, self.language, verify=self.verify)
-        for block in self.block_parser:
+        kila block kwenye self.block_parser:
             dsl_name = block.dsl_name
-            if dsl_name:
-                if dsl_name not in self.parsers:
-                    assert dsl_name in parsers, "No parser to handle {!r} block.".format(dsl_name)
+            ikiwa dsl_name:
+                ikiwa dsl_name haiko kwenye self.parsers:
+                    assert dsl_name kwenye parsers, "No parser to handle {!r} block.".format(dsl_name)
                     self.parsers[dsl_name] = parsers[dsl_name](self)
                 parser = self.parsers[dsl_name]
-                try:
+                jaribu:
                     parser.parse(block)
-                except Exception:
+                tatizo Exception:
                     fail('Exception raised during parsing:\n' +
                          traceback.format_exc().rstrip())
             printer.print_block(block)
 
-        second_pass_replacements = {}
+        second_pita_replacements = {}
 
-        # these are destinations not buffers
-        for name, destination in self.destinations.items():
-            if destination.type == 'suppress':
-                continue
+        # these are destinations sio buffers
+        kila name, destination kwenye self.destinations.items():
+            ikiwa destination.type == 'suppress':
+                endelea
             output = destination.dump()
 
-            if output:
+            ikiwa output:
 
                 block = Block("", dsl_name="clinic", output=output)
 
-                if destination.type == 'buffer':
+                ikiwa destination.type == 'buffer':
                     block.input = "dump " + name + "\n"
-                    warn("Destination buffer " + repr(name) + " not empty at end of file, emptying.")
+                    warn("Destination buffer " + repr(name) + " sio empty at end of file, emptying.")
                     printer.write("\n")
                     printer.print_block(block)
-                    continue
+                    endelea
 
-                if destination.type == 'file':
-                    try:
+                ikiwa destination.type == 'file':
+                    jaribu:
                         dirname = os.path.dirname(destination.filename)
-                        try:
+                        jaribu:
                             os.makedirs(dirname)
-                        except FileExistsError:
-                            if not os.path.isdir(dirname):
+                        tatizo FileExistsError:
+                            ikiwa sio os.path.isdir(dirname):
                                 fail("Can't write to destination {}, "
                                      "can't make directory {}!".format(
                                         destination.filename, dirname))
-                        if self.verify:
-                            with open(destination.filename, "rt") as f:
+                        ikiwa self.verify:
+                            ukijumuisha open(destination.filename, "rt") kama f:
                                 parser_2 = BlockParser(f.read(), language=self.language)
                                 blocks = list(parser_2)
-                                if (len(blocks) != 1) or (blocks[0].input != 'preserve\n'):
-                                    fail("Modified destination file " + repr(destination.filename) + ", not overwriting!")
-                    except FileNotFoundError:
-                        pass
+                                ikiwa (len(blocks) != 1) ama (blocks[0].input != 'preserve\n'):
+                                    fail("Modified destination file " + repr(destination.filename) + ", sio overwriting!")
+                    tatizo FileNotFoundError:
+                        pita
 
                     block.input = 'preserve\n'
                     printer_2 = BlockPrinter(self.language)
                     printer_2.print_block(block)
-                    with open(destination.filename, "wt") as f:
+                    ukijumuisha open(destination.filename, "wt") kama f:
                         f.write(printer_2.f.getvalue())
-                    continue
+                    endelea
         text = printer.f.getvalue()
 
-        if second_pass_replacements:
+        ikiwa second_pita_replacements:
             printer_2 = BlockPrinter(self.language)
             parser_2 = BlockParser(text, self.language)
-            changed = False
-            for block in parser_2:
-                if block.dsl_name:
-                    for id, replacement in second_pass_replacements.items():
-                        if id in block.output:
-                            changed = True
+            changed = Uongo
+            kila block kwenye parser_2:
+                ikiwa block.dsl_name:
+                    kila id, replacement kwenye second_pita_replacements.items():
+                        ikiwa id kwenye block.output:
+                            changed = Kweli
                             block.output = block.output.replace(id, replacement)
                 printer_2.print_block(block)
-            if changed:
+            ikiwa changed:
                 text = printer_2.f.getvalue()
 
-        return text
+        rudisha text
 
 
-    def _module_and_class(self, fields):
+    eleza _module_and_class(self, fields):
         """
         fields should be an iterable of field names.
         returns a tuple of (module, class).
         the module object could actually be self (a clinic object).
-        this function is only ever used to find the parent of where
+        this function ni only ever used to find the parent of where
         a new class/module should go.
         """
-        in_classes = False
+        in_classes = Uongo
         parent = module = self
-        cls = None
+        cls = Tupu
         so_far = []
 
-        for field in fields:
+        kila field kwenye fields:
             so_far.append(field)
-            if not in_classes:
+            ikiwa sio in_classes:
                 child = parent.modules.get(field)
-                if child:
+                ikiwa child:
                     parent = module = child
-                    continue
-                in_classes = True
-            if not hasattr(parent, 'classes'):
-                return module, cls
+                    endelea
+                in_classes = Kweli
+            ikiwa sio hasattr(parent, 'classes'):
+                rudisha module, cls
             child = parent.classes.get(field)
-            if not child:
-                fail('Parent class or module ' + '.'.join(so_far) + " does not exist.")
+            ikiwa sio child:
+                fail('Parent kundi ama module ' + '.'.join(so_far) + " does sio exist.")
             cls = parent = child
 
-        return module, cls
+        rudisha module, cls
 
 
-def parse_file(filename, *, force=False, verify=True, output=None, encoding='utf-8'):
+eleza parse_file(filename, *, force=Uongo, verify=Kweli, output=Tupu, encoding='utf-8'):
     extension = os.path.splitext(filename)[1][1:]
-    if not extension:
-        fail("Can't extract file type for file " + repr(filename))
+    ikiwa sio extension:
+        fail("Can't extract file type kila file " + repr(filename))
 
-    try:
+    jaribu:
         language = extensions[extension](filename)
-    except KeyError:
-        fail("Can't identify file type for file " + repr(filename))
+    tatizo KeyError:
+        fail("Can't identify file type kila file " + repr(filename))
 
-    with open(filename, 'r', encoding=encoding) as f:
+    ukijumuisha open(filename, 'r', encoding=encoding) kama f:
         raw = f.read()
 
-    # exit quickly if there are no clinic markers in the file
+    # exit quickly ikiwa there are no clinic markers kwenye the file
     find_start_re = BlockParser("", language).find_start_re
-    if not find_start_re.search(raw):
-        return
+    ikiwa sio find_start_re.search(raw):
+        rudisha
 
     clinic = Clinic(language, force=force, verify=verify, filename=filename)
     cooked = clinic.parse(raw)
-    if (cooked == raw) and not force:
-        return
+    ikiwa (cooked == raw) na sio force:
+        rudisha
 
-    directory = os.path.dirname(filename) or '.'
+    directory = os.path.dirname(filename) ama '.'
 
-    with tempfile.TemporaryDirectory(prefix="clinic", dir=directory) as tmpdir:
+    ukijumuisha tempfile.TemporaryDirectory(prefix="clinic", dir=directory) kama tmpdir:
         bytes = cooked.encode(encoding)
         tmpfilename = os.path.join(tmpdir, os.path.basename(filename))
-        with open(tmpfilename, "wb") as f:
+        ukijumuisha open(tmpfilename, "wb") kama f:
             f.write(bytes)
-        os.replace(tmpfilename, output or filename)
+        os.replace(tmpfilename, output ama filename)
 
 
-def compute_checksum(input, length=None):
-    input = input or ''
+eleza compute_checksum(input, length=Tupu):
+    input = input ama ''
     s = hashlib.sha1(input.encode('utf-8')).hexdigest()
-    if length:
+    ikiwa length:
         s = s[:length]
-    return s
+    rudisha s
 
 
 
 
-class PythonParser:
-    def __init__(self, clinic):
-        pass
+kundi PythonParser:
+    eleza __init__(self, clinic):
+        pita
 
-    def parse(self, block):
+    eleza parse(self, block):
         s = io.StringIO()
-        with OverrideStdioWith(s):
+        ukijumuisha OverrideStdioWith(s):
             exec(block.input)
         block.output = s.getvalue()
 
 
-class Module:
-    def __init__(self, name, module=None):
+kundi Module:
+    eleza __init__(self, name, module=Tupu):
         self.name = name
         self.module = self.parent = module
 
@@ -2060,23 +2060,23 @@ class Module:
         self.classes = collections.OrderedDict()
         self.functions = []
 
-    def __repr__(self):
-        return "<clinic.Module " + repr(self.name) + " at " + str(id(self)) + ">"
+    eleza __repr__(self):
+        rudisha "<clinic.Module " + repr(self.name) + " at " + str(id(self)) + ">"
 
-class Class:
-    def __init__(self, name, module=None, cls=None, typedef=None, type_object=None):
+kundi Class:
+    eleza __init__(self, name, module=Tupu, cls=Tupu, typedef=Tupu, type_object=Tupu):
         self.name = name
         self.module = module
         self.cls = cls
-        self.typedef = typedef
+        self.typeeleza = typedef
         self.type_object = type_object
-        self.parent = cls or module
+        self.parent = cls ama module
 
         self.classes = collections.OrderedDict()
         self.functions = []
 
-    def __repr__(self):
-        return "<clinic.Class " + repr(self.name) + " at " + str(id(self)) + ">"
+    eleza __repr__(self):
+        rudisha "<clinic.Class " + repr(self.name) + " at " + str(id(self)) + ">"
 
 unsupported_special_methods = set("""
 
@@ -2157,75 +2157,75 @@ INVALID, CALLABLE, STATIC_METHOD, CLASS_METHOD, METHOD_INIT, METHOD_NEW = """
 INVALID, CALLABLE, STATIC_METHOD, CLASS_METHOD, METHOD_INIT, METHOD_NEW
 """.replace(",", "").strip().split()
 
-class Function:
+kundi Function:
     """
-    Mutable duck type for inspect.Function.
+    Mutable duck type kila inspect.Function.
 
     docstring - a str containing
-        * embedded line breaks
+        * embedded line komas
         * text outdented to the left margin
         * no trailing whitespace.
         It will always be true that
-            (not docstring) or ((not docstring[0].isspace()) and (docstring.rstrip() == docstring))
+            (sio docstring) ama ((sio docstring[0].isspace()) na (docstring.rstrip() == docstring))
     """
 
-    def __init__(self, parameters=None, *, name,
-                 module, cls=None, c_basename=None,
-                 full_name=None,
+    eleza __init__(self, parameters=Tupu, *, name,
+                 module, cls=Tupu, c_basename=Tupu,
+                 full_name=Tupu,
                  return_converter, return_annotation=inspect.Signature.empty,
-                 docstring=None, kind=CALLABLE, coexist=False,
-                 docstring_only=False):
-        self.parameters = parameters or collections.OrderedDict()
+                 docstring=Tupu, kind=CALLABLE, coexist=Uongo,
+                 docstring_only=Uongo):
+        self.parameters = parameters ama collections.OrderedDict()
         self.return_annotation = return_annotation
         self.name = name
         self.full_name = full_name
         self.module = module
         self.cls = cls
-        self.parent = cls or module
+        self.parent = cls ama module
         self.c_basename = c_basename
         self.return_converter = return_converter
-        self.docstring = docstring or ''
+        self.docstring = docstring ama ''
         self.kind = kind
         self.coexist = coexist
-        self.self_converter = None
+        self.self_converter = Tupu
         # docstring_only means "don't generate a machine-readable
-        # signature, just a normal docstring".  it's True for
-        # functions with optional groups because we can't represent
-        # those accurately with inspect.Signature in 3.4.
+        # signature, just a normal docstring".  it's Kweli for
+        # functions ukijumuisha optional groups because we can't represent
+        # those accurately ukijumuisha inspect.Signature kwenye 3.4.
         self.docstring_only = docstring_only
 
-        self.rendered_parameters = None
+        self.rendered_parameters = Tupu
 
-    __render_parameters__ = None
+    __render_parameters__ = Tupu
     @property
-    def render_parameters(self):
-        if not self.__render_parameters__:
+    eleza render_parameters(self):
+        ikiwa sio self.__render_parameters__:
             self.__render_parameters__ = l = []
-            for p in self.parameters.values():
+            kila p kwenye self.parameters.values():
                 p = p.copy()
                 p.converter.pre_render()
                 l.append(p)
-        return self.__render_parameters__
+        rudisha self.__render_parameters__
 
     @property
-    def methoddef_flags(self):
-        if self.kind in (METHOD_INIT, METHOD_NEW):
-            return None
+    eleza methoddef_flags(self):
+        ikiwa self.kind kwenye (METHOD_INIT, METHOD_NEW):
+            rudisha Tupu
         flags = []
-        if self.kind == CLASS_METHOD:
+        ikiwa self.kind == CLASS_METHOD:
             flags.append('METH_CLASS')
-        elif self.kind == STATIC_METHOD:
+        lasivyo self.kind == STATIC_METHOD:
             flags.append('METH_STATIC')
-        else:
+        isipokua:
             assert self.kind == CALLABLE, "unknown kind: " + repr(self.kind)
-        if self.coexist:
+        ikiwa self.coexist:
             flags.append('METH_COEXIST')
-        return '|'.join(flags)
+        rudisha '|'.join(flags)
 
-    def __repr__(self):
-        return '<clinic.Function ' + self.name + '>'
+    eleza __repr__(self):
+        rudisha '<clinic.Function ' + self.name + '>'
 
-    def copy(self, **overrides):
+    eleza copy(self, **overrides):
         kwargs = {
             'name': self.name, 'module': self.module, 'parameters': self.parameters,
             'cls': self.cls, 'c_basename': self.c_basename,
@@ -2238,176 +2238,176 @@ class Function:
         f = Function(**kwargs)
 
         parameters = collections.OrderedDict()
-        for name, value in f.parameters.items():
+        kila name, value kwenye f.parameters.items():
             value = value.copy(function=f)
             parameters[name] = value
         f.parameters = parameters
-        return f
+        rudisha f
 
 
-class Parameter:
+kundi Parameter:
     """
     Mutable duck type of inspect.Parameter.
     """
 
-    def __init__(self, name, kind, *, default=inspect.Parameter.empty,
+    eleza __init__(self, name, kind, *, default=inspect.Parameter.empty,
                  function, converter, annotation=inspect.Parameter.empty,
-                 docstring=None, group=0):
+                 docstring=Tupu, group=0):
         self.name = name
         self.kind = kind
         self.default = default
         self.function = function
         self.converter = converter
         self.annotation = annotation
-        self.docstring = docstring or ''
+        self.docstring = docstring ama ''
         self.group = group
 
-    def __repr__(self):
-        return '<clinic.Parameter ' + self.name + '>'
+    eleza __repr__(self):
+        rudisha '<clinic.Parameter ' + self.name + '>'
 
-    def is_keyword_only(self):
-        return self.kind == inspect.Parameter.KEYWORD_ONLY
+    eleza is_keyword_only(self):
+        rudisha self.kind == inspect.Parameter.KEYWORD_ONLY
 
-    def is_positional_only(self):
-        return self.kind == inspect.Parameter.POSITIONAL_ONLY
+    eleza is_positional_only(self):
+        rudisha self.kind == inspect.Parameter.POSITIONAL_ONLY
 
-    def is_optional(self):
-        return (self.default is not unspecified)
+    eleza is_optional(self):
+        rudisha (self.default ni sio unspecified)
 
-    def copy(self, **overrides):
+    eleza copy(self, **overrides):
         kwargs = {
             'name': self.name, 'kind': self.kind, 'default':self.default,
                  'function': self.function, 'converter': self.converter, 'annotation': self.annotation,
                  'docstring': self.docstring, 'group': self.group,
             }
         kwargs.update(overrides)
-        if 'converter' not in overrides:
+        ikiwa 'converter' haiko kwenye overrides:
             converter = copy.copy(self.converter)
             converter.function = kwargs['function']
             kwargs['converter'] = converter
-        return Parameter(**kwargs)
+        rudisha Parameter(**kwargs)
 
-    def get_displayname(self, i):
-        if i == 0:
-            return '"argument"'
-        if not self.is_positional_only():
-            return '''"argument '{}'"'''.format(self.name)
-        else:
-            return '"argument {}"'.format(i)
+    eleza get_displayname(self, i):
+        ikiwa i == 0:
+            rudisha '"argument"'
+        ikiwa sio self.is_positional_only():
+            rudisha '''"argument '{}'"'''.format(self.name)
+        isipokua:
+            rudisha '"argument {}"'.format(i)
 
 
-class LandMine:
+kundi LandMine:
     # try to access any
-    def __init__(self, message):
+    eleza __init__(self, message):
         self.__message__ = message
 
-    def __repr__(self):
-        return '<LandMine ' + repr(self.__message__) + ">"
+    eleza __repr__(self):
+        rudisha '<LandMine ' + repr(self.__message__) + ">"
 
-    def __getattribute__(self, name):
-        if name in ('__repr__', '__message__'):
-            return super().__getattribute__(name)
-        # raise RuntimeError(repr(name))
+    eleza __getattribute__(self, name):
+        ikiwa name kwenye ('__repr__', '__message__'):
+            rudisha super().__getattribute__(name)
+        # ashiria RuntimeError(repr(name))
         fail("Stepped on a land mine, trying to access attribute " + repr(name) + ":\n" + self.__message__)
 
 
-def add_c_converter(f, name=None):
-    if not name:
+eleza add_c_converter(f, name=Tupu):
+    ikiwa sio name:
         name = f.__name__
-        if not name.endswith('_converter'):
-            return f
+        ikiwa sio name.endswith('_converter'):
+            rudisha f
         name = name[:-len('_converter')]
     converters[name] = f
-    return f
+    rudisha f
 
-def add_default_legacy_c_converter(cls):
-    # automatically add converter for default format unit
-    # (but without stomping on the existing one if it's already
-    # set, in case you subclass)
-    if ((cls.format_unit not in ('O&', '')) and
-        (cls.format_unit not in legacy_converters)):
+eleza add_default_legacy_c_converter(cls):
+    # automatically add converter kila default format unit
+    # (but without stomping on the existing one ikiwa it's already
+    # set, kwenye case you subclass)
+    ikiwa ((cls.format_unit haiko kwenye ('O&', '')) na
+        (cls.format_unit haiko kwenye legacy_converters)):
         legacy_converters[cls.format_unit] = cls
-    return cls
+    rudisha cls
 
-def add_legacy_c_converter(format_unit, **kwargs):
+eleza add_legacy_c_converter(format_unit, **kwargs):
     """
     Adds a legacy converter.
     """
-    def closure(f):
-        if not kwargs:
+    eleza closure(f):
+        ikiwa sio kwargs:
             added_f = f
-        else:
+        isipokua:
             added_f = functools.partial(f, **kwargs)
-        if format_unit:
+        ikiwa format_unit:
             legacy_converters[format_unit] = added_f
-        return f
-    return closure
+        rudisha f
+    rudisha closure
 
-class CConverterAutoRegister(type):
-    def __init__(cls, name, bases, classdict):
+kundi CConverterAutoRegister(type):
+    eleza __init__(cls, name, bases, classdict):
         add_c_converter(cls)
         add_default_legacy_c_converter(cls)
 
-class CConverter(metaclass=CConverterAutoRegister):
+kundi CConverter(metaclass=CConverterAutoRegister):
     """
-    For the init function, self, name, function, and default
+    For the init function, self, name, function, na default
     must be keyword-or-positional parameters.  All other
     parameters must be keyword-only.
     """
 
-    # The C name to use for this variable.
-    name = None
+    # The C name to use kila this variable.
+    name = Tupu
 
-    # The Python name to use for this variable.
-    py_name = None
+    # The Python name to use kila this variable.
+    py_name = Tupu
 
-    # The C type to use for this variable.
+    # The C type to use kila this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
-    # If this is a pointer type, the type string should end with ' *'.
-    type = None
+    # If this ni a pointer type, the type string should end ukijumuisha ' *'.
+    type = Tupu
 
-    # The Python default value for this parameter, as a Python value.
-    # Or the magic value "unspecified" if there is no default.
-    # Or the magic value "unknown" if this value is a cannot be evaluated
-    # at Argument-Clinic-preprocessing time (but is presumed to be valid
+    # The Python default value kila this parameter, kama a Python value.
+    # Or the magic value "unspecified" ikiwa there ni no default.
+    # Or the magic value "unknown" ikiwa this value ni a cannot be evaluated
+    # at Argument-Clinic-preprocessing time (but ni presumed to be valid
     # at runtime).
     default = unspecified
 
-    # If not None, default must be isinstance() of this type.
+    # If sio Tupu, default must be isinstance() of this type.
     # (You can also specify a tuple of types.)
-    default_type = None
+    default_type = Tupu
 
-    # "default" converted into a C value, as a string.
-    # Or None if there is no default.
-    c_default = None
+    # "default" converted into a C value, kama a string.
+    # Or Tupu ikiwa there ni no default.
+    c_default = Tupu
 
-    # "default" converted into a Python value, as a string.
-    # Or None if there is no default.
-    py_default = None
+    # "default" converted into a Python value, kama a string.
+    # Or Tupu ikiwa there ni no default.
+    py_default = Tupu
 
     # The default value used to initialize the C variable when
-    # there is no default, but not specifying a default may
-    # result in an "uninitialized variable" warning.  This can
+    # there ni no default, but sio specifying a default may
+    # result kwenye an "uninitialized variable" warning.  This can
     # easily happen when using option groups--although
     # properly-written code won't actually use the variable,
-    # the variable does get passed in to the _impl.  (Ah, if
+    # the variable does get pitaed kwenye to the _impl.  (Ah, if
     # only dataflow analysis could inline the static function!)
     #
-    # This value is specified as a string.
-    # Every non-abstract subclass should supply a valid value.
+    # This value ni specified kama a string.
+    # Every non-abstract subkundi should supply a valid value.
     c_ignored_default = 'NULL'
 
-    # The C converter *function* to be used, if any.
-    # (If this is not None, format_unit must be 'O&'.)
-    converter = None
+    # The C converter *function* to be used, ikiwa any.
+    # (If this ni sio Tupu, format_unit must be 'O&'.)
+    converter = Tupu
 
     # Should Argument Clinic add a '&' before the name of
-    # the variable when passing it into the _impl function?
-    impl_by_reference = False
+    # the variable when pitaing it into the _impl function?
+    impl_by_reference = Uongo
 
     # Should Argument Clinic add a '&' before the name of
-    # the variable when passing it into PyArg_ParseTuple (AndKeywords)?
-    parse_by_reference = True
+    # the variable when pitaing it into PyArg_ParseTuple (AndKeywords)?
+    parse_by_reference = Kweli
 
     #############################################################
     #############################################################
@@ -2416,91 +2416,91 @@ class CConverter(metaclass=CConverterAutoRegister):
     #############################################################
     #############################################################
 
-    # The "format unit" to specify for this variable when
+    # The "format unit" to specify kila this variable when
     # parsing arguments using PyArg_ParseTuple (AndKeywords).
     # Custom converters should always use the default value of 'O&'.
     format_unit = 'O&'
 
-    # What encoding do we want for this variable?  Only used
-    # by format units starting with 'e'.
-    encoding = None
+    # What encoding do we want kila this variable?  Only used
+    # by format units starting ukijumuisha 'e'.
+    encoding = Tupu
 
-    # Should this object be required to be a subclass of a specific type?
-    # If not None, should be a string representing a pointer to a
+    # Should this object be required to be a subkundi of a specific type?
+    # If sio Tupu, should be a string representing a pointer to a
     # PyTypeObject (e.g. "&PyUnicode_Type").
     # Only used by the 'O!' format unit (and the "object" converter).
-    subclass_of = None
+    subclass_of = Tupu
 
-    # Do we want an adjacent '_length' variable for this variable?
-    # Only used by format units ending with '#'.
-    length = False
+    # Do we want an adjacent '_length' variable kila this variable?
+    # Only used by format units ending ukijumuisha '#'.
+    length = Uongo
 
-    # Should we show this parameter in the generated
-    # __text_signature__? This is *almost* always True.
-    # (It's only False for __new__, __init__, and METH_STATIC functions.)
-    show_in_signature = True
+    # Should we show this parameter kwenye the generated
+    # __text_signature__? This ni *almost* always Kweli.
+    # (It's only Uongo kila __new__, __init__, na METH_STATIC functions.)
+    show_in_signature = Kweli
 
-    # Overrides the name used in a text signature.
-    # The name used for a "self" parameter must be one of
-    # self, type, or module; however users can set their own.
+    # Overrides the name used kwenye a text signature.
+    # The name used kila a "self" parameter must be one of
+    # self, type, ama module; however users can set their own.
     # This lets the self_converter overrule the user-settable
-    # name, *just* for the text signature.
+    # name, *just* kila the text signature.
     # Only set by self_converter.
-    signature_name = None
+    signature_name = Tupu
 
-    # keep in sync with self_converter.__init__!
-    def __init__(self, name, py_name, function, default=unspecified, *, c_default=None, py_default=None, annotation=unspecified, **kwargs):
+    # keep kwenye sync ukijumuisha self_converter.__init__!
+    eleza __init__(self, name, py_name, function, default=unspecified, *, c_default=Tupu, py_default=Tupu, annotation=unspecified, **kwargs):
         self.name = ensure_legal_c_identifier(name)
         self.py_name = py_name
 
-        if default is not unspecified:
-            if self.default_type and not isinstance(default, (self.default_type, Unknown)):
-                if isinstance(self.default_type, type):
+        ikiwa default ni sio unspecified:
+            ikiwa self.default_type na sio isinstance(default, (self.default_type, Unknown)):
+                ikiwa isinstance(self.default_type, type):
                     types_str = self.default_type.__name__
-                else:
-                    types_str = ', '.join((cls.__name__ for cls in self.default_type))
-                fail("{}: default value {!r} for field {} is not of type {}".format(
+                isipokua:
+                    types_str = ', '.join((cls.__name__ kila cls kwenye self.default_type))
+                fail("{}: default value {!r} kila field {} ni sio of type {}".format(
                     self.__class__.__name__, default, name, types_str))
             self.default = default
 
-        if c_default:
+        ikiwa c_default:
             self.c_default = c_default
-        if py_default:
+        ikiwa py_default:
             self.py_default = py_default
 
-        if annotation != unspecified:
-            fail("The 'annotation' parameter is not currently permitted.")
+        ikiwa annotation != unspecified:
+            fail("The 'annotation' parameter ni sio currently permitted.")
 
-        # this is deliberate, to prevent you from caching information
-        # about the function in the init.
-        # (that breaks if we get cloned.)
+        # this ni deliberate, to prevent you kutoka caching information
+        # about the function kwenye the init.
+        # (that komas ikiwa we get cloned.)
         # so after this change we will noisily fail.
         self.function = LandMine("Don't access members of self.function inside converter_init!")
         self.converter_init(**kwargs)
         self.function = function
 
-    def converter_init(self):
-        pass
+    eleza converter_init(self):
+        pita
 
-    def is_optional(self):
-        return (self.default is not unspecified)
+    eleza is_optional(self):
+        rudisha (self.default ni sio unspecified)
 
-    def _render_self(self, parameter, data):
+    eleza _render_self(self, parameter, data):
         self.parameter = parameter
         name = self.name
 
         # impl_arguments
-        s = ("&" if self.impl_by_reference else "") + name
+        s = ("&" ikiwa self.impl_by_reference isipokua "") + name
         data.impl_arguments.append(s)
-        if self.length:
+        ikiwa self.length:
             data.impl_arguments.append(self.length_name())
 
         # impl_parameters
         data.impl_parameters.append(self.simple_declaration(by_reference=self.impl_by_reference))
-        if self.length:
+        ikiwa self.length:
             data.impl_parameters.append("Py_ssize_clean_t " + self.length_name())
 
-    def _render_non_self(self, parameter, data):
+    eleza _render_non_self(self, parameter, data):
         self.parameter = parameter
         name = self.name
 
@@ -2510,24 +2510,24 @@ class CConverter(metaclass=CConverterAutoRegister):
 
         # initializers
         initializers = self.initialize()
-        if initializers:
-            data.initializers.append('/* initializers for ' + name + ' */\n' + initializers.rstrip())
+        ikiwa initializers:
+            data.initializers.append('/* initializers kila ' + name + ' */\n' + initializers.rstrip())
 
         # modifications
         modifications = self.modify()
-        if modifications:
-            data.modifications.append('/* modifications for ' + name + ' */\n' + modifications.rstrip())
+        ikiwa modifications:
+            data.modifications.append('/* modifications kila ' + name + ' */\n' + modifications.rstrip())
 
         # keywords
-        if parameter.is_positional_only():
+        ikiwa parameter.is_positional_only():
             data.keywords.append('')
-        else:
+        isipokua:
             data.keywords.append(parameter.name)
 
         # format_units
-        if self.is_optional() and '|' not in data.format_units:
+        ikiwa self.is_optional() na '|' haiko kwenye data.format_units:
             data.format_units.append('|')
-        if parameter.is_keyword_only() and '$' not in data.format_units:
+        ikiwa parameter.is_keyword_only() na '$' haiko kwenye data.format_units:
             data.format_units.append('$')
         data.format_units.append(self.format_unit)
 
@@ -2536,125 +2536,125 @@ class CConverter(metaclass=CConverterAutoRegister):
 
         # cleanup
         cleanup = self.cleanup()
-        if cleanup:
-            data.cleanup.append('/* Cleanup for ' + name + ' */\n' + cleanup.rstrip() + "\n")
+        ikiwa cleanup:
+            data.cleanup.append('/* Cleanup kila ' + name + ' */\n' + cleanup.rstrip() + "\n")
 
-    def render(self, parameter, data):
+    eleza render(self, parameter, data):
         """
-        parameter is a clinic.Parameter instance.
-        data is a CRenderData instance.
+        parameter ni a clinic.Parameter instance.
+        data ni a CRenderData instance.
         """
         self._render_self(parameter, data)
         self._render_non_self(parameter, data)
 
-    def length_name(self):
+    eleza length_name(self):
         """Computes the name of the associated "length" variable."""
-        if not self.length:
-            return None
-        return self.name + "_length"
+        ikiwa sio self.length:
+            rudisha Tupu
+        rudisha self.name + "_length"
 
-    # Why is this one broken out separately?
+    # Why ni this one broken out separately?
     # For "positional-only" function parsing,
     # which generates a bunch of PyArg_ParseTuple calls.
-    def parse_argument(self, list):
-        assert not (self.converter and self.encoding)
-        if self.format_unit == 'O&':
+    eleza parse_argument(self, list):
+        assert sio (self.converter na self.encoding)
+        ikiwa self.format_unit == 'O&':
             assert self.converter
             list.append(self.converter)
 
-        if self.encoding:
+        ikiwa self.encoding:
             list.append(c_repr(self.encoding))
-        elif self.subclass_of:
+        lasivyo self.subclass_of:
             list.append(self.subclass_of)
 
-        s = ("&" if self.parse_by_reference else "") + self.name
+        s = ("&" ikiwa self.parse_by_reference isipokua "") + self.name
         list.append(s)
 
-        if self.length:
+        ikiwa self.length:
             list.append("&" + self.length_name())
 
     #
-    # All the functions after here are intended as extension points.
+    # All the functions after here are intended kama extension points.
     #
 
-    def simple_declaration(self, by_reference=False):
+    eleza simple_declaration(self, by_reference=Uongo):
         """
         Computes the basic declaration of the variable.
-        Used in computing the prototype declaration and the
+        Used kwenye computing the prototype declaration na the
         variable declaration.
         """
         prototype = [self.type]
-        if by_reference or not self.type.endswith('*'):
+        ikiwa by_reference ama sio self.type.endswith('*'):
             prototype.append(" ")
-        if by_reference:
+        ikiwa by_reference:
             prototype.append('*')
         prototype.append(self.name)
-        return "".join(prototype)
+        rudisha "".join(prototype)
 
-    def declaration(self):
+    eleza declaration(self):
         """
         The C statement to declare this variable.
         """
         declaration = [self.simple_declaration()]
         default = self.c_default
-        if not default and self.parameter.group:
+        ikiwa sio default na self.parameter.group:
             default = self.c_ignored_default
-        if default:
+        ikiwa default:
             declaration.append(" = ")
             declaration.append(default)
         declaration.append(";")
-        if self.length:
+        ikiwa self.length:
             declaration.append('\nPy_ssize_clean_t ')
             declaration.append(self.length_name())
             declaration.append(';')
-        return "".join(declaration)
+        rudisha "".join(declaration)
 
-    def initialize(self):
+    eleza initialize(self):
         """
         The C statements required to set up this variable before parsing.
         Returns a string containing this code indented at column 0.
-        If no initialization is necessary, returns an empty string.
+        If no initialization ni necessary, returns an empty string.
         """
-        return ""
+        rudisha ""
 
-    def modify(self):
+    eleza modify(self):
         """
         The C statements required to modify this variable after parsing.
         Returns a string containing this code indented at column 0.
-        If no initialization is necessary, returns an empty string.
+        If no initialization ni necessary, returns an empty string.
         """
-        return ""
+        rudisha ""
 
-    def cleanup(self):
+    eleza cleanup(self):
         """
         The C statements required to clean up after this variable.
         Returns a string containing this code indented at column 0.
-        If no cleanup is necessary, returns an empty string.
+        If no cleanup ni necessary, returns an empty string.
         """
-        return ""
+        rudisha ""
 
-    def pre_render(self):
+    eleza pre_render(self):
         """
         A second initialization function, like converter_init,
         called just before rendering.
         You are permitted to examine self.function here.
         """
-        pass
+        pita
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'O&':
-            return """
-                if (!{converter}({argname}, &{paramname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'O&':
+            rudisha """
+                ikiwa (!{converter}({argname}, &{paramname})) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            converter=self.converter)
-        if self.format_unit == 'O!':
-            cast = '(%s)' % self.type if self.type != 'PyObject *' else ''
-            if self.subclass_of in type_checks:
+        ikiwa self.format_unit == 'O!':
+            cast = '(%s)' % self.type ikiwa self.type != 'PyObject *' isipokua ''
+            ikiwa self.subclass_of kwenye type_checks:
                 typecheck, typename = type_checks[self.subclass_of]
-                return """
-                    if (!{typecheck}({argname})) {{{{
+                rudisha """
+                    ikiwa (!{typecheck}({argname})) {{{{
                         _PyArg_BadArgument("{{name}}", {displayname}, "{typename}", {argname});
                         goto exit;
                     }}}}
@@ -2662,8 +2662,8 @@ class CConverter(metaclass=CConverterAutoRegister):
                     """.format(argname=argname, paramname=self.name,
                                displayname=displayname, typecheck=typecheck,
                                typename=typename, cast=cast)
-            return """
-                if (!PyObject_TypeCheck({argname}, {subclass_of})) {{{{
+            rudisha """
+                ikiwa (!PyObject_TypeCheck({argname}, {subclass_of})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, ({subclass_of})->tp_name, {argname});
                     goto exit;
                 }}}}
@@ -2671,12 +2671,12 @@ class CConverter(metaclass=CConverterAutoRegister):
                 """.format(argname=argname, paramname=self.name,
                            subclass_of=self.subclass_of, cast=cast,
                            displayname=displayname)
-        if self.format_unit == 'O':
-            cast = '(%s)' % self.type if self.type != 'PyObject *' else ''
-            return """
+        ikiwa self.format_unit == 'O':
+            cast = '(%s)' % self.type ikiwa self.type != 'PyObject *' isipokua ''
+            rudisha """
                 {paramname} = {cast}{argname};
                 """.format(argname=argname, paramname=self.name, cast=cast)
-        return None
+        rudisha Tupu
 
 type_checks = {
     '&PyLong_Type': ('PyLong_Check', 'int'),
@@ -2691,377 +2691,377 @@ type_checks = {
 }
 
 
-class bool_converter(CConverter):
+kundi bool_converter(CConverter):
     type = 'int'
     default_type = bool
     format_unit = 'p'
     c_ignored_default = '0'
 
-    def converter_init(self, *, accept={object}):
-        if accept == {int}:
+    eleza converter_init(self, *, accept={object}):
+        ikiwa accept == {int}:
             self.format_unit = 'i'
-        elif accept != {object}:
+        lasivyo accept != {object}:
             fail("bool_converter: illegal 'accept' argument " + repr(accept))
-        if self.default is not unspecified:
+        ikiwa self.default ni sio unspecified:
             self.default = bool(self.default)
             self.c_default = str(int(self.default))
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'i':
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'i':
             # XXX PyFloat_Check can be removed after the end of the
-            # deprecation in _PyLong_FromNbIndexOrNbInt.
-            return """
-                if (PyFloat_Check({argname})) {{{{
+            # deprecation kwenye _PyLong_FromNbIndexOrNbInt.
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = _PyLong_AsInt({argname});
-                if ({paramname} == -1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        elif self.format_unit == 'p':
-            return """
-                {paramname} = PyObject_IsTrue({argname});
-                if ({paramname} < 0) {{{{
+        lasivyo self.format_unit == 'p':
+            rudisha """
+                {paramname} = PyObject_IsKweli({argname});
+                ikiwa ({paramname} < 0) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class char_converter(CConverter):
+kundi char_converter(CConverter):
     type = 'char'
     default_type = (bytes, bytearray)
     format_unit = 'c'
     c_ignored_default = "'\0'"
 
-    def converter_init(self):
-        if isinstance(self.default, self.default_type):
-            if len(self.default) != 1:
+    eleza converter_init(self):
+        ikiwa isinstance(self.default, self.default_type):
+            ikiwa len(self.default) != 1:
                 fail("char_converter: illegal default value " + repr(self.default))
 
             self.c_default = repr(bytes(self.default))[1:]
-            if self.c_default == '"\'"':
+            ikiwa self.c_default == '"\'"':
                 self.c_default = r"'\''"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'c':
-            return """
-                if (PyBytes_Check({argname}) && PyBytes_GET_SIZE({argname}) == 1) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'c':
+            rudisha """
+                ikiwa (PyBytes_Check({argname}) && PyBytes_GET_SIZE({argname}) == 1) {{{{
                     {paramname} = PyBytes_AS_STRING({argname})[0];
                 }}}}
-                else if (PyByteArray_Check({argname}) && PyByteArray_GET_SIZE({argname}) == 1) {{{{
+                isipokua ikiwa (PyByteArray_Check({argname}) && PyByteArray_GET_SIZE({argname}) == 1) {{{{
                     {paramname} = PyByteArray_AS_STRING({argname})[0];
                 }}}}
-                else {{{{
+                isipokua {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "a byte string of length 1", {argname});
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-@add_legacy_c_converter('B', bitwise=True)
-class unsigned_char_converter(CConverter):
+@add_legacy_c_converter('B', bitwise=Kweli)
+kundi unsigned_char_converter(CConverter):
     type = 'unsigned char'
     default_type = int
     format_unit = 'b'
     c_ignored_default = "'\0'"
 
-    def converter_init(self, *, bitwise=False):
-        if bitwise:
+    eleza converter_init(self, *, bitwise=Uongo):
+        ikiwa bitwise:
             self.format_unit = 'B'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'b':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'b':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {{{{
                     long ival = PyLong_AsLong({argname});
-                    if (ival == -1 && PyErr_Occurred()) {{{{
+                    ikiwa (ival == -1 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
-                    else if (ival < 0) {{{{
+                    isipokua ikiwa (ival < 0) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "unsigned byte integer is less than minimum");
+                                        "unsigned byte integer ni less than minimum");
                         goto exit;
                     }}}}
-                    else if (ival > UCHAR_MAX) {{{{
+                    isipokua ikiwa (ival > UCHAR_MAX) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "unsigned byte integer is greater than maximum");
+                                        "unsigned byte integer ni greater than maximum");
                         goto exit;
                     }}}}
-                    else {{{{
+                    isipokua {{{{
                         {paramname} = (unsigned char) ival;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        elif self.format_unit == 'B':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+        lasivyo self.format_unit == 'B':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {{{{
                     long ival = PyLong_AsUnsignedLongMask({argname});
-                    if (ival == -1 && PyErr_Occurred()) {{{{
+                    ikiwa (ival == -1 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
-                    else {{{{
+                    isipokua {{{{
                         {paramname} = (unsigned char) ival;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class byte_converter(unsigned_char_converter): pass
+kundi byte_converter(unsigned_char_converter): pita
 
-class short_converter(CConverter):
+kundi short_converter(CConverter):
     type = 'short'
     default_type = int
     format_unit = 'h'
     c_ignored_default = "0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'h':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'h':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {{{{
                     long ival = PyLong_AsLong({argname});
-                    if (ival == -1 && PyErr_Occurred()) {{{{
+                    ikiwa (ival == -1 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
-                    else if (ival < SHRT_MIN) {{{{
+                    isipokua ikiwa (ival < SHRT_MIN) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "signed short integer is less than minimum");
+                                        "signed short integer ni less than minimum");
                         goto exit;
                     }}}}
-                    else if (ival > SHRT_MAX) {{{{
+                    isipokua ikiwa (ival > SHRT_MAX) {{{{
                         PyErr_SetString(PyExc_OverflowError,
-                                        "signed short integer is greater than maximum");
+                                        "signed short integer ni greater than maximum");
                         goto exit;
                     }}}}
-                    else {{{{
+                    isipokua {{{{
                         {paramname} = (short) ival;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class unsigned_short_converter(CConverter):
+kundi unsigned_short_converter(CConverter):
     type = 'unsigned short'
     default_type = int
     c_ignored_default = "0"
 
-    def converter_init(self, *, bitwise=False):
-        if bitwise:
+    eleza converter_init(self, *, bitwise=Uongo):
+        ikiwa bitwise:
             self.format_unit = 'H'
-        else:
+        isipokua:
             self.converter = '_PyLong_UnsignedShort_Converter'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'H':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'H':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = (unsigned short)PyLong_AsUnsignedLongMask({argname});
-                if ({paramname} == (unsigned short)-1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == (unsigned short)-1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 @add_legacy_c_converter('C', accept={str})
-class int_converter(CConverter):
+kundi int_converter(CConverter):
     type = 'int'
     default_type = int
     format_unit = 'i'
     c_ignored_default = "0"
 
-    def converter_init(self, *, accept={int}, type=None):
-        if accept == {str}:
+    eleza converter_init(self, *, accept={int}, type=Tupu):
+        ikiwa accept == {str}:
             self.format_unit = 'C'
-        elif accept != {int}:
+        lasivyo accept != {int}:
             fail("int_converter: illegal 'accept' argument " + repr(accept))
-        if type != None:
+        ikiwa type != Tupu:
             self.type = type
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'i':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'i':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = _PyLong_AsInt({argname});
-                if ({paramname} == -1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        elif self.format_unit == 'C':
-            return """
-                if (!PyUnicode_Check({argname})) {{{{
+        lasivyo self.format_unit == 'C':
+            rudisha """
+                ikiwa (!PyUnicode_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "a unicode character", {argname});
                     goto exit;
                 }}}}
-                if (PyUnicode_READY({argname})) {{{{
+                ikiwa (PyUnicode_READY({argname})) {{{{
                     goto exit;
                 }}}}
-                if (PyUnicode_GET_LENGTH({argname}) != 1) {{{{
+                ikiwa (PyUnicode_GET_LENGTH({argname}) != 1) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "a unicode character", {argname});
                     goto exit;
                 }}}}
                 {paramname} = PyUnicode_READ_CHAR({argname}, 0);
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class unsigned_int_converter(CConverter):
+kundi unsigned_int_converter(CConverter):
     type = 'unsigned int'
     default_type = int
     c_ignored_default = "0"
 
-    def converter_init(self, *, bitwise=False):
-        if bitwise:
+    eleza converter_init(self, *, bitwise=Uongo):
+        ikiwa bitwise:
             self.format_unit = 'I'
-        else:
+        isipokua:
             self.converter = '_PyLong_UnsignedInt_Converter'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'I':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'I':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = (unsigned int)PyLong_AsUnsignedLongMask({argname});
-                if ({paramname} == (unsigned int)-1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == (unsigned int)-1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class long_converter(CConverter):
+kundi long_converter(CConverter):
     type = 'long'
     default_type = int
     format_unit = 'l'
     c_ignored_default = "0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'l':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'l':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = PyLong_AsLong({argname});
-                if ({paramname} == -1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class unsigned_long_converter(CConverter):
+kundi unsigned_long_converter(CConverter):
     type = 'unsigned long'
     default_type = int
     c_ignored_default = "0"
 
-    def converter_init(self, *, bitwise=False):
-        if bitwise:
+    eleza converter_init(self, *, bitwise=Uongo):
+        ikiwa bitwise:
             self.format_unit = 'k'
-        else:
+        isipokua:
             self.converter = '_PyLong_UnsignedLong_Converter'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'k':
-            return """
-                if (!PyLong_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'k':
+            rudisha """
+                ikiwa (!PyLong_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "int", {argname});
                     goto exit;
                 }}}}
                 {paramname} = PyLong_AsUnsignedLongMask({argname});
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class long_long_converter(CConverter):
+kundi long_long_converter(CConverter):
     type = 'long long'
     default_type = int
     format_unit = 'L'
     c_ignored_default = "0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'L':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'L':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
                 }}}}
                 {paramname} = PyLong_AsLongLong({argname});
-                if ({paramname} == (PY_LONG_LONG)-1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == (PY_LONG_LONG)-1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class unsigned_long_long_converter(CConverter):
+kundi unsigned_long_long_converter(CConverter):
     type = 'unsigned long long'
     default_type = int
     c_ignored_default = "0"
 
-    def converter_init(self, *, bitwise=False):
-        if bitwise:
+    eleza converter_init(self, *, bitwise=Uongo):
+        ikiwa bitwise:
             self.format_unit = 'K'
-        else:
+        isipokua:
             self.converter = '_PyLong_UnsignedLongLong_Converter'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'K':
-            return """
-                if (!PyLong_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'K':
+            rudisha """
+                ikiwa (!PyLong_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "int", {argname});
                     goto exit;
                 }}}}
                 {paramname} = PyLong_AsUnsignedLongLongMask({argname});
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class Py_ssize_t_converter(CConverter):
+kundi Py_ssize_t_converter(CConverter):
     type = 'Py_ssize_t'
     c_ignored_default = "0"
 
-    def converter_init(self, *, accept={int}):
-        if accept == {int}:
+    eleza converter_init(self, *, accept={int}):
+        ikiwa accept == {int}:
             self.format_unit = 'n'
             self.default_type = int
-        elif accept == {int, NoneType}:
+        lasivyo accept == {int, TupuType}:
             self.converter = '_Py_convert_optional_to_ssize_t'
-        else:
+        isipokua:
             fail("Py_ssize_t_converter: illegal 'accept' argument " + repr(accept))
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'n':
-            return """
-                if (PyFloat_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'n':
+            rudisha """
+                ikiwa (PyFloat_Check({argname})) {{{{
                     PyErr_SetString(PyExc_TypeError,
                                     "integer argument expected, got float" );
                     goto exit;
@@ -3069,845 +3069,845 @@ class Py_ssize_t_converter(CConverter):
                 {{{{
                     Py_ssize_t ival = -1;
                     PyObject *iobj = PyNumber_Index({argname});
-                    if (iobj != NULL) {{{{
+                    ikiwa (iobj != NULL) {{{{
                         ival = PyLong_AsSsize_t(iobj);
                         Py_DECREF(iobj);
                     }}}}
-                    if (ival == -1 && PyErr_Occurred()) {{{{
+                    ikiwa (ival == -1 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
                     {paramname} = ival;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-class slice_index_converter(CConverter):
+kundi slice_index_converter(CConverter):
     type = 'Py_ssize_t'
 
-    def converter_init(self, *, accept={int, NoneType}):
-        if accept == {int}:
-            self.converter = '_PyEval_SliceIndexNotNone'
-        elif accept == {int, NoneType}:
+    eleza converter_init(self, *, accept={int, TupuType}):
+        ikiwa accept == {int}:
+            self.converter = '_PyEval_SliceIndexNotTupu'
+        lasivyo accept == {int, TupuType}:
             self.converter = '_PyEval_SliceIndex'
-        else:
+        isipokua:
             fail("slice_index_converter: illegal 'accept' argument " + repr(accept))
 
-class size_t_converter(CConverter):
+kundi size_t_converter(CConverter):
     type = 'size_t'
     converter = '_PyLong_Size_t_Converter'
     c_ignored_default = "0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'n':
-            return """
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'n':
+            rudisha """
                 {paramname} = PyNumber_AsSsize_t({argname}, PyExc_OverflowError);
-                if ({paramname} == -1 && PyErr_Occurred()) {{{{
+                ikiwa ({paramname} == -1 && PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-class float_converter(CConverter):
+kundi float_converter(CConverter):
     type = 'float'
     default_type = float
     format_unit = 'f'
     c_ignored_default = "0.0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'f':
-            return """
-                if (PyFloat_CheckExact({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'f':
+            rudisha """
+                ikiwa (PyFloat_CheckExact({argname})) {{{{
                     {paramname} = (float) (PyFloat_AS_DOUBLE({argname}));
                 }}}}
-                else
+                isipokua
                 {{{{
                     {paramname} = (float) PyFloat_AsDouble({argname});
-                    if ({paramname} == -1.0 && PyErr_Occurred()) {{{{
+                    ikiwa ({paramname} == -1.0 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class double_converter(CConverter):
+kundi double_converter(CConverter):
     type = 'double'
     default_type = float
     format_unit = 'd'
     c_ignored_default = "0.0"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'd':
-            return """
-                if (PyFloat_CheckExact({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'd':
+            rudisha """
+                ikiwa (PyFloat_CheckExact({argname})) {{{{
                     {paramname} = PyFloat_AS_DOUBLE({argname});
                 }}}}
-                else
+                isipokua
                 {{{{
                     {paramname} = PyFloat_AsDouble({argname});
-                    if ({paramname} == -1.0 && PyErr_Occurred()) {{{{
+                    ikiwa ({paramname} == -1.0 && PyErr_Occurred()) {{{{
                         goto exit;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-class Py_complex_converter(CConverter):
+kundi Py_complex_converter(CConverter):
     type = 'Py_complex'
     default_type = complex
     format_unit = 'D'
     c_ignored_default = "{0.0, 0.0}"
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'D':
-            return """
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'D':
+            rudisha """
                 {paramname} = PyComplex_AsCComplex({argname});
-                if (PyErr_Occurred()) {{{{
+                ikiwa (PyErr_Occurred()) {{{{
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-class object_converter(CConverter):
+kundi object_converter(CConverter):
     type = 'PyObject *'
     format_unit = 'O'
 
-    def converter_init(self, *, converter=None, type=None, subclass_of=None):
-        if converter:
-            if subclass_of:
-                fail("object: Cannot pass in both 'converter' and 'subclass_of'")
+    eleza converter_init(self, *, converter=Tupu, type=Tupu, subclass_of=Tupu):
+        ikiwa converter:
+            ikiwa subclass_of:
+                fail("object: Cannot pita kwenye both 'converter' na 'subclass_of'")
             self.format_unit = 'O&'
             self.converter = converter
-        elif subclass_of:
+        lasivyo subclass_of:
             self.format_unit = 'O!'
             self.subclass_of = subclass_of
 
-        if type is not None:
+        ikiwa type ni sio Tupu:
             self.type = type
 
 
 #
-# We define three conventions for buffer types in the 'accept' argument:
+# We define three conventions kila buffer types kwenye the 'accept' argument:
 #
 #  buffer  : any object supporting the buffer interface
 #  rwbuffer: any object supporting the buffer interface, but must be writeable
-#  robuffer: any object supporting the buffer interface, but must not be writeable
+#  robuffer: any object supporting the buffer interface, but must sio be writeable
 #
 
-class buffer: pass
-class rwbuffer: pass
-class robuffer: pass
+kundi buffer: pita
+kundi rwbuffer: pita
+kundi robuffer: pita
 
-def str_converter_key(types, encoding, zeroes):
-    return (frozenset(types), bool(encoding), bool(zeroes))
+eleza str_converter_key(types, encoding, zeroes):
+    rudisha (frozenset(types), bool(encoding), bool(zeroes))
 
 str_converter_argument_map = {}
 
-class str_converter(CConverter):
+kundi str_converter(CConverter):
     type = 'const char *'
-    default_type = (str, Null, NoneType)
+    default_type = (str, Null, TupuType)
     format_unit = 's'
 
-    def converter_init(self, *, accept={str}, encoding=None, zeroes=False):
+    eleza converter_init(self, *, accept={str}, encoding=Tupu, zeroes=Uongo):
 
         key = str_converter_key(accept, encoding, zeroes)
         format_unit = str_converter_argument_map.get(key)
-        if not format_unit:
+        ikiwa sio format_unit:
             fail("str_converter: illegal combination of arguments", key)
 
         self.format_unit = format_unit
         self.length = bool(zeroes)
-        if encoding:
-            if self.default not in (Null, None, unspecified):
-                fail("str_converter: Argument Clinic doesn't support default values for encoded strings")
+        ikiwa encoding:
+            ikiwa self.default haiko kwenye (Null, Tupu, unspecified):
+                fail("str_converter: Argument Clinic doesn't support default values kila encoded strings")
             self.encoding = encoding
             self.type = 'char *'
             # sorry, clinic can't support preallocated buffers
-            # for es# and et#
+            # kila es# na et#
             self.c_default = "NULL"
-        if NoneType in accept and self.c_default == "Py_None":
+        ikiwa TupuType kwenye accept na self.c_default == "Py_Tupu":
             self.c_default = "NULL"
 
-    def cleanup(self):
-        if self.encoding:
+    eleza cleanup(self):
+        ikiwa self.encoding:
             name = self.name
-            return "".join(["if (", name, ") {\n   PyMem_FREE(", name, ");\n}\n"])
+            rudisha "".join(["ikiwa (", name, ") {\n   PyMem_FREE(", name, ");\n}\n"])
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 's':
-            return """
-                if (!PyUnicode_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 's':
+            rudisha """
+                ikiwa (!PyUnicode_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "str", {argname});
                     goto exit;
                 }}}}
                 Py_ssize_t {paramname}_length;
                 {paramname} = PyUnicode_AsUTF8AndSize({argname}, &{paramname}_length);
-                if ({paramname} == NULL) {{{{
+                ikiwa ({paramname} == NULL) {{{{
                     goto exit;
                 }}}}
-                if (strlen({paramname}) != (size_t){paramname}_length) {{{{
+                ikiwa (strlen({paramname}) != (size_t){paramname}_length) {{{{
                     PyErr_SetString(PyExc_ValueError, "embedded null character");
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        if self.format_unit == 'z':
-            return """
-                if ({argname} == Py_None) {{{{
+        ikiwa self.format_unit == 'z':
+            rudisha """
+                ikiwa ({argname} == Py_Tupu) {{{{
                     {paramname} = NULL;
                 }}}}
-                else if (PyUnicode_Check({argname})) {{{{
+                isipokua ikiwa (PyUnicode_Check({argname})) {{{{
                     Py_ssize_t {paramname}_length;
                     {paramname} = PyUnicode_AsUTF8AndSize({argname}, &{paramname}_length);
-                    if ({paramname} == NULL) {{{{
+                    ikiwa ({paramname} == NULL) {{{{
                         goto exit;
                     }}}}
-                    if (strlen({paramname}) != (size_t){paramname}_length) {{{{
+                    ikiwa (strlen({paramname}) != (size_t){paramname}_length) {{{{
                         PyErr_SetString(PyExc_ValueError, "embedded null character");
                         goto exit;
                     }}}}
                 }}}}
-                else {{{{
-                    _PyArg_BadArgument("{{name}}", {displayname}, "str or None", {argname});
+                isipokua {{{{
+                    _PyArg_BadArgument("{{name}}", {displayname}, "str ama Tupu", {argname});
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 #
-# This is the fourth or fifth rewrite of registering all the
+# This ni the fourth ama fifth rewrite of registering all the
 # string converter format units.  Previous approaches hid
 # bugs--generally mismatches between the semantics of the format
-# unit and the arguments necessary to represent those semantics
-# properly.  Hopefully with this approach we'll get it 100% right.
+# unit na the arguments necessary to represent those semantics
+# properly.  Hopefully ukijumuisha this approach we'll get it 100% right.
 #
-# The r() function (short for "register") both registers the
-# mapping from arguments to format unit *and* registers the
-# legacy C converter for that format unit.
+# The r() function (short kila "register") both registers the
+# mapping kutoka arguments to format unit *and* registers the
+# legacy C converter kila that format unit.
 #
-def r(format_unit, *, accept, encoding=False, zeroes=False):
-    if not encoding and format_unit != 's':
+eleza r(format_unit, *, accept, encoding=Uongo, zeroes=Uongo):
+    ikiwa sio encoding na format_unit != 's':
         # add the legacy c converters here too.
         #
         # note: add_legacy_c_converter can't work for
-        #   es, es#, et, or et#
+        #   es, es#, et, ama et#
         #   because of their extra encoding argument
         #
-        # also don't add the converter for 's' because
-        # the metaclass for CConverter adds it for us.
+        # also don't add the converter kila 's' because
+        # the metakundi kila CConverter adds it kila us.
         kwargs = {}
-        if accept != {str}:
+        ikiwa accept != {str}:
             kwargs['accept'] = accept
-        if zeroes:
-            kwargs['zeroes'] = True
+        ikiwa zeroes:
+            kwargs['zeroes'] = Kweli
         added_f = functools.partial(str_converter, **kwargs)
         legacy_converters[format_unit] = added_f
 
     d = str_converter_argument_map
     key = str_converter_key(accept, encoding, zeroes)
-    if key in d:
-        sys.exit("Duplicate keys specified for str_converter_argument_map!")
+    ikiwa key kwenye d:
+        sys.exit("Duplicate keys specified kila str_converter_argument_map!")
     d[key] = format_unit
 
-r('es',  encoding=True,              accept={str})
-r('es#', encoding=True, zeroes=True, accept={str})
-r('et',  encoding=True,              accept={bytes, bytearray, str})
-r('et#', encoding=True, zeroes=True, accept={bytes, bytearray, str})
+r('es',  encoding=Kweli,              accept={str})
+r('es#', encoding=Kweli, zeroes=Kweli, accept={str})
+r('et',  encoding=Kweli,              accept={bytes, bytearray, str})
+r('et#', encoding=Kweli, zeroes=Kweli, accept={bytes, bytearray, str})
 r('s',                               accept={str})
-r('s#',                 zeroes=True, accept={robuffer, str})
+r('s#',                 zeroes=Kweli, accept={robuffer, str})
 r('y',                               accept={robuffer})
-r('y#',                 zeroes=True, accept={robuffer})
-r('z',                               accept={str, NoneType})
-r('z#',                 zeroes=True, accept={robuffer, str, NoneType})
-del r
+r('y#',                 zeroes=Kweli, accept={robuffer})
+r('z',                               accept={str, TupuType})
+r('z#',                 zeroes=Kweli, accept={robuffer, str, TupuType})
+toa r
 
 
-class PyBytesObject_converter(CConverter):
+kundi PyBytesObject_converter(CConverter):
     type = 'PyBytesObject *'
     format_unit = 'S'
     # accept = {bytes}
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'S':
-            return """
-                if (!PyBytes_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'S':
+            rudisha """
+                ikiwa (!PyBytes_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "bytes", {argname});
                     goto exit;
                 }}}}
                 {paramname} = ({type}){argname};
                 """.format(argname=argname, paramname=self.name,
                            type=self.type, displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class PyByteArrayObject_converter(CConverter):
+kundi PyByteArrayObject_converter(CConverter):
     type = 'PyByteArrayObject *'
     format_unit = 'Y'
     # accept = {bytearray}
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'Y':
-            return """
-                if (!PyByteArray_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'Y':
+            rudisha """
+                ikiwa (!PyByteArray_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "bytearray", {argname});
                     goto exit;
                 }}}}
                 {paramname} = ({type}){argname};
                 """.format(argname=argname, paramname=self.name,
                            type=self.type, displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-class unicode_converter(CConverter):
+kundi unicode_converter(CConverter):
     type = 'PyObject *'
-    default_type = (str, Null, NoneType)
+    default_type = (str, Null, TupuType)
     format_unit = 'U'
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'U':
-            return """
-                if (!PyUnicode_Check({argname})) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'U':
+            rudisha """
+                ikiwa (!PyUnicode_Check({argname})) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "str", {argname});
                     goto exit;
                 }}}}
-                if (PyUnicode_READY({argname}) == -1) {{{{
+                ikiwa (PyUnicode_READY({argname}) == -1) {{{{
                     goto exit;
                 }}}}
                 {paramname} = {argname};
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
-@add_legacy_c_converter('u#', zeroes=True)
-@add_legacy_c_converter('Z', accept={str, NoneType})
-@add_legacy_c_converter('Z#', accept={str, NoneType}, zeroes=True)
-class Py_UNICODE_converter(CConverter):
+@add_legacy_c_converter('u#', zeroes=Kweli)
+@add_legacy_c_converter('Z', accept={str, TupuType})
+@add_legacy_c_converter('Z#', accept={str, TupuType}, zeroes=Kweli)
+kundi Py_UNICODE_converter(CConverter):
     type = 'const Py_UNICODE *'
-    default_type = (str, Null, NoneType)
+    default_type = (str, Null, TupuType)
     format_unit = 'u'
 
-    def converter_init(self, *, accept={str}, zeroes=False):
-        format_unit = 'Z' if accept=={str, NoneType} else 'u'
-        if zeroes:
+    eleza converter_init(self, *, accept={str}, zeroes=Uongo):
+        format_unit = 'Z' ikiwa accept=={str, TupuType} isipokua 'u'
+        ikiwa zeroes:
             format_unit += '#'
-            self.length = True
+            self.length = Kweli
         self.format_unit = format_unit
 
 @add_legacy_c_converter('s*', accept={str, buffer})
-@add_legacy_c_converter('z*', accept={str, buffer, NoneType})
+@add_legacy_c_converter('z*', accept={str, buffer, TupuType})
 @add_legacy_c_converter('w*', accept={rwbuffer})
-class Py_buffer_converter(CConverter):
+kundi Py_buffer_converter(CConverter):
     type = 'Py_buffer'
     format_unit = 'y*'
-    impl_by_reference = True
+    impl_by_reference = Kweli
     c_ignored_default = "{NULL, NULL}"
 
-    def converter_init(self, *, accept={buffer}):
-        if self.default not in (unspecified, None):
-            fail("The only legal default value for Py_buffer is None.")
+    eleza converter_init(self, *, accept={buffer}):
+        ikiwa self.default haiko kwenye (unspecified, Tupu):
+            fail("The only legal default value kila Py_buffer ni Tupu.")
 
         self.c_default = self.c_ignored_default
 
-        if accept == {str, buffer, NoneType}:
+        ikiwa accept == {str, buffer, TupuType}:
             format_unit = 'z*'
-        elif accept == {str, buffer}:
+        lasivyo accept == {str, buffer}:
             format_unit = 's*'
-        elif accept == {buffer}:
+        lasivyo accept == {buffer}:
             format_unit = 'y*'
-        elif accept == {rwbuffer}:
+        lasivyo accept == {rwbuffer}:
             format_unit = 'w*'
-        else:
+        isipokua:
             fail("Py_buffer_converter: illegal combination of arguments")
 
         self.format_unit = format_unit
 
-    def cleanup(self):
+    eleza cleanup(self):
         name = self.name
-        return "".join(["if (", name, ".obj) {\n   PyBuffer_Release(&", name, ");\n}\n"])
+        rudisha "".join(["ikiwa (", name, ".obj) {\n   PyBuffer_Release(&", name, ");\n}\n"])
 
-    def parse_arg(self, argname, displayname):
-        if self.format_unit == 'y*':
-            return """
-                if (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_SIMPLE) != 0) {{{{
+    eleza parse_arg(self, argname, displayname):
+        ikiwa self.format_unit == 'y*':
+            rudisha """
+                ikiwa (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_SIMPLE) != 0) {{{{
                     goto exit;
                 }}}}
-                if (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
+                ikiwa (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "contiguous buffer", {argname});
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        elif self.format_unit == 's*':
-            return """
-                if (PyUnicode_Check({argname})) {{{{
+        lasivyo self.format_unit == 's*':
+            rudisha """
+                ikiwa (PyUnicode_Check({argname})) {{{{
                     Py_ssize_t len;
                     const char *ptr = PyUnicode_AsUTF8AndSize({argname}, &len);
-                    if (ptr == NULL) {{{{
+                    ikiwa (ptr == NULL) {{{{
                         goto exit;
                     }}}}
                     PyBuffer_FillInfo(&{paramname}, {argname}, (void *)ptr, len, 1, 0);
                 }}}}
-                else {{{{ /* any bytes-like object */
-                    if (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_SIMPLE) != 0) {{{{
+                isipokua {{{{ /* any bytes-like object */
+                    ikiwa (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_SIMPLE) != 0) {{{{
                         goto exit;
                     }}}}
-                    if (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
+                    ikiwa (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
                         _PyArg_BadArgument("{{name}}", {displayname}, "contiguous buffer", {argname});
                         goto exit;
                     }}}}
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        elif self.format_unit == 'w*':
-            return """
-                if (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_WRITABLE) < 0) {{{{
+        lasivyo self.format_unit == 'w*':
+            rudisha """
+                ikiwa (PyObject_GetBuffer({argname}, &{paramname}, PyBUF_WRITABLE) < 0) {{{{
                     PyErr_Clear();
                     _PyArg_BadArgument("{{name}}", {displayname}, "read-write bytes-like object", {argname});
                     goto exit;
                 }}}}
-                if (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
+                ikiwa (!PyBuffer_IsContiguous(&{paramname}, 'C')) {{{{
                     _PyArg_BadArgument("{{name}}", {displayname}, "contiguous buffer", {argname});
                     goto exit;
                 }}}}
                 """.format(argname=argname, paramname=self.name,
                            displayname=displayname)
-        return super().parse_arg(argname, displayname)
+        rudisha super().parse_arg(argname, displayname)
 
 
-def correct_name_for_self(f):
-    if f.kind in (CALLABLE, METHOD_INIT):
-        if f.cls:
-            return "PyObject *", "self"
-        return "PyObject *", "module"
-    if f.kind == STATIC_METHOD:
-        return "void *", "null"
-    if f.kind in (CLASS_METHOD, METHOD_NEW):
-        return "PyTypeObject *", "type"
-    raise RuntimeError("Unhandled type of function f: " + repr(f.kind))
+eleza correct_name_for_self(f):
+    ikiwa f.kind kwenye (CALLABLE, METHOD_INIT):
+        ikiwa f.cls:
+            rudisha "PyObject *", "self"
+        rudisha "PyObject *", "module"
+    ikiwa f.kind == STATIC_METHOD:
+        rudisha "void *", "null"
+    ikiwa f.kind kwenye (CLASS_METHOD, METHOD_NEW):
+        rudisha "PyTypeObject *", "type"
+    ashiria RuntimeError("Unhandled type of function f: " + repr(f.kind))
 
-def required_type_for_self_for_parser(f):
+eleza required_type_for_self_for_parser(f):
     type, _ = correct_name_for_self(f)
-    if f.kind in (METHOD_INIT, METHOD_NEW, STATIC_METHOD, CLASS_METHOD):
-        return type
-    return None
+    ikiwa f.kind kwenye (METHOD_INIT, METHOD_NEW, STATIC_METHOD, CLASS_METHOD):
+        rudisha type
+    rudisha Tupu
 
 
-class self_converter(CConverter):
+kundi self_converter(CConverter):
     """
     A special-case converter:
-    this is the default converter used for "self".
+    this ni the default converter used kila "self".
     """
-    type = None
+    type = Tupu
     format_unit = ''
 
-    def converter_init(self, *, type=None):
+    eleza converter_init(self, *, type=Tupu):
         self.specified_type = type
 
-    def pre_render(self):
+    eleza pre_render(self):
         f = self.function
         default_type, default_name = correct_name_for_self(f)
         self.signature_name = default_name
-        self.type = self.specified_type or self.type or default_type
+        self.type = self.specified_type ama self.type ama default_type
 
         kind = self.function.kind
-        new_or_init = kind in (METHOD_NEW, METHOD_INIT)
+        new_or_init = kind kwenye (METHOD_NEW, METHOD_INIT)
 
-        if (kind == STATIC_METHOD) or new_or_init:
-            self.show_in_signature = False
+        ikiwa (kind == STATIC_METHOD) ama new_or_init:
+            self.show_in_signature = Uongo
 
     # tp_new (METHOD_NEW) functions are of type newfunc:
-    #     typedef PyObject *(*newfunc)(struct _typeobject *, PyObject *, PyObject *);
-    # PyTypeObject is a typedef for struct _typeobject.
+    #     typeeleza PyObject *(*newfunc)(struct _typeobject *, PyObject *, PyObject *);
+    # PyTypeObject ni a typeeleza kila struct _typeobject.
     #
     # tp_init (METHOD_INIT) functions are of type initproc:
-    #     typedef int (*initproc)(PyObject *, PyObject *, PyObject *);
+    #     typeeleza int (*initproc)(PyObject *, PyObject *, PyObject *);
     #
     # All other functions generated by Argument Clinic are stored in
-    # PyMethodDef structures, in the ml_meth slot, which is of type PyCFunction:
-    #     typedef PyObject *(*PyCFunction)(PyObject *, PyObject *);
+    # PyMethodDef structures, kwenye the ml_meth slot, which ni of type PyCFunction:
+    #     typeeleza PyObject *(*PyCFunction)(PyObject *, PyObject *);
     # However!  We habitually cast these functions to PyCFunction,
     # since functions that accept keyword arguments don't fit this signature
     # but are stored there anyway.  So strict type equality isn't important
-    # for these functions.
+    # kila these functions.
     #
     # So:
     #
-    # * The name of the first parameter to the impl and the parsing function will always
+    # * The name of the first parameter to the impl na the parsing function will always
     #   be self.name.
     #
     # * The type of the first parameter to the impl will always be of self.type.
     #
-    # * If the function is neither tp_new (METHOD_NEW) nor tp_init (METHOD_INIT):
-    #   * The type of the first parameter to the parsing function is also self.type.
-    #     This means that if you step into the parsing function, your "self" parameter
-    #     is of the correct type, which may make debugging more pleasant.
+    # * If the function ni neither tp_new (METHOD_NEW) nor tp_init (METHOD_INIT):
+    #   * The type of the first parameter to the parsing function ni also self.type.
+    #     This means that ikiwa you step into the parsing function, your "self" parameter
+    #     ni of the correct type, which may make debugging more pleasant.
     #
-    # * Else if the function is tp_new (METHOD_NEW):
-    #   * The type of the first parameter to the parsing function is "PyTypeObject *",
-    #     so the type signature of the function call is an exact match.
+    # * Else ikiwa the function ni tp_new (METHOD_NEW):
+    #   * The type of the first parameter to the parsing function ni "PyTypeObject *",
+    #     so the type signature of the function call ni an exact match.
     #   * If self.type != "PyTypeObject *", we cast the first parameter to self.type
-    #     in the impl call.
+    #     kwenye the impl call.
     #
-    # * Else if the function is tp_init (METHOD_INIT):
-    #   * The type of the first parameter to the parsing function is "PyObject *",
-    #     so the type signature of the function call is an exact match.
+    # * Else ikiwa the function ni tp_init (METHOD_INIT):
+    #   * The type of the first parameter to the parsing function ni "PyObject *",
+    #     so the type signature of the function call ni an exact match.
     #   * If self.type != "PyObject *", we cast the first parameter to self.type
-    #     in the impl call.
+    #     kwenye the impl call.
 
     @property
-    def parser_type(self):
-        return required_type_for_self_for_parser(self.function) or self.type
+    eleza parser_type(self):
+        rudisha required_type_for_self_for_parser(self.function) ama self.type
 
-    def render(self, parameter, data):
+    eleza render(self, parameter, data):
         """
-        parameter is a clinic.Parameter instance.
-        data is a CRenderData instance.
+        parameter ni a clinic.Parameter instance.
+        data ni a CRenderData instance.
         """
-        if self.function.kind == STATIC_METHOD:
-            return
+        ikiwa self.function.kind == STATIC_METHOD:
+            rudisha
 
         self._render_self(parameter, data)
 
-        if self.type != self.parser_type:
+        ikiwa self.type != self.parser_type:
             # insert cast to impl_argument[0], aka self.
-            # we know we're in the first slot in all the CRenderData lists,
-            # because we render parameters in order, and self is always first.
+            # we know we're kwenye the first slot kwenye all the CRenderData lists,
+            # because we render parameters kwenye order, na self ni always first.
             assert len(data.impl_arguments) == 1
             assert data.impl_arguments[0] == self.name
             data.impl_arguments[0] = '(' + self.type + ")" + data.impl_arguments[0]
 
-    def set_template_dict(self, template_dict):
+    eleza set_template_dict(self, template_dict):
         template_dict['self_name'] = self.name
         template_dict['self_type'] = self.parser_type
         kind = self.function.kind
         cls = self.function.cls
 
-        if ((kind in (METHOD_NEW, METHOD_INIT)) and cls and cls.typedef):
-            if kind == METHOD_NEW:
-                passed_in_type = self.name
-            else:
-                passed_in_type = 'Py_TYPE({})'.format(self.name)
+        ikiwa ((kind kwenye (METHOD_NEW, METHOD_INIT)) na cls na cls.typedef):
+            ikiwa kind == METHOD_NEW:
+                pitaed_in_type = self.name
+            isipokua:
+                pitaed_in_type = 'Py_TYPE({})'.format(self.name)
 
-            line = '({passed_in_type} == {type_object}) &&\n        '
+            line = '({pitaed_in_type} == {type_object}) &&\n        '
             d = {
                 'type_object': self.function.cls.type_object,
-                'passed_in_type': passed_in_type
+                'pitaed_in_type': pitaed_in_type
                 }
             template_dict['self_type_check'] = line.format_map(d)
 
 
 
-def add_c_return_converter(f, name=None):
-    if not name:
+eleza add_c_return_converter(f, name=Tupu):
+    ikiwa sio name:
         name = f.__name__
-        if not name.endswith('_return_converter'):
-            return f
+        ikiwa sio name.endswith('_return_converter'):
+            rudisha f
         name = name[:-len('_return_converter')]
     return_converters[name] = f
-    return f
+    rudisha f
 
 
-class CReturnConverterAutoRegister(type):
-    def __init__(cls, name, bases, classdict):
+kundi CReturnConverterAutoRegister(type):
+    eleza __init__(cls, name, bases, classdict):
         add_c_return_converter(cls)
 
-class CReturnConverter(metaclass=CReturnConverterAutoRegister):
+kundi CReturnConverter(metaclass=CReturnConverterAutoRegister):
 
-    # The C type to use for this variable.
+    # The C type to use kila this variable.
     # 'type' should be a Python string specifying the type, e.g. "int".
-    # If this is a pointer type, the type string should end with ' *'.
+    # If this ni a pointer type, the type string should end ukijumuisha ' *'.
     type = 'PyObject *'
 
-    # The Python default value for this parameter, as a Python value.
-    # Or the magic value "unspecified" if there is no default.
-    default = None
+    # The Python default value kila this parameter, kama a Python value.
+    # Or the magic value "unspecified" ikiwa there ni no default.
+    default = Tupu
 
-    def __init__(self, *, py_default=None, **kwargs):
+    eleza __init__(self, *, py_default=Tupu, **kwargs):
         self.py_default = py_default
-        try:
+        jaribu:
             self.return_converter_init(**kwargs)
-        except TypeError as e:
-            s = ', '.join(name + '=' + repr(value) for name, value in kwargs.items())
+        tatizo TypeError kama e:
+            s = ', '.join(name + '=' + repr(value) kila name, value kwenye kwargs.items())
             sys.exit(self.__class__.__name__ + '(' + s + ')\n' + str(e))
 
-    def return_converter_init(self):
-        pass
+    eleza return_converter_init(self):
+        pita
 
-    def declare(self, data, name="_return_value"):
+    eleza declare(self, data, name="_return_value"):
         line = []
         add = line.append
         add(self.type)
-        if not self.type.endswith('*'):
+        ikiwa sio self.type.endswith('*'):
             add(' ')
         add(name + ';')
         data.declarations.append(''.join(line))
         data.return_value = name
 
-    def err_occurred_if(self, expr, data):
-        data.return_conversion.append('if (({}) && PyErr_Occurred()) {{\n    goto exit;\n}}\n'.format(expr))
+    eleza err_occurred_if(self, expr, data):
+        data.return_conversion.append('ikiwa (({}) && PyErr_Occurred()) {{\n    goto exit;\n}}\n'.format(expr))
 
-    def err_occurred_if_null_pointer(self, variable, data):
-        data.return_conversion.append('if ({} == NULL) {{\n    goto exit;\n}}\n'.format(variable))
+    eleza err_occurred_if_null_pointer(self, variable, data):
+        data.return_conversion.append('ikiwa ({} == NULL) {{\n    goto exit;\n}}\n'.format(variable))
 
-    def render(self, function, data):
+    eleza render(self, function, data):
         """
-        function is a clinic.Function instance.
-        data is a CRenderData instance.
+        function ni a clinic.Function instance.
+        data ni a CRenderData instance.
         """
-        pass
+        pita
 
 add_c_return_converter(CReturnConverter, 'object')
 
-class NoneType_return_converter(CReturnConverter):
-    def render(self, function, data):
+kundi TupuType_return_converter(CReturnConverter):
+    eleza render(self, function, data):
         self.declare(data)
         data.return_conversion.append('''
-if (_return_value != Py_None) {
+ikiwa (_return_value != Py_Tupu) {
     goto exit;
 }
-return_value = Py_None;
-Py_INCREF(Py_None);
+return_value = Py_Tupu;
+Py_INCREF(Py_Tupu);
 '''.strip())
 
-class bool_return_converter(CReturnConverter):
+kundi bool_return_converter(CReturnConverter):
     type = 'int'
 
-    def render(self, function, data):
+    eleza render(self, function, data):
         self.declare(data)
         self.err_occurred_if("_return_value == -1", data)
         data.return_conversion.append('return_value = PyBool_FromLong((long)_return_value);\n')
 
-class long_return_converter(CReturnConverter):
+kundi long_return_converter(CReturnConverter):
     type = 'long'
     conversion_fn = 'PyLong_FromLong'
     cast = ''
     unsigned_cast = ''
 
-    def render(self, function, data):
+    eleza render(self, function, data):
         self.declare(data)
         self.err_occurred_if("_return_value == {}-1".format(self.unsigned_cast), data)
         data.return_conversion.append(
             ''.join(('return_value = ', self.conversion_fn, '(', self.cast, '_return_value);\n')))
 
-class int_return_converter(long_return_converter):
+kundi int_return_converter(long_return_converter):
     type = 'int'
     cast = '(long)'
 
-class init_return_converter(long_return_converter):
+kundi init_return_converter(long_return_converter):
     """
-    Special return converter for __init__ functions.
+    Special rudisha converter kila __init__ functions.
     """
     type = 'int'
     cast = '(long)'
 
-    def render(self, function, data):
-        pass
+    eleza render(self, function, data):
+        pita
 
-class unsigned_long_return_converter(long_return_converter):
+kundi unsigned_long_return_converter(long_return_converter):
     type = 'unsigned long'
     conversion_fn = 'PyLong_FromUnsignedLong'
     unsigned_cast = '(unsigned long)'
 
-class unsigned_int_return_converter(unsigned_long_return_converter):
+kundi unsigned_int_return_converter(unsigned_long_return_converter):
     type = 'unsigned int'
     cast = '(unsigned long)'
     unsigned_cast = '(unsigned int)'
 
-class Py_ssize_t_return_converter(long_return_converter):
+kundi Py_ssize_t_return_converter(long_return_converter):
     type = 'Py_ssize_t'
     conversion_fn = 'PyLong_FromSsize_t'
 
-class size_t_return_converter(long_return_converter):
+kundi size_t_return_converter(long_return_converter):
     type = 'size_t'
     conversion_fn = 'PyLong_FromSize_t'
     unsigned_cast = '(size_t)'
 
 
-class double_return_converter(CReturnConverter):
+kundi double_return_converter(CReturnConverter):
     type = 'double'
     cast = ''
 
-    def render(self, function, data):
+    eleza render(self, function, data):
         self.declare(data)
         self.err_occurred_if("_return_value == -1.0", data)
         data.return_conversion.append(
             'return_value = PyFloat_FromDouble(' + self.cast + '_return_value);\n')
 
-class float_return_converter(double_return_converter):
+kundi float_return_converter(double_return_converter):
     type = 'float'
     cast = '(double)'
 
 
-def eval_ast_expr(node, globals, *, filename='-'):
+eleza eval_ast_expr(node, globals, *, filename='-'):
     """
-    Takes an ast.Expr node.  Compiles and evaluates it.
+    Takes an ast.Expr node.  Compiles na evaluates it.
     Returns the result of the expression.
 
     globals represents the globals dict the expression
-    should see.  (There's no equivalent for "locals" here.)
+    should see.  (There's no equivalent kila "locals" here.)
     """
 
-    if isinstance(node, ast.Expr):
+    ikiwa isinstance(node, ast.Expr):
         node = node.value
 
     node = ast.Expression(node)
     co = compile(node, filename, 'eval')
     fn = types.FunctionType(co, globals)
-    return fn()
+    rudisha fn()
 
 
-class IndentStack:
-    def __init__(self):
+kundi IndentStack:
+    eleza __init__(self):
         self.indents = []
-        self.margin = None
+        self.margin = Tupu
 
-    def _ensure(self):
-        if not self.indents:
+    eleza _ensure(self):
+        ikiwa sio self.indents:
             fail('IndentStack expected indents, but none are defined.')
 
-    def measure(self, line):
+    eleza measure(self, line):
         """
         Returns the length of the line's margin.
         """
-        if '\t' in line:
-            fail('Tab characters are illegal in the Argument Clinic DSL.')
+        ikiwa '\t' kwenye line:
+            fail('Tab characters are illegal kwenye the Argument Clinic DSL.')
         stripped = line.lstrip()
-        if not len(stripped):
-            # we can't tell anything from an empty line
+        ikiwa sio len(stripped):
+            # we can't tell anything kutoka an empty line
             # so just pretend it's indented like our current indent
             self._ensure()
-            return self.indents[-1]
-        return len(line) - len(stripped)
+            rudisha self.indents[-1]
+        rudisha len(line) - len(stripped)
 
-    def infer(self, line):
+    eleza infer(self, line):
         """
-        Infer what is now the current margin based on this line.
+        Infer what ni now the current margin based on this line.
         Returns:
-            1 if we have indented (or this is the first margin)
-            0 if the margin has not changed
-           -N if we have dedented N times
+            1 ikiwa we have indented (or this ni the first margin)
+            0 ikiwa the margin has sio changed
+           -N ikiwa we have dedented N times
         """
         indent = self.measure(line)
         margin = ' ' * indent
-        if not self.indents:
+        ikiwa sio self.indents:
             self.indents.append(indent)
             self.margin = margin
-            return 1
+            rudisha 1
         current = self.indents[-1]
-        if indent == current:
-            return 0
-        if indent > current:
+        ikiwa indent == current:
+            rudisha 0
+        ikiwa indent > current:
             self.indents.append(indent)
             self.margin = margin
-            return 1
+            rudisha 1
         # indent < current
-        if indent not in self.indents:
+        ikiwa indent haiko kwenye self.indents:
             fail("Illegal outdent.")
         outdent_count = 0
-        while indent != current:
+        wakati indent != current:
             self.indents.pop()
             current = self.indents[-1]
             outdent_count -= 1
         self.margin = margin
-        return outdent_count
+        rudisha outdent_count
 
     @property
-    def depth(self):
+    eleza depth(self):
         """
         Returns how many margins are currently defined.
         """
-        return len(self.indents)
+        rudisha len(self.indents)
 
-    def indent(self, line):
+    eleza indent(self, line):
         """
         Indents a line by the currently defined margin.
         """
-        return self.margin + line
+        rudisha self.margin + line
 
-    def dedent(self, line):
+    eleza dedent(self, line):
         """
         Dedents a line by the currently defined margin.
         (The inverse of 'indent'.)
         """
         margin = self.margin
         indent = self.indents[-1]
-        if not line.startswith(margin):
-            fail('Cannot dedent, line does not start with the previous margin:')
-        return line[indent:]
+        ikiwa sio line.startswith(margin):
+            fail('Cannot dedent, line does sio start ukijumuisha the previous margin:')
+        rudisha line[indent:]
 
 
-class DSLParser:
-    def __init__(self, clinic):
+kundi DSLParser:
+    eleza __init__(self, clinic):
         self.clinic = clinic
 
         self.directives = {}
-        for name in dir(self):
-            # functions that start with directive_ are added to directives
+        kila name kwenye dir(self):
+            # functions that start ukijumuisha directive_ are added to directives
             _, s, key = name.partition("directive_")
-            if s:
+            ikiwa s:
                 self.directives[key] = getattr(self, name)
 
-            # functions that start with at_ are too, with an @ in front
+            # functions that start ukijumuisha at_ are too, ukijumuisha an @ kwenye front
             _, s, key = name.partition("at_")
-            if s:
+            ikiwa s:
                 self.directives['@' + key] = getattr(self, name)
 
         self.reset()
 
-    def reset(self):
-        self.function = None
+    eleza reset(self):
+        self.function = Tupu
         self.state = self.state_dsl_start
-        self.parameter_indent = None
-        self.keyword_only = False
-        self.positional_only = False
+        self.parameter_indent = Tupu
+        self.keyword_only = Uongo
+        self.positional_only = Uongo
         self.group = 0
         self.parameter_state = self.ps_start
-        self.seen_positional_with_default = False
+        self.seen_positional_with_default = Uongo
         self.indent = IndentStack()
         self.kind = CALLABLE
-        self.coexist = False
+        self.coexist = Uongo
         self.parameter_continuation = ''
-        self.preserve_output = False
+        self.preserve_output = Uongo
 
-    def directive_version(self, required):
+    eleza directive_version(self, required):
         global version
-        if version_comparitor(version, required) < 0:
+        ikiwa version_comparitor(version, required) < 0:
             fail("Insufficient Clinic version!\n  Version: " + version + "\n  Required: " + required)
 
-    def directive_module(self, name):
+    eleza directive_module(self, name):
         fields = name.split('.')
         new = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
-        if cls:
+        ikiwa cls:
             fail("Can't nest a module inside a class!")
 
-        if name in module.classes:
+        ikiwa name kwenye module.classes:
             fail("Already defined module " + repr(name) + "!")
 
         m = Module(name, module)
         module.modules[name] = m
         self.block.signatures.append(m)
 
-    def directive_class(self, name, typedef, type_object):
+    eleza directive_class(self, name, typedef, type_object):
         fields = name.split('.')
-        in_classes = False
+        in_classes = Uongo
         parent = self
         name = fields.pop()
         so_far = []
         module, cls = self.clinic._module_and_class(fields)
 
-        parent = cls or module
-        if name in parent.classes:
-            fail("Already defined class " + repr(name) + "!")
+        parent = cls ama module
+        ikiwa name kwenye parent.classes:
+            fail("Already defined kundi " + repr(name) + "!")
 
         c = Class(name, module, cls, typedef, type_object)
         parent.classes[name] = c
         self.block.signatures.append(c)
 
-    def directive_set(self, name, value):
-        if name not in ("line_prefix", "line_suffix"):
+    eleza directive_set(self, name, value):
+        ikiwa name haiko kwenye ("line_prefix", "line_suffix"):
             fail("unknown variable", repr(name))
 
         value = value.format_map({
@@ -3917,259 +3917,259 @@ class DSLParser:
 
         self.clinic.__dict__[name] = value
 
-    def directive_destination(self, name, command, *args):
-        if command == 'new':
+    eleza directive_destination(self, name, command, *args):
+        ikiwa command == 'new':
             self.clinic.add_destination(name, *args)
-            return
+            rudisha
 
-        if command == 'clear':
+        ikiwa command == 'clear':
             self.clinic.get_destination(name).clear()
         fail("unknown destination command", repr(command))
 
 
-    def directive_output(self, command_or_name, destination=''):
+    eleza directive_output(self, command_or_name, destination=''):
         fd = self.clinic.destination_buffers
 
-        if command_or_name == "preset":
+        ikiwa command_or_name == "preset":
             preset = self.clinic.presets.get(destination)
-            if not preset:
+            ikiwa sio preset:
                 fail("Unknown preset " + repr(destination) + "!")
             fd.update(preset)
-            return
+            rudisha
 
-        if command_or_name == "push":
+        ikiwa command_or_name == "push":
             self.clinic.destination_buffers_stack.append(fd.copy())
-            return
+            rudisha
 
-        if command_or_name == "pop":
-            if not self.clinic.destination_buffers_stack:
-                fail("Can't 'output pop', stack is empty!")
+        ikiwa command_or_name == "pop":
+            ikiwa sio self.clinic.destination_buffers_stack:
+                fail("Can't 'output pop', stack ni empty!")
             previous_fd = self.clinic.destination_buffers_stack.pop()
             fd.update(previous_fd)
-            return
+            rudisha
 
-        # secret command for debugging!
-        if command_or_name == "print" or command_or_name == "andika":
+        # secret command kila debugging!
+        ikiwa command_or_name == "print" ama command_or_name == "andika":
             self.block.output.append(pprint.pformat(fd))
             self.block.output.append('\n')
-            return
+            rudisha
 
         d = self.clinic.get_destination(destination)
 
-        if command_or_name == "everything":
-            for name in list(fd):
+        ikiwa command_or_name == "everything":
+            kila name kwenye list(fd):
                 fd[name] = d
-            return
+            rudisha
 
-        if command_or_name not in fd:
+        ikiwa command_or_name haiko kwenye fd:
             fail("Invalid command / destination name " + repr(command_or_name) + ", must be one of:\n  preset push pop print everything " + " ".join(fd))
         fd[command_or_name] = d
 
-    def directive_dump(self, name):
+    eleza directive_dump(self, name):
         self.block.output.append(self.clinic.get_destination(name).dump())
 
-    def directive_print(self, *args):
+    eleza directive_andika(self, *args):
         self.block.output.append(' '.join(args))
         self.block.output.append('\n')
 
-    def directive_preserve(self):
-        if self.preserve_output:
-            fail("Can't have preserve twice in one block!")
-        self.preserve_output = True
+    eleza directive_preserve(self):
+        ikiwa self.preserve_output:
+            fail("Can't have preserve twice kwenye one block!")
+        self.preserve_output = Kweli
 
-    def at_classmethod(self):
-        if self.kind is not CALLABLE:
-            fail("Can't set @classmethod, function is not a normal callable")
+    eleza at_classmethod(self):
+        ikiwa self.kind ni sio CALLABLE:
+            fail("Can't set @classmethod, function ni sio a normal callable")
         self.kind = CLASS_METHOD
 
-    def at_staticmethod(self):
-        if self.kind is not CALLABLE:
-            fail("Can't set @staticmethod, function is not a normal callable")
+    eleza at_staticmethod(self):
+        ikiwa self.kind ni sio CALLABLE:
+            fail("Can't set @staticmethod, function ni sio a normal callable")
         self.kind = STATIC_METHOD
 
-    def at_coexist(self):
-        if self.coexist:
+    eleza at_coexist(self):
+        ikiwa self.coexist:
             fail("Called @coexist twice!")
-        self.coexist = True
+        self.coexist = Kweli
 
-    def parse(self, block):
+    eleza parse(self, block):
         self.reset()
         self.block = block
         self.saved_output = self.block.output
         block.output = []
         block_start = self.clinic.block_parser.line_number
         lines = block.input.split('\n')
-        for line_number, line in enumerate(lines, self.clinic.block_parser.block_start_line_number):
-            if '\t' in line:
-                fail('Tab characters are illegal in the Clinic DSL.\n\t' + repr(line), line_number=block_start)
+        kila line_number, line kwenye enumerate(lines, self.clinic.block_parser.block_start_line_number):
+            ikiwa '\t' kwenye line:
+                fail('Tab characters are illegal kwenye the Clinic DSL.\n\t' + repr(line), line_number=block_start)
             self.state(line)
 
         self.next(self.state_terminal)
-        self.state(None)
+        self.state(Tupu)
 
         block.output.extend(self.clinic.language.render(clinic, block.signatures))
 
-        if self.preserve_output:
-            if block.output:
-                fail("'preserve' only works for blocks that don't produce any output!")
+        ikiwa self.preserve_output:
+            ikiwa block.output:
+                fail("'preserve' only works kila blocks that don't produce any output!")
             block.output = self.saved_output
 
     @staticmethod
-    def ignore_line(line):
+    eleza ignore_line(line):
         # ignore comment-only lines
-        if line.lstrip().startswith('#'):
-            return True
+        ikiwa line.lstrip().startswith('#'):
+            rudisha Kweli
 
         # Ignore empty lines too
-        # (but not in docstring sections!)
-        if not line.strip():
-            return True
+        # (but haiko kwenye docstring sections!)
+        ikiwa sio line.strip():
+            rudisha Kweli
 
-        return False
+        rudisha Uongo
 
     @staticmethod
-    def calculate_indent(line):
-        return len(line) - len(line.strip())
+    eleza calculate_indent(line):
+        rudisha len(line) - len(line.strip())
 
-    def next(self, state, line=None):
-        # real_print(self.state.__name__, "->", state.__name__, ", line=", line)
+    eleza next(self, state, line=Tupu):
+        # real_andika(self.state.__name__, "->", state.__name__, ", line=", line)
         self.state = state
-        if line is not None:
+        ikiwa line ni sio Tupu:
             self.state(line)
 
-    def state_dsl_start(self, line):
+    eleza state_dsl_start(self, line):
         # self.block = self.ClinicOutputBlock(self)
-        if self.ignore_line(line):
-            return
+        ikiwa self.ignore_line(line):
+            rudisha
 
-        # is it a directive?
+        # ni it a directive?
         fields = shlex.split(line)
         directive_name = fields[0]
-        directive = self.directives.get(directive_name, None)
-        if directive:
-            try:
+        directive = self.directives.get(directive_name, Tupu)
+        ikiwa directive:
+            jaribu:
                 directive(*fields[1:])
-            except TypeError as e:
+            tatizo TypeError kama e:
                 fail(str(e))
-            return
+            rudisha
 
         self.next(self.state_modulename_name, line)
 
-    def state_modulename_name(self, line):
-        # looking for declaration, which establishes the leftmost column
+    eleza state_modulename_name(self, line):
+        # looking kila declaration, which establishes the leftmost column
         # line should be
-        #     modulename.fnname [as c_basename] [-> return annotation]
+        #     modulename.fnname [as c_basename] [-> rudisha annotation]
         # square brackets denote optional syntax.
         #
         # alternatively:
         #     modulename.fnname [as c_basename] = modulename.existing_fn_name
-        # clones the parameters and return converter from that
+        # clones the parameters na rudisha converter kutoka that
         # function.  you can't modify them.  you must enter a
         # new docstring.
         #
         # (but we might find a directive first!)
         #
-        # this line is permitted to start with whitespace.
-        # we'll call this number of spaces F (for "function").
+        # this line ni permitted to start ukijumuisha whitespace.
+        # we'll call this number of spaces F (kila "function").
 
-        if not line.strip():
-            return
+        ikiwa sio line.strip():
+            rudisha
 
         self.indent.infer(line)
 
         # are we cloning?
         before, equals, existing = line.rpartition('=')
-        if equals:
-            full_name, _, c_basename = before.partition(' as ')
+        ikiwa equals:
+            full_name, _, c_basename = before.partition(' kama ')
             full_name = full_name.strip()
             c_basename = c_basename.strip()
             existing = existing.strip()
-            if (is_legal_py_identifier(full_name) and
-                (not c_basename or is_legal_c_identifier(c_basename)) and
+            ikiwa (is_legal_py_identifier(full_name) na
+                (sio c_basename ama is_legal_c_identifier(c_basename)) na
                 is_legal_py_identifier(existing)):
                 # we're cloning!
-                fields = [x.strip() for x in existing.split('.')]
+                fields = [x.strip() kila x kwenye existing.split('.')]
                 function_name = fields.pop()
                 module, cls = self.clinic._module_and_class(fields)
 
-                for existing_function in (cls or module).functions:
-                    if existing_function.name == function_name:
-                        break
-                else:
-                    existing_function = None
-                if not existing_function:
-                    print("class", cls, "module", module, "existing", existing)
-                    print("cls. functions", cls.functions)
+                kila existing_function kwenye (cls ama module).functions:
+                    ikiwa existing_function.name == function_name:
+                        koma
+                isipokua:
+                    existing_function = Tupu
+                ikiwa sio existing_function:
+                    andika("class", cls, "module", module, "existing", existing)
+                    andika("cls. functions", cls.functions)
                     fail("Couldn't find existing function " + repr(existing) + "!")
 
-                fields = [x.strip() for x in full_name.split('.')]
+                fields = [x.strip() kila x kwenye full_name.split('.')]
                 function_name = fields.pop()
                 module, cls = self.clinic._module_and_class(fields)
 
-                if not (existing_function.kind == self.kind and existing_function.coexist == self.coexist):
-                    fail("'kind' of function and cloned function don't match!  (@classmethod/@staticmethod/@coexist)")
+                ikiwa sio (existing_function.kind == self.kind na existing_function.coexist == self.coexist):
+                    fail("'kind' of function na cloned function don't match!  (@classmethod/@staticmethod/@coexist)")
                 self.function = existing_function.copy(name=function_name, full_name=full_name, module=module, cls=cls, c_basename=c_basename, docstring='')
 
                 self.block.signatures.append(self.function)
-                (cls or module).functions.append(self.function)
+                (cls ama module).functions.append(self.function)
                 self.next(self.state_function_docstring)
-                return
+                rudisha
 
         line, _, returns = line.partition('->')
 
-        full_name, _, c_basename = line.partition(' as ')
+        full_name, _, c_basename = line.partition(' kama ')
         full_name = full_name.strip()
-        c_basename = c_basename.strip() or None
+        c_basename = c_basename.strip() ama Tupu
 
-        if not is_legal_py_identifier(full_name):
+        ikiwa sio is_legal_py_identifier(full_name):
             fail("Illegal function name: {}".format(full_name))
-        if c_basename and not is_legal_c_identifier(c_basename):
+        ikiwa c_basename na sio is_legal_c_identifier(c_basename):
             fail("Illegal C basename: {}".format(c_basename))
 
-        return_converter = None
-        if returns:
-            ast_input = "def x() -> {}: pass".format(returns)
-            module = None
-            try:
+        return_converter = Tupu
+        ikiwa returns:
+            ast_input = "eleza x() -> {}: pita".format(returns)
+            module = Tupu
+            jaribu:
                 module = ast.parse(ast_input)
-            except SyntaxError:
-                pass
-            if not module:
-                fail("Badly-formed annotation for " + full_name + ": " + returns)
-            try:
+            tatizo SyntaxError:
+                pita
+            ikiwa sio module:
+                fail("Badly-formed annotation kila " + full_name + ": " + returns)
+            jaribu:
                 name, legacy, kwargs = self.parse_converter(module.body[0].returns)
-                if legacy:
-                    fail("Legacy converter {!r} not allowed as a return converter"
+                ikiwa legacy:
+                    fail("Legacy converter {!r} sio allowed kama a rudisha converter"
                          .format(name))
-                if name not in return_converters:
-                    fail("No available return converter called " + repr(name))
+                ikiwa name haiko kwenye return_converters:
+                    fail("No available rudisha converter called " + repr(name))
                 return_converter = return_converters[name](**kwargs)
-            except ValueError:
-                fail("Badly-formed annotation for " + full_name + ": " + returns)
+            tatizo ValueError:
+                fail("Badly-formed annotation kila " + full_name + ": " + returns)
 
-        fields = [x.strip() for x in full_name.split('.')]
+        fields = [x.strip() kila x kwenye full_name.split('.')]
         function_name = fields.pop()
         module, cls = self.clinic._module_and_class(fields)
 
         fields = full_name.split('.')
-        if fields[-1] == '__new__':
-            if (self.kind != CLASS_METHOD) or (not cls):
-                fail("__new__ must be a class method!")
+        ikiwa fields[-1] == '__new__':
+            ikiwa (self.kind != CLASS_METHOD) ama (sio cls):
+                fail("__new__ must be a kundi method!")
             self.kind = METHOD_NEW
-        elif fields[-1] == '__init__':
-            if (self.kind != CALLABLE) or (not cls):
-                fail("__init__ must be a normal method, not a class or static method!")
+        lasivyo fields[-1] == '__init__':
+            ikiwa (self.kind != CALLABLE) ama (sio cls):
+                fail("__init__ must be a normal method, sio a kundi ama static method!")
             self.kind = METHOD_INIT
-            if not return_converter:
+            ikiwa sio return_converter:
                 return_converter = init_return_converter()
-        elif fields[-1] in unsupported_special_methods:
-            fail(fields[-1] + " is a special method and cannot be converted to Argument Clinic!  (Yet.)")
+        lasivyo fields[-1] kwenye unsupported_special_methods:
+            fail(fields[-1] + " ni a special method na cannot be converted to Argument Clinic!  (Yet.)")
 
-        if not return_converter:
+        ikiwa sio return_converter:
             return_converter = CReturnConverter()
 
-        if not module:
-            fail("Undefined module used in declaration of " + repr(full_name.strip()) + ".")
+        ikiwa sio module:
+            fail("Undefined module used kwenye declaration of " + repr(full_name.strip()) + ".")
         self.function = Function(name=function_name, full_name=full_name, module=module, cls=cls, c_basename=c_basename,
                                  return_converter=return_converter, kind=self.kind, coexist=self.coexist)
         self.block.signatures.append(self.function)
@@ -4177,54 +4177,54 @@ class DSLParser:
         # insert a self converter automatically
         type, name = correct_name_for_self(self.function)
         kwargs = {}
-        if cls and type == "PyObject *":
+        ikiwa cls na type == "PyObject *":
             kwargs['type'] = cls.typedef
         sc = self.function.self_converter = self_converter(name, name, self.function, **kwargs)
         p_self = Parameter(sc.name, inspect.Parameter.POSITIONAL_ONLY, function=self.function, converter=sc)
         self.function.parameters[sc.name] = p_self
 
-        (cls or module).functions.append(self.function)
+        (cls ama module).functions.append(self.function)
         self.next(self.state_parameters_start)
 
     # Now entering the parameters section.  The rules, formally stated:
     #
-    #   * All lines must be indented with spaces only.
+    #   * All lines must be indented ukijumuisha spaces only.
     #   * The first line must be a parameter declaration.
     #   * The first line must be indented.
-    #       * This first line establishes the indent for parameters.
-    #       * We'll call this number of spaces P (for "parameter").
+    #       * This first line establishes the indent kila parameters.
+    #       * We'll call this number of spaces P (kila "parameter").
     #   * Thenceforth:
-    #       * Lines indented with P spaces specify a parameter.
-    #       * Lines indented with > P spaces are docstrings for the previous
+    #       * Lines indented ukijumuisha P spaces specify a parameter.
+    #       * Lines indented ukijumuisha > P spaces are docstrings kila the previous
     #         parameter.
-    #           * We'll call this number of spaces D (for "docstring").
-    #           * All subsequent lines indented with >= D spaces are stored as
+    #           * We'll call this number of spaces D (kila "docstring").
+    #           * All subsequent lines indented ukijumuisha >= D spaces are stored as
     #             part of the per-parameter docstring.
     #           * All lines will have the first D spaces of the indent stripped
     #             before they are stored.
-    #           * It's illegal to have a line starting with a number of spaces X
+    #           * It's illegal to have a line starting ukijumuisha a number of spaces X
     #             such that P < X < D.
-    #       * A line with < P spaces is the first line of the function
-    #         docstring, which ends processing for parameters and per-parameter
+    #       * A line ukijumuisha < P spaces ni the first line of the function
+    #         docstring, which ends processing kila parameters na per-parameter
     #         docstrings.
     #           * The first line of the function docstring must be at the same
-    #             indent as the function declaration.
-    #       * It's illegal to have any line in the parameters section starting
-    #         with X spaces such that F < X < P.  (As before, F is the indent
+    #             indent kama the function declaration.
+    #       * It's illegal to have any line kwenye the parameters section starting
+    #         ukijumuisha X spaces such that F < X < P.  (As before, F ni the indent
     #         of the function declaration.)
     #
     # Also, currently Argument Clinic places the following restrictions on groups:
     #   * Each group must contain at least one parameter.
     #   * Each group may contain at most one group, which must be the furthest
-    #     thing in the group from the required parameters.  (The nested group
-    #     must be the first in the group when it's before the required
-    #     parameters, and the last thing in the group when after the required
+    #     thing kwenye the group kutoka the required parameters.  (The nested group
+    #     must be the first kwenye the group when it's before the required
+    #     parameters, na the last thing kwenye the group when after the required
     #     parameters.)
-    #   * There may be at most one (top-level) group to the left or right of
+    #   * There may be at most one (top-level) group to the left ama right of
     #     the required parameters.
-    #   * You must specify a slash, and it must be after all parameters.
+    #   * You must specify a slash, na it must be after all parameters.
     #     (In other words: either all parameters are positional-only,
-    #      or none are.)
+    #      ama none are.)
     #
     #  Said another way:
     #   * Each group must contain at least one parameter.
@@ -4232,136 +4232,136 @@ class DSLParser:
     #     consecutive.  (You can't have a left square bracket followed
     #     by a parameter, then another left square bracket.  You can't
     #     have a left square bracket, a parameter, a right square bracket,
-    #     and then a left square bracket.)
+    #     na then a left square bracket.)
     #   * All right square brackets after the required parameters must be
     #     consecutive.
     #
-    # These rules are enforced with a single state variable:
-    # "parameter_state".  (Previously the code was a miasma of ifs and
+    # These rules are enforced ukijumuisha a single state variable:
+    # "parameter_state".  (Previously the code was a miasma of ifs na
     # separate boolean state variables.)  The states are:
     #
     #  [ [ a, b, ] c, ] d, e, f=3, [ g, h, [ i ] ]   <- line
     # 01   2          3       4    5           6     <- state transitions
     #
-    # 0: ps_start.  before we've seen anything.  legal transitions are to 1 or 3.
+    # 0: ps_start.  before we've seen anything.  legal transitions are to 1 ama 3.
     # 1: ps_left_square_before.  left square brackets before required parameters.
-    # 2: ps_group_before.  in a group, before required parameters.
-    # 3: ps_required.  required parameters, positional-or-keyword or positional-only
+    # 2: ps_group_before.  kwenye a group, before required parameters.
+    # 3: ps_required.  required parameters, positional-or-keyword ama positional-only
     #     (we don't know yet).  (renumber left groups!)
-    # 4: ps_optional.  positional-or-keyword or positional-only parameters that
+    # 4: ps_optional.  positional-or-keyword ama positional-only parameters that
     #    now must have default values.
-    # 5: ps_group_after.  in a group, after required parameters.
+    # 5: ps_group_after.  kwenye a group, after required parameters.
     # 6: ps_right_square_after.  right square brackets after required parameters.
     ps_start, ps_left_square_before, ps_group_before, ps_required, \
     ps_optional, ps_group_after, ps_right_square_after = range(7)
 
-    def state_parameters_start(self, line):
-        if self.ignore_line(line):
-            return
+    eleza state_parameters_start(self, line):
+        ikiwa self.ignore_line(line):
+            rudisha
 
-        # if this line is not indented, we have no parameters
-        if not self.indent.infer(line):
-            return self.next(self.state_function_docstring, line)
+        # ikiwa this line ni sio indented, we have no parameters
+        ikiwa sio self.indent.infer(line):
+            rudisha self.next(self.state_function_docstring, line)
 
         self.parameter_continuation = ''
-        return self.next(self.state_parameter, line)
+        rudisha self.next(self.state_parameter, line)
 
 
-    def to_required(self):
+    eleza to_required(self):
         """
         Transition to the "required" parameter state.
         """
-        if self.parameter_state != self.ps_required:
+        ikiwa self.parameter_state != self.ps_required:
             self.parameter_state = self.ps_required
-            for p in self.function.parameters.values():
+            kila p kwenye self.function.parameters.values():
                 p.group = -p.group
 
-    def state_parameter(self, line):
-        if self.parameter_continuation:
+    eleza state_parameter(self, line):
+        ikiwa self.parameter_continuation:
             line = self.parameter_continuation + ' ' + line.lstrip()
             self.parameter_continuation = ''
 
-        if self.ignore_line(line):
-            return
+        ikiwa self.ignore_line(line):
+            rudisha
 
         assert self.indent.depth == 2
         indent = self.indent.infer(line)
-        if indent == -1:
+        ikiwa indent == -1:
             # we outdented, must be to definition column
-            return self.next(self.state_function_docstring, line)
+            rudisha self.next(self.state_function_docstring, line)
 
-        if indent == 1:
+        ikiwa indent == 1:
             # we indented, must be to new parameter docstring column
-            return self.next(self.state_parameter_docstring_start, line)
+            rudisha self.next(self.state_parameter_docstring_start, line)
 
         line = line.rstrip()
-        if line.endswith('\\'):
+        ikiwa line.endswith('\\'):
             self.parameter_continuation = line[:-1]
-            return
+            rudisha
 
         line = line.lstrip()
 
-        if line in ('*', '/', '[', ']'):
+        ikiwa line kwenye ('*', '/', '[', ']'):
             self.parse_special_symbol(line)
-            return
+            rudisha
 
-        if self.parameter_state in (self.ps_start, self.ps_required):
+        ikiwa self.parameter_state kwenye (self.ps_start, self.ps_required):
             self.to_required()
-        elif self.parameter_state == self.ps_left_square_before:
+        lasivyo self.parameter_state == self.ps_left_square_before:
             self.parameter_state = self.ps_group_before
-        elif self.parameter_state == self.ps_group_before:
-            if not self.group:
+        lasivyo self.parameter_state == self.ps_group_before:
+            ikiwa sio self.group:
                 self.to_required()
-        elif self.parameter_state in (self.ps_group_after, self.ps_optional):
-            pass
-        else:
+        lasivyo self.parameter_state kwenye (self.ps_group_after, self.ps_optional):
+            pita
+        isipokua:
             fail("Function " + self.function.name + " has an unsupported group configuration. (Unexpected state " + str(self.parameter_state) + ".a)")
 
-        # handle "as" for  parameters too
-        c_name = None
-        name, have_as_token, trailing = line.partition(' as ')
-        if have_as_token:
+        # handle "as" kila  parameters too
+        c_name = Tupu
+        name, have_as_token, trailing = line.partition(' kama ')
+        ikiwa have_as_token:
             name = name.strip()
-            if ' ' not in name:
+            ikiwa ' ' haiko kwenye name:
                 fields = trailing.strip().split(' ')
-                if not fields:
+                ikiwa sio fields:
                     fail("Invalid 'as' clause!")
                 c_name = fields[0]
-                if c_name.endswith(':'):
+                ikiwa c_name.endswith(':'):
                     name += ':'
                     c_name = c_name[:-1]
                 fields[0] = name
                 line = ' '.join(fields)
 
         base, equals, default = line.rpartition('=')
-        if not equals:
+        ikiwa sio equals:
             base = default
-            default = None
+            default = Tupu
 
-        module = None
-        try:
-            ast_input = "def x({}): pass".format(base)
+        module = Tupu
+        jaribu:
+            ast_input = "eleza x({}): pita".format(base)
             module = ast.parse(ast_input)
-        except SyntaxError:
-            try:
+        tatizo SyntaxError:
+            jaribu:
                 # the last = was probably inside a function call, like
                 #   c: int(accept={str})
                 # so assume there was no actual default value.
-                default = None
-                ast_input = "def x({}): pass".format(line)
+                default = Tupu
+                ast_input = "eleza x({}): pita".format(line)
                 module = ast.parse(ast_input)
-            except SyntaxError:
-                pass
-        if not module:
+            tatizo SyntaxError:
+                pita
+        ikiwa sio module:
             fail("Function " + self.function.name + " has an invalid parameter declaration:\n\t" + line)
 
         function_args = module.body[0].args
 
-        if len(function_args.args) > 1:
+        ikiwa len(function_args.args) > 1:
             fail("Function " + self.function.name + " has an invalid parameter declaration (comma?):\n\t" + line)
-        if function_args.defaults or function_args.kw_defaults:
+        ikiwa function_args.defaults ama function_args.kw_defaults:
             fail("Function " + self.function.name + " has an invalid parameter declaration (default value?):\n\t" + line)
-        if function_args.vararg or function_args.kwarg:
+        ikiwa function_args.vararg ama function_args.kwarg:
             fail("Function " + self.function.name + " has an invalid parameter declaration (*args? **kwargs?):\n\t" + line)
 
         parameter = function_args.args[0]
@@ -4369,41 +4369,41 @@ class DSLParser:
         parameter_name = parameter.arg
         name, legacy, kwargs = self.parse_converter(parameter.annotation)
 
-        if not default:
-            if self.parameter_state == self.ps_optional:
-                fail("Can't have a parameter without a default (" + repr(parameter_name) + ")\nafter a parameter with a default!")
+        ikiwa sio default:
+            ikiwa self.parameter_state == self.ps_optional:
+                fail("Can't have a parameter without a default (" + repr(parameter_name) + ")\nafter a parameter ukijumuisha a default!")
             value = unspecified
-            if 'py_default' in kwargs:
+            ikiwa 'py_default' kwenye kwargs:
                 fail("You can't specify py_default without specifying a default value!")
-        else:
-            if self.parameter_state == self.ps_required:
+        isipokua:
+            ikiwa self.parameter_state == self.ps_required:
                 self.parameter_state = self.ps_optional
             default = default.strip()
-            bad = False
+            bad = Uongo
             ast_input = "x = {}".format(default)
-            bad = False
-            try:
+            bad = Uongo
+            jaribu:
                 module = ast.parse(ast_input)
 
-                if 'c_default' not in kwargs:
-                    # we can only represent very simple data values in C.
-                    # detect whether default is okay, via a blacklist
+                ikiwa 'c_default' haiko kwenye kwargs:
+                    # we can only represent very simple data values kwenye C.
+                    # detect whether default ni okay, via a blacklist
                     # of disallowed ast nodes.
-                    class DetectBadNodes(ast.NodeVisitor):
-                        bad = False
-                        def bad_node(self, node):
-                            self.bad = True
+                    kundi DetectBadNodes(ast.NodeVisitor):
+                        bad = Uongo
+                        eleza bad_node(self, node):
+                            self.bad = Kweli
 
                         # inline function call
                         visit_Call = bad_node
-                        # inline if statement ("x = 3 if y else z")
+                        # inline ikiwa statement ("x = 3 ikiwa y isipokua z")
                         visit_IfExp = bad_node
 
-                        # comprehensions and generator expressions
+                        # comprehensions na generator expressions
                         visit_ListComp = visit_SetComp = bad_node
                         visit_DictComp = visit_GeneratorExp = bad_node
 
-                        # literals for advanced types
+                        # literals kila advanced types
                         visit_Dict = visit_Set = bad_node
                         visit_List = visit_Tuple = bad_node
 
@@ -4413,234 +4413,234 @@ class DSLParser:
                     blacklist = DetectBadNodes()
                     blacklist.visit(module)
                     bad = blacklist.bad
-                else:
-                    # if they specify a c_default, we can be more lenient about the default value.
+                isipokua:
+                    # ikiwa they specify a c_default, we can be more lenient about the default value.
                     # but at least make an attempt at ensuring it's a valid expression.
-                    try:
+                    jaribu:
                         value = eval(default)
-                        if value == unspecified:
-                            fail("'unspecified' is not a legal default value!")
-                    except NameError:
-                        pass # probably a named constant
-                    except Exception as e:
-                        fail("Malformed expression given as default value\n"
+                        ikiwa value == unspecified:
+                            fail("'unspecified' ni sio a legal default value!")
+                    tatizo NameError:
+                        pita # probably a named constant
+                    tatizo Exception kama e:
+                        fail("Malformed expression given kama default value\n"
                              "{!r} caused {!r}".format(default, e))
-                if bad:
-                    fail("Unsupported expression as default value: " + repr(default))
+                ikiwa bad:
+                    fail("Unsupported expression kama default value: " + repr(default))
 
                 expr = module.body[0].value
-                # mild hack: explicitly support NULL as a default value
-                if isinstance(expr, ast.Name) and expr.id == 'NULL':
+                # mild hack: explicitly support NULL kama a default value
+                ikiwa isinstance(expr, ast.Name) na expr.id == 'NULL':
                     value = NULL
                     py_default = '<unrepresentable>'
                     c_default = "NULL"
-                elif (isinstance(expr, ast.BinOp) or
-                    (isinstance(expr, ast.UnaryOp) and
-                     not (isinstance(expr.operand, ast.Num) or
-                          (hasattr(ast, 'Constant') and
-                           isinstance(expr.operand, ast.Constant) and
-                           type(expr.operand.value) in (int, float, complex)))
+                lasivyo (isinstance(expr, ast.BinOp) ama
+                    (isinstance(expr, ast.UnaryOp) na
+                     sio (isinstance(expr.operand, ast.Num) ama
+                          (hasattr(ast, 'Constant') na
+                           isinstance(expr.operand, ast.Constant) na
+                           type(expr.operand.value) kwenye (int, float, complex)))
                     )):
                     c_default = kwargs.get("c_default")
-                    if not (isinstance(c_default, str) and c_default):
-                        fail("When you specify an expression (" + repr(default) + ") as your default value,\nyou MUST specify a valid c_default." + ast.dump(expr))
+                    ikiwa sio (isinstance(c_default, str) na c_default):
+                        fail("When you specify an expression (" + repr(default) + ") kama your default value,\nyou MUST specify a valid c_default." + ast.dump(expr))
                     py_default = default
                     value = unknown
-                elif isinstance(expr, ast.Attribute):
+                lasivyo isinstance(expr, ast.Attribute):
                     a = []
                     n = expr
-                    while isinstance(n, ast.Attribute):
+                    wakati isinstance(n, ast.Attribute):
                         a.append(n.attr)
                         n = n.value
-                    if not isinstance(n, ast.Name):
+                    ikiwa sio isinstance(n, ast.Name):
                         fail("Unsupported default value " + repr(default) + " (looked like a Python constant)")
                     a.append(n.id)
                     py_default = ".".join(reversed(a))
 
                     c_default = kwargs.get("c_default")
-                    if not (isinstance(c_default, str) and c_default):
-                        fail("When you specify a named constant (" + repr(py_default) + ") as your default value,\nyou MUST specify a valid c_default.")
+                    ikiwa sio (isinstance(c_default, str) na c_default):
+                        fail("When you specify a named constant (" + repr(py_default) + ") kama your default value,\nyou MUST specify a valid c_default.")
 
-                    try:
+                    jaribu:
                         value = eval(py_default)
-                    except NameError:
+                    tatizo NameError:
                         value = unknown
-                else:
+                isipokua:
                     value = ast.literal_eval(expr)
                     py_default = repr(value)
-                    if isinstance(value, (bool, None.__class__)):
+                    ikiwa isinstance(value, (bool, Tupu.__class__)):
                         c_default = "Py_" + py_default
-                    elif isinstance(value, str):
+                    lasivyo isinstance(value, str):
                         c_default = c_repr(value)
-                    else:
+                    isipokua:
                         c_default = py_default
 
-            except SyntaxError as e:
+            tatizo SyntaxError kama e:
                 fail("Syntax error: " + repr(e.text))
-            except (ValueError, AttributeError):
+            tatizo (ValueError, AttributeError):
                 value = unknown
                 c_default = kwargs.get("c_default")
                 py_default = default
-                if not (isinstance(c_default, str) and c_default):
-                    fail("When you specify a named constant (" + repr(py_default) + ") as your default value,\nyou MUST specify a valid c_default.")
+                ikiwa sio (isinstance(c_default, str) na c_default):
+                    fail("When you specify a named constant (" + repr(py_default) + ") kama your default value,\nyou MUST specify a valid c_default.")
 
             kwargs.setdefault('c_default', c_default)
             kwargs.setdefault('py_default', py_default)
 
-        dict = legacy_converters if legacy else converters
-        legacy_str = "legacy " if legacy else ""
-        if name not in dict:
-            fail('{} is not a valid {}converter'.format(name, legacy_str))
-        # if you use a c_name for the parameter, we just give that name to the converter
+        dict = legacy_converters ikiwa legacy isipokua converters
+        legacy_str = "legacy " ikiwa legacy isipokua ""
+        ikiwa name haiko kwenye dict:
+            fail('{} ni sio a valid {}converter'.format(name, legacy_str))
+        # ikiwa you use a c_name kila the parameter, we just give that name to the converter
         # but the parameter object gets the python name
-        converter = dict[name](c_name or parameter_name, parameter_name, self.function, value, **kwargs)
+        converter = dict[name](c_name ama parameter_name, parameter_name, self.function, value, **kwargs)
 
-        kind = inspect.Parameter.KEYWORD_ONLY if self.keyword_only else inspect.Parameter.POSITIONAL_OR_KEYWORD
+        kind = inspect.Parameter.KEYWORD_ONLY ikiwa self.keyword_only isipokua inspect.Parameter.POSITIONAL_OR_KEYWORD
 
-        if isinstance(converter, self_converter):
-            if len(self.function.parameters) == 1:
-                if (self.parameter_state != self.ps_required):
+        ikiwa isinstance(converter, self_converter):
+            ikiwa len(self.function.parameters) == 1:
+                ikiwa (self.parameter_state != self.ps_required):
                     fail("A 'self' parameter cannot be marked optional.")
-                if value is not unspecified:
+                ikiwa value ni sio unspecified:
                     fail("A 'self' parameter cannot have a default value.")
-                if self.group:
-                    fail("A 'self' parameter cannot be in an optional group.")
+                ikiwa self.group:
+                    fail("A 'self' parameter cannot be kwenye an optional group.")
                 kind = inspect.Parameter.POSITIONAL_ONLY
                 self.parameter_state = self.ps_start
                 self.function.parameters.clear()
-            else:
-                fail("A 'self' parameter, if specified, must be the very first thing in the parameter block.")
+            isipokua:
+                fail("A 'self' parameter, ikiwa specified, must be the very first thing kwenye the parameter block.")
 
         p = Parameter(parameter_name, kind, function=self.function, converter=converter, default=value, group=self.group)
 
-        if parameter_name in self.function.parameters:
+        ikiwa parameter_name kwenye self.function.parameters:
             fail("You can't have two parameters named " + repr(parameter_name) + "!")
         self.function.parameters[parameter_name] = p
 
-    def parse_converter(self, annotation):
-        if (hasattr(ast, 'Constant') and
-            isinstance(annotation, ast.Constant) and
-            type(annotation.value) is str):
-            return annotation.value, True, {}
+    eleza parse_converter(self, annotation):
+        ikiwa (hasattr(ast, 'Constant') na
+            isinstance(annotation, ast.Constant) na
+            type(annotation.value) ni str):
+            rudisha annotation.value, Kweli, {}
 
-        if isinstance(annotation, ast.Str):
-            return annotation.s, True, {}
+        ikiwa isinstance(annotation, ast.Str):
+            rudisha annotation.s, Kweli, {}
 
-        if isinstance(annotation, ast.Name):
-            return annotation.id, False, {}
+        ikiwa isinstance(annotation, ast.Name):
+            rudisha annotation.id, Uongo, {}
 
-        if not isinstance(annotation, ast.Call):
-            fail("Annotations must be either a name, a function call, or a string.")
+        ikiwa sio isinstance(annotation, ast.Call):
+            fail("Annotations must be either a name, a function call, ama a string.")
 
         name = annotation.func.id
         symbols = globals()
 
-        kwargs = {node.arg: eval_ast_expr(node.value, symbols) for node in annotation.keywords}
-        return name, False, kwargs
+        kwargs = {node.arg: eval_ast_expr(node.value, symbols) kila node kwenye annotation.keywords}
+        rudisha name, Uongo, kwargs
 
-    def parse_special_symbol(self, symbol):
-        if symbol == '*':
-            if self.keyword_only:
+    eleza parse_special_symbol(self, symbol):
+        ikiwa symbol == '*':
+            ikiwa self.keyword_only:
                 fail("Function " + self.function.name + " uses '*' more than once.")
-            self.keyword_only = True
-        elif symbol == '[':
-            if self.parameter_state in (self.ps_start, self.ps_left_square_before):
+            self.keyword_only = Kweli
+        lasivyo symbol == '[':
+            ikiwa self.parameter_state kwenye (self.ps_start, self.ps_left_square_before):
                 self.parameter_state = self.ps_left_square_before
-            elif self.parameter_state in (self.ps_required, self.ps_group_after):
+            lasivyo self.parameter_state kwenye (self.ps_required, self.ps_group_after):
                 self.parameter_state = self.ps_group_after
-            else:
+            isipokua:
                 fail("Function " + self.function.name + " has an unsupported group configuration. (Unexpected state " + str(self.parameter_state) + ".b)")
             self.group += 1
-            self.function.docstring_only = True
-        elif symbol == ']':
-            if not self.group:
+            self.function.docstring_only = Kweli
+        lasivyo symbol == ']':
+            ikiwa sio self.group:
                 fail("Function " + self.function.name + " has a ] without a matching [.")
-            if not any(p.group == self.group for p in self.function.parameters.values()):
+            ikiwa sio any(p.group == self.group kila p kwenye self.function.parameters.values()):
                 fail("Function " + self.function.name + " has an empty group.\nAll groups must contain at least one parameter.")
             self.group -= 1
-            if self.parameter_state in (self.ps_left_square_before, self.ps_group_before):
+            ikiwa self.parameter_state kwenye (self.ps_left_square_before, self.ps_group_before):
                 self.parameter_state = self.ps_group_before
-            elif self.parameter_state in (self.ps_group_after, self.ps_right_square_after):
+            lasivyo self.parameter_state kwenye (self.ps_group_after, self.ps_right_square_after):
                 self.parameter_state = self.ps_right_square_after
-            else:
+            isipokua:
                 fail("Function " + self.function.name + " has an unsupported group configuration. (Unexpected state " + str(self.parameter_state) + ".c)")
-        elif symbol == '/':
-            if self.positional_only:
+        lasivyo symbol == '/':
+            ikiwa self.positional_only:
                 fail("Function " + self.function.name + " uses '/' more than once.")
-            self.positional_only = True
-            # ps_required and ps_optional are allowed here, that allows positional-only without option groups
+            self.positional_only = Kweli
+            # ps_required na ps_optional are allowed here, that allows positional-only without option groups
             # to work (and have default values!)
-            if (self.parameter_state not in (self.ps_required, self.ps_optional, self.ps_right_square_after, self.ps_group_before)) or self.group:
+            ikiwa (self.parameter_state haiko kwenye (self.ps_required, self.ps_optional, self.ps_right_square_after, self.ps_group_before)) ama self.group:
                 fail("Function " + self.function.name + " has an unsupported group configuration. (Unexpected state " + str(self.parameter_state) + ".d)")
-            if self.keyword_only:
-                fail("Function " + self.function.name + " mixes keyword-only and positional-only parameters, which is unsupported.")
+            ikiwa self.keyword_only:
+                fail("Function " + self.function.name + " mixes keyword-only na positional-only parameters, which ni unsupported.")
             # fixup preceding parameters
-            for p in self.function.parameters.values():
-                if (p.kind != inspect.Parameter.POSITIONAL_OR_KEYWORD and not isinstance(p.converter, self_converter)):
-                    fail("Function " + self.function.name + " mixes keyword-only and positional-only parameters, which is unsupported.")
+            kila p kwenye self.function.parameters.values():
+                ikiwa (p.kind != inspect.Parameter.POSITIONAL_OR_KEYWORD na sio isinstance(p.converter, self_converter)):
+                    fail("Function " + self.function.name + " mixes keyword-only na positional-only parameters, which ni unsupported.")
                 p.kind = inspect.Parameter.POSITIONAL_ONLY
 
-    def state_parameter_docstring_start(self, line):
+    eleza state_parameter_docstring_start(self, line):
         self.parameter_docstring_indent = len(self.indent.margin)
         assert self.indent.depth == 3
-        return self.next(self.state_parameter_docstring, line)
+        rudisha self.next(self.state_parameter_docstring, line)
 
-    # every line of the docstring must start with at least F spaces,
+    # every line of the docstring must start ukijumuisha at least F spaces,
     # where F > P.
     # these F spaces will be stripped.
-    def state_parameter_docstring(self, line):
+    eleza state_parameter_docstring(self, line):
         stripped = line.strip()
-        if stripped.startswith('#'):
-            return
+        ikiwa stripped.startswith('#'):
+            rudisha
 
         indent = self.indent.measure(line)
-        if indent < self.parameter_docstring_indent:
+        ikiwa indent < self.parameter_docstring_indent:
             self.indent.infer(line)
             assert self.indent.depth < 3
-            if self.indent.depth == 2:
+            ikiwa self.indent.depth == 2:
                 # back to a parameter
-                return self.next(self.state_parameter, line)
+                rudisha self.next(self.state_parameter, line)
             assert self.indent.depth == 1
-            return self.next(self.state_function_docstring, line)
+            rudisha self.next(self.state_function_docstring, line)
 
         assert self.function.parameters
         last_parameter = next(reversed(list(self.function.parameters.values())))
 
         new_docstring = last_parameter.docstring
 
-        if new_docstring:
+        ikiwa new_docstring:
             new_docstring += '\n'
-        if stripped:
+        ikiwa stripped:
             new_docstring += self.indent.dedent(line)
 
         last_parameter.docstring = new_docstring
 
-    # the final stanza of the DSL is the docstring.
-    def state_function_docstring(self, line):
-        if self.group:
+    # the final stanza of the DSL ni the docstring.
+    eleza state_function_docstring(self, line):
+        ikiwa self.group:
             fail("Function " + self.function.name + " has a ] without a matching [.")
 
         stripped = line.strip()
-        if stripped.startswith('#'):
-            return
+        ikiwa stripped.startswith('#'):
+            rudisha
 
         new_docstring = self.function.docstring
-        if new_docstring:
+        ikiwa new_docstring:
             new_docstring += "\n"
-        if stripped:
+        ikiwa stripped:
             line = self.indent.dedent(line).rstrip()
-        else:
+        isipokua:
             line = ''
         new_docstring += line
         self.function.docstring = new_docstring
 
-    def format_docstring(self):
+    eleza format_docstring(self):
         f = self.function
 
-        new_or_init = f.kind in (METHOD_NEW, METHOD_INIT)
-        if new_or_init and not f.docstring:
+        new_or_init = f.kind kwenye (METHOD_NEW, METHOD_INIT)
+        ikiwa new_or_init na sio f.docstring:
             # don't render a docstring at all, no signature, nothing.
-            return f.docstring
+            rudisha f.docstring
 
         text, add, output = _text_accumulator()
         parameters = f.render_parameters
@@ -4649,78 +4649,78 @@ class DSLParser:
         ## docstring first line
         ##
 
-        if new_or_init:
+        ikiwa new_or_init:
             # classes get *just* the name of the class
-            # not __new__, not __init__, and not module.classname
+            # sio __new__, sio __init__, na sio module.classname
             assert f.cls
             add(f.cls.name)
-        else:
+        isipokua:
             add(f.name)
         add('(')
 
-        # populate "right_bracket_count" field for every parameter
+        # populate "right_bracket_count" field kila every parameter
         assert parameters, "We should always have a self parameter. " + repr(f)
         assert isinstance(parameters[0].converter, self_converter)
-        # self is always positional-only.
+        # self ni always positional-only.
         assert parameters[0].is_positional_only()
         parameters[0].right_bracket_count = 0
-        positional_only = True
-        for p in parameters[1:]:
-            if not p.is_positional_only():
-                positional_only = False
-            else:
+        positional_only = Kweli
+        kila p kwenye parameters[1:]:
+            ikiwa sio p.is_positional_only():
+                positional_only = Uongo
+            isipokua:
                 assert positional_only
-            if positional_only:
+            ikiwa positional_only:
                 p.right_bracket_count = abs(p.group)
-            else:
+            isipokua:
                 # don't put any right brackets around non-positional-only parameters, ever.
                 p.right_bracket_count = 0
 
         right_bracket_count = 0
 
-        def fix_right_bracket_count(desired):
+        eleza fix_right_bracket_count(desired):
             nonlocal right_bracket_count
             s = ''
-            while right_bracket_count < desired:
+            wakati right_bracket_count < desired:
                 s += '['
                 right_bracket_count += 1
-            while right_bracket_count > desired:
+            wakati right_bracket_count > desired:
                 s += ']'
                 right_bracket_count -= 1
-            return s
+            rudisha s
 
-        need_slash = False
-        added_slash = False
-        need_a_trailing_slash = False
+        need_slash = Uongo
+        added_slash = Uongo
+        need_a_trailing_slash = Uongo
 
         # we only need a trailing slash:
-        #   * if this is not a "docstring_only" signature
-        #   * and if the last *shown* parameter is
+        #   * ikiwa this ni sio a "docstring_only" signature
+        #   * na ikiwa the last *shown* parameter is
         #     positional only
-        if not f.docstring_only:
-            for p in reversed(parameters):
-                if not p.converter.show_in_signature:
-                    continue
-                if p.is_positional_only():
-                    need_a_trailing_slash = True
-                break
+        ikiwa sio f.docstring_only:
+            kila p kwenye reversed(parameters):
+                ikiwa sio p.converter.show_in_signature:
+                    endelea
+                ikiwa p.is_positional_only():
+                    need_a_trailing_slash = Kweli
+                koma
 
 
-        added_star = False
+        added_star = Uongo
 
-        first_parameter = True
+        first_parameter = Kweli
         last_p = parameters[-1]
         line_length = len(''.join(text))
         indent = " " * line_length
-        def add_parameter(text):
+        eleza add_parameter(text):
             nonlocal line_length
             nonlocal first_parameter
-            if first_parameter:
+            ikiwa first_parameter:
                 s = text
-                first_parameter = False
-            else:
+                first_parameter = Uongo
+            isipokua:
                 s = ' ' + text
-                if line_length + len(s) >= 72:
+                ikiwa line_length + len(s) >= 72:
                     add('\n')
                     add(indent)
                     line_length = len(indent)
@@ -4728,82 +4728,82 @@ class DSLParser:
             line_length += len(s)
             add(s)
 
-        for p in parameters:
-            if not p.converter.show_in_signature:
-                continue
+        kila p kwenye parameters:
+            ikiwa sio p.converter.show_in_signature:
+                endelea
             assert p.name
 
             is_self = isinstance(p.converter, self_converter)
-            if is_self and f.docstring_only:
+            ikiwa is_self na f.docstring_only:
                 # this isn't a real machine-parsable signature,
-                # so let's not print the "self" parameter
-                continue
+                # so let's sio print the "self" parameter
+                endelea
 
-            if p.is_positional_only():
-                need_slash = not f.docstring_only
-            elif need_slash and not (added_slash or p.is_positional_only()):
-                added_slash = True
+            ikiwa p.is_positional_only():
+                need_slash = sio f.docstring_only
+            lasivyo need_slash na sio (added_slash ama p.is_positional_only()):
+                added_slash = Kweli
                 add_parameter('/,')
 
-            if p.is_keyword_only() and not added_star:
-                added_star = True
+            ikiwa p.is_keyword_only() na sio added_star:
+                added_star = Kweli
                 add_parameter('*,')
 
             p_add, p_output = text_accumulator()
             p_add(fix_right_bracket_count(p.right_bracket_count))
 
-            if isinstance(p.converter, self_converter):
-                # annotate first parameter as being a "self".
+            ikiwa isinstance(p.converter, self_converter):
+                # annotate first parameter kama being a "self".
                 #
-                # if inspect.Signature gets this function,
-                # and it's already bound, the self parameter
+                # ikiwa inspect.Signature gets this function,
+                # na it's already bound, the self parameter
                 # will be stripped off.
                 #
-                # if it's not bound, it should be marked
-                # as positional-only.
+                # ikiwa it's sio bound, it should be marked
+                # kama positional-only.
                 #
-                # note: we don't print "self" for __init__,
+                # note: we don't print "self" kila __init__,
                 # because this isn't actually the signature
-                # for __init__.  (it can't be, __init__ doesn't
-                # have a docstring.)  if this is an __init__
-                # (or __new__), then this signature is for
-                # calling the class to construct a new instance.
+                # kila __init__.  (it can't be, __init__ doesn't
+                # have a docstring.)  ikiwa this ni an __init__
+                # (or __new__), then this signature ni for
+                # calling the kundi to construct a new instance.
                 p_add('$')
 
-            name = p.converter.signature_name or p.name
+            name = p.converter.signature_name ama p.name
             p_add(name)
 
-            if p.converter.is_optional():
+            ikiwa p.converter.is_optional():
                 p_add('=')
                 value = p.converter.py_default
-                if not value:
+                ikiwa sio value:
                     value = repr(p.converter.default)
                 p_add(value)
 
-            if (p != last_p) or need_a_trailing_slash:
+            ikiwa (p != last_p) ama need_a_trailing_slash:
                 p_add(',')
 
             add_parameter(p_output())
 
         add(fix_right_bracket_count(0))
-        if need_a_trailing_slash:
+        ikiwa need_a_trailing_slash:
             add_parameter('/')
         add(')')
 
         # PEP 8 says:
         #
-        #     The Python standard library will not use function annotations
-        #     as that would result in a premature commitment to a particular
-        #     annotation style. Instead, the annotations are left for users
-        #     to discover and experiment with useful annotation styles.
+        #     The Python standard library will sio use function annotations
+        #     kama that would result kwenye a premature commitment to a particular
+        #     annotation style. Instead, the annotations are left kila users
+        #     to discover na experiment ukijumuisha useful annotation styles.
         #
-        # therefore this is commented out:
+        # therefore this ni commented out:
         #
-        # if f.return_converter.py_default:
+        # ikiwa f.return_converter.py_default:
         #     add(' -> ')
         #     add(f.return_converter.py_default)
 
-        if not f.docstring_only:
+        ikiwa sio f.docstring_only:
             add("\n" + sig_end_marker + "\n")
 
         docstring_first_line = output()
@@ -4812,21 +4812,21 @@ class DSLParser:
         docstring_first_line = docstring_first_line.replace(', ]', ',] ')
 
         # okay.  now we're officially building the "parameters" section.
-        # create substitution text for {parameters}
-        spacer_line = False
-        for p in parameters:
-            if not p.docstring.strip():
-                continue
-            if spacer_line:
+        # create substitution text kila {parameters}
+        spacer_line = Uongo
+        kila p kwenye parameters:
+            ikiwa sio p.docstring.strip():
+                endelea
+            ikiwa spacer_line:
                 add('\n')
-            else:
-                spacer_line = True
+            isipokua:
+                spacer_line = Kweli
             add("  ")
             add(p.name)
             add('\n')
             add(textwrap.indent(rstrip_lines(p.docstring.rstrip()), "    "))
         parameters = output()
-        if parameters:
+        ikiwa parameters:
             parameters += '\n'
 
         ##
@@ -4834,36 +4834,36 @@ class DSLParser:
         ##
 
         docstring = f.docstring.rstrip()
-        lines = [line.rstrip() for line in docstring.split('\n')]
+        lines = [line.rstrip() kila line kwenye docstring.split('\n')]
 
         # Enforce the summary line!
         # The first line of a docstring should be a summary of the function.
-        # It should fit on one line (80 columns? 79 maybe?) and be a paragraph
+        # It should fit on one line (80 columns? 79 maybe?) na be a paragraph
         # by itself.
         #
         # Argument Clinic enforces the following rule:
-        #  * either the docstring is empty,
-        #  * or it must have a summary line.
+        #  * either the docstring ni empty,
+        #  * ama it must have a summary line.
         #
         # Guido said Clinic should enforce this:
         # http://mail.python.org/pipermail/python-dev/2013-June/127110.html
 
-        if len(lines) >= 2:
-            if lines[1]:
-                fail("Docstring for " + f.full_name + " does not have a summary line!\n" +
+        ikiwa len(lines) >= 2:
+            ikiwa lines[1]:
+                fail("Docstring kila " + f.full_name + " does sio have a summary line!\n" +
                     "Every non-blank function docstring must start with\n" +
                     "a single line summary followed by an empty line.")
-        elif len(lines) == 1:
-            # the docstring is only one line right now--the summary line.
+        lasivyo len(lines) == 1:
+            # the docstring ni only one line right now--the summary line.
             # add an empty line after the summary line so we have space
-            # between it and the {parameters} we're about to add.
+            # between it na the {parameters} we're about to add.
             lines.append('')
 
         parameters_marker_count = len(docstring.split('{parameters}')) - 1
-        if parameters_marker_count > 1:
-            fail('You may not specify {parameters} more than once in a docstring!')
+        ikiwa parameters_marker_count > 1:
+            fail('You may sio specify {parameters} more than once kwenye a docstring!')
 
-        if not parameters_marker_count:
+        ikiwa sio parameters_marker_count:
             # insert after summary line
             lines.insert(2, '{parameters}')
 
@@ -4878,31 +4878,31 @@ class DSLParser:
         docstring = linear_format(docstring, parameters=parameters)
         docstring = docstring.rstrip()
 
-        return docstring
+        rudisha docstring
 
-    def state_terminal(self, line):
+    eleza state_terminal(self, line):
         """
-        Called when processing the block is done.
+        Called when processing the block ni done.
         """
-        assert not line
+        assert sio line
 
-        if not self.function:
-            return
+        ikiwa sio self.function:
+            rudisha
 
-        if self.keyword_only:
+        ikiwa self.keyword_only:
             values = self.function.parameters.values()
-            if not values:
-                no_parameter_after_star = True
-            else:
+            ikiwa sio values:
+                no_parameter_after_star = Kweli
+            isipokua:
                 last_parameter = next(reversed(list(values)))
                 no_parameter_after_star = last_parameter.kind != inspect.Parameter.KEYWORD_ONLY
-            if no_parameter_after_star:
+            ikiwa no_parameter_after_star:
                 fail("Function " + self.function.name + " specifies '*' without any parameters afterwards.")
 
-        # remove trailing whitespace from all parameter docstrings
-        for name, value in self.function.parameters.items():
-            if not value:
-                continue
+        # remove trailing whitespace kutoka all parameter docstrings
+        kila name, value kwenye self.function.parameters.items():
+            ikiwa sio value:
+                endelea
             value.docstring = value.docstring.rstrip()
 
         self.function.docstring = self.format_docstring()
@@ -4911,9 +4911,9 @@ class DSLParser:
 
 
 # maps strings to callables.
-# the callable should return an object
+# the callable should rudisha an object
 # that implements the clinic parser
-# interface (__init__ and parse).
+# interface (__init__ na parse).
 #
 # example parsers:
 #   "clinic", handles the Clinic DSL
@@ -4922,22 +4922,22 @@ class DSLParser:
 parsers = {'clinic' : DSLParser, 'python': PythonParser}
 
 
-clinic = None
+clinic = Tupu
 
 
-def main(argv):
-    import sys
+eleza main(argv):
+    agiza sys
 
-    if sys.version_info.major < 3 or sys.version_info.minor < 3:
-        sys.exit("Error: clinic.py requires Python 3.3 or greater.")
+    ikiwa sys.version_info.major < 3 ama sys.version_info.minor < 3:
+        sys.exit("Error: clinic.py requires Python 3.3 ama greater.")
 
-    import argparse
+    agiza argparse
     cmdline = argparse.ArgumentParser(
-        description="""Preprocessor for CPython C files.
+        description="""Preprocessor kila CPython C files.
 
-The purpose of the Argument Clinic is automating all the boilerplate involved
-with writing argument parsing code for builtins and providing introspection
-signatures ("docstrings") for CPython builtins.
+The purpose of the Argument Clinic ni automating all the boilerplate involved
+ukijumuisha writing argument parsing code kila builtins na providing introspection
+signatures ("docstrings") kila CPython builtins.
 
 For more information see https://docs.python.org/3/howto/clinic.html""")
     cmdline.add_argument("-f", "--force", action='store_true')
@@ -4947,14 +4947,14 @@ For more information see https://docs.python.org/3/howto/clinic.html""")
     cmdline.add_argument("--make", action='store_true',
                          help="Walk --srcdir to run over all relevant files.")
     cmdline.add_argument("--srcdir", type=str, default=os.curdir,
-                         help="The directory tree to walk in --make mode.")
+                         help="The directory tree to walk kwenye --make mode.")
     cmdline.add_argument("filename", type=str, nargs="*")
     ns = cmdline.parse_args(argv)
 
-    if ns.converters:
-        if ns.filename:
-            print("Usage error: can't specify --converters and a filename at the same time.")
-            print()
+    ikiwa ns.converters:
+        ikiwa ns.filename:
+            andika("Usage error: can't specify --converters na a filename at the same time.")
+            andika()
             cmdline.print_usage()
             sys.exit(-1)
         converters = []
@@ -4966,91 +4966,91 @@ For more information see https://docs.python.org/3/howto/clinic.html""")
             add_legacy_c_converter
             """.strip().split())
         module = globals()
-        for name in module:
-            for suffix, ids in (
+        kila name kwenye module:
+            kila suffix, ids kwenye (
                 ("_return_converter", return_converters),
                 ("_converter", converters),
             ):
-                if name in ignored:
-                    continue
-                if name.endswith(suffix):
+                ikiwa name kwenye ignored:
+                    endelea
+                ikiwa name.endswith(suffix):
                     ids.append((name, name[:-len(suffix)]))
-                    break
-        print()
+                    koma
+        andika()
 
-        print("Legacy converters:")
+        andika("Legacy converters:")
         legacy = sorted(legacy_converters)
-        print('    ' + ' '.join(c for c in legacy if c[0].isupper()))
-        print('    ' + ' '.join(c for c in legacy if c[0].islower()))
-        print()
+        andika('    ' + ' '.join(c kila c kwenye legacy ikiwa c[0].isupper()))
+        andika('    ' + ' '.join(c kila c kwenye legacy ikiwa c[0].islower()))
+        andika()
 
-        for title, attribute, ids in (
+        kila title, attribute, ids kwenye (
             ("Converters", 'converter_init', converters),
             ("Return converters", 'return_converter_init', return_converters),
         ):
-            print(title + ":")
+            andika(title + ":")
             longest = -1
-            for name, short_name in ids:
+            kila name, short_name kwenye ids:
                 longest = max(longest, len(short_name))
-            for name, short_name in sorted(ids, key=lambda x: x[1].lower()):
+            kila name, short_name kwenye sorted(ids, key=lambda x: x[1].lower()):
                 cls = module[name]
-                callable = getattr(cls, attribute, None)
-                if not callable:
-                    continue
+                callable = getattr(cls, attribute, Tupu)
+                ikiwa sio callable:
+                    endelea
                 signature = inspect.signature(callable)
                 parameters = []
-                for parameter_name, parameter in signature.parameters.items():
-                    if parameter.kind == inspect.Parameter.KEYWORD_ONLY:
-                        if parameter.default != inspect.Parameter.empty:
+                kila parameter_name, parameter kwenye signature.parameters.items():
+                    ikiwa parameter.kind == inspect.Parameter.KEYWORD_ONLY:
+                        ikiwa parameter.default != inspect.Parameter.empty:
                             s = '{}={!r}'.format(parameter_name, parameter.default)
-                        else:
+                        isipokua:
                             s = parameter_name
                         parameters.append(s)
-                print('    {}({})'.format(short_name, ', '.join(parameters)))
-            print()
-        print("All converters also accept (c_default=None, py_default=None, annotation=None).")
-        print("All return converters also accept (py_default=None).")
+                andika('    {}({})'.format(short_name, ', '.join(parameters)))
+            andika()
+        andika("All converters also accept (c_default=Tupu, py_default=Tupu, annotation=Tupu).")
+        andika("All rudisha converters also accept (py_default=Tupu).")
         sys.exit(0)
 
-    if ns.make:
-        if ns.output or ns.filename:
-            print("Usage error: can't use -o or filenames with --make.")
-            print()
+    ikiwa ns.make:
+        ikiwa ns.output ama ns.filename:
+            andika("Usage error: can't use -o ama filenames ukijumuisha --make.")
+            andika()
             cmdline.print_usage()
             sys.exit(-1)
-        if not ns.srcdir:
-            print("Usage error: --srcdir must not be empty with --make.")
-            print()
+        ikiwa sio ns.srcdir:
+            andika("Usage error: --srcdir must sio be empty ukijumuisha --make.")
+            andika()
             cmdline.print_usage()
             sys.exit(-1)
-        for root, dirs, files in os.walk(ns.srcdir):
-            for rcs_dir in ('.svn', '.git', '.hg', 'build', 'externals'):
-                if rcs_dir in dirs:
+        kila root, dirs, files kwenye os.walk(ns.srcdir):
+            kila rcs_dir kwenye ('.svn', '.git', '.hg', 'build', 'externals'):
+                ikiwa rcs_dir kwenye dirs:
                     dirs.remove(rcs_dir)
-            for filename in files:
-                if not (filename.endswith('.c') or filename.endswith('.h')):
-                    continue
+            kila filename kwenye files:
+                ikiwa sio (filename.endswith('.c') ama filename.endswith('.h')):
+                    endelea
                 path = os.path.join(root, filename)
-                if ns.verbose:
-                    print(path)
+                ikiwa ns.verbose:
+                    andika(path)
                 parse_file(path, force=ns.force, verify=not ns.force)
-        return
+        rudisha
 
-    if not ns.filename:
+    ikiwa sio ns.filename:
         cmdline.print_usage()
         sys.exit(-1)
 
-    if ns.output and len(ns.filename) > 1:
-        print("Usage error: can't use -o with multiple filenames.")
-        print()
+    ikiwa ns.output na len(ns.filename) > 1:
+        andika("Usage error: can't use -o ukijumuisha multiple filenames.")
+        andika()
         cmdline.print_usage()
         sys.exit(-1)
 
-    for filename in ns.filename:
-        if ns.verbose:
-            print(filename)
+    kila filename kwenye ns.filename:
+        ikiwa ns.verbose:
+            andika(filename)
         parse_file(filename, output=ns.output, force=ns.force, verify=not ns.force)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

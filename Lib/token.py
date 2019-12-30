@@ -62,18 +62,18 @@ AWAIT = 55
 ASYNC = 56
 TYPE_IGNORE = 57
 TYPE_COMMENT = 58
-# These aren't used by the C tokenizer but are needed for tokenize.py
+# These aren't used by the C tokenizer but are needed kila tokenize.py
 ERRORTOKEN = 59
 COMMENT = 60
 NL = 61
 ENCODING = 62
 N_TOKENS = 63
-# Special definitions for cooperation with parser
+# Special definitions kila cooperation ukijumuisha parser
 NT_OFFSET = 256
 
 tok_name = {value: name
-            for name, value in globals().items()
-            if isinstance(value, int) and not name.startswith('_')}
+            kila name, value kwenye globals().items()
+            ikiwa isinstance(value, int) na sio name.startswith('_')}
 __all__.extend(tok_name.values())
 
 EXACT_TOKEN_TYPES = {
@@ -126,11 +126,11 @@ EXACT_TOKEN_TYPES = {
     '~': TILDE,
 }
 
-def ISTERMINAL(x):
-    return x < NT_OFFSET
+eleza ISTERMINAL(x):
+    rudisha x < NT_OFFSET
 
-def ISNONTERMINAL(x):
-    return x >= NT_OFFSET
+eleza ISNONTERMINAL(x):
+    rudisha x >= NT_OFFSET
 
-def ISEOF(x):
-    return x == ENDMARKER
+eleza ISEOF(x):
+    rudisha x == ENDMARKER

@@ -1,8 +1,8 @@
-import marshal
-import bkfile
+agiza marshal
+agiza bkfile
 
 
-# Write a file containing frozen code for the modules in the dictionary.
+# Write a file containing frozen code kila the modules kwenye the dictionary.
 
 header = """
 #include "Python.h"
@@ -14,74 +14,74 @@ trailer = """\
 };
 """
 
-# if __debug__ == 0 (i.e. -O option given), set Py_OptimizeFlag in frozen app.
+# ikiwa __debug__ == 0 (i.e. -O option given), set Py_OptimizeFlag kwenye frozen app.
 default_entry_point = """
 int
 main(int argc, char **argv)
 {
         extern int Py_FrozenMain(int, char **);
-""" + ((not __debug__ and """
+""" + ((sio __debug__ na """
         Py_OptimizeFlag++;
-""") or "")  + """
+""") ama "")  + """
         PyImport_FrozenModules = _PyImport_FrozenModules;
-        return Py_FrozenMain(argc, argv);
+        rudisha Py_FrozenMain(argc, argv);
 }
 
 """
 
-def makefreeze(base, dict, debug=0, entry_point=None, fail_import=()):
-    if entry_point is None: entry_point = default_entry_point
+eleza makefreeze(base, dict, debug=0, entry_point=Tupu, fail_import=()):
+    ikiwa entry_point ni Tupu: entry_point = default_entry_point
     done = []
     files = []
     mods = sorted(dict.keys())
-    for mod in mods:
+    kila mod kwenye mods:
         m = dict[mod]
         mangled = "__".join(mod.split("."))
-        if m.__code__:
+        ikiwa m.__code__:
             file = 'M_' + mangled + '.c'
-            with bkfile.open(base + file, 'w') as outfp:
+            ukijumuisha bkfile.open(base + file, 'w') kama outfp:
                 files.append(file)
-                if debug:
-                    print("freezing", mod, "...")
+                ikiwa debug:
+                    andika("freezing", mod, "...")
                 str = marshal.dumps(m.__code__)
                 size = len(str)
-                if m.__path__:
+                ikiwa m.__path__:
                     # Indicate package by negative size
                     size = -size
                 done.append((mod, mangled, size))
                 writecode(outfp, mangled, str)
-    if debug:
-        print("generating table of frozen modules")
-    with bkfile.open(base + 'frozen.c', 'w') as outfp:
-        for mod, mangled, size in done:
+    ikiwa debug:
+        andika("generating table of frozen modules")
+    ukijumuisha bkfile.open(base + 'frozen.c', 'w') kama outfp:
+        kila mod, mangled, size kwenye done:
             outfp.write('extern unsigned char M_%s[];\n' % mangled)
         outfp.write(header)
-        for mod, mangled, size in done:
+        kila mod, mangled, size kwenye done:
             outfp.write('\t{"%s", M_%s, %d},\n' % (mod, mangled, size))
         outfp.write('\n')
         # The following modules have a NULL code pointer, indicating
-        # that the frozen program should not search for them on the host
-        # system. Importing them will *always* raise an ImportError.
-        # The zero value size is never used.
-        for mod in fail_import:
+        # that the frozen program should sio search kila them on the host
+        # system. Importing them will *always* ashiria an ImportError.
+        # The zero value size ni never used.
+        kila mod kwenye fail_import:
             outfp.write('\t{"%s", NULL, 0},\n' % (mod,))
         outfp.write(trailer)
         outfp.write(entry_point)
-    return files
+    rudisha files
 
 
 
-# Write a C initializer for a module containing the frozen python code.
-# The array is called M_<mod>.
+# Write a C initializer kila a module containing the frozen python code.
+# The array ni called M_<mod>.
 
-def writecode(outfp, mod, str):
+eleza writecode(outfp, mod, str):
     outfp.write('unsigned char M_%s[] = {' % mod)
-    for i in range(0, len(str), 16):
+    kila i kwenye range(0, len(str), 16):
         outfp.write('\n\t')
-        for c in bytes(str[i:i+16]):
+        kila c kwenye bytes(str[i:i+16]):
             outfp.write('%d,' % c)
     outfp.write('\n};\n')
 
-## def writecode(outfp, mod, str):
+## eleza writecode(outfp, mod, str):
 ##     outfp.write('unsigned char M_%s[%d] = "%s";\n' % (mod, len(str),
 ##     '\\"'.join(map(lambda s: repr(s)[1:-1], str.split('"')))))

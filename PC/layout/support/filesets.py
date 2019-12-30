@@ -1,100 +1,100 @@
 """
-File sets and globbing helper for make_layout.
+File sets na globbing helper kila make_layout.
 """
 
 __author__ = "Steve Dower <steve.dower@python.org>"
 __version__ = "3.8"
 
-import os
+agiza os
 
 
-class FileStemSet:
-    def __init__(self, *patterns):
+kundi FileStemSet:
+    eleza __init__(self, *patterns):
         self._names = set()
         self._prefixes = []
         self._suffixes = []
-        for p in map(os.path.normcase, patterns):
-            if p.endswith("*"):
+        kila p kwenye map(os.path.normcase, patterns):
+            ikiwa p.endswith("*"):
                 self._prefixes.append(p[:-1])
-            elif p.startswith("*"):
+            lasivyo p.startswith("*"):
                 self._suffixes.append(p[1:])
-            else:
+            isipokua:
                 self._names.add(p)
 
-    def _make_name(self, f):
-        return os.path.normcase(f.stem)
+    eleza _make_name(self, f):
+        rudisha os.path.normcase(f.stem)
 
-    def __contains__(self, f):
+    eleza __contains__(self, f):
         bn = self._make_name(f)
-        return (
-            bn in self._names
-            or any(map(bn.startswith, self._prefixes))
-            or any(map(bn.endswith, self._suffixes))
+        rudisha (
+            bn kwenye self._names
+            ama any(map(bn.startswith, self._prefixes))
+            ama any(map(bn.endswith, self._suffixes))
         )
 
 
-class FileNameSet(FileStemSet):
-    def _make_name(self, f):
-        return os.path.normcase(f.name)
+kundi FileNameSet(FileStemSet):
+    eleza _make_name(self, f):
+        rudisha os.path.normcase(f.name)
 
 
-class FileSuffixSet:
-    def __init__(self, *patterns):
+kundi FileSuffixSet:
+    eleza __init__(self, *patterns):
         self._names = set()
         self._prefixes = []
         self._suffixes = []
-        for p in map(os.path.normcase, patterns):
-            if p.startswith("*."):
+        kila p kwenye map(os.path.normcase, patterns):
+            ikiwa p.startswith("*."):
                 self._names.add(p[1:])
-            elif p.startswith("*"):
+            lasivyo p.startswith("*"):
                 self._suffixes.append(p[1:])
-            elif p.endswith("*"):
+            lasivyo p.endswith("*"):
                 self._prefixes.append(p[:-1])
-            elif p.startswith("."):
+            lasivyo p.startswith("."):
                 self._names.add(p)
-            else:
+            isipokua:
                 self._names.add("." + p)
 
-    def _make_name(self, f):
-        return os.path.normcase(f.suffix)
+    eleza _make_name(self, f):
+        rudisha os.path.normcase(f.suffix)
 
-    def __contains__(self, f):
+    eleza __contains__(self, f):
         bn = self._make_name(f)
-        return (
-            bn in self._names
-            or any(map(bn.startswith, self._prefixes))
-            or any(map(bn.endswith, self._suffixes))
+        rudisha (
+            bn kwenye self._names
+            ama any(map(bn.startswith, self._prefixes))
+            ama any(map(bn.endswith, self._suffixes))
         )
 
 
-def _rglob(root, pattern, condition):
+eleza _rglob(root, pattern, condition):
     dirs = [root]
-    recurse = pattern[:3] in {"**/", "**\\"}
-    if recurse:
+    recurse = pattern[:3] kwenye {"**/", "**\\"}
+    ikiwa recurse:
         pattern = pattern[3:]
 
-    while dirs:
+    wakati dirs:
         d = dirs.pop(0)
-        if recurse:
+        ikiwa recurse:
             dirs.extend(
                 filter(
-                    condition, (type(root)(f2) for f2 in os.scandir(d) if f2.is_dir())
+                    condition, (type(root)(f2) kila f2 kwenye os.scandir(d) ikiwa f2.is_dir())
                 )
             )
-        yield from (
+        tuma kutoka (
             (f.relative_to(root), f)
-            for f in d.glob(pattern)
-            if f.is_file() and condition(f)
+            kila f kwenye d.glob(pattern)
+            ikiwa f.is_file() na condition(f)
         )
 
 
-def _return_true(f):
-    return True
+eleza _return_true(f):
+    rudisha Kweli
 
 
-def rglob(root, patterns, condition=None):
-    if isinstance(patterns, tuple):
-        for p in patterns:
-            yield from _rglob(root, p, condition or _return_true)
-    else:
-        yield from _rglob(root, patterns, condition or _return_true)
+eleza rglob(root, patterns, condition=Tupu):
+    ikiwa isinstance(patterns, tuple):
+        kila p kwenye patterns:
+            tuma kutoka _rglob(root, p, condition ama _return_true)
+    isipokua:
+        tuma kutoka _rglob(root, patterns, condition ama _return_true)

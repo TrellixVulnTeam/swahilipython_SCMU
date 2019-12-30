@@ -7,8 +7,8 @@ kutoka multiprocessing agiza Process, Queue, current_process, freeze_support
 # Function run by worker processes
 #
 
-def worker(input, output):
-    for func, args in iter(input.get, 'STOP'):
+eleza worker(input, output):
+    kila func, args kwenye iter(input.get, 'STOP'):
         result = calculate(func, args)
         output.put(result)
 
@@ -16,62 +16,62 @@ def worker(input, output):
 # Function used to calculate result
 #
 
-def calculate(func, args):
+eleza calculate(func, args):
     result = func(*args)
-    return '%s says that %s%s = %s' % \
+    rudisha '%s says that %s%s = %s' % \
         (current_process().name, func.__name__, args, result)
 
 #
 # Functions referenced by tasks
 #
 
-def mul(a, b):
+eleza mul(a, b):
     time.sleep(0.5*random.random())
-    return a * b
+    rudisha a * b
 
-def plus(a, b):
+eleza plus(a, b):
     time.sleep(0.5*random.random())
-    return a + b
+    rudisha a + b
 
 #
 #
 #
 
-def test():
+eleza test():
     NUMBER_OF_PROCESSES = 4
-    TASKS1 = [(mul, (i, 7)) for i in range(20)]
-    TASKS2 = [(plus, (i, 8)) for i in range(10)]
+    TASKS1 = [(mul, (i, 7)) kila i kwenye range(20)]
+    TASKS2 = [(plus, (i, 8)) kila i kwenye range(10)]
 
     # Create queues
     task_queue = Queue()
     done_queue = Queue()
 
     # Submit tasks
-    for task in TASKS1:
+    kila task kwenye TASKS1:
         task_queue.put(task)
 
     # Start worker processes
-    for i in range(NUMBER_OF_PROCESSES):
+    kila i kwenye range(NUMBER_OF_PROCESSES):
         Process(target=worker, args=(task_queue, done_queue)).start()
 
-    # Get and print results
-    print('Unordered results:')
-    for i in range(len(TASKS1)):
-        print('\t', done_queue.get())
+    # Get na print results
+    andika('Unordered results:')
+    kila i kwenye range(len(TASKS1)):
+        andika('\t', done_queue.get())
 
     # Add more tasks using `put()`
-    for task in TASKS2:
+    kila task kwenye TASKS2:
         task_queue.put(task)
 
-    # Get and print some more results
-    for i in range(len(TASKS2)):
-        print('\t', done_queue.get())
+    # Get na print some more results
+    kila i kwenye range(len(TASKS2)):
+        andika('\t', done_queue.get())
 
     # Tell child processes to stop
-    for i in range(NUMBER_OF_PROCESSES):
+    kila i kwenye range(NUMBER_OF_PROCESSES):
         task_queue.put('STOP')
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     freeze_support()
     test()

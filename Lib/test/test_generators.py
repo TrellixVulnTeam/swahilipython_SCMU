@@ -1917,7 +1917,7 @@ TypeError: exceptions must be classes ama instances deriving kutoka BaseExceptio
 >>> g.throw(0)
 Traceback (most recent call last):
   ...
-TypeError: exceptions must be classes ama instances deriving kutoka BaseException, sio in
+TypeError: exceptions must be classes ama instances deriving kutoka BaseException, haiko kwenye
 
 >>> g.throw(list)
 Traceback (most recent call last):

@@ -1,37 +1,37 @@
 #!/usr/bin/env python3
-"""Miscellaneous diagnostics for the import system"""
+"""Miscellaneous diagnostics kila the agiza system"""
 
-import sys
-import argparse
-from pprint import pprint
+agiza sys
+agiza argparse
+kutoka pprint agiza pprint
 
-def _dump_state(args):
-    print(sys.version)
-    for name in args.attributes:
-        print("sys.{}:".format(name))
-        pprint(getattr(sys, name))
+eleza _dump_state(args):
+    andika(sys.version)
+    kila name kwenye args.attributes:
+        andika("sys.{}:".format(name))
+        pandika(getattr(sys, name))
 
-def _add_dump_args(cmd):
+eleza _add_dump_args(cmd):
     cmd.add_argument("attributes", metavar="ATTR", nargs="+",
                      help="sys module attribute to display")
 
 COMMANDS = (
-  ("dump", "Dump import state", _dump_state, _add_dump_args),
+  ("dump", "Dump agiza state", _dump_state, _add_dump_args),
 )
 
-def _make_parser():
+eleza _make_parser():
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(title="Commands")
-    for name, description, implementation, add_args in COMMANDS:
+    kila name, description, implementation, add_args kwenye COMMANDS:
         cmd = sub.add_parser(name, help=description)
         cmd.set_defaults(command=implementation)
         add_args(cmd)
-    return parser
+    rudisha parser
 
-def main(args):
+eleza main(args):
     parser = _make_parser()
     args = parser.parse_args(args)
-    return args.command(args)
+    rudisha args.command(args)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

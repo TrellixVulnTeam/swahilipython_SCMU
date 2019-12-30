@@ -2,57 +2,57 @@
 
 """
 Remote python server.
-Execute Python commands remotely and send output back.
+Execute Python commands remotely na send output back.
 
 WARNING: This version has a gaping security hole -- it accepts requests
-from any host on the Internet!
+kutoka any host on the Internet!
 """
 
-import sys
-from socket import socket, AF_INET, SOCK_STREAM
-import io
-import traceback
+agiza sys
+kutoka socket agiza socket, AF_INET, SOCK_STREAM
+agiza io
+agiza traceback
 
 PORT = 4127
 BUFSIZE = 1024
 
-def main():
-    if len(sys.argv) > 1:
+eleza main():
+    ikiwa len(sys.argv) > 1:
         port = int(sys.argv[1])
-    else:
+    isipokua:
         port = PORT
     s = socket(AF_INET, SOCK_STREAM)
     s.bind(('', port))
     s.listen(1)
-    while True:
+    wakati Kweli:
         conn, (remotehost, remoteport) = s.accept()
-        with conn:
-            print('connection from', remotehost, remoteport)
+        ukijumuisha conn:
+            andika('connection from', remotehost, remoteport)
             request = b''
-            while 1:
+            wakati 1:
                 data = conn.recv(BUFSIZE)
-                if not data:
-                    break
+                ikiwa sio data:
+                    koma
                 request += data
             reply = execute(request.decode())
             conn.send(reply.encode())
 
-def execute(request):
+eleza execute(request):
     stdout = sys.stdout
     stderr = sys.stderr
     sys.stdout = sys.stderr = fakefile = io.StringIO()
-    try:
-        try:
+    jaribu:
+        jaribu:
             exec(request, {}, {})
-        except:
-            print()
+        tatizo:
+            andika()
             traceback.print_exc(100)
-    finally:
+    mwishowe:
         sys.stderr = stderr
         sys.stdout = stdout
-    return fakefile.getvalue()
+    rudisha fakefile.getvalue()
 
-try:
+jaribu:
     main()
-except KeyboardInterrupt:
-    pass
+tatizo KeyboardInterrupt:
+    pita

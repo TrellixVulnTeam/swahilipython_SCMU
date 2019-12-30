@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-For each argument on the command line, look for it in the set of all Unicode
-names.  Arguments are treated as case-insensitive regular expressions, e.g.:
+For each argument on the command line, look kila it kwenye the set of all Unicode
+names.  Arguments are treated kama case-insensitive regular expressions, e.g.:
 
     % find-uname 'small letter a$' 'horizontal line'
     *** small letter a$ matches ***
@@ -16,25 +16,25 @@ names.  Arguments are treated as case-insensitive regular expressions, e.g.:
     HORIZONTAL LINE EXTENSION (9135)
 """
 
-import unicodedata
-import sys
-import re
+agiza unicodedata
+agiza sys
+agiza re
 
-def main(args):
+eleza main(args):
     unicode_names = []
-    for ix in range(sys.maxunicode+1):
-        try:
+    kila ix kwenye range(sys.maxunicode+1):
+        jaribu:
             unicode_names.append((ix, unicodedata.name(chr(ix))))
-        except ValueError: # no name for the character
-            pass
-    for arg in args:
+        tatizo ValueError: # no name kila the character
+            pita
+    kila arg kwenye args:
         pat = re.compile(arg, re.I)
-        matches = [(y,x) for (x,y) in unicode_names
-                   if pat.search(y) is not None]
-        if matches:
-            print("***", arg, "matches", "***")
-            for match in matches:
-                print("%s (%d)" % match)
+        matches = [(y,x) kila (x,y) kwenye unicode_names
+                   ikiwa pat.search(y) ni sio Tupu]
+        ikiwa matches:
+            andika("***", arg, "matches", "***")
+            kila match kwenye matches:
+                andika("%s (%d)" % match)
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main(sys.argv[1:])

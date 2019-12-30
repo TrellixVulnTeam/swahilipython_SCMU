@@ -5,17 +5,17 @@ cur = con.cursor()
 
 AUSTRIA = "\xd6sterreich"
 
-# by default, rows are returned as Unicode
+# by default, rows are returned kama Unicode
 cur.execute("select ?", (AUSTRIA,))
 row = cur.fetchone()
 assert row[0] == AUSTRIA
 
-# but we can make sqlite3 always return bytestrings ...
+# but we can make sqlite3 always rudisha bytestrings ...
 con.text_factory = bytes
 cur.execute("select ?", (AUSTRIA,))
 row = cur.fetchone()
-assert type(row[0]) is bytes
-# the bytestrings will be encoded in UTF-8, unless you stored garbage in the
+assert type(row[0]) ni bytes
+# the bytestrings will be encoded kwenye UTF-8, unless you stored garbage kwenye the
 # database ...
 assert row[0] == AUSTRIA.encode("utf-8")
 

@@ -1,90 +1,90 @@
-# Check for a module in a set of extension directories.
+# Check kila a module kwenye a set of extension directories.
 # An extension directory should contain a Setup file
-# and one or more .o files or a lib.a file.
+# na one ama more .o files ama a lib.a file.
 
-import os
-import parsesetup
+agiza os
+agiza parsesetup
 
-def checkextensions(unknown, extensions):
+eleza checkextensions(unknown, extensions):
     files = []
     modules = []
     edict = {}
-    for e in extensions:
+    kila e kwenye extensions:
         setup = os.path.join(e, 'Setup')
         liba = os.path.join(e, 'lib.a')
-        if not os.path.isfile(liba):
-            liba = None
+        ikiwa sio os.path.isfile(liba):
+            liba = Tupu
         edict[e] = parsesetup.getsetupinfo(setup), liba
-    for mod in unknown:
-        for e in extensions:
+    kila mod kwenye unknown:
+        kila e kwenye extensions:
             (mods, vars), liba = edict[e]
-            if mod not in mods:
-                continue
+            ikiwa mod haiko kwenye mods:
+                endelea
             modules.append(mod)
-            if liba:
+            ikiwa liba:
                 # If we find a lib.a, use it, ignore the
-                # .o files, and use *all* libraries for
-                # *all* modules in the Setup file
-                if liba in files:
-                    break
+                # .o files, na use *all* libraries for
+                # *all* modules kwenye the Setup file
+                ikiwa liba kwenye files:
+                    koma
                 files.append(liba)
-                for m in list(mods.keys()):
+                kila m kwenye list(mods.keys()):
                     files = files + select(e, mods, vars,
                                            m, 1)
-                break
+                koma
             files = files + select(e, mods, vars, mod, 0)
-            break
-    return files, modules
+            koma
+    rudisha files, modules
 
-def select(e, mods, vars, mod, skipofiles):
+eleza select(e, mods, vars, mod, skipofiles):
     files = []
-    for w in mods[mod]:
+    kila w kwenye mods[mod]:
         w = treatword(w)
-        if not w:
-            continue
+        ikiwa sio w:
+            endelea
         w = expandvars(w, vars)
-        for w in w.split():
-            if skipofiles and w[-2:] == '.o':
-                continue
+        kila w kwenye w.split():
+            ikiwa skipofiles na w[-2:] == '.o':
+                endelea
             # Assume $var expands to absolute pathname
-            if w[0] not in ('-', '$') and w[-2:] in ('.o', '.a'):
+            ikiwa w[0] haiko kwenye ('-', '$') na w[-2:] kwenye ('.o', '.a'):
                 w = os.path.join(e, w)
-            if w[:2] in ('-L', '-R') and w[2:3] != '$':
+            ikiwa w[:2] kwenye ('-L', '-R') na w[2:3] != '$':
                 w = w[:2] + os.path.join(e, w[2:])
             files.append(w)
-    return files
+    rudisha files
 
 cc_flags = ['-I', '-D', '-U']
 cc_exts = ['.c', '.C', '.cc', '.c++']
 
-def treatword(w):
-    if w[:2] in cc_flags:
-        return None
-    if w[:1] == '-':
-        return w # Assume loader flag
+eleza treatword(w):
+    ikiwa w[:2] kwenye cc_flags:
+        rudisha Tupu
+    ikiwa w[:1] == '-':
+        rudisha w # Assume loader flag
     head, tail = os.path.split(w)
     base, ext = os.path.splitext(tail)
-    if ext in cc_exts:
+    ikiwa ext kwenye cc_exts:
         tail = base + '.o'
         w = os.path.join(head, tail)
-    return w
+    rudisha w
 
-def expandvars(str, vars):
+eleza expandvars(str, vars):
     i = 0
-    while i < len(str):
+    wakati i < len(str):
         i = k = str.find('$', i)
-        if i < 0:
-            break
+        ikiwa i < 0:
+            koma
         i = i+1
         var = str[i:i+1]
         i = i+1
-        if var == '(':
+        ikiwa var == '(':
             j = str.find(')', i)
-            if j < 0:
-                break
+            ikiwa j < 0:
+                koma
             var = str[i:j]
             i = j+1
-        if var in vars:
+        ikiwa var kwenye vars:
             str = str[:k] + vars[var] + str[i:]
             i = k
-    return str
+    rudisha str

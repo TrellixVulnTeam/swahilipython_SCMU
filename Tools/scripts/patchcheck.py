@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Check proposed changes for common issues."""
-import re
-import sys
-import shutil
-import os.path
-import subprocess
-import sysconfig
+"""Check proposed changes kila common issues."""
+agiza re
+agiza sys
+agiza shutil
+agiza os.path
+agiza subprocess
+agiza sysconfig
 
-import reindent
-import untabify
+agiza reindent
+agiza untabify
 
 
 # Excluded directories which are copies of external libraries:
@@ -21,234 +21,234 @@ EXCLUDE_DIRS = [os.path.join('Modules', '_ctypes', 'libffi_osx'),
 SRCDIR = sysconfig.get_config_var('srcdir')
 
 
-def n_files_str(count):
-    """Return 'N file(s)' with the proper plurality on 'file'."""
-    return "{} file{}".format(count, "s" if count != 1 else "")
+eleza n_files_str(count):
+    """Return 'N file(s)' ukijumuisha the proper plurality on 'file'."""
+    rudisha "{} file{}".format(count, "s" ikiwa count != 1 isipokua "")
 
 
-def status(message, modal=False, info=None):
+eleza status(message, modal=Uongo, info=Tupu):
     """Decorator to output status info to stdout."""
-    def decorated_fxn(fxn):
-        def call_fxn(*args, **kwargs):
+    eleza decorated_fxn(fxn):
+        eleza call_fxn(*args, **kwargs):
             sys.stdout.write(message + ' ... ')
             sys.stdout.flush()
             result = fxn(*args, **kwargs)
-            if not modal and not info:
-                print("done")
-            elif info:
-                print(info(result))
-            else:
-                print("yes" if result else "NO")
-            return result
-        return call_fxn
-    return decorated_fxn
+            ikiwa sio modal na sio info:
+                andika("done")
+            lasivyo info:
+                andika(info(result))
+            isipokua:
+                andika("yes" ikiwa result isipokua "NO")
+            rudisha result
+        rudisha call_fxn
+    rudisha decorated_fxn
 
 
-def get_git_branch():
-    """Get the symbolic name for the current git branch"""
+eleza get_git_branch():
+    """Get the symbolic name kila the current git branch"""
     cmd = "git rev-parse --abbrev-ref HEAD".split()
-    try:
-        return subprocess.check_output(cmd,
+    jaribu:
+        rudisha subprocess.check_output(cmd,
                                        stderr=subprocess.DEVNULL,
                                        cwd=SRCDIR)
-    except subprocess.CalledProcessError:
-        return None
+    tatizo subprocess.CalledProcessError:
+        rudisha Tupu
 
 
-def get_git_upstream_remote():
-    """Get the remote name to use for upstream branches
+eleza get_git_upstream_remote():
+    """Get the remote name to use kila upstream branches
 
-    Uses "upstream" if it exists, "origin" otherwise
+    Uses "upstream" ikiwa it exists, "origin" otherwise
     """
     cmd = "git remote get-url upstream".split()
-    try:
+    jaribu:
         subprocess.check_output(cmd,
                                 stderr=subprocess.DEVNULL,
                                 cwd=SRCDIR)
-    except subprocess.CalledProcessError:
-        return "origin"
-    return "upstream"
+    tatizo subprocess.CalledProcessError:
+        rudisha "origin"
+    rudisha "upstream"
 
 
-@status("Getting base branch for PR",
-        info=lambda x: x if x is not None else "not a PR branch")
-def get_base_branch():
-    if not os.path.exists(os.path.join(SRCDIR, '.git')):
+@status("Getting base branch kila PR",
+        info=lambda x: x ikiwa x ni sio Tupu isipokua "not a PR branch")
+eleza get_base_branch():
+    ikiwa sio os.path.exists(os.path.join(SRCDIR, '.git')):
         # Not a git checkout, so there's no base branch
-        return None
+        rudisha Tupu
     version = sys.version_info
-    if version.releaselevel == 'alpha':
+    ikiwa version.releaselevel == 'alpha':
         base_branch = "master"
-    else:
+    isipokua:
         base_branch = "{0.major}.{0.minor}".format(version)
     this_branch = get_git_branch()
-    if this_branch is None or this_branch == base_branch:
+    ikiwa this_branch ni Tupu ama this_branch == base_branch:
         # Not on a git PR branch, so there's no base branch
-        return None
+        rudisha Tupu
     upstream_remote = get_git_upstream_remote()
-    return upstream_remote + "/" + base_branch
+    rudisha upstream_remote + "/" + base_branch
 
 
 @status("Getting the list of files that have been added/changed",
         info=lambda x: n_files_str(len(x)))
-def changed_files(base_branch=None):
-    """Get the list of changed or added files from git."""
-    if os.path.exists(os.path.join(SRCDIR, '.git')):
+eleza changed_files(base_branch=Tupu):
+    """Get the list of changed ama added files kutoka git."""
+    ikiwa os.path.exists(os.path.join(SRCDIR, '.git')):
         # We just use an existence check here as:
         #  directory = normal git checkout/clone
         #  file = git worktree directory
-        if base_branch:
+        ikiwa base_branch:
             cmd = 'git diff --name-status ' + base_branch
-        else:
+        isipokua:
             cmd = 'git status --porcelain'
         filenames = []
-        with subprocess.Popen(cmd.split(),
+        ukijumuisha subprocess.Popen(cmd.split(),
                               stdout=subprocess.PIPE,
-                              cwd=SRCDIR) as st:
-            for line in st.stdout:
+                              cwd=SRCDIR) kama st:
+            kila line kwenye st.stdout:
                 line = line.decode().rstrip()
                 status_text, filename = line.split(maxsplit=1)
                 status = set(status_text)
-                # modified, added or unmerged files
-                if not status.intersection('MAU'):
-                    continue
-                if ' -> ' in filename:
-                    # file is renamed
+                # modified, added ama unmerged files
+                ikiwa sio status.intersection('MAU'):
+                    endelea
+                ikiwa ' -> ' kwenye filename:
+                    # file ni renamed
                     filename = filename.split(' -> ', 2)[1].strip()
                 filenames.append(filename)
-    else:
+    isipokua:
         sys.exit('need a git checkout to get modified files')
 
     filenames2 = []
-    for filename in filenames:
+    kila filename kwenye filenames:
         # Normalize the path to be able to match using .startswith()
         filename = os.path.normpath(filename)
-        if any(filename.startswith(path) for path in EXCLUDE_DIRS):
+        ikiwa any(filename.startswith(path) kila path kwenye EXCLUDE_DIRS):
             # Exclude the file
-            continue
+            endelea
         filenames2.append(filename)
 
-    return filenames2
+    rudisha filenames2
 
 
-def report_modified_files(file_paths):
+eleza report_modified_files(file_paths):
     count = len(file_paths)
-    if count == 0:
-        return n_files_str(count)
-    else:
+    ikiwa count == 0:
+        rudisha n_files_str(count)
+    isipokua:
         lines = ["{}:".format(n_files_str(count))]
-        for path in file_paths:
+        kila path kwenye file_paths:
             lines.append("  {}".format(path))
-        return "\n".join(lines)
+        rudisha "\n".join(lines)
 
 
 @status("Fixing Python file whitespace", info=report_modified_files)
-def normalize_whitespace(file_paths):
-    """Make sure that the whitespace for .py files have been normalized."""
-    reindent.makebackup = False  # No need to create backups.
-    fixed = [path for path in file_paths if path.endswith('.py') and
+eleza normalize_whitespace(file_paths):
+    """Make sure that the whitespace kila .py files have been normalized."""
+    reindent.makebackup = Uongo  # No need to create backups.
+    fixed = [path kila path kwenye file_paths ikiwa path.endswith('.py') na
              reindent.check(os.path.join(SRCDIR, path))]
-    return fixed
+    rudisha fixed
 
 
 @status("Fixing C file whitespace", info=report_modified_files)
-def normalize_c_whitespace(file_paths):
-    """Report if any C files """
+eleza normalize_c_whitespace(file_paths):
+    """Report ikiwa any C files """
     fixed = []
-    for path in file_paths:
+    kila path kwenye file_paths:
         abspath = os.path.join(SRCDIR, path)
-        with open(abspath, 'r') as f:
-            if '\t' not in f.read():
-                continue
-        untabify.process(abspath, 8, verbose=False)
+        ukijumuisha open(abspath, 'r') kama f:
+            ikiwa '\t' haiko kwenye f.read():
+                endelea
+        untabify.process(abspath, 8, verbose=Uongo)
         fixed.append(path)
-    return fixed
+    rudisha fixed
 
 
 ws_re = re.compile(br'\s+(\r?\n)$')
 
 @status("Fixing docs whitespace", info=report_modified_files)
-def normalize_docs_whitespace(file_paths):
+eleza normalize_docs_whitespace(file_paths):
     fixed = []
-    for path in file_paths:
+    kila path kwenye file_paths:
         abspath = os.path.join(SRCDIR, path)
-        try:
-            with open(abspath, 'rb') as f:
+        jaribu:
+            ukijumuisha open(abspath, 'rb') kama f:
                 lines = f.readlines()
-            new_lines = [ws_re.sub(br'\1', line) for line in lines]
-            if new_lines != lines:
+            new_lines = [ws_re.sub(br'\1', line) kila line kwenye lines]
+            ikiwa new_lines != lines:
                 shutil.copyfile(abspath, abspath + '.bak')
-                with open(abspath, 'wb') as f:
+                ukijumuisha open(abspath, 'wb') kama f:
                     f.writelines(new_lines)
                 fixed.append(path)
-        except Exception as err:
-            print('Cannot fix %s: %s' % (path, err))
-    return fixed
+        tatizo Exception kama err:
+            andika('Cannot fix %s: %s' % (path, err))
+    rudisha fixed
 
 
-@status("Docs modified", modal=True)
-def docs_modified(file_paths):
-    """Report if any file in the Doc directory has been changed."""
-    return bool(file_paths)
+@status("Docs modified", modal=Kweli)
+eleza docs_modified(file_paths):
+    """Report ikiwa any file kwenye the Doc directory has been changed."""
+    rudisha bool(file_paths)
 
 
-@status("Misc/ACKS updated", modal=True)
-def credit_given(file_paths):
-    """Check if Misc/ACKS has been changed."""
-    return os.path.join('Misc', 'ACKS') in file_paths
+@status("Misc/ACKS updated", modal=Kweli)
+eleza credit_given(file_paths):
+    """Check ikiwa Misc/ACKS has been changed."""
+    rudisha os.path.join('Misc', 'ACKS') kwenye file_paths
 
 
-@status("Misc/NEWS.d updated with `blurb`", modal=True)
-def reported_news(file_paths):
-    """Check if Misc/NEWS.d has been changed."""
-    return any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
-               for p in file_paths)
+@status("Misc/NEWS.d updated ukijumuisha `blurb`", modal=Kweli)
+eleza reported_news(file_paths):
+    """Check ikiwa Misc/NEWS.d has been changed."""
+    rudisha any(p.startswith(os.path.join('Misc', 'NEWS.d', 'next'))
+               kila p kwenye file_paths)
 
-@status("configure regenerated", modal=True, info=str)
-def regenerated_configure(file_paths):
-    """Check if configure has been regenerated."""
-    if 'configure.ac' in file_paths:
-        return "yes" if 'configure' in file_paths else "no"
-    else:
-        return "not needed"
+@status("configure regenerated", modal=Kweli, info=str)
+eleza regenerated_configure(file_paths):
+    """Check ikiwa configure has been regenerated."""
+    ikiwa 'configure.ac' kwenye file_paths:
+        rudisha "yes" ikiwa 'configure' kwenye file_paths isipokua "no"
+    isipokua:
+        rudisha "not needed"
 
-@status("pyconfig.h.in regenerated", modal=True, info=str)
-def regenerated_pyconfig_h_in(file_paths):
-    """Check if pyconfig.h.in has been regenerated."""
-    if 'configure.ac' in file_paths:
-        return "yes" if 'pyconfig.h.in' in file_paths else "no"
-    else:
-        return "not needed"
+@status("pyconfig.h.in regenerated", modal=Kweli, info=str)
+eleza regenerated_pyconfig_h_in(file_paths):
+    """Check ikiwa pyconfig.h.in has been regenerated."""
+    ikiwa 'configure.ac' kwenye file_paths:
+        rudisha "yes" ikiwa 'pyconfig.h.in' kwenye file_paths isipokua "no"
+    isipokua:
+        rudisha "not needed"
 
-def travis(pull_request):
-    if pull_request == 'false':
-        print('Not a pull request; skipping')
-        return
+eleza travis(pull_request):
+    ikiwa pull_request == 'false':
+        andika('Not a pull request; skipping')
+        rudisha
     base_branch = get_base_branch()
     file_paths = changed_files(base_branch)
-    python_files = [fn for fn in file_paths if fn.endswith('.py')]
-    c_files = [fn for fn in file_paths if fn.endswith(('.c', '.h'))]
-    doc_files = [fn for fn in file_paths if fn.startswith('Doc') and
+    python_files = [fn kila fn kwenye file_paths ikiwa fn.endswith('.py')]
+    c_files = [fn kila fn kwenye file_paths ikiwa fn.endswith(('.c', '.h'))]
+    doc_files = [fn kila fn kwenye file_paths ikiwa fn.startswith('Doc') na
                  fn.endswith(('.rst', '.inc'))]
     fixed = []
     fixed.extend(normalize_whitespace(python_files))
     fixed.extend(normalize_c_whitespace(c_files))
     fixed.extend(normalize_docs_whitespace(doc_files))
-    if not fixed:
-        print('No whitespace issues found')
-    else:
-        print(f'Please fix the {len(fixed)} file(s) with whitespace issues')
-        print('(on UNIX you can run `make patchcheck` to make the fixes)')
+    ikiwa sio fixed:
+        andika('No whitespace issues found')
+    isipokua:
+        andika(f'Please fix the {len(fixed)} file(s) ukijumuisha whitespace issues')
+        andika('(on UNIX you can run `make patchcheck` to make the fixes)')
         sys.exit(1)
 
-def main():
+eleza main():
     base_branch = get_base_branch()
     file_paths = changed_files(base_branch)
-    python_files = [fn for fn in file_paths if fn.endswith('.py')]
-    c_files = [fn for fn in file_paths if fn.endswith(('.c', '.h'))]
-    doc_files = [fn for fn in file_paths if fn.startswith('Doc') and
+    python_files = [fn kila fn kwenye file_paths ikiwa fn.endswith('.py')]
+    c_files = [fn kila fn kwenye file_paths ikiwa fn.endswith(('.c', '.h'))]
+    doc_files = [fn kila fn kwenye file_paths ikiwa fn.startswith('Doc') na
                  fn.endswith(('.rst', '.inc'))]
-    misc_files = {p for p in file_paths if p.startswith('Misc')}
+    misc_files = {p kila p kwenye file_paths ikiwa p.startswith('Misc')}
     # PEP 8 whitespace rules enforcement.
     normalize_whitespace(python_files)
     # C rules enforcement.
@@ -261,25 +261,25 @@ def main():
     credit_given(misc_files)
     # Misc/NEWS changed.
     reported_news(misc_files)
-    # Regenerated configure, if necessary.
+    # Regenerated configure, ikiwa necessary.
     regenerated_configure(file_paths)
-    # Regenerated pyconfig.h.in, if necessary.
+    # Regenerated pyconfig.h.in, ikiwa necessary.
     regenerated_pyconfig_h_in(file_paths)
 
-    # Test suite run and passed.
-    if python_files or c_files:
-        end = " and check for refleaks?" if c_files else "?"
-        print()
-        print("Did you run the test suite" + end)
+    # Test suite run na pitaed.
+    ikiwa python_files ama c_files:
+        end = " na check kila refleaks?" ikiwa c_files isipokua "?"
+        andika()
+        andika("Did you run the test suite" + end)
 
 
-if __name__ == '__main__':
-    import argparse
+ikiwa __name__ == '__main__':
+    agiza argparse
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--travis',
-                        help='Perform pass/fail checks')
+                        help='Perform pita/fail checks')
     args = parser.parse_args()
-    if args.travis:
+    ikiwa args.travis:
         travis(args.travis)
-    else:
+    isipokua:
         main()

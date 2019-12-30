@@ -1,36 +1,36 @@
 #!/usr/bin/env python3
 '''
-Small wsgiref based web server. Takes a path to serve from and an
+Small wsgiref based web server. Takes a path to serve kutoka na an
 optional port number (defaults to 8000), then tries to serve files.
-Mime types are guessed from the file names, 404 errors are raised
-if the file is not found. Used for the make serve target in Doc.
+Mime types are guessed kutoka the file names, 404 errors are raised
+ikiwa the file ni sio found. Used kila the make serve target kwenye Doc.
 '''
-import sys
-import os
-import mimetypes
-from wsgiref import simple_server, util
+agiza sys
+agiza os
+agiza mimetypes
+kutoka wsgiref agiza simple_server, util
 
-def app(environ, respond):
+eleza app(environ, respond):
 
     fn = os.path.join(path, environ['PATH_INFO'][1:])
-    if '.' not in fn.split(os.path.sep)[-1]:
+    ikiwa '.' haiko kwenye fn.split(os.path.sep)[-1]:
         fn = os.path.join(fn, 'index.html')
     type = mimetypes.guess_type(fn)[0]
 
-    if os.path.exists(fn):
+    ikiwa os.path.exists(fn):
         respond('200 OK', [('Content-Type', type)])
-        return util.FileWrapper(open(fn, "rb"))
-    else:
+        rudisha util.FileWrapper(open(fn, "rb"))
+    isipokua:
         respond('404 Not Found', [('Content-Type', 'text/plain')])
-        return [b'not found']
+        rudisha [b'not found']
 
-if __name__ == '__main__':
-    path = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()
-    port = int(sys.argv[2]) if len(sys.argv) > 2 else 8000
+ikiwa __name__ == '__main__':
+    path = sys.argv[1] ikiwa len(sys.argv) > 1 isipokua os.getcwd()
+    port = int(sys.argv[2]) ikiwa len(sys.argv) > 2 isipokua 8000
     httpd = simple_server.make_server('', port, app)
-    print("Serving {} on port {}, control-C to stop".format(path, port))
-    try:
+    andika("Serving {} on port {}, control-C to stop".format(path, port))
+    jaribu:
         httpd.serve_forever()
-    except KeyboardInterrupt:
-        print("Shutting down.")
+    tatizo KeyboardInterrupt:
+        andika("Shutting down.")
         httpd.server_close()

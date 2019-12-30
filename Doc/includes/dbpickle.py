@@ -5,83 +5,83 @@ agiza pickle
 agiza sqlite3
 kutoka collections agiza namedtuple
 
-# Simple kundi representing a record in our database.
+# Simple kundi representing a record kwenye our database.
 MemoRecord = namedtuple("MemoRecord", "key, task")
 
 kundi DBPickler(pickle.Pickler):
 
-    def persistent_id(self, obj):
-        # Instead of pickling MemoRecord as a regular kundi instance, we emit a
+    eleza persistent_id(self, obj):
+        # Instead of pickling MemoRecord kama a regular kundi instance, we emit a
         # persistent ID.
-        if isinstance(obj, MemoRecord):
-            # Here, our persistent ID is simply a tuple, containing a tag and a
-            # key, which refers to a specific record in the database.
-            return ("MemoRecord", obj.key)
-        else:
-            # If obj does not have a persistent ID, return None. This means obj
-            # needs to be pickled as usual.
-            return None
+        ikiwa isinstance(obj, MemoRecord):
+            # Here, our persistent ID ni simply a tuple, containing a tag na a
+            # key, which refers to a specific record kwenye the database.
+            rudisha ("MemoRecord", obj.key)
+        isipokua:
+            # If obj does sio have a persistent ID, rudisha Tupu. This means obj
+            # needs to be pickled kama usual.
+            rudisha Tupu
 
 
 kundi DBUnpickler(pickle.Unpickler):
 
-    def __init__(self, file, connection):
+    eleza __init__(self, file, connection):
         super().__init__(file)
         self.connection = connection
 
-    def persistent_load(self, pid):
-        # This method is invoked whenever a persistent ID is encountered.
-        # Here, pid is the tuple returned by DBPickler.
+    eleza persistent_load(self, pid):
+        # This method ni invoked whenever a persistent ID ni encountered.
+        # Here, pid ni the tuple returned by DBPickler.
         cursor = self.connection.cursor()
         type_tag, key_id = pid
-        if type_tag == "MemoRecord":
-            # Fetch the referenced record kutoka the database and return it.
+        ikiwa type_tag == "MemoRecord":
+            # Fetch the referenced record kutoka the database na rudisha it.
             cursor.execute("SELECT * FROM memos WHERE key=?", (str(key_id),))
             key, task = cursor.fetchone()
-            return MemoRecord(key, task)
-        else:
-            # Always raises an error if you cannot return the correct object.
-            # Otherwise, the unpickler will think None is the object referenced
+            rudisha MemoRecord(key, task)
+        isipokua:
+            # Always raises an error ikiwa you cannot rudisha the correct object.
+            # Otherwise, the unpickler will think Tupu ni the object referenced
             # by the persistent ID.
-            raise pickle.UnpicklingError("unsupported persistent object")
+            ashiria pickle.UnpicklingError("unsupported persistent object")
 
 
-def main():
+eleza main():
     agiza io
     agiza pprint
 
-    # Initialize and populate our database.
+    # Initialize na populate our database.
     conn = sqlite3.connect(":memory:")
     cursor = conn.cursor()
     cursor.execute("CREATE TABLE memos(key INTEGER PRIMARY KEY, task TEXT)")
     tasks = (
         'give food to fish',
         'prepare group meeting',
-        'fight with a zebra',
+        'fight ukijumuisha a zebra',
         )
-    for task in tasks:
+    kila task kwenye tasks:
         cursor.execute("INSERT INTO memos VALUES(NULL, ?)", (task,))
 
     # Fetch the records to be pickled.
     cursor.execute("SELECT * FROM memos")
-    memos = [MemoRecord(key, task) for key, task in cursor]
+    memos = [MemoRecord(key, task) kila key, task kwenye cursor]
     # Save the records using our custom DBPickler.
     file = io.BytesIO()
     DBPickler(file).dump(memos)
 
-    print("Pickled records:")
-    pprint.pprint(memos)
+    andika("Pickled records:")
+    pprint.pandika(memos)
 
-    # Update a record, just for good measure.
+    # Update a record, just kila good measure.
     cursor.execute("UPDATE memos SET task='learn italian' WHERE key=1")
 
     # Load the records kutoka the pickle data stream.
     file.seek(0)
     memos = DBUnpickler(file, conn).load()
 
-    print("Unpickled records:")
-    pprint.pprint(memos)
+    andika("Unpickled records:")
+    pprint.pandika(memos)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

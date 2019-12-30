@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Script that generates the ctype.h-replacement in stringobject.c."""
+"""Script that generates the ctype.h-replacement kwenye stringobject.c."""
 
 NAMES = ("LOWER", "UPPER", "ALPHA", "DIGIT", "XDIGIT", "ALNUM", "SPACE")
 
-print("""
+andika("""
 #define FLAG_LOWER  0x01
 #define FLAG_UPPER  0x02
 #define FLAG_ALPHA  (FLAG_LOWER|FLAG_UPPER)
@@ -14,81 +14,81 @@ print("""
 
 static unsigned int ctype_table[256] = {""")
 
-for i in range(128):
+kila i kwenye range(128):
     c = chr(i)
     flags = []
-    for name in NAMES:
-        if name in ("ALPHA", "ALNUM"):
-            continue
-        if name == "XDIGIT":
-            method = lambda: c.isdigit() or c.upper() in "ABCDEF"
-        else:
+    kila name kwenye NAMES:
+        ikiwa name kwenye ("ALPHA", "ALNUM"):
+            endelea
+        ikiwa name == "XDIGIT":
+            method = lambda: c.isdigit() ama c.upper() kwenye "ABCDEF"
+        isipokua:
             method = getattr(c, "is" + name.lower())
-        if method():
+        ikiwa method():
             flags.append("FLAG_" + name)
     rc = repr(c)
-    if c == '\v':
+    ikiwa c == '\v':
         rc = "'\\v'"
-    elif c == '\f':
+    lasivyo c == '\f':
         rc = "'\\f'"
-    if not flags:
-        print("    0, /* 0x%x %s */" % (i, rc))
-    else:
-        print("    %s, /* 0x%x %s */" % ("|".join(flags), i, rc))
+    ikiwa sio flags:
+        andika("    0, /* 0x%x %s */" % (i, rc))
+    isipokua:
+        andika("    %s, /* 0x%x %s */" % ("|".join(flags), i, rc))
 
-for i in range(128, 256, 16):
-    print("    %s," % ", ".join(16*["0"]))
+kila i kwenye range(128, 256, 16):
+    andika("    %s," % ", ".join(16*["0"]))
 
-print("};")
-print("")
+andika("};")
+andika("")
 
-for name in NAMES:
-    print("#define IS%s(c) (ctype_table[Py_CHARMASK(c)] & FLAG_%s)" %
+kila name kwenye NAMES:
+    andika("#define IS%s(c) (ctype_table[Py_CHARMASK(c)] & FLAG_%s)" %
           (name, name))
 
-print("")
+andika("")
 
-for name in NAMES:
+kila name kwenye NAMES:
     name = "is" + name.lower()
-    print("#undef %s" % name)
-    print("#define %s(c) undefined_%s(c)" % (name, name))
+    andika("#uneleza %s" % name)
+    andika("#define %s(c) undefined_%s(c)" % (name, name))
 
-print("""
+andika("""
 static unsigned char ctype_tolower[256] = {""")
 
-for i in range(0, 256, 8):
+kila i kwenye range(0, 256, 8):
     values = []
-    for i in range(i, i+8):
-        if i < 128:
+    kila i kwenye range(i, i+8):
+        ikiwa i < 128:
             c = chr(i)
-            if c.isupper():
+            ikiwa c.isupper():
                 i = ord(c.lower())
         values.append("0x%02x" % i)
-    print("    %s," % ", ".join(values))
+    andika("    %s," % ", ".join(values))
 
-print("};")
+andika("};")
 
-print("""
+andika("""
 static unsigned char ctype_toupper[256] = {""")
 
-for i in range(0, 256, 8):
+kila i kwenye range(0, 256, 8):
     values = []
-    for i in range(i, i+8):
-        if i < 128:
+    kila i kwenye range(i, i+8):
+        ikiwa i < 128:
             c = chr(i)
-            if c.islower():
+            ikiwa c.islower():
                 i = ord(c.upper())
         values.append("0x%02x" % i)
-    print("    %s," % ", ".join(values))
+    andika("    %s," % ", ".join(values))
 
-print("};")
+andika("};")
 
-print("""
+andika("""
 #define TOLOWER(c) (ctype_tolower[Py_CHARMASK(c)])
 #define TOUPPER(c) (ctype_toupper[Py_CHARMASK(c)])
 
-#undef tolower
+#uneleza tolower
 #define tolower(c) undefined_tolower(c)
-#undef toupper
+#uneleza toupper
 #define toupper(c) undefined_toupper(c)
 """)

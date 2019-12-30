@@ -12,110 +12,110 @@ C stack frames, depending on how many calls through Python's abstract
 C API occur.
 
 After each round of tests, it prints a message:
-"Limit of NNNN is fine".
+"Limit of NNNN ni fine".
 
-The highest printed value of "NNNN" is therefore the highest potentially
-safe limit for your system (which depends on the OS, architecture, but also
-the compilation flags). Please note that it is practically impossible to
-test all possible recursion paths in the interpreter, so the results of
-this test should not be trusted blindly -- although they give a good hint
+The highest printed value of "NNNN" ni therefore the highest potentially
+safe limit kila your system (which depends on the OS, architecture, but also
+the compilation flags). Please note that it ni practically impossible to
+test all possible recursion paths kwenye the interpreter, so the results of
+this test should sio be trusted blindly -- although they give a good hint
 of which values are reasonable.
 
-NOTE: When the C stack space allocated by your system is exceeded due
+NOTE: When the C stack space allocated by your system ni exceeded due
 to excessive recursion, exact behaviour depends on the platform, although
-the interpreter will always fail in a likely brutal way: either a
-segmentation fault, a MemoryError, or just a silent abort.
+the interpreter will always fail kwenye a likely brutal way: either a
+segmentation fault, a MemoryError, ama just a silent abort.
 
-NB: A program that does not use __methods__ can set a higher limit.
+NB: A program that does sio use __methods__ can set a higher limit.
 """
 
-import sys
-import itertools
+agiza sys
+agiza itertools
 
-class RecursiveBlowup1:
-    def __init__(self):
+kundi RecursiveBlowup1:
+    eleza __init__(self):
         self.__init__()
 
-def test_init():
-    return RecursiveBlowup1()
+eleza test_init():
+    rudisha RecursiveBlowup1()
 
-class RecursiveBlowup2:
-    def __repr__(self):
-        return repr(self)
+kundi RecursiveBlowup2:
+    eleza __repr__(self):
+        rudisha repr(self)
 
-def test_repr():
-    return repr(RecursiveBlowup2())
+eleza test_repr():
+    rudisha repr(RecursiveBlowup2())
 
-class RecursiveBlowup4:
-    def __add__(self, x):
-        return x + self
+kundi RecursiveBlowup4:
+    eleza __add__(self, x):
+        rudisha x + self
 
-def test_add():
-    return RecursiveBlowup4() + RecursiveBlowup4()
+eleza test_add():
+    rudisha RecursiveBlowup4() + RecursiveBlowup4()
 
-class RecursiveBlowup5:
-    def __getattr__(self, attr):
-        return getattr(self, attr)
+kundi RecursiveBlowup5:
+    eleza __getattr__(self, attr):
+        rudisha getattr(self, attr)
 
-def test_getattr():
-    return RecursiveBlowup5().attr
+eleza test_getattr():
+    rudisha RecursiveBlowup5().attr
 
-class RecursiveBlowup6:
-    def __getitem__(self, item):
-        return self[item - 2] + self[item - 1]
+kundi RecursiveBlowup6:
+    eleza __getitem__(self, item):
+        rudisha self[item - 2] + self[item - 1]
 
-def test_getitem():
-    return RecursiveBlowup6()[5]
+eleza test_getitem():
+    rudisha RecursiveBlowup6()[5]
 
-def test_recurse():
-    return test_recurse()
+eleza test_recurse():
+    rudisha test_recurse()
 
-def test_cpickle(_cache={}):
-    import io
-    try:
+eleza test_cpickle(_cache={}):
+    agiza io
+    jaribu:
         agiza _pickle
-    except ImportError:
-        print("cannot agiza _pickle, skipped!")
-        return
-    k, l = None, None
-    for n in itertools.count():
-        try:
+    tatizo ImportError:
+        andika("cannot agiza _pickle, skipped!")
+        rudisha
+    k, l = Tupu, Tupu
+    kila n kwenye itertools.count():
+        jaribu:
             l = _cache[n]
-            continue  # Already tried and it works, let's save some time
-        except KeyError:
-            for i in range(100):
+            endelea  # Already tried na it works, let's save some time
+        tatizo KeyError:
+            kila i kwenye range(100):
                 l = [k, l]
                 k = {i: l}
         _pickle.Pickler(io.BytesIO(), protocol=-1).dump(l)
         _cache[n] = l
 
-def test_compiler_recursion():
+eleza test_compiler_recursion():
     # The compiler uses a scaling factor to support additional levels
-    # of recursion. This is a sanity check of that scaling to ensure
+    # of recursion. This ni a sanity check of that scaling to ensure
     # it still raises RecursionError even at higher recursion limits
     compile("()" * (10 * sys.getrecursionlimit()), "<single>", "single")
 
-def check_limit(n, test_func_name):
+eleza check_limit(n, test_func_name):
     sys.setrecursionlimit(n)
-    if test_func_name.startswith("test_"):
-        print(test_func_name[5:])
-    else:
-        print(test_func_name)
+    ikiwa test_func_name.startswith("test_"):
+        andika(test_func_name[5:])
+    isipokua:
+        andika(test_func_name)
     test_func = globals()[test_func_name]
-    try:
+    jaribu:
         test_func()
     # AttributeError can be raised because of the way e.g. PyDict_GetItem()
-    # silences all exceptions and returns NULL, which is usually interpreted
-    # as "missing attribute".
-    except (RecursionError, AttributeError):
-        pass
-    else:
-        print("Yikes!")
+    # silences all exceptions na returns NULL, which ni usually interpreted
+    # kama "missing attribute".
+    tatizo (RecursionError, AttributeError):
+        pita
+    isipokua:
+        andika("Yikes!")
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
 
     limit = 1000
-    while 1:
+    wakati 1:
         check_limit(limit, "test_recurse")
         check_limit(limit, "test_add")
         check_limit(limit, "test_repr")
@@ -124,5 +124,5 @@ if __name__ == '__main__':
         check_limit(limit, "test_getitem")
         check_limit(limit, "test_cpickle")
         check_limit(limit, "test_compiler_recursion")
-        print("Limit of %d is fine" % limit)
+        andika("Limit of %d ni fine" % limit)
         limit = limit + 100

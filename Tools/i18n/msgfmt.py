@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 # Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 
-"""Generate binary message catalog from textual translation description.
+"""Generate binary message catalog kutoka textual translation description.
 
 This program converts a textual Uniforum-style message catalog (.po file) into
-a binary GNU catalog (.mo file).  This is essentially the same function as the
-GNU msgfmt program, however, it is a simpler implementation.  Currently it
-does not handle plural forms but it does handle message contexts.
+a binary GNU catalog (.mo file).  This ni essentially the same function kama the
+GNU msgfmt program, however, it ni a simpler implementation.  Currently it
+does sio handle plural forms but it does handle message contexts.
 
 Usage: msgfmt.py [OPTIONS] filename.po
 
@@ -18,68 +18,68 @@ Options:
 
     -h
     --help
-        Print this message and exit.
+        Print this message na exit.
 
     -V
     --version
-        Display version information and exit.
+        Display version information na exit.
 """
 
-import os
-import sys
-import ast
-import getopt
-import struct
-import array
-from email.parser import HeaderParser
+agiza os
+agiza sys
+agiza ast
+agiza getopt
+agiza struct
+agiza array
+kutoka email.parser agiza HeaderParser
 
 __version__ = "1.2"
 
 MESSAGES = {}
 
 
-def usage(code, msg=''):
-    print(__doc__, file=sys.stderr)
-    if msg:
-        print(msg, file=sys.stderr)
+eleza usage(code, msg=''):
+    andika(__doc__, file=sys.stderr)
+    ikiwa msg:
+        andika(msg, file=sys.stderr)
     sys.exit(code)
 
 
-def add(ctxt, id, str, fuzzy):
+eleza add(ctxt, id, str, fuzzy):
     "Add a non-fuzzy translation to the dictionary."
     global MESSAGES
-    if not fuzzy and str:
-        if ctxt is None:
+    ikiwa sio fuzzy na str:
+        ikiwa ctxt ni Tupu:
             MESSAGES[id] = str
-        else:
+        isipokua:
             MESSAGES[b"%b\x04%b" % (ctxt, id)] = str
 
 
-def generate():
+eleza generate():
     "Return the generated output."
     global MESSAGES
-    # the keys are sorted in the .mo file
+    # the keys are sorted kwenye the .mo file
     keys = sorted(MESSAGES.keys())
     offsets = []
     ids = strs = b''
-    for id in keys:
-        # For each string, we need size and file offset.  Each string is NUL
-        # terminated; the NUL does not count into the size.
+    kila id kwenye keys:
+        # For each string, we need size na file offset.  Each string ni NUL
+        # terminated; the NUL does sio count into the size.
         offsets.append((len(ids), len(id), len(strs), len(MESSAGES[id])))
         ids += id + b'\0'
         strs += MESSAGES[id] + b'\0'
     output = ''
-    # The header is 7 32-bit unsigned integers.  We don't use hash tables, so
+    # The header ni 7 32-bit unsigned integers.  We don't use hash tables, so
     # the keys start right after the index tables.
     # translated string.
     keystart = 7*4+16*len(keys)
-    # and the values start after the keys
+    # na the values start after the keys
     valuestart = keystart + len(ids)
     koffsets = []
     voffsets = []
     # The string table first has the list of keys, then the list of values.
     # Each entry has first the size of the string, then the file offset.
-    for o1, l1, o2, l2 in offsets:
+    kila o1, l1, o2, l2 kwenye offsets:
         koffsets += [l1, o1+keystart]
         voffsets += [l2, o2+valuestart]
     offsets = koffsets + voffsets
@@ -89,34 +89,34 @@ def generate():
                          len(keys),         # # of entries
                          7*4,               # start of key index
                          7*4+len(keys)*8,   # start of value index
-                         0, 0)              # size and offset of hash table
+                         0, 0)              # size na offset of hash table
     output += array.array("i", offsets).tobytes()
     output += ids
     output += strs
-    return output
+    rudisha output
 
 
-def make(filename, outfile):
+eleza make(filename, outfile):
     ID = 1
     STR = 2
     CTXT = 3
 
-    # Compute .mo name from .po name and arguments
-    if filename.endswith('.po'):
+    # Compute .mo name kutoka .po name na arguments
+    ikiwa filename.endswith('.po'):
         infile = filename
-    else:
+    isipokua:
         infile = filename + '.po'
-    if outfile is None:
+    ikiwa outfile ni Tupu:
         outfile = os.path.splitext(infile)[0] + '.mo'
 
-    try:
-        with open(infile, 'rb') as f:
+    jaribu:
+        ukijumuisha open(infile, 'rb') kama f:
             lines = f.readlines()
-    except IOError as msg:
-        print(msg, file=sys.stderr)
+    tatizo IOError kama msg:
+        andika(msg, file=sys.stderr)
         sys.exit(1)
 
-    section = msgctxt = None
+    section = msgctxt = Tupu
     fuzzy = 0
 
     # Start off assuming Latin-1, so everything decodes without failure,
@@ -125,122 +125,122 @@ def make(filename, outfile):
 
     # Parse the catalog
     lno = 0
-    for l in lines:
+    kila l kwenye lines:
         l = l.decode(encoding)
         lno += 1
-        # If we get a comment line after a msgstr, this is a new entry
-        if l[0] == '#' and section == STR:
+        # If we get a comment line after a msgstr, this ni a new entry
+        ikiwa l[0] == '#' na section == STR:
             add(msgctxt, msgid, msgstr, fuzzy)
-            section = msgctxt = None
+            section = msgctxt = Tupu
             fuzzy = 0
         # Record a fuzzy mark
-        if l[:2] == '#,' and 'fuzzy' in l:
+        ikiwa l[:2] == '#,' na 'fuzzy' kwenye l:
             fuzzy = 1
         # Skip comments
-        if l[0] == '#':
-            continue
-        # Now we are in a msgid or msgctxt section, output previous section
-        if l.startswith('msgctxt'):
-            if section == STR:
+        ikiwa l[0] == '#':
+            endelea
+        # Now we are kwenye a msgid ama msgctxt section, output previous section
+        ikiwa l.startswith('msgctxt'):
+            ikiwa section == STR:
                 add(msgctxt, msgid, msgstr, fuzzy)
             section = CTXT
             l = l[7:]
             msgctxt = b''
-        elif l.startswith('msgid') and not l.startswith('msgid_plural'):
-            if section == STR:
+        lasivyo l.startswith('msgid') na sio l.startswith('msgid_plural'):
+            ikiwa section == STR:
                 add(msgctxt, msgid, msgstr, fuzzy)
-                if not msgid:
-                    # See whether there is an encoding declaration
+                ikiwa sio msgid:
+                    # See whether there ni an encoding declaration
                     p = HeaderParser()
                     charset = p.parsestr(msgstr.decode(encoding)).get_content_charset()
-                    if charset:
+                    ikiwa charset:
                         encoding = charset
             section = ID
             l = l[5:]
             msgid = msgstr = b''
-            is_plural = False
-        # This is a message with plural forms
-        elif l.startswith('msgid_plural'):
-            if section != ID:
-                print('msgid_plural not preceded by msgid on %s:%d' % (infile, lno),
+            is_plural = Uongo
+        # This ni a message ukijumuisha plural forms
+        lasivyo l.startswith('msgid_plural'):
+            ikiwa section != ID:
+                andika('msgid_plural sio preceded by msgid on %s:%d' % (infile, lno),
                       file=sys.stderr)
                 sys.exit(1)
             l = l[12:]
-            msgid += b'\0' # separator of singular and plural
-            is_plural = True
-        # Now we are in a msgstr section
-        elif l.startswith('msgstr'):
+            msgid += b'\0' # separator of singular na plural
+            is_plural = Kweli
+        # Now we are kwenye a msgstr section
+        lasivyo l.startswith('msgstr'):
             section = STR
-            if l.startswith('msgstr['):
-                if not is_plural:
-                    print('plural without msgid_plural on %s:%d' % (infile, lno),
+            ikiwa l.startswith('msgstr['):
+                ikiwa sio is_plural:
+                    andika('plural without msgid_plural on %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l.split(']', 1)[1]
-                if msgstr:
+                ikiwa msgstr:
                     msgstr += b'\0' # Separator of the various plural forms
-            else:
-                if is_plural:
-                    print('indexed msgstr required for plural on  %s:%d' % (infile, lno),
+            isipokua:
+                ikiwa is_plural:
+                    andika('indexed msgstr required kila plural on  %s:%d' % (infile, lno),
                           file=sys.stderr)
                     sys.exit(1)
                 l = l[6:]
         # Skip empty lines
         l = l.strip()
-        if not l:
-            continue
+        ikiwa sio l:
+            endelea
         l = ast.literal_eval(l)
-        if section == CTXT:
+        ikiwa section == CTXT:
             msgctxt += l.encode(encoding)
-        elif section == ID:
+        lasivyo section == ID:
             msgid += l.encode(encoding)
-        elif section == STR:
+        lasivyo section == STR:
             msgstr += l.encode(encoding)
-        else:
-            print('Syntax error on %s:%d' % (infile, lno), \
+        isipokua:
+            andika('Syntax error on %s:%d' % (infile, lno), \
                   'before:', file=sys.stderr)
-            print(l, file=sys.stderr)
+            andika(l, file=sys.stderr)
             sys.exit(1)
     # Add last entry
-    if section == STR:
+    ikiwa section == STR:
         add(msgctxt, msgid, msgstr, fuzzy)
 
     # Compute output
     output = generate()
 
-    try:
-        with open(outfile,"wb") as f:
+    jaribu:
+        ukijumuisha open(outfile,"wb") kama f:
             f.write(output)
-    except IOError as msg:
-        print(msg, file=sys.stderr)
+    tatizo IOError kama msg:
+        andika(msg, file=sys.stderr)
 
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'hVo:',
                                    ['help', 'version', 'output-file='])
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(1, msg)
 
-    outfile = None
+    outfile = Tupu
     # parse options
-    for opt, arg in opts:
-        if opt in ('-h', '--help'):
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elif opt in ('-V', '--version'):
-            print("msgfmt.py", __version__)
+        lasivyo opt kwenye ('-V', '--version'):
+            andika("msgfmt.py", __version__)
             sys.exit(0)
-        elif opt in ('-o', '--output-file'):
+        lasivyo opt kwenye ('-o', '--output-file'):
             outfile = arg
     # do it
-    if not args:
-        print('No input file given', file=sys.stderr)
-        print("Try `msgfmt --help' for more information.", file=sys.stderr)
-        return
+    ikiwa sio args:
+        andika('No input file given', file=sys.stderr)
+        andika("Try `msgfmt --help' kila more information.", file=sys.stderr)
+        rudisha
 
-    for filename in args:
+    kila filename kwenye args:
         make(filename, outfile)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

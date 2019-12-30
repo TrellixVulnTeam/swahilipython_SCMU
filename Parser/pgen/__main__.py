@@ -1,25 +1,25 @@
-import argparse
+agiza argparse
 
-from .pgen import ParserGenerator
+kutoka .pgen agiza ParserGenerator
 
 
-def main():
+eleza main():
     parser = argparse.ArgumentParser(description="Parser generator main program.")
     parser.add_argument(
-        "grammar", type=str, help="The file with the grammar definition in EBNF format"
+        "grammar", type=str, help="The file ukijumuisha the grammar definition kwenye EBNF format"
     )
     parser.add_argument(
-        "tokens", type=str, help="The file with the token definitions"
+        "tokens", type=str, help="The file ukijumuisha the token definitions"
     )
     parser.add_argument(
         "graminit_h",
         type=argparse.FileType('w'),
-        help="The path to write the grammar's non-terminals as #defines",
+        help="The path to write the grammar's non-terminals kama #defines",
     )
     parser.add_argument(
         "graminit_c",
         type=argparse.FileType('w'),
-        help="The path to write the grammar as initialized data",
+        help="The path to write the grammar kama initialized data",
     )
 
     parser.add_argument("--verbose", "-v", action="count")
@@ -31,5 +31,5 @@ def main():
     grammar.produce_graminit_c(args.graminit_c.write)
 
 
-if __name__ == "__main__":
+ikiwa __name__ == "__main__":
     main()

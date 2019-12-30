@@ -1,101 +1,101 @@
-"""Extension management for Windows.
+"""Extension management kila Windows.
 
-Under Windows it is unlikely the .obj files are of use, as special compiler options
+Under Windows it ni unlikely the .obj files are of use, kama special compiler options
 are needed (primarily to toggle the behavior of "public" symbols.
 
-I don't consider it worth parsing the MSVC makefiles for compiler options.  Even if
+I don't consider it worth parsing the MSVC makefiles kila compiler options.  Even if
 we get it just right, a specific freeze application may have specific compiler
-options anyway (eg, to enable or disable specific functionality)
+options anyway (eg, to enable ama disable specific functionality)
 
 So my basic strategy is:
 
-* Have some Windows INI files which "describe" one or more extension modules.
-  (Freeze comes with a default one for all known modules - but you can specify
+* Have some Windows INI files which "describe" one ama more extension modules.
+  (Freeze comes ukijumuisha a default one kila all known modules - but you can specify
   your own).
 * This description can include:
-  - The MSVC .dsp file for the extension.  The .c source file names
-    are extracted from there.
+  - The MSVC .dsp file kila the extension.  The .c source file names
+    are extracted kutoka there.
   - Specific compiler/linker options
-  - Flag to indicate if Unicode compilation is expected.
+  - Flag to indicate ikiwa Unicode compilation ni expected.
 
-At the moment the name and location of this INI file is hardcoded,
+At the moment the name na location of this INI file ni hardcoded,
 but an obvious enhancement would be to provide command line options.
 """
 
-import os, sys
-try:
-    import win32api
-except ImportError:
-    win32api = None # User has already been warned
+agiza os, sys
+jaribu:
+    agiza win32api
+tatizo ImportError:
+    win32api = Tupu # User has already been warned
 
-class CExtension:
-    """An abstraction of an extension implemented in C/C++
+kundi CExtension:
+    """An abstraction of an extension implemented kwenye C/C++
     """
-    def __init__(self, name, sourceFiles):
+    eleza __init__(self, name, sourceFiles):
         self.name = name
         # A list of strings defining additional compiler options.
         self.sourceFiles = sourceFiles
         # A list of special compiler options to be applied to
-        # all source modules in this extension.
+        # all source modules kwenye this extension.
         self.compilerOptions = []
         # A list of .lib files the final .EXE will need.
         self.linkerLibs = []
 
-    def GetSourceFiles(self):
-        return self.sourceFiles
+    eleza GetSourceFiles(self):
+        rudisha self.sourceFiles
 
-    def AddCompilerOption(self, option):
+    eleza AddCompilerOption(self, option):
         self.compilerOptions.append(option)
-    def GetCompilerOptions(self):
-        return self.compilerOptions
+    eleza GetCompilerOptions(self):
+        rudisha self.compilerOptions
 
-    def AddLinkerLib(self, lib):
+    eleza AddLinkerLib(self, lib):
         self.linkerLibs.append(lib)
-    def GetLinkerLibs(self):
-        return self.linkerLibs
+    eleza GetLinkerLibs(self):
+        rudisha self.linkerLibs
 
-def checkextensions(unknown, extra_inis, prefix):
+eleza checkextensions(unknown, extra_inis, prefix):
     # Create a table of frozen extensions
 
     defaultMapName = os.path.join( os.path.split(sys.argv[0])[0], "extensions_win32.ini")
-    if not os.path.isfile(defaultMapName):
-        sys.stderr.write("WARNING: %s can not be found - standard extensions may not be found\n" % defaultMapName)
-    else:
+    ikiwa sio os.path.isfile(defaultMapName):
+        sys.stderr.write("WARNING: %s can sio be found - standard extensions may sio be found\n" % defaultMapName)
+    isipokua:
         # must go on end, so other inis can override.
         extra_inis.append(defaultMapName)
 
     ret = []
-    for mod in unknown:
-        for ini in extra_inis:
+    kila mod kwenye unknown:
+        kila ini kwenye extra_inis:
 #                       print "Looking for", mod, "in", win32api.GetFullPathName(ini),"...",
             defn = get_extension_defn( mod, ini, prefix )
-            if defn is not None:
+            ikiwa defn ni sio Tupu:
 #                               print "Yay - found it!"
                 ret.append( defn )
-                break
+                koma
 #                       print "Nope!"
-        else: # For not broken!
-            sys.stderr.write("No definition of module %s in any specified map file.\n" % (mod))
+        isipokua: # For sio broken!
+            sys.stderr.write("No definition of module %s kwenye any specified map file.\n" % (mod))
 
-    return ret
+    rudisha ret
 
-def get_extension_defn(moduleName, mapFileName, prefix):
-    if win32api is None: return None
+eleza get_extension_defn(moduleName, mapFileName, prefix):
+    ikiwa win32api ni Tupu: rudisha Tupu
     os.environ['PYTHONPREFIX'] = prefix
     dsp = win32api.GetProfileVal(moduleName, "dsp", "", mapFileName)
-    if dsp=="":
-        return None
+    ikiwa dsp=="":
+        rudisha Tupu
 
-    # We allow environment variables in the file name
+    # We allow environment variables kwenye the file name
     dsp = win32api.ExpandEnvironmentStrings(dsp)
-    # If the path to the .DSP file is not absolute, assume it is relative
+    # If the path to the .DSP file ni sio absolute, assume it ni relative
     # to the description file.
-    if not os.path.isabs(dsp):
+    ikiwa sio os.path.isabs(dsp):
         dsp = os.path.join( os.path.split(mapFileName)[0], dsp)
     # Parse it to extract the source files.
     sourceFiles = parse_dsp(dsp)
-    if sourceFiles is None:
-        return None
+    ikiwa sourceFiles ni Tupu:
+        rudisha Tupu
 
     module = CExtension(moduleName, sourceFiles)
     # Put the path to the DSP into the environment so entries can reference it.
@@ -103,63 +103,63 @@ def get_extension_defn(moduleName, mapFileName, prefix):
     os.environ['ini_path'] = os.path.split(mapFileName)[0]
 
     cl_options = win32api.GetProfileVal(moduleName, "cl", "", mapFileName)
-    if cl_options:
+    ikiwa cl_options:
         module.AddCompilerOption(win32api.ExpandEnvironmentStrings(cl_options))
 
     exclude = win32api.GetProfileVal(moduleName, "exclude", "", mapFileName)
     exclude = exclude.split()
 
-    if win32api.GetProfileVal(moduleName, "Unicode", 0, mapFileName):
+    ikiwa win32api.GetProfileVal(moduleName, "Unicode", 0, mapFileName):
         module.AddCompilerOption('/D UNICODE /D _UNICODE')
 
     libs = win32api.GetProfileVal(moduleName, "libs", "", mapFileName).split()
-    for lib in libs:
+    kila lib kwenye libs:
         module.AddLinkerLib(win32api.ExpandEnvironmentStrings(lib))
 
-    for exc in exclude:
-        if exc in module.sourceFiles:
+    kila exc kwenye exclude:
+        ikiwa exc kwenye module.sourceFiles:
             module.sourceFiles.remove(exc)
 
-    return module
+    rudisha module
 
 # Given an MSVC DSP file, locate C source files it uses
 # returns a list of source files.
-def parse_dsp(dsp):
+eleza parse_dsp(dsp):
 #       print "Processing", dsp
     # For now, only support
     ret = []
     dsp_path, dsp_name = os.path.split(dsp)
-    try:
-        with open(dsp, "r") as fp:
+    jaribu:
+        ukijumuisha open(dsp, "r") kama fp:
             lines = fp.readlines()
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write("%s: %s\n" % (dsp, msg))
-        return None
-    for line in lines:
+        rudisha Tupu
+    kila line kwenye lines:
         fields = line.strip().split("=", 2)
-        if fields[0]=="SOURCE":
-            if os.path.splitext(fields[1])[1].lower() in ['.cpp', '.c']:
+        ikiwa fields[0]=="SOURCE":
+            ikiwa os.path.splitext(fields[1])[1].lower() kwenye ['.cpp', '.c']:
                 ret.append( win32api.GetFullPathName(os.path.join(dsp_path, fields[1] ) ) )
-    return ret
+    rudisha ret
 
-def write_extension_table(fname, modules):
+eleza write_extension_table(fname, modules):
     fp = open(fname, "w")
-    try:
+    jaribu:
         fp.write (ext_src_header)
         # Write fn protos
-        for module in modules:
-            # bit of a hack for .pyd's as part of packages.
+        kila module kwenye modules:
+            # bit of a hack kila .pyd's kama part of packages.
             name = module.name.split('.')[-1]
             fp.write('extern void init%s(void);\n' % (name) )
         # Write the table
         fp.write (ext_tab_header)
-        for module in modules:
+        kila module kwenye modules:
             name = module.name.split('.')[-1]
             fp.write('\t{"%s", init%s},\n' % (name, name) )
 
         fp.write (ext_tab_footer)
         fp.write(ext_src_footer)
-    finally:
+    mwishowe:
         fp.close()
 
 
@@ -183,7 +183,7 @@ extern DL_IMPORT(int) PyImport_ExtendInittab(struct _inittab *newtab);
 
 int PyInitFrozenExtensions()
 {
-        return PyImport_ExtendInittab(extensions);
+        rudisha PyImport_ExtendInittab(extensions);
 }
 
 """

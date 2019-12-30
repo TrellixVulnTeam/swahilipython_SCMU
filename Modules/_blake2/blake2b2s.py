@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-import os
-import re
+agiza os
+agiza re
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BLAKE2 = os.path.join(HERE, 'impl')
@@ -9,41 +9,41 @@ BLAKE2 = os.path.join(HERE, 'impl')
 PUBLIC_SEARCH = re.compile(r'\ int (blake2[bs]p?[a-z_]*)\(')
 
 
-def getfiles():
-    for name in os.listdir(BLAKE2):
+eleza getfiles():
+    kila name kwenye os.listdir(BLAKE2):
         name = os.path.join(BLAKE2, name)
-        if os.path.isfile(name):
-            yield name
+        ikiwa os.path.isfile(name):
+            tuma name
 
 
-def find_public():
+eleza find_public():
     public_funcs = set()
-    for name in getfiles():
-        with open(name) as f:
-            for line in f:
+    kila name kwenye getfiles():
+        ukijumuisha open(name) kama f:
+            kila line kwenye f:
                 # find public functions
                 mo = PUBLIC_SEARCH.search(line)
-                if mo:
+                ikiwa mo:
                     public_funcs.add(mo.group(1))
 
-    for f in sorted(public_funcs):
-        print('#define {0:<18} PyBlake2_{0}'.format(f))
+    kila f kwenye sorted(public_funcs):
+        andika('#define {0:<18} PyBlake2_{0}'.format(f))
 
-    return public_funcs
+    rudisha public_funcs
 
 
-def main():
+eleza main():
     lines = []
-    with open(os.path.join(HERE, 'blake2b_impl.c')) as f:
-        for line in f:
+    ukijumuisha open(os.path.join(HERE, 'blake2b_impl.c')) kama f:
+        kila line kwenye f:
             line = line.replace('blake2b', 'blake2s')
             line = line.replace('BLAKE2b', 'BLAKE2s')
             line = line.replace('BLAKE2B', 'BLAKE2S')
             lines.append(line)
-    with open(os.path.join(HERE, 'blake2s_impl.c'), 'w') as f:
+    ukijumuisha open(os.path.join(HERE, 'blake2s_impl.c'), 'w') kama f:
         f.write(''.join(lines))
     # find_public()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

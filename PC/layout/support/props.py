@@ -2,9 +2,9 @@
 Provides .props file.
 """
 
-import os
+agiza os
 
-from .constants import *
+kutoka .constants agiza *
 
 __all__ = ["get_props_layout"]
 
@@ -17,16 +17,16 @@ PROPS_DATA = {
     "PYTHON_TARGET": "",
 }
 
-if not PROPS_DATA["PYTHON_VERSION"]:
-    if VER_NAME:
+ikiwa sio PROPS_DATA["PYTHON_VERSION"]:
+    ikiwa VER_NAME:
         PROPS_DATA["PYTHON_VERSION"] = "{}.{}-{}{}".format(
             VER_DOT, VER_MICRO, VER_NAME, VER_SERIAL
         )
-    else:
+    isipokua:
         PROPS_DATA["PYTHON_VERSION"] = "{}.{}".format(VER_DOT, VER_MICRO)
 
-if not PROPS_DATA["PYTHON_PLATFORM"]:
-    PROPS_DATA["PYTHON_PLATFORM"] = "x64" if IS_X64 else "Win32"
+ikiwa sio PROPS_DATA["PYTHON_PLATFORM"]:
+    PROPS_DATA["PYTHON_PLATFORM"] = "x64" ikiwa IS_X64 isipokua "Win32"
 
 PROPS_DATA["PYTHON_TARGET"] = "_GetPythonRuntimeFilesDependsOn{}{}_{}".format(
     VER_MAJOR, VER_MINOR, PROPS_DATA["PYTHON_PLATFORM"]
@@ -85,14 +85,14 @@ PROPS_TEMPLATE = r"""<?xml version="1.0" encoding="utf-8"?>
       <PythonRuntime Include="@(_PythonRuntimeExe);@(_PythonRuntimeDlls);@(_PythonRuntimeLib)" />
     </ItemGroup>
 
-    <Message Importance="low" Text="Collected Python runtime from $(PythonHome):%0D%0A@(PythonRuntime->'  %(Link)','%0D%0A')" />
+    <Message Importance="low" Text="Collected Python runtime kutoka $(PythonHome):%0D%0A@(PythonRuntime->'  %(Link)','%0D%0A')" />
   </Target>
 </Project>
 """
 
 
-def get_props_layout(ns):
-    if ns.include_all or ns.include_props:
+eleza get_props_layout(ns):
+    ikiwa ns.include_all ama ns.include_props:
         # TODO: Filter contents of props file according to included/excluded items
         props = PROPS_TEMPLATE.format_map(PROPS_DATA)
-        yield "python.props", ("python.props", props.encode("utf-8"))
+        tuma "python.props", ("python.props", props.encode("utf-8"))

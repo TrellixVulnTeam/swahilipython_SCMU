@@ -1,18 +1,18 @@
-"""Pynche -- The PYthon Natural Color and Hue Editor.
+"""Pynche -- The PYthon Natural Color na Hue Editor.
 
 Contact: %(AUTHNAME)s
 Email:   %(AUTHEMAIL)s
 Version: %(__version__)s
 
-Pynche is based largely on a similar color editor I wrote years ago for the
+Pynche ni based largely on a similar color editor I wrote years ago kila the
 SunView window system.  That editor was called ICE: the Interactive Color
 Editor.  I'd always wanted to port the editor to X but didn't feel like
-hacking X and C code to do it.  Fast forward many years, to where Python +
-Tkinter provides such a nice programming environment, with enough power, that
-I finally buckled down and implemented it.  I changed the name because these
+hacking X na C code to do it.  Fast forward many years, to where Python +
+Tkinter provides such a nice programming environment, ukijumuisha enough power, that
+I finally buckled down na implemented it.  I changed the name because these
 days, too many other systems have the acronym `ICE'.
 
-This program currently requires Python 2.2 with Tkinter.
+This program currently requires Python 2.2 ukijumuisha Tkinter.
 
 Usage: %(PROGRAM)s [-d file] [-i file] [-X] [-v] [-h] [initialcolor]
 
@@ -24,10 +24,10 @@ Where:
     --initfile file
     -i file
         Alternate location of the initialization file.  This file contains a
-        persistent database of the current Pynche options and color.  This
-        means that Pynche restores its option settings and current color when
-        it restarts, using this file (unless the -X option is used).  The
-        default is ~/.pynche
+        persistent database of the current Pynche options na color.  This
+        means that Pynche restores its option settings na current color when
+        it restarts, using this file (unless the -X option ni used).  The
+        default ni ~/.pynche
 
     --ignore
     -X
@@ -36,28 +36,28 @@ Where:
 
     --version
     -v
-        print the version number and exit
+        print the version number na exit
 
     --help
     -h
         print this message
 
     initialcolor
-        initial color, as a color name or #RRGGBB format
+        initial color, kama a color name ama #RRGGBB format
 """
 
 __version__ = '1.4.1'
 
-import sys
-import os
-import getopt
-import ColorDB
+agiza sys
+agiza os
+agiza getopt
+agiza ColorDB
 
-from PyncheWidget import PyncheWidget
-from Switchboard import Switchboard
-from StripViewer import StripViewer
-from ChipViewer import ChipViewer
-from TypeinViewer import TypeinViewer
+kutoka PyncheWidget agiza PyncheWidget
+kutoka Switchboard agiza Switchboard
+kutoka StripViewer agiza StripViewer
+kutoka ChipViewer agiza ChipViewer
+kutoka TypeinViewer agiza TypeinViewer
 
 
 
@@ -65,7 +65,7 @@ PROGRAM = sys.argv[0]
 AUTHNAME = 'Barry Warsaw'
 AUTHEMAIL = 'barry@python.org'
 
-# Default locations of rgb.txt or other textual color database
+# Default locations of rgb.txt ama other textual color database
 RGB_TXT = [
     # Solaris OpenWindows
     '/usr/openwin/lib/rgb.txt',
@@ -79,70 +79,70 @@ RGB_TXT = [
 
 
 # Do this because PyncheWidget.py wants to get at the interpolated docstring
-# too, for its Help menu.
-def docstring():
-    return __doc__ % globals()
+# too, kila its Help menu.
+eleza docstring():
+    rudisha __doc__ % globals()
 
 
-def usage(code, msg=''):
-    print(docstring())
-    if msg:
-        print(msg)
+eleza usage(code, msg=''):
+    andika(docstring())
+    ikiwa msg:
+        andika(msg)
     sys.exit(code)
 
 
 
-def initial_color(s, colordb):
+eleza initial_color(s, colordb):
     # function called on every color
-    def scan_color(s, colordb=colordb):
-        try:
+    eleza scan_color(s, colordb=colordb):
+        jaribu:
             r, g, b = colordb.find_byname(s)
-        except ColorDB.BadColor:
-            try:
+        tatizo ColorDB.BadColor:
+            jaribu:
                 r, g, b = ColorDB.rrggbb_to_triplet(s)
-            except ColorDB.BadColor:
-                return None, None, None
-        return r, g, b
+            tatizo ColorDB.BadColor:
+                rudisha Tupu, Tupu, Tupu
+        rudisha r, g, b
     #
-    # First try the passed in color
+    # First try the pitaed kwenye color
     r, g, b = scan_color(s)
-    if r is None:
-        # try the same color with '#' prepended, since some shells require
-        # this to be escaped, which is a pain
+    ikiwa r ni Tupu:
+        # try the same color ukijumuisha '#' prepended, since some shells require
+        # this to be escaped, which ni a pain
         r, g, b = scan_color('#' + s)
-    if r is None:
-        print('Bad initial color, using gray50:', s)
+    ikiwa r ni Tupu:
+        andika('Bad initial color, using gray50:', s)
         r, g, b = scan_color('gray50')
-    if r is None:
+    ikiwa r ni Tupu:
         usage(1, 'Cannot find an initial color to use')
-        # does not return
-    return r, g, b
+        # does sio rudisha
+    rudisha r, g, b
 
 
 
-def build(master=None, initialcolor=None, initfile=None, ignore=None,
-          dbfile=None):
+eleza build(master=Tupu, initialcolor=Tupu, initfile=Tupu, ignore=Tupu,
+          dbfile=Tupu):
     # create all output widgets
-    s = Switchboard(not ignore and initfile)
+    s = Switchboard(sio ignore na initfile)
     # defer to the command line chosen color database, falling back to the one
-    # in the .pynche file.
-    if dbfile is None:
+    # kwenye the .pynche file.
+    ikiwa dbfile ni Tupu:
         dbfile = s.optiondb().get('DBFILE')
     # find a parseable color database
-    colordb = None
+    colordb = Tupu
     files = RGB_TXT[:]
-    if dbfile is None:
+    ikiwa dbfile ni Tupu:
         dbfile = files.pop()
-    while colordb is None:
-        try:
+    wakati colordb ni Tupu:
+        jaribu:
             colordb = ColorDB.get_colordb(dbfile)
-        except (KeyError, IOError):
-            pass
-        if colordb is None:
-            if not files:
-                break
+        tatizo (KeyError, IOError):
+            pita
+        ikiwa colordb ni Tupu:
+            ikiwa sio files:
+                koma
             dbfile = files.pop(0)
-    if not colordb:
+    ikiwa sio colordb:
         usage(1, 'No color database file found, see the -d option.')
     s.set_colordb(colordb)
 
@@ -155,65 +155,65 @@ def build(master=None, initialcolor=None, initfile=None, ignore=None,
     s.add_view(ChipViewer(s, w))
     s.add_view(TypeinViewer(s, w))
 
-    # get the initial color as components and set the color on all views.  if
+    # get the initial color kama components na set the color on all views.  if
     # there was no initial color given on the command line, use the one that's
-    # stored in the option database
-    if initialcolor is None:
+    # stored kwenye the option database
+    ikiwa initialcolor ni Tupu:
         optiondb = s.optiondb()
         red = optiondb.get('RED')
         green = optiondb.get('GREEN')
         blue = optiondb.get('BLUE')
-        # but if there wasn't any stored in the database, use grey50
-        if red is None or blue is None or green is None:
+        # but ikiwa there wasn't any stored kwenye the database, use grey50
+        ikiwa red ni Tupu ama blue ni Tupu ama green ni Tupu:
             red, green, blue = initial_color('grey50', colordb)
-    else:
+    isipokua:
         red, green, blue = initial_color(initialcolor, colordb)
     s.update_views(red, green, blue)
-    return app, s
+    rudisha app, s
 
 
-def run(app, s):
-    try:
+eleza run(app, s):
+    jaribu:
         app.start()
-    except KeyboardInterrupt:
-        pass
+    tatizo KeyboardInterrupt:
+        pita
 
 
 
-def main():
-    try:
+eleza main():
+    jaribu:
         opts, args = getopt.getopt(
             sys.argv[1:],
             'hd:i:Xv',
             ['database=', 'initfile=', 'ignore', 'help', 'version'])
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(1, msg)
 
-    if len(args) == 0:
-        initialcolor = None
-    elif len(args) == 1:
+    ikiwa len(args) == 0:
+        initialcolor = Tupu
+    lasivyo len(args) == 1:
         initialcolor = args[0]
-    else:
+    isipokua:
         usage(1)
 
-    ignore = False
-    dbfile = None
+    ignore = Uongo
+    dbfile = Tupu
     initfile = os.path.expanduser('~/.pynche')
-    for opt, arg in opts:
-        if opt in ('-h', '--help'):
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elif opt in ('-v', '--version'):
-            print("""\
-Pynche -- The PYthon Natural Color and Hue Editor.
+        lasivyo opt kwenye ('-v', '--version'):
+            andika("""\
+Pynche -- The PYthon Natural Color na Hue Editor.
 Contact: %(AUTHNAME)s
 Email:   %(AUTHEMAIL)s
 Version: %(__version__)s""" % globals())
             sys.exit(0)
-        elif opt in ('-d', '--database'):
+        lasivyo opt kwenye ('-d', '--database'):
             dbfile = arg
-        elif opt in ('-X', '--ignore'):
-            ignore = True
-        elif opt in ('-i', '--initfile'):
+        lasivyo opt kwenye ('-X', '--ignore'):
+            ignore = Kweli
+        lasivyo opt kwenye ('-i', '--initfile'):
             initfile = arg
 
     app, sb = build(initialcolor=initialcolor,
@@ -225,5 +225,5 @@ Version: %(__version__)s""" % globals())
 
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

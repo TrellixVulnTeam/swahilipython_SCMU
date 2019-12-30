@@ -1,66 +1,66 @@
 # Copyright (c) 2010 Python Software Foundation. All Rights Reserved.
-# Adapted from Python's Lib/test/test_strtod.py (by Mark Dickinson)
+# Adapted kutoka Python's Lib/test/test_strtod.py (by Mark Dickinson)
 
-# More test cases for deccheck.py.
+# More test cases kila deccheck.py.
 
-import random
+agiza random
 
 TEST_SIZE = 2
 
 
-def test_short_halfway_cases():
-    # exact halfway cases with a small number of significant digits
-    for k in 0, 5, 10, 15, 20:
+eleza test_short_halfway_cases():
+    # exact halfway cases ukijumuisha a small number of significant digits
+    kila k kwenye 0, 5, 10, 15, 20:
         # upper = smallest integer >= 2**54/5**k
         upper = -(-2**54//5**k)
         # lower = smallest odd number >= 2**53/5**k
         lower = -(-2**53//5**k)
-        if lower % 2 == 0:
+        ikiwa lower % 2 == 0:
             lower += 1
-        for i in range(10 * TEST_SIZE):
-            # Select a random odd n in [2**53/5**k,
+        kila i kwenye range(10 * TEST_SIZE):
+            # Select a random odd n kwenye [2**53/5**k,
             # 2**54/5**k). Then n * 10**k gives a halfway case
-            # with small number of significant digits.
+            # ukijumuisha small number of significant digits.
             n, e = random.randrange(lower, upper, 2), k
 
             # Remove any additional powers of 5.
-            while n % 5 == 0:
+            wakati n % 5 == 0:
                 n, e = n // 5, e + 1
-            assert n % 10 in (1, 3, 7, 9)
+            assert n % 10 kwenye (1, 3, 7, 9)
 
             # Try numbers of the form n * 2**p2 * 10**e, p2 >= 0,
             # until n * 2**p2 has more than 20 significant digits.
             digits, exponent = n, e
-            while digits < 10**20:
+            wakati digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
-                yield s
-                # Same again, but with extra trailing zeros.
+                tuma s
+                # Same again, but ukijumuisha extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
-                yield s
+                tuma s
                 digits *= 2
 
             # Try numbers of the form n * 5**p2 * 10**(e - p5), p5
-            # >= 0, with n * 5**p5 < 10**20.
+            # >= 0, ukijumuisha n * 5**p5 < 10**20.
             digits, exponent = n, e
-            while digits < 10**20:
+            wakati digits < 10**20:
                 s = '{}e{}'.format(digits, exponent)
-                yield s
-                # Same again, but with extra trailing zeros.
+                tuma s
+                # Same again, but ukijumuisha extra trailing zeros.
                 s = '{}e{}'.format(digits * 10**40, exponent - 40)
-                yield s
+                tuma s
                 digits *= 5
                 exponent -= 1
 
-def test_halfway_cases():
-    # test halfway cases for the round-half-to-even rule
-    for i in range(1000):
-        for j in range(TEST_SIZE):
-            # bit pattern for a random finite positive (or +0.0) float
+eleza test_halfway_cases():
+    # test halfway cases kila the round-half-to-even rule
+    kila i kwenye range(1000):
+        kila j kwenye range(TEST_SIZE):
+            # bit pattern kila a random finite positive (or +0.0) float
             bits = random.randrange(2047*2**52)
 
             # convert bit pattern to a number of the form m * 2**e
             e, m = divmod(bits, 2**52)
-            if e:
+            ikiwa e:
                 m, e = m + 2**52, e - 1
             e -= 1074
 
@@ -68,85 +68,85 @@ def test_halfway_cases():
             m, e = 2*m + 1, e - 1
 
             # convert to a decimal string
-            if e >= 0:
+            ikiwa e >= 0:
                 digits = m << e
                 exponent = 0
-            else:
+            isipokua:
                 # m * 2**e = (m * 5**-e) * 10**e
                 digits = m * 5**-e
                 exponent = e
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            tuma s
 
-def test_boundaries():
-    # boundaries expressed as triples (n, e, u), where
-    # n*10**e is an approximation to the boundary value and
-    # u*10**e is 1ulp
+eleza test_boundaries():
+    # boundaries expressed kama triples (n, e, u), where
+    # n*10**e ni an approximation to the boundary value na
+    # u*10**e ni 1ulp
     boundaries = [
         (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)
         (17976931348623159077, 289, 1995),   # overflow boundary (2.**1024)
         (22250738585072013831, -327, 4941),  # normal/subnormal (2.**-1022)
         (0, -327, 4941),                     # zero
         ]
-    for n, e, u in boundaries:
-        for j in range(1000):
-            for i in range(TEST_SIZE):
+    kila n, e, u kwenye boundaries:
+        kila j kwenye range(1000):
+            kila i kwenye range(TEST_SIZE):
                 digits = n + random.randrange(-3*u, 3*u)
                 exponent = e
                 s = '{}e{}'.format(digits, exponent)
-                yield s
+                tuma s
             n *= 10
             u *= 10
             e -= 1
 
-def test_underflow_boundary():
+eleza test_underflow_boundary():
     # test values close to 2**-1075, the underflow boundary; similar
-    # to boundary_tests, except that the random error doesn't scale
-    # with n
-    for exponent in range(-400, -320):
+    # to boundary_tests, tatizo that the random error doesn't scale
+    # ukijumuisha n
+    kila exponent kwenye range(-400, -320):
         base = 10**-exponent // 2**1075
-        for j in range(TEST_SIZE):
+        kila j kwenye range(TEST_SIZE):
             digits = base + random.randrange(-1000, 1000)
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            tuma s
 
-def test_bigcomp():
-    for ndigs in 5, 10, 14, 15, 16, 17, 18, 19, 20, 40, 41, 50:
+eleza test_bigcomp():
+    kila ndigs kwenye 5, 10, 14, 15, 16, 17, 18, 19, 20, 40, 41, 50:
         dig10 = 10**ndigs
-        for i in range(100 * TEST_SIZE):
+        kila i kwenye range(100 * TEST_SIZE):
             digits = random.randrange(dig10)
             exponent = random.randrange(-400, 400)
             s = '{}e{}'.format(digits, exponent)
-            yield s
+            tuma s
 
-def test_parsing():
+eleza test_parsing():
     # make '0' more likely to be chosen than other digits
     digits = '000000123456789'
     signs = ('+', '-', '')
 
     # put together random short valid strings
     # \d*[.\d*]?e
-    for i in range(1000):
-        for j in range(TEST_SIZE):
+    kila i kwenye range(1000):
+        kila j kwenye range(TEST_SIZE):
             s = random.choice(signs)
             intpart_len = random.randrange(5)
-            s += ''.join(random.choice(digits) for _ in range(intpart_len))
-            if random.choice([True, False]):
+            s += ''.join(random.choice(digits) kila _ kwenye range(intpart_len))
+            ikiwa random.choice([Kweli, Uongo]):
                 s += '.'
                 fracpart_len = random.randrange(5)
                 s += ''.join(random.choice(digits)
-                             for _ in range(fracpart_len))
-            else:
+                             kila _ kwenye range(fracpart_len))
+            isipokua:
                 fracpart_len = 0
-            if random.choice([True, False]):
+            ikiwa random.choice([Kweli, Uongo]):
                 s += random.choice(['e', 'E'])
                 s += random.choice(signs)
                 exponent_len = random.randrange(1, 4)
                 s += ''.join(random.choice(digits)
-                             for _ in range(exponent_len))
+                             kila _ kwenye range(exponent_len))
 
-            if intpart_len + fracpart_len:
-                yield s
+            ikiwa intpart_len + fracpart_len:
+                tuma s
 
 test_particular = [
      # squares
@@ -204,7 +204,7 @@ test_particular = [
     '000000000000000000000000000000000000000000000000000' #...
     '1',
 
-    # tough cases for ln etc.
+    # tough cases kila ln etc.
     '1.000000000000000000000000000000000000000000000000' #...
     '00000000000000000000000000000000000000000000000000' #...
     '00100000000000000000000000000000000000000000000000' #...
@@ -220,31 +220,31 @@ test_particular = [
 
 
 TESTCASES = [
-      [x for x in test_short_halfway_cases()],
-      [x for x in test_halfway_cases()],
-      [x for x in test_boundaries()],
-      [x for x in test_underflow_boundary()],
-      [x for x in test_bigcomp()],
-      [x for x in test_parsing()],
+      [x kila x kwenye test_short_halfway_cases()],
+      [x kila x kwenye test_halfway_cases()],
+      [x kila x kwenye test_boundaries()],
+      [x kila x kwenye test_underflow_boundary()],
+      [x kila x kwenye test_bigcomp()],
+      [x kila x kwenye test_parsing()],
       test_particular
 ]
 
-def un_randfloat():
-    for i in range(1000):
+eleza un_randfloat():
+    kila i kwenye range(1000):
         l = random.choice(TESTCASES[:6])
-        yield random.choice(l)
-    for v in test_particular:
-        yield v
+        tuma random.choice(l)
+    kila v kwenye test_particular:
+        tuma v
 
-def bin_randfloat():
-    for i in range(1000):
+eleza bin_randfloat():
+    kila i kwenye range(1000):
         l1 = random.choice(TESTCASES)
         l2 = random.choice(TESTCASES)
-        yield random.choice(l1), random.choice(l2)
+        tuma random.choice(l1), random.choice(l2)
 
-def tern_randfloat():
-    for i in range(1000):
+eleza tern_randfloat():
+    kila i kwenye range(1000):
         l1 = random.choice(TESTCASES)
         l2 = random.choice(TESTCASES)
         l3 = random.choice(TESTCASES)
-        yield random.choice(l1), random.choice(l2), random.choice(l3)
+        tuma random.choice(l1), random.choice(l2), random.choice(l3)

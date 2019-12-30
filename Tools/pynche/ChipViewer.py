@@ -1,38 +1,38 @@
-"""Chip viewer and widget.
+"""Chip viewer na widget.
 
 In the lower left corner of the main Pynche window, you will see two
-ChipWidgets, one for the selected color and one for the nearest color.  The
-selected color is the actual RGB value expressed as an X11 #COLOR name. The
-nearest color is the named color from the X11 database that is closest to the
-selected color in 3D space.  There may be other colors equally close, but the
-nearest one is the first one found.
+ChipWidgets, one kila the selected color na one kila the nearest color.  The
+selected color ni the actual RGB value expressed kama an X11 #COLOR name. The
+nearest color ni the named color kutoka the X11 database that ni closest to the
+selected color kwenye 3D space.  There may be other colors equally close, but the
+nearest one ni the first one found.
 
 Clicking on the nearest color chip selects that named color.
 
-The ChipViewer class includes the entire lower left quandrant; i.e. both the
-selected and nearest ChipWidgets.
+The ChipViewer kundi includes the entire lower left quandrant; i.e. both the
+selected na nearest ChipWidgets.
 """
 
-from tkinter import *
-import ColorDB
+kutoka tkinter agiza *
+agiza ColorDB
 
 
-class ChipWidget:
+kundi ChipWidget:
     _WIDTH = 150
     _HEIGHT = 80
 
-    def __init__(self,
-                 master = None,
+    eleza __init__(self,
+                 master = Tupu,
                  width  = _WIDTH,
                  height = _HEIGHT,
                  text   = 'Color',
                  initialcolor = 'blue',
-                 presscmd   = None,
-                 releasecmd = None):
+                 presscmd   = Tupu,
+                 releasecmd = Tupu):
         # create the text label
         self.__label = Label(master, text=text)
         self.__label.grid(row=0, column=0)
-        # create the color chip, implemented as a frame
+        # create the color chip, implemented kama a frame
         self.__chip = Frame(master, relief=RAISED, borderwidth=2,
                             width=width,
                             height=height,
@@ -52,33 +52,33 @@ class ChipWidget:
                             font=self.__label['font'])
         self.__name.grid(row=3, column=0)
         # set bindings
-        if presscmd:
+        ikiwa presscmd:
             self.__chip.bind('<ButtonPress-1>', presscmd)
-        if releasecmd:
+        ikiwa releasecmd:
             self.__chip.bind('<ButtonRelease-1>', releasecmd)
 
-    def set_color(self, color):
+    eleza set_color(self, color):
         self.__chip.config(background=color)
 
-    def get_color(self):
-        return self.__chip['background']
+    eleza get_color(self):
+        rudisha self.__chip['background']
 
-    def set_name(self, colorname):
+    eleza set_name(self, colorname):
         self.__namevar.set(colorname)
 
-    def set_message(self, message):
+    eleza set_message(self, message):
         self.__msgvar.set(message)
 
-    def press(self):
+    eleza press(self):
         self.__chip.configure(relief=SUNKEN)
 
-    def release(self):
+    eleza release(self):
         self.__chip.configure(relief=RAISED)
 
 
 
-class ChipViewer:
-    def __init__(self, switchboard, master=None):
+kundi ChipViewer:
+    eleza __init__(self, switchboard, master=Tupu):
         self.__sb = switchboard
         self.__frame = Frame(master, relief=RAISED, borderwidth=1)
         self.__frame.grid(row=3, column=0, ipadx=5, sticky='NSEW')
@@ -95,13 +95,13 @@ class ChipViewer:
                                     presscmd = self.__buttonpress,
                                     releasecmd = self.__buttonrelease)
 
-    def update_yourself(self, red, green, blue):
+    eleza update_yourself(self, red, green, blue):
         # Selected always shows the #rrggbb name of the color, nearest always
-        # shows the name of the nearest color in the database.  BAW: should
-        # an exact match be indicated in some way?
+        # shows the name of the nearest color kwenye the database.  BAW: should
+        # an exact match be indicated kwenye some way?
         #
         # Always use the #rrggbb style to actually set the color, since we may
-        # not be using X color names (e.g. "web-safe" names)
+        # sio be using X color names (e.g. "web-safe" names)
         colordb = self.__sb.colordb()
         rgbtuple = (red, green, blue)
         rrggbb = ColorDB.triplet_to_rrggbb(rgbtuple)
@@ -111,19 +111,19 @@ class ChipViewer:
         nearest_rrggbb = ColorDB.triplet_to_rrggbb(nearest_tuple)
         self.__selected.set_color(rrggbb)
         self.__nearest.set_color(nearest_rrggbb)
-        # set the name and messages areas
+        # set the name na messages areas
         self.__selected.set_name(rrggbb)
-        if rrggbb == nearest_rrggbb:
+        ikiwa rrggbb == nearest_rrggbb:
             self.__selected.set_message(nearest)
-        else:
+        isipokua:
             self.__selected.set_message('')
         self.__nearest.set_name(nearest_rrggbb)
         self.__nearest.set_message(nearest)
 
-    def __buttonpress(self, event=None):
+    eleza __buttonpress(self, event=Tupu):
         self.__nearest.press()
 
-    def __buttonrelease(self, event=None):
+    eleza __buttonrelease(self, event=Tupu):
         self.__nearest.release()
         rrggbb = self.__nearest.get_color()
         red, green, blue = ColorDB.rrggbb_to_triplet(rrggbb)

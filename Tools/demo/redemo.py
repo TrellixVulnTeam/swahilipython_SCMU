@@ -2,12 +2,12 @@
 
 """Basic regular expression demonstration facility (Perl style syntax)."""
 
-from tkinter import *
-import re
+kutoka tkinter agiza *
+agiza re
 
-class ReDemo:
+kundi ReDemo:
 
-    def __init__(self, master):
+    eleza __init__(self, master):
         self.master = master
 
         self.promptdisplay = Label(self.master, anchor=W,
@@ -61,7 +61,7 @@ class ReDemo:
         self.regexdisplay.bind('<Key>', self.recompile)
         self.stringdisplay.bind('<Key>', self.reevaluate)
 
-        self.compiled = None
+        self.compiled = Tupu
         self.recompile()
 
         btags = self.regexdisplay.bindtags()
@@ -70,15 +70,15 @@ class ReDemo:
         btags = self.stringdisplay.bindtags()
         self.stringdisplay.bindtags(btags[1:] + btags[:1])
 
-    def addoptions(self):
+    eleza addoptions(self):
         self.frames = []
         self.boxes = []
         self.vars = []
-        for name in ('IGNORECASE',
+        kila name kwenye ('IGNORECASE',
                      'MULTILINE',
                      'DOTALL',
                      'VERBOSE'):
-            if len(self.boxes) % 3 == 0:
+            ikiwa len(self.boxes) % 3 == 0:
                 frame = Frame(self.master)
                 frame.pack(fill=X)
                 self.frames.append(frame)
@@ -92,80 +92,80 @@ class ReDemo:
             self.boxes.append(box)
             self.vars.append(var)
 
-    def getflags(self):
+    eleza getflags(self):
         flags = 0
-        for var in self.vars:
+        kila var kwenye self.vars:
             flags = flags | var.get()
-        return flags
+        rudisha flags
 
-    def recompile(self, event=None):
-        try:
+    eleza recompile(self, event=Tupu):
+        jaribu:
             self.compiled = re.compile(self.regexdisplay.get(),
                                        self.getflags())
             bg = self.promptdisplay['background']
             self.statusdisplay.config(text="", background=bg)
-        except re.error as msg:
-            self.compiled = None
+        tatizo re.error kama msg:
+            self.compiled = Tupu
             self.statusdisplay.config(
                     text="re.error: %s" % str(msg),
                     background="red")
         self.reevaluate()
 
-    def reevaluate(self, event=None):
-        try:
+    eleza reevaluate(self, event=Tupu):
+        jaribu:
             self.stringdisplay.tag_remove("hit", "1.0", END)
-        except TclError:
-            pass
-        try:
+        tatizo TclError:
+            pita
+        jaribu:
             self.stringdisplay.tag_remove("hit0", "1.0", END)
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
         self.grouplist.delete(0, END)
-        if not self.compiled:
-            return
+        ikiwa sio self.compiled:
+            rudisha
         self.stringdisplay.tag_configure("hit", background="yellow")
         self.stringdisplay.tag_configure("hit0", background="orange")
         text = self.stringdisplay.get("1.0", END)
         last = 0
         nmatches = 0
-        while last <= len(text):
+        wakati last <= len(text):
             m = self.compiled.search(text, last)
-            if m is None:
-                break
+            ikiwa m ni Tupu:
+                koma
             first, last = m.span()
-            if last == first:
+            ikiwa last == first:
                 last = first+1
                 tag = "hit0"
-            else:
+            isipokua:
                 tag = "hit"
             pfirst = "1.0 + %d chars" % first
             plast = "1.0 + %d chars" % last
             self.stringdisplay.tag_add(tag, pfirst, plast)
-            if nmatches == 0:
+            ikiwa nmatches == 0:
                 self.stringdisplay.yview_pickplace(pfirst)
                 groups = list(m.groups())
                 groups.insert(0, m.group())
-                for i in range(len(groups)):
+                kila i kwenye range(len(groups)):
                     g = "%2d: %r" % (i, groups[i])
                     self.grouplist.insert(END, g)
             nmatches = nmatches + 1
-            if self.showvar.get() == "first":
-                break
+            ikiwa self.showvar.get() == "first":
+                koma
 
-        if nmatches == 0:
+        ikiwa nmatches == 0:
             self.statusdisplay.config(text="(no match)",
                                       background="yellow")
-        else:
+        isipokua:
             self.statusdisplay.config(text="")
 
 
-# Main function, run when invoked as a stand-alone Python program.
+# Main function, run when invoked kama a stand-alone Python program.
 
-def main():
+eleza main():
     root = Tk()
     demo = ReDemo(root)
     root.protocol('WM_DELETE_WINDOW', root.quit)
     root.mainloop()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

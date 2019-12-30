@@ -825,7 +825,7 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
             ikiwa getattr(b, _PARAMS).frozen:
                 any_frozen_base = Kweli
 
-    # Annotations that are defined kwenye this kundi (sio kwenye base
+    # Annotations that are defined kwenye this kundi (haiko kwenye base
     # classes).  If __annotations__ isn't present, then this class
     # adds no new annotations.  We use this to compute fields that are
     # added by this class.

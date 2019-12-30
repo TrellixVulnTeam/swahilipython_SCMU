@@ -1,30 +1,30 @@
-# A minimal SQLite shell for experiments
+# A minimal SQLite shell kila experiments
 
 agiza sqlite3
 
 con = sqlite3.connect(":memory:")
-con.isolation_level = None
+con.isolation_level = Tupu
 cur = con.cursor()
 
 buffer = ""
 
-print("Enter your SQL commands to execute in sqlite3.")
-print("Enter a blank line to exit.")
+andika("Enter your SQL commands to execute kwenye sqlite3.")
+andika("Enter a blank line to exit.")
 
-while Kweli:
-    line = input()
-    if line == "":
-        break
+wakati Kweli:
+    line = uliza()
+    ikiwa line == "":
+        koma
     buffer += line
-    if sqlite3.complete_statement(buffer):
-        try:
+    ikiwa sqlite3.complete_statement(buffer):
+        jaribu:
             buffer = buffer.strip()
             cur.execute(buffer)
 
-            if buffer.lstrip().upper().startswith("SELECT"):
-                print(cur.fetchall())
-        except sqlite3.Error as e:
-            print("An error occurred:", e.args[0])
+            ikiwa buffer.lstrip().upper().startswith("SELECT"):
+                andika(cur.fetchall())
+        tatizo sqlite3.Error kama e:
+            andika("An error occurred:", e.args[0])
         buffer = ""
 
 con.close()

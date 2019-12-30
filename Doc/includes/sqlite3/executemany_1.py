@@ -1,17 +1,17 @@
 agiza sqlite3
 
 kundi IterChars:
-    def __init__(self):
+    eleza __init__(self):
         self.count = ord('a')
 
-    def __iter__(self):
-        return self
+    eleza __iter__(self):
+        rudisha self
 
-    def __next__(self):
-        if self.count > ord('z'):
-            raise StopIteration
+    eleza __next__(self):
+        ikiwa self.count > ord('z'):
+            ashiria StopIteration
         self.count += 1
-        return (chr(self.count - 1),) # this is a 1-tuple
+        rudisha (chr(self.count - 1),) # this ni a 1-tuple
 
 con = sqlite3.connect(":memory:")
 cur = con.cursor()
@@ -21,6 +21,6 @@ theIter = IterChars()
 cur.executemany("insert into characters(c) values (?)", theIter)
 
 cur.execute("select c kutoka characters")
-print(cur.fetchall())
+andika(cur.fetchall())
 
 con.close()

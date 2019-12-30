@@ -6,59 +6,59 @@
 # by Peter Funk <pf@artcom-gmbh.de>
 #
 # 2002-11-22 Jürgen Hermann <jh@web.de>
-# Added checks that _() only contains string literals, and
+# Added checks that _() only contains string literals, na
 # command line args are resolved to module lists, i.e. you
-# can now pass a filename, a module or package name, or a
-# directory (including globbing chars, important for Win32).
-# Made docstring fit in 80 chars wide displays using pydoc.
+# can now pita a filename, a module ama package name, ama a
+# directory (including globbing chars, important kila Win32).
+# Made docstring fit kwenye 80 chars wide displays using pydoc.
 #
 
-# for selftesting
-try:
-    import fintl
+# kila selftesting
+jaribu:
+    agiza fintl
     _ = fintl.gettext
-except ImportError:
+tatizo ImportError:
     _ = lambda s: s
 
 __doc__ = _("""pygettext -- Python equivalent of xgettext(1)
 
 Many systems (Solaris, Linux, Gnu) provide extensive tools that ease the
 internationalization of C programs. Most of these tools are independent of
-the programming language and can be used from within Python programs.
-Martin von Loewis' work[1] helps considerably in this regard.
+the programming language na can be used kutoka within Python programs.
+Martin von Loewis' work[1] helps considerably kwenye this regard.
 
-There's one problem though; xgettext is the program that scans source code
-looking for message strings, but it groks only C (or C++). Python
-introduces a few wrinkles, such as dual quoting characters, triple quoted
-strings, and raw strings. xgettext understands none of this.
+There's one problem though; xgettext ni the program that scans source code
+looking kila message strings, but it groks only C (or C++). Python
+introduces a few wrinkles, such kama dual quoting characters, triple quoted
+strings, na raw strings. xgettext understands none of this.
 
 Enter pygettext, which uses Python's standard tokenize module to scan
 Python source code, generating .pot files identical to what GNU xgettext[2]
-generates for C and C++ code. From there, the standard GNU tools can be
+generates kila C na C++ code. From there, the standard GNU tools can be
 used.
 
-A word about marking Python strings as candidates for translation. GNU
+A word about marking Python strings kama candidates kila translation. GNU
 xgettext recognizes the following keywords: gettext, dgettext, dcgettext,
 and gettext_noop. But those can be a lot of text to include all over your
-code. C and C++ have a trick: they use the C preprocessor. Most
-internationalized C source includes a #define for gettext() to _() so that
-what has to be written in the source is much less. Thus these are both
+code. C na C++ have a trick: they use the C preprocessor. Most
+internationalized C source includes a #define kila gettext() to _() so that
+what has to be written kwenye the source ni much less. Thus these are both
 translatable strings:
 
     gettext("Translatable String")
     _("Translatable String")
 
 Python of course has no preprocessor so this doesn't work so well.  Thus,
-pygettext searches only for _() by default, but see the -k/--keyword flag
-below for how to augment this.
+pygettext searches only kila _() by default, but see the -k/--keyword flag
+below kila how to augment this.
 
  [1] http://www.python.org/workshops/1997-10/proceedings/loewis.html
  [2] http://www.gnu.org/software/gettext/gettext.html
 
-NOTE: pygettext attempts to be option and feature compatible with GNU
-xgettext where ever possible. However some options are still missing or are
+NOTE: pygettext attempts to be option na feature compatible ukijumuisha GNU
+xgettext where ever possible. However some options are still missing ama are
 not fully implemented. Also, xgettext's use of command line switches with
-option arguments is broken, and in these cases, pygettext just defines
+option arguments ni broken, na kwenye these cases, pygettext just defines
 additional switches.
 
 Usage: pygettext [options] inputfile ...
@@ -71,25 +71,25 @@ Options:
 
     -d name
     --default-domain=name
-        Rename the default output file from messages.pot to name.pot.
+        Rename the default output file kutoka messages.pot to name.pot.
 
     -E
     --escape
-        Replace non-ASCII characters with octal escape sequences.
+        Replace non-ASCII characters ukijumuisha octal escape sequences.
 
     -D
     --docstrings
-        Extract module, class, method, and function docstrings.  These do
-        not need to be wrapped in _() markers, and in fact cannot be for
+        Extract module, class, method, na function docstrings.  These do
+        sio need to be wrapped kwenye _() markers, na kwenye fact cannot be for
         Python to consider them docstrings. (See also the -X option).
 
     -h
     --help
-        Print this help message and exit.
+        Print this help message na exit.
 
     -k word
     --keyword=word
-        Keywords to look for in addition to the default set, which are:
+        Keywords to look kila kwenye addition to the default set, which are:
         %(DEFAULTKEYWORDS)s
 
         You can have multiple -k flags on the command line.
@@ -97,36 +97,36 @@ Options:
     -K
     --no-default-keywords
         Disable the default set of keywords (see above).  Any keywords
-        explicitly added with the -k/--keyword option are still recognized.
+        explicitly added ukijumuisha the -k/--keyword option are still recognized.
 
     --no-location
-        Do not write filename/lineno location comments.
+        Do sio write filename/lineno location comments.
 
     -n
     --add-location
         Write filename/lineno location comments indicating where each
-        extracted string is found in the source.  These lines appear before
-        each msgid.  The style of comments is controlled by the -S/--style
-        option.  This is the default.
+        extracted string ni found kwenye the source.  These lines appear before
+        each msgid.  The style of comments ni controlled by the -S/--style
+        option.  This ni the default.
 
     -o filename
     --output=filename
-        Rename the default output file from messages.pot to filename.  If
-        filename is `-' then the output is sent to standard out.
+        Rename the default output file kutoka messages.pot to filename.  If
+        filename ni `-' then the output ni sent to standard out.
 
     -p dir
     --output-dir=dir
-        Output files will be placed in directory dir.
+        Output files will be placed kwenye directory dir.
 
     -S stylename
     --style stylename
-        Specify which style to use for location comments.  Two styles are
+        Specify which style to use kila location comments.  Two styles are
         supported:
 
         Solaris  # File: filename, line: line-number
         GNU      #: filename:line
 
-        The style name is case insensitive.  GNU style is the default.
+        The style name ni case insensitive.  GNU style ni the default.
 
     -v
     --verbose
@@ -134,7 +134,7 @@ Options:
 
     -V
     --version
-        Print the version of pygettext and exit.
+        Print the version of pygettext na exit.
 
     -w columns
     --width=columns
@@ -142,28 +142,28 @@ Options:
 
     -x filename
     --exclude-file=filename
-        Specify a file that contains a list of strings that are not be
-        extracted from the input files.  Each string to be excluded must
-        appear on a line by itself in the file.
+        Specify a file that contains a list of strings that are sio be
+        extracted kutoka the input files.  Each string to be excluded must
+        appear on a line by itself kwenye the file.
 
     -X filename
     --no-docstrings=filename
         Specify a file that contains a list of files (one per line) that
-        should not have their docstrings extracted.  This is only useful in
-        conjunction with the -D option above.
+        should sio have their docstrings extracted.  This ni only useful in
+        conjunction ukijumuisha the -D option above.
 
-If `inputfile' is -, standard input is read.
+If `inputfile' ni -, standard input ni read.
 """)
 
-import os
-import importlib.machinery
-import importlib.util
-import sys
-import glob
-import time
-import getopt
-import token
-import tokenize
+agiza os
+agiza importlib.machinery
+agiza importlib.util
+agiza sys
+agiza glob
+agiza time
+agiza getopt
+agiza token
+agiza tokenize
 
 __version__ = '1.5'
 
@@ -174,7 +174,7 @@ EMPTYSTRING = ''
 
 
 
-# The normal pot-file header. msgmerge and Emacs's po-mode work better if it's
+# The normal pot-file header. msgmerge na Emacs's po-mode work better ikiwa it's
 # there.
 pot_header = _('''\
 # SOME DESCRIPTIVE TITLE.
@@ -196,27 +196,27 @@ msgstr ""
 ''')
 
 
-def usage(code, msg=''):
-    print(__doc__ % globals(), file=sys.stderr)
-    if msg:
-        print(msg, file=sys.stderr)
+eleza usage(code, msg=''):
+    andika(__doc__ % globals(), file=sys.stderr)
+    ikiwa msg:
+        andika(msg, file=sys.stderr)
     sys.exit(code)
 
 
 
-def make_escapes(pass_nonascii):
+eleza make_escapes(pita_nonascii):
     global escapes, escape
-    if pass_nonascii:
-        # Allow non-ascii characters to pass through so that e.g. 'msgid
-        # "Höhe"' would result not result in 'msgid "H\366he"'.  Otherwise we
+    ikiwa pita_nonascii:
+        # Allow non-ascii characters to pita through so that e.g. 'msgid
+        # "Höhe"' would result sio result kwenye 'msgid "H\366he"'.  Otherwise we
         # escape any character outside the 32..126 range.
         mod = 128
         escape = escape_ascii
-    else:
+    isipokua:
         mod = 256
         escape = escape_nonascii
-    escapes = [r"\%03o" % i for i in range(mod)]
-    for i in range(32, 127):
+    escapes = [r"\%03o" % i kila i kwenye range(mod)]
+    kila i kwenye range(32, 127):
         escapes[i] = chr(i)
     escapes[ord('\\')] = r'\\'
     escapes[ord('\t')] = r'\t'
@@ -225,169 +225,169 @@ def make_escapes(pass_nonascii):
     escapes[ord('\"')] = r'\"'
 
 
-def escape_ascii(s, encoding):
-    return ''.join(escapes[ord(c)] if ord(c) < 128 else c for c in s)
+eleza escape_ascii(s, encoding):
+    rudisha ''.join(escapes[ord(c)] ikiwa ord(c) < 128 isipokua c kila c kwenye s)
 
-def escape_nonascii(s, encoding):
-    return ''.join(escapes[b] for b in s.encode(encoding))
-
-
-def is_literal_string(s):
-    return s[0] in '\'"' or (s[0] in 'rRuU' and s[1] in '\'"')
+eleza escape_nonascii(s, encoding):
+    rudisha ''.join(escapes[b] kila b kwenye s.encode(encoding))
 
 
-def safe_eval(s):
+eleza is_literal_string(s):
+    rudisha s[0] kwenye '\'"' ama (s[0] kwenye 'rRuU' na s[1] kwenye '\'"')
+
+
+eleza safe_eval(s):
     # unwrap quotes, safely
-    return eval(s, {'__builtins__':{}}, {})
+    rudisha eval(s, {'__builtins__':{}}, {})
 
 
-def normalize(s, encoding):
+eleza normalize(s, encoding):
     # This converts the various Python string types into a format that is
-    # appropriate for .po files, namely much closer to C style.
+    # appropriate kila .po files, namely much closer to C style.
     lines = s.split('\n')
-    if len(lines) == 1:
+    ikiwa len(lines) == 1:
         s = '"' + escape(s, encoding) + '"'
-    else:
-        if not lines[-1]:
-            del lines[-1]
+    isipokua:
+        ikiwa sio lines[-1]:
+            toa lines[-1]
             lines[-1] = lines[-1] + '\n'
-        for i in range(len(lines)):
+        kila i kwenye range(len(lines)):
             lines[i] = escape(lines[i], encoding)
         lineterm = '\\n"\n"'
         s = '""\n"' + lineterm.join(lines) + '"'
-    return s
+    rudisha s
 
 
-def containsAny(str, set):
-    """Check whether 'str' contains ANY of the chars in 'set'"""
-    return 1 in [c in str for c in set]
+eleza containsAny(str, set):
+    """Check whether 'str' contains ANY of the chars kwenye 'set'"""
+    rudisha 1 kwenye [c kwenye str kila c kwenye set]
 
 
-def getFilesForName(name):
-    """Get a list of module files for a filename, a module or package name,
-    or a directory.
+eleza getFilesForName(name):
+    """Get a list of module files kila a filename, a module ama package name,
+    ama a directory.
     """
-    if not os.path.exists(name):
-        # check for glob chars
-        if containsAny(name, "*?[]"):
+    ikiwa sio os.path.exists(name):
+        # check kila glob chars
+        ikiwa containsAny(name, "*?[]"):
             files = glob.glob(name)
             list = []
-            for file in files:
+            kila file kwenye files:
                 list.extend(getFilesForName(file))
-            return list
+            rudisha list
 
-        # try to find module or package
-        try:
+        # try to find module ama package
+        jaribu:
             spec = importlib.util.find_spec(name)
             name = spec.origin
-        except ImportError:
-            name = None
-        if not name:
-            return []
+        tatizo ImportError:
+            name = Tupu
+        ikiwa sio name:
+            rudisha []
 
-    if os.path.isdir(name):
-        # find all python files in directory
+    ikiwa os.path.isdir(name):
+        # find all python files kwenye directory
         list = []
-        # get extension for python source files
+        # get extension kila python source files
         _py_ext = importlib.machinery.SOURCE_SUFFIXES[0]
-        for root, dirs, files in os.walk(name):
+        kila root, dirs, files kwenye os.walk(name):
             # don't recurse into CVS directories
-            if 'CVS' in dirs:
+            ikiwa 'CVS' kwenye dirs:
                 dirs.remove('CVS')
             # add all *.py files to list
             list.extend(
-                [os.path.join(root, file) for file in files
-                 if os.path.splitext(file)[1] == _py_ext]
+                [os.path.join(root, file) kila file kwenye files
+                 ikiwa os.path.splitext(file)[1] == _py_ext]
                 )
-        return list
-    elif os.path.exists(name):
+        rudisha list
+    lasivyo os.path.exists(name):
         # a single file
-        return [name]
+        rudisha [name]
 
-    return []
+    rudisha []
 
 
-class TokenEater:
-    def __init__(self, options):
+kundi TokenEater:
+    eleza __init__(self, options):
         self.__options = options
         self.__messages = {}
         self.__state = self.__waiting
         self.__data = []
         self.__lineno = -1
         self.__freshmodule = 1
-        self.__curfile = None
+        self.__curfile = Tupu
         self.__enclosurecount = 0
 
-    def __call__(self, ttype, tstring, stup, etup, line):
+    eleza __call__(self, ttype, tstring, stup, etup, line):
         # dispatch
-##        import token
-##        print('ttype:', token.tok_name[ttype], 'tstring:', tstring,
+##        agiza token
+##        andika('ttype:', token.tok_name[ttype], 'tstring:', tstring,
 ##              file=sys.stderr)
         self.__state(ttype, tstring, stup[0])
 
-    def __waiting(self, ttype, tstring, lineno):
+    eleza __waiting(self, ttype, tstring, lineno):
         opts = self.__options
-        # Do docstring extractions, if enabled
-        if opts.docstrings and not opts.nodocstrings.get(self.__curfile):
+        # Do docstring extractions, ikiwa enabled
+        ikiwa opts.docstrings na sio opts.nodocstrings.get(self.__curfile):
             # module docstring?
-            if self.__freshmodule:
-                if ttype == tokenize.STRING and is_literal_string(tstring):
+            ikiwa self.__freshmodule:
+                ikiwa ttype == tokenize.STRING na is_literal_string(tstring):
                     self.__addentry(safe_eval(tstring), lineno, isdocstring=1)
                     self.__freshmodule = 0
-                elif ttype not in (tokenize.COMMENT, tokenize.NL):
+                lasivyo ttype haiko kwenye (tokenize.COMMENT, tokenize.NL):
                     self.__freshmodule = 0
-                return
-            # class or func/method docstring?
-            if ttype == tokenize.NAME and tstring in ('class', 'def'):
+                rudisha
+            # kundi ama func/method docstring?
+            ikiwa ttype == tokenize.NAME na tstring kwenye ('class', 'def'):
                 self.__state = self.__suiteseen
-                return
-        if ttype == tokenize.NAME and tstring in opts.keywords:
+                rudisha
+        ikiwa ttype == tokenize.NAME na tstring kwenye opts.keywords:
             self.__state = self.__keywordseen
 
-    def __suiteseen(self, ttype, tstring, lineno):
+    eleza __suiteseen(self, ttype, tstring, lineno):
         # skip over any enclosure pairs until we see the colon
-        if ttype == tokenize.OP:
-            if tstring == ':' and self.__enclosurecount == 0:
-                # we see a colon and we're not in an enclosure: end of def
+        ikiwa ttype == tokenize.OP:
+            ikiwa tstring == ':' na self.__enclosurecount == 0:
+                # we see a colon na we're haiko kwenye an enclosure: end of def
                 self.__state = self.__suitedocstring
-            elif tstring in '([{':
+            lasivyo tstring kwenye '([{':
                 self.__enclosurecount += 1
-            elif tstring in ')]}':
+            lasivyo tstring kwenye ')]}':
                 self.__enclosurecount -= 1
 
-    def __suitedocstring(self, ttype, tstring, lineno):
+    eleza __suitedocstring(self, ttype, tstring, lineno):
         # ignore any intervening noise
-        if ttype == tokenize.STRING and is_literal_string(tstring):
+        ikiwa ttype == tokenize.STRING na is_literal_string(tstring):
             self.__addentry(safe_eval(tstring), lineno, isdocstring=1)
             self.__state = self.__waiting
-        elif ttype not in (tokenize.NEWLINE, tokenize.INDENT,
+        lasivyo ttype haiko kwenye (tokenize.NEWLINE, tokenize.INDENT,
                            tokenize.COMMENT):
-            # there was no class docstring
+            # there was no kundi docstring
             self.__state = self.__waiting
 
-    def __keywordseen(self, ttype, tstring, lineno):
-        if ttype == tokenize.OP and tstring == '(':
+    eleza __keywordseen(self, ttype, tstring, lineno):
+        ikiwa ttype == tokenize.OP na tstring == '(':
             self.__data = []
             self.__lineno = lineno
             self.__state = self.__openseen
-        else:
+        isipokua:
             self.__state = self.__waiting
 
-    def __openseen(self, ttype, tstring, lineno):
-        if ttype == tokenize.OP and tstring == ')':
+    eleza __openseen(self, ttype, tstring, lineno):
+        ikiwa ttype == tokenize.OP na tstring == ')':
             # We've seen the last of the translatable strings.  Record the
-            # line number of the first line of the strings and update the list
-            # of messages seen.  Reset state for the next batch.  If there
+            # line number of the first line of the strings na update the list
+            # of messages seen.  Reset state kila the next batch.  If there
             # were no strings inside _(), then just ignore this entry.
-            if self.__data:
+            ikiwa self.__data:
                 self.__addentry(EMPTYSTRING.join(self.__data))
             self.__state = self.__waiting
-        elif ttype == tokenize.STRING and is_literal_string(tstring):
+        lasivyo ttype == tokenize.STRING na is_literal_string(tstring):
             self.__data.append(safe_eval(tstring))
-        elif ttype not in [tokenize.COMMENT, token.INDENT, token.DEDENT,
+        lasivyo ttype haiko kwenye [tokenize.COMMENT, token.INDENT, token.DEDENT,
                            token.NEWLINE, tokenize.NL]:
-            # warn if we see anything else than STRING or whitespace
-            print(_(
+            # warn ikiwa we see anything isipokua than STRING ama whitespace
+            andika(_(
                 '*** %(file)s:%(lineno)s: Seen unexpected token "%(token)s"'
                 ) % {
                 'token': tstring,
@@ -396,75 +396,75 @@ class TokenEater:
                 }, file=sys.stderr)
             self.__state = self.__waiting
 
-    def __addentry(self, msg, lineno=None, isdocstring=0):
-        if lineno is None:
+    eleza __addentry(self, msg, lineno=Tupu, isdocstring=0):
+        ikiwa lineno ni Tupu:
             lineno = self.__lineno
-        if not msg in self.__options.toexclude:
+        ikiwa sio msg kwenye self.__options.toexclude:
             entry = (self.__curfile, lineno)
             self.__messages.setdefault(msg, {})[entry] = isdocstring
 
-    def set_filename(self, filename):
+    eleza set_filename(self, filename):
         self.__curfile = filename
         self.__freshmodule = 1
 
-    def write(self, fp):
+    eleza write(self, fp):
         options = self.__options
         timestamp = time.strftime('%Y-%m-%d %H:%M%z')
-        encoding = fp.encoding if fp.encoding else 'UTF-8'
-        print(pot_header % {'time': timestamp, 'version': __version__,
+        encoding = fp.encoding ikiwa fp.encoding isipokua 'UTF-8'
+        andika(pot_header % {'time': timestamp, 'version': __version__,
                             'charset': encoding,
                             'encoding': '8bit'}, file=fp)
         # Sort the entries.  First sort each particular entry's keys, then
         # sort all the entries by their first item.
         reverse = {}
-        for k, v in self.__messages.items():
+        kila k, v kwenye self.__messages.items():
             keys = sorted(v.keys())
             reverse.setdefault(tuple(keys), []).append((k, v))
         rkeys = sorted(reverse.keys())
-        for rkey in rkeys:
+        kila rkey kwenye rkeys:
             rentries = reverse[rkey]
             rentries.sort()
-            for k, v in rentries:
+            kila k, v kwenye rentries:
                 # If the entry was gleaned out of a docstring, then add a
-                # comment stating so.  This is to aid translators who may wish
+                # comment stating so.  This ni to aid translators who may wish
                 # to skip translating some unimportant docstrings.
                 isdocstring = any(v.values())
-                # k is the message string, v is a dictionary-set of (filename,
-                # lineno) tuples.  We want to sort the entries in v first by
-                # file name and then by line number.
+                # k ni the message string, v ni a dictionary-set of (filename,
+                # lineno) tuples.  We want to sort the entries kwenye v first by
+                # file name na then by line number.
                 v = sorted(v.keys())
-                if not options.writelocations:
-                    pass
-                # location comments are different b/w Solaris and GNU:
-                elif options.locationstyle == options.SOLARIS:
-                    for filename, lineno in v:
+                ikiwa sio options.writelocations:
+                    pita
+                # location comments are different b/w Solaris na GNU:
+                lasivyo options.locationstyle == options.SOLARIS:
+                    kila filename, lineno kwenye v:
                         d = {'filename': filename, 'lineno': lineno}
-                        print(_(
+                        andika(_(
                             '# File: %(filename)s, line: %(lineno)d') % d, file=fp)
-                elif options.locationstyle == options.GNU:
-                    # fit as many locations on one line, as long as the
+                lasivyo options.locationstyle == options.GNU:
+                    # fit kama many locations on one line, kama long kama the
                     # resulting line length doesn't exceed 'options.width'
                     locline = '#:'
-                    for filename, lineno in v:
+                    kila filename, lineno kwenye v:
                         d = {'filename': filename, 'lineno': lineno}
                         s = _(' %(filename)s:%(lineno)d') % d
-                        if len(locline) + len(s) <= options.width:
+                        ikiwa len(locline) + len(s) <= options.width:
                             locline = locline + s
-                        else:
-                            print(locline, file=fp)
+                        isipokua:
+                            andika(locline, file=fp)
                             locline = "#:" + s
-                    if len(locline) > 2:
-                        print(locline, file=fp)
-                if isdocstring:
-                    print('#, docstring', file=fp)
-                print('msgid', normalize(k, encoding), file=fp)
-                print('msgstr ""\n', file=fp)
+                    ikiwa len(locline) > 2:
+                        andika(locline, file=fp)
+                ikiwa isdocstring:
+                    andika('#, docstring', file=fp)
+                andika('msgid', normalize(k, encoding), file=fp)
+                andika('msgstr ""\n', file=fp)
 
 
 
-def main():
+eleza main():
     global default_keywords
-    try:
+    jaribu:
         opts, args = getopt.getopt(
             sys.argv[1:],
             'ad:DEhk:Kno:p:S:Vvw:x:X:',
@@ -474,11 +474,11 @@ def main():
              'style=', 'verbose', 'version', 'width=', 'exclude-file=',
              'docstrings', 'no-docstrings',
              ])
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(1, msg)
 
-    # for holding option values
-    class Options:
+    # kila holding option values
+    kundi Options:
         # constants
         GNU = 1
         SOLARIS = 2
@@ -502,127 +502,127 @@ def main():
                  }
 
     # parse options
-    for opt, arg in opts:
-        if opt in ('-h', '--help'):
+    kila opt, arg kwenye opts:
+        ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elif opt in ('-a', '--extract-all'):
+        lasivyo opt kwenye ('-a', '--extract-all'):
             options.extractall = 1
-        elif opt in ('-d', '--default-domain'):
+        lasivyo opt kwenye ('-d', '--default-domain'):
             options.outfile = arg + '.pot'
-        elif opt in ('-E', '--escape'):
+        lasivyo opt kwenye ('-E', '--escape'):
             options.escape = 1
-        elif opt in ('-D', '--docstrings'):
+        lasivyo opt kwenye ('-D', '--docstrings'):
             options.docstrings = 1
-        elif opt in ('-k', '--keyword'):
+        lasivyo opt kwenye ('-k', '--keyword'):
             options.keywords.append(arg)
-        elif opt in ('-K', '--no-default-keywords'):
+        lasivyo opt kwenye ('-K', '--no-default-keywords'):
             default_keywords = []
-        elif opt in ('-n', '--add-location'):
+        lasivyo opt kwenye ('-n', '--add-location'):
             options.writelocations = 1
-        elif opt in ('--no-location',):
+        lasivyo opt kwenye ('--no-location',):
             options.writelocations = 0
-        elif opt in ('-S', '--style'):
+        lasivyo opt kwenye ('-S', '--style'):
             options.locationstyle = locations.get(arg.lower())
-            if options.locationstyle is None:
-                usage(1, _('Invalid value for --style: %s') % arg)
-        elif opt in ('-o', '--output'):
+            ikiwa options.locationstyle ni Tupu:
+                usage(1, _('Invalid value kila --style: %s') % arg)
+        lasivyo opt kwenye ('-o', '--output'):
             options.outfile = arg
-        elif opt in ('-p', '--output-dir'):
+        lasivyo opt kwenye ('-p', '--output-dir'):
             options.outpath = arg
-        elif opt in ('-v', '--verbose'):
+        lasivyo opt kwenye ('-v', '--verbose'):
             options.verbose = 1
-        elif opt in ('-V', '--version'):
-            print(_('pygettext.py (xgettext for Python) %s') % __version__)
+        lasivyo opt kwenye ('-V', '--version'):
+            andika(_('pygettext.py (xgettext kila Python) %s') % __version__)
             sys.exit(0)
-        elif opt in ('-w', '--width'):
-            try:
+        lasivyo opt kwenye ('-w', '--width'):
+            jaribu:
                 options.width = int(arg)
-            except ValueError:
+            tatizo ValueError:
                 usage(1, _('--width argument must be an integer: %s') % arg)
-        elif opt in ('-x', '--exclude-file'):
+        lasivyo opt kwenye ('-x', '--exclude-file'):
             options.excludefilename = arg
-        elif opt in ('-X', '--no-docstrings'):
+        lasivyo opt kwenye ('-X', '--no-docstrings'):
             fp = open(arg)
-            try:
-                while 1:
+            jaribu:
+                wakati 1:
                     line = fp.readline()
-                    if not line:
-                        break
+                    ikiwa sio line:
+                        koma
                     options.nodocstrings[line[:-1]] = 1
-            finally:
+            mwishowe:
                 fp.close()
 
     # calculate escapes
-    make_escapes(not options.escape)
+    make_escapes(sio options.escape)
 
     # calculate all keywords
     options.keywords.extend(default_keywords)
 
     # initialize list of strings to exclude
-    if options.excludefilename:
-        try:
-            with open(options.excludefilename) as fp:
+    ikiwa options.excludefilename:
+        jaribu:
+            ukijumuisha open(options.excludefilename) kama fp:
                 options.toexclude = fp.readlines()
-        except IOError:
-            print(_(
+        tatizo IOError:
+            andika(_(
                 "Can't read --exclude-file: %s") % options.excludefilename, file=sys.stderr)
             sys.exit(1)
-    else:
+    isipokua:
         options.toexclude = []
 
     # resolve args to module lists
     expanded = []
-    for arg in args:
-        if arg == '-':
+    kila arg kwenye args:
+        ikiwa arg == '-':
             expanded.append(arg)
-        else:
+        isipokua:
             expanded.extend(getFilesForName(arg))
     args = expanded
 
     # slurp through all the files
     eater = TokenEater(options)
-    for filename in args:
-        if filename == '-':
-            if options.verbose:
-                print(_('Reading standard input'))
+    kila filename kwenye args:
+        ikiwa filename == '-':
+            ikiwa options.verbose:
+                andika(_('Reading standard input'))
             fp = sys.stdin.buffer
             closep = 0
-        else:
-            if options.verbose:
-                print(_('Working on %s') % filename)
+        isipokua:
+            ikiwa options.verbose:
+                andika(_('Working on %s') % filename)
             fp = open(filename, 'rb')
             closep = 1
-        try:
+        jaribu:
             eater.set_filename(filename)
-            try:
+            jaribu:
                 tokens = tokenize.tokenize(fp.readline)
-                for _token in tokens:
+                kila _token kwenye tokens:
                     eater(*_token)
-            except tokenize.TokenError as e:
-                print('%s: %s, line %d, column %d' % (
+            tatizo tokenize.TokenError kama e:
+                andika('%s: %s, line %d, column %d' % (
                     e.args[0], filename, e.args[1][0], e.args[1][1]),
                     file=sys.stderr)
-        finally:
-            if closep:
+        mwishowe:
+            ikiwa closep:
                 fp.close()
 
     # write the output
-    if options.outfile == '-':
+    ikiwa options.outfile == '-':
         fp = sys.stdout
         closep = 0
-    else:
-        if options.outpath:
+    isipokua:
+        ikiwa options.outpath:
             options.outfile = os.path.join(options.outpath, options.outfile)
         fp = open(options.outfile, 'w')
         closep = 1
-    try:
+    jaribu:
         eater.write(fp)
-    finally:
-        if closep:
+    mwishowe:
+        ikiwa closep:
             fp.close()
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
     # some more test strings
     # this one creates a warning

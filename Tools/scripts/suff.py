@@ -4,23 +4,23 @@
 #
 # show different suffixes amongst arguments
 
-import sys
+agiza sys
 
 
-def main():
+eleza main():
     files = sys.argv[1:]
     suffixes = {}
-    for filename in files:
+    kila filename kwenye files:
         suff = getsuffix(filename)
         suffixes.setdefault(suff, []).append(filename)
-    for suff, filenames in sorted(suffixes.items()):
-        print(repr(suff), len(filenames))
+    kila suff, filenames kwenye sorted(suffixes.items()):
+        andika(repr(suff), len(filenames))
 
 
-def getsuffix(filename):
+eleza getsuffix(filename):
     name, sep, suff = filename.rpartition('.')
-    return sep + suff if sep else ''
+    rudisha sep + suff ikiwa sep isipokua ''
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

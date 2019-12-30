@@ -16,7 +16,7 @@ agiza os
 agiza re
 agiza sys
 
-def get_header_version_info(srcdir):
+eleza get_header_version_info(srcdir):
     patchlevel_h = os.path.join(srcdir, '..', 'Include', 'patchlevel.h')
 
     # This won't pick out all #defines, but it will pick up the ones we
@@ -24,10 +24,10 @@ def get_header_version_info(srcdir):
     rx = re.compile(r'\s*#define\s+([a-zA-Z][a-zA-Z_0-9]*)\s+([a-zA-Z_0-9]+)')
 
     d = {}
-    with open(patchlevel_h) as f:
-        for line in f:
+    ukijumuisha open(patchlevel_h) kama f:
+        kila line kwenye f:
             m = rx.match(line)
-            if m is not None:
+            ikiwa m ni sio Tupu:
                 name, value = m.group(1, 2)
                 d[name] = value
 
@@ -41,28 +41,28 @@ def get_header_version_info(srcdir):
         'PY_RELEASE_LEVEL_BETA':  'b',
         'PY_RELEASE_LEVEL_GAMMA': 'rc',
         }
-    if level != 'PY_RELEASE_LEVEL_FINAL':
+    ikiwa level != 'PY_RELEASE_LEVEL_FINAL':
         release += suffixes[level] + str(int(d['PY_RELEASE_SERIAL']))
-    return version, release
+    rudisha version, release
 
 
-def get_sys_version_info():
+eleza get_sys_version_info():
     major, minor, micro, level, serial = sys.version_info
     release = version = '%s.%s' % (major, minor)
     release += '.%s' % micro
-    if level != 'final':
+    ikiwa level != 'final':
         release += '%s%s' % (level[0], serial)
-    return version, release
+    rudisha version, release
 
 
-def get_version_info():
-    try:
-        return get_header_version_info('.')
-    except (IOError, OSError):
+eleza get_version_info():
+    jaribu:
+        rudisha get_header_version_info('.')
+    tatizo (IOError, OSError):
         version, release = get_sys_version_info()
-        print('Can\'t get version info kutoka Include/patchlevel.h, ' \
+        andika('Can\'t get version info kutoka Include/patchlevel.h, ' \
               'using version of this interpreter (%s).' % release, file=sys.stderr)
-        return version, release
+        rudisha version, release
 
-if __name__ == '__main__':
-    print(get_header_version_info('.')[1])
+ikiwa __name__ == '__main__':
+    andika(get_header_version_info('.')[1])

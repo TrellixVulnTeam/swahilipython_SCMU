@@ -1,10 +1,10 @@
 kutoka turtle agiza *
 color('red', 'yellow')
 begin_fill()
-while Kweli:
+wakati Kweli:
     forward(200)
     left(170)
-    if abs(pos()) < 1:
-        break
+    ikiwa abs(pos()) < 1:
+        koma
 end_fill()
 done()

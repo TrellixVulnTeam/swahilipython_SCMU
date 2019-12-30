@@ -3,136 +3,136 @@
 """cleanfuture [-d][-r][-v] path ...
 
 -d  Dry run.  Analyze, but don't make any changes to, files.
--r  Recurse.  Search for all .py files in subdirectories too.
+-r  Recurse.  Search kila all .py files kwenye subdirectories too.
 -v  Verbose.  Print informative msgs.
 
-Search Python (.py) files for future statements, and remove the features
-from such statements that are already mandatory in the version of Python
+Search Python (.py) files kila future statements, na remove the features
+kutoka such statements that are already mandatory kwenye the version of Python
 you're using.
 
-Pass one or more file and/or directory paths.  When a directory path, all
-.py files within the directory will be examined, and, if the -r option is
-given, likewise recursively for subdirectories.
+Pass one ama more file and/or directory paths.  When a directory path, all
+.py files within the directory will be examined, and, ikiwa the -r option is
+given, likewise recursively kila subdirectories.
 
-Overwrites files in place, renaming the originals with a .bak extension. If
-cleanfuture finds nothing to change, the file is left alone.  If cleanfuture
-does change a file, the changed file is a fixed-point (i.e., running
+Overwrites files kwenye place, renaming the originals ukijumuisha a .bak extension. If
+cleanfuture finds nothing to change, the file ni left alone.  If cleanfuture
+does change a file, the changed file ni a fixed-point (i.e., running
 cleanfuture on the resulting .py file won't change it again, at least not
-until you try it again with a later Python release).
+until you try it again ukijumuisha a later Python release).
 
 Limitations:  You can do these things, but this tool won't help you then:
 
-+ A future statement cannot be mixed with any other statement on the same
++ A future statement cannot be mixed ukijumuisha any other statement on the same
   physical line (separated by semicolon).
 
 + A future statement cannot contain an "as" clause.
 
-Example:  Assuming you're using Python 2.2, if a file containing
+Example:  Assuming you're using Python 2.2, ikiwa a file containing
 
-from __future__ import nested_scopes, generators
+kutoka __future__ agiza nested_scopes, generators
 
-is analyzed by cleanfuture, the line is rewritten to
+is analyzed by cleanfuture, the line ni rewritten to
 
-from __future__ import generators
+kutoka __future__ agiza generators
 
-because nested_scopes is no longer optional in 2.2 but generators is.
+because nested_scopes ni no longer optional kwenye 2.2 but generators is.
 """
 
 agiza __future__
-import tokenize
-import os
-import sys
+agiza tokenize
+agiza os
+agiza sys
 
 dryrun  = 0
 recurse = 0
 verbose = 0
 
-def errprint(*args):
+eleza errandika(*args):
     strings = map(str, args)
     msg = ' '.join(strings)
-    if msg[-1:] != '\n':
+    ikiwa msg[-1:] != '\n':
         msg += '\n'
     sys.stderr.write(msg)
 
-def main():
-    import getopt
+eleza main():
+    agiza getopt
     global verbose, recurse, dryrun
-    try:
+    jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "drv")
-    except getopt.error as msg:
-        errprint(msg)
-        return
-    for o, a in opts:
-        if o == '-d':
+    tatizo getopt.error kama msg:
+        errandika(msg)
+        rudisha
+    kila o, a kwenye opts:
+        ikiwa o == '-d':
             dryrun += 1
-        elif o == '-r':
+        lasivyo o == '-r':
             recurse += 1
-        elif o == '-v':
+        lasivyo o == '-v':
             verbose += 1
-    if not args:
-        errprint("Usage:", __doc__)
-        return
-    for arg in args:
+    ikiwa sio args:
+        errandika("Usage:", __doc__)
+        rudisha
+    kila arg kwenye args:
         check(arg)
 
-def check(file):
-    if os.path.isdir(file) and not os.path.islink(file):
-        if verbose:
-            print("listing directory", file)
+eleza check(file):
+    ikiwa os.path.isdir(file) na sio os.path.islink(file):
+        ikiwa verbose:
+            andika("listing directory", file)
         names = os.listdir(file)
-        for name in names:
+        kila name kwenye names:
             fullname = os.path.join(file, name)
-            if ((recurse and os.path.isdir(fullname) and
-                 not os.path.islink(fullname))
-                or name.lower().endswith(".py")):
+            ikiwa ((recurse na os.path.isdir(fullname) na
+                 sio os.path.islink(fullname))
+                ama name.lower().endswith(".py")):
                 check(fullname)
-        return
+        rudisha
 
-    if verbose:
-        print("checking", file, "...", end=' ')
-    try:
+    ikiwa verbose:
+        andika("checking", file, "...", end=' ')
+    jaribu:
         f = open(file)
-    except IOError as msg:
-        errprint("%r: I/O Error: %s" % (file, str(msg)))
-        return
+    tatizo IOError kama msg:
+        errandika("%r: I/O Error: %s" % (file, str(msg)))
+        rudisha
 
-    with f:
+    ukijumuisha f:
         ff = FutureFinder(f, file)
         changed = ff.run()
-        if changed:
+        ikiwa changed:
             ff.gettherest()
-    if changed:
-        if verbose:
-            print("changed.")
-            if dryrun:
-                print("But this is a dry run, so leaving it alone.")
-        for s, e, line in changed:
-            print("%r lines %d-%d" % (file, s+1, e+1))
-            for i in range(s, e+1):
-                print(ff.lines[i], end=' ')
-            if line is None:
-                print("-- deleted")
-            else:
-                print("-- change to:")
-                print(line, end=' ')
-        if not dryrun:
+    ikiwa changed:
+        ikiwa verbose:
+            andika("changed.")
+            ikiwa dryrun:
+                andika("But this ni a dry run, so leaving it alone.")
+        kila s, e, line kwenye changed:
+            andika("%r lines %d-%d" % (file, s+1, e+1))
+            kila i kwenye range(s, e+1):
+                andika(ff.lines[i], end=' ')
+            ikiwa line ni Tupu:
+                andika("-- deleted")
+            isipokua:
+                andika("-- change to:")
+                andika(line, end=' ')
+        ikiwa sio dryrun:
             bak = file + ".bak"
-            if os.path.exists(bak):
+            ikiwa os.path.exists(bak):
                 os.remove(bak)
             os.rename(file, bak)
-            if verbose:
-                print("renamed", file, "to", bak)
-            with open(file, "w") as g:
+            ikiwa verbose:
+                andika("renamed", file, "to", bak)
+            ukijumuisha open(file, "w") kama g:
                 ff.write(g)
-            if verbose:
-                print("wrote new", file)
-    else:
-        if verbose:
-            print("unchanged.")
+            ikiwa verbose:
+                andika("wrote new", file)
+    isipokua:
+        ikiwa verbose:
+            andika("unchanged.")
 
-class FutureFinder:
+kundi FutureFinder:
 
-    def __init__(self, f, fname):
+    eleza __init__(self, f, fname):
         self.f = f
         self.fname = fname
         self.ateof = 0
@@ -141,18 +141,18 @@ class FutureFinder:
         # List of (start_index, end_index, new_line) triples.
         self.changed = []
 
-    # Line-getter for tokenize.
-    def getline(self):
-        if self.ateof:
-            return ""
+    # Line-getter kila tokenize.
+    eleza getline(self):
+        ikiwa self.ateof:
+            rudisha ""
         line = self.f.readline()
-        if line == "":
+        ikiwa line == "":
             self.ateof = 1
-        else:
+        isipokua:
             self.lines.append(line)
-        return line
+        rudisha line
 
-    def run(self):
+    eleza run(self):
         STRING = tokenize.STRING
         NL = tokenize.NL
         NEWLINE = tokenize.NEWLINE
@@ -164,112 +164,112 @@ class FutureFinder:
         get = tokenize.generate_tokens(self.getline).__next__
         type, token, (srow, scol), (erow, ecol), line = get()
 
-        # Chew up initial comments and blank lines (if any).
-        while type in (COMMENT, NL, NEWLINE):
+        # Chew up initial comments na blank lines (ikiwa any).
+        wakati type kwenye (COMMENT, NL, NEWLINE):
             type, token, (srow, scol), (erow, ecol), line = get()
 
-        # Chew up docstring (if any -- and it may be implicitly catenated!).
-        while type is STRING:
+        # Chew up docstring (ikiwa any -- na it may be implicitly catenated!).
+        wakati type ni STRING:
             type, token, (srow, scol), (erow, ecol), line = get()
 
         # Analyze the future stmts.
-        while 1:
-            # Chew up comments and blank lines (if any).
-            while type in (COMMENT, NL, NEWLINE):
+        wakati 1:
+            # Chew up comments na blank lines (ikiwa any).
+            wakati type kwenye (COMMENT, NL, NEWLINE):
                 type, token, (srow, scol), (erow, ecol), line = get()
 
-            if not (type is NAME and token == "from"):
-                break
-            startline = srow - 1    # tokenize is one-based
+            ikiwa sio (type ni NAME na token == "from"):
+                koma
+            startline = srow - 1    # tokenize ni one-based
             type, token, (srow, scol), (erow, ecol), line = get()
 
-            if not (type is NAME and token == "__future__"):
-                break
+            ikiwa sio (type ni NAME na token == "__future__"):
+                koma
             type, token, (srow, scol), (erow, ecol), line = get()
 
-            if not (type is NAME and token == "import"):
-                break
+            ikiwa sio (type ni NAME na token == "import"):
+                koma
             type, token, (srow, scol), (erow, ecol), line = get()
 
             # Get the list of features.
             features = []
-            while type is NAME:
+            wakati type ni NAME:
                 features.append(token)
                 type, token, (srow, scol), (erow, ecol), line = get()
 
-                if not (type is OP and token == ','):
-                    break
+                ikiwa sio (type ni OP na token == ','):
+                    koma
                 type, token, (srow, scol), (erow, ecol), line = get()
 
             # A trailing comment?
-            comment = None
-            if type is COMMENT:
+            comment = Tupu
+            ikiwa type ni COMMENT:
                 comment = token
                 type, token, (srow, scol), (erow, ecol), line = get()
 
-            if type is not NEWLINE:
-                errprint("Skipping file %r; can't parse line %d:\n%s" %
+            ikiwa type ni sio NEWLINE:
+                errandika("Skipping file %r; can't parse line %d:\n%s" %
                          (self.fname, srow, line))
-                return []
+                rudisha []
 
             endline = srow - 1
 
-            # Check for obsolete features.
+            # Check kila obsolete features.
             okfeatures = []
-            for f in features:
-                object = getattr(__future__, f, None)
-                if object is None:
+            kila f kwenye features:
+                object = getattr(__future__, f, Tupu)
+                ikiwa object ni Tupu:
                     # A feature we don't know about yet -- leave it in.
                     # They'll get a compile-time error when they compile
-                    # this program, but that's not our job to sort out.
+                    # this program, but that's sio our job to sort out.
                     okfeatures.append(f)
-                else:
+                isipokua:
                     released = object.getMandatoryRelease()
-                    if released is None or released <= sys.version_info:
-                        # Withdrawn or obsolete.
-                        pass
-                    else:
+                    ikiwa released ni Tupu ama released <= sys.version_info:
+                        # Withdrawn ama obsolete.
+                        pita
+                    isipokua:
                         okfeatures.append(f)
 
-            # Rewrite the line if at least one future-feature is obsolete.
-            if len(okfeatures) < len(features):
-                if len(okfeatures) == 0:
-                    line = None
-                else:
-                    line = "from __future__ import "
+            # Rewrite the line ikiwa at least one future-feature ni obsolete.
+            ikiwa len(okfeatures) < len(features):
+                ikiwa len(okfeatures) == 0:
+                    line = Tupu
+                isipokua:
+                    line = "kutoka __future__ agiza "
                     line += ', '.join(okfeatures)
-                    if comment is not None:
+                    ikiwa comment ni sio Tupu:
                         line += ' ' + comment
                     line += '\n'
                 changed.append((startline, endline, line))
 
-            # Loop back for more future statements.
+            # Loop back kila more future statements.
 
-        return changed
+        rudisha changed
 
-    def gettherest(self):
-        if self.ateof:
+    eleza gettherest(self):
+        ikiwa self.ateof:
             self.therest = ''
-        else:
+        isipokua:
             self.therest = self.f.read()
 
-    def write(self, f):
+    eleza write(self, f):
         changed = self.changed
         assert changed
         # Prevent calling this again.
         self.changed = []
-        # Apply changes in reverse order.
+        # Apply changes kwenye reverse order.
         changed.reverse()
-        for s, e, line in changed:
-            if line is None:
+        kila s, e, line kwenye changed:
+            ikiwa line ni Tupu:
                 # pure deletion
-                del self.lines[s:e+1]
-            else:
+                toa self.lines[s:e+1]
+            isipokua:
                 self.lines[s:e+1] = [line]
         f.writelines(self.lines)
         # Copy over the remainder of the file.
-        if self.therest:
+        ikiwa self.therest:
             f.write(self.therest)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

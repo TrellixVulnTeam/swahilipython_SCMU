@@ -1,46 +1,46 @@
 """DetailsViewer class.
 
-This class implements a pure input window which allows you to meticulously
+This kundi implements a pure input window which allows you to meticulously
 edit the current color.  You have both mouse control of the color (via the
-buttons along the bottom row), and there are keyboard bindings for each of the
+buttons along the bottom row), na there are keyboard bindings kila each of the
 increment/decrement buttons.
 
 The top three check buttons allow you to specify which of the three color
-variations are tied together when incrementing and decrementing.  Red, green,
-and blue are self evident.  By tying together red and green, you can modify
-the yellow level of the color.  By tying together red and blue, you can modify
-the magenta level of the color.  By tying together green and blue, you can
-modify the cyan level, and by tying all three together, you can modify the
+variations are tied together when incrementing na decrementing.  Red, green,
+and blue are self evident.  By tying together red na green, you can modify
+the yellow level of the color.  By tying together red na blue, you can modify
+the magenta level of the color.  By tying together green na blue, you can
+modify the cyan level, na by tying all three together, you can modify the
 grey level.
 
-The behavior at the boundaries (0 and 255) are defined by the `At boundary'
+The behavior at the boundaries (0 na 255) are defined by the `At boundary'
 option menu:
 
     Stop
-        When the increment or decrement would send any of the tied variations
-        out of bounds, the entire delta is discarded.
+        When the increment ama decrement would send any of the tied variations
+        out of bounds, the entire delta ni discarded.
 
     Wrap Around
-        When the increment or decrement would send any of the tied variations
-        out of bounds, the out of bounds variation is wrapped around to the
-        other side.  Thus if red were at 238 and 25 were added to it, red
+        When the increment ama decrement would send any of the tied variations
+        out of bounds, the out of bounds variation ni wrapped around to the
+        other side.  Thus ikiwa red were at 238 na 25 were added to it, red
         would have the value 7.
 
     Preserve Distance
-        When the increment or decrement would send any of the tied variations
-        out of bounds, all tied variations are wrapped as one, so as to
-        preserve the distance between them.  Thus if green and blue were tied,
-        and green was at 238 while blue was at 223, and an increment of 25
-        were applied, green would be at 15 and blue would be at 0.
+        When the increment ama decrement would send any of the tied variations
+        out of bounds, all tied variations are wrapped kama one, so kama to
+        preserve the distance between them.  Thus ikiwa green na blue were tied,
+        na green was at 238 wakati blue was at 223, na an increment of 25
+        were applied, green would be at 15 na blue would be at 0.
 
     Squash
-        When the increment or decrement would send any of the tied variations
-        out of bounds, the out of bounds variation is set to the ceiling of
-        255 or floor of 0, as appropriate.  In this way, all tied variations
-        are squashed to one edge or the other.
+        When the increment ama decrement would send any of the tied variations
+        out of bounds, the out of bounds variation ni set to the ceiling of
+        255 ama floor of 0, kama appropriate.  In this way, all tied variations
+        are squashed to one edge ama the other.
 
-The following key bindings can be used as accelerators.  Note that Pynche can
-fall behind if you hold the key down as a key repeat:
+The following key bindings can be used kama accelerators.  Note that Pynche can
+fall behind ikiwa you hold the key down kama a key repeat:
 
 Left arrow == -1
 Right arrow == +1
@@ -52,7 +52,7 @@ Shift + Left == -25
 Shift + Right == +25
 """
 
-from tkinter import *
+kutoka tkinter agiza *
 
 STOP = 'Stop'
 WRAP = 'Wrap Around'
@@ -62,8 +62,8 @@ GRAV = 'Squash'
 ADDTOVIEW = 'Details Window...'
 
 
-class DetailsViewer:
-    def __init__(self, switchboard, master=None):
+kundi DetailsViewer:
+    eleza __init__(self, switchboard, master=Tupu):
         self.__sb = switchboard
         optiondb = switchboard.optiondb()
         self.__red, self.__green, self.__blue = switchboard.current_rgb()
@@ -146,127 +146,127 @@ class DetailsViewer:
         self.__up10.pack(expand=YES, fill=X, side=LEFT)
         self.__up25.pack(expand=YES, fill=X, side=LEFT)
 
-    def __effect(self, event=None):
+    eleza __effect(self, event=Tupu):
         tie = self.__rvar.get() + self.__gvar.get() + self.__bvar.get()
-        if tie in (0, 1, 2, 4):
+        ikiwa tie kwenye (0, 1, 2, 4):
             text = ''
-        else:
+        isipokua:
             text = '(= %s Level)' % {3: 'Cyan',
                                      5: 'Magenta',
                                      6: 'Yellow',
                                      7: 'Grey'}[tie]
         self.__l2.configure(text=text)
 
-    def __quit(self, event=None):
+    eleza __quit(self, event=Tupu):
         self.__root.quit()
 
-    def withdraw(self, event=None):
+    eleza withdraw(self, event=Tupu):
         self.__root.withdraw()
 
-    def deiconify(self, event=None):
+    eleza deiconify(self, event=Tupu):
         self.__root.deiconify()
 
-    def __minus25(self, event=None):
+    eleza __minus25(self, event=Tupu):
         self.__delta(-25)
 
-    def __minus10(self, event=None):
+    eleza __minus10(self, event=Tupu):
         self.__delta(-10)
 
-    def __minus1(self, event=None):
+    eleza __minus1(self, event=Tupu):
         self.__delta(-1)
 
-    def __plus1(self, event=None):
+    eleza __plus1(self, event=Tupu):
         self.__delta(1)
 
-    def __plus10(self, event=None):
+    eleza __plus10(self, event=Tupu):
         self.__delta(10)
 
-    def __plus25(self, event=None):
+    eleza __plus25(self, event=Tupu):
         self.__delta(25)
 
-    def __delta(self, delta):
+    eleza __delta(self, delta):
         tie = []
-        if self.__rvar.get():
+        ikiwa self.__rvar.get():
             red = self.__red + delta
             tie.append(red)
-        else:
+        isipokua:
             red = self.__red
-        if self.__gvar.get():
+        ikiwa self.__gvar.get():
             green = self.__green + delta
             tie.append(green)
-        else:
+        isipokua:
             green = self.__green
-        if self.__bvar.get():
+        ikiwa self.__bvar.get():
             blue = self.__blue + delta
             tie.append(blue)
-        else:
+        isipokua:
             blue = self.__blue
         # now apply at boundary behavior
         atbound = self.__boundvar.get()
-        if atbound == STOP:
-            if red < 0 or green < 0 or blue < 0 or \
-               red > 255 or green > 255 or blue > 255:
+        ikiwa atbound == STOP:
+            ikiwa red < 0 ama green < 0 ama blue < 0 ama \
+               red > 255 ama green > 255 ama blue > 255:
                 # then
                 red, green, blue = self.__red, self.__green, self.__blue
-        elif atbound == WRAP or (atbound == RATIO and len(tie) < 2):
-            if red < 0:
+        lasivyo atbound == WRAP ama (atbound == RATIO na len(tie) < 2):
+            ikiwa red < 0:
                 red += 256
-            if green < 0:
+            ikiwa green < 0:
                 green += 256
-            if blue < 0:
+            ikiwa blue < 0:
                 blue += 256
-            if red > 255:
+            ikiwa red > 255:
                 red -= 256
-            if green > 255:
+            ikiwa green > 255:
                 green -= 256
-            if blue > 255:
+            ikiwa blue > 255:
                 blue -= 256
-        elif atbound == RATIO:
-            # for when 2 or 3 colors are tied together
+        lasivyo atbound == RATIO:
+            # kila when 2 ama 3 colors are tied together
             dir = 0
-            for c in tie:
-                if c < 0:
+            kila c kwenye tie:
+                ikiwa c < 0:
                     dir = -1
-                elif c > 255:
+                lasivyo c > 255:
                     dir = 1
-            if dir == -1:
+            ikiwa dir == -1:
                 delta = max(tie)
-                if self.__rvar.get():
+                ikiwa self.__rvar.get():
                     red = red + 255 - delta
-                if self.__gvar.get():
+                ikiwa self.__gvar.get():
                     green = green + 255 - delta
-                if self.__bvar.get():
+                ikiwa self.__bvar.get():
                     blue = blue + 255 - delta
-            elif dir == 1:
+            lasivyo dir == 1:
                 delta = min(tie)
-                if self.__rvar.get():
+                ikiwa self.__rvar.get():
                     red = red - delta
-                if self.__gvar.get():
+                ikiwa self.__gvar.get():
                     green = green - delta
-                if self.__bvar.get():
+                ikiwa self.__bvar.get():
                     blue = blue - delta
-        elif atbound == GRAV:
-            if red < 0:
+        lasivyo atbound == GRAV:
+            ikiwa red < 0:
                 red = 0
-            if green < 0:
+            ikiwa green < 0:
                 green = 0
-            if blue < 0:
+            ikiwa blue < 0:
                 blue = 0
-            if red > 255:
+            ikiwa red > 255:
                 red = 255
-            if green > 255:
+            ikiwa green > 255:
                 green = 255
-            if blue > 255:
+            ikiwa blue > 255:
                 blue = 255
         self.__sb.update_views(red, green, blue)
         self.__root.update_idletasks()
 
-    def update_yourself(self, red, green, blue):
+    eleza update_yourself(self, red, green, blue):
         self.__red = red
         self.__green = green
         self.__blue = blue
 
-    def save_options(self, optiondb):
+    eleza save_options(self, optiondb):
         optiondb['RSLIDER'] = self.__rvar.get()
         optiondb['GSLIDER'] = self.__gvar.get()
         optiondb['BSLIDER'] = self.__bvar.get()

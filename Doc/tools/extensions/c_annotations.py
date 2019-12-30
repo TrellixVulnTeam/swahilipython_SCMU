@@ -3,10 +3,10 @@
     c_annotations.py
     ~~~~~~~~~~~~~~~~
 
-    Supports annotations for C API elements:
+    Supports annotations kila C API elements:
 
-    * reference count annotations for C API functions.  Based on
-      refcount.py and anno-api.py in the old Python documentation tools.
+    * reference count annotations kila C API functions.  Based on
+      refcount.py na anno-api.py kwenye the old Python documentation tools.
 
     * stable API annotations
 
@@ -25,86 +25,86 @@ kutoka sphinx agiza addnodes
 kutoka sphinx.domains.c agiza CObject
 
 
-kundi RCEntry:
-    def __init__(self, name):
+kundi RCEnjaribu:
+    eleza __init__(self, name):
         self.name = name
         self.args = []
         self.result_type = ''
-        self.result_refs = None
+        self.result_refs = Tupu
 
 
 kundi Annotations(dict):
     @classmethod
-    def kutokafile(cls, filename):
+    eleza kutokafile(cls, filename):
         d = cls()
         fp = open(filename, 'r')
-        try:
-            for line in fp:
+        jaribu:
+            kila line kwenye fp:
                 line = line.strip()
-                if line[:1] in ("", "#"):
-                    # blank lines and comments
-                    continue
+                ikiwa line[:1] kwenye ("", "#"):
+                    # blank lines na comments
+                    endelea
                 parts = line.split(":", 4)
-                if len(parts) != 5:
-                    raise ValueError("Wrong field count in %r" % line)
+                ikiwa len(parts) != 5:
+                    ashiria ValueError("Wrong field count kwenye %r" % line)
                 function, type, arg, refcount, comment = parts
-                # Get the entry, creating it if needed:
-                try:
+                # Get the entry, creating it ikiwa needed:
+                jaribu:
                     entry = d[function]
-                except KeyError:
+                tatizo KeyError:
                     entry = d[function] = RCEntry(function)
-                if not refcount or refcount == "null":
-                    refcount = None
-                else:
+                ikiwa sio refcount ama refcount == "null":
+                    refcount = Tupu
+                isipokua:
                     refcount = int(refcount)
-                # Update the entry with the new parameter or the result
+                # Update the entry ukijumuisha the new parameter ama the result
                 # information.
-                if arg:
+                ikiwa arg:
                     entry.args.append((arg, type, refcount))
-                else:
+                isipokua:
                     entry.result_type = type
                     entry.result_refs = refcount
-        finally:
+        mwishowe:
             fp.close()
-        return d
+        rudisha d
 
-    def add_annotations(self, app, doctree):
-        for node in doctree.traverse(addnodes.desc_content):
+    eleza add_annotations(self, app, doctree):
+        kila node kwenye doctree.traverse(addnodes.desc_content):
             par = node.parent
-            if par['domain'] != 'c':
-                continue
-            if par['stableabi']:
+            ikiwa par['domain'] != 'c':
+                endelea
+            ikiwa par['stableabi']:
                 node.insert(0, nodes.emphasis(' Part of the stable ABI.',
                                               ' Part of the stable ABI.',
                                               classes=['stableabi']))
-            if par['objtype'] != 'function':
-                continue
-            if not par[0].has_key('names') or not par[0]['names']:
-                continue
+            ikiwa par['objtype'] != 'function':
+                endelea
+            ikiwa sio par[0].has_key('names') ama sio par[0]['names']:
+                endelea
             name = par[0]['names'][0]
-            if name.startswith("c."):
+            ikiwa name.startswith("c."):
                 name = name[2:]
             entry = self.get(name)
-            if not entry:
-                continue
-            elif not entry.result_type.endswith("Object*"):
-                continue
-            if entry.result_refs is None:
+            ikiwa sio enjaribu:
+                endelea
+            lasivyo sio entry.result_type.endswith("Object*"):
+                endelea
+            ikiwa entry.result_refs ni Tupu:
                 rc = 'Return value: Always NULL.'
-            elif entry.result_refs:
+            lasivyo entry.result_refs:
                 rc = 'Return value: New reference.'
-            else:
+            isipokua:
                 rc = 'Return value: Borrowed reference.'
             node.insert(0, nodes.emphasis(rc, rc, classes=['refcount']))
 
 
-def init_annotations(app):
+eleza init_annotations(app):
     refcounts = Annotations.kutokafile(
         path.join(app.srcdir, app.config.refcount_file))
     app.connect('doctree-read', refcounts.add_annotations)
 
 
-def setup(app):
+eleza setup(app):
     app.add_config_value('refcount_file', '', Kweli)
     app.connect('builder-inited', init_annotations)
 
@@ -114,8 +114,8 @@ def setup(app):
         'stableabi': directives.flag,
     }
     old_handle_signature = CObject.handle_signature
-    def new_handle_signature(self, sig, signode):
-        signode.parent['stableabi'] = 'stableabi' in self.options
-        return old_handle_signature(self, sig, signode)
+    eleza new_handle_signature(self, sig, signode):
+        signode.parent['stableabi'] = 'stableabi' kwenye self.options
+        rudisha old_handle_signature(self, sig, signode)
     CObject.handle_signature = new_handle_signature
-    return {'version': '1.0', 'parallel_read_safe': Kweli}
+    rudisha {'version': '1.0', 'parallel_read_safe': Kweli}

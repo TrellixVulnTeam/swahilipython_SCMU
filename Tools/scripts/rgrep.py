@@ -5,63 +5,63 @@
 Usage: rgrep [-i] pattern file
 """
 
-import sys
-import re
-import getopt
+agiza sys
+agiza re
+agiza getopt
 
 
-def main():
+eleza main():
     bufsize = 64 * 1024
     reflags = 0
     opts, args = getopt.getopt(sys.argv[1:], "i")
-    for o, a in opts:
-        if o == '-i':
+    kila o, a kwenye opts:
+        ikiwa o == '-i':
             reflags = reflags | re.IGNORECASE
-    if len(args) < 2:
+    ikiwa len(args) < 2:
         usage("not enough arguments")
-    if len(args) > 2:
+    ikiwa len(args) > 2:
         usage("exactly one file argument required")
     pattern, filename = args
-    try:
+    jaribu:
         prog = re.compile(pattern, reflags)
-    except re.error as msg:
-        usage("error in regular expression: %s" % msg)
-    try:
+    tatizo re.error kama msg:
+        usage("error kwenye regular expression: %s" % msg)
+    jaribu:
         f = open(filename)
-    except IOError as msg:
+    tatizo IOError kama msg:
         usage("can't open %r: %s" % (filename, msg), 1)
-    with f:
+    ukijumuisha f:
         f.seek(0, 2)
         pos = f.tell()
-        leftover = None
-        while pos > 0:
+        leftover = Tupu
+        wakati pos > 0:
             size = min(pos, bufsize)
             pos = pos - size
             f.seek(pos)
             buffer = f.read(size)
             lines = buffer.split("\n")
-            del buffer
-            if leftover is None:
-                if not lines[-1]:
-                    del lines[-1]
-            else:
+            toa buffer
+            ikiwa leftover ni Tupu:
+                ikiwa sio lines[-1]:
+                    toa lines[-1]
+            isipokua:
                 lines[-1] = lines[-1] + leftover
-            if pos > 0:
+            ikiwa pos > 0:
                 leftover = lines[0]
-                del lines[0]
-            else:
-                leftover = None
-            for line in reversed(lines):
-                if prog.search(line):
-                    print(line)
+                toa lines[0]
+            isipokua:
+                leftover = Tupu
+            kila line kwenye reversed(lines):
+                ikiwa prog.search(line):
+                    andika(line)
 
 
-def usage(msg, code=2):
+eleza usage(msg, code=2):
     sys.stdout = sys.stderr
-    print(msg)
-    print(__doc__)
+    andika(msg)
+    andika(__doc__)
     sys.exit(code)
 
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

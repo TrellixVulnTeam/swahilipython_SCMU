@@ -2,48 +2,48 @@
 
 # Add some standard cpp magic to a header file
 
-import sys
+agiza sys
 
-def main():
+eleza main():
     args = sys.argv[1:]
-    for filename in args:
+    kila filename kwenye args:
         process(filename)
 
-def process(filename):
-    try:
+eleza process(filename):
+    jaribu:
         f = open(filename, 'r')
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write('%s: can\'t open: %s\n' % (filename, str(msg)))
-        return
-    with f:
+        rudisha
+    ukijumuisha f:
         data = f.read()
-    if data[:2] != '/*':
-        sys.stderr.write('%s does not begin with C comment\n' % filename)
-        return
-    try:
+    ikiwa data[:2] != '/*':
+        sys.stderr.write('%s does sio begin ukijumuisha C comment\n' % filename)
+        rudisha
+    jaribu:
         f = open(filename, 'w')
-    except IOError as msg:
+    tatizo IOError kama msg:
         sys.stderr.write('%s: can\'t write: %s\n' % (filename, str(msg)))
-        return
-    with f:
+        rudisha
+    ukijumuisha f:
         sys.stderr.write('Processing %s ...\n' % filename)
         magic = 'Py_'
-        for c in filename:
-            if ord(c)<=0x80 and c.isalnum():
+        kila c kwenye filename:
+            ikiwa ord(c)<=0x80 na c.isalnum():
                 magic = magic + c.upper()
-            else: magic = magic + '_'
-        print('#ifndef', magic, file=f)
-        print('#define', magic, file=f)
-        print('#ifdef __cplusplus', file=f)
-        print('extern "C" {', file=f)
-        print('#endif', file=f)
-        print(file=f)
+            isipokua: magic = magic + '_'
+        andika('#ifndef', magic, file=f)
+        andika('#define', magic, file=f)
+        andika('#ifeleza __cplusplus', file=f)
+        andika('extern "C" {', file=f)
+        andika('#endif', file=f)
+        andika(file=f)
         f.write(data)
-        print(file=f)
-        print('#ifdef __cplusplus', file=f)
-        print('}', file=f)
-        print('#endif', file=f)
-        print('#endif /*', '!'+magic, '*/', file=f)
+        andika(file=f)
+        andika('#ifeleza __cplusplus', file=f)
+        andika('}', file=f)
+        andika('#endif', file=f)
+        andika('#endikiwa /*', '!'+magic, '*/', file=f)
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()

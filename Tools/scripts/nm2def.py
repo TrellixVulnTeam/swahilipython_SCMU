@@ -1,13 +1,13 @@
 #! /usr/bin/env python3
 """nm2def.py
 
-Helpers to extract symbols from Unix libs and auto-generate
-Windows definition files from them. Depends on nm(1). Tested
-on Linux and Solaris only (-p option to nm is for Solaris only).
+Helpers to extract symbols kutoka Unix libs na auto-generate
+Windows definition files kutoka them. Depends on nm(1). Tested
+on Linux na Solaris only (-p option to nm ni kila Solaris only).
 
 By Marc-Andre Lemburg, Aug 1998.
 
-Additional notes: the output of nm is supposed to look like this:
+Additional notes: the output of nm ni supposed to look like this:
 
 acceler.o:
 000001fd T PyGrammar_AddAccelerators
@@ -30,47 +30,47 @@ grammar1.o:
 
 ...
 
-Even if this isn't the default output of your nm, there is generally an
-option to produce this format (since it is the original v7 Unix format).
+Even ikiwa this isn't the default output of your nm, there ni generally an
+option to produce this format (since it ni the original v7 Unix format).
 
 """
-import os, sys
+agiza os, sys
 
 PYTHONLIB = 'libpython%d.%d.a' % sys.version_info[:2]
 PC_PYTHONLIB = 'Python%d%d.dll' % sys.version_info[:2]
 NM = 'nm -p -g %s'                      # For Linux, use "nm -g %s"
 
-def symbols(lib=PYTHONLIB,types=('T','C','D')):
+eleza symbols(lib=PYTHONLIB,types=('T','C','D')):
 
-    with os.popen(NM % lib) as pipe:
+    ukijumuisha os.popen(NM % lib) kama pipe:
         lines = pipe.readlines()
-    lines = [s.strip() for s in lines]
+    lines = [s.strip() kila s kwenye lines]
     symbols = {}
-    for line in lines:
-        if len(line) == 0 or ':' in line:
-            continue
+    kila line kwenye lines:
+        ikiwa len(line) == 0 ama ':' kwenye line:
+            endelea
         items = line.split()
-        if len(items) != 3:
-            continue
+        ikiwa len(items) != 3:
+            endelea
         address, type, name = items
-        if type not in types:
-            continue
+        ikiwa type haiko kwenye types:
+            endelea
         symbols[name] = address,type
-    return symbols
+    rudisha symbols
 
-def export_list(symbols):
+eleza export_list(symbols):
 
     data = []
     code = []
-    for name,(addr,type) in symbols.items():
-        if type in ('C','D'):
+    kila name,(addr,type) kwenye symbols.items():
+        ikiwa type kwenye ('C','D'):
             data.append('\t'+name)
-        else:
+        isipokua:
             code.append('\t'+name)
     data.sort()
     data.append('')
     code.sort()
-    return ' DATA\n'.join(data)+'\n'+'\n'.join(code)
+    rudisha ' DATA\n'.join(data)+'\n'+'\n'.join(code)
 
 # Definition file template
 DEF_TEMPLATE = """\
@@ -79,19 +79,19 @@ EXPORTS
 """
 
 # Special symbols that have to be included even though they don't
-# pass the filter
+# pita the filter
 SPECIALS = (
     )
 
-def filter_Python(symbols,specials=SPECIALS):
+eleza filter_Python(symbols,specials=SPECIALS):
 
-    for name in list(symbols.keys()):
-        if name[:2] == 'Py' or name[:3] == '_Py':
-            pass
-        elif name not in specials:
-            del symbols[name]
+    kila name kwenye list(symbols.keys()):
+        ikiwa name[:2] == 'Py' ama name[:3] == '_Py':
+            pita
+        lasivyo name haiko kwenye specials:
+            toa symbols[name]
 
-def main():
+eleza main():
 
     s = symbols(PYTHONLIB)
     filter_Python(s)
@@ -100,5 +100,5 @@ def main():
     f.write(DEF_TEMPLATE % (exports))
     # f.close()
 
-if __name__ == '__main__':
+ikiwa __name__ == '__main__':
     main()
