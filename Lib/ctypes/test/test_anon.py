@@ -39,9 +39,9 @@ kundi AnonTest(unittest.TestCase):
     @test.support.cpython_only
     eleza test_issue31490(self):
         # There shouldn't be an assertion failure kwenye case the kundi has an
-        # attribute whose name ni specified kwenye _anonymous_ but sio kwenye _fields_.
+        # attribute whose name ni specified kwenye _anonymous_ but haiko kwenye _fields_.
 
-        # AttributeError: 'x' ni specified kwenye _anonymous_ but sio kwenye _fields_
+        # AttributeError: 'x' ni specified kwenye _anonymous_ but haiko kwenye _fields_
         ukijumuisha self.assertRaises(AttributeError):
             kundi Name(Structure):
                 _fields_ = []

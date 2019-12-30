@@ -58,7 +58,7 @@ kundi TestBase(unittest.TestCase):
                 ikiwa Complains.maybe_complain na random.random() < 0.001:
                     ikiwa verbose:
                         andika("        complaining at", self, other)
-                     ashiria RuntimeError
+                    ashiria RuntimeError
                 rudisha self.i < other.i
 
             eleza __repr__(self):
@@ -105,7 +105,7 @@ kundi TestBase(unittest.TestCase):
 
             ikiwa len(x) >= 2:
                 eleza bad_key(x):
-                     ashiria RuntimeError
+                    ashiria RuntimeError
                 s = x[:]
                 self.assertRaises(RuntimeError, s.sort, key=bad_key)
 
@@ -116,7 +116,7 @@ kundi TestBase(unittest.TestCase):
             it_complained = Uongo
             jaribu:
                 s.sort()
-            except RuntimeError:
+            tatizo RuntimeError:
                 it_complained = Kweli
             ikiwa it_complained:
                 Complains.maybe_complain = Uongo
@@ -135,7 +135,7 @@ kundi TestBugs(unittest.TestCase):
     eleza test_bug453523(self):
         # bug 453523 -- list.sort() crasher.
         # If this fails, the most likely outcome ni a core dump.
-        # Mutations during a list sort should  ashiria a ValueError.
+        # Mutations during a list sort should ashiria a ValueError.
 
         kundi C:
             eleza __lt__(self, other):
@@ -209,7 +209,7 @@ kundi TestDecorateSortUndecorate(unittest.TestCase):
         data = list(range(10))
         kundi SortKiller(object):
             eleza __init__(self, x):
-                pass
+                pita
             eleza __del__(self):
                 toa data[:]
                 data[:] = range(20)
@@ -223,7 +223,7 @@ kundi TestDecorateSortUndecorate(unittest.TestCase):
         kundi SortKiller(object):
             eleza __init__(self, x):
                 ikiwa x > 2:
-                     ashiria RuntimeError
+                    ashiria RuntimeError
             eleza __del__(self):
                 toa data[:]
                 data[:] = list(range(20))
@@ -264,7 +264,7 @@ eleza check_against_PyObject_RichCompareBool(self, L):
     ## The idea here ni to exploit the fact that unsafe_tuple_compare uses
     ## PyObject_RichCompareBool kila the second elements of tuples. So we have,
     ## kila (most) L, sorted(L) == [y[1] kila y kwenye sorted([(0,x) kila x kwenye L])]
-    ## This will work as long as __eq__ => sio __lt__ kila all the objects kwenye L,
+    ## This will work kama long kama __eq__ => sio __lt__ kila all the objects kwenye L,
     ## which holds kila all the types used below.
     ##
     ## Testing this way ensures that the optimized implementation remains consistent
@@ -316,11 +316,11 @@ kundi TestOptimizedCompares(unittest.TestCase):
                 rudisha int.__lt__(self, other)
 
         kundi WackyList1(list):
-            pass
+            pita
 
         kundi WackyList2(list):
             eleza __lt__(self, other):
-                 ashiria ValueError
+                ashiria ValueError
 
         L = [WackyList1([WackyComparator(i), i]) kila i kwenye range(10)]
         elem = L[-1]

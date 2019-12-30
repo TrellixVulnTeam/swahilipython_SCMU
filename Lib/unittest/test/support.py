@@ -2,7 +2,7 @@ agiza unittest
 
 
 kundi TestEquality(object):
-    """Used as a mixin kila TestCase"""
+    """Used kama a mixin kila TestCase"""
 
     # Check kila a valid __eq__ implementation
     eleza test_eq(self):
@@ -17,7 +17,7 @@ kundi TestEquality(object):
             self.assertNotEqual(obj_2, obj_1)
 
 kundi TestHashing(object):
-    """Used as a mixin kila TestCase"""
+    """Used kama a mixin kila TestCase"""
 
     # Check kila a valid __hash__ implementation
     eleza test_hash(self):
@@ -25,7 +25,7 @@ kundi TestHashing(object):
             jaribu:
                 ikiwa sio hash(obj_1) == hash(obj_2):
                     self.fail("%r na %r do sio hash equal" % (obj_1, obj_2))
-            except Exception as e:
+            tatizo Exception kama e:
                 self.fail("Problem hashing %r na %r: %s" % (obj_1, obj_2, e))
 
         kila obj_1, obj_2 kwenye self.ne_pairs:
@@ -33,7 +33,7 @@ kundi TestHashing(object):
                 ikiwa hash(obj_1) == hash(obj_2):
                     self.fail("%s na %s hash equal, but shouldn't" %
                               (obj_1, obj_2))
-            except Exception as e:
+            tatizo Exception kama e:
                 self.fail("Problem hashing %s na %s: %s" % (obj_1, obj_2, e))
 
 
@@ -91,7 +91,7 @@ kundi LegacyLoggingResult(_BaseLoggingResult):
 
     @property
     eleza addSubTest(self):
-         ashiria AttributeError
+        ashiria AttributeError
 
 
 kundi LoggingResult(_BaseLoggingResult):
@@ -120,19 +120,19 @@ kundi ResultWithNoStartTestRunStopTestRun(object):
         self.shouldStop = Uongo
 
     eleza startTest(self, test):
-        pass
+        pita
 
     eleza stopTest(self, test):
-        pass
+        pita
 
     eleza addError(self, test):
-        pass
+        pita
 
     eleza addFailure(self, test):
-        pass
+        pita
 
     eleza addSuccess(self, test):
-        pass
+        pita
 
     eleza wasSuccessful(self):
         rudisha Kweli

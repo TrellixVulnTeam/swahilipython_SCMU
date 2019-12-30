@@ -335,7 +335,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_methods_and_spec(self):
         kundi Iterable(object):
-            eleza __iter__(self): pass
+            eleza __iter__(self): pita
 
         mock = Mock(spec=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -344,7 +344,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(mock), [])
 
         kundi NonIterable(object):
-            pass
+            pita
         mock = Mock(spec=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
@@ -359,7 +359,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_methods_and_spec_set(self):
         kundi Iterable(object):
-            eleza __iter__(self): pass
+            eleza __iter__(self): pita
 
         mock = Mock(spec_set=Iterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
@@ -368,7 +368,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
         self.assertEqual(list(mock), [])
 
         kundi NonIterable(object):
-            pass
+            pita
         mock = Mock(spec_set=NonIterable)
         self.assertRaises(AttributeError, lambda: mock.__iter__)
 
@@ -443,7 +443,7 @@ kundi TestMockingMagicMethods(unittest.TestCase):
 
     eleza test_magic_method_type(self):
         kundi Foo(MagicMock):
-            pass
+            pita
 
         foo = Foo()
         self.assertIsInstance(foo.__int__, Foo)

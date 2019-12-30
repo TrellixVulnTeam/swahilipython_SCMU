@@ -31,10 +31,10 @@ kundi LoggingSilencer(object):
         super().tearDown()
 
     eleza _log(self, level, msg, args):
-        ikiwa level sio kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
-             ashiria ValueError('%s wrong log level' % str(level))
+        ikiwa level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
+            ashiria ValueError('%s wrong log level' % str(level))
         ikiwa sio isinstance(msg, str):
-             ashiria TypeError("msg should be str, sio '%.200s'"
+            ashiria TypeError("msg should be str, sio '%.200s'"
                             % (type(msg).__name__))
         self.logs.append((level, msg, args))
 
@@ -117,7 +117,7 @@ kundi DummyCommand:
             setattr(self, kw, val)
 
     eleza ensure_finalized(self):
-        pass
+        pita
 
 
 kundi EnvironGuard(object):
@@ -132,7 +132,7 @@ kundi EnvironGuard(object):
                 os.environ[key] = value
 
         kila key kwenye tuple(os.environ.keys()):
-            ikiwa key sio kwenye self.old_environ:
+            ikiwa key haiko kwenye self.old_environ:
                 toa os.environ[key]
 
         super(EnvironGuard, self).tearDown()
@@ -152,7 +152,7 @@ eleza copy_xxmodule_c(directory):
     """
     filename = _get_xxmodule_path()
     ikiwa filename ni Tupu:
-         ashiria unittest.SkipTest('cannot find xxmodule.c (test must run kwenye '
+        ashiria unittest.SkipTest('cannot find xxmodule.c (test must run kwenye '
                                 'the python build dir)')
     shutil.copy(filename, directory)
 
@@ -175,10 +175,10 @@ eleza _get_xxmodule_path():
 
 
 eleza fixup_build_ext(cmd):
-    """Function needed to make build_ext tests pass.
+    """Function needed to make build_ext tests pita.
 
     When Python was built ukijumuisha --enable-shared on Unix, -L. ni sio enough to
-    find libpython<blah>.so, because regrtest runs kwenye a tempdir, sio kwenye the
+    find libpython<blah>.so, because regrtest runs kwenye a tempdir, haiko kwenye the
     source directory where the .so lives.
 
     When Python was built ukijumuisha kwenye debug mode on Windows, build_ext commands
@@ -196,7 +196,7 @@ eleza fixup_build_ext(cmd):
     """
     ikiwa os.name == 'nt':
         cmd.debug = sys.executable.endswith('_d.exe')
-    elikiwa sysconfig.get_config_var('Py_ENABLE_SHARED'):
+    lasivyo sysconfig.get_config_var('Py_ENABLE_SHARED'):
         # To further add to the shared builds fun on Unix, we can't just add
         # library_dirs to the Extension() instance because that doesn't get
         # plumbed through to the final compiler command.

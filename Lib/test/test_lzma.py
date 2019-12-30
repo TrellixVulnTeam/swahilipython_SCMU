@@ -521,7 +521,7 @@ kundi TempFile:
         self.data = data
 
     eleza __enter__(self):
-        ukijumuisha open(self.filename, "wb") as f:
+        ukijumuisha open(self.filename, "wb") kama f:
             f.write(self.data)
 
     eleza __exit__(self, *args):
@@ -531,58 +531,58 @@ kundi TempFile:
 kundi FileTestCase(unittest.TestCase):
 
     eleza test_init(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
-            pass
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
-            pass
-        ukijumuisha LZMAFile(BytesIO(), "x") as f:
-            pass
-        ukijumuisha LZMAFile(BytesIO(), "a") as f:
-            pass
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
+            pita
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
+            pita
+        ukijumuisha LZMAFile(BytesIO(), "x") kama f:
+            pita
+        ukijumuisha LZMAFile(BytesIO(), "a") kama f:
+            pita
 
     eleza test_init_with_PathLike_filename(self):
         filename = pathlib.Path(TESTFN)
         ukijumuisha TempFile(filename, COMPRESSED_XZ):
-            ukijumuisha LZMAFile(filename) as f:
+            ukijumuisha LZMAFile(filename) kama f:
                 self.assertEqual(f.read(), INPUT)
-            ukijumuisha LZMAFile(filename, "a") as f:
+            ukijumuisha LZMAFile(filename, "a") kama f:
                 f.write(INPUT)
-            ukijumuisha LZMAFile(filename) as f:
+            ukijumuisha LZMAFile(filename) kama f:
                 self.assertEqual(f.read(), INPUT * 2)
 
     eleza test_init_with_filename(self):
         ukijumuisha TempFile(TESTFN, COMPRESSED_XZ):
-            ukijumuisha LZMAFile(TESTFN) as f:
-                pass
-            ukijumuisha LZMAFile(TESTFN, "w") as f:
-                pass
-            ukijumuisha LZMAFile(TESTFN, "a") as f:
-                pass
+            ukijumuisha LZMAFile(TESTFN) kama f:
+                pita
+            ukijumuisha LZMAFile(TESTFN, "w") kama f:
+                pita
+            ukijumuisha LZMAFile(TESTFN, "a") kama f:
+                pita
 
     eleza test_init_mode(self):
         ukijumuisha TempFile(TESTFN):
             ukijumuisha LZMAFile(TESTFN, "r"):
-                pass
+                pita
             ukijumuisha LZMAFile(TESTFN, "rb"):
-                pass
+                pita
             ukijumuisha LZMAFile(TESTFN, "w"):
-                pass
+                pita
             ukijumuisha LZMAFile(TESTFN, "wb"):
-                pass
+                pita
             ukijumuisha LZMAFile(TESTFN, "a"):
-                pass
+                pita
             ukijumuisha LZMAFile(TESTFN, "ab"):
-                pass
+                pita
 
     eleza test_init_with_x_mode(self):
         self.addCleanup(unlink, TESTFN)
         kila mode kwenye ("x", "xb"):
             unlink(TESTFN)
             ukijumuisha LZMAFile(TESTFN, mode):
-                pass
+                pita
             ukijumuisha self.assertRaises(FileExistsError):
                 ukijumuisha LZMAFile(TESTFN, mode):
-                    pass
+                    pita
 
     eleza test_init_bad_mode(self):
         ukijumuisha self.assertRaises(ValueError):
@@ -668,7 +668,7 @@ kundi FileTestCase(unittest.TestCase):
                      preset=6, filters=FILTERS_RAW_1)
 
     eleza test_close(self):
-        ukijumuisha BytesIO(COMPRESSED_XZ) as src:
+        ukijumuisha BytesIO(COMPRESSED_XZ) kama src:
             f = LZMAFile(src)
             f.close()
             # LZMAFile.close() should sio close the underlying file object.
@@ -781,46 +781,46 @@ kundi FileTestCase(unittest.TestCase):
         self.assertRaises(ValueError, f.writable)
 
     eleza test_read(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) kama f:
             self.assertEqual(f.read(), INPUT)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_1),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_1) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_1) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_2),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_2) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_2) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_3),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_3) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_3) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_4),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_4) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_4) kama f:
             self.assertEqual(f.read(), INPUT)
             self.assertEqual(f.read(), b"")
 
     eleza test_read_0(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertEqual(f.read(0), b"")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) kama f:
             self.assertEqual(f.read(0), b"")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) kama f:
             self.assertEqual(f.read(0), b"")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) kama f:
             self.assertEqual(f.read(0), b"")
 
     eleza test_read_10(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             chunks = []
             wakati Kweli:
                 result = f.read(10)
@@ -831,12 +831,12 @@ kundi FileTestCase(unittest.TestCase):
             self.assertEqual(b"".join(chunks), INPUT)
 
     eleza test_read_multistream(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5)) kama f:
             self.assertEqual(f.read(), INPUT * 5)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_ALONE)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_ALONE)) kama f:
             self.assertEqual(f.read(), INPUT * 2)
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_3 * 4),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_3) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_3) kama f:
             self.assertEqual(f.read(), INPUT * 4)
 
     eleza test_read_multistream_buffer_size_aligned(self):
@@ -845,68 +845,68 @@ kundi FileTestCase(unittest.TestCase):
         saved_buffer_size = _compression.BUFFER_SIZE
         _compression.BUFFER_SIZE = len(COMPRESSED_XZ)
         jaribu:
-            ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ *  5)) as f:
+            ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ *  5)) kama f:
                 self.assertEqual(f.read(), INPUT * 5)
         mwishowe:
             _compression.BUFFER_SIZE = saved_buffer_size
 
     eleza test_read_trailing_junk(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_BOGUS)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ + COMPRESSED_BOGUS)) kama f:
             self.assertEqual(f.read(), INPUT)
 
     eleza test_read_multistream_trailing_junk(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5 + COMPRESSED_BOGUS)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5 + COMPRESSED_BOGUS)) kama f:
             self.assertEqual(f.read(), INPUT * 5)
 
     eleza test_read_from_file(self):
         ukijumuisha TempFile(TESTFN, COMPRESSED_XZ):
-            ukijumuisha LZMAFile(TESTFN) as f:
+            ukijumuisha LZMAFile(TESTFN) kama f:
                 self.assertEqual(f.read(), INPUT)
                 self.assertEqual(f.read(), b"")
 
     eleza test_read_from_file_with_bytes_filename(self):
         jaribu:
             bytes_filename = TESTFN.encode("ascii")
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             self.skipTest("Temporary file name needs to be ASCII")
         ukijumuisha TempFile(TESTFN, COMPRESSED_XZ):
-            ukijumuisha LZMAFile(bytes_filename) as f:
+            ukijumuisha LZMAFile(bytes_filename) kama f:
                 self.assertEqual(f.read(), INPUT)
                 self.assertEqual(f.read(), b"")
 
     eleza test_read_incomplete(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ[:128])) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ[:128])) kama f:
             self.assertRaises(EOFError, f.read)
 
     eleza test_read_truncated(self):
         # Drop stream footer: CRC (4 bytes), index size (4 bytes),
         # flags (2 bytes) na magic number (2 bytes).
         truncated = COMPRESSED_XZ[:-12]
-        ukijumuisha LZMAFile(BytesIO(truncated)) as f:
+        ukijumuisha LZMAFile(BytesIO(truncated)) kama f:
             self.assertRaises(EOFError, f.read)
-        ukijumuisha LZMAFile(BytesIO(truncated)) as f:
+        ukijumuisha LZMAFile(BytesIO(truncated)) kama f:
             self.assertEqual(f.read(len(INPUT)), INPUT)
             self.assertRaises(EOFError, f.read, 1)
         # Incomplete 12-byte header.
         kila i kwenye range(12):
-            ukijumuisha LZMAFile(BytesIO(truncated[:i])) as f:
+            ukijumuisha LZMAFile(BytesIO(truncated[:i])) kama f:
                 self.assertRaises(EOFError, f.read, 1)
 
     eleza test_read_bad_args(self):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.read)
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             self.assertRaises(ValueError, f.read)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertRaises(TypeError, f.read, float())
 
     eleza test_read_bad_data(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_BOGUS)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_BOGUS)) kama f:
             self.assertRaises(LZMAError, f.read)
 
     eleza test_read1(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             blocks = []
             wakati Kweli:
                 result = f.read1()
@@ -917,11 +917,11 @@ kundi FileTestCase(unittest.TestCase):
             self.assertEqual(f.read1(), b"")
 
     eleza test_read1_0(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertEqual(f.read1(0), b"")
 
     eleza test_read1_10(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             blocks = []
             wakati Kweli:
                 result = f.read1(10)
@@ -932,7 +932,7 @@ kundi FileTestCase(unittest.TestCase):
             self.assertEqual(f.read1(), b"")
 
     eleza test_read1_multistream(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 5)) kama f:
             blocks = []
             wakati Kweli:
                 result = f.read1()
@@ -946,53 +946,53 @@ kundi FileTestCase(unittest.TestCase):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.read1)
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             self.assertRaises(ValueError, f.read1)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertRaises(TypeError, f.read1, Tupu)
 
     eleza test_peek(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             result = f.peek()
             self.assertGreater(len(result), 0)
             self.assertKweli(INPUT.startswith(result))
             self.assertEqual(f.read(), INPUT)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             result = f.peek(10)
             self.assertGreater(len(result), 0)
             self.assertKweli(INPUT.startswith(result))
             self.assertEqual(f.read(), INPUT)
 
     eleza test_peek_bad_args(self):
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             self.assertRaises(ValueError, f.peek)
 
     eleza test_iterator(self):
-        ukijumuisha BytesIO(INPUT) as f:
+        ukijumuisha BytesIO(INPUT) kama f:
             lines = f.readlines()
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertListEqual(list(iter(f)), lines)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE)) kama f:
             self.assertListEqual(list(iter(f)), lines)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), format=lzma.FORMAT_XZ) kama f:
             self.assertListEqual(list(iter(f)), lines)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_ALONE), format=lzma.FORMAT_ALONE) kama f:
             self.assertListEqual(list(iter(f)), lines)
         ukijumuisha LZMAFile(BytesIO(COMPRESSED_RAW_2),
-                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_2) as f:
+                      format=lzma.FORMAT_RAW, filters=FILTERS_RAW_2) kama f:
             self.assertListEqual(list(iter(f)), lines)
 
     eleza test_readline(self):
-        ukijumuisha BytesIO(INPUT) as f:
+        ukijumuisha BytesIO(INPUT) kama f:
             lines = f.readlines()
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             kila line kwenye lines:
                 self.assertEqual(f.readline(), line)
 
     eleza test_readlines(self):
-        ukijumuisha BytesIO(INPUT) as f:
+        ukijumuisha BytesIO(INPUT) kama f:
             lines = f.readlines()
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertListEqual(f.readlines(), lines)
 
     eleza test_decompress_limited(self):
@@ -1007,32 +1007,32 @@ kundi FileTestCase(unittest.TestCase):
             "Excessive amount of data was decompressed")
 
     eleza test_write(self):
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w") as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w") kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT)
             self.assertEqual(dst.getvalue(), expected)
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w", format=lzma.FORMAT_XZ) as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w", format=lzma.FORMAT_XZ) kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT, format=lzma.FORMAT_XZ)
             self.assertEqual(dst.getvalue(), expected)
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w", format=lzma.FORMAT_ALONE) as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w", format=lzma.FORMAT_ALONE) kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT, format=lzma.FORMAT_ALONE)
             self.assertEqual(dst.getvalue(), expected)
-        ukijumuisha BytesIO() as dst:
+        ukijumuisha BytesIO() kama dst:
             ukijumuisha LZMAFile(dst, "w", format=lzma.FORMAT_RAW,
-                          filters=FILTERS_RAW_2) as f:
+                          filters=FILTERS_RAW_2) kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT, format=lzma.FORMAT_RAW,
                                      filters=FILTERS_RAW_2)
             self.assertEqual(dst.getvalue(), expected)
 
     eleza test_write_10(self):
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w") as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w") kama f:
                 kila start kwenye range(0, len(INPUT), 10):
                     f.write(INPUT[start:start+10])
             expected = lzma.compress(INPUT)
@@ -1043,21 +1043,21 @@ kundi FileTestCase(unittest.TestCase):
         part2 = INPUT[1024:1536]
         part3 = INPUT[1536:]
         expected = b"".join(lzma.compress(x) kila x kwenye (part1, part2, part3))
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w") as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w") kama f:
                 f.write(part1)
-            ukijumuisha LZMAFile(dst, "a") as f:
+            ukijumuisha LZMAFile(dst, "a") kama f:
                 f.write(part2)
-            ukijumuisha LZMAFile(dst, "a") as f:
+            ukijumuisha LZMAFile(dst, "a") kama f:
                 f.write(part3)
             self.assertEqual(dst.getvalue(), expected)
 
     eleza test_write_to_file(self):
         jaribu:
-            ukijumuisha LZMAFile(TESTFN, "w") as f:
+            ukijumuisha LZMAFile(TESTFN, "w") kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT)
-            ukijumuisha open(TESTFN, "rb") as f:
+            ukijumuisha open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), expected)
         mwishowe:
             unlink(TESTFN)
@@ -1065,13 +1065,13 @@ kundi FileTestCase(unittest.TestCase):
     eleza test_write_to_file_with_bytes_filename(self):
         jaribu:
             bytes_filename = TESTFN.encode("ascii")
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             self.skipTest("Temporary file name needs to be ASCII")
         jaribu:
-            ukijumuisha LZMAFile(bytes_filename, "w") as f:
+            ukijumuisha LZMAFile(bytes_filename, "w") kama f:
                 f.write(INPUT)
             expected = lzma.compress(INPUT)
-            ukijumuisha open(TESTFN, "rb") as f:
+            ukijumuisha open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), expected)
         mwishowe:
             unlink(TESTFN)
@@ -1082,13 +1082,13 @@ kundi FileTestCase(unittest.TestCase):
         part3 = INPUT[1536:]
         expected = b"".join(lzma.compress(x) kila x kwenye (part1, part2, part3))
         jaribu:
-            ukijumuisha LZMAFile(TESTFN, "w") as f:
+            ukijumuisha LZMAFile(TESTFN, "w") kama f:
                 f.write(part1)
-            ukijumuisha LZMAFile(TESTFN, "a") as f:
+            ukijumuisha LZMAFile(TESTFN, "a") kama f:
                 f.write(part2)
-            ukijumuisha LZMAFile(TESTFN, "a") as f:
+            ukijumuisha LZMAFile(TESTFN, "a") kama f:
                 f.write(part3)
-            ukijumuisha open(TESTFN, "rb") as f:
+            ukijumuisha open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), expected)
         mwishowe:
             unlink(TESTFN)
@@ -1097,68 +1097,68 @@ kundi FileTestCase(unittest.TestCase):
         f = LZMAFile(BytesIO(), "w")
         f.close()
         self.assertRaises(ValueError, f.write, b"foo")
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), "r") as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ), "r") kama f:
             self.assertRaises(ValueError, f.write, b"bar")
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             self.assertRaises(TypeError, f.write, Tupu)
             self.assertRaises(TypeError, f.write, "text")
             self.assertRaises(TypeError, f.write, 789)
 
     eleza test_writelines(self):
-        ukijumuisha BytesIO(INPUT) as f:
+        ukijumuisha BytesIO(INPUT) kama f:
             lines = f.readlines()
-        ukijumuisha BytesIO() as dst:
-            ukijumuisha LZMAFile(dst, "w") as f:
+        ukijumuisha BytesIO() kama dst:
+            ukijumuisha LZMAFile(dst, "w") kama f:
                 f.writelines(lines)
             expected = lzma.compress(INPUT)
             self.assertEqual(dst.getvalue(), expected)
 
     eleza test_seek_forward(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.seek(555)
             self.assertEqual(f.read(), INPUT[555:])
 
     eleza test_seek_forward_across_streams(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 2)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 2)) kama f:
             f.seek(len(INPUT) + 123)
             self.assertEqual(f.read(), INPUT[123:])
 
     eleza test_seek_forward_relative_to_current(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.read(100)
             f.seek(1236, 1)
             self.assertEqual(f.read(), INPUT[1336:])
 
     eleza test_seek_forward_relative_to_end(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.seek(-555, 2)
             self.assertEqual(f.read(), INPUT[-555:])
 
     eleza test_seek_backward(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.read(1001)
             f.seek(211)
             self.assertEqual(f.read(), INPUT[211:])
 
     eleza test_seek_backward_across_streams(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 2)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ * 2)) kama f:
             f.read(len(INPUT) + 333)
             f.seek(737)
             self.assertEqual(f.read(), INPUT[737:] + INPUT)
 
     eleza test_seek_backward_relative_to_end(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.seek(-150, 2)
             self.assertEqual(f.read(), INPUT[-150:])
 
     eleza test_seek_past_end(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.seek(len(INPUT) + 9001)
             self.assertEqual(f.tell(), len(INPUT))
             self.assertEqual(f.read(), b"")
 
     eleza test_seek_past_start(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             f.seek(-88)
             self.assertEqual(f.tell(), 0)
             self.assertEqual(f.read(), INPUT)
@@ -1167,9 +1167,9 @@ kundi FileTestCase(unittest.TestCase):
         f = LZMAFile(BytesIO(COMPRESSED_XZ))
         f.close()
         self.assertRaises(ValueError, f.seek, 0)
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             self.assertRaises(ValueError, f.seek, 0)
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             self.assertRaises(ValueError, f.seek, 0, 3)
             # io.BufferedReader raises TypeError instead of ValueError
             self.assertRaises((TypeError, ValueError), f.seek, 9, ())
@@ -1177,7 +1177,7 @@ kundi FileTestCase(unittest.TestCase):
             self.assertRaises(TypeError, f.seek, b"derp")
 
     eleza test_tell(self):
-        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) as f:
+        ukijumuisha LZMAFile(BytesIO(COMPRESSED_XZ)) kama f:
             pos = 0
             wakati Kweli:
                 self.assertEqual(f.tell(), pos)
@@ -1186,7 +1186,7 @@ kundi FileTestCase(unittest.TestCase):
                     koma
                 pos += len(result)
             self.assertEqual(f.tell(), len(INPUT))
-        ukijumuisha LZMAFile(BytesIO(), "w") as f:
+        ukijumuisha LZMAFile(BytesIO(), "w") kama f:
             kila pos kwenye range(0, len(INPUT), 144):
                 self.assertEqual(f.tell(), pos)
                 f.write(INPUT[pos:pos+144])
@@ -1231,14 +1231,14 @@ kundi FileTestCase(unittest.TestCase):
 kundi OpenTestCase(unittest.TestCase):
 
     eleza test_binary_modes(self):
-        ukijumuisha lzma.open(BytesIO(COMPRESSED_XZ), "rb") as f:
+        ukijumuisha lzma.open(BytesIO(COMPRESSED_XZ), "rb") kama f:
             self.assertEqual(f.read(), INPUT)
-        ukijumuisha BytesIO() as bio:
-            ukijumuisha lzma.open(bio, "wb") as f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha lzma.open(bio, "wb") kama f:
                 f.write(INPUT)
             file_data = lzma.decompress(bio.getvalue())
             self.assertEqual(file_data, INPUT)
-            ukijumuisha lzma.open(bio, "ab") as f:
+            ukijumuisha lzma.open(bio, "ab") kama f:
                 f.write(INPUT)
             file_data = lzma.decompress(bio.getvalue())
             self.assertEqual(file_data, INPUT * 2)
@@ -1246,41 +1246,41 @@ kundi OpenTestCase(unittest.TestCase):
     eleza test_text_modes(self):
         uncompressed = INPUT.decode("ascii")
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
-        ukijumuisha lzma.open(BytesIO(COMPRESSED_XZ), "rt") as f:
+        ukijumuisha lzma.open(BytesIO(COMPRESSED_XZ), "rt") kama f:
             self.assertEqual(f.read(), uncompressed)
-        ukijumuisha BytesIO() as bio:
-            ukijumuisha lzma.open(bio, "wt") as f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha lzma.open(bio, "wt") kama f:
                 f.write(uncompressed)
             file_data = lzma.decompress(bio.getvalue()).decode("ascii")
             self.assertEqual(file_data, uncompressed_raw)
-            ukijumuisha lzma.open(bio, "at") as f:
+            ukijumuisha lzma.open(bio, "at") kama f:
                 f.write(uncompressed)
             file_data = lzma.decompress(bio.getvalue()).decode("ascii")
             self.assertEqual(file_data, uncompressed_raw * 2)
 
     eleza test_filename(self):
         ukijumuisha TempFile(TESTFN):
-            ukijumuisha lzma.open(TESTFN, "wb") as f:
+            ukijumuisha lzma.open(TESTFN, "wb") kama f:
                 f.write(INPUT)
-            ukijumuisha open(TESTFN, "rb") as f:
+            ukijumuisha open(TESTFN, "rb") kama f:
                 file_data = lzma.decompress(f.read())
                 self.assertEqual(file_data, INPUT)
-            ukijumuisha lzma.open(TESTFN, "rb") as f:
+            ukijumuisha lzma.open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), INPUT)
-            ukijumuisha lzma.open(TESTFN, "ab") as f:
+            ukijumuisha lzma.open(TESTFN, "ab") kama f:
                 f.write(INPUT)
-            ukijumuisha lzma.open(TESTFN, "rb") as f:
+            ukijumuisha lzma.open(TESTFN, "rb") kama f:
                 self.assertEqual(f.read(), INPUT * 2)
 
     eleza test_with_pathlike_filename(self):
         filename = pathlib.Path(TESTFN)
         ukijumuisha TempFile(filename):
-            ukijumuisha lzma.open(filename, "wb") as f:
+            ukijumuisha lzma.open(filename, "wb") kama f:
                 f.write(INPUT)
-            ukijumuisha open(filename, "rb") as f:
+            ukijumuisha open(filename, "rb") kama f:
                 file_data = lzma.decompress(f.read())
                 self.assertEqual(file_data, INPUT)
-            ukijumuisha lzma.open(filename, "rb") as f:
+            ukijumuisha lzma.open(filename, "rb") kama f:
                 self.assertEqual(f.read(), INPUT)
 
     eleza test_bad_params(self):
@@ -1299,10 +1299,10 @@ kundi OpenTestCase(unittest.TestCase):
     eleza test_format_and_filters(self):
         # Test non-default format na filter chain.
         options = {"format": lzma.FORMAT_RAW, "filters": FILTERS_RAW_1}
-        ukijumuisha lzma.open(BytesIO(COMPRESSED_RAW_1), "rb", **options) as f:
+        ukijumuisha lzma.open(BytesIO(COMPRESSED_RAW_1), "rb", **options) kama f:
             self.assertEqual(f.read(), INPUT)
-        ukijumuisha BytesIO() as bio:
-            ukijumuisha lzma.open(bio, "wb", **options) as f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha lzma.open(bio, "wb", **options) kama f:
                 f.write(INPUT)
             file_data = lzma.decompress(bio.getvalue(), **options)
             self.assertEqual(file_data, INPUT)
@@ -1311,29 +1311,29 @@ kundi OpenTestCase(unittest.TestCase):
         # Test non-default encoding.
         uncompressed = INPUT.decode("ascii")
         uncompressed_raw = uncompressed.replace("\n", os.linesep)
-        ukijumuisha BytesIO() as bio:
-            ukijumuisha lzma.open(bio, "wt", encoding="utf-16-le") as f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha lzma.open(bio, "wt", encoding="utf-16-le") kama f:
                 f.write(uncompressed)
             file_data = lzma.decompress(bio.getvalue()).decode("utf-16-le")
             self.assertEqual(file_data, uncompressed_raw)
             bio.seek(0)
-            ukijumuisha lzma.open(bio, "rt", encoding="utf-16-le") as f:
+            ukijumuisha lzma.open(bio, "rt", encoding="utf-16-le") kama f:
                 self.assertEqual(f.read(), uncompressed)
 
     eleza test_encoding_error_handler(self):
         # Test ukijumuisha non-default encoding error handler.
-        ukijumuisha BytesIO(lzma.compress(b"foo\xffbar")) as bio:
-            ukijumuisha lzma.open(bio, "rt", encoding="ascii", errors="ignore") as f:
+        ukijumuisha BytesIO(lzma.compress(b"foo\xffbar")) kama bio:
+            ukijumuisha lzma.open(bio, "rt", encoding="ascii", errors="ignore") kama f:
                 self.assertEqual(f.read(), "foobar")
 
     eleza test_newline(self):
         # Test ukijumuisha explicit newline (universal newline mode disabled).
         text = INPUT.decode("ascii")
-        ukijumuisha BytesIO() as bio:
-            ukijumuisha lzma.open(bio, "wt", newline="\n") as f:
+        ukijumuisha BytesIO() kama bio:
+            ukijumuisha lzma.open(bio, "wt", newline="\n") kama f:
                 f.write(text)
             bio.seek(0)
-            ukijumuisha lzma.open(bio, "rt", newline="\r") as f:
+            ukijumuisha lzma.open(bio, "rt", newline="\r") kama f:
                 self.assertEqual(f.readlines(), [text])
 
     eleza test_x_mode(self):
@@ -1341,10 +1341,10 @@ kundi OpenTestCase(unittest.TestCase):
         kila mode kwenye ("x", "xb", "xt"):
             unlink(TESTFN)
             ukijumuisha lzma.open(TESTFN, mode):
-                pass
+                pita
             ukijumuisha self.assertRaises(FileExistsError):
                 ukijumuisha lzma.open(TESTFN, mode):
-                    pass
+                    pita
 
 
 kundi MiscellaneousTestCase(unittest.TestCase):
@@ -1435,7 +1435,7 @@ LORD POLONIUS
        Bear't that the opposed may beware of thee.
        Give every man thy ear, but few thy voice;
        Take each man's censure, but reserve thy judgment.
-       Costly thy habit as thy purse can buy,
+       Costly thy habit kama thy purse can buy,
        But sio express'd kwenye fancy; rich, sio gaudy;
        For the apparel oft proclaims the man,
        And they kwenye France of the best rank na station
@@ -1444,7 +1444,7 @@ LORD POLONIUS
        For loan oft loses both itself na friend,
        And borrowing dulls the edge of husbandry.
        This above all: to thine ownself be true,
-       And it must follow, as the night the day,
+       And it must follow, kama the night the day,
        Thou canst sio then be false to any man.
        Farewell: my blessing season this kwenye thee!
 

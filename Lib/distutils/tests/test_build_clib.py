@@ -72,7 +72,7 @@ kundi BuildCLibTestCase(support.TempdirManager,
         cmd = build_clib(dist)
         kundi FakeCompiler:
             eleza compile(*args, **kw):
-                pass
+                pita
             create_static_lib = compile
 
         cmd.compiler = FakeCompiler()

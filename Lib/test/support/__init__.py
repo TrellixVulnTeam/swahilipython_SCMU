@@ -1,7 +1,7 @@
 """Supporting definitions kila the Python regression tests."""
 
 ikiwa __name__ != 'test.support':
-     ashiria ImportError('support must be imported kutoka the test package')
+    ashiria ImportError('support must be imported kutoka the test package')
 
 agiza asyncio.events
 agiza collections.abc
@@ -41,37 +41,37 @@ kutoka .testresult agiza get_test_runner
 
 jaribu:
     agiza multiprocessing.process
-except ImportError:
+tatizo ImportError:
     multiprocessing = Tupu
 
 jaribu:
     agiza zlib
-except ImportError:
+tatizo ImportError:
     zlib = Tupu
 
 jaribu:
     agiza gzip
-except ImportError:
+tatizo ImportError:
     gzip = Tupu
 
 jaribu:
     agiza bz2
-except ImportError:
+tatizo ImportError:
     bz2 = Tupu
 
 jaribu:
     agiza lzma
-except ImportError:
+tatizo ImportError:
     lzma = Tupu
 
 jaribu:
     agiza resource
-except ImportError:
+tatizo ImportError:
     resource = Tupu
 
 jaribu:
     agiza _hashlib
-except ImportError:
+tatizo ImportError:
     _hashlib = Tupu
 
 __all__ = [
@@ -150,9 +150,9 @@ eleza _ignore_deprecated_imports(ignore=Kweli):
         ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings("ignore", ".+ (module|package)",
                                     DeprecationWarning)
-            yield
+            tuma
     isipokua:
-        yield
+        tuma
 
 
 eleza ignore_warnings(*, category):
@@ -183,10 +183,10 @@ eleza import_module(name, deprecated=Uongo, *, required_on=()):
     ukijumuisha _ignore_deprecated_imports(deprecated):
         jaribu:
             rudisha importlib.import_module(name)
-        except ImportError as msg:
+        tatizo ImportError kama msg:
             ikiwa sys.platform.startswith(tuple(required_on)):
                 raise
-             ashiria unittest.SkipTest(str(msg))
+            ashiria unittest.SkipTest(str(msg))
 
 
 eleza _save_and_remove_module(name, orig_modules):
@@ -194,8 +194,8 @@ eleza _save_and_remove_module(name, orig_modules):
 
     Raise ImportError ikiwa the module can't be imported.
     """
-    # try to agiza the module na  ashiria an error ikiwa it can't be imported
-    ikiwa name sio kwenye sys.modules:
+    # try to agiza the module na ashiria an error ikiwa it can't be imported
+    ikiwa name haiko kwenye sys.modules:
         __import__(name)
         toa sys.modules[name]
     kila modname kwenye list(sys.modules):
@@ -211,7 +211,7 @@ eleza _save_and_block_module(name, orig_modules):
     saved = Kweli
     jaribu:
         orig_modules[name] = sys.modules[name]
-    except KeyError:
+    tatizo KeyError:
         saved = Uongo
     sys.modules[name] = Tupu
     rudisha saved
@@ -230,7 +230,7 @@ eleza anticipate_failure(condition):
 eleza load_package_tests(pkg_dir, loader, standard_tests, pattern):
     """Generic load_tests implementation kila simple test packages.
 
-    Most packages can implement load_tests using this function as follows:
+    Most packages can implement load_tests using this function kama follows:
 
        eleza load_tests(*args):
            rudisha load_package_tests(os.path.dirname(__file__), *args)
@@ -248,7 +248,7 @@ eleza load_package_tests(pkg_dir, loader, standard_tests, pattern):
 
 
 eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
-    """Import na rudisha a module, deliberately bypassing sys.modules.
+    """Import na rudisha a module, deliberately bypitaing sys.modules.
 
     This function imports na returns a fresh copy of the named Python module
     by removing the named module kutoka sys.modules before doing the import.
@@ -260,7 +260,7 @@ eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
 
     *blocked* ni an iterable of module names that are replaced ukijumuisha Tupu
     kwenye the module cache during the agiza to ensure that attempts to import
-    them  ashiria ImportError.
+    them ashiria ImportError.
 
     The named module na any modules named kwenye the *fresh* na *blocked*
     parameters are saved before starting the agiza na then reinserted into
@@ -269,14 +269,14 @@ eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
     Module na package deprecation messages are suppressed during this import
     ikiwa *deprecated* ni Kweli.
 
-    This function will  ashiria ImportError ikiwa the named module cannot be
+    This function will ashiria ImportError ikiwa the named module cannot be
     imported.
     """
     # NOTE: test_heapq, test_json na test_warnings include extra sanity checks
-    # to make sure that this utility function ni working as expected
+    # to make sure that this utility function ni working kama expected
     ukijumuisha _ignore_deprecated_imports(deprecated):
-        # Keep track of modules saved kila later restoration as well
-        # as those which just need a blocking entry removed
+        # Keep track of modules saved kila later restoration kama well
+        # kama those which just need a blocking entry removed
         orig_modules = {}
         names_to_remove = []
         _save_and_remove_module(name, orig_modules)
@@ -287,7 +287,7 @@ eleza import_fresh_module(name, fresh=(), blocked=(), deprecated=Uongo):
                 ikiwa sio _save_and_block_module(blocked_name, orig_modules):
                     names_to_remove.append(blocked_name)
             fresh_module = importlib.import_module(name)
-        except ImportError:
+        tatizo ImportError:
             fresh_module = Tupu
         mwishowe:
             kila orig_name, module kwenye orig_modules.items():
@@ -301,8 +301,8 @@ eleza get_attribute(obj, name):
     """Get an attribute, raising SkipTest ikiwa AttributeError ni raised."""
     jaribu:
         attribute = getattr(obj, name)
-    except AttributeError:
-         ashiria unittest.SkipTest("object %r has no attribute %r" % (obj, name))
+    tatizo AttributeError:
+        ashiria unittest.SkipTest("object %r has no attribute %r" % (obj, name))
     isipokua:
         rudisha attribute
 
@@ -328,13 +328,13 @@ eleza get_original_stdout():
 eleza unload(name):
     jaribu:
         toa sys.modules[name]
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
 
 eleza _force_run(path, func, *args):
     jaribu:
         rudisha func(*args)
-    except OSError as err:
+    tatizo OSError kama err:
         ikiwa verbose >= 2:
             andika('%s: %s' % (err.__class__.__name__, err))
             andika('re-run %s%r' % (func.__name__, args))
@@ -360,7 +360,7 @@ ikiwa sys.platform.startswith("win"):
         timeout = 0.001
         wakati timeout < 1.0:
             # Note we are only testing kila the existence of the file(s) in
-            # the contents of the directory regardless of any security or
+            # the contents of the directory regardless of any security ama
             # access rights.  If we have made it this far, we have sufficient
             # permissions to do that much using Python's equivalent of the
             # Windows API FindFirstFile.
@@ -387,7 +387,7 @@ ikiwa sys.platform.startswith("win"):
                 fullname = os.path.join(path, name)
                 jaribu:
                     mode = os.lstat(fullname).st_mode
-                except OSError as exc:
+                tatizo OSError kama exc:
                     andika("support.rmtree(): os.lstat(%r) failed ukijumuisha %s" % (fullname, exc),
                           file=sys.__stderr__)
                     mode = 0
@@ -402,9 +402,9 @@ ikiwa sys.platform.startswith("win"):
     eleza _longpath(path):
         jaribu:
             agiza ctypes
-        except ImportError:
+        tatizo ImportError:
             # No ctypes means we can't expands paths.
-            pass
+            pita
         isipokua:
             buffer = ctypes.create_unicode_buffer(len(path) * 2)
             length = ctypes.windll.kernel32.GetLongPathNameW(path, buffer,
@@ -420,15 +420,15 @@ isipokua:
         jaribu:
             shutil.rmtree(path)
             return
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         eleza _rmtree_inner(path):
             kila name kwenye _force_run(path, os.listdir, path):
                 fullname = os.path.join(path, name)
                 jaribu:
                     mode = os.lstat(fullname).st_mode
-                except OSError:
+                tatizo OSError:
                     mode = 0
                 ikiwa stat.S_ISDIR(mode):
                     _rmtree_inner(fullname)
@@ -444,20 +444,20 @@ isipokua:
 eleza unlink(filename):
     jaribu:
         _unlink(filename)
-    except (FileNotFoundError, NotADirectoryError):
-        pass
+    tatizo (FileNotFoundError, NotADirectoryError):
+        pita
 
 eleza rmdir(dirname):
     jaribu:
         _rmdir(dirname)
-    except FileNotFoundError:
-        pass
+    tatizo FileNotFoundError:
+        pita
 
 eleza rmtree(path):
     jaribu:
         _rmtree(path)
-    except FileNotFoundError:
-        pass
+    tatizo FileNotFoundError:
+        pita
 
 eleza make_legacy_pyc(source):
     """Move a PEP 3147/488 pyc file to its legacy pyc location.
@@ -475,7 +475,7 @@ eleza make_legacy_pyc(source):
 eleza forget(modname):
     """'Forget' a module was ever imported.
 
-    This removes the module kutoka sys.modules na deletes any PEP 3147/488 or
+    This removes the module kutoka sys.modules na deletes any PEP 3147/488 ama
     legacy .pyc files.
     """
     unload(modname)
@@ -493,7 +493,7 @@ eleza _is_gui_available():
         rudisha _is_gui_available.result
     reason = Tupu
     ikiwa sys.platform.startswith('win'):
-        # ikiwa Python ni running as a service (such as the buildbot service),
+        # ikiwa Python ni running kama a service (such kama the buildbot service),
         # gui interaction may be disallowed
         agiza ctypes
         agiza ctypes.wintypes
@@ -506,7 +506,7 @@ eleza _is_gui_available():
         dll = ctypes.windll.user32
         h = dll.GetProcessWindowStation()
         ikiwa sio h:
-             ashiria ctypes.WinError()
+            ashiria ctypes.WinError()
         uof = USEROBJECTFLAGS()
         needed = ctypes.wintypes.DWORD()
         res = dll.GetUserObjectInformationW(h,
@@ -515,15 +515,15 @@ eleza _is_gui_available():
             ctypes.sizeof(uof),
             ctypes.byref(needed))
         ikiwa sio res:
-             ashiria ctypes.WinError()
+            ashiria ctypes.WinError()
         ikiwa sio bool(uof.dwFlags & WSF_VISIBLE):
             reason = "gui sio available (WSF_VISIBLE flag sio set)"
-    elikiwa sys.platform == 'darwin':
+    lasivyo sys.platform == 'darwin':
         # The Aqua Tk implementations on OS X can abort the process if
         # being called kwenye an environment where a window server connection
         # cannot be made, kila instance when invoked by a buildbot ama ssh
-        # process sio running under the same user id as the current console
-        # user.  To avoid that,  ashiria an exception ikiwa the window manager
+        # process sio running under the same user id kama the current console
+        # user.  To avoid that, ashiria an exception ikiwa the window manager
         # connection ni sio available.
         kutoka ctypes agiza cdll, c_int, pointer, Structure
         kutoka ctypes.util agiza find_library
@@ -538,7 +538,7 @@ eleza _is_gui_available():
                             ("lowLongOfPSN", c_int)]
             psn = ProcessSerialNumber()
             psn_p = pointer(psn)
-            ikiwa (  (app_services.GetCurrentProcess(psn_p) < 0) or
+            ikiwa (  (app_services.GetCurrentProcess(psn_p) < 0) ama
                   (app_services.SetFrontProcess(psn_p) < 0) ):
                 reason = "cannot run without OS X gui process"
 
@@ -550,7 +550,7 @@ eleza _is_gui_available():
             root.withdraw()
             root.update()
             root.destroy()
-        except Exception as e:
+        tatizo Exception kama e:
             err_string = str(e)
             ikiwa len(err_string) > 50:
                 err_string = err_string[:50] + ' [...]'
@@ -575,9 +575,9 @@ eleza requires(resource, msg=Tupu):
     ikiwa sio is_resource_enabled(resource):
         ikiwa msg ni Tupu:
             msg = "Use of the %r resource sio enabled" % resource
-         ashiria ResourceDenied(msg)
+        ashiria ResourceDenied(msg)
     ikiwa resource == 'gui' na sio _is_gui_available():
-         ashiria ResourceDenied(_is_gui_available.reason)
+        ashiria ResourceDenied(_is_gui_available.reason)
 
 eleza _requires_unix_version(sysname, min_version):
     """Decorator raising SkipTest ikiwa the OS ni `sysname` na the version ni less
@@ -593,12 +593,12 @@ eleza _requires_unix_version(sysname, min_version):
                 version_txt = platform.release().split('-', 1)[0]
                 jaribu:
                     version = tuple(map(int, version_txt.split('.')))
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
                 isipokua:
                     ikiwa version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
-                         ashiria unittest.SkipTest(
+                        ashiria unittest.SkipTest(
                             "%s version %s ama higher required, sio %s"
                             % (sysname, min_version_txt, version_txt))
             rudisha func(*args, **kw)
@@ -638,12 +638,12 @@ eleza requires_mac_ver(*min_version):
                 version_txt = platform.mac_ver()[0]
                 jaribu:
                     version = tuple(map(int, version_txt.split('.')))
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
                 isipokua:
                     ikiwa version < min_version:
                         min_version_txt = '.'.join(map(str, min_version))
-                         ashiria unittest.SkipTest(
+                        ashiria unittest.SkipTest(
                             "Mac OS X %s ama higher required, sio %s"
                             % (min_version_txt, version_txt))
             rudisha func(*args, **kw)
@@ -673,8 +673,8 @@ eleza requires_hashdigest(digestname, openssl=Tupu):
                     _hashlib.new(digestname)
                 isipokua:
                     hashlib.new(digestname)
-            except ValueError:
-                 ashiria unittest.SkipTest(
+            tatizo ValueError:
+                ashiria unittest.SkipTest(
                     f"hash digest '{digestname}' ni sio available."
                 )
             rudisha func(*args, **kwargs)
@@ -699,13 +699,13 @@ eleza find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     server socket needs to be bound to a particular port kila the duration of
     the test.  Which one to use depends on whether the calling code ni creating
     a python socket, ama ikiwa an unused port needs to be provided kwenye a constructor
-    ama passed to an external program (i.e. the -accept argument to openssl's
+    ama pitaed to an external program (i.e. the -accept argument to openssl's
     s_server mode).  Always prefer bind_port() over find_unused_port() where
-    possible.  Hard coded ports should *NEVER* be used.  As soon as a server
+    possible.  Hard coded ports should *NEVER* be used.  As soon kama a server
     socket ni bound to a hard coded port, the ability to run multiple instances
     of the test simultaneously on the same host ni compromised, which makes the
     test a ticking time bomb kwenye a buildbot environment. On Unix buildbots, this
-    may simply manifest as a failed test, which can be recovered kutoka without
+    may simply manifest kama a failed test, which can be recovered kutoka without
     intervention kwenye most cases, but on Windows, the entire python process can
     completely na utterly wedge, requiring someone to log kwenye to the buildbot
     na manually kill the affected process.
@@ -714,14 +714,14 @@ eleza find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     the SO_REUSEADDR socket option having different semantics on Windows versus
     Unix/Linux.  On Unix, you can't have two AF_INET SOCK_STREAM sockets bind,
     listen na then accept connections on identical host/ports.  An EADDRINUSE
-    OSError will be raised at some point (depending on the platform and
+    OSError will be raised at some point (depending on the platform na
     the order bind na listen were called on each socket).
 
     However, on Windows, ikiwa SO_REUSEADDR ni set on the sockets, no EADDRINUSE
     will ever be raised when attempting to bind two identical host/ports. When
     accept() ni called on each socket, the second caller's process will steal
     the port kutoka the first caller, leaving them both kwenye an awkwardly wedged
-    state where they'll no longer respond to any signals ama graceful kills, and
+    state where they'll no longer respond to any signals ama graceful kills, na
     must be forcibly killed via OpenProcess()/TerminateProcess().
 
     The solution on Windows ni to use the SO_EXCLUSIVEADDRUSE socket option
@@ -743,7 +743,7 @@ eleza find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
     issue if/when we come across it.
     """
 
-    ukijumuisha socket.socket(family, socktype) as tempsock:
+    ukijumuisha socket.socket(family, socktype) kama tempsock:
         port = bind_port(tempsock)
     toa tempsock
     rudisha port
@@ -751,7 +751,7 @@ eleza find_unused_port(family=socket.AF_INET, socktype=socket.SOCK_STREAM):
 eleza bind_port(sock, host=HOST):
     """Bind the socket to a free port na rudisha the port number.  Relies on
     ephemeral ports kwenye order to ensure we are using an unbound port.  This is
-    important as many tests may be running simultaneously, especially kwenye a
+    important kama many tests may be running simultaneously, especially kwenye a
     buildbot environment.  This method raises an exception ikiwa the sock.family
     ni AF_INET na sock.type ni SOCK_STREAM, *and* the socket has SO_REUSEADDR
     ama SO_REUSEPORT set on it.  Tests should *never* set these socket options
@@ -766,18 +766,18 @@ eleza bind_port(sock, host=HOST):
     ikiwa sock.family == socket.AF_INET na sock.type == socket.SOCK_STREAM:
         ikiwa hasattr(socket, 'SO_REUSEADDR'):
             ikiwa sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR) == 1:
-                 ashiria TestFailed("tests should never set the SO_REUSEADDR "   \
+                ashiria TestFailed("tests should never set the SO_REUSEADDR "   \
                                  "socket option on TCP/IP sockets!")
         ikiwa hasattr(socket, 'SO_REUSEPORT'):
             jaribu:
                 ikiwa sock.getsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT) == 1:
-                     ashiria TestFailed("tests should never set the SO_REUSEPORT "   \
+                    ashiria TestFailed("tests should never set the SO_REUSEPORT "   \
                                      "socket option on TCP/IP sockets!")
-            except OSError:
+            tatizo OSError:
                 # Python's socket module was compiled using modern headers
                 # thus defining SO_REUSEPORT but this process ni running
                 # under an older kernel that does sio support SO_REUSEPORT.
-                pass
+                pita
         ikiwa hasattr(socket, 'SO_EXCLUSIVEADDRUSE'):
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
 
@@ -790,9 +790,9 @@ eleza bind_unix_socket(sock, addr):
     assert sock.family == socket.AF_UNIX
     jaribu:
         sock.bind(addr)
-    except PermissionError:
+    tatizo PermissionError:
         sock.close()
-         ashiria unittest.SkipTest('cannot bind AF_UNIX sockets')
+        ashiria unittest.SkipTest('cannot bind AF_UNIX sockets')
 
 eleza _is_ipv6_enabled():
     """Check whether IPv6 ni enabled on this host."""
@@ -802,8 +802,8 @@ eleza _is_ipv6_enabled():
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.bind((HOSTv6, 0))
             rudisha Kweli
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         mwishowe:
             ikiwa sock:
                 sock.close()
@@ -817,9 +817,9 @@ eleza system_must_validate_cert(f):
     eleza dec(*args, **kwargs):
         jaribu:
             f(*args, **kwargs)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa "CERTIFICATE_VERIFY_FAILED" kwenye str(e):
-                 ashiria unittest.SkipTest("system does sio contain "
+                ashiria unittest.SkipTest("system does sio contain "
                                         "necessary certificates")
             raise
     rudisha dec
@@ -916,9 +916,9 @@ kila character kwenye (
         # 'replace' error mode ni used, na encode() returns b'?'
         # kila characters missing kwenye the ANSI codepage
         ikiwa os.fsdecode(os.fsencode(character)) != character:
-             ashiria UnicodeError
-    except UnicodeError:
-        pass
+            ashiria UnicodeError
+    tatizo UnicodeError:
+        pita
     isipokua:
         FS_NONASCII = character
         koma
@@ -945,26 +945,26 @@ ikiwa os.name == 'nt':
         TESTFN_UNENCODABLE = TESTFN + "-\u5171\u0141\u2661\u0363\uDC80"
         jaribu:
             TESTFN_UNENCODABLE.encode(TESTFN_ENCODING)
-        except UnicodeEncodeError:
-            pass
+        tatizo UnicodeEncodeError:
+            pita
         isipokua:
             andika('WARNING: The filename %r CAN be encoded by the filesystem encoding (%s). '
                   'Unicode filename tests may sio be effective'
                   % (TESTFN_UNENCODABLE, TESTFN_ENCODING))
             TESTFN_UNENCODABLE = Tupu
 # Mac OS X denies unencodable filenames (invalid utf-8)
-elikiwa sys.platform != 'darwin':
+lasivyo sys.platform != 'darwin':
     jaribu:
         # ascii na utf-8 cannot encode the byte 0xff
         b'\xff'.decode(TESTFN_ENCODING)
-    except UnicodeDecodeError:
+    tatizo UnicodeDecodeError:
         # 0xff will be encoded using the surrogate character u+DCFF
         TESTFN_UNENCODABLE = TESTFN \
             + b'-\xff'.decode(TESTFN_ENCODING, 'surrogateescape')
     isipokua:
         # File system encoding (eg. ISO-8859-* encodings) can encode
         # the byte 0xff. Skip some unicode filename tests.
-        pass
+        pita
 
 # TESTFN_UNDECODABLE ni a filename (bytes type) that should *not* be able to be
 # decoded kutoka the filesystem encoding (in strict mode). It can be Tupu ikiwa we
@@ -992,7 +992,7 @@ kila name kwenye (
 ):
     jaribu:
         name.decode(TESTFN_ENCODING)
-    except UnicodeDecodeError:
+    tatizo UnicodeDecodeError:
         TESTFN_UNDECODABLE = os.fsencode(TESTFN) + name
         koma
 
@@ -1035,7 +1035,7 @@ eleza temp_dir(path=Tupu, quiet=Uongo):
         jaribu:
             os.mkdir(path)
             dir_created = Kweli
-        except OSError as exc:
+        tatizo OSError kama exc:
             ikiwa sio quiet:
                 raise
             warnings.warn(f'tests may fail, unable to create '
@@ -1057,7 +1057,7 @@ eleza change_cwd(path, quiet=Uongo):
 
     Arguments:
 
-      path: the directory to use as the temporary current working directory.
+      path: the directory to use kama the temporary current working directory.
 
       quiet: ikiwa Uongo (the default), the context manager raises an exception
         on error.  Otherwise, it issues only a warning na keeps the current
@@ -1067,7 +1067,7 @@ eleza change_cwd(path, quiet=Uongo):
     saved_dir = os.getcwd()
     jaribu:
         os.chdir(path)
-    except OSError as exc:
+    tatizo OSError kama exc:
         ikiwa sio quiet:
             raise
         warnings.warn(f'tests may fail, unable to change the current working '
@@ -1094,8 +1094,8 @@ eleza temp_cwd(name='tempcwd', quiet=Uongo):
     only a warning ni raised na the original CWD ni used.
 
     """
-    ukijumuisha temp_dir(path=name, quiet=quiet) as temp_path:
-        ukijumuisha change_cwd(temp_path, quiet=quiet) as cwd_dir:
+    ukijumuisha temp_dir(path=name, quiet=quiet) kama temp_path:
+        ukijumuisha change_cwd(temp_path, quiet=quiet) kama cwd_dir:
             tuma cwd_dir
 
 ikiwa hasattr(os, "umask"):
@@ -1104,7 +1104,7 @@ ikiwa hasattr(os, "umask"):
         """Context manager that temporarily sets the process umask."""
         oldmask = os.umask(umask)
         jaribu:
-            yield
+            tuma
         mwishowe:
             os.umask(oldmask)
 
@@ -1113,12 +1113,12 @@ ikiwa hasattr(os, "umask"):
 TEST_SUPPORT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_HOME_DIR = os.path.dirname(TEST_SUPPORT_DIR)
 
-# TEST_DATA_DIR ni used as a target download location kila remote resources
+# TEST_DATA_DIR ni used kama a target download location kila remote resources
 TEST_DATA_DIR = os.path.join(TEST_HOME_DIR, "data")
 
 eleza findfile(filename, subdir=Tupu):
     """Try to find a file on sys.path ama kwenye the test directory.  If it ni not
-    found the argument passed to the function ni returned (this does not
+    found the argument pitaed to the function ni returned (this does not
     necessarily signal failure; could still be the legitimate path).
 
     Setting *subdir* indicates a relative path to use to find the file
@@ -1160,7 +1160,7 @@ eleza make_bad_fd():
 
 
 eleza check_syntax_error(testcase, statement, errtext='', *, lineno=Tupu, offset=Tupu):
-    ukijumuisha testcase.assertRaisesRegex(SyntaxError, errtext) as cm:
+    ukijumuisha testcase.assertRaisesRegex(SyntaxError, errtext) kama cm:
         compile(statement, '<test string>', 'exec')
     err = cm.exception
     testcase.assertIsNotTupu(err.lineno)
@@ -1172,7 +1172,7 @@ eleza check_syntax_error(testcase, statement, errtext='', *, lineno=Tupu, offset
 
 eleza check_syntax_warning(testcase, statement, errtext='', *, lineno=1, offset=Tupu):
     # Test also that a warning ni emitted only once.
-    ukijumuisha warnings.catch_warnings(record=Kweli) as warns:
+    ukijumuisha warnings.catch_warnings(record=Kweli) kama warns:
         warnings.simplefilter('always', SyntaxWarning)
         compile(statement, '<testcase>', 'exec')
     testcase.assertEqual(len(warns), 1, warns)
@@ -1189,7 +1189,7 @@ eleza check_syntax_warning(testcase, statement, errtext='', *, lineno=1, offset=
     # SyntaxWarning should be converted to SyntaxError when raised,
     # since the latter contains more information na provides better
     # error report.
-    ukijumuisha warnings.catch_warnings(record=Kweli) as warns:
+    ukijumuisha warnings.catch_warnings(record=Kweli) kama warns:
         warnings.simplefilter('error', SyntaxWarning)
         check_syntax_error(testcase, statement, errtext,
                            lineno=lineno, offset=offset)
@@ -1210,7 +1210,7 @@ eleza open_urlresource(url, *args, **kw):
         f = open(fn, *args, **kw)
         ikiwa check ni Tupu:
             rudisha f
-        elikiwa check(f):
+        lasivyo check(f):
             f.seek(0)
             rudisha f
         f.close()
@@ -1233,7 +1233,7 @@ eleza open_urlresource(url, *args, **kw):
     ikiwa gzip na f.headers.get('Content-Encoding') == 'gzip':
         f = gzip.GzipFile(fileobj=f)
     jaribu:
-        ukijumuisha open(fn, "wb") as out:
+        ukijumuisha open(fn, "wb") kama out:
             s = f.read()
             wakati s:
                 out.write(s)
@@ -1244,7 +1244,7 @@ eleza open_urlresource(url, *args, **kw):
     f = check_valid_file(fn)
     ikiwa f ni sio Tupu:
         rudisha f
-     ashiria TestFailed('invalid resource %r' % fn)
+    ashiria TestFailed('invalid resource %r' % fn)
 
 
 kundi WarningsRecorder(object):
@@ -1258,9 +1258,9 @@ kundi WarningsRecorder(object):
     eleza __getattr__(self, attr):
         ikiwa len(self._warnings) > self._last:
             rudisha getattr(self._warnings[-1], attr)
-        elikiwa attr kwenye warnings.WarningMessage._WARNING_DETAILS:
+        lasivyo attr kwenye warnings.WarningMessage._WARNING_DETAILS:
             rudisha Tupu
-         ashiria AttributeError("%r has no attribute %r" % (self, attr))
+        ashiria AttributeError("%r has no attribute %r" % (self, attr))
 
     @property
     eleza warnings(self):
@@ -1272,30 +1272,30 @@ kundi WarningsRecorder(object):
 
 eleza _filterwarnings(filters, quiet=Uongo):
     """Catch the warnings, then check ikiwa all the expected
-    warnings have been raised na re- ashiria unexpected warnings.
-    If 'quiet' ni Kweli, only re- ashiria the unexpected warnings.
+    warnings have been raised na re-ashiria unexpected warnings.
+    If 'quiet' ni Kweli, only re-ashiria the unexpected warnings.
     """
     # Clear the warning registry of the calling module
-    # kwenye order to re- ashiria the warnings.
+    # kwenye order to re-ashiria the warnings.
     frame = sys._getframe(2)
     registry = frame.f_globals.get('__warningregistry__')
     ikiwa regisjaribu:
         registry.clear()
-    ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+    ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
         # Set filter "always" to record all warnings.  Because
         # test_warnings swap the module, we need to look up in
         # the sys.modules dictionary.
         sys.modules['warnings'].simplefilter("always")
         tuma WarningsRecorder(w)
     # Filter the recorded warnings
-    re ashiria = list(w)
+    reashiria = list(w)
     missing = []
     kila msg, cat kwenye filters:
         seen = Uongo
         kila w kwenye reraise[:]:
             warning = w.message
             # Filter out the matching messages
-            ikiwa (re.match(msg, str(warning), re.I) and
+            ikiwa (re.match(msg, str(warning), re.I) na
                 issubclass(warning.__class__, cat)):
                 seen = Kweli
                 reraise.remove(w)
@@ -1303,9 +1303,9 @@ eleza _filterwarnings(filters, quiet=Uongo):
             # This filter caught nothing
             missing.append((msg, cat.__name__))
     ikiwa reraise:
-         ashiria AssertionError("unhandled warning %s" % reraise[0])
+        ashiria AssertionError("unhandled warning %s" % reraise[0])
     ikiwa missing:
-         ashiria AssertionError("filter (%r, %s) did sio catch any warning" %
+        ashiria AssertionError("filter (%r, %s) did sio catch any warning" %
                              missing[0])
 
 
@@ -1313,7 +1313,7 @@ eleza _filterwarnings(filters, quiet=Uongo):
 eleza check_warnings(*filters, **kwargs):
     """Context manager to silence warnings.
 
-    Accept 2-tuples as positional arguments:
+    Accept 2-tuples kama positional arguments:
         ("message regexp", WarningCategory)
 
     Optional argument:
@@ -1343,15 +1343,15 @@ eleza check_no_warnings(testcase, message='', category=Warning, force_gc=Uongo):
 
     If force_gc ni Kweli, a garbage collection ni attempted before checking
     kila warnings. This may help to catch warnings emitted when objects
-    are deleted, such as ResourceWarning.
+    are deleted, such kama ResourceWarning.
 
-    Other keyword arguments are passed to warnings.filterwarnings().
+    Other keyword arguments are pitaed to warnings.filterwarnings().
     """
-    ukijumuisha warnings.catch_warnings(record=Kweli) as warns:
+    ukijumuisha warnings.catch_warnings(record=Kweli) kama warns:
         warnings.filterwarnings('always',
                                 message=message,
                                 category=category)
-        yield
+        tuma
         ikiwa force_gc:
             gc_collect()
     testcase.assertEqual(warns, [])
@@ -1372,7 +1372,7 @@ eleza check_no_resource_warning(testcase):
     the end of the context manager.
     """
     ukijumuisha check_no_warnings(testcase, category=ResourceWarning, force_gc=Kweli):
-        yield
+        tuma
 
 
 kundi CleanImport(object):
@@ -1421,13 +1421,13 @@ kundi EnvironmentVarGuard(collections.abc.MutableMapping):
 
     eleza __setitem__(self, envvar, value):
         # Remember the initial value on the first access
-        ikiwa envvar sio kwenye self._changed:
+        ikiwa envvar haiko kwenye self._changed:
             self._changed[envvar] = self._environ.get(envvar)
         self._environ[envvar] = value
 
     eleza __delitem__(self, envvar):
         # Remember the initial value on the first access
-        ikiwa envvar sio kwenye self._changed:
+        ikiwa envvar haiko kwenye self._changed:
             self._changed[envvar] = self._environ.get(envvar)
         ikiwa envvar kwenye self._environ:
             toa self._environ[envvar]
@@ -1464,7 +1464,7 @@ kundi DirsOnSysPath(object):
     """Context manager to temporarily add directories to sys.path.
 
     This makes a copy of sys.path, appends any directories given
-    as positional arguments, then reverts sys.path to the copied
+    kama positional arguments, then reverts sys.path to the copied
     settings when the context ends.
 
     Note that *all* sys.path modifications kwenye the body of the
@@ -1499,7 +1499,7 @@ kundi TransientResource(object):
 
     eleza __exit__(self, type_=Tupu, value=Tupu, traceback=Tupu):
         """If type_ ni a subkundi of self.exc na value has attributes matching
-        self.attrs,  ashiria ResourceDenied.  Otherwise let the exception
+        self.attrs, ashiria ResourceDenied.  Otherwise let the exception
         propagate (ikiwa any)."""
         ikiwa type_ ni sio Tupu na issubclass(self.exc, type_):
             kila attr, attr_value kwenye self.attrs.items():
@@ -1508,10 +1508,10 @@ kundi TransientResource(object):
                 ikiwa getattr(value, attr) != attr_value:
                     koma
             isipokua:
-                 ashiria ResourceDenied("an optional resource ni sio available")
+                ashiria ResourceDenied("an optional resource ni sio available")
 
-# Context managers that  ashiria ResourceDenied when various issues
-# ukijumuisha the Internet connection manifest themselves as exceptions.
+# Context managers that ashiria ResourceDenied when various issues
+# ukijumuisha the Internet connection manifest themselves kama exceptions.
 # XXX deprecate these na use transient_internet() instead
 time_out = TransientResource(OSError, errno=errno.ETIMEDOUT)
 socket_peer_reset = TransientResource(OSError, errno=errno.ECONNRESET)
@@ -1542,7 +1542,7 @@ eleza get_socket_conn_refused_errs():
 @contextlib.contextmanager
 eleza transient_internet(resource_name, *, timeout=30.0, errnos=()):
     """Return a context manager that raises ResourceDenied when various issues
-    ukijumuisha the Internet connection manifest themselves as exceptions."""
+    ukijumuisha the Internet connection manifest themselves kama exceptions."""
     default_errnos = [
         ('ECONNREFUSED', 111),
         ('ECONNRESET', 104),
@@ -1573,39 +1573,39 @@ eleza transient_internet(resource_name, *, timeout=30.0, errnos=()):
 
     eleza filter_error(err):
         n = getattr(err, 'errno', Tupu)
-        ikiwa (isinstance(err, socket.timeout) or
-            (isinstance(err, socket.gaierror) na n kwenye gai_errnos) or
-            (isinstance(err, urllib.error.HTTPError) and
-             500 <= err.code <= 599) or
-            (isinstance(err, urllib.error.URLError) and
-                 (("ConnectionRefusedError" kwenye err.reason) or
-                  ("TimeoutError" kwenye err.reason) or
-                  ("EOFError" kwenye err.reason))) or
+        ikiwa (isinstance(err, socket.timeout) ama
+            (isinstance(err, socket.gaierror) na n kwenye gai_errnos) ama
+            (isinstance(err, urllib.error.HTTPError) na
+             500 <= err.code <= 599) ama
+            (isinstance(err, urllib.error.URLError) na
+                 (("ConnectionRefusedError" kwenye err.reason) ama
+                  ("TimeoutError" kwenye err.reason) ama
+                  ("EOFError" kwenye err.reason))) ama
             n kwenye captured_errnos):
             ikiwa sio verbose:
                 sys.stderr.write(denied.args[0] + "\n")
-             ashiria denied kutoka err
+            ashiria denied kutoka err
 
     old_timeout = socket.getdefaulttimeout()
     jaribu:
         ikiwa timeout ni sio Tupu:
             socket.setdefaulttimeout(timeout)
-        yield
-    except nntplib.NNTPTemporaryError as err:
+        tuma
+    tatizo nntplib.NNTPTemporaryError kama err:
         ikiwa verbose:
             sys.stderr.write(denied.args[0] + "\n")
-         ashiria denied kutoka err
-    except OSError as err:
+        ashiria denied kutoka err
+    tatizo OSError kama err:
         # urllib can wrap original socket errors multiple times (!), we must
         # unwrap to get at the original error.
         wakati Kweli:
             a = err.args
             ikiwa len(a) >= 1 na isinstance(a[0], OSError):
                 err = a[0]
-            # The error can also be wrapped as args[1]:
-            #    except socket.error as msg:
-            #         ashiria OSError('socket error', msg).with_traceback(sys.exc_info()[2])
-            elikiwa len(a) >= 2 na isinstance(a[1], OSError):
+            # The error can also be wrapped kama args[1]:
+            #    tatizo socket.error kama msg:
+            #        ashiria OSError('socket error', msg).with_traceback(sys.exc_info()[2])
+            lasivyo len(a) >= 2 na isinstance(a[1], OSError):
                 err = a[1]
             isipokua:
                 koma
@@ -1632,7 +1632,7 @@ eleza captured_output(stream_name):
 eleza captured_stdout():
     """Capture the output of sys.stdout:
 
-       ukijumuisha captured_stdout() as stdout:
+       ukijumuisha captured_stdout() kama stdout:
            andika("hello")
        self.assertEqual(stdout.getvalue(), "hello\\n")
     """
@@ -1641,7 +1641,7 @@ eleza captured_stdout():
 eleza captured_stderr():
     """Capture the output of sys.stderr:
 
-       ukijumuisha captured_stderr() as stderr:
+       ukijumuisha captured_stderr() kama stderr:
            andika("hello", file=sys.stderr)
        self.assertEqual(stderr.getvalue(), "hello\\n")
     """
@@ -1650,7 +1650,7 @@ eleza captured_stderr():
 eleza captured_stdin():
     """Capture the input to sys.stdin:
 
-       ukijumuisha captured_stdin() as stdin:
+       ukijumuisha captured_stdin() kama stdin:
            stdin.write('hello\\n')
            stdin.seek(0)
            # call test code that consumes kutoka sys.stdin
@@ -1661,7 +1661,7 @@ eleza captured_stdin():
 
 
 eleza gc_collect():
-    """Force as many objects as possible to be collected.
+    """Force kama many objects kama possible to be collected.
 
     In non-CPython implementations of Python, this ni needed because timely
     deallocation ni sio guaranteed by the garbage collector.  (Even kwenye CPython
@@ -1681,7 +1681,7 @@ eleza disable_gc():
     have_gc = gc.isenabled()
     gc.disable()
     jaribu:
-        yield
+        tuma
     mwishowe:
         ikiwa have_gc:
             gc.enable()
@@ -1694,7 +1694,7 @@ eleza python_is_optimized():
     kila opt kwenye cflags.split():
         ikiwa opt.startswith('-O'):
             final_opt = opt
-    rudisha final_opt sio kwenye ('', '-O0', '-Og')
+    rudisha final_opt haiko kwenye ('', '-O0', '-Og')
 
 
 _header = 'nP'
@@ -1736,7 +1736,7 @@ eleza run_with_locale(catstr, *locales):
                 agiza locale
                 category = getattr(locale, catstr)
                 orig_locale = locale.setlocale(category)
-            except AttributeError:
+            tatizo AttributeError:
                 # ikiwa the test author gives us an invalid category string
                 raise
             tatizo:
@@ -1748,7 +1748,7 @@ eleza run_with_locale(catstr, *locales):
                         locale.setlocale(category, loc)
                         koma
                     tatizo:
-                        pass
+                        pita
 
             # now run the function, resetting the locale on exceptions
             jaribu:
@@ -1770,8 +1770,8 @@ eleza run_with_tz(tz):
         eleza inner(*args, **kwds):
             jaribu:
                 tzset = time.tzset
-            except AttributeError:
-                 ashiria unittest.SkipTest("tzset required")
+            tatizo AttributeError:
+                ashiria unittest.SkipTest("tzset required")
             ikiwa 'TZ' kwenye os.environ:
                 orig_tz = os.environ['TZ']
             isipokua:
@@ -1798,8 +1798,8 @@ eleza run_with_tz(tz):
 # Big-memory-test support. Separate kutoka 'resources' because memory use
 # should be configurable.
 
-# Some handy shorthands. Note that these are used kila byte-limits as well
-# as size-limits, kwenye the various bigmem tests
+# Some handy shorthands. Note that these are used kila byte-limits kama well
+# kama size-limits, kwenye the various bigmem tests
 _1M = 1024*1024
 _1G = 1024 * _1M
 _2G = 2 * _1G
@@ -1819,13 +1819,13 @@ eleza set_memlimit(limit):
     m = re.match(r'(\d+(\.\d+)?) (K|M|G|T)b?$', limit,
                  re.IGNORECASE | re.VERBOSE)
     ikiwa m ni Tupu:
-         ashiria ValueError('Invalid memory limit %r' % (limit,))
+        ashiria ValueError('Invalid memory limit %r' % (limit,))
     memlimit = int(float(m.group(1)) * sizes[m.group(3).lower()])
     real_max_memuse = memlimit
     ikiwa memlimit > MAX_Py_ssize_t:
         memlimit = MAX_Py_ssize_t
     ikiwa memlimit < _2G - 1:
-         ashiria ValueError('Memory limit %r too low to be useful' % (limit,))
+        ashiria ValueError('Memory limit %r too low to be useful' % (limit,))
     max_memuse = memlimit
 
 kundi _MemoryWatchdog:
@@ -1840,7 +1840,7 @@ kundi _MemoryWatchdog:
     eleza start(self):
         jaribu:
             f = open(self.procfile, 'r')
-        except OSError as e:
+        tatizo OSError kama e:
             warnings.warn('/proc sio available kila stats: {}'.format(e),
                           RuntimeWarning)
             sys.stderr.flush()
@@ -1867,8 +1867,8 @@ eleza bigmemtest(size, memuse, dry_run=Kweli):
     estimate of it. For example, a test that needs two byte buffers, of 4 GiB
     each, could be decorated ukijumuisha @bigmemtest(size=_4G, memuse=2).
 
-    The 'size' argument ni normally passed to the decorated test method as an
-    extra argument. If 'dry_run' ni true, the value passed to the test method
+    The 'size' argument ni normally pitaed to the decorated test method kama an
+    extra argument. If 'dry_run' ni true, the value pitaed to the test method
     may be less than the requested value. If 'dry_run' ni false, it means the
     test doesn't support dummy runs when -M ni sio specified.
     """
@@ -1883,7 +1883,7 @@ eleza bigmemtest(size, memuse, dry_run=Kweli):
 
             ikiwa ((real_max_memuse ama sio dry_run)
                 na real_max_memuse < maxsize * memuse):
-                 ashiria unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (size * memuse / (1024 ** 3)))
 
@@ -1912,10 +1912,10 @@ eleza bigaddrspacetest(f):
     eleza wrapper(self):
         ikiwa max_memuse < MAX_Py_ssize_t:
             ikiwa MAX_Py_ssize_t >= 2**63 - 1 na max_memuse >= 2**31:
-                 ashiria unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: try a 32-bit build instead")
             isipokua:
-                 ashiria unittest.SkipTest(
+                ashiria unittest.SkipTest(
                     "not enough memory: %.1fG minimum needed"
                     % (MAX_Py_ssize_t / (1024 ** 3)))
         isipokua:
@@ -1976,7 +1976,7 @@ eleza check_impl_detail(**guards):
        Examples:
           ikiwa check_impl_detail():               # only on CPython (default)
           ikiwa check_impl_detail(jython=Kweli):    # only on Jython
-          ikiwa check_impl_detail(cpython=Uongo):  # everywhere except on CPython
+          ikiwa check_impl_detail(cpython=Uongo):  # everywhere tatizo on CPython
     """
     guards, default = _parse_guards(guards)
     rudisha guards.get(platform.python_implementation().lower(), default)
@@ -2033,16 +2033,16 @@ eleza _run_suite(suite):
         junit_xml_list.append(result.get_xml_element())
 
     ikiwa sio result.testsRun na sio result.skipped:
-         ashiria TestDidNotRun
+        ashiria TestDidNotRun
     ikiwa sio result.wasSuccessful():
         ikiwa len(result.errors) == 1 na sio result.failures:
             err = result.errors[0][1]
-        elikiwa len(result.failures) == 1 na sio result.errors:
+        lasivyo len(result.failures) == 1 na sio result.errors:
             err = result.failures[0][1]
         isipokua:
             err = "multiple errors occurred"
             ikiwa sio verbose: err += "; run kwenye verbose mode kila details"
-         ashiria TestFailed(err)
+        ashiria TestFailed(err)
 
 
 # By default, don't filter tests
@@ -2060,12 +2060,12 @@ eleza match_test(test):
 
 eleza _is_full_match_test(pattern):
     # If a pattern contains at least one dot, it's considered
-    # as a full test identifier.
+    # kama a full test identifier.
     # Example: 'test.test_os.FileTests.test_access'.
     #
     # Reject patterns which contain fnmatch patterns: '*', '?', '[...]'
     # ama '[!...]'. For example, reject 'test_access*'.
-    rudisha ('.' kwenye pattern) na (not re.search(r'[?*\[\]]', pattern))
+    rudisha ('.' kwenye pattern) na (sio re.search(r'[?*\[\]]', pattern))
 
 
 eleza set_match_tests(patterns):
@@ -2077,9 +2077,9 @@ eleza set_match_tests(patterns):
 
     ikiwa sio patterns:
         func = Tupu
-        # set_match_tests(Tupu) behaves as set_match_tests(())
+        # set_match_tests(Tupu) behaves kama set_match_tests(())
         patterns = ()
-    elikiwa all(map(_is_full_match_test, patterns)):
+    lasivyo all(map(_is_full_match_test, patterns)):
         # Simple case: all patterns are full test identifier.
         # The test.bisect_cmd utility only uses such full test identifiers.
         func = set(patterns).__contains__
@@ -2117,8 +2117,8 @@ eleza run_unittest(*classes):
             ikiwa cls kwenye sys.modules:
                 suite.addTest(unittest.findTestCases(sys.modules[cls]))
             isipokua:
-                 ashiria ValueError("str arguments must be keys kwenye sys.modules")
-        elikiwa isinstance(cls, valid_types):
+                ashiria ValueError("str arguments must be keys kwenye sys.modules")
+        lasivyo isinstance(cls, valid_types):
             suite.addTest(cls)
         isipokua:
             suite.addTest(unittest.makeSuite(cls))
@@ -2134,11 +2134,11 @@ eleza run_unittest(*classes):
 eleza _check_docstrings():
     """Just used to check ikiwa docstrings are enabled"""
 
-MISSING_C_DOCSTRINGS = (check_impl_detail() and
-                        sys.platform != 'win32' and
+MISSING_C_DOCSTRINGS = (check_impl_detail() na
+                        sys.platform != 'win32' na
                         sio sysconfig.get_config_var('WITH_DOC_STRINGS'))
 
-HAVE_DOCSTRINGS = (_check_docstrings.__doc__ ni sio Tupu and
+HAVE_DOCSTRINGS = (_check_docstrings.__doc__ ni sio Tupu na
                    sio MISSING_C_DOCSTRINGS)
 
 requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
@@ -2151,7 +2151,7 @@ requires_docstrings = unittest.skipUnless(HAVE_DOCSTRINGS,
 eleza run_doctest(module, verbosity=Tupu, optionflags=0):
     """Run doctest on the given module.  Return (#failures, #tests).
 
-    If optional argument verbosity ni sio specified (or ni Tupu), pass
+    If optional argument verbosity ni sio specified (or ni Tupu), pita
     support's belief about verbosity on to doctest.  Else doctest's
     usual behavior ni used (it searches sys.argv kila -v).
     """
@@ -2165,7 +2165,7 @@ eleza run_doctest(module, verbosity=Tupu, optionflags=0):
 
     f, t = doctest.testmod(module, verbose=verbosity, optionflags=optionflags)
     ikiwa f:
-         ashiria TestFailed("%d of %d doctests failed" % (f, t))
+        ashiria TestFailed("%d of %d doctests failed" % (f, t))
     ikiwa verbose:
         andika('doctest (%s) ... %d tests ukijumuisha zero failures' %
               (module.__name__, t))
@@ -2187,7 +2187,7 @@ eleza modules_cleanup(oldmodules):
     sys.modules.clear()
     sys.modules.update(encodings)
     # XXX: This kind of problem can affect more than just encodings. In particular
-    # extension modules (such as _ssl) don't cope ukijumuisha reloading properly.
+    # extension modules (such kama _ssl) don't cope ukijumuisha reloading properly.
     # Really, test modules should be cleaning out the test specific modules they
     # know they added (ala test_runpy) rather than relying on this function (as
     # test_importhooks na test_pkg do currently).
@@ -2278,7 +2278,7 @@ eleza wait_threads_exit(timeout=60.0):
     """
     old_count = _thread._count()
     jaribu:
-        yield
+        tuma
     mwishowe:
         start_time = time.monotonic()
         deadline = start_time + timeout
@@ -2291,7 +2291,7 @@ eleza wait_threads_exit(timeout=60.0):
                 msg = (f"wait_threads() failed to cleanup {count - old_count} "
                        f"threads after {dt:.1f} seconds "
                        f"(count: {count}, old count: {old_count})")
-                 ashiria AssertionError(msg)
+                ashiria AssertionError(msg)
             time.sleep(0.010)
             gc_collect()
 
@@ -2303,7 +2303,7 @@ eleza join_thread(thread, timeout=30.0):
     thread.join(timeout)
     ikiwa thread.is_alive():
         msg = f"failed to join the thread kwenye {timeout:.1f} seconds"
-         ashiria AssertionError(msg)
+        ashiria AssertionError(msg)
 
 
 eleza reap_children():
@@ -2324,7 +2324,7 @@ eleza reap_children():
         jaribu:
             # Read the exit status of any child process which already completed
             pid, status = os.waitpid(-1, os.WNOHANG)
-        except OSError:
+        tatizo OSError:
             koma
 
         ikiwa pid == 0:
@@ -2349,7 +2349,7 @@ eleza start_threads(threads, unlock=Tupu):
                 andika("Can't start %d threads, only %d threads started" %
                       (len(threads), len(started)))
             raise
-        yield
+        tuma
     mwishowe:
         jaribu:
             ikiwa unlock:
@@ -2369,7 +2369,7 @@ eleza start_threads(threads, unlock=Tupu):
             started = [t kila t kwenye started ikiwa t.is_alive()]
             ikiwa started:
                 faulthandler.dump_traceback(sys.stdout)
-                 ashiria AssertionError('Unable to join %d threads' % len(started))
+                ashiria AssertionError('Unable to join %d threads' % len(started))
 
 @contextlib.contextmanager
 eleza swap_attr(obj, attr, new_val):
@@ -2397,7 +2397,7 @@ eleza swap_attr(obj, attr, new_val):
     isipokua:
         setattr(obj, attr, new_val)
         jaribu:
-            yield
+            tuma
         mwishowe:
             ikiwa hasattr(obj, attr):
                 delattr(obj, attr)
@@ -2428,7 +2428,7 @@ eleza swap_item(obj, item, new_val):
     isipokua:
         obj[item] = new_val
         jaribu:
-            yield
+            tuma
         mwishowe:
             ikiwa item kwenye obj:
                 toa obj[item]
@@ -2463,7 +2463,7 @@ eleza optim_args_from_interpreter_flags():
 kundi TestHandler(logging.handlers.BufferingHandler):
     eleza __init__(self, matcher):
         # BufferingHandler takes a "capacity" argument
-        # so as to know when to flush. As we're overriding
+        # so kama to know when to flush. As we're overriding
         # shouldFlush anyway, we can set a capacity of zero.
         # You can call flush() manually to clear out the
         # buffer.
@@ -2515,7 +2515,7 @@ kundi Matcher(object):
         """
         ikiwa type(v) != type(dv):
             result = Uongo
-        elikiwa type(dv) ni sio str ama k sio kwenye self._partial_matches:
+        lasivyo type(dv) ni sio str ama k haiko kwenye self._partial_matches:
             result = (v == dv)
         isipokua:
             result = dv.find(v) >= 0
@@ -2531,7 +2531,7 @@ eleza can_symlink():
     jaribu:
         os.symlink(TESTFN, symlink_path)
         can = Kweli
-    except (OSError, NotImplementedError, AttributeError):
+    tatizo (OSError, NotImplementedError, AttributeError):
         can = Uongo
     isipokua:
         os.remove(symlink_path)
@@ -2557,8 +2557,8 @@ eleza skip_if_buggy_ucrt_strfptime(test):
     """
     global _buggy_ucrt
     ikiwa _buggy_ucrt ni Tupu:
-        if(sys.platform == 'win32' and
-                locale.getdefaultlocale()[1]  == 'cp65001' and
+        if(sys.platform == 'win32' na
+                locale.getdefaultlocale()[1]  == 'cp65001' na
                 time.localtime().tm_zone == ''):
             _buggy_ucrt = Kweli
         isipokua:
@@ -2578,7 +2578,7 @@ kundi PythonSymlink:
         self._platform_specific()
 
     eleza _platform_specific(self):
-        pass
+        pita
 
     ikiwa sys.platform == "win32":
         eleza _platform_specific(self):
@@ -2619,7 +2619,7 @@ kundi PythonSymlink:
         kila link kwenye self._linked:
             jaribu:
                 os.remove(link)
-            except IOError as ex:
+            tatizo IOError kama ex:
                 ikiwa verbose:
                     andika("failed to clean up {}: {}".format(link, ex))
 
@@ -2632,7 +2632,7 @@ kundi PythonSymlink:
             ikiwa verbose:
                 andika(repr(r[0]))
                 andika(repr(r[1]), file=sys.stderr)
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 'unexpected rudisha code: {0} (0x{0:08X})'.format(p.returncode))
         rudisha r
 
@@ -2654,7 +2654,7 @@ eleza can_xattr():
         tmp_dir = tempfile.mkdtemp()
         tmp_fp, tmp_name = tempfile.mkstemp(dir=tmp_dir)
         jaribu:
-            ukijumuisha open(TESTFN, "wb") as fp:
+            ukijumuisha open(TESTFN, "wb") kama fp:
                 jaribu:
                     # TESTFN & tempfile may use different file systems with
                     # different capabilities
@@ -2665,7 +2665,7 @@ eleza can_xattr():
                     kernel_version = platform.release()
                     m = re.match(r"2.6.(\d{1,2})", kernel_version)
                     can = m ni Tupu ama int(m.group(1)) >= 39
-                except OSError:
+                tatizo OSError:
                     can = Uongo
         mwishowe:
             unlink(TESTFN)
@@ -2694,11 +2694,11 @@ eleza skip_unless_bind_unix_socket(test):
     global _bind_nix_socket_error
     ikiwa _bind_nix_socket_error ni Tupu:
         path = TESTFN + "can_bind_unix_socket"
-        ukijumuisha socket.socket(socket.AF_UNIX) as sock:
+        ukijumuisha socket.socket(socket.AF_UNIX) kama sock:
             jaribu:
                 sock.bind(path)
                 _bind_nix_socket_error = Uongo
-            except OSError as e:
+            tatizo OSError kama e:
                 _bind_nix_socket_error = e
             mwishowe:
                 unlink(path)
@@ -2711,19 +2711,19 @@ eleza skip_unless_bind_unix_socket(test):
 
 eleza fs_is_case_insensitive(directory):
     """Detects ikiwa the file system kila the specified directory ni case-insensitive."""
-    ukijumuisha tempfile.NamedTemporaryFile(dir=directory) as base:
+    ukijumuisha tempfile.NamedTemporaryFile(dir=directory) kama base:
         base_path = base.name
         case_path = base_path.upper()
         ikiwa case_path == base_path:
             case_path = base_path.lower()
         jaribu:
             rudisha os.path.samefile(base_path, case_path)
-        except FileNotFoundError:
+        tatizo FileNotFoundError:
             rudisha Uongo
 
 
 eleza detect_api_mismatch(ref_api, other_api, *, ignore=()):
-    """Returns the set of items kwenye ref_api sio kwenye other_api, except kila a
+    """Returns the set of items kwenye ref_api haiko kwenye other_api, tatizo kila a
     defined list of items to be ignored kwenye this check.
 
     By default this skips private attributes beginning ukijumuisha '_' but
@@ -2746,17 +2746,17 @@ eleza check__all__(test_case, module, name_of_module=Tupu, extra=(),
     'module'.
 
     The 'name_of_module' argument can specify (as a string ama tuple thereof)
-    what module(s) an API could be defined kwenye kwenye order to be detected as a
+    what module(s) an API could be defined kwenye kwenye order to be detected kama a
     public API. One case kila this ni when 'module' imports part of its public
     API kutoka other modules, possibly a C backend (like 'csv' na its '_csv').
 
     The 'extra' argument can be a set of names that wouldn't otherwise be
-    automatically detected as "public", like objects without a proper
+    automatically detected kama "public", like objects without a proper
     '__module__' attribute. If provided, it will be added to the
     automatically detected ones.
 
     The 'blacklist' argument can be a set of names that must sio be treated
-    as part of the public API even though their names indicate otherwise.
+    kama part of the public API even though their names indicate otherwise.
 
     Usage:
         agiza bar
@@ -2780,7 +2780,7 @@ eleza check__all__(test_case, module, name_of_module=Tupu, extra=(),
 
     ikiwa name_of_module ni Tupu:
         name_of_module = (module.__name__, )
-    elikiwa isinstance(name_of_module, str):
+    lasivyo isinstance(name_of_module, str):
         name_of_module = (name_of_module, )
 
     expected = set(extra)
@@ -2789,8 +2789,8 @@ eleza check__all__(test_case, module, name_of_module=Tupu, extra=(),
         ikiwa name.startswith('_') ama name kwenye blacklist:
             endelea
         obj = getattr(module, name)
-        ikiwa (getattr(obj, '__module__', Tupu) kwenye name_of_module or
-                (not hasattr(obj, '__module__') and
+        ikiwa (getattr(obj, '__module__', Tupu) kwenye name_of_module ama
+                (sio hasattr(obj, '__module__') na
                  sio isinstance(obj, types.ModuleType))):
             expected.add(name)
     test_case.assertCountEqual(module.__all__, expected)
@@ -2827,9 +2827,9 @@ kundi SuppressCrashReport:
             jaribu:
                 agiza msvcrt
                 msvcrt.CrtSetReportMode
-            except (AttributeError, ImportError):
+            tatizo (AttributeError, ImportError):
                 # no msvcrt ama a release build
-                pass
+                pita
             isipokua:
                 self.old_modes = {}
                 kila report_type kwenye [msvcrt.CRT_WARN,
@@ -2847,8 +2847,8 @@ kundi SuppressCrashReport:
                     self.old_value = resource.getrlimit(resource.RLIMIT_CORE)
                     resource.setrlimit(resource.RLIMIT_CORE,
                                        (0, self.old_value[1]))
-                except (ValueError, OSError):
-                    pass
+                tatizo (ValueError, OSError):
+                    pita
 
             ikiwa sys.platform == 'darwin':
                 # Check ikiwa the 'Crash Reporter' on OSX was configured
@@ -2887,8 +2887,8 @@ kundi SuppressCrashReport:
             ikiwa resource ni sio Tupu:
                 jaribu:
                     resource.setrlimit(resource.RLIMIT_CORE, self.old_value)
-                except (ValueError, OSError):
-                    pass
+                tatizo (ValueError, OSError):
+                    pita
 
 
 eleza patch(test_instance, object_to_patch, attr_name, new_value):
@@ -2900,14 +2900,14 @@ eleza patch(test_instance, object_to_patch, attr_name, new_value):
 
     """
     # check that 'attr_name' ni a real attribute kila 'object_to_patch'
-    # will  ashiria AttributeError ikiwa it does sio exist
+    # will ashiria AttributeError ikiwa it does sio exist
     getattr(object_to_patch, attr_name)
 
     # keep a copy of the old value
     attr_is_local = Uongo
     jaribu:
         old_value = object_to_patch.__dict__[attr_name]
-    except (AttributeError, KeyError):
+    tatizo (AttributeError, KeyError):
         old_value = getattr(object_to_patch, attr_name, Tupu)
     isipokua:
         attr_is_local = Kweli
@@ -2934,11 +2934,11 @@ eleza run_in_subinterp(code):
     # sub-interpreters, the tracemalloc module uses these functions internally
     jaribu:
         agiza tracemalloc
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
     isipokua:
         ikiwa tracemalloc.is_tracing():
-             ashiria unittest.SkipTest("run_in_subinterp() cannot be used "
+            ashiria unittest.SkipTest("run_in_subinterp() cannot be used "
                                      "ikiwa tracemalloc module ni tracing "
                                      "memory allocations")
     agiza _testcapi
@@ -2952,8 +2952,8 @@ eleza check_free_after_iterating(test, iter, cls, args=()):
             done = Kweli
             jaribu:
                 next(it)
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
 
     done = Uongo
     it = iter(A(*args))
@@ -2977,13 +2977,13 @@ eleza missing_compiler_executable(cmd_names=[]):
     compiler = ccompiler.new_compiler()
     sysconfig.customize_compiler(compiler)
     kila name kwenye compiler.executables:
-        ikiwa cmd_names na name sio kwenye cmd_names:
+        ikiwa cmd_names na name haiko kwenye cmd_names:
             endelea
         cmd = getattr(compiler, name)
         ikiwa cmd_names:
             assert cmd ni sio Tupu, \
                     "the '%s' executable ni sio configured" % name
-        elikiwa sio cmd:
+        lasivyo sio cmd:
             endelea
         ikiwa spawn.find_executable(cmd[0]) ni Tupu:
             rudisha cmd[0]
@@ -3014,7 +3014,7 @@ eleza disable_faulthandler():
     is_enabled = faulthandler.is_enabled()
     jaribu:
         faulthandler.disable()
-        yield
+        tuma
     mwishowe:
         ikiwa is_enabled:
             faulthandler.enable(file=fd, all_threads=Kweli)
@@ -3029,15 +3029,15 @@ eleza fd_count():
             # Subtract one because listdir() internally opens a file
             # descriptor to list the content of the /proc/self/fd/ directory.
             rudisha len(names) - 1
-        except FileNotFoundError:
-            pass
+        tatizo FileNotFoundError:
+            pita
 
     MAXFD = 256
     ikiwa hasattr(os, 'sysconf'):
         jaribu:
             MAXFD = os.sysconf("SC_OPEN_MAX")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     old_modes = Tupu
     ikiwa sys.platform == 'win32':
@@ -3046,9 +3046,9 @@ eleza fd_count():
         jaribu:
             agiza msvcrt
             msvcrt.CrtSetReportMode
-        except (AttributeError, ImportError):
+        tatizo (AttributeError, ImportError):
             # no msvcrt ama a release build
-            pass
+            pita
         isipokua:
             old_modes = {}
             kila report_type kwenye (msvcrt.CRT_WARN,
@@ -3063,7 +3063,7 @@ eleza fd_count():
                 # Prefer dup() over fstat(). fstat() can require input/output
                 # whereas dup() doesn't.
                 fd2 = os.dup(fd)
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno != errno.EBADF:
                     raise
             isipokua:
@@ -3096,7 +3096,7 @@ kundi SaveSignals:
         kila signame kwenye ('SIGKILL', 'SIGSTOP'):
             jaribu:
                 signum = getattr(signal, signame)
-            except AttributeError:
+            tatizo AttributeError:
                 endelea
             self.signals.remove(signum)
         self.handlers = {}
@@ -3133,10 +3133,10 @@ kundi FakePath:
         rudisha f'<FakePath {self.path!r}>'
 
     eleza __fspath__(self):
-        ikiwa (isinstance(self.path, BaseException) or
-            isinstance(self.path, type) and
+        ikiwa (isinstance(self.path, BaseException) ama
+            isinstance(self.path, type) na
                 issubclass(self.path, BaseException)):
-             ashiria self.path
+            ashiria self.path
         isipokua:
             rudisha self.path
 
@@ -3155,7 +3155,7 @@ ALWAYS_EQ = _ALWAYS_EQ()
 @functools.total_ordering
 kundi _LARGEST:
     """
-    Object that ni greater than anything (except itself).
+    Object that ni greater than anything (tatizo itself).
     """
     eleza __eq__(self, other):
         rudisha isinstance(other, _LARGEST)
@@ -3167,7 +3167,7 @@ LARGEST = _LARGEST()
 @functools.total_ordering
 kundi _SMALLEST:
     """
-    Object that ni less than anything (except itself).
+    Object that ni less than anything (tatizo itself).
     """
     eleza __eq__(self, other):
         rudisha isinstance(other, _SMALLEST)
@@ -3208,7 +3208,7 @@ eleza collision_stats(nbins, nballs):
     # rationals, but kwenye context that's unbearably slow, requiring
     # multi-million bit arithmetic.
     agiza decimal
-    ukijumuisha decimal.localcontext() as ctx:
+    ukijumuisha decimal.localcontext() kama ctx:
         bits = n.bit_length() * 2  # bits kwenye n**2
         # At least that many bits will likely cancel out.
         # Use that many decimal digits instead.
@@ -3236,7 +3236,7 @@ kundi catch_unraisable_exception:
 
     Usage:
 
-        ukijumuisha support.catch_unraisable_exception() as cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             # code creating an "unraisable exception"
             ...
 
@@ -3284,7 +3284,7 @@ kundi catch_threading_exception:
 
     Usage:
 
-        ukijumuisha support.catch_threading_exception() as cm:
+        ukijumuisha support.catch_threading_exception() kama cm:
             # code spawning a thread which raises an exception
             ...
 

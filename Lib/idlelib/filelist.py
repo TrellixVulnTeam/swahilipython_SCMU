@@ -1,7 +1,7 @@
 "idlelib.filelist"
 
 agiza os
-kutoka tkinter agiza messagebox as tkMessageBox
+kutoka tkinter agiza messagebox kama tkMessageBox
 
 
 kundi FileList:
@@ -19,7 +19,7 @@ kundi FileList:
         assert filename
         filename = self.canonize(filename)
         ikiwa os.path.isdir(filename):
-            # This can happen when bad filename ni passed on command line:
+            # This can happen when bad filename ni pitaed on command line:
             tkMessageBox.showerror(
                 "File Error",
                 "%r ni a directory." % (filename,),
@@ -59,7 +59,7 @@ kundi FileList:
     eleza unregister_maybe_terminate(self, edit):
         jaribu:
             key = self.inversedict[edit]
-        except KeyError:
+        tatizo KeyError:
             andika("Don't know this EditorWindow object.  (close)")
             return
         ikiwa key:
@@ -72,7 +72,7 @@ kundi FileList:
         edit.saved_change_hook()
         jaribu:
             key = self.inversedict[edit]
-        except KeyError:
+        tatizo KeyError:
             andika("Don't know this EditorWindow object.  (rename)")
             return
         filename = edit.io.filename
@@ -97,15 +97,15 @@ kundi FileList:
         ikiwa key:
             jaribu:
                 toa self.dict[key]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
 
     eleza canonize(self, filename):
         ikiwa sio os.path.isabs(filename):
             jaribu:
                 pwd = os.getcwd()
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
             isipokua:
                 filename = os.path.join(pwd, filename)
         rudisha os.path.normpath(filename)

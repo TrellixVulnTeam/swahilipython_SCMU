@@ -47,19 +47,19 @@ kundi TransportSocket:
                 laddr = self.getsockname()
                 ikiwa laddr:
                     s = f"{s}, laddr={laddr}"
-            except socket.error:
-                pass
+            tatizo socket.error:
+                pita
             jaribu:
                 raddr = self.getpeername()
                 ikiwa raddr:
                     s = f"{s}, raddr={raddr}"
-            except socket.error:
-                pass
+            tatizo socket.error:
+                pita
 
         rudisha f"{s}>"
 
     eleza __getstate__(self):
-         ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
+        ashiria TypeError("Cannot serialize asyncio.TransportSocket object")
 
     eleza fileno(self):
         rudisha self._sock.fileno()
@@ -185,7 +185,7 @@ kundi TransportSocket:
     eleza settimeout(self, value):
         ikiwa value == 0:
             return
-         ashiria ValueError(
+        ashiria ValueError(
             'settimeout(): only 0 timeout ni allowed on transport sockets')
 
     eleza gettimeout(self):
@@ -194,7 +194,7 @@ kundi TransportSocket:
     eleza setblocking(self, flag):
         ikiwa sio flag:
             return
-         ashiria ValueError(
+        ashiria ValueError(
             'setblocking(): transport sockets cannot be blocking')
 
     eleza __enter__(self):

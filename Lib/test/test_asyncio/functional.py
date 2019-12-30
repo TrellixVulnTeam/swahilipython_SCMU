@@ -55,16 +55,16 @@ kundi FunctionalTestCaseMixin:
 
         ikiwa addr ni Tupu:
             ikiwa hasattr(socket, 'AF_UNIX') na family == socket.AF_UNIX:
-                ukijumuisha tempfile.NamedTemporaryFile() as tmp:
+                ukijumuisha tempfile.NamedTemporaryFile() kama tmp:
                     addr = tmp.name
             isipokua:
                 addr = ('127.0.0.1', 0)
 
         sock = socket.create_server(addr, family=family, backlog=backlog)
         ikiwa timeout ni Tupu:
-             ashiria RuntimeError('timeout ni required')
+            ashiria RuntimeError('timeout ni required')
         ikiwa timeout <= 0:
-             ashiria RuntimeError('only blocking sockets are supported')
+            ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         rudisha TestThreadedServer(
@@ -77,9 +77,9 @@ kundi FunctionalTestCaseMixin:
         sock = socket.socket(family, socket.SOCK_STREAM)
 
         ikiwa timeout ni Tupu:
-             ashiria RuntimeError('timeout ni required')
+            ashiria RuntimeError('timeout ni required')
         ikiwa timeout <= 0:
-             ashiria RuntimeError('only blocking sockets are supported')
+            ashiria RuntimeError('only blocking sockets are supported')
         sock.settimeout(timeout)
 
         rudisha TestThreadedClient(
@@ -87,25 +87,25 @@ kundi FunctionalTestCaseMixin:
 
     eleza unix_server(self, *args, **kwargs):
         ikiwa sio hasattr(socket, 'AF_UNIX'):
-             ashiria NotImplementedError
+            ashiria NotImplementedError
         rudisha self.tcp_server(*args, family=socket.AF_UNIX, **kwargs)
 
     eleza unix_client(self, *args, **kwargs):
         ikiwa sio hasattr(socket, 'AF_UNIX'):
-             ashiria NotImplementedError
+            ashiria NotImplementedError
         rudisha self.tcp_client(*args, family=socket.AF_UNIX, **kwargs)
 
     @contextlib.contextmanager
     eleza unix_sock_name(self):
-        ukijumuisha tempfile.TemporaryDirectory() as td:
+        ukijumuisha tempfile.TemporaryDirectory() kama td:
             fn = os.path.join(td, 'sock')
             jaribu:
                 tuma fn
             mwishowe:
                 jaribu:
                     os.unlink(fn)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
 
     eleza _abort_socket_test(self, ex):
         jaribu:
@@ -129,7 +129,7 @@ kundi TestSocketWrapper:
         wakati len(buf) < n:
             data = self.recv(n - len(buf))
             ikiwa data == b'':
-                 ashiria ConnectionAbortedError
+                ashiria ConnectionAbortedError
             buf += data
         rudisha buf
 
@@ -188,7 +188,7 @@ kundi TestThreadedClient(SocketThread):
     eleza run(self):
         jaribu:
             self._prog(TestSocketWrapper(self._sock))
-        except Exception as ex:
+        tatizo Exception kama ex:
             self._test._abort_socket_test(ex)
 
 
@@ -217,8 +217,8 @@ kundi TestThreadedServer(SocketThread):
             ikiwa self._s2 na self._s2.fileno() != -1:
                 jaribu:
                     self._s2.send(b'stop')
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
         mwishowe:
             super().stop()
 
@@ -245,9 +245,9 @@ kundi TestThreadedServer(SocketThread):
             ikiwa self._sock kwenye r:
                 jaribu:
                     conn, addr = self._sock.accept()
-                except BlockingIOError:
+                tatizo BlockingIOError:
                     endelea
-                except socket.timeout:
+                tatizo socket.timeout:
                     ikiwa sio self._active:
                         return
                     isipokua:
@@ -258,7 +258,7 @@ kundi TestThreadedServer(SocketThread):
                     jaribu:
                         ukijumuisha conn:
                             self._handle_client(conn)
-                    except Exception as ex:
+                    tatizo Exception kama ex:
                         self._active = Uongo
                         jaribu:
                             raise

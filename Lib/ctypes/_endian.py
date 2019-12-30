@@ -18,7 +18,7 @@ eleza _other_endian(typ):
     # ikiwa typ ni structure
     ikiwa issubclass(typ, Structure):
         rudisha typ
-     ashiria TypeError("This type does sio support other endian: %s" % typ)
+    ashiria TypeError("This type does sio support other endian: %s" % typ)
 
 kundi _swapped_meta(type(Structure)):
     eleza __setattr__(self, attrname, value):
@@ -34,7 +34,7 @@ kundi _swapped_meta(type(Structure)):
 
 ################################################################
 
-# Note: The Structure metakundi checks kila the *presence* (not the
+# Note: The Structure metakundi checks kila the *presence* (sio the
 # value!) of a _swapped_bytes_ attribute to determine the bit order in
 # structures containing bit fields.
 
@@ -48,7 +48,7 @@ ikiwa sys.byteorder == "little":
         __slots__ = ()
         _swappedbytes_ = Tupu
 
-elikiwa sys.byteorder == "big":
+lasivyo sys.byteorder == "big":
     _OTHER_ENDIAN = "__ctype_le__"
 
     BigEndianStructure = Structure
@@ -58,4 +58,4 @@ elikiwa sys.byteorder == "big":
         _swappedbytes_ = Tupu
 
 isipokua:
-     ashiria RuntimeError("Invalid byteorder")
+    ashiria RuntimeError("Invalid byteorder")

@@ -13,11 +13,11 @@ agiza unittest
 
 jaribu:
     agiza bz2
-except ImportError:
+tatizo ImportError:
     bz2 = Tupu
 jaribu:
     agiza gzip
-except ImportError:
+tatizo ImportError:
     gzip = Tupu
 
 kutoka io agiza BytesIO, StringIO
@@ -25,7 +25,7 @@ kutoka fileinput agiza FileInput, hook_encoded
 kutoka pathlib agiza Path
 
 kutoka test.support agiza verbose, TESTFN, check_warnings
-kutoka test.support agiza unlink as safe_unlink
+kutoka test.support agiza unlink kama safe_unlink
 kutoka test agiza support
 kutoka unittest agiza mock
 
@@ -40,7 +40,7 @@ kundi BaseTests:
     eleza writeTmp(self, content, *, mode='w'):  # opening kwenye text mode ni the default
         fd, name = tempfile.mkstemp()
         self.addCleanup(support.unlink, name)
-        ukijumuisha open(fd, mode) as f:
+        ukijumuisha open(fd, mode) kama f:
             f.write(content)
         rudisha name
 
@@ -78,7 +78,7 @@ kundi LineReader:
                 rudisha lines
 
     eleza close(self):
-        pass
+        pita
 
 kundi BufferSizesTests(BaseTests, unittest.TestCase):
     eleza test_buffer_sizes(self):
@@ -169,7 +169,7 @@ kundi UnconditionallyRaise:
         self.invoked = Uongo
     eleza __call__(self, *args, **kwargs):
         self.invoked = Kweli
-         ashiria self.exception_type()
+        ashiria self.exception_type()
 
 kundi FileInputTests(BaseTests, unittest.TestCase):
 
@@ -227,11 +227,11 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
     eleza test_opening_mode(self):
         jaribu:
-            # invalid mode, should  ashiria ValueError
+            # invalid mode, should ashiria ValueError
             fi = FileInput(mode="w")
             self.fail("FileInput should reject invalid mode argument")
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         # try opening kwenye universal newline mode
         t1 = self.writeTmp(b"A\nB\r\nC\rD", mode="wb")
         ukijumuisha check_warnings(('', DeprecationWarning)):
@@ -241,7 +241,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         self.assertEqual(lines, ["A\n", "B\n", "C\n", "D"])
 
     eleza test_stdin_binary_mode(self):
-        ukijumuisha mock.patch('sys.stdin') as m_stdin:
+        ukijumuisha mock.patch('sys.stdin') kama m_stdin:
             m_stdin.buffer = BytesIO(b'spam, bacon, sausage, na spam')
             fi = FileInput(files=['-'], mode='rb')
             lines = list(fi)
@@ -262,15 +262,15 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         jaribu:
             # cannot use openhook na inplace mode
             fi = FileInput(inplace=1, openhook=lambda f, m: Tupu)
-            self.fail("FileInput should  ashiria ikiwa both inplace "
+            self.fail("FileInput should ashiria ikiwa both inplace "
                              "and openhook arguments are given")
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         jaribu:
             fi = FileInput(openhook=1)
             self.fail("FileInput should check openhook kila being callable")
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
         kundi CustomOpenHook:
             eleza __init__(self):
@@ -281,12 +281,12 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         t = self.writeTmp("\n")
         custom_open_hook = CustomOpenHook()
-        ukijumuisha FileInput([t], openhook=custom_open_hook) as fi:
+        ukijumuisha FileInput([t], openhook=custom_open_hook) kama fi:
             fi.readline()
         self.assertKweli(custom_open_hook.invoked, "openhook sio invoked")
 
     eleza test_readline(self):
-        ukijumuisha open(TESTFN, 'wb') as f:
+        ukijumuisha open(TESTFN, 'wb') kama f:
             f.write(b'A\nB\r\nC\r')
             # Fill TextIOWrapper buffer.
             f.write(b'123456789\n' * 1000)
@@ -295,12 +295,12 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         self.addCleanup(safe_unlink, TESTFN)
 
         ukijumuisha FileInput(files=TESTFN,
-                       openhook=hook_encoded('ascii')) as fi:
+                       openhook=hook_encoded('ascii')) kama fi:
             jaribu:
                 self.assertEqual(fi.readline(), 'A\n')
                 self.assertEqual(fi.readline(), 'B\n')
                 self.assertEqual(fi.readline(), 'C\n')
-            except UnicodeDecodeError:
+            tatizo UnicodeDecodeError:
                 self.fail('Read to end of file')
             ukijumuisha self.assertRaises(UnicodeDecodeError):
                 # Read to the end of file.
@@ -309,11 +309,11 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
             self.assertEqual(fi.readline(), '')
 
     eleza test_readline_binary_mode(self):
-        ukijumuisha open(TESTFN, 'wb') as f:
+        ukijumuisha open(TESTFN, 'wb') kama f:
             f.write(b'A\nB\r\nC\rD')
         self.addCleanup(safe_unlink, TESTFN)
 
-        ukijumuisha FileInput(files=TESTFN, mode='rb') as fi:
+        ukijumuisha FileInput(files=TESTFN, mode='rb') kama fi:
             self.assertEqual(fi.readline(), b'A\n')
             self.assertEqual(fi.readline(), b'B\r\n')
             self.assertEqual(fi.readline(), b'C\rD')
@@ -323,18 +323,18 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
     eleza test_inplace_binary_write_mode(self):
         temp_file = self.writeTmp(b'Initial text.', mode='wb')
-        ukijumuisha FileInput(temp_file, mode='rb', inplace=Kweli) as fobj:
+        ukijumuisha FileInput(temp_file, mode='rb', inplace=Kweli) kama fobj:
             line = fobj.readline()
             self.assertEqual(line, b'Initial text.')
             # andika() cannot be used ukijumuisha files opened kwenye binary mode.
             sys.stdout.write(b'New line.')
-        ukijumuisha open(temp_file, 'rb') as f:
+        ukijumuisha open(temp_file, 'rb') kama f:
             self.assertEqual(f.read(), b'New line.')
 
     eleza test_context_manager(self):
         t1 = self.writeTmp("A\nB\nC")
         t2 = self.writeTmp("D\nE\nF")
-        ukijumuisha FileInput(files=(t1, t2)) as fi:
+        ukijumuisha FileInput(files=(t1, t2)) kama fi:
             lines = list(fi)
         self.assertEqual(lines, ["A\n", "B\n", "C", "D\n", "E\n", "F"])
         self.assertEqual(fi.filelineno(), 3)
@@ -344,13 +344,13 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
     eleza test_close_on_exception(self):
         t1 = self.writeTmp("")
         jaribu:
-            ukijumuisha FileInput(files=t1) as fi:
-                 ashiria OSError
-        except OSError:
+            ukijumuisha FileInput(files=t1) kama fi:
+                ashiria OSError
+        tatizo OSError:
             self.assertEqual(fi._files, ())
 
     eleza test_empty_files_list_specified_to_constructor(self):
-        ukijumuisha FileInput(files=[]) as fi:
+        ukijumuisha FileInput(files=[]) kama fi:
             self.assertEqual(fi._files, ('-',))
 
     @support.ignore_warnings(category=DeprecationWarning)
@@ -358,7 +358,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         """Tests invoking FileInput.__getitem__() ukijumuisha the current
            line number"""
         t = self.writeTmp("line1\nline2\n")
-        ukijumuisha FileInput(files=[t]) as fi:
+        ukijumuisha FileInput(files=[t]) kama fi:
             retval1 = fi[0]
             self.assertEqual(retval1, "line1\n")
             retval2 = fi[1]
@@ -368,7 +368,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         t = self.writeTmp("line1\nline2\n")
         ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                    r'Use iterator protocol instead'):
-            ukijumuisha FileInput(files=[t]) as fi:
+            ukijumuisha FileInput(files=[t]) kama fi:
                 self.assertEqual(fi[0], "line1\n")
 
     @support.ignore_warnings(category=DeprecationWarning)
@@ -376,8 +376,8 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         """Tests invoking FileInput.__getitem__() ukijumuisha an index unequal to
            the line number"""
         t = self.writeTmp("line1\nline2\n")
-        ukijumuisha FileInput(files=[t]) as fi:
-            ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha FileInput(files=[t]) kama fi:
+            ukijumuisha self.assertRaises(RuntimeError) kama cm:
                 fi[1]
         self.assertEqual(cm.exception.args, ("accessing lines out of order",))
 
@@ -386,14 +386,14 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         """Tests invoking FileInput.__getitem__() ukijumuisha the line number but at
            end-of-input"""
         t = self.writeTmp('')
-        ukijumuisha FileInput(files=[t]) as fi:
-            ukijumuisha self.assertRaises(IndexError) as cm:
+        ukijumuisha FileInput(files=[t]) kama fi:
+            ukijumuisha self.assertRaises(IndexError) kama cm:
                 fi[0]
         self.assertEqual(cm.exception.args, ("end of input reached",))
 
     eleza test_nextfile_oserror_deleting_backup(self):
         """Tests invoking FileInput.nextfile() when the attempt to delete
-           the backup file would  ashiria OSError.  This error ni expected to be
+           the backup file would ashiria OSError.  This error ni expected to be
            silently ignored"""
 
         os_unlink_orig = os.unlink
@@ -401,7 +401,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         jaribu:
             t = self.writeTmp("\n")
             self.addCleanup(support.unlink, t + '.bak')
-            ukijumuisha FileInput(files=[t], inplace=Kweli) as fi:
+            ukijumuisha FileInput(files=[t], inplace=Kweli) kama fi:
                 next(fi) # make sure the file ni opened
                 os.unlink = os_unlink_replacement
                 fi.nextfile()
@@ -420,7 +420,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         os_fstat_replacement = UnconditionallyRaise(OSError)
         jaribu:
             t = self.writeTmp("\n")
-            ukijumuisha FileInput(files=[t], inplace=Kweli) as fi:
+            ukijumuisha FileInput(files=[t], inplace=Kweli) kama fi:
                 os.fstat = os_fstat_replacement
                 fi.readline()
         mwishowe:
@@ -438,7 +438,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
         os_chmod_replacement = UnconditionallyRaise(OSError)
         jaribu:
             t = self.writeTmp("\n")
-            ukijumuisha FileInput(files=[t], inplace=Kweli) as fi:
+            ukijumuisha FileInput(files=[t], inplace=Kweli) kama fi:
                 os.chmod = os_chmod_replacement
                 fi.readline()
         mwishowe:
@@ -457,7 +457,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
         unconditionally_raise_ValueError = FilenoRaisesValueError()
         t = self.writeTmp("\n")
-        ukijumuisha FileInput(files=[t]) as fi:
+        ukijumuisha FileInput(files=[t]) kama fi:
             file_backup = fi._file
             jaribu:
                 fi._file = unconditionally_raise_ValueError
@@ -474,7 +474,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
     eleza test_readline_buffering(self):
         src = LineReader()
         ukijumuisha FileInput(files=['line1\nline2', 'line3\n'],
-                       openhook=src.openhook) as fi:
+                       openhook=src.openhook) kama fi:
             self.assertEqual(src.linesread, [])
             self.assertEqual(fi.readline(), 'line1\n')
             self.assertEqual(src.linesread, ['line1\n'])
@@ -490,7 +490,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
     eleza test_iteration_buffering(self):
         src = LineReader()
         ukijumuisha FileInput(files=['line1\nline2', 'line3\n'],
-                       openhook=src.openhook) as fi:
+                       openhook=src.openhook) kama fi:
             self.assertEqual(src.linesread, [])
             self.assertEqual(next(fi), 'line1\n')
             self.assertEqual(src.linesread, ['line1\n'])
@@ -505,7 +505,7 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
     eleza test_pathlib_file(self):
         t1 = Path(self.writeTmp("Pathlib file."))
-        ukijumuisha FileInput(t1) as fi:
+        ukijumuisha FileInput(t1) kama fi:
             line = fi.readline()
             self.assertEqual(line, 'Pathlib file.')
             self.assertEqual(fi.lineno(), 1)
@@ -514,11 +514,11 @@ kundi FileInputTests(BaseTests, unittest.TestCase):
 
     eleza test_pathlib_file_inplace(self):
         t1 = Path(self.writeTmp('Pathlib file.'))
-        ukijumuisha FileInput(t1, inplace=Kweli) as fi:
+        ukijumuisha FileInput(t1, inplace=Kweli) kama fi:
             line = fi.readline()
             self.assertEqual(line, 'Pathlib file.')
             andika('Modified %s' % line)
-        ukijumuisha open(t1) as f:
+        ukijumuisha open(t1) kama f:
             self.assertEqual(f.read(), 'Modified Pathlib file.\n')
 
 
@@ -599,7 +599,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
         instance = MockFileInput()
         instance._file = object()
         fileinput._state = instance
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.uliza()
         self.assertEqual(("uliza() already active",), cm.exception.args)
         self.assertIs(instance, fileinput._state, "fileinput._state")
@@ -607,7 +607,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
     eleza test_state_is_not_Tupu_and_state_file_is_Tupu(self):
         """Tests invoking fileinput.uliza() when fileinput._state ni sio Tupu
            but its _file attribute *is* Tupu.  Expect it to create na return
-           a new fileinput.FileInput object ukijumuisha all method parameters passed
+           a new fileinput.FileInput object ukijumuisha all method parameters pitaed
            explicitly to the __init__() method; also ensure that
            fileinput._state ni set to the returned instance."""
         instance = MockFileInput()
@@ -618,7 +618,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
     eleza test_state_is_Tupu(self):
         """Tests invoking fileinput.uliza() when fileinput._state ni Tupu
            Expect it to create na rudisha a new fileinput.FileInput object
-           ukijumuisha all method parameters passed explicitly to the __init__()
+           ukijumuisha all method parameters pitaed explicitly to the __init__()
            method; also ensure that fileinput._state ni set to the returned
            instance."""
         fileinput._state = Tupu
@@ -626,7 +626,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
 
     eleza do_test_call_uliza(self):
         """Tests that fileinput.uliza() creates a new fileinput.FileInput
-           object, passing the given parameters unmodified to
+           object, pitaing the given parameters unmodified to
            fileinput.FileInput.__init__().  Note that this test depends on the
            monkey patching of fileinput.FileInput done by setUp()."""
         files = object()
@@ -642,7 +642,7 @@ kundi Test_fileinput_uliza(BaseFileInputGlobalMethodsTest):
         # ensure fileinput._state was set to the returned object
         self.assertIs(result, fileinput._state, "fileinput._state")
 
-        # ensure the parameters to fileinput.uliza() were passed directly
+        # ensure the parameters to fileinput.uliza() were pitaed directly
         # to FileInput.__init__()
         self.assertIs(files, result.files, "files")
         self.assertIs(inplace, result.inplace, "inplace")
@@ -677,7 +677,7 @@ kundi Test_fileinput_nextfile(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.nextfile()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -704,7 +704,7 @@ kundi Test_fileinput_filename(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.filename()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -731,7 +731,7 @@ kundi Test_fileinput_lineno(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.lineno()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -758,7 +758,7 @@ kundi Test_fileinput_filelineno(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.filelineno()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -785,7 +785,7 @@ kundi Test_fileinput_fileno(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.fileno()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -813,7 +813,7 @@ kundi Test_fileinput_isfirstline(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.isfirstline()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -840,7 +840,7 @@ kundi Test_fileinput_isstdin(BaseFileInputGlobalMethodsTest):
            Ensure that it raises RuntimeError ukijumuisha a meaningful error message
            na does sio modify fileinput._state"""
         fileinput._state = Tupu
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             fileinput.isstdin()
         self.assertEqual(("no active uliza()",), cm.exception.args)
         self.assertIsTupu(fileinput._state)
@@ -956,13 +956,13 @@ kundi Test_hook_encoded(unittest.TestCase):
         self.assertUongo(kwargs)
 
     eleza test_errors(self):
-        ukijumuisha open(TESTFN, 'wb') as f:
+        ukijumuisha open(TESTFN, 'wb') kama f:
             f.write(b'\x80abc')
         self.addCleanup(safe_unlink, TESTFN)
 
         eleza check(errors, expected_lines):
             ukijumuisha FileInput(files=TESTFN, mode='r',
-                           openhook=hook_encoded('utf-8', errors=errors)) as fi:
+                           openhook=hook_encoded('utf-8', errors=errors)) kama fi:
                 lines = list(fi)
             self.assertEqual(lines, expected_lines)
 
@@ -973,14 +973,14 @@ kundi Test_hook_encoded(unittest.TestCase):
         check('backslashreplace', ['\\x80abc'])
 
     eleza test_modes(self):
-        ukijumuisha open(TESTFN, 'wb') as f:
+        ukijumuisha open(TESTFN, 'wb') kama f:
             # UTF-7 ni a convenient, seldom used encoding
             f.write(b'A\nB\r\nC\rD+IKw-')
         self.addCleanup(safe_unlink, TESTFN)
 
         eleza check(mode, expected_lines):
             ukijumuisha FileInput(files=TESTFN, mode=mode,
-                           openhook=hook_encoded('utf-7')) as fi:
+                           openhook=hook_encoded('utf-7')) kama fi:
                 lines = list(fi)
             self.assertEqual(lines, expected_lines)
 

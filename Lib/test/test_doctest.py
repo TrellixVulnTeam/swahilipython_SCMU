@@ -168,7 +168,7 @@ Example ni a simple container kundi that holds:
     exception ni expected).
   - `lineno`: A line number (within the docstring).
   - `indent`: The example's indentation kwenye the input string.
-  - `options`: An option dictionary, mapping option flags to Kweli or
+  - `options`: An option dictionary, mapping option flags to Kweli ama
     Uongo.
 
 These attributes are set by the constructor.  `source` na `want` are
@@ -247,19 +247,19 @@ unless it's `Tupu`:
 
     Message spans multiple lines
     >>> exc_msg = 'ValueError: 1\n  2'
-    >>> e = doctest.Example(' ashiria ValueError("1\n  2")', '', exc_msg)
+    >>> e = doctest.Example('ashiria ValueError("1\n  2")', '', exc_msg)
     >>> e.exc_msg
     'ValueError: 1\n  2\n'
 
     >>> exc_msg = 'ValueError: 1\n  2\n'
-    >>> e = doctest.Example(' ashiria ValueError("1\n  2")', '', exc_msg)
+    >>> e = doctest.Example('ashiria ValueError("1\n  2")', '', exc_msg)
     >>> e.exc_msg
     'ValueError: 1\n  2\n'
 
     Empty (but non-Tupu) exception message (which should never appear
     kwenye real examples)
     >>> exc_msg = ''
-    >>> e = doctest.Example(' ashiria X()', '', exc_msg)
+    >>> e = doctest.Example('ashiria X()', '', exc_msg)
     >>> e.exc_msg
     '\n'
 
@@ -327,7 +327,7 @@ containing test:
     26
 
 If the docstring contains inconsistent leading whitespace kwenye the
-expected output of an example, then `DocTest` will  ashiria a ValueError:
+expected output of an example, then `DocTest` will ashiria a ValueError:
 
     >>> docstring = r'''
     ...       >>> andika('bad\nindentation')
@@ -339,7 +339,7 @@ expected output of an example, then `DocTest` will  ashiria a ValueError:
     ValueError: line 4 of the docstring kila some_test has inconsistent leading whitespace: 'indentation'
 
 If the docstring contains inconsistent leading whitespace on
-continuation lines, then `DocTest` will  ashiria a ValueError:
+continuation lines, then `DocTest` will ashiria a ValueError:
 
     >>> docstring = r'''
     ...       >>> andika(('bad indentation',
@@ -351,7 +351,7 @@ continuation lines, then `DocTest` will  ashiria a ValueError:
     ValueError: line 2 of the docstring kila some_test has inconsistent leading whitespace: '...          2))'
 
 If there's no blank space after a PS1 prompt ('>>>'), then `DocTest`
-will  ashiria a ValueError:
+will ashiria a ValueError:
 
     >>> docstring = '>>>andika(1)\n1'
     >>> parser.get_doctest(docstring, globs, 'some_test', 'filename', 0)
@@ -359,7 +359,7 @@ will  ashiria a ValueError:
     ValueError: line 1 of the docstring kila some_test lacks blank after >>>: '>>>andika(1)'
 
 If there's no blank space after a PS2 prompt ('...'), then `DocTest`
-will  ashiria a ValueError:
+will ashiria a ValueError:
 
     >>> docstring = '>>> ikiwa 1:\n...andika(1)\n1'
     >>> parser.get_doctest(docstring, globs, 'some_test', 'filename', 0)
@@ -418,7 +418,7 @@ Unit tests kila the `DocTestFinder` class.
 
 DocTestFinder ni used to extract DocTests kutoka an object's docstring
 and the docstrings of its contained objects.  It can be used with
-modules, functions, classes, methods, staticmethods, classmethods, and
+modules, functions, classes, methods, staticmethods, classmethods, na
 properties.
 
 Finding Tests kwenye Functions
@@ -455,7 +455,7 @@ leading path components.
 By default, tests are created kila objects ukijumuisha no docstring:
 
     >>> eleza no_docstring(v):
-    ...     pass
+    ...     pita
     >>> finder.find(no_docstring)
     []
 
@@ -464,7 +464,7 @@ constructor can be used to exclude tests kila objects ukijumuisha empty
 docstrings:
 
     >>> eleza no_docstring(v):
-    ...     pass
+    ...     pita
     >>> excl_empty_finder = doctest.DocTestFinder(exclude_empty=Kweli)
     >>> excl_empty_finder.find(no_docstring)
     []
@@ -656,7 +656,7 @@ DocTestFinder finds the line number of each example:
 Finding Doctests kwenye Modules Not Written kwenye Python
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 DocTestFinder can also find doctests kwenye most modules sio written kwenye Python.
-We'll use builtins as an example, since it almost certainly isn't written in
+We'll use builtins kama an example, since it almost certainly isn't written in
 plain ol' Python na ni guaranteed to be available.
 
     >>> agiza builtins
@@ -692,7 +692,7 @@ kundi TestDocTestFinder(unittest.TestCase):
 
     eleza test_empty_namespace_package(self):
         pkg_name = 'doctest_empty_pkg'
-        ukijumuisha tempfile.TemporaryDirectory() as parent_dir:
+        ukijumuisha tempfile.TemporaryDirectory() kama parent_dir:
             pkg_dir = os.path.join(parent_dir, pkg_name)
             os.mkdir(pkg_dir)
             sys.path.append(parent_dir)
@@ -892,7 +892,7 @@ explicitly set, to ensure that the test behavior ni consistent.
 Tests of `DocTestRunner`'s exception handling.
 
 An expected exception ni specified ukijumuisha a traceback message.  The
-lines between the first line na the type/value may be omitted or
+lines between the first line na the type/value may be omitted ama
 replaced ukijumuisha any other string:
 
     >>> eleza f(x):
@@ -908,7 +908,7 @@ replaced ukijumuisha any other string:
 
 An example may sio generate output before it raises an exception; if
 it does, then the traceback message will sio be recognized as
-signaling an expected exception, so the example will be reported as an
+signaling an expected exception, so the example will be reported kama an
 unexpected exception:
 
     >>> eleza f(x):
@@ -935,7 +935,7 @@ Exception messages may contain newlines:
 
     >>> eleza f(x):
     ...     r'''
-    ...     >>>  ashiria ValueError('multi\nline\nmessage')
+    ...     >>> ashiria ValueError('multi\nline\nmessage')
     ...     Traceback (most recent call last):
     ...     ValueError: multi
     ...     line
@@ -945,12 +945,12 @@ Exception messages may contain newlines:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=1)
 
-If an exception ni expected, but an exception ukijumuisha the wrong type or
-message ni raised, then it ni reported as a failure:
+If an exception ni expected, but an exception ukijumuisha the wrong type ama
+message ni raised, then it ni reported kama a failure:
 
     >>> eleza f(x):
     ...     r'''
-    ...     >>>  ashiria ValueError('message')
+    ...     >>> ashiria ValueError('message')
     ...     Traceback (most recent call last):
     ...     ValueError: wrong message
     ...     '''
@@ -960,7 +960,7 @@ message ni raised, then it ni reported as a failure:
     **********************************************************************
     File ..., line 3, kwenye f
     Failed example:
-         ashiria ValueError('message')
+        ashiria ValueError('message')
     Expected:
         Traceback (most recent call last):
         ValueError: wrong message
@@ -975,7 +975,7 @@ detail:
 
     >>> eleza f(x):
     ...     r'''
-    ...     >>>  ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     ValueError: wrong message
     ...     '''
@@ -985,12 +985,12 @@ detail:
 
 IGNORE_EXCEPTION_DETAIL also ignores difference kwenye exception formatting
 between Python versions. For example, kwenye Python 2.x, the module path of
-the exception ni sio kwenye the output, but this will fail under Python 3:
+the exception ni haiko kwenye the output, but this will fail under Python 3:
 
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException('message')
+    ...     >>> ashiria HTTPException('message')
     ...     Traceback (most recent call last):
     ...     HTTPException: message
     ...     '''
@@ -1000,7 +1000,7 @@ the exception ni sio kwenye the output, but this will fail under Python 3:
     **********************************************************************
     File ..., line 4, kwenye f
     Failed example:
-         ashiria HTTPException('message')
+        ashiria HTTPException('message')
     Expected:
         Traceback (most recent call last):
         HTTPException: message
@@ -1017,7 +1017,7 @@ Python 2.
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException('message')
+    ...     >>> ashiria HTTPException('message')
     ...     Traceback (most recent call last):
     ...     http.client.HTTPException: message
     ...     '''
@@ -1031,7 +1031,7 @@ However, ukijumuisha IGNORE_EXCEPTION_DETAIL, the module name of the exception
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     HTTPException: message
     ...     '''
@@ -1040,13 +1040,13 @@ However, ukijumuisha IGNORE_EXCEPTION_DETAIL, the module name of the exception
     TestResults(failed=0, attempted=2)
 
 The module path will be completely ignored, so two different module paths will
-still pass ikiwa IGNORE_EXCEPTION_DETAIL ni given. This ni intentional, so it can
+still pita ikiwa IGNORE_EXCEPTION_DETAIL ni given. This ni intentional, so it can
 be used when exceptions have changed module.
 
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria HTTPException('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException: message
     ...     '''
@@ -1058,7 +1058,7 @@ But IGNORE_EXCEPTION_DETAIL does sio allow a mismatch kwenye the exception type:
 
     >>> eleza f(x):
     ...     r'''
-    ...     >>>  ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     TypeError: wrong type
     ...     '''
@@ -1068,7 +1068,7 @@ But IGNORE_EXCEPTION_DETAIL does sio allow a mismatch kwenye the exception type:
     **********************************************************************
     File ..., line 3, kwenye f
     Failed example:
-         ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
+        ashiria ValueError('message') #doctest: +IGNORE_EXCEPTION_DETAIL
     Expected:
         Traceback (most recent call last):
         TypeError: wrong type
@@ -1084,7 +1084,7 @@ IGNORE_EXCEPTION_DETAIL to normalize the modules between Python 2 na 3:
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException
     ...     '''
@@ -1097,7 +1097,7 @@ Note that a trailing colon doesn't matter either:
     >>> eleza f(x):
     ...     r'''
     ...     >>> kutoka http.client agiza HTTPException
-    ...     >>>  ashiria HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
+    ...     >>> ashiria HTTPException() #doctest: +IGNORE_EXCEPTION_DETAIL
     ...     Traceback (most recent call last):
     ...     foo.bar.HTTPException:
     ...     '''
@@ -1105,7 +1105,7 @@ Note that a trailing colon doesn't matter either:
     >>> doctest.DocTestRunner(verbose=Uongo).run(test)
     TestResults(failed=0, attempted=2)
 
-If an exception ni raised but sio expected, then it ni reported as an
+If an exception ni raised but sio expected, then it ni reported kama an
 unexpected exception:
 
     >>> eleza f(x):
@@ -1159,7 +1159,7 @@ Test that changing sys.displayhook doesn't matter kila doctest.
 Tests of `DocTestRunner`'s option flag handling.
 
 Several option flags can be used to customize the behavior of the test
-runner.  These are defined as module constants kwenye doctest, na passed
+runner.  These are defined kama module constants kwenye doctest, na pitaed
 to the DocTestRunner constructor (multiple constants should be ORed
 together).
 
@@ -1220,7 +1220,7 @@ and the '<BLANKLINE>' marker:
     TestResults(failed=1, attempted=1)
 
 The NORMALIZE_WHITESPACE flag causes all sequences of whitespace to be
-treated as equal:
+treated kama equal:
 
     >>> eleza f(x):
     ...     '>>> andika(1, 2, 3)\n  1   2\n 3'
@@ -1285,7 +1285,7 @@ output to match any substring kwenye the actual output:
     ...     andika('!')
     0 1...4...9 16 ... 36 49 64 ... 9801 !
 
-    ... can be surprising; e.g., this test passes:
+    ... can be surprising; e.g., this test pitaes:
 
     >>> ikiwa 1:  #doctest: +ELLIPSIS
     ...     kila i kwenye range(20):
@@ -1304,7 +1304,7 @@ output to match any substring kwenye the actual output:
 
 The SKIP flag causes an example to be skipped entirely.  I.e., the
 example ni sio run.  It can be useful kwenye contexts where doctest
-examples serve as both documentation na test cases, na an example
+examples serve kama both documentation na test cases, na an example
 should be included kila documentation purposes, but should sio be
 checked (e.g., because its output ni random, ama depends on resources
 which would be unavailable.)  The SKIP flag can also be used for
@@ -1419,7 +1419,7 @@ and actual outputs to be displayed using a context diff:
 
 The REPORT_NDIFF flag causes failures to use the difflib.Differ algorithm
 used by the popular ndiff.py utility.  This does intraline difference
-marking, as well as interline differences.
+marking, kama well kama interline differences.
 
     >>> eleza f(x):
     ...     r'''
@@ -1527,13 +1527,13 @@ FAIL_FAST only:
     TestResults(failed=1, attempted=2)
 
 For the purposes of both REPORT_ONLY_FIRST_FAILURE na FAIL_FAST, unexpected
-exceptions count as failures:
+exceptions count kama failures:
 
     >>> eleza f(x):
     ...     r'''
     ...     >>> andika(1) # first success
     ...     1
-    ...     >>>  ashiria ValueError(2) # first failure
+    ...     >>> ashiria ValueError(2) # first failure
     ...     200
     ...     >>> andika(3) # second failure
     ...     300
@@ -1549,7 +1549,7 @@ exceptions count as failures:
     **********************************************************************
     File ..., line 5, kwenye f
     Failed example:
-         ashiria ValueError(2) # first failure
+        ashiria ValueError(2) # first failure
     Exception raised:
         ...
         ValueError: 2
@@ -1560,7 +1560,7 @@ exceptions count as failures:
     **********************************************************************
     File ..., line 5, kwenye f
     Failed example:
-         ashiria ValueError(2) # first failure
+        ashiria ValueError(2) # first failure
     Exception raised:
         ...
         ValueError: 2
@@ -1738,7 +1738,7 @@ may be separated by whitespace, commas, ama both:
     TestResults(failed=1, attempted=2)
 
 The option directive may be put on the line following the source, as
-long as a continuation prompt ni used:
+long kama a continuation prompt ni used:
 
     >>> eleza f(x): r'''
     ...     >>> andika(list(range(10)))
@@ -1887,7 +1887,7 @@ ikiwa sio hasattr(sys, 'gettrace') ama sio sys.gettrace():
 
           >>> doc = '''
           ... >>> x = 42
-          ... >>>  ashiria Exception('clé')
+          ... >>> ashiria Exception('clé')
           ... Traceback (most recent call last):
           ... Exception: clé
           ... >>> agiza pdb; pdb.set_trace()
@@ -2099,7 +2099,7 @@ eleza test_DocTestSuite():
     """DocTestSuite creates a unittest test suite kutoka a doctest.
 
        We create a Suite by providing a module.  A module can be provided
-       by passing a module object:
+       by pitaing a module object:
 
          >>> agiza unittest
          >>> agiza test.sample_doctest
@@ -2147,8 +2147,8 @@ eleza test_DocTestSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=0 errors=0 failures=0>
 
-       We can supply global variables.  If we pass globs, they will be
-       used instead of the module globals.  Here we'll pass an empty
+       We can supply global variables.  If we pita globs, they will be
+       used instead of the module globals.  Here we'll pita an empty
        globals, triggering an extra error:
 
          >>> suite = doctest.DocTestSuite('test.sample_doctest', globs={})
@@ -2163,7 +2163,7 @@ eleza test_DocTestSuite():
          >>> suite.run(unittest.TestResult())
          <unittest.result.TestResult run=9 errors=0 failures=3>
 
-       You can pass option flags.  Here we'll cause an extra error
+       You can pita option flags.  Here we'll cause an extra error
        by disabling the blank-line feature:
 
          >>> suite = doctest.DocTestSuite('test.sample_doctest',
@@ -2196,7 +2196,7 @@ eleza test_DocTestSuite():
          ...
          AttributeError: module 'test.test_doctest' has no attribute 'sillySetup'
 
-       The setUp na tearDown functions are passed test objects. Here
+       The setUp na tearDown functions are pitaed test objects. Here
        we'll use the setUp function to supply the missing variable y:
 
          >>> eleza setUp(test):
@@ -2256,7 +2256,7 @@ eleza test_DocFileSuite():
          ...         toa test.__loader__
          <unittest.result.TestResult run=3 errors=0 failures=2>
 
-       '/' should be used as a path separator.  It will be converted
+       '/' should be used kama a path separator.  It will be converted
        to a native separator at run time:
 
          >>> suite = doctest.DocFileSuite('../test/test_doctest.txt')
@@ -2342,7 +2342,7 @@ eleza test_DocFileSuite():
          ...
          AttributeError: module 'test.test_doctest' has no attribute 'sillySetup'
 
-       The setUp na tearDown functions are passed test objects.
+       The setUp na tearDown functions are pitaed test objects.
        Here, we'll use a setUp function to set the favorite color in
        test_doctest.txt:
 
@@ -2398,7 +2398,7 @@ kundi Wrapper:
 @Wrapper
 eleza test_look_in_unwrapped():
     """
-    Docstrings kwenye wrapped functions must be detected as well.
+    Docstrings kwenye wrapped functions must be detected kama well.
 
     >>> 'one other test'
     'one other test'
@@ -2566,11 +2566,11 @@ Verbosity can be increased ukijumuisha the optional `verbose` parameter:
         <BLANKLINE>
         b
     ok
-    1 items passed all tests:
+    1 items pitaed all tests:
        2 tests kwenye test_doctest.txt
     2 tests kwenye 1 items.
-    2 passed na 0 failed.
-    Test passed.
+    2 pitaed na 0 failed.
+    Test pitaed.
     TestResults(failed=0, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
 
@@ -2600,7 +2600,7 @@ parameter:
     TestResults(failed=1, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
 
-The optional keyword argument `raise_on_error` can be used to  ashiria an
+The optional keyword argument `raise_on_error` can be used to ashiria an
 exception on the first error (which may be useful kila postmortem
 debugging):
 
@@ -2649,11 +2649,11 @@ Test the verbose output:
     Expecting:
         'b\u0105r'
     ok
-    1 items passed all tests:
+    1 items pitaed all tests:
        2 tests kwenye test_doctest4.txt
     2 tests kwenye 1 items.
-    2 passed na 0 failed.
-    Test passed.
+    2 pitaed na 0 failed.
+    Test pitaed.
     TestResults(failed=0, attempted=2)
     >>> doctest.master = Tupu  # Reset master.
     >>> sys.argv = save_argv
@@ -2670,7 +2670,7 @@ Windows line endings first:
 
     >>> agiza tempfile, os
     >>> fn = tempfile.mktemp()
-    >>> ukijumuisha open(fn, 'wb') as f:
+    >>> ukijumuisha open(fn, 'wb') kama f:
     ...    f.write(b'Test:\r\n\r\n  >>> x = 1 + 1\r\n\r\nDone.\r\n')
     35
     >>> doctest.testfile(fn, module_relative=Uongo, verbose=Uongo)
@@ -2680,7 +2680,7 @@ Windows line endings first:
 And now *nix line endings:
 
     >>> fn = tempfile.mktemp()
-    >>> ukijumuisha open(fn, 'wb') as f:
+    >>> ukijumuisha open(fn, 'wb') kama f:
     ...     f.write(b'Test:\n\n  >>> x = 1 + 1\n\nDone.\n')
     30
     >>> doctest.testfile(fn, module_relative=Uongo, verbose=Uongo)
@@ -2702,15 +2702,15 @@ out of the binary module.
 
 jaribu:
     os.fsencode("foo-bär@baz.py")
-except UnicodeEncodeError:
+tatizo UnicodeEncodeError:
     # Skip the test: the filesystem encoding ni unable to encode the filename
-    pass
+    pita
 isipokua:
     eleza test_unicode(): """
 Check doctest ukijumuisha a non-ascii filename:
 
     >>> doc = '''
-    ... >>>  ashiria Exception('clé')
+    ... >>> ashiria Exception('clé')
     ... '''
     ...
     >>> parser = doctest.DocTestParser()
@@ -2722,13 +2722,13 @@ Check doctest ukijumuisha a non-ascii filename:
     **********************************************************************
     File "foo-bär@baz.py", line 2, kwenye foo-bär@baz
     Failed example:
-         ashiria Exception('clé')
+        ashiria Exception('clé')
     Exception raised:
         Traceback (most recent call last):
           File ...
             exec(compile(example.source, filename, "single",
           File "<doctest foo-bär@baz[0]>", line 1, kwenye <module>
-             ashiria Exception('clé')
+            ashiria Exception('clé')
         Exception: clé
     TestResults(failed=1, attempted=1)
     """
@@ -2746,13 +2746,13 @@ output into something we can doctest against:
     ...     rudisha '\n'.join(s.decode().splitlines())
 
 With those preliminaries out of the way, we'll start ukijumuisha a file ukijumuisha two
-simple tests na no errors.  We'll run both the unadorned doctest command, and
+simple tests na no errors.  We'll run both the unadorned doctest command, na
 the verbose version, na then check the output:
 
     >>> kutoka test.support agiza script_helper, temp_dir
-    >>> ukijumuisha temp_dir() as tmpdir:
+    >>> ukijumuisha temp_dir() kama tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
-    ...     ukijumuisha open(fn, 'w') as f:
+    ...     ukijumuisha open(fn, 'w') kama f:
     ...         _ = f.write('This ni a very simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
@@ -2765,7 +2765,7 @@ the verbose version, na then check the output:
     ...     rc2, out2, err2 = script_helper.assert_python_ok(
     ...             '-m', 'doctest', '-v', fn)
 
-With no arguments na passing tests, we should get no output:
+With no arguments na pitaing tests, we should get no output:
 
     >>> rc1, out1, err1
     (0, b'', b'')
@@ -2785,25 +2785,25 @@ With the verbose flag, we should see the test output, but no error output:
     Expecting:
         'a'
     ok
-    1 items passed all tests:
+    1 items pitaed all tests:
        2 tests kwenye myfile.doc
     2 tests kwenye 1 items.
-    2 passed na 0 failed.
-    Test passed.
+    2 pitaed na 0 failed.
+    Test pitaed.
 
 Now we'll write a couple files, one ukijumuisha three tests, the other a python module
 ukijumuisha two tests, both of the files having "errors" kwenye the tests that can be made
 non-errors by applying the appropriate doctest options to the run (ELLIPSIS in
 the first file, NORMALIZE_WHITESPACE kwenye the second).  This combination will
-allow thoroughly testing the -f na -o flags, as well as the doctest command's
+allow thoroughly testing the -f na -o flags, kama well kama the doctest command's
 ability to process more than one file on the command line and, since the second
 file ends kwenye '.py', its handling of python module files (as opposed to straight
 text files).
 
     >>> kutoka test.support agiza script_helper, temp_dir
-    >>> ukijumuisha temp_dir() as tmpdir:
+    >>> ukijumuisha temp_dir() kama tmpdir:
     ...     fn = os.path.join(tmpdir, 'myfile.doc')
-    ...     ukijumuisha open(fn, 'w') as f:
+    ...     ukijumuisha open(fn, 'w') kama f:
     ...         _ = f.write('This ni another simple test file.\n')
     ...         _ = f.write('   >>> 1 + 1\n')
     ...         _ = f.write('   2\n')
@@ -2814,7 +2814,7 @@ text files).
     ...         _ = f.write('\n')
     ...         _ = f.write('And that ni it.\n')
     ...     fn2 = os.path.join(tmpdir, 'myfile2.py')
-    ...     ukijumuisha open(fn2, 'w') as f:
+    ...     ukijumuisha open(fn2, 'w') kama f:
     ...         _ = f.write('eleza test_func():\n')
     ...         _ = f.write('   \"\"\"\n')
     ...         _ = f.write('   This ni simple python test function.\n')
@@ -2913,11 +2913,11 @@ success output kila the tests kwenye both files:
     Expecting:
         'a...l'
     ok
-    1 items passed all tests:
+    1 items pitaed all tests:
        3 tests kwenye myfile.doc
     3 tests kwenye 1 items.
-    3 passed na 0 failed.
-    Test passed.
+    3 pitaed na 0 failed.
+    Test pitaed.
     Trying:
         1 + 1
     Expecting:
@@ -2930,11 +2930,11 @@ success output kila the tests kwenye both files:
     ok
     1 items had no tests:
         myfile2
-    1 items passed all tests:
+    1 items pitaed all tests:
        2 tests kwenye myfile2.test_func
     2 tests kwenye 2 items.
-    2 passed na 0 failed.
-    Test passed.
+    2 pitaed na 0 failed.
+    Test pitaed.
 
 We should also check some typical error cases.
 
@@ -2964,7 +2964,7 @@ eleza test_no_trailing_whitespace_stripping():
     r"""
     The fancy reports had a bug kila a long time where any trailing whitespace on
     the reported diff lines was stripped, making it impossible to see the
-    differences kwenye line reported as different that differed only kwenye the amount of
+    differences kwenye line reported kama different that differed only kwenye the amount of
     trailing whitespace.  The whitespace still isn't particularly visible unless
     you use NDIFF, but at least it ni now there to be found.
 
@@ -2997,7 +2997,7 @@ eleza test_no_trailing_whitespace_stripping():
     TestResults(failed=1, attempted=1)
 
     *NOTE*: `\x20` ni kila checking the trailing whitespace on the +a line above.
-    We cannot use actual spaces there, as a commit hook prevents kutoka committing
+    We cannot use actual spaces there, kama a commit hook prevents kutoka committing
     patches that contain trailing whitespace. More info on Issue 24746.
     """
 

@@ -31,13 +31,13 @@ kundi D(C, B):
         rudisha (cls, super().cm(), 'D')
 
 kundi E(D):
-    pass
+    pita
 
 kundi F(E):
     f = E.f
 
 kundi G(A):
-    pass
+    pita
 
 
 kundi TestSuper(unittest.TestCase):
@@ -98,7 +98,7 @@ kundi TestSuper(unittest.TestCase):
             eleza f():
                 __class__
         self.assertIs(X.x, type(self))
-        ukijumuisha self.assertRaises(NameError) as e:
+        ukijumuisha self.assertRaises(NameError) kama e:
             exec("""kundi X:
                 __class__
                 eleza f():
@@ -144,7 +144,7 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___class___new(self):
         # See issue #23722
-        # Ensure zero-arg super() works as soon as type.__new__() ni completed
+        # Ensure zero-arg super() works kama soon kama type.__new__() ni completed
         test_kundi = Tupu
 
         kundi Meta(type):
@@ -210,7 +210,7 @@ kundi TestSuper(unittest.TestCase):
         # when at least one method needs it, na should be omitted otherwise
         namespace_snapshot = Tupu
         kundi WithoutClassRef(metaclass=Meta):
-            pass
+            pita
         self.assertNotIn("__classcell__", namespace_snapshot)
 
         # With zero-arg super() ama an explicit __class__ reference,
@@ -231,7 +231,7 @@ kundi TestSuper(unittest.TestCase):
 
     eleza test___classcell___missing(self):
         # See issue #23722
-        # Some metaclasses may sio pass the original namespace to type.__new__
+        # Some metaclasses may sio pita the original namespace to type.__new__
         # We test that case here by forcibly deleting __classcell__
         kundi Meta(type):
             eleza __new__(cls, name, bases, namespace):
@@ -240,10 +240,10 @@ kundi TestSuper(unittest.TestCase):
 
         # The default case should endelea to work without any errors
         kundi WithoutClassRef(metaclass=Meta):
-            pass
+            pita
 
         # With zero-arg super() ama an explicit __class__ reference, we expect
-        # __build_class__ to  ashiria a RuntimeError complaining that
+        # __build_class__ to ashiria a RuntimeError complaining that
         # __class__ was sio set, na asking ikiwa __classcell__ was propagated
         # to type.__new__.
         expected_error = '__class__ sio set.*__classcell__ propagated'
@@ -264,7 +264,7 @@ kundi TestSuper(unittest.TestCase):
             ukijumuisha self.subTest(bad_cell=bad_cell):
                 ukijumuisha self.assertRaises(TypeError):
                     kundi A(metaclass=Meta, cell=bad_cell):
-                        pass
+                        pita
 
     eleza test___classcell___wrong_cell(self):
         # See issue #23722

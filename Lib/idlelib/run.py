@@ -12,7 +12,7 @@ agiza sys
 agiza textwrap
 agiza time
 agiza traceback
-agiza _thread as thread
+agiza _thread kama thread
 agiza threading
 agiza warnings
 
@@ -63,8 +63,8 @@ eleza idle_showwarning_subproc(
     jaribu:
         file.write(idle_formatwarning(
                 message, category, filename, lineno, line))
-    except OSError:
-        pass # the file (probably stderr) ni invalid - this warning gets lost.
+    tatizo OSError:
+        pita # the file (probably stderr) ni invalid - this warning gets lost.
 
 _warnings_showwarning = Tupu
 
@@ -107,10 +107,10 @@ eleza main(del_exitfunc=Uongo):
 
     When the RPCServer 'server' ni instantiated, the TCPServer initialization
     creates an instance of run.MyHandler na calls its handle() method.
-    handle() instantiates a run.Executive object, passing it a reference to the
-    MyHandler object.  That reference ni saved as attribute rpchandler of the
-    Executive instance.  The Executive methods have access to the reference and
-    can pass it on to entities that they command
+    handle() instantiates a run.Executive object, pitaing it a reference to the
+    MyHandler object.  That reference ni saved kama attribute rpchandler of the
+    Executive instance.  The Executive methods have access to the reference na
+    can pita it on to entities that they command
     (e.g. debugger_r.Debugger.start_debugger()).  The latter, kwenye turn, can
     call MyHandler(SocketIO) register/unregister methods via the reference to
     register na unregister themselves.
@@ -125,7 +125,7 @@ eleza main(del_exitfunc=Uongo):
         assert(len(sys.argv) > 1)
         port = int(sys.argv[-1])
     tatizo:
-        andika("IDLE Subprocess: no IP port passed kwenye sys.argv.",
+        andika("IDLE Subprocess: no IP port pitaed kwenye sys.argv.",
               file=sys.__stderr__)
         return
 
@@ -141,12 +141,12 @@ eleza main(del_exitfunc=Uongo):
             ikiwa exit_now:
                 jaribu:
                     exit()
-                except KeyboardInterrupt:
+                tatizo KeyboardInterrupt:
                     # exiting but got an extra KBI? Try again!
                     endelea
             jaribu:
                 request = rpc.request_queue.get(block=Kweli, timeout=0.05)
-            except queue.Empty:
+            tatizo queue.Empty:
                 request = Tupu
                 # Issue 32207: calling handle_tk_events here adds spurious
                 # queue.Empty traceback to event handling exceptions.
@@ -156,11 +156,11 @@ eleza main(del_exitfunc=Uongo):
                 rpc.response_queue.put((seq, ret))
             isipokua:
                 handle_tk_events()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             ikiwa quitting:
                 exit_now = Kweli
             endelea
-        except SystemExit:
+        tatizo SystemExit:
             capture_warnings(Uongo)
             raise
         tatizo:
@@ -181,7 +181,7 @@ eleza manage_socket(address):
         jaribu:
             server = MyRPCServer(address, MyHandler)
             koma
-        except OSError as err:
+        tatizo OSError kama err:
             andika("IDLE Subprocess: OSError: " + err.args[1] +
                   ", retrying....", file=sys.__stderr__)
             socket_error = err
@@ -223,13 +223,13 @@ eleza print_exception():
         seen.add(id(exc))
         context = exc.__context__
         cause = exc.__cause__
-        ikiwa cause ni sio Tupu na id(cause) sio kwenye seen:
+        ikiwa cause ni sio Tupu na id(cause) haiko kwenye seen:
             print_exc(type(cause), cause, cause.__traceback__)
             andika("\nThe above exception was the direct cause "
                   "of the following exception:\n", file=efile)
-        elikiwa (context ni sio Tupu and
-              sio exc.__suppress_context__ and
-              id(context) sio kwenye seen):
+        lasivyo (context ni sio Tupu na
+              sio exc.__suppress_context__ na
+              id(context) haiko kwenye seen):
             print_exc(type(context), context, context.__traceback__)
             andika("\nDuring handling of the above exception, "
                   "another exception occurred:\n", file=efile)
@@ -321,15 +321,15 @@ eleza install_recursionlimit_wrappers():
     eleza setrecursionlimit(*args, **kwargs):
         # mimic the original sys.setrecursionlimit()'s input handling
         ikiwa kwargs:
-             ashiria TypeError(
+            ashiria TypeError(
                 "setrecursionlimit() takes no keyword arguments")
         jaribu:
             limit, = args
-        except ValueError:
-             ashiria TypeError(f"setrecursionlimit() takes exactly one "
+        tatizo ValueError:
+            ashiria TypeError(f"setrecursionlimit() takes exactly one "
                             f"argument ({len(args)} given)")
         ikiwa sio limit > 0:
-             ashiria ValueError(
+            ashiria ValueError(
                 "recursion limit must be greater ama equal than 1")
 
         rudisha setrecursionlimit.__wrapped__(limit + RECURSIONLIMIT_DELTA)
@@ -360,7 +360,7 @@ eleza uninstall_recursionlimit_wrappers():
     this to remove the wrapping.
     """
     ikiwa (
-            getattr(sys.setrecursionlimit, '__wrapped__', Tupu) and
+            getattr(sys.setrecursionlimit, '__wrapped__', Tupu) na
             getattr(sys.getrecursionlimit, '__wrapped__', Tupu)
     ):
         sys.setrecursionlimit = sys.setrecursionlimit.__wrapped__
@@ -379,9 +379,9 @@ kundi MyRPCServer(rpc.RPCServer):
         global quitting
         jaribu:
             raise
-        except SystemExit:
+        tatizo SystemExit:
             raise
-        except EOFError:
+        tatizo EOFError:
             global exit_now
             exit_now = Kweli
             thread.interrupt_main()
@@ -432,7 +432,7 @@ kundi StdOutputFile(StdioFile):
 
     eleza write(self, s):
         ikiwa self.closed:
-             ashiria ValueError("write to closed file")
+            ashiria ValueError("write to closed file")
         s = str.encode(s, self.encoding, self.errors).decode(self.encoding, self.errors)
         rudisha self.shell.write(s, self.tags)
 
@@ -445,11 +445,11 @@ kundi StdInputFile(StdioFile):
 
     eleza read(self, size=-1):
         ikiwa self.closed:
-             ashiria ValueError("read kutoka closed file")
+            ashiria ValueError("read kutoka closed file")
         ikiwa size ni Tupu:
             size = -1
-        elikiwa sio isinstance(size, int):
-             ashiria TypeError('must be int, sio ' + type(size).__name__)
+        lasivyo sio isinstance(size, int):
+            ashiria TypeError('must be int, sio ' + type(size).__name__)
         result = self._line_buffer
         self._line_buffer = ''
         ikiwa size < 0:
@@ -468,11 +468,11 @@ kundi StdInputFile(StdioFile):
 
     eleza readline(self, size=-1):
         ikiwa self.closed:
-             ashiria ValueError("read kutoka closed file")
+            ashiria ValueError("read kutoka closed file")
         ikiwa size ni Tupu:
             size = -1
-        elikiwa sio isinstance(size, int):
-             ashiria TypeError('must be int, sio ' + type(size).__name__)
+        lasivyo sio isinstance(size, int):
+            ashiria TypeError('must be int, sio ' + type(size).__name__)
         line = self._line_buffer ama self.shell.readline()
         ikiwa size < 0:
             size = len(line)
@@ -548,7 +548,7 @@ kundi Executive(object):
                 exec(code, self.locals)
             mwishowe:
                 interruptable = Uongo
-        except SystemExit as e:
+        tatizo SystemExit kama e:
             ikiwa e.args:  # SystemExit called ukijumuisha an argument.
                 ob = e.args[0]
                 ikiwa sio isinstance(ob, (type(Tupu), int)):

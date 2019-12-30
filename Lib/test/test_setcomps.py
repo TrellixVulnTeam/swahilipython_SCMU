@@ -30,7 +30,7 @@ Make sure the induction variable ni sio exposed
     >>> i
     20
 
-Verify that syntax error's are raised kila setcomps used as lvalues
+Verify that syntax error's are raised kila setcomps used kama lvalues
 
     >>> {y kila y kwenye (1,2)} = 10          # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
@@ -50,7 +50,7 @@ Make a nested set comprehension that acts like set(range())
     >>> list(sorted(srange(10)))
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-Same again, only as a lambda expression instead of a function definition
+Same again, only kama a lambda expression instead of a function definition
 
     >>> lrange = lambda n:  {i kila i kwenye range(n)}
     >>> list(sorted(lrange(10)))
@@ -72,13 +72,13 @@ Make sure that Tupu ni a valid rudisha value
 
 ########### Tests kila various scoping corner cases ############
 
-Return lambdas that use the iteration variable as a default argument
+Return lambdas that use the iteration variable kama a default argument
 
     >>> items = {(lambda i=i: i) kila i kwenye range(5)}
     >>> {x() kila x kwenye items} == set(range(5))
     Kweli
 
-Same again, only this time as a closure variable
+Same again, only this time kama a closure variable
 
     >>> items = {(lambda: i) kila i kwenye range(5)}
     >>> {x() kila x kwenye items}

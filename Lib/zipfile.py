@@ -20,18 +20,18 @@ agiza time
 jaribu:
     agiza zlib # We may need its compression method
     crc32 = zlib.crc32
-except ImportError:
+tatizo ImportError:
     zlib = Tupu
     crc32 = binascii.crc32
 
 jaribu:
     agiza bz2 # We may need its compression method
-except ImportError:
+tatizo ImportError:
     bz2 = Tupu
 
 jaribu:
     agiza lzma # We may need its compression method
-except ImportError:
+tatizo ImportError:
     lzma = Tupu
 
 __all__ = ["BadZipFile", "BadZipfile", "error",
@@ -39,7 +39,7 @@ __all__ = ["BadZipFile", "BadZipfile", "error",
            "is_zipfile", "ZipInfo", "ZipFile", "PyZipFile", "LargeZipFile"]
 
 kundi BadZipFile(Exception):
-    pass
+    pita
 
 
 kundi LargeZipFile(Exception):
@@ -73,7 +73,7 @@ MAX_EXTRACT_VERSION = 63
 # the struct module.  The names na structures of headers/records are those used
 # kwenye the PKWARE description of the ZIP file format:
 #     http://www.pkware.com/documents/casestudies/APPNOTE.TXT
-# (URL valid as of January 2008)
+# (URL valid kama of January 2008)
 
 # The "end of central directory" structure, magic number, size, na indices
 # (section V.I kwenye the format document)
@@ -89,8 +89,8 @@ _ECD_ENTRIES_TOTAL = 4
 _ECD_SIZE = 5
 _ECD_OFFSET = 6
 _ECD_COMMENT_SIZE = 7
-# These last two indices are sio part of the structure as defined kwenye the
-# spec, but they are used internally by this module as a convenience
+# These last two indices are sio part of the structure kama defined kwenye the
+# spec, but they are used internally by this module kama a convenience
 _ECD_COMMENT = 8
 _ECD_LOCATION = 9
 
@@ -189,8 +189,8 @@ eleza _check_zipfile(fp):
     jaribu:
         ikiwa _EndRecData(fp):
             rudisha Kweli         # file has correct magic number
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     rudisha Uongo
 
 eleza is_zipfile(filename):
@@ -203,10 +203,10 @@ eleza is_zipfile(filename):
         ikiwa hasattr(filename, "read"):
             result = _check_zipfile(fp=filename)
         isipokua:
-            ukijumuisha open(filename, "rb") as fp:
+            ukijumuisha open(filename, "rb") kama fp:
                 result = _check_zipfile(fp)
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     rudisha result
 
 eleza _EndRecData64(fpin, offset, endrec):
@@ -215,7 +215,7 @@ eleza _EndRecData64(fpin, offset, endrec):
     """
     jaribu:
         fpin.seek(offset - sizeEndCentDir64Locator, 2)
-    except OSError:
+    tatizo OSError:
         # If the seek fails, the file ni sio large enough to contain a ZIP64
         # end-of-archive record, so just rudisha the end record we were given.
         rudisha endrec
@@ -228,7 +228,7 @@ eleza _EndRecData64(fpin, offset, endrec):
         rudisha endrec
 
     ikiwa diskno != 0 ama disks > 1:
-         ashiria BadZipFile("zipfiles that span multiple disks are sio supported")
+        ashiria BadZipFile("zipfiles that span multiple disks are sio supported")
 
     # Assume no 'zip64 extensible data'
     fpin.seek(offset - sizeEndCentDir64Locator - sizeEndCentDir64, 2)
@@ -267,11 +267,11 @@ eleza _EndRecData(fpin):
     # file ikiwa this ni the case).
     jaribu:
         fpin.seek(-sizeEndCentDir, 2)
-    except OSError:
+    tatizo OSError:
         rudisha Tupu
     data = fpin.read()
-    ikiwa (len(data) == sizeEndCentDir and
-        data[0:4] == stringEndArchive and
+    ikiwa (len(data) == sizeEndCentDir na
+        data[0:4] == stringEndArchive na
         data[-2:] == b"\000\000"):
         # the signature ni correct na there's no comment, unpack structure
         endrec = struct.unpack(structEndArchive, data)
@@ -343,12 +343,12 @@ kundi ZipInfo (object):
         self.orig_filename = filename   # Original file name kwenye archive
 
         # Terminate the file name at the first null byte.  Null bytes kwenye file
-        # names are used as tricks by viruses kwenye archives.
+        # names are used kama tricks by viruses kwenye archives.
         null_byte = filename.find(chr(0))
         ikiwa null_byte >= 0:
             filename = filename[0:null_byte]
         # This ni used to ensure paths kwenye generated ZIP files always use
-        # forward slashes as the directory separator, as required by the
+        # forward slashes kama the directory separator, kama required by the
         # ZIP format specification.
         ikiwa os.sep != "/" na os.sep kwenye filename:
             filename = filename.replace(os.sep, "/")
@@ -357,7 +357,7 @@ kundi ZipInfo (object):
         self.date_time = date_time      # year, month, day, hour, min, sec
 
         ikiwa date_time[0] < 1980:
-             ashiria ValueError('ZIP does sio support timestamps before 1980')
+            ashiria ValueError('ZIP does sio support timestamps before 1980')
 
         # Standard values:
         self.compress_type = ZIP_STORED # Type of compression kila the file
@@ -397,15 +397,15 @@ kundi ZipInfo (object):
         isdir = self.is_dir()
         ikiwa sio isdir ama self.file_size:
             result.append(' file_size=%r' % self.file_size)
-        ikiwa ((not isdir ama self.compress_size) and
-            (self.compress_type != ZIP_STORED or
+        ikiwa ((sio isdir ama self.compress_size) na
+            (self.compress_type != ZIP_STORED ama
              self.file_size != self.compress_size)):
             result.append(' compress_size=%r' % self.compress_size)
         result.append('>')
         rudisha ''.join(result)
 
     eleza FileHeader(self, zip64=Tupu):
-        """Return the per-file header as a bytes object."""
+        """Return the per-file header kama a bytes object."""
         dt = self.date_time
         dosdate = (dt[0] - 1980) << 9 | dt[1] << 5 | dt[2]
         dostime = dt[3] << 11 | dt[4] << 5 | (dt[5] // 2)
@@ -428,7 +428,7 @@ kundi ZipInfo (object):
                                         1, struct.calcsize(fmt)-4, file_size, compress_size)
         ikiwa file_size > ZIP64_LIMIT ama compress_size > ZIP64_LIMIT:
             ikiwa sio zip64:
-                 ashiria LargeZipFile("Filesize would require ZIP64 extensions")
+                ashiria LargeZipFile("Filesize would require ZIP64 extensions")
             # File ni larger than what fits into a 4 byte integer,
             # fall back to the ZIP64 extension
             file_size = 0xffffffff
@@ -437,7 +437,7 @@ kundi ZipInfo (object):
 
         ikiwa self.compress_type == ZIP_BZIP2:
             min_version = max(BZIP2_VERSION, min_version)
-        elikiwa self.compress_type == ZIP_LZMA:
+        lasivyo self.compress_type == ZIP_LZMA:
             min_version = max(LZMA_VERSION, min_version)
 
         self.extract_version = max(min_version, self.extract_version)
@@ -453,7 +453,7 @@ kundi ZipInfo (object):
     eleza _encodeFilenameFlags(self):
         jaribu:
             rudisha self.filename.encode('ascii'), self.flag_bits
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             rudisha self.filename.encode('utf-8'), self.flag_bits | 0x800
 
     eleza _decodeExtra(self):
@@ -463,18 +463,18 @@ kundi ZipInfo (object):
         wakati len(extra) >= 4:
             tp, ln = unpack('<HH', extra[:4])
             ikiwa ln+4 > len(extra):
-                 ashiria BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
+                ashiria BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
             ikiwa tp == 0x0001:
                 ikiwa ln >= 24:
                     counts = unpack('<QQQ', extra[4:28])
-                elikiwa ln == 16:
+                lasivyo ln == 16:
                     counts = unpack('<QQ', extra[4:20])
-                elikiwa ln == 8:
+                lasivyo ln == 8:
                     counts = unpack('<Q', extra[4:12])
-                elikiwa ln == 0:
+                lasivyo ln == 0:
                     counts = ()
                 isipokua:
-                     ashiria BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
+                    ashiria BadZipFile("Corrupt extra field %04x (size=%d)" % (tp, ln))
 
                 idx = 0
 
@@ -501,7 +501,7 @@ kundi ZipInfo (object):
         filename should be the path to a file ama directory on the filesystem.
 
         arcname ni the name which it will have within the archive (by default,
-        this will be the same as filename, but without a drive letter na with
+        this will be the same kama filename, but without a drive letter na with
         leading path separators removed).
         """
         ikiwa isinstance(filename, os.PathLike):
@@ -512,7 +512,7 @@ kundi ZipInfo (object):
         date_time = mtime[0:6]
         ikiwa sio strict_timestamps na date_time[0] < 1980:
             date_time = (1980, 1, 1, 0, 0, 0)
-        elikiwa sio strict_timestamps na date_time[0] > 2107:
+        lasivyo sio strict_timestamps na date_time[0] > 2107:
             date_time = (2107, 12, 31, 23, 59, 59)
         # Create ZipInfo instance to store file information
         ikiwa arcname ni Tupu:
@@ -550,7 +550,7 @@ eleza _gen_crc(crc):
             crc >>= 1
     rudisha crc
 
-# ZIP supports a password-based form of encryption. Even though known
+# ZIP supports a pitaword-based form of encryption. Even though known
 # plaintext attacks have been found against it, it ni still useful
 # to be able to get data out of such a file.
 #
@@ -669,21 +669,21 @@ compressor_names = {
 
 eleza _check_compression(compression):
     ikiwa compression == ZIP_STORED:
-        pass
-    elikiwa compression == ZIP_DEFLATED:
+        pita
+    lasivyo compression == ZIP_DEFLATED:
         ikiwa sio zlib:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 "Compression requires the (missing) zlib module")
-    elikiwa compression == ZIP_BZIP2:
+    lasivyo compression == ZIP_BZIP2:
         ikiwa sio bz2:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 "Compression requires the (missing) bz2 module")
-    elikiwa compression == ZIP_LZMA:
+    lasivyo compression == ZIP_LZMA:
         ikiwa sio lzma:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 "Compression requires the (missing) lzma module")
     isipokua:
-         ashiria NotImplementedError("That compression method ni sio supported")
+        ashiria NotImplementedError("That compression method ni sio supported")
 
 
 eleza _get_compressor(compress_type, compresslevel=Tupu):
@@ -691,12 +691,12 @@ eleza _get_compressor(compress_type, compresslevel=Tupu):
         ikiwa compresslevel ni sio Tupu:
             rudisha zlib.compressobj(compresslevel, zlib.DEFLATED, -15)
         rudisha zlib.compressobj(zlib.Z_DEFAULT_COMPRESSION, zlib.DEFLATED, -15)
-    elikiwa compress_type == ZIP_BZIP2:
+    lasivyo compress_type == ZIP_BZIP2:
         ikiwa compresslevel ni sio Tupu:
             rudisha bz2.BZ2Compressor(compresslevel)
         rudisha bz2.BZ2Compressor()
     # compresslevel ni ignored kila ZIP_LZMA
-    elikiwa compress_type == ZIP_LZMA:
+    lasivyo compress_type == ZIP_LZMA:
         rudisha LZMACompressor()
     isipokua:
         rudisha Tupu
@@ -706,18 +706,18 @@ eleza _get_decompressor(compress_type):
     _check_compression(compress_type)
     ikiwa compress_type == ZIP_STORED:
         rudisha Tupu
-    elikiwa compress_type == ZIP_DEFLATED:
+    lasivyo compress_type == ZIP_DEFLATED:
         rudisha zlib.decompressobj(-15)
-    elikiwa compress_type == ZIP_BZIP2:
+    lasivyo compress_type == ZIP_BZIP2:
         rudisha bz2.BZ2Decompressor()
-    elikiwa compress_type == ZIP_LZMA:
+    lasivyo compress_type == ZIP_LZMA:
         rudisha LZMADecompressor()
     isipokua:
         descr = compressor_names.get(compress_type)
         ikiwa descr:
-             ashiria NotImplementedError("compression type %d (%s)" % (compress_type, descr))
+            ashiria NotImplementedError("compression type %d (%s)" % (compress_type, descr))
         isipokua:
-             ashiria NotImplementedError("compression type %d" % (compress_type,))
+            ashiria NotImplementedError("compression type %d" % (compress_type,))
 
 
 kundi _SharedFile:
@@ -733,7 +733,7 @@ kundi _SharedFile:
     eleza seek(self, offset, whence=0):
         ukijumuisha self._lock:
             ikiwa self._writing():
-                 ashiria ValueError("Can't reposition kwenye the ZIP file wakati "
+                ashiria ValueError("Can't reposition kwenye the ZIP file wakati "
                         "there ni an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             self._file.seek(offset, whence)
@@ -743,7 +743,7 @@ kundi _SharedFile:
     eleza read(self, n=-1):
         ukijumuisha self._lock:
             ikiwa self._writing():
-                 ashiria ValueError("Can't read kutoka the ZIP file wakati there "
+                ashiria ValueError("Can't read kutoka the ZIP file wakati there "
                         "is an open writing handle on it. "
                         "Close the writing handle before trying to read.")
             self._file.seek(self._pos)
@@ -811,7 +811,7 @@ kundi ZipExtFile(io.BufferedIOBase):
         self.newlines = Tupu
 
         # Adjust read size kila encrypted files since the first 12 bytes
-        # are kila the encryption/password information.
+        # are kila the encryption/pitaword information.
         ikiwa self._decrypter ni sio Tupu:
             self._compress_left -= 12
 
@@ -832,8 +832,8 @@ kundi ZipExtFile(io.BufferedIOBase):
                 self._orig_file_size = zipinfo.file_size
                 self._orig_start_crc = self._running_crc
                 self._seekable = Kweli
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza __repr__(self):
         result = ['<%s.%s' % (self.__class__.__module__,
@@ -922,7 +922,7 @@ kundi ZipExtFile(io.BufferedIOBase):
         self._running_crc = crc32(newdata, self._running_crc)
         # Check the CRC ikiwa we're at the end of the file
         ikiwa self._eof na self._running_crc != self._expected_crc:
-             ashiria BadZipFile("Bad CRC-32 kila file %r" % self.name)
+            ashiria BadZipFile("Bad CRC-32 kila file %r" % self.name)
 
     eleza read1(self, n):
         """Read up to n bytes ukijumuisha at most one read() system call."""
@@ -978,11 +978,11 @@ kundi ZipExtFile(io.BufferedIOBase):
 
         ikiwa self._compress_type == ZIP_STORED:
             self._eof = self._compress_left <= 0
-        elikiwa self._compress_type == ZIP_DEFLATED:
+        lasivyo self._compress_type == ZIP_DEFLATED:
             n = max(n, self.MIN_READ_SIZE)
             data = self._decompressor.decompress(data, n)
-            self._eof = (self._decompressor.eof or
-                         self._compress_left <= 0 and
+            self._eof = (self._decompressor.eof ama
+                         self._compress_left <= 0 na
                          sio self._decompressor.unconsumed_tail)
             ikiwa self._eof:
                 data += self._decompressor.flush()
@@ -1007,7 +1007,7 @@ kundi ZipExtFile(io.BufferedIOBase):
         data = self._fileobj.read(n)
         self._compress_left -= len(data)
         ikiwa sio data:
-             ashiria EOFError
+            ashiria EOFError
 
         ikiwa self._decrypter ni sio Tupu:
             data = self._decrypter(data)
@@ -1025,16 +1025,16 @@ kundi ZipExtFile(io.BufferedIOBase):
 
     eleza seek(self, offset, whence=0):
         ikiwa sio self._seekable:
-             ashiria io.UnsupportedOperation("underlying stream ni sio seekable")
+            ashiria io.UnsupportedOperation("underlying stream ni sio seekable")
         curr_pos = self.tell()
         ikiwa whence == 0: # Seek kutoka start of file
             new_pos = offset
-        elikiwa whence == 1: # Seek kutoka current position
+        lasivyo whence == 1: # Seek kutoka current position
             new_pos = curr_pos + offset
-        elikiwa whence == 2: # Seek kutoka EOF
+        lasivyo whence == 2: # Seek kutoka EOF
             new_pos = self._orig_file_size + offset
         isipokua:
-             ashiria ValueError("whence must be os.SEEK_SET (0), "
+            ashiria ValueError("whence must be os.SEEK_SET (0), "
                              "os.SEEK_CUR (1), ama os.SEEK_END (2)")
 
         ikiwa new_pos > self._orig_file_size:
@@ -1050,7 +1050,7 @@ kundi ZipExtFile(io.BufferedIOBase):
             # Just move the _offset index ikiwa the new position ni kwenye the _readbuffer
             self._offset = buff_offset
             read_offset = 0
-        elikiwa read_offset < 0:
+        lasivyo read_offset < 0:
             # Position ni before the current position. Reset the ZipExtFile
             self._fileobj.seek(self._orig_compress_start)
             self._running_crc = self._orig_start_crc
@@ -1071,7 +1071,7 @@ kundi ZipExtFile(io.BufferedIOBase):
 
     eleza tell(self):
         ikiwa sio self._seekable:
-             ashiria io.UnsupportedOperation("underlying stream ni sio seekable")
+            ashiria io.UnsupportedOperation("underlying stream ni sio seekable")
         filepos = self._orig_file_size - self._left - len(self._readbuffer) + self._offset
         rudisha filepos
 
@@ -1096,7 +1096,7 @@ kundi _ZipWriteFile(io.BufferedIOBase):
 
     eleza write(self, data):
         ikiwa self.closed:
-             ashiria ValueError('I/O operation on closed file.')
+            ashiria ValueError('I/O operation on closed file.')
         nbytes = len(data)
         self._file_size += nbytes
         self._crc = crc32(data, self._crc)
@@ -1132,10 +1132,10 @@ kundi _ZipWriteFile(io.BufferedIOBase):
             isipokua:
                 ikiwa sio self._zip64:
                     ikiwa self._file_size > ZIP64_LIMIT:
-                         ashiria RuntimeError(
+                        ashiria RuntimeError(
                             'File size unexpectedly exceeded ZIP64 limit')
                     ikiwa self._compress_size > ZIP64_LIMIT:
-                         ashiria RuntimeError(
+                        ashiria RuntimeError(
                             'Compressed size unexpectedly exceeded ZIP64 limit')
                 # Seek backwards na write file header (which will now include
                 # correct CRC na file sizes)
@@ -1167,10 +1167,10 @@ kundi ZipFile:
     compression: ZIP_STORED (no compression), ZIP_DEFLATED (requires zlib),
                  ZIP_BZIP2 (requires bz2) ama ZIP_LZMA (requires lzma).
     allowZip64: ikiwa Kweli ZipFile will create files ukijumuisha ZIP64 extensions when
-                needed, otherwise it will  ashiria an exception when this would
+                needed, otherwise it will ashiria an exception when this would
                 be necessary.
     compresslevel: Tupu (default kila the given compression type) ama an integer
-                   specifying the level to pass to the compressor.
+                   specifying the level to pita to the compressor.
                    When using ZIP_STORED ama ZIP_LZMA this keyword has no effect.
                    When using ZIP_DEFLATED integers 0 through 9 are accepted.
                    When using ZIP_BZIP2 integers 1 through 9 are accepted.
@@ -1184,8 +1184,8 @@ kundi ZipFile:
                  compresslevel=Tupu, *, strict_timestamps=Kweli):
         """Open the ZIP file ukijumuisha mode read 'r', write 'w', exclusive create 'x',
         ama append 'a'."""
-        ikiwa mode sio kwenye ('r', 'w', 'x', 'a'):
-             ashiria ValueError("ZipFile requires mode 'r', 'w', 'x', ama 'a'")
+        ikiwa mode haiko kwenye ('r', 'w', 'x', 'a'):
+            ashiria ValueError("ZipFile requires mode 'r', 'w', 'x', ama 'a'")
 
         _check_compression(compression)
 
@@ -1201,7 +1201,7 @@ kundi ZipFile:
         self._comment = b''
         self._strict_timestamps = strict_timestamps
 
-        # Check ikiwa we were passed a file-like object
+        # Check ikiwa we were pitaed a file-like object
         ikiwa isinstance(file, os.PathLike):
             file = os.fspath(file)
         ikiwa isinstance(file, str):
@@ -1214,7 +1214,7 @@ kundi ZipFile:
             wakati Kweli:
                 jaribu:
                     self.fp = io.open(file, filemode)
-                except OSError:
+                tatizo OSError:
                     ikiwa filemode kwenye modeDict:
                         filemode = modeDict[filemode]
                         endelea
@@ -1232,13 +1232,13 @@ kundi ZipFile:
         jaribu:
             ikiwa mode == 'r':
                 self._RealGetContents()
-            elikiwa mode kwenye ('w', 'x'):
+            lasivyo mode kwenye ('w', 'x'):
                 # set the modified flag so central directory gets written
                 # even ikiwa no files are added to the archive
                 self._didModify = Kweli
                 jaribu:
                     self.start_dir = self.fp.tell()
-                except (AttributeError, OSError):
+                tatizo (AttributeError, OSError):
                     self.fp = _Tellable(self.fp)
                     self.start_dir = 0
                     self._seekable = Uongo
@@ -1246,15 +1246,15 @@ kundi ZipFile:
                     # Some file-like objects can provide tell() but sio seek()
                     jaribu:
                         self.fp.seek(self.start_dir)
-                    except (AttributeError, OSError):
+                    tatizo (AttributeError, OSError):
                         self._seekable = Uongo
-            elikiwa mode == 'a':
+            lasivyo mode == 'a':
                 jaribu:
                     # See ikiwa file ni a zip file
                     self._RealGetContents()
                     # seek to start of directory na overwrite
                     self.fp.seek(self.start_dir)
-                except BadZipFile:
+                tatizo BadZipFile:
                     # file ni sio a zip file, just append
                     self.fp.seek(0, 2)
 
@@ -1263,7 +1263,7 @@ kundi ZipFile:
                     self._didModify = Kweli
                     self.start_dir = self.fp.tell()
             isipokua:
-                 ashiria ValueError("Mode must be 'r', 'w', 'x', ama 'a'")
+                ashiria ValueError("Mode must be 'r', 'w', 'x', ama 'a'")
         tatizo:
             fp = self.fp
             self.fp = Tupu
@@ -1282,7 +1282,7 @@ kundi ZipFile:
         ikiwa self.fp ni sio Tupu:
             ikiwa self._filePassed:
                 result.append(' file=%r' % self.fp)
-            elikiwa self.filename ni sio Tupu:
+            lasivyo self.filename ni sio Tupu:
                 result.append(' filename=%r' % self.filename)
             result.append(' mode=%r' % self.mode)
         isipokua:
@@ -1295,10 +1295,10 @@ kundi ZipFile:
         fp = self.fp
         jaribu:
             endrec = _EndRecData(fp)
-        except OSError:
-             ashiria BadZipFile("File ni sio a zip file")
+        tatizo OSError:
+            ashiria BadZipFile("File ni sio a zip file")
         ikiwa sio endrec:
-             ashiria BadZipFile("File ni sio a zip file")
+            ashiria BadZipFile("File ni sio a zip file")
         ikiwa self.debug > 1:
             andika(endrec)
         size_cd = endrec[_ECD_SIZE]             # bytes kwenye central directory
@@ -1323,10 +1323,10 @@ kundi ZipFile:
         wakati total < size_cd:
             centdir = fp.read(sizeCentralDir)
             ikiwa len(centdir) != sizeCentralDir:
-                 ashiria BadZipFile("Truncated central directory")
+                ashiria BadZipFile("Truncated central directory")
             centdir = struct.unpack(structCentralDir, centdir)
             ikiwa centdir[_CD_SIGNATURE] != stringCentralDir:
-                 ashiria BadZipFile("Bad magic number kila central directory")
+                ashiria BadZipFile("Bad magic number kila central directory")
             ikiwa self.debug > 2:
                 andika(centdir)
             filename = fp.read(centdir[_CD_FILENAME_LENGTH])
@@ -1346,7 +1346,7 @@ kundi ZipFile:
              x.flag_bits, x.compress_type, t, d,
              x.CRC, x.compress_size, x.file_size) = centdir[1:12]
             ikiwa x.extract_version > MAX_EXTRACT_VERSION:
-                 ashiria NotImplementedError("zip file version %.1f" %
+                ashiria NotImplementedError("zip file version %.1f" %
                                           (x.extract_version / 10))
             x.volume, x.internal_attr, x.external_attr = centdir[15:18]
             # Convert date/time code to (year, month, day, hour, min, sec)
@@ -1393,25 +1393,25 @@ kundi ZipFile:
             jaribu:
                 # Read by chunks, to avoid an OverflowError ama a
                 # MemoryError ukijumuisha very large embedded files.
-                ukijumuisha self.open(zinfo.filename, "r") as f:
+                ukijumuisha self.open(zinfo.filename, "r") kama f:
                     wakati f.read(chunk_size):     # Check CRC-32
-                        pass
-            except BadZipFile:
+                        pita
+            tatizo BadZipFile:
                 rudisha zinfo.filename
 
     eleza getinfo(self, name):
         """Return the instance of ZipInfo given 'name'."""
         info = self.NameToInfo.get(name)
         ikiwa info ni Tupu:
-             ashiria KeyError(
+            ashiria KeyError(
                 'There ni no item named %r kwenye the archive' % name)
 
         rudisha info
 
-    eleza setpassword(self, pwd):
-        """Set default password kila encrypted files."""
+    eleza setpitaword(self, pwd):
+        """Set default pitaword kila encrypted files."""
         ikiwa pwd na sio isinstance(pwd, bytes):
-             ashiria TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
+            ashiria TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
         ikiwa pwd:
             self.pwd = pwd
         isipokua:
@@ -1425,7 +1425,7 @@ kundi ZipFile:
     @comment.setter
     eleza comment(self, comment):
         ikiwa sio isinstance(comment, bytes):
-             ashiria TypeError("comment: expected bytes, got %s" % type(comment).__name__)
+            ashiria TypeError("comment: expected bytes, got %s" % type(comment).__name__)
         # check kila valid comment length
         ikiwa len(comment) > ZIP_MAX_COMMENT:
             agiza warnings
@@ -1437,7 +1437,7 @@ kundi ZipFile:
 
     eleza read(self, name, pwd=Tupu):
         """Return file bytes kila name."""
-        ukijumuisha self.open(name, "r", pwd) as fp:
+        ukijumuisha self.open(name, "r", pwd) kama fp:
             rudisha fp.read()
 
     eleza open(self, name, mode="r", pwd=Tupu, *, force_zip64=Uongo):
@@ -1449,28 +1449,28 @@ kundi ZipFile:
         mode should be 'r' to read a file already kwenye the ZIP file, ama 'w' to
         write to a file newly added to the archive.
 
-        pwd ni the password to decrypt files (only used kila reading).
+        pwd ni the pitaword to decrypt files (only used kila reading).
 
         When writing, ikiwa the file size ni sio known kwenye advance but may exceed
-        2 GiB, pass force_zip64 to use the ZIP64 format, which can handle large
-        files.  If the size ni known kwenye advance, it ni best to pass a ZipInfo
+        2 GiB, pita force_zip64 to use the ZIP64 format, which can handle large
+        files.  If the size ni known kwenye advance, it ni best to pita a ZipInfo
         instance kila name, ukijumuisha zinfo.file_size set.
         """
-        ikiwa mode sio kwenye {"r", "w"}:
-             ashiria ValueError('open() requires mode "r" ama "w"')
+        ikiwa mode haiko kwenye {"r", "w"}:
+            ashiria ValueError('open() requires mode "r" ama "w"')
         ikiwa pwd na sio isinstance(pwd, bytes):
-             ashiria TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
+            ashiria TypeError("pwd: expected bytes, got %s" % type(pwd).__name__)
         ikiwa pwd na (mode == "w"):
-             ashiria ValueError("pwd ni only supported kila reading files")
+            ashiria ValueError("pwd ni only supported kila reading files")
         ikiwa sio self.fp:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Attempt to use ZIP archive that was already closed")
 
         # Make sure we have an info object
         ikiwa isinstance(name, ZipInfo):
             # 'name' ni already an info object
             zinfo = name
-        elikiwa mode == 'w':
+        lasivyo mode == 'w':
             zinfo = ZipInfo(name)
             zinfo.compress_type = self.compression
             zinfo._compresslevel = self.compresslevel
@@ -1482,7 +1482,7 @@ kundi ZipFile:
             rudisha self._open_to_write(zinfo, force_zip64=force_zip64)
 
         ikiwa self._writing:
-             ashiria ValueError("Can't read kutoka the ZIP file wakati there "
+            ashiria ValueError("Can't read kutoka the ZIP file wakati there "
                     "is an open writing handle on it. "
                     "Close the writing handle before trying to read.")
 
@@ -1494,10 +1494,10 @@ kundi ZipFile:
             # Skip the file header:
             fheader = zef_file.read(sizeFileHeader)
             ikiwa len(fheader) != sizeFileHeader:
-                 ashiria BadZipFile("Truncated file header")
+                ashiria BadZipFile("Truncated file header")
             fheader = struct.unpack(structFileHeader, fheader)
             ikiwa fheader[_FH_SIGNATURE] != stringFileHeader:
-                 ashiria BadZipFile("Bad magic number kila file header")
+                ashiria BadZipFile("Bad magic number kila file header")
 
             fname = zef_file.read(fheader[_FH_FILENAME_LENGTH])
             ikiwa fheader[_FH_EXTRA_FIELD_LENGTH]:
@@ -1505,11 +1505,11 @@ kundi ZipFile:
 
             ikiwa zinfo.flag_bits & 0x20:
                 # Zip 2.7: compressed patched data
-                 ashiria NotImplementedError("compressed patched data (flag bit 5)")
+                ashiria NotImplementedError("compressed patched data (flag bit 5)")
 
             ikiwa zinfo.flag_bits & 0x40:
                 # strong encryption
-                 ashiria NotImplementedError("strong encryption (flag bit 6)")
+                ashiria NotImplementedError("strong encryption (flag bit 6)")
 
             ikiwa zinfo.flag_bits & 0x800:
                 # UTF-8 filename
@@ -1518,18 +1518,18 @@ kundi ZipFile:
                 fname_str = fname.decode("cp437")
 
             ikiwa fname_str != zinfo.orig_filename:
-                 ashiria BadZipFile(
+                ashiria BadZipFile(
                     'File name kwenye directory %r na header %r differ.'
                     % (zinfo.orig_filename, fname))
 
-            # check kila encrypted flag & handle password
+            # check kila encrypted flag & handle pitaword
             is_encrypted = zinfo.flag_bits & 0x1
             zd = Tupu
             ikiwa is_encrypted:
                 ikiwa sio pwd:
                     pwd = self.pwd
                 ikiwa sio pwd:
-                     ashiria RuntimeError("File %r ni encrypted, password "
+                    ashiria RuntimeError("File %r ni encrypted, pitaword "
                                        "required kila extraction" % name)
 
                 zd = _ZipDecrypter(pwd)
@@ -1537,7 +1537,7 @@ kundi ZipFile:
                 #  used to strengthen the algorithm. The first 11 bytes are
                 #  completely random, wakati the 12th contains the MSB of the CRC,
                 #  ama the MSB of the file time depending on the header type
-                #  na ni used to check the correctness of the password.
+                #  na ni used to check the correctness of the pitaword.
                 header = zef_file.read(12)
                 h = zd(header[0:12])
                 ikiwa zinfo.flag_bits & 0x8:
@@ -1547,7 +1547,7 @@ kundi ZipFile:
                     # compare against the CRC otherwise
                     check_byte = (zinfo.CRC >> 24) & 0xff
                 ikiwa h[11] != check_byte:
-                     ashiria RuntimeError("Bad password kila file %r" % name)
+                    ashiria RuntimeError("Bad pitaword kila file %r" % name)
 
             rudisha ZipExtFile(zef_file, mode, zinfo, zd, Kweli)
         tatizo:
@@ -1556,12 +1556,12 @@ kundi ZipFile:
 
     eleza _open_to_write(self, zinfo, force_zip64=Uongo):
         ikiwa force_zip64 na sio self._allowZip64:
-             ashiria ValueError(
+            ashiria ValueError(
                 "force_zip64 ni Kweli, but allowZip64 was Uongo when opening "
                 "the ZIP file."
             )
         ikiwa self._writing:
-             ashiria ValueError("Can't write to the ZIP file wakati there ni "
+            ashiria ValueError("Can't write to the ZIP file wakati there ni "
                              "another write handle open on it. "
                              "Close the first handle before opening another.")
 
@@ -1599,8 +1599,8 @@ kundi ZipFile:
 
     eleza extract(self, member, path=Tupu, pwd=Tupu):
         """Extract a member kutoka the archive to the current working directory,
-           using its full name. Its file information ni extracted as accurately
-           as possible. `member' may be a filename ama a ZipInfo object. You can
+           using its full name. Its file information ni extracted kama accurately
+           kama possible. `member' may be a filename ama a ZipInfo object. You can
            specify a different directory using `path'.
         """
         ikiwa path ni Tupu:
@@ -1655,12 +1655,12 @@ kundi ZipFile:
 
         ikiwa os.path.altsep:
             arcname = arcname.replace(os.path.altsep, os.path.sep)
-        # interpret absolute pathname as relative, remove drive letter or
+        # interpret absolute pathname kama relative, remove drive letter ama
         # UNC path, redundant separators, "." na ".." components.
         arcname = os.path.splitdrive(arcname)[1]
         invalid_path_parts = ('', os.path.curdir, os.path.pardir)
         arcname = os.path.sep.join(x kila x kwenye arcname.split(os.path.sep)
-                                   ikiwa x sio kwenye invalid_path_parts)
+                                   ikiwa x haiko kwenye invalid_path_parts)
         ikiwa os.path.sep == '\\':
             # filter illegal characters on Windows
             arcname = self._sanitize_windows_name(arcname, os.path.sep)
@@ -1678,8 +1678,8 @@ kundi ZipFile:
                 os.mkdir(targetpath)
             rudisha targetpath
 
-        ukijumuisha self.open(member, pwd=pwd) as source, \
-             open(targetpath, "wb") as target:
+        ukijumuisha self.open(member, pwd=pwd) kama source, \
+             open(targetpath, "wb") kama target:
             shutil.copyfileobj(source, target)
 
         rudisha targetpath
@@ -1689,22 +1689,22 @@ kundi ZipFile:
         ikiwa zinfo.filename kwenye self.NameToInfo:
             agiza warnings
             warnings.warn('Duplicate name: %r' % zinfo.filename, stacklevel=3)
-        ikiwa self.mode sio kwenye ('w', 'x', 'a'):
-             ashiria ValueError("write() requires mode 'w', 'x', ama 'a'")
+        ikiwa self.mode haiko kwenye ('w', 'x', 'a'):
+            ashiria ValueError("write() requires mode 'w', 'x', ama 'a'")
         ikiwa sio self.fp:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Attempt to write ZIP archive that was already closed")
         _check_compression(zinfo.compress_type)
         ikiwa sio self._allowZip64:
             requires_zip64 = Tupu
             ikiwa len(self.filelist) >= ZIP_FILECOUNT_LIMIT:
                 requires_zip64 = "Files count"
-            elikiwa zinfo.file_size > ZIP64_LIMIT:
+            lasivyo zinfo.file_size > ZIP64_LIMIT:
                 requires_zip64 = "Filesize"
-            elikiwa zinfo.header_offset > ZIP64_LIMIT:
+            lasivyo zinfo.header_offset > ZIP64_LIMIT:
                 requires_zip64 = "Zipfile size"
             ikiwa requires_zip64:
-                 ashiria LargeZipFile(requires_zip64 +
+                ashiria LargeZipFile(requires_zip64 +
                                    " would require ZIP64 extensions")
 
     eleza write(self, filename, arcname=Tupu,
@@ -1712,10 +1712,10 @@ kundi ZipFile:
         """Put the bytes kutoka filename into the archive under the name
         arcname."""
         ikiwa sio self.fp:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Attempt to write to ZIP archive that was already closed")
         ikiwa self._writing:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Can't write to ZIP archive wakati an open writing handle exists"
             )
 
@@ -1753,15 +1753,15 @@ kundi ZipFile:
                 self.fp.write(zinfo.FileHeader(Uongo))
                 self.start_dir = self.fp.tell()
         isipokua:
-            ukijumuisha open(filename, "rb") as src, self.open(zinfo, 'w') as dest:
+            ukijumuisha open(filename, "rb") kama src, self.open(zinfo, 'w') kama dest:
                 shutil.copyfileobj(src, dest, 1024*8)
 
     eleza writestr(self, zinfo_or_arcname, data,
                  compress_type=Tupu, compresslevel=Tupu):
         """Write a file into the archive.  The contents ni 'data', which
         may be either a 'str' ama a 'bytes' instance; ikiwa it ni a 'str',
-        it ni encoded as UTF-8 first.
-        'zinfo_or_arcname' ni either a ZipInfo instance or
+        it ni encoded kama UTF-8 first.
+        'zinfo_or_arcname' ni either a ZipInfo instance ama
         the name of the file kwenye the archive."""
         ikiwa isinstance(data, str):
             data = data.encode("utf-8")
@@ -1779,10 +1779,10 @@ kundi ZipFile:
             zinfo = zinfo_or_arcname
 
         ikiwa sio self.fp:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Attempt to write to ZIP archive that was already closed")
         ikiwa self._writing:
-             ashiria ValueError(
+            ashiria ValueError(
                 "Can't write to ZIP archive wakati an open writing handle exists."
             )
 
@@ -1794,7 +1794,7 @@ kundi ZipFile:
 
         zinfo.file_size = len(data)            # Uncompressed size
         ukijumuisha self._lock:
-            ukijumuisha self.open(zinfo, mode='w') as dest:
+            ukijumuisha self.open(zinfo, mode='w') kama dest:
                 dest.write(data)
 
     eleza __del__(self):
@@ -1808,7 +1808,7 @@ kundi ZipFile:
             return
 
         ikiwa self._writing:
-             ashiria ValueError("Can't close the ZIP file wakati there ni "
+            ashiria ValueError("Can't close the ZIP file wakati there ni "
                              "an open writing handle on it. "
                              "Close the writing handle before closing the zip.")
 
@@ -1858,7 +1858,7 @@ kundi ZipFile:
 
             ikiwa zinfo.compress_type == ZIP_BZIP2:
                 min_version = max(BZIP2_VERSION, min_version)
-            elikiwa zinfo.compress_type == ZIP_LZMA:
+            lasivyo zinfo.compress_type == ZIP_LZMA:
                 min_version = max(LZMA_VERSION, min_version)
 
             extract_version = max(min_version, zinfo.extract_version)
@@ -1873,7 +1873,7 @@ kundi ZipFile:
                                       len(filename), len(extra_data), len(zinfo.comment),
                                       0, zinfo.internal_attr, zinfo.external_attr,
                                       header_offset)
-            except DeprecationWarning:
+            tatizo DeprecationWarning:
                 andika((structCentralDir, stringCentralDir, create_version,
                        zinfo.create_system, extract_version, zinfo.reserved,
                        zinfo.flag_bits, zinfo.compress_type, dostime, dosdate,
@@ -1895,14 +1895,14 @@ kundi ZipFile:
         requires_zip64 = Tupu
         ikiwa centDirCount > ZIP_FILECOUNT_LIMIT:
             requires_zip64 = "Files count"
-        elikiwa centDirOffset > ZIP64_LIMIT:
+        lasivyo centDirOffset > ZIP64_LIMIT:
             requires_zip64 = "Central directory offset"
-        elikiwa centDirSize > ZIP64_LIMIT:
+        lasivyo centDirSize > ZIP64_LIMIT:
             requires_zip64 = "Central directory size"
         ikiwa requires_zip64:
             # Need to write the ZIP64 end-of-archive records
             ikiwa sio self._allowZip64:
-                 ashiria LargeZipFile(requires_zip64 +
+                ashiria LargeZipFile(requires_zip64 +
                                    " would require ZIP64 extensions")
             zip64endrec = struct.pack(
                 structEndArchive64, stringEndArchive64,
@@ -1944,7 +1944,7 @@ kundi PyZipFile(ZipFile):
     eleza writepy(self, pathname, basename="", filterfunc=Tupu):
         """Add all files kutoka "pathname" to the ZIP archive.
 
-        If pathname ni a package directory, search the directory and
+        If pathname ni a package directory, search the directory na
         all package subdirectories recursively kila all *.py na enter
         the modules into the archive.  If pathname ni a plain
         directory, listdir *.py na enter all modules.  Else, pathname
@@ -1987,7 +1987,7 @@ kundi PyZipFile(ZipFile):
                             # This ni a package directory, add it
                             self.writepy(path, basename,
                                          filterfunc=filterfunc)  # Recursive call
-                    elikiwa ext == ".py":
+                    lasivyo ext == ".py":
                         ikiwa filterfunc na sio filterfunc(path):
                             ikiwa self.debug:
                                 andika('file %r skipped by filterfunc' % path)
@@ -2016,7 +2016,7 @@ kundi PyZipFile(ZipFile):
                         self.write(fname, arcname)
         isipokua:
             ikiwa pathname[-3:] != ".py":
-                 ashiria RuntimeError(
+                ashiria RuntimeError(
                     'Files added ukijumuisha writepy() must end ukijumuisha ".py"')
             fname, arcname = self._get_codename(pathname[0:-3], basename)
             ikiwa self.debug:
@@ -2026,7 +2026,7 @@ kundi PyZipFile(ZipFile):
     eleza _get_codename(self, pathname, basename):
         """Return (filename, archivename) kila the path.
 
-        Given a module name path, rudisha the correct file path and
+        Given a module name path, rudisha the correct file path na
         archive name, compiling ikiwa necessary.  For example, given
         /python/lib/string, rudisha (/python/lib/string.pyc, string).
         """
@@ -2036,7 +2036,7 @@ kundi PyZipFile(ZipFile):
                 andika("Compiling", file)
             jaribu:
                 py_compile.compile(file, doraise=Kweli, optimize=optimize)
-            except py_compile.PyCompileError as err:
+            tatizo py_compile.PyCompileError kama err:
                 andika(err.msg)
                 rudisha Uongo
             rudisha Kweli
@@ -2048,23 +2048,23 @@ kundi PyZipFile(ZipFile):
         pycache_opt2 = importlib.util.cache_from_source(file_py, optimization=2)
         ikiwa self._optimize == -1:
             # legacy mode: use whatever file ni present
-            ikiwa (os.path.isfile(file_pyc) and
+            ikiwa (os.path.isfile(file_pyc) na
                   os.stat(file_pyc).st_mtime >= os.stat(file_py).st_mtime):
                 # Use .pyc file.
                 arcname = fname = file_pyc
-            elikiwa (os.path.isfile(pycache_opt0) and
+            lasivyo (os.path.isfile(pycache_opt0) na
                   os.stat(pycache_opt0).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name kwenye the archive.
                 fname = pycache_opt0
                 arcname = file_pyc
-            elikiwa (os.path.isfile(pycache_opt1) and
+            lasivyo (os.path.isfile(pycache_opt1) na
                   os.stat(pycache_opt1).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name kwenye the archive.
                 fname = pycache_opt1
                 arcname = file_pyc
-            elikiwa (os.path.isfile(pycache_opt2) and
+            lasivyo (os.path.isfile(pycache_opt2) na
                   os.stat(pycache_opt2).st_mtime >= os.stat(file_py).st_mtime):
                 # Use the __pycache__/*.pyc file, but write it to the legacy pyc
                 # file name kwenye the archive.
@@ -2075,7 +2075,7 @@ kundi PyZipFile(ZipFile):
                 ikiwa _compile(file_py):
                     ikiwa sys.flags.optimize == 0:
                         fname = pycache_opt0
-                    elikiwa sys.flags.optimize == 1:
+                    lasivyo sys.flags.optimize == 1:
                         fname = pycache_opt1
                     isipokua:
                         fname = pycache_opt2
@@ -2091,12 +2091,12 @@ kundi PyZipFile(ZipFile):
                 arcname = file_pyc
                 ikiwa self._optimize == 1:
                     fname = pycache_opt1
-                elikiwa self._optimize == 2:
+                lasivyo self._optimize == 2:
                     fname = pycache_opt2
                 isipokua:
                     msg = "invalid value kila 'optimize': {!r}".format(self._optimize)
-                     ashiria ValueError(msg)
-            ikiwa sio (os.path.isfile(fname) and
+                    ashiria ValueError(msg)
+            ikiwa sio (os.path.isfile(fname) na
                     os.stat(fname).st_mtime >= os.stat(file_py).st_mtime):
                 ikiwa sio _compile(file_py, optimize=self._optimize):
                     fname = arcname = file_py
@@ -2119,7 +2119,7 @@ eleza _unique_everseen(iterable, key=Tupu):
     isipokua:
         kila element kwenye iterable:
             k = key(element)
-            ikiwa k sio kwenye seen:
+            ikiwa k haiko kwenye seen:
                 seen_add(k)
                 tuma element
 
@@ -2245,11 +2245,11 @@ kundi Path:
         rudisha posixpath.basename(self.at.rstrip("/"))
 
     eleza read_text(self, *args, **kwargs):
-        ukijumuisha self.open() as strm:
+        ukijumuisha self.open() kama strm:
             rudisha io.TextIOWrapper(strm, *args, **kwargs).read()
 
     eleza read_bytes(self):
-        ukijumuisha self.open() as strm:
+        ukijumuisha self.open() kama strm:
             rudisha strm.read()
 
     eleza _is_child(self, path):
@@ -2269,7 +2269,7 @@ kundi Path:
 
     eleza iterdir(self):
         ikiwa sio self.is_dir():
-             ashiria ValueError("Can't listdir a file")
+            ashiria ValueError("Can't listdir a file")
         subs = map(self._next, self._names())
         rudisha filter(self._is_child, subs)
 
@@ -2283,7 +2283,7 @@ kundi Path:
         next = posixpath.join(self.at, add)
         next_dir = posixpath.join(self.at, add, "")
         names = self._names()
-        rudisha self._next(next_dir ikiwa next sio kwenye names na next_dir kwenye names isipokua next)
+        rudisha self._next(next_dir ikiwa next haiko kwenye names na next_dir kwenye names isipokua next)
 
     __truediv__ = joinpath
 
@@ -2293,7 +2293,7 @@ kundi Path:
             parent + "/"
             kila name kwenye names
             kila parent kwenye _parents(name)
-            ikiwa parent + "/" sio kwenye names
+            ikiwa parent + "/" haiko kwenye names
         )
 
     @classmethod
@@ -2331,30 +2331,30 @@ eleza main(args=Tupu):
 
     ikiwa args.test ni sio Tupu:
         src = args.test
-        ukijumuisha ZipFile(src, 'r') as zf:
+        ukijumuisha ZipFile(src, 'r') kama zf:
             badfile = zf.testzip()
         ikiwa badfile:
             andika("The following enclosed file ni corrupted: {!r}".format(badfile))
         andika("Done testing")
 
-    elikiwa args.list ni sio Tupu:
+    lasivyo args.list ni sio Tupu:
         src = args.list
-        ukijumuisha ZipFile(src, 'r') as zf:
+        ukijumuisha ZipFile(src, 'r') kama zf:
             zf.printdir()
 
-    elikiwa args.extract ni sio Tupu:
+    lasivyo args.extract ni sio Tupu:
         src, curdir = args.extract
-        ukijumuisha ZipFile(src, 'r') as zf:
+        ukijumuisha ZipFile(src, 'r') kama zf:
             zf.extractall(curdir)
 
-    elikiwa args.create ni sio Tupu:
+    lasivyo args.create ni sio Tupu:
         zip_name = args.create.pop(0)
         files = args.create
 
         eleza addToZip(zf, path, zippath):
             ikiwa os.path.isfile(path):
                 zf.write(path, zippath, ZIP_DEFLATED)
-            elikiwa os.path.isdir(path):
+            lasivyo os.path.isdir(path):
                 ikiwa zippath:
                     zf.write(path, zippath)
                 kila nm kwenye sorted(os.listdir(path)):
@@ -2362,7 +2362,7 @@ eleza main(args=Tupu):
                              os.path.join(path, nm), os.path.join(zippath, nm))
             # isipokua: ignore
 
-        ukijumuisha ZipFile(zip_name, 'w') as zf:
+        ukijumuisha ZipFile(zip_name, 'w') kama zf:
             kila path kwenye files:
                 zippath = os.path.basename(path)
                 ikiwa sio zippath:

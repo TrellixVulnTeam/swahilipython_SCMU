@@ -1,5 +1,5 @@
 "Test mainmenu, coverage 100%."
-# Reported as 88%; mocking turtledemo absence would have no point.
+# Reported kama 88%; mocking turtledemo absence would have no point.
 
 kutoka idlelib agiza mainmenu
 agiza unittest

@@ -118,7 +118,7 @@ eleza spawn_main(pipe_handle, parent_pid=Tupu, tracker_fd=Tupu):
 
 
 eleza _main(fd, parent_sentinel):
-    ukijumuisha os.fdopen(fd, 'rb', closefd=Kweli) as from_parent:
+    ukijumuisha os.fdopen(fd, 'rb', closefd=Kweli) kama from_parent:
         process.current_process()._inheriting = Kweli
         jaribu:
             preparation_data = reduction.pickle.load(from_parent)
@@ -131,7 +131,7 @@ eleza _main(fd, parent_sentinel):
 
 eleza _check_not_importing_main():
     ikiwa getattr(process.current_process(), '_inheriting', Uongo):
-         ashiria RuntimeError('''
+        ashiria RuntimeError('''
         An attempt has been made to start a new process before the
         current process has finished its bootstrapping phase.
 
@@ -163,8 +163,8 @@ eleza get_preparation_data(name):
     sys_path=sys.path.copy()
     jaribu:
         i = sys_path.index('')
-    except ValueError:
-        pass
+    tatizo ValueError:
+        pita
     isipokua:
         sys_path[i] = process.ORIGINAL_DIR
 
@@ -177,16 +177,16 @@ eleza get_preparation_data(name):
         start_method=get_start_method(),
         )
 
-    # Figure out whether to initialise main kwenye the subprocess as a module
+    # Figure out whether to initialise main kwenye the subprocess kama a module
     # ama through direct execution (or to leave it alone entirely)
     main_module = sys.modules['__main__']
     main_mod_name = getattr(main_module.__spec__, "name", Tupu)
     ikiwa main_mod_name ni sio Tupu:
         d['init_main_from_name'] = main_mod_name
-    elikiwa sys.platform != 'win32' ama (not WINEXE na sio WINSERVICE):
+    lasivyo sys.platform != 'win32' ama (sio WINEXE na sio WINSERVICE):
         main_path = getattr(main_module, '__file__', Tupu)
         ikiwa main_path ni sio Tupu:
-            ikiwa (not os.path.isabs(main_path) and
+            ikiwa (sio os.path.isabs(main_path) na
                         process.ORIGINAL_DIR ni sio Tupu):
                 main_path = os.path.join(process.ORIGINAL_DIR, main_path)
             d['init_main_from_path'] = os.path.normpath(main_path)
@@ -232,7 +232,7 @@ eleza prepare(data):
 
     ikiwa 'init_main_from_name' kwenye data:
         _fixup_main_from_name(data['init_main_from_name'])
-    elikiwa 'init_main_from_path' kwenye data:
+    lasivyo 'init_main_from_path' kwenye data:
         _fixup_main_from_path(data['init_main_from_path'])
 
 # Multiprocessing module helpers to fix up the main module in
@@ -251,7 +251,7 @@ eleza _fixup_main_from_name(mod_name):
         return
 
     # Otherwise, __main__ may contain some non-main code where we need to
-    # support unpickling it properly. We rerun it as __mp_main__ na make
+    # support unpickling it properly. We rerun it kama __mp_main__ na make
     # the normal __main__ an alias to that
     old_main_modules.append(current_main)
     main_module = types.ModuleType("__mp_main__")

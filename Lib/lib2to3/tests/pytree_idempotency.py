@@ -51,11 +51,11 @@ eleza main():
         ikiwa diff(fn, tree):
             problems.append(fn)
 
-    # Process every single module on sys.path (but sio kwenye packages)
+    # Process every single module on sys.path (but haiko kwenye packages)
     kila dir kwenye sys.path:
         jaribu:
             names = os.listdir(dir)
-        except OSError:
+        tatizo OSError:
             endelea
         andika("Scanning", dir, "...", file=sys.stderr)
         kila name kwenye names:
@@ -65,7 +65,7 @@ eleza main():
             fn = os.path.join(dir, name)
             jaribu:
                 tree = dr.parse_file(fn, debug=Kweli)
-            except pgen2.parse.ParseError as err:
+            tatizo pgen2.parse.ParseError kama err:
                 andika("ParseError:", err)
             isipokua:
                 ikiwa diff(fn, tree):

@@ -38,7 +38,7 @@ kundi PackageNotFoundError(ModuleNotFoundError):
 
 
 kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
-    """An entry point as defined by Python packaging conventions.
+    """An entry point kama defined by Python packaging conventions.
 
     See `the packaging docs on entry points
     <https://packaging.python.org/specifications/entry-points/>`_
@@ -60,7 +60,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         - package.module:object.attribute
         - package.module:attr [extra1, extra2]
 
-    Other combinations are possible as well.
+    Other combinations are possible kama well.
 
     The expression ni lenient about whitespace around the ':',
     following the attr, na following any extras.
@@ -96,7 +96,7 @@ kundi EntryPoint(collections.namedtuple('EntryPointBase', 'name value group')):
         config.optionxform = str
         jaribu:
             config.read_string(text)
-        except AttributeError:  # pragma: nocover
+        tatizo AttributeError:  # pragma: nocover
             # Python 2 has no read_string
             config.readfp(io.StringIO(text))
         rudisha EntryPoint._from_config(config)
@@ -112,11 +112,11 @@ kundi PackagePath(pathlib.PurePosixPath):
     """A reference to a path kwenye a package"""
 
     eleza read_text(self, encoding='utf-8'):
-        ukijumuisha self.locate().open(encoding=encoding) as stream:
+        ukijumuisha self.locate().open(encoding=encoding) kama stream:
             rudisha stream.read()
 
     eleza read_binary(self):
-        ukijumuisha self.locate().open('rb') as stream:
+        ukijumuisha self.locate().open('rb') kama stream:
             rudisha stream.read()
 
     eleza locate(self):
@@ -166,13 +166,13 @@ kundi Distribution:
             ikiwa dist ni sio Tupu:
                 rudisha dist
         isipokua:
-             ashiria PackageNotFoundError(name)
+            ashiria PackageNotFoundError(name)
 
     @classmethod
     eleza discover(cls, **kwargs):
         """Return an iterable of Distribution objects kila all packages.
 
-        Pass a ``context`` ama pass keyword arguments kila constructing
+        Pass a ``context`` ama pita keyword arguments kila constructing
         a context.
 
         :context: A ``DistributionFinder.Context`` object.
@@ -180,7 +180,7 @@ kundi Distribution:
         """
         context = kwargs.pop('context', Tupu)
         ikiwa context na kwargs:
-             ashiria ValueError("cannot accept context na kwargs")
+            ashiria ValueError("cannot accept context na kwargs")
         context = context ama DistributionFinder.Context(**kwargs)
         rudisha itertools.chain.from_iterable(
             resolver(context)
@@ -439,7 +439,7 @@ kundi PathDistribution(Distribution):
 eleza distribution(distribution_name):
     """Get the ``Distribution`` instance kila the named package.
 
-    :param distribution_name: The name of the distribution package as a string.
+    :param distribution_name: The name of the distribution package kama a string.
     :return: A ``Distribution`` instance (or subkundi thereof).
     """
     rudisha Distribution.from_name(distribution_name)
@@ -466,7 +466,7 @@ eleza version(distribution_name):
     """Get the version string kila the named package.
 
     :param distribution_name: The name of the distribution package to query.
-    :return: The version string kila the package as defined kwenye the package's
+    :return: The version string kila the package kama defined kwenye the package's
         "Version" metadata key.
     """
     rudisha distribution(distribution_name).version

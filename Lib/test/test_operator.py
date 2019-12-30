@@ -63,7 +63,7 @@ kundi OperatorTestCase:
         operator = self.module
         kundi C(object):
             eleza __eq__(self, other):
-                 ashiria SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.eq)
         self.assertRaises(SyntaxError, operator.eq, C(), C())
         self.assertUongo(operator.eq(1, 0))
@@ -77,7 +77,7 @@ kundi OperatorTestCase:
         operator = self.module
         kundi C(object):
             eleza __ne__(self, other):
-                 ashiria SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.ne)
         self.assertRaises(SyntaxError, operator.ne, C(), C())
         self.assertKweli(operator.ne(1, 0))
@@ -280,7 +280,7 @@ kundi OperatorTestCase:
         operator = self.module
         kundi C(object):
             eleza __bool__(self):
-                 ashiria SyntaxError
+                ashiria SyntaxError
         self.assertRaises(TypeError, operator.truth)
         self.assertRaises(SyntaxError, operator.truth, C())
         self.assertKweli(operator.truth(5))
@@ -313,7 +313,7 @@ kundi OperatorTestCase:
     eleza test_attrgetter(self):
         operator = self.module
         kundi A:
-            pass
+            pita
         a = A()
         a.name = 'arthur'
         f = operator.attrgetter('name')
@@ -336,7 +336,7 @@ kundi OperatorTestCase:
 
         kundi C(object):
             eleza __getattr__(self, name):
-                 ashiria SyntaxError
+                ashiria SyntaxError
         self.assertRaises(SyntaxError, operator.attrgetter('foo'), C())
 
         # recursive gets
@@ -376,7 +376,7 @@ kundi OperatorTestCase:
 
         kundi C(object):
             eleza __getitem__(self, name):
-                 ashiria SyntaxError
+                ashiria SyntaxError
         self.assertRaises(SyntaxError, operator.itemgetter(42), C())
 
         f = operator.itemgetter('name')
@@ -409,7 +409,7 @@ kundi OperatorTestCase:
         # interesting sequences
         kundi T(tuple):
             'Tuple subclass'
-            pass
+            pita
         self.assertEqual(operator.itemgetter(0)(T('abc')), 'a')
         self.assertEqual(operator.itemgetter(0)(['a', 'b', 'c']), 'a')
         self.assertEqual(operator.itemgetter(0)(range(100, 200)), 100)
@@ -482,7 +482,7 @@ kundi OperatorTestCase:
 
             eleza __length_hint__(self):
                 ikiwa type(self.value) ni type:
-                     ashiria self.value
+                    ashiria self.value
                 isipokua:
                     rudisha self.value
 
@@ -527,7 +527,7 @@ kundi OperatorPickleTestCase:
     eleza test_attrgetter(self):
         attrgetter = self.module.attrgetter
         kundi A:
-            pass
+            pita
         a = A()
         a.x = 'X'
         a.y = 'Y'

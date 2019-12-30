@@ -29,13 +29,13 @@ agiza time
 agiza unittest
 
 ikiwa sio hasattr(select, "epoll"):
-     ashiria unittest.SkipTest("test works only on Linux 2.6")
+    ashiria unittest.SkipTest("test works only on Linux 2.6")
 
 jaribu:
     select.epoll()
-except OSError as e:
+tatizo OSError kama e:
     ikiwa e.errno == errno.ENOSYS:
-         ashiria unittest.SkipTest("kernel doesn't support epoll()")
+        ashiria unittest.SkipTest("kernel doesn't support epoll()")
     raise
 
 kundi TestEPoll(unittest.TestCase):
@@ -53,10 +53,10 @@ kundi TestEPoll(unittest.TestCase):
         client.setblocking(Uongo)
         jaribu:
             client.connect(('127.0.0.1', self.serverSocket.getsockname()[1]))
-        except OSError as e:
+        tatizo OSError kama e:
             self.assertEqual(e.args[0], errno.EINPROGRESS)
         isipokua:
-             ashiria AssertionError("Connect should have raised EINPROGRESS")
+            ashiria AssertionError("Connect should have raised EINPROGRESS")
         server, addr = self.serverSocket.accept()
 
         self.connections.extend((client, server))
@@ -65,10 +65,10 @@ kundi TestEPoll(unittest.TestCase):
     eleza test_create(self):
         jaribu:
             ep = select.epoll(16)
-        except OSError as e:
-             ashiria AssertionError(str(e))
+        tatizo OSError kama e:
+            ashiria AssertionError(str(e))
         self.assertKweli(ep.fileno() > 0, ep.fileno())
-        self.assertKweli(not ep.closed)
+        self.assertKweli(sio ep.closed)
         ep.close()
         self.assertKweli(ep.closed)
         self.assertRaises(ValueError, ep.fileno)
@@ -94,7 +94,7 @@ kundi TestEPoll(unittest.TestCase):
             self.assertRaises(OSError, select.epoll, flags=12356)
 
     eleza test_context_manager(self):
-        ukijumuisha select.epoll(16) as ep:
+        ukijumuisha select.epoll(16) kama ep:
             self.assertGreater(ep.fileno(), 0)
             self.assertUongo(ep.closed)
         self.assertKweli(ep.closed)
@@ -141,7 +141,7 @@ kundi TestEPoll(unittest.TestCase):
     eleza test_fromfd(self):
         server, client = self._connected_pair()
 
-        ukijumuisha select.epoll(2) as ep:
+        ukijumuisha select.epoll(2) kama ep:
             ep2 = select.epoll.fromfd(ep.fileno())
 
             ep2.register(server.fileno(), select.EPOLLIN | select.EPOLLOUT)
@@ -154,10 +154,10 @@ kundi TestEPoll(unittest.TestCase):
 
         jaribu:
             ep2.poll(1, 4)
-        except OSError as e:
+        tatizo OSError kama e:
             self.assertEqual(e.args[0], errno.EBADF, e)
         isipokua:
-            self.fail("epoll on closed fd didn't  ashiria EBADF")
+            self.fail("epoll on closed fd didn't ashiria EBADF")
 
     eleza test_control_and_wait(self):
         client, server = self._connected_pair()

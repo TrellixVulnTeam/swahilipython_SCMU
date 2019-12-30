@@ -38,7 +38,7 @@ kundi FileDialog:
 
     The 'key' argument specifies a key kwenye the global dictionary
     'dialogstates', which keeps track of the values kila the directory
-    na pattern arguments, overriding the values passed kwenye (it does
+    na pattern arguments, overriding the values pitaed kwenye (it does
     sio keep track of the default argument!).  If no key ni specified,
     the dialog keeps no memory of previous state.  Note that memory is
     kept even when the dialog ni canceled.  (All this emulates the
@@ -166,7 +166,7 @@ kundi FileDialog:
         dir, pat = self.get_filter()
         jaribu:
             names = os.listdir(dir)
-        except OSError:
+        tatizo OSError:
             self.master.bell()
             return
         self.directory = dir
@@ -178,7 +178,7 @@ kundi FileDialog:
             fullname = os.path.join(dir, name)
             ikiwa os.path.isdir(fullname):
                 subdirs.append(name)
-            elikiwa fnmatch.fnmatch(name, pat):
+            lasivyo fnmatch.fnmatch(name, pat):
                 matchingfiles.append(name)
         self.dirs.delete(0, END)
         kila name kwenye subdirs:
@@ -209,7 +209,7 @@ kundi FileDialog:
         ikiwa sio os.path.isabs(dir):
             jaribu:
                 pwd = os.getcwd()
-            except OSError:
+            tatizo OSError:
                 pwd = Tupu
             ikiwa pwd:
                 dir = os.path.join(pwd, dir)
@@ -271,7 +271,7 @@ kundi SaveFileDialog(FileDialog):
 # - defaultextension: added to filename ikiwa sio explicitly given
 #
 # - filetypes: sequence of (label, pattern) tuples.  the same pattern
-#   may occur ukijumuisha several patterns.  use "*" as pattern to indicate
+#   may occur ukijumuisha several patterns.  use "*" kama pattern to indicate
 #   all files.
 #
 # - initialdir: initial directory.  preserved by dialog instance.
@@ -299,8 +299,8 @@ kundi _Dialog(commondialog.Dialog):
         jaribu:
             # make sure "filetypes" ni a tuple
             self.options["filetypes"] = tuple(self.options["filetypes"])
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
 
     eleza _fixresult(self, widget, result):
         ikiwa result:
@@ -308,9 +308,9 @@ kundi _Dialog(commondialog.Dialog):
             # convert Tcl path objects to strings
             jaribu:
                 result = result.string
-            except AttributeError:
+            tatizo AttributeError:
                 # it already ni a string
-                pass
+                pita
             path, file = os.path.split(result)
             self.options["initialdir"] = path
             self.options["initialfile"] = file
@@ -333,7 +333,7 @@ kundi Open(_Dialog):
             ikiwa result:
                 path, file = os.path.split(result[0])
                 self.options["initialdir"] = path
-                # don't set initialfile ama filename, as we have multiple of these
+                # don't set initialfile ama filename, kama we have multiple of these
             rudisha result
         ikiwa sio widget.tk.wantobjects() na "multiple" kwenye self.options:
             # Need to split result explicitly
@@ -358,9 +358,9 @@ kundi Directory(commondialog.Dialog):
             # convert Tcl path objects to strings
             jaribu:
                 result = result.string
-            except AttributeError:
+            tatizo AttributeError:
                 # it already ni a string
-                pass
+                pita
             # keep directory until next time
             self.options["initialdir"] = result
         self.directory = result # compatibility
@@ -448,7 +448,7 @@ eleza test():
     andika(loadfile, savefile)
 
     # Since the file name may contain non-ASCII characters, we need
-    # to find an encoding that likely supports the file name, and
+    # to find an encoding that likely supports the file name, na
     # displays correctly on the terminal.
 
     # Start off ukijumuisha UTF-8
@@ -460,8 +460,8 @@ eleza test():
         agiza locale
         locale.setlocale(locale.LC_ALL,'')
         enc = locale.nl_langinfo(locale.CODESET)
-    except (ImportError, AttributeError):
-        pass
+    tatizo (ImportError, AttributeError):
+        pita
 
     # dialog kila opening files
 

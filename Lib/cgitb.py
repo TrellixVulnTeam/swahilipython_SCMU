@@ -18,7 +18,7 @@ original use of this module)
 Alternatively, ikiwa you have caught an exception na want cgitb to display it
 kila you, call cgitb.handler().  The optional argument to handler() ni a
 3-item tuple (etype, evalue, etb) just like the value of sys.exc_info().
-The default handler displays output as HTML.
+The default handler displays output kama HTML.
 
 """
 agiza inspect
@@ -82,7 +82,7 @@ eleza scanvars(reader, frame, locals):
     vars, lasttoken, parent, prefix, value = [], Tupu, Tupu, '', __UNDEF__
     kila ttype, token, start, end, line kwenye tokenize.generate_tokens(reader):
         ikiwa ttype == tokenize.NEWLINE: koma
-        ikiwa ttype == tokenize.NAME na token sio kwenye keyword.kwlist:
+        ikiwa ttype == tokenize.NAME na token haiko kwenye keyword.kwlist:
             ikiwa lasttoken == '.':
                 ikiwa parent ni sio __UNDEF__:
                     value = getattr(parent, token, __UNDEF__)
@@ -90,7 +90,7 @@ eleza scanvars(reader, frame, locals):
             isipokua:
                 where, value = lookup(token, frame, locals)
                 vars.append((token, where, value))
-        elikiwa token == '.':
+        lasivyo token == '.':
             prefix += lasttoken + '.'
             parent = value
         isipokua:
@@ -157,7 +157,7 @@ function calls leading up to the error, kwenye the order they occurred.</p>'''
             ikiwa value ni sio __UNDEF__:
                 ikiwa where kwenye ('global', 'builtin'):
                     name = ('<em>%s</em> ' % where) + strong(name)
-                elikiwa where == 'local':
+                lasivyo where == 'local':
                     name = strong(name)
                 isipokua:
                     name = where + strong(name.split('.')[-1])
@@ -234,7 +234,7 @@ function calls leading up to the error, kwenye the order they occurred.
             done[name] = 1
             ikiwa value ni sio __UNDEF__:
                 ikiwa where == 'global': name = 'global ' + name
-                elikiwa where != 'local': name = where + name.split('.')[-1]
+                lasivyo where != 'local': name = where + name.split('.')[-1]
                 dump.append('%s = %s' % (name, pydoc.text.repr(value)))
             isipokua:
                 dump.append(name + ' undefined')
@@ -296,7 +296,7 @@ kundi Hook:
             (fd, path) = tempfile.mkstemp(suffix=suffix, dir=self.logdir)
 
             jaribu:
-                ukijumuisha os.fdopen(fd, 'w') as file:
+                ukijumuisha os.fdopen(fd, 'w') kama file:
                     file.write(doc)
                 msg = '%s contains the description of this error.' % path
             tatizo:
@@ -308,11 +308,11 @@ kundi Hook:
                 self.file.write(msg + '\n')
         jaribu:
             self.file.flush()
-        tatizo: pass
+        tatizo: pita
 
 handler = Hook().handle
 eleza enable(display=1, logdir=Tupu, context=5, format="html"):
-    """Install an exception handler that formats tracebacks as HTML.
+    """Install an exception handler that formats tracebacks kama HTML.
 
     The optional argument 'display' can be set to 0 to suppress sending the
     traceback to the browser, na 'logdir' can be set to a directory to cause

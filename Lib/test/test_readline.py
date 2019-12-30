@@ -110,7 +110,7 @@ kundi TestHistoryManipulation (unittest.TestCase):
         readline.clear_history()
         jaribu:
             readline.add_history("entrée 1")
-        except UnicodeEncodeError as err:
+        tatizo UnicodeEncodeError kama err:
             self.skipTest("Locale cannot encode test data: " + format(err))
         readline.add_history("entrée 2")
         readline.replace_history_item(1, "entrée 22")
@@ -163,7 +163,7 @@ andika("History length:", readline.get_current_history_length())
 
         jaribu:
             readline.add_history("\xEB\xEF")
-        except UnicodeEncodeError as err:
+        tatizo UnicodeEncodeError kama err:
             self.skipTest("Locale cannot encode test data: " + format(err))
 
         script = r"""agiza readline
@@ -245,13 +245,13 @@ andika("history", ascii(readline.get_history_item(1)))
                      "editline history size configuration ni broken")
     eleza test_history_size(self):
         history_size = 10
-        ukijumuisha temp_dir() as test_dir:
+        ukijumuisha temp_dir() kama test_dir:
             inputrc = os.path.join(test_dir, "inputrc")
-            ukijumuisha open(inputrc, "wb") as f:
+            ukijumuisha open(inputrc, "wb") kama f:
                 f.write(b"set history-size %d\n" % history_size)
 
             history_file = os.path.join(test_dir, "history")
-            ukijumuisha open(history_file, "wb") as f:
+            ukijumuisha open(history_file, "wb") kama f:
                 # history_size * 2 items crashes readline
                 data = b"".join(b"item %d\n" % i
                                 kila i kwenye range(history_size * 2))
@@ -273,7 +273,7 @@ readline.write_history_file(history_file)
 
             run_pty(script, input=b"last input\r", env=env)
 
-            ukijumuisha open(history_file, "rb") as f:
+            ukijumuisha open(history_file, "rb") kama f:
                 lines = f.readlines()
             self.assertEqual(len(lines), history_size)
             self.assertEqual(lines[-1].strip(), b"last input")
@@ -286,14 +286,14 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
     args = (sys.executable, '-c', script)
     proc = subprocess.Popen(args, stdin=slave, stdout=slave, stderr=slave, env=env)
     os.close(slave)
-    ukijumuisha ExitStack() as cleanup:
+    ukijumuisha ExitStack() kama cleanup:
         cleanup.enter_context(proc)
         eleza terminate(proc):
             jaribu:
                 proc.terminate()
-            except ProcessLookupError:
+            tatizo ProcessLookupError:
                 # Workaround kila Open/Net BSD bug (Issue 16762)
-                pass
+                pita
         cleanup.callback(terminate, proc)
         cleanup.callback(os.close, master)
         # Avoid using DefaultSelector na PollSelector. Kqueue() does not
@@ -309,7 +309,7 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
                 ikiwa events & selectors.EVENT_READ:
                     jaribu:
                         chunk = os.read(master, 0x10000)
-                    except OSError as err:
+                    tatizo OSError kama err:
                         # Linux raises EIO when slave ni closed (Issue 5380)
                         ikiwa err.errno != EIO:
                             raise
@@ -320,7 +320,7 @@ eleza run_pty(script, input=b"dummy input\r", env=Tupu):
                 ikiwa events & selectors.EVENT_WRITE:
                     jaribu:
                         input = input[os.write(master, input):]
-                    except OSError as err:
+                    tatizo OSError kama err:
                         # Apparently EIO means the slave was closed
                         ikiwa err.errno != EIO:
                             raise

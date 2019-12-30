@@ -41,16 +41,16 @@ eleza receive(sock, n, timeout=20):
     ikiwa sock kwenye r:
         rudisha sock.recv(n)
     isipokua:
-         ashiria RuntimeError("timed out on %r" % (sock,))
+        ashiria RuntimeError("timed out on %r" % (sock,))
 
 ikiwa HAVE_UNIX_SOCKETS na HAVE_FORKING:
     kundi ForkingUnixStreamServer(socketserver.ForkingMixIn,
                                   socketserver.UnixStreamServer):
-        pass
+        pita
 
     kundi ForkingUnixDatagramServer(socketserver.ForkingMixIn,
                                     socketserver.UnixDatagramServer):
-        pass
+        pita
 
 
 @contextlib.contextmanager
@@ -58,7 +58,7 @@ eleza simple_subprocess(testcase):
     """Tests that a custom child process ni sio waited on (Issue 1540386)"""
     pid = os.fork()
     ikiwa pid == 0:
-        # Don't  ashiria an exception; it would be caught by the test harness.
+        # Don't ashiria an exception; it would be caught by the test harness.
         os._exit(72)
     jaribu:
         tuma Tupu
@@ -85,8 +85,8 @@ kundi SocketServerTest(unittest.TestCase):
         kila fn kwenye self.test_files:
             jaribu:
                 os.remove(fn)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         self.test_files[:] = []
 
     eleza pickaddr(self, proto):
@@ -114,7 +114,7 @@ kundi SocketServerTest(unittest.TestCase):
         ikiwa verbose: andika("creating server")
         jaribu:
             server = MyServer(addr, MyHandler)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             # Issue 29184: cannot bind() a Unix socket on Android.
             self.skipTest('Cannot create server (%s, %s): %s' %
                           (svrcls, addr, e))
@@ -157,22 +157,22 @@ kundi SocketServerTest(unittest.TestCase):
         ikiwa verbose: andika("done")
 
     eleza stream_examine(self, proto, addr):
-        ukijumuisha socket.socket(proto, socket.SOCK_STREAM) as s:
+        ukijumuisha socket.socket(proto, socket.SOCK_STREAM) kama s:
             s.connect(addr)
             s.sendall(TEST_STR)
             buf = data = receive(s, 100)
-            wakati data na b'\n' sio kwenye buf:
+            wakati data na b'\n' haiko kwenye buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
 
     eleza dgram_examine(self, proto, addr):
-        ukijumuisha socket.socket(proto, socket.SOCK_DGRAM) as s:
+        ukijumuisha socket.socket(proto, socket.SOCK_DGRAM) kama s:
             ikiwa HAVE_UNIX_SOCKETS na proto == socket.AF_UNIX:
                 s.bind(self.pickaddr(proto))
             s.sendto(TEST_STR, addr)
             buf = data = receive(s, 100)
-            wakati data na b'\n' sio kwenye buf:
+            wakati data na b'\n' haiko kwenye buf:
                 data = receive(s, 100)
                 buf += data
             self.assertEqual(buf, TEST_STR)
@@ -255,10 +255,10 @@ kundi SocketServerTest(unittest.TestCase):
         # Issue #2302: shutdown() should always succeed kwenye making an
         # other thread leave serve_forever().
         kundi MyServer(socketserver.TCPServer):
-            pass
+            pita
 
         kundi MyHandler(socketserver.StreamRequestHandler):
-            pass
+            pita
 
         threads = []
         kila i kwenye range(20):
@@ -288,15 +288,15 @@ kundi SocketServerTest(unittest.TestCase):
 
     eleza test_context_manager(self):
         ukijumuisha socketserver.TCPServer((HOST, 0),
-                                    socketserver.StreamRequestHandler) as server:
-            pass
+                                    socketserver.StreamRequestHandler) kama server:
+            pita
         self.assertEqual(-1, server.socket.fileno())
 
 
 kundi ErrorHandlerTest(unittest.TestCase):
-    """Test that the servers pass normal exceptions kutoka the handler to
-    handle_error(), na that exiting exceptions like SystemExit and
-    KeyboardInterrupt are sio passed."""
+    """Test that the servers pita normal exceptions kutoka the handler to
+    handle_error(), na that exiting exceptions like SystemExit na
+    KeyboardInterrupt are sio pitaed."""
 
     eleza tearDown(self):
         test.support.unlink(test.support.TESTFN)
@@ -329,7 +329,7 @@ kundi ErrorHandlerTest(unittest.TestCase):
         self.check_result(handled=Uongo)
 
     eleza check_result(self, handled):
-        ukijumuisha open(test.support.TESTFN) as log:
+        ukijumuisha open(test.support.TESTFN) kama log:
             expected = 'Handler called\n' + 'Error handled\n' * handled
             self.assertEqual(log.read(), expected)
 
@@ -339,7 +339,7 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
         self.exception = exception
         super().__init__((HOST, 0), BadHandler)
         ukijumuisha socket.create_connection(self.server_address):
-            pass
+            pita
         jaribu:
             self.handle_request()
         mwishowe:
@@ -347,18 +347,18 @@ kundi BaseErrorTestServer(socketserver.TCPServer):
         self.wait_done()
 
     eleza handle_error(self, request, client_address):
-        ukijumuisha open(test.support.TESTFN, 'a') as log:
+        ukijumuisha open(test.support.TESTFN, 'a') kama log:
             log.write('Error handled\n')
 
     eleza wait_done(self):
-        pass
+        pita
 
 
 kundi BadHandler(socketserver.BaseRequestHandler):
     eleza handle(self):
-        ukijumuisha open(test.support.TESTFN, 'a') as log:
+        ukijumuisha open(test.support.TESTFN, 'a') kama log:
             log.write('Handler called\n')
-         ashiria self.server.exception('Test error')
+        ashiria self.server.exception('Test error')
 
 
 kundi ThreadingErrorTestServer(socketserver.ThreadingMixIn,
@@ -377,7 +377,7 @@ kundi ThreadingErrorTestServer(socketserver.ThreadingMixIn,
 
 ikiwa HAVE_FORKING:
     kundi ForkingErrorTestServer(socketserver.ForkingMixIn, BaseErrorTestServer):
-        pass
+        pita
 
 
 kundi SocketWriterTest(unittest.TestCase):
@@ -427,7 +427,7 @@ kundi SocketWriterTest(unittest.TestCase):
         eleza run_client():
             s = socket.socket(server.address_family, socket.SOCK_STREAM,
                 socket.IPPROTO_TCP)
-            ukijumuisha s, s.makefile('rb') as reader:
+            ukijumuisha s, s.makefile('rb') kama reader:
                 s.connect(server.server_address)
                 nonlocal response1
                 response1 = reader.readline()

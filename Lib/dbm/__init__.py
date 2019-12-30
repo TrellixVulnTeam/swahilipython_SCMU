@@ -15,7 +15,7 @@ It has the following interface (key na data are strings):
 
         d[key] = data   # store data at key (may override data at
                         # existing key)
-        data = d[key]   # retrieve data at key ( ashiria KeyError ikiwa no
+        data = d[key]   # retrieve data at key (ashiria KeyError ikiwa no
                         # such key)
         toa d[key]      # delete data stored at key (raises KeyError
                         # ikiwa no such key)
@@ -36,7 +36,7 @@ agiza sys
 
 
 kundi error(Exception):
-    pass
+    pita
 
 _names = ['dbm.gnu', 'dbm.ndbm', 'dbm.dumb']
 _defaultmod = Tupu
@@ -46,7 +46,7 @@ error = (error, OSError)
 
 jaribu:
     kutoka dbm agiza ndbm
-except ImportError:
+tatizo ImportError:
     ndbm = Tupu
 
 
@@ -66,29 +66,29 @@ eleza open(file, flag='r', mode=0o666):
         kila name kwenye _names:
             jaribu:
                 mod = __import__(name, fromlist=['open'])
-            except ImportError:
+            tatizo ImportError:
                 endelea
             ikiwa sio _defaultmod:
                 _defaultmod = mod
             _modules[name] = mod
         ikiwa sio _defaultmod:
-             ashiria ImportError("no dbm clone found; tried %s" % _names)
+            ashiria ImportError("no dbm clone found; tried %s" % _names)
 
     # guess the type of an existing database, ikiwa sio creating a new one
-    result = whichdb(file) ikiwa 'n' sio kwenye flag isipokua Tupu
+    result = whichdb(file) ikiwa 'n' haiko kwenye flag isipokua Tupu
     ikiwa result ni Tupu:
         # db doesn't exist ama 'n' flag was specified to create a new db
         ikiwa 'c' kwenye flag ama 'n' kwenye flag:
             # file doesn't exist na the new flag was used so use default type
             mod = _defaultmod
         isipokua:
-             ashiria error[0]("db file doesn't exist; "
+            ashiria error[0]("db file doesn't exist; "
                            "use 'c' ama 'n' flag to create a new db")
-    elikiwa result == "":
+    lasivyo result == "":
         # db type cannot be determined
-         ashiria error[0]("db type could sio be determined")
-    elikiwa result sio kwenye _modules:
-         ashiria error[0]("db type ni {0}, but the module ni sio "
+        ashiria error[0]("db type could sio be determined")
+    lasivyo result haiko kwenye _modules:
+        ashiria error[0]("db type ni {0}, but the module ni sio "
                        "available".format(result))
     isipokua:
         mod = _modules[result]
@@ -115,7 +115,7 @@ eleza whichdb(filename):
         f = io.open(filename + ".dir", "rb")
         f.close()
         rudisha "dbm.ndbm"
-    except OSError:
+    tatizo OSError:
         # some dbm emulations based on Berkeley DB generate a .db file
         # some do not, but they should be caught by the bsd checks
         jaribu:
@@ -128,8 +128,8 @@ eleza whichdb(filename):
                 d = ndbm.open(filename)
                 d.close()
                 rudisha "dbm.ndbm"
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     # Check kila dumbdbm next -- this has a .dir na a .dat file
     jaribu:
@@ -145,13 +145,13 @@ eleza whichdb(filename):
                 rudisha "dbm.dumb"
         mwishowe:
             f.close()
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
 
     # See ikiwa the file exists, rudisha Tupu ikiwa not
     jaribu:
         f = io.open(filename, "rb")
-    except OSError:
+    tatizo OSError:
         rudisha Tupu
 
     ukijumuisha f:
@@ -166,7 +166,7 @@ eleza whichdb(filename):
     # Convert to 4-byte int kwenye native byte order -- rudisha "" ikiwa impossible
     jaribu:
         (magic,) = struct.unpack("=l", s)
-    except struct.error:
+    tatizo struct.error:
         rudisha ""
 
     # Check kila GNU dbm
@@ -177,7 +177,7 @@ eleza whichdb(filename):
     # front of the file type
     jaribu:
         (magic,) = struct.unpack("=l", s16[-4:])
-    except struct.error:
+    tatizo struct.error:
         rudisha ""
 
     # Unknown

@@ -37,7 +37,7 @@ setup()
 
 setup_defines_subkundi = """\
 kutoka distutils.core agiza setup
-kutoka distutils.command.install agiza install as _install
+kutoka distutils.command.install agiza install kama _install
 
 kundi install(_install):
     sub_commands = _install.sub_commands + ['cmd']
@@ -65,7 +65,7 @@ kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
         path = test.support.TESTFN
         ikiwa os.path.isfile(path):
             os.remove(path)
-        elikiwa os.path.isdir(path):
+        lasivyo os.path.isdir(path):
             shutil.rmtree(path)
 
     eleza write_setup(self, text, path=test.support.TESTFN):
@@ -78,7 +78,7 @@ kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     eleza test_run_setup_provides_file(self):
         # Make sure the script can use __file__; ikiwa that's missing, the test
-        # setup.py script will  ashiria NameError.
+        # setup.py script will ashiria NameError.
         distutils.core.run_setup(
             self.write_setup(setup_using___file__))
 
@@ -91,7 +91,7 @@ kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     eleza test_run_setup_defines_subclass(self):
         # Make sure the script can use __file__; ikiwa that's missing, the test
-        # setup.py script will  ashiria NameError.
+        # setup.py script will ashiria NameError.
         dist = distutils.core.run_setup(
             self.write_setup(setup_defines_subclass))
         install = dist.get_command_obj('install')
@@ -99,7 +99,7 @@ kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
 
     eleza test_run_setup_uses_current_dir(self):
         # This tests that the setup script ni run ukijumuisha the current directory
-        # as its own current directory; this was temporarily broken by a
+        # kama its own current directory; this was temporarily broken by a
         # previous patch when TESTFN did sio use the current directory.
         sys.stdout = io.StringIO()
         cwd = os.getcwd()
@@ -118,14 +118,14 @@ kundi CoreTestCase(support.EnvironGuard, unittest.TestCase):
     eleza test_debug_mode(self):
         # this covers the code called when DEBUG ni set
         sys.argv = ['setup.py', '--name']
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             distutils.core.setup(name='bar')
         stdout.seek(0)
         self.assertEqual(stdout.read(), 'bar\n')
 
         distutils.core.DEBUG = Kweli
         jaribu:
-            ukijumuisha captured_stdout() as stdout:
+            ukijumuisha captured_stdout() kama stdout:
                 distutils.core.setup(name='bar')
         mwishowe:
             distutils.core.DEBUG = Uongo

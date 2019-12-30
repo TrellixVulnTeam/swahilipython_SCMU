@@ -24,7 +24,7 @@ kundi TestContains(unittest.TestCase):
         self.assertIn(1, c)
         self.assertNotIn(0, c)
         self.assertRaises(TypeError, lambda: 1 kwenye a)
-        self.assertRaises(TypeError, lambda: 1 sio kwenye a)
+        self.assertRaises(TypeError, lambda: 1 haiko kwenye a)
 
         # test char kwenye string
         self.assertIn('c', 'abc')
@@ -94,7 +94,7 @@ kundi TestContains(unittest.TestCase):
             """Is sio a container
 
             This kundi ni a perfectly good iterable (as tested by
-            list(bc)), as well as inheriting kutoka a perfectly good
+            list(bc)), kama well kama inheriting kutoka a perfectly good
             container, but __contains__ = Tupu prevents the usual
             fallback to iteration kwenye the container protocol. That
             is, normally, 0 kwenye bc would fall back to the equivalent

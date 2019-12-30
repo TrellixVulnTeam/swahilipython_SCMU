@@ -62,14 +62,14 @@ kundi BaseRotatingHandler(logging.FileHandler):
         """
         Emit a record.
 
-        Output the record to the file, catering kila rollover as described
+        Output the record to the file, catering kila rollover kama described
         kwenye doRollover().
         """
         jaribu:
             ikiwa self.shouldRollover(record):
                 self.doRollover()
             logging.FileHandler.emit(self, record)
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
     eleza rotation_filename(self, default_name):
@@ -79,7 +79,7 @@ kundi BaseRotatingHandler(logging.FileHandler):
         This ni provided so that a custom filename can be provided.
 
         The default implementation calls the 'namer' attribute of the
-        handler, ikiwa it's callable, passing the default name to
+        handler, ikiwa it's callable, pitaing the default name to
         it. If the attribute isn't callable (the default ni Tupu), the name
         ni returned unchanged.
 
@@ -96,7 +96,7 @@ kundi BaseRotatingHandler(logging.FileHandler):
         When rotating, rotate the current log.
 
         The default implementation calls the 'rotator' attribute of the
-        handler, ikiwa it's callable, passing the source na dest arguments to
+        handler, ikiwa it's callable, pitaing the source na dest arguments to
         it. If the attribute isn't callable (the default ni Tupu), the source
         ni simply renamed to the destination.
 
@@ -119,7 +119,7 @@ kundi RotatingFileHandler(BaseRotatingHandler):
     """
     eleza __init__(self, filename, mode='a', maxBytes=0, backupCount=0, encoding=Tupu, delay=Uongo):
         """
-        Open the specified file na use it as the stream kila logging.
+        Open the specified file na use it kama the stream kila logging.
 
         By default, the file grows indefinitely. You can specify particular
         values of maxBytes na backupCount to allow the file to rollover at
@@ -127,7 +127,7 @@ kundi RotatingFileHandler(BaseRotatingHandler):
 
         Rollover occurs whenever the current log file ni nearly maxBytes in
         length. If backupCount ni >= 1, the system will successively create
-        new files ukijumuisha the same pathname as the base file, but ukijumuisha extensions
+        new files ukijumuisha the same pathname kama the base file, but ukijumuisha extensions
         ".1", ".2" etc. appended to it. For example, ukijumuisha a backupCount of 5
         na a base file name of "app.log", you would get "app.log",
         "app.log.1", "app.log.2", ... through to "app.log.5". The file being
@@ -151,7 +151,7 @@ kundi RotatingFileHandler(BaseRotatingHandler):
 
     eleza doRollover(self):
         """
-        Do a rollover, as described kwenye __init__().
+        Do a rollover, kama described kwenye __init__().
         """
         ikiwa self.stream:
             self.stream.close()
@@ -218,33 +218,33 @@ kundi TimedRotatingFileHandler(BaseRotatingHandler):
             self.interval = 1 # one second
             self.suffix = "%Y-%m-%d_%H-%M-%S"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when == 'M':
+        lasivyo self.when == 'M':
             self.interval = 60 # one minute
             self.suffix = "%Y-%m-%d_%H-%M"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when == 'H':
+        lasivyo self.when == 'H':
             self.interval = 60 * 60 # one hour
             self.suffix = "%Y-%m-%d_%H"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}_\d{2}(\.\w+)?$"
-        elikiwa self.when == 'D' ama self.when == 'MIDNIGHT':
+        lasivyo self.when == 'D' ama self.when == 'MIDNIGHT':
             self.interval = 60 * 60 * 24 # one day
             self.suffix = "%Y-%m-%d"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}(\.\w+)?$"
-        elikiwa self.when.startswith('W'):
+        lasivyo self.when.startswith('W'):
             self.interval = 60 * 60 * 24 * 7 # one week
             ikiwa len(self.when) != 2:
-                 ashiria ValueError("You must specify a day kila weekly rollover kutoka 0 to 6 (0 ni Monday): %s" % self.when)
+                ashiria ValueError("You must specify a day kila weekly rollover kutoka 0 to 6 (0 ni Monday): %s" % self.when)
             ikiwa self.when[1] < '0' ama self.when[1] > '6':
-                 ashiria ValueError("Invalid day specified kila weekly rollover: %s" % self.when)
+                ashiria ValueError("Invalid day specified kila weekly rollover: %s" % self.when)
             self.dayOfWeek = int(self.when[1])
             self.suffix = "%Y-%m-%d"
             self.extMatch = r"^\d{4}-\d{2}-\d{2}(\.\w+)?$"
         isipokua:
-             ashiria ValueError("Invalid rollover interval specified: %s" % self.when)
+            ashiria ValueError("Invalid rollover interval specified: %s" % self.when)
 
         self.extMatch = re.compile(self.extMatch, re.ASCII)
         self.interval = self.interval * interval # multiply by units requested
-        # The following line added because the filename passed kwenye could be a
+        # The following line added because the filename pitaed kwenye could be a
         # path object (see Issue #27493), but self.baseFilename will be a string
         filename = self.baseFilename
         ikiwa os.path.exists(filename):
@@ -330,7 +330,7 @@ kundi TimedRotatingFileHandler(BaseRotatingHandler):
         """
         Determine ikiwa rollover should occur.
 
-        record ni sio used, as we are just comparing times, but it ni needed so
+        record ni sio used, kama we are just comparing times, but it ni needed so
         the method signatures are the same
         """
         t = int(time.time())
@@ -415,7 +415,7 @@ kundi WatchedFileHandler(logging.FileHandler):
     """
     A handler kila logging to a file, which watches the file
     to see ikiwa it has changed wakati kwenye use. This can happen because of
-    usage of programs such as newsyslog na logrotate which perform
+    usage of programs such kama newsyslog na logrotate which perform
     log file rotation. This handler, intended kila use under Unix,
     watches the file to see ikiwa it has changed since the last emit.
     (A file has changed ikiwa its device ama inode have changed.)
@@ -456,7 +456,7 @@ kundi WatchedFileHandler(logging.FileHandler):
         jaribu:
             # stat the file by path, checking kila existence
             sres = os.stat(self.baseFilename)
-        except FileNotFoundError:
+        tatizo FileNotFoundError:
             sres = Tupu
         # compare file system stat ukijumuisha that of our stream file handle
         ikiwa sio sres ama sres[ST_DEV] != self.dev ama sres[ST_INO] != self.ino:
@@ -530,7 +530,7 @@ kundi SocketHandler(logging.Handler):
             result.settimeout(timeout)
             jaribu:
                 result.connect(self.address)
-            except OSError:
+            tatizo OSError:
                 result.close()  # Issue 19182
                 raise
         rudisha result
@@ -543,7 +543,7 @@ kundi SocketHandler(logging.Handler):
         """
         now = time.time()
         # Either retryTime ni Tupu, kwenye which case this
-        # ni the first time back after a disconnect, or
+        # ni the first time back after a disconnect, ama
         # we've waited long enough.
         ikiwa self.retryTime ni Tupu:
             attempt = Kweli
@@ -553,7 +553,7 @@ kundi SocketHandler(logging.Handler):
             jaribu:
                 self.sock = self.makeSocket()
                 self.retryTime = Tupu # next time, no delay before trying
-            except OSError:
+            tatizo OSError:
                 #Creation failed, so set the retry time na return.
                 ikiwa self.retryTime ni Tupu:
                     self.retryPeriod = self.retryStart
@@ -578,13 +578,13 @@ kundi SocketHandler(logging.Handler):
         ikiwa self.sock:
             jaribu:
                 self.sock.sendall(s)
-            except OSError: #pragma: no cover
+            tatizo OSError: #pragma: no cover
                 self.sock.close()
                 self.sock = Tupu  # so we can call createSocket next time
 
     eleza makePickle(self, record):
         """
-        Pickles the record kwenye binary format ukijumuisha a length prefix, and
+        Pickles the record kwenye binary format ukijumuisha a length prefix, na
         returns it ready kila transmission across the socket.
         """
         ei = record.exc_info
@@ -593,7 +593,7 @@ kundi SocketHandler(logging.Handler):
             dummy = self.format(record)
         # See issue #14436: If msg ama args are objects, they may sio be
         # available on the receiving end. So we convert the msg % args
-        # to a string, save it as msg na zap the args.
+        # to a string, save it kama msg na zap the args.
         d = dict(record.__dict__)
         d['msg'] = record.getMessage()
         d['args'] = Tupu
@@ -630,7 +630,7 @@ kundi SocketHandler(logging.Handler):
         jaribu:
             s = self.makePickle(record)
             self.send(s)
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
     eleza close(self):
@@ -682,7 +682,7 @@ kundi DatagramHandler(SocketHandler):
         Send a pickled string to a socket.
 
         This function no longer allows kila partial sends which can happen
-        when the network ni busy - UDP does sio guarantee delivery and
+        when the network ni busy - UDP does sio guarantee delivery na
         can deliver packets out of sequence.
         """
         ikiwa self.sock ni Tupu:
@@ -797,10 +797,10 @@ kundi SysLogHandler(logging.Handler):
         """
         Initialize a handler.
 
-        If address ni specified as a string, a UNIX socket ni used. To log to a
+        If address ni specified kama a string, a UNIX socket ni used. To log to a
         local syslogd, "SysLogHandler(address="/dev/log")" can be used.
         If facility ni sio specified, LOG_USER ni used. If socktype is
-        specified as socket.SOCK_DGRAM ama socket.SOCK_STREAM, that specific
+        specified kama socket.SOCK_DGRAM ama socket.SOCK_STREAM, that specific
         socket type will be used. For Unix sockets, you can also specify a
         socktype of Tupu, kwenye which case socket.SOCK_DGRAM will be used, falling
         back to socket.SOCK_STREAM.
@@ -819,8 +819,8 @@ kundi SysLogHandler(logging.Handler):
             # to ignore it also here.
             jaribu:
                 self._connect_unixsocket(address)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         isipokua:
             self.unixsocket = Uongo
             ikiwa socktype ni Tupu:
@@ -828,7 +828,7 @@ kundi SysLogHandler(logging.Handler):
             host, port = address
             ress = socket.getaddrinfo(host, port, 0, socktype)
             ikiwa sio ress:
-                 ashiria OSError("getaddrinfo returns an empty list")
+                ashiria OSError("getaddrinfo returns an empty list")
             kila res kwenye ress:
                 af, socktype, proto, _, sa = res
                 err = sock = Tupu
@@ -837,12 +837,12 @@ kundi SysLogHandler(logging.Handler):
                     ikiwa socktype == socket.SOCK_STREAM:
                         sock.connect(sa)
                     koma
-                except OSError as exc:
+                tatizo OSError kama exc:
                     err = exc
                     ikiwa sock ni sio Tupu:
                         sock.close()
             ikiwa err ni sio Tupu:
-                 ashiria err
+                ashiria err
             self.socket = sock
             self.socktype = socktype
 
@@ -855,7 +855,7 @@ kundi SysLogHandler(logging.Handler):
             self.socket.connect(address)
             # it worked, so set self.socktype to the used type
             self.socktype = use_socktype
-        except OSError:
+        tatizo OSError:
             self.socket.close()
             ikiwa self.socktype ni sio Tupu:
                 # user didn't specify falling back, so fail
@@ -866,14 +866,14 @@ kundi SysLogHandler(logging.Handler):
                 self.socket.connect(address)
                 # it worked, so set self.socktype to the used type
                 self.socktype = use_socktype
-            except OSError:
+            tatizo OSError:
                 self.socket.close()
                 raise
 
     eleza encodePriority(self, facility, priority):
         """
-        Encode the facility na priority. You can pass kwenye strings or
-        integers - ikiwa strings are passed, the facility_names and
+        Encode the facility na priority. You can pita kwenye strings ama
+        integers - ikiwa strings are pitaed, the facility_names na
         priority_names mapping dictionaries are used to convert them to
         integers.
         """
@@ -926,21 +926,21 @@ kundi SysLogHandler(logging.Handler):
             prio = '<%d>' % self.encodePriority(self.facility,
                                                 self.mapPriority(record.levelname))
             prio = prio.encode('utf-8')
-            # Message ni a string. Convert to bytes as required by RFC 5424
+            # Message ni a string. Convert to bytes kama required by RFC 5424
             msg = msg.encode('utf-8')
             msg = prio + msg
             ikiwa self.unixsocket:
                 jaribu:
                     self.socket.send(msg)
-                except OSError:
+                tatizo OSError:
                     self.socket.close()
                     self._connect_unixsocket(self.address)
                     self.socket.send(msg)
-            elikiwa self.socktype == socket.SOCK_DGRAM:
+            lasivyo self.socktype == socket.SOCK_DGRAM:
                 self.socket.sendto(msg, self.address)
             isipokua:
                 self.socket.sendall(msg)
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
 kundi SMTPHandler(logging.Handler):
@@ -955,13 +955,13 @@ kundi SMTPHandler(logging.Handler):
         Initialize the instance ukijumuisha the kutoka na to addresses na subject
         line of the email. To specify a non-standard SMTP port, use the
         (host, port) tuple format kila the mailhost argument. To specify
-        authentication credentials, supply a (username, password) tuple
+        authentication credentials, supply a (username, pitaword) tuple
         kila the credentials argument. To specify the use of a secure
-        protocol (TLS), pass kwenye a tuple kila the secure argument. This will
+        protocol (TLS), pita kwenye a tuple kila the secure argument. This will
         only be used when authentication credentials are supplied. The tuple
         will be either an empty tuple, ama a single-value tuple ukijumuisha the name
-        of a keyfile, ama a 2-value tuple ukijumuisha the names of the keyfile and
-        certificate file. (This tuple ni passed to the `starttls` method).
+        of a keyfile, ama a 2-value tuple ukijumuisha the names of the keyfile na
+        certificate file. (This tuple ni pitaed to the `starttls` method).
         A timeout kwenye seconds can be specified kila the SMTP connection (the
         default ni one second).
         """
@@ -971,7 +971,7 @@ kundi SMTPHandler(logging.Handler):
         isipokua:
             self.mailhost, self.mailport = mailhost, Tupu
         ikiwa isinstance(credentials, (list, tuple)):
-            self.username, self.password = credentials
+            self.username, self.pitaword = credentials
         isipokua:
             self.username = Tupu
         self.fromaddr = fromaddr
@@ -1017,10 +1017,10 @@ kundi SMTPHandler(logging.Handler):
                     smtp.ehlo()
                     smtp.starttls(*self.secure)
                     smtp.ehlo()
-                smtp.login(self.username, self.password)
+                smtp.login(self.username, self.pitaword)
             smtp.send_message(msg)
             smtp.quit()
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
 kundi NTEventLogHandler(logging.Handler):
@@ -1029,8 +1029,8 @@ kundi NTEventLogHandler(logging.Handler):
     registry entry kila the specified application name. If no dllname is
     provided, win32service.pyd (which contains some basic message
     placeholders) ni used. Note that use of these placeholders will make
-    your event logs big, as the entire message source ni held kwenye the log.
-    If you want slimmer logs, you have to pass kwenye the name of your own DLL
+    your event logs big, kama the entire message source ni held kwenye the log.
+    If you want slimmer logs, you have to pita kwenye the name of your own DLL
     which contains the message definitions you want to use kwenye the event log.
     """
     eleza __init__(self, appname, dllname=Tupu, logtype="Application"):
@@ -1054,7 +1054,7 @@ kundi NTEventLogHandler(logging.Handler):
                 logging.ERROR   : win32evtlog.EVENTLOG_ERROR_TYPE,
                 logging.CRITICAL: win32evtlog.EVENTLOG_ERROR_TYPE,
          }
-        except ImportError:
+        tatizo ImportError:
             andika("The Python Win32 extensions kila NT (service, event "\
                         "logging) appear sio to be available.")
             self._welu = Tupu
@@ -1062,7 +1062,7 @@ kundi NTEventLogHandler(logging.Handler):
     eleza getMessageID(self, record):
         """
         Return the message ID kila the event record. If you are using your
-        own messages, you could do this by having the msg passed to the
+        own messages, you could do this by having the msg pitaed to the
         logger being an ID rather than a formatting string. Then, kwenye here,
         you could use a dictionary lookup to get the message ID. This
         version returns 1, which ni the base message ID kwenye win32service.pyd.
@@ -1105,16 +1105,16 @@ kundi NTEventLogHandler(logging.Handler):
                 type = self.getEventType(record)
                 msg = self.format(record)
                 self._welu.ReportEvent(self.appname, id, cat, type, [msg])
-            except Exception:
+            tatizo Exception:
                 self.handleError(record)
 
     eleza close(self):
         """
         Clean up this handler.
 
-        You can remove the application name kutoka the registry as a
+        You can remove the application name kutoka the registry kama a
         source of event log entries. However, ikiwa you do this, you will
-        sio be able to see the events as you intended kwenye the Event Log
+        sio be able to see the events kama you intended kwenye the Event Log
         Viewer - it needs to be able to access the registry to get the
         DLL name.
         """
@@ -1123,7 +1123,7 @@ kundi NTEventLogHandler(logging.Handler):
 
 kundi HTTPHandler(logging.Handler):
     """
-    A kundi which sends records to a Web server, using either GET or
+    A kundi which sends records to a Web server, using either GET ama
     POST semantics.
     """
     eleza __init__(self, host, url, method="GET", secure=Uongo, credentials=Tupu,
@@ -1134,10 +1134,10 @@ kundi HTTPHandler(logging.Handler):
         """
         logging.Handler.__init__(self)
         method = method.upper()
-        ikiwa method sio kwenye ["GET", "POST"]:
-             ashiria ValueError("method must be GET ama POST")
+        ikiwa method haiko kwenye ["GET", "POST"]:
+            ashiria ValueError("method must be GET ama POST")
         ikiwa sio secure na context ni sio Tupu:
-             ashiria ValueError("context parameter only makes sense "
+            ashiria ValueError("context parameter only makes sense "
                              "ukijumuisha secure=Kweli")
         self.host = host
         self.url = url
@@ -1149,7 +1149,7 @@ kundi HTTPHandler(logging.Handler):
     eleza mapLogRecord(self, record):
         """
         Default implementation of mapping the log record into a dict
-        that ni sent as the CGI data. Overwrite kwenye your class.
+        that ni sent kama the CGI data. Overwrite kwenye your class.
         Contributed by Franz Glasner.
         """
         rudisha record.__dict__
@@ -1158,7 +1158,7 @@ kundi HTTPHandler(logging.Handler):
         """
         Emit a record.
 
-        Send the record to the Web server as a percent-encoded dictionary
+        Send the record to the Web server kama a percent-encoded dictionary
         """
         jaribu:
             agiza http.client, urllib.parse
@@ -1197,7 +1197,7 @@ kundi HTTPHandler(logging.Handler):
             ikiwa self.method == "POST":
                 h.send(data.encode('utf-8'))
             h.getresponse()    #can't do anything ukijumuisha the result
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
 kundi BufferingHandler(logging.Handler):
@@ -1334,7 +1334,7 @@ kundi QueueHandler(logging.Handler):
     """
     This handler sends events to a queue. Typically, it would be used together
     ukijumuisha a multiprocessing Queue to centralise logging to file kwenye one process
-    (in a multi-process application), so as to avoid file write contention
+    (in a multi-process application), so kama to avoid file write contention
     between processes.
 
     This code ni new kwenye Python 3.2, but this kundi can be copy pasted into
@@ -1343,7 +1343,7 @@ kundi QueueHandler(logging.Handler):
 
     eleza __init__(self, queue):
         """
-        Initialise an instance, using the passed queue.
+        Initialise an instance, using the pitaed queue.
         """
         logging.Handler.__init__(self)
         self.queue = queue
@@ -1374,8 +1374,8 @@ kundi QueueHandler(logging.Handler):
         # The format operation gets traceback text into record.exc_text
         # (ikiwa there's exception data), na also returns the formatted
         # message. We can then use this to replace the original
-        # msg + args, as these might be unpickleable. We also zap the
-        # exc_info na exc_text attributes, as they are no longer
+        # msg + args, kama these might be unpickleable. We also zap the
+        # exc_info na exc_text attributes, kama they are no longer
         # needed and, ikiwa sio Tupu, will typically sio be pickleable.
         msg = self.format(record)
         # bpo-35726: make copy of record to avoid affecting other handlers kwenye the chain.
@@ -1395,21 +1395,21 @@ kundi QueueHandler(logging.Handler):
         """
         jaribu:
             self.enqueue(self.prepare(record))
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
 
 kundi QueueListener(object):
     """
     This kundi implements an internal threaded listener which watches for
-    LogRecords being added to a queue, removes them na passes them to a
+    LogRecords being added to a queue, removes them na pitaes them to a
     list of handlers kila processing.
     """
     _sentinel = Tupu
 
     eleza __init__(self, queue, *handlers, respect_handler_level=Uongo):
         """
-        Initialise an instance ukijumuisha the specified queue and
+        Initialise an instance ukijumuisha the specified queue na
         handlers.
         """
         self.queue = queue
@@ -1441,9 +1441,9 @@ kundi QueueListener(object):
         """
         Prepare a record kila handling.
 
-        This method just returns the passed-in record. You may want to
-        override this method ikiwa you need to do any custom marshalling or
-        manipulation of the record before passing it to the handlers.
+        This method just returns the pitaed-in record. You may want to
+        override this method ikiwa you need to do any custom marshalling ama
+        manipulation of the record before pitaing it to the handlers.
         """
         rudisha record
 
@@ -1483,7 +1483,7 @@ kundi QueueListener(object):
                 self.handle(record)
                 ikiwa has_task_done:
                     q.task_done()
-            except queue.Empty:
+            tatizo queue.Empty:
                 koma
 
     eleza enqueue_sentinel(self):

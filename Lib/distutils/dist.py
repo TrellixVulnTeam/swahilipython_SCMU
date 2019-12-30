@@ -11,7 +11,7 @@ kutoka email agiza message_from_file
 
 jaribu:
     agiza warnings
-except ImportError:
+tatizo ImportError:
     warnings = Tupu
 
 kutoka distutils.errors agiza *
@@ -21,7 +21,7 @@ kutoka distutils agiza log
 kutoka distutils.debug agiza DEBUG
 
 # Regex to define acceptable Distutils command names.  This ni sio *quite*
-# the same as a Python NAME -- I don't allow leading underscores.  The fact
+# the same kama a Python NAME -- I don't allow leading underscores.  The fact
 # that they're very similar ni no coincidence; the default naming scheme is
 # to look kila a Python module named after the command.
 command_re = re.compile(r'^[a-zA-Z]([a-zA-Z0-9_]*)$')
@@ -31,9 +31,9 @@ eleza _ensure_list(value, fieldname):
     ikiwa isinstance(value, str):
         # a string containing comma separated values ni okay.  It will
         # be converted to a list by Distribution.finalize_options().
-        pass
-    elikiwa sio isinstance(value, list):
-        # passing a tuple ama an iterator perhaps, warn na convert
+        pita
+    lasivyo sio isinstance(value, list):
+        # pitaing a tuple ama an iterator perhaps, warn na convert
         typename = type(value).__name__
         msg = f"Warning: '{fieldname}' should be a list, got type '{typename}'"
         log.log(log.WARN, msg)
@@ -49,8 +49,8 @@ kundi Distribution:
     Setup scripts will almost never instantiate Distribution directly,
     unless the 'setup()' function ni totally inadequate to their needs.
     However, it ni conceivable that a setup script might wish to subclass
-    Distribution kila some specialized purpose, na then pass the subclass
-    to 'setup()' as the 'distclass' keyword argument.  If so, it is
+    Distribution kila some specialized purpose, na then pita the subclass
+    to 'setup()' kama the 'distclass' keyword argument.  If so, it is
     necessary to respect the expectations that 'setup' has of Distribution.
     See the code kila 'setup()', kwenye core.py, kila details.
     """
@@ -59,7 +59,7 @@ kundi Distribution:
     # supplied to the setup script prior to any actual commands.
     # Eg. "./setup.py -n" ama "./setup.py --quiet" both take advantage of
     # these global options.  This list should be kept to a bare minimum,
-    # since every global option ni also valid as a command option -- na we
+    # since every global option ni also valid kama a command option -- na we
     # don't want to pollute the commands ukijumuisha too many options that they
     # have minimal control over.
     # The fourth entry kila verbose means that it can be repeated.
@@ -194,14 +194,14 @@ Common commands: (see '--help-commands' kila more)
         # gives sysconfig.get_python_version() ikiwa the dist file is
         # specific to a Python version, 'any' ikiwa it ni good kila all
         # Python versions on the target platform, na '' kila a source
-        # file. pyversion should sio be used to specify minimum or
+        # file. pyversion should sio be used to specify minimum ama
         # maximum required Python versions; use the metainfo kila that
         # instead.
         self.dist_files = []
 
         # These options are really the business of various commands, rather
         # than of the Distribution itself.  We provide aliases kila them in
-        # Distribution as a convenience to the developer.
+        # Distribution kama a convenience to the developer.
         self.packages = Tupu
         self.package_data = {}
         self.package_dir = Tupu
@@ -214,7 +214,7 @@ Common commands: (see '--help-commands' kila more)
         self.extra_path = Tupu
         self.scripts = Tupu
         self.data_files = Tupu
-        self.password = ''
+        self.pitaword = ''
 
         # And now initialize bookkeeping stuff that can't be supplied by
         # the caller at all.  'command_obj' maps command names to
@@ -265,9 +265,9 @@ Common commands: (see '--help-commands' kila more)
             kila (key, val) kwenye attrs.items():
                 ikiwa hasattr(self.metadata, "set_" + key):
                     getattr(self.metadata, "set_" + key)(val)
-                elikiwa hasattr(self.metadata, key):
+                lasivyo hasattr(self.metadata, key):
                     setattr(self.metadata, key, val)
-                elikiwa hasattr(self, key):
+                lasivyo hasattr(self, key):
                     setattr(self, key, val)
                 isipokua:
                     msg = "Unknown distribution option: %s" % repr(key)
@@ -276,7 +276,7 @@ Common commands: (see '--help-commands' kila more)
         # no-user-cfg ni handled before other command line args
         # because other args override the config files, na this
         # one ni needed before we can load the config files.
-        # If attrs['script_args'] wasn't passed, assume false.
+        # If attrs['script_args'] wasn't pitaed, assume false.
         #
         # This also make sure we just look at the global options
         self.want_user_cfg = Kweli
@@ -331,7 +331,7 @@ Common commands: (see '--help-commands' kila more)
     # -- Config file finding/parsing methods ---------------------------
 
     eleza find_config_files(self):
-        """Find as many configuration files as should be processed kila this
+        """Find kama many configuration files kama should be processed kila this
         platform, na rudisha a list of filenames kwenye the order kwenye which they
         should be parsed.  The filenames returned are guaranteed to exist
         (modulo nasty race conditions).
@@ -409,7 +409,7 @@ Common commands: (see '--help-commands' kila more)
                 opt_dict = self.get_option_dict(section)
 
                 kila opt kwenye options:
-                    ikiwa opt != '__name__' na opt sio kwenye ignore_options:
+                    ikiwa opt != '__name__' na opt haiko kwenye ignore_options:
                         val = parser.get(section,opt)
                         opt = opt.replace('-', '_')
                         opt_dict[opt] = (filename, val)
@@ -427,12 +427,12 @@ Common commands: (see '--help-commands' kila more)
                 jaribu:
                     ikiwa alias:
                         setattr(self, alias, sio strtobool(val))
-                    elikiwa opt kwenye ('verbose', 'dry_run'): # ugh!
+                    lasivyo opt kwenye ('verbose', 'dry_run'): # ugh!
                         setattr(self, opt, strtobool(val))
                     isipokua:
                         setattr(self, opt, val)
-                except ValueError as msg:
-                     ashiria DistutilsOptionError(msg)
+                tatizo ValueError kama msg:
+                    ashiria DistutilsOptionError(msg)
 
     # -- Command-line parsing methods ----------------------------------
 
@@ -463,7 +463,7 @@ Common commands: (see '--help-commands' kila more)
 
         # We have to parse the command line a bit at a time -- global
         # options, then the first command, then its options, na so on --
-        # because each command will be handled by a different class, and
+        # because each command will be handled by a different class, na
         # the options that are valid kila a particular kundi aren't known
         # until we have loaded the command class, which doesn't happen
         # until we know what the command is.
@@ -484,7 +484,7 @@ Common commands: (see '--help-commands' kila more)
             ikiwa args ni Tupu:            # user asked kila help (and got it)
                 return
 
-        # Handle the cases of --help as a "global" option, ie.
+        # Handle the cases of --help kama a "global" option, ie.
         # "setup.py --help" na "setup.py --help command ...".  For the
         # former, we show global options (--verbose, --dry-run, etc.)
         # na display-only options (--name, --version, etc.); kila the
@@ -498,7 +498,7 @@ Common commands: (see '--help-commands' kila more)
 
         # Oops, no commands found -- an end-user error
         ikiwa sio self.commands:
-             ashiria DistutilsArgError("no commands supplied")
+            ashiria DistutilsArgError("no commands supplied")
 
         # All ni well: rudisha true
         rudisha Kweli
@@ -507,7 +507,7 @@ Common commands: (see '--help-commands' kila more)
         """Return the non-display options recognized at the top level.
 
         This includes options that are recognized *only* at the top
-        level as well as options recognized kila commands.
+        level kama well kama options recognized kila commands.
         """
         rudisha self.global_options + [
             ("command-packages=", Tupu,
@@ -529,7 +529,7 @@ Common commands: (see '--help-commands' kila more)
         # Pull the current command kutoka the head of the command line
         command = args[0]
         ikiwa sio command_re.match(command):
-             ashiria SystemExit("invalid command name '%s'" % command)
+            ashiria SystemExit("invalid command name '%s'" % command)
         self.commands.append(command)
 
         # Dig up the command kundi that implements this command, so we
@@ -537,22 +537,22 @@ Common commands: (see '--help-commands' kila more)
         # it takes.
         jaribu:
             cmd_kundi = self.get_command_class(command)
-        except DistutilsModuleError as msg:
-             ashiria DistutilsArgError(msg)
+        tatizo DistutilsModuleError kama msg:
+            ashiria DistutilsArgError(msg)
 
         # Require that the command kundi be derived kutoka Command -- want
         # to be sure that the basic "command" interface ni implemented.
         ikiwa sio issubclass(cmd_class, Command):
-             ashiria DistutilsClassError(
+            ashiria DistutilsClassError(
                 "command kundi %s must subkundi Command" % cmd_class)
 
         # Also make sure that the command object provides a list of its
         # known options.
-        ikiwa sio (hasattr(cmd_class, 'user_options') and
+        ikiwa sio (hasattr(cmd_class, 'user_options') na
                 isinstance(cmd_class.user_options, list)):
             msg = ("command kundi %s must provide "
                 "'user_options' attribute (a list of tuples)")
-             ashiria DistutilsClassError(msg % cmd_class)
+            ashiria DistutilsClassError(msg % cmd_class)
 
         # If the command kundi has a list of negative alias options,
         # merge it kwenye ukijumuisha the global negative aliases.
@@ -563,7 +563,7 @@ Common commands: (see '--help-commands' kila more)
 
         # Check kila help_options kwenye command class.  They have a different
         # format (tuple of four) so we need to preprocess them here.
-        ikiwa (hasattr(cmd_class, 'help_options') and
+        ikiwa (hasattr(cmd_class, 'help_options') na
                 isinstance(cmd_class.help_options, list)):
             help_options = fix_help_options(cmd_class.help_options)
         isipokua:
@@ -580,7 +580,7 @@ Common commands: (see '--help-commands' kila more)
             self._show_help(parser, display_options=0, commands=[cmd_class])
             return
 
-        ikiwa (hasattr(cmd_class, 'help_options') and
+        ikiwa (hasattr(cmd_class, 'help_options') na
                 isinstance(cmd_class.help_options, list)):
             help_option_found=0
             kila (help_option, short, desc, func) kwenye cmd_class.help_options:
@@ -589,7 +589,7 @@ Common commands: (see '--help-commands' kila more)
                     ikiwa callable(func):
                         func()
                     isipokua:
-                         ashiria DistutilsClassError(
+                        ashiria DistutilsClassError(
                             "invalid help function %r kila help option '%s': "
                             "must be a callable object (function, etc.)"
                             % (func, help_option))
@@ -623,7 +623,7 @@ Common commands: (see '--help-commands' kila more)
         """Show help kila the setup script command-line kwenye the form of
         several lists of command-line options.  'parser' should be a
         FancyGetopt instance; do sio expect it to be returned kwenye the
-        same state, as its option table will be reset to make it
+        same state, kama its option table will be reset to make it
         generate the correct help text.
 
         If 'global_options' ni true, lists the global options:
@@ -657,7 +657,7 @@ Common commands: (see '--help-commands' kila more)
                 klass = command
             isipokua:
                 klass = self.get_command_class(command)
-            ikiwa (hasattr(klass, 'help_options') and
+            ikiwa (hasattr(klass, 'help_options') na
                     isinstance(klass.help_options, list)):
                 parser.set_option_table(klass.user_options +
                                         fix_help_options(klass.help_options))
@@ -699,7 +699,7 @@ Common commands: (see '--help-commands' kila more)
                 value = getattr(self.metadata, "get_"+opt)()
                 ikiwa opt kwenye ['keywords', 'platforms']:
                     andika(','.join(value))
-                elikiwa opt kwenye ('classifiers', 'provides', 'requires',
+                lasivyo opt kwenye ('classifiers', 'provides', 'requires',
                              'obsoletes'):
                     andika('\n'.join(value))
                 isipokua:
@@ -720,7 +720,7 @@ Common commands: (see '--help-commands' kila more)
                 klass = self.get_command_class(cmd)
             jaribu:
                 description = klass.description
-            except AttributeError:
+            tatizo AttributeError:
                 description = "(no description available)"
 
             andika("  %-*s  %s" % (max_length, cmd, description))
@@ -785,7 +785,7 @@ Common commands: (see '--help-commands' kila more)
                 klass = self.get_command_class(cmd)
             jaribu:
                 description = klass.description
-            except AttributeError:
+            tatizo AttributeError:
                 description = "(no description available)"
             rv.append((cmd, description))
         rudisha rv
@@ -799,7 +799,7 @@ Common commands: (see '--help-commands' kila more)
             ikiwa pkgs ni Tupu:
                 pkgs = ''
             pkgs = [pkg.strip() kila pkg kwenye pkgs.split(',') ikiwa pkg != '']
-            ikiwa "distutils.command" sio kwenye pkgs:
+            ikiwa "distutils.command" haiko kwenye pkgs:
                 pkgs.insert(0, "distutils.command")
             self.command_packages = pkgs
         rudisha pkgs
@@ -827,25 +827,25 @@ Common commands: (see '--help-commands' kila more)
             jaribu:
                 __import__(module_name)
                 module = sys.modules[module_name]
-            except ImportError:
+            tatizo ImportError:
                 endelea
 
             jaribu:
                 klass = getattr(module, klass_name)
-            except AttributeError:
-                 ashiria DistutilsModuleError(
+            tatizo AttributeError:
+                ashiria DistutilsModuleError(
                     "invalid command '%s' (no kundi '%s' kwenye module '%s')"
                     % (command, klass_name, module_name))
 
             self.cmdclass[command] = klass
             rudisha klass
 
-         ashiria DistutilsModuleError("invalid command '%s'" % command)
+        ashiria DistutilsModuleError("invalid command '%s'" % command)
 
     eleza get_command_obj(self, command, create=1):
         """Return the command object kila 'command'.  Normally this object
         ni cached on a previous call to 'get_command_obj()'; ikiwa no command
-        object kila 'command' ni kwenye the cache, then we either create and
+        object kila 'command' ni kwenye the cache, then we either create na
         rudisha it (ikiwa 'create' ni true) ama rudisha Tupu.
         """
         cmd_obj = self.command_obj.get(command)
@@ -891,27 +891,27 @@ Common commands: (see '--help-commands' kila more)
             jaribu:
                 bool_opts = [translate_longopt(o)
                              kila o kwenye command_obj.boolean_options]
-            except AttributeError:
+            tatizo AttributeError:
                 bool_opts = []
             jaribu:
                 neg_opt = command_obj.negative_opt
-            except AttributeError:
+            tatizo AttributeError:
                 neg_opt = {}
 
             jaribu:
                 is_string = isinstance(value, str)
                 ikiwa option kwenye neg_opt na is_string:
                     setattr(command_obj, neg_opt[option], sio strtobool(value))
-                elikiwa option kwenye bool_opts na is_string:
+                lasivyo option kwenye bool_opts na is_string:
                     setattr(command_obj, option, strtobool(value))
-                elikiwa hasattr(command_obj, option):
+                lasivyo hasattr(command_obj, option):
                     setattr(command_obj, option, value)
                 isipokua:
-                     ashiria DistutilsOptionError(
+                    ashiria DistutilsOptionError(
                         "error kwenye %s: command '%s' has no such option '%s'"
                         % (source, command_name, option))
-            except ValueError as msg:
-                 ashiria DistutilsOptionError(msg)
+            tatizo ValueError kama msg:
+                ashiria DistutilsOptionError(msg)
 
     eleza reinitialize_command(self, command, reinit_subcommands=0):
         """Reinitializes a command to the state it was kwenye when first
@@ -925,7 +925,7 @@ Common commands: (see '--help-commands' kila more)
 
         'command' should be a command name (string) ama command object.  If
         'reinit_subcommands' ni true, also reinitializes the command's
-        sub-commands, as declared by the 'sub_commands' kundi attribute (if
+        sub-commands, kama declared by the 'sub_commands' kundi attribute (if
         it has one).  See the "install" command kila an example.  Only
         reinitializes the sub-commands that actually matter, ie. those
         whose test predicates rudisha true.
@@ -1009,8 +1009,8 @@ Common commands: (see '--help-commands' kila more)
         rudisha self.data_files na len(self.data_files) > 0
 
     eleza is_pure(self):
-        rudisha (self.has_pure_modules() and
-                sio self.has_ext_modules() and
+        rudisha (self.has_pure_modules() na
+                sio self.has_ext_modules() na
                 sio self.has_c_libraries())
 
     # -- Metadata query methods ----------------------------------------
@@ -1113,14 +1113,14 @@ kundi DistributionMetadata:
         """Write the PKG-INFO file into the release tree.
         """
         ukijumuisha open(os.path.join(base_dir, 'PKG-INFO'), 'w',
-                  encoding='UTF-8') as pkg_info:
+                  encoding='UTF-8') kama pkg_info:
             self.write_pkg_file(pkg_info)
 
     eleza write_pkg_file(self, file):
         """Write the PKG-INFO format data to a file object.
         """
         version = '1.0'
-        ikiwa (self.provides ama self.requires ama self.obsoletes or
+        ikiwa (self.provides ama self.requires ama self.obsoletes ama
                 self.classifiers ama self.download_url):
             version = '1.1'
 
@@ -1247,7 +1247,7 @@ kundi DistributionMetadata:
         self.obsoletes = list(value)
 
 eleza fix_help_options(options):
-    """Convert a 4-tuple 'help_options' list as found kwenye various command
+    """Convert a 4-tuple 'help_options' list kama found kwenye various command
     classes to the 3-tuple form required by FancyGetopt.
     """
     new_options = []

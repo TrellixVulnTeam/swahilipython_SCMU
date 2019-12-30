@@ -25,12 +25,12 @@ kundi MIMEApplication(MIMENonMultipart):
         _encoder ni a function which will perform the actual encoding for
         transport of the application data, defaulting to base64 encoding.
 
-        Any additional keyword arguments are passed to the base class
+        Any additional keyword arguments are pitaed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
         ikiwa _subtype ni Tupu:
-             ashiria TypeError('Invalid application MIME subtype')
+            ashiria TypeError('Invalid application MIME subtype')
         MIMENonMultipart.__init__(self, 'application', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_data)

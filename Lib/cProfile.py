@@ -7,7 +7,7 @@
 __all__ = ["run", "runctx", "Profile"]
 
 agiza _lsprof
-agiza profile as _pyprofile
+agiza profile kama _pyprofile
 
 # ____________________________________________________________
 # Simple interface
@@ -43,7 +43,7 @@ kundi Profile(_lsprof.Profiler):
 
     eleza dump_stats(self, file):
         agiza marshal
-        ukijumuisha open(file, 'wb') as f:
+        ukijumuisha open(file, 'wb') kama f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
@@ -72,7 +72,7 @@ kundi Profile(_lsprof.Profiler):
                 kila subentry kwenye entry.calls:
                     jaribu:
                         callers = callersdicts[id(subentry.code)]
-                    except KeyError:
+                    tatizo KeyError:
                         endelea
                     nc = subentry.callcount
                     cc = nc - subentry.reccallcount
@@ -87,7 +87,7 @@ kundi Profile(_lsprof.Profiler):
                     callers[func] = nc, cc, tt, ct
 
     # The following two methods can be called by clients to use
-    # a profiler to profile a statement, given as a string.
+    # a profiler to profile a statement, given kama a string.
 
     eleza run(self, cmd):
         agiza __main__
@@ -106,17 +106,17 @@ kundi Profile(_lsprof.Profiler):
     eleza runcall(*args, **kw):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor 'runcall' of 'Profile' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        elikiwa 'func' kwenye kw:
+        lasivyo 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument ni deprecated",
+            warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError('runcall expected at least 1 positional argument, '
+            ashiria TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.enable()
@@ -178,7 +178,7 @@ eleza main():
         isipokua:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            ukijumuisha open(progname, 'rb') as fp:
+            ukijumuisha open(progname, 'rb') kama fp:
                 code = compile(fp.read(), progname, 'exec')
             globs = {
                 '__file__': progname,
@@ -191,6 +191,6 @@ eleza main():
         parser.print_usage()
     rudisha parser
 
-# When invoked as main program, invoke the profiler on a script
+# When invoked kama main program, invoke the profiler on a script
 ikiwa __name__ == '__main__':
     main()

@@ -28,7 +28,7 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-         ashiria IndexError
+        ashiria IndexError
 
     eleza __iter__(self):
         rudisha self
@@ -37,7 +37,7 @@ kundi FileWrapper:
         data = self.filelike.read(self.blksize)
         ikiwa data:
             rudisha data
-         ashiria StopIteration
+        ashiria StopIteration
 
 eleza guess_scheme(environ):
     """Return a guess kila whether 'wsgi.url_scheme' should be 'http' ama 'https'
@@ -140,7 +140,7 @@ eleza setup_testing_defaults(environ):
     environ.setdefault('HTTP_HOST',environ['SERVER_NAME'])
     environ.setdefault('REQUEST_METHOD','GET')
 
-    ikiwa 'SCRIPT_NAME' sio kwenye environ na 'PATH_INFO' sio kwenye environ:
+    ikiwa 'SCRIPT_NAME' haiko kwenye environ na 'PATH_INFO' haiko kwenye environ:
         environ.setdefault('SCRIPT_NAME','')
         environ.setdefault('PATH_INFO','/')
 
@@ -156,7 +156,7 @@ eleza setup_testing_defaults(environ):
 
     ikiwa environ['wsgi.url_scheme']=='http':
         environ.setdefault('SERVER_PORT', '80')
-    elikiwa environ['wsgi.url_scheme']=='https':
+    lasivyo environ['wsgi.url_scheme']=='https':
         environ.setdefault('SERVER_PORT', '443')
 
 

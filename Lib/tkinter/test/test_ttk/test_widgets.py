@@ -50,7 +50,7 @@ kundi StandardTtkOptionsTests(StandardOptionsTests):
         widget2 = self.create(class_='Foo')
         self.assertEqual(widget2['class'], 'Foo')
         # XXX
-        pass
+        pita
 
 
 kundi WidgetTest(AbstractTkTest, unittest.TestCase):
@@ -107,7 +107,7 @@ kundi WidgetTest(AbstractTkTest, unittest.TestCase):
         # verify that widget didn't change its state
         self.assertEqual(currstate, self.widget.state())
 
-        # ensuring that passing Tupu as state doesn't modify current state
+        # ensuring that pitaing Tupu kama state doesn't modify current state
         self.widget.state(['active', '!disabled'])
         self.assertEqual(self.widget.state(), ('active', ))
 
@@ -882,7 +882,7 @@ kundi ProgressbarTest(AbstractWidgetTest, unittest.TestCase):
 
     eleza test_phase(self):
         # XXX
-        pass
+        pita
 
     eleza test_value(self):
         widget = self.create()
@@ -944,8 +944,8 @@ kundi NotebookTest(AbstractWidgetTest, unittest.TestCase):
             jaribu:
                 ikiwa self.nb.tab('@%d, 5' % i, text=Tupu) == 'a':
                     koma
-            except tkinter.TclError:
-                pass
+            tatizo tkinter.TclError:
+                pita
 
         isipokua:
             self.fail("Tab ukijumuisha text 'a' sio found")
@@ -976,7 +976,7 @@ kundi NotebookTest(AbstractWidgetTest, unittest.TestCase):
         self.assertEqual(self.nb.tabs(), tabs)
         self.assertEqual(self.nb.index(self.child2), child2_index)
         self.assertEqual(str(self.child2), self.nb.tabs()[child2_index])
-        # but the tab next to it (not hidden) ni the one selected now
+        # but the tab next to it (sio hidden) ni the one selected now
         self.assertEqual(self.nb.index('current'), curr + 1)
 
 
@@ -1215,7 +1215,7 @@ kundi SpinboxTest(EntryTest, unittest.TestCase):
         self.spin.update()
         self._click_increment_arrow()
         value = self.spin.get()
-        self.assertKweli('.' sio kwenye value)
+        self.assertKweli('.' haiko kwenye value)
         self.assertEqual(len(value), 1)
 
     eleza test_wrap(self):
@@ -1374,13 +1374,13 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
         self.assertIsInstance(self.tv.get_children(), tuple)
         self.assertEqual(self.tv.get_children()[0], item_id)
 
-        # add item_id na child3 as children of child2
+        # add item_id na child3 kama children of child2
         child2 = self.tv.insert('', 'end')
         child3 = self.tv.insert('', 'end')
         self.tv.set_children(child2, item_id, child3)
         self.assertEqual(self.tv.get_children(child2), (item_id, child3))
 
-        # child3 has child2 as parent, thus trying to set child2 as a children
+        # child3 has child2 kama parent, thus trying to set child2 kama a children
         # of child3 should result kwenye an error
         self.assertRaises(tkinter.TclError,
             self.tv.set_children, child3, child2)
@@ -1793,7 +1793,7 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
             ikiwa len(found) == 2: # item1 na item2 already found
                 koma
             item_id = self.tv.identify_row(i)
-            ikiwa item_id na item_id sio kwenye found:
+            ikiwa item_id na item_id haiko kwenye found:
                 pos_y.add(i)
                 found.add(item_id)
 
@@ -1809,7 +1809,7 @@ kundi TreeviewTest(AbstractWidgetTest, unittest.TestCase):
 
 
     eleza test_tag_configure(self):
-        # Just testing parameter passing kila now
+        # Just testing parameter pitaing kila now
         self.assertRaises(TypeError, self.tv.tag_configure)
         self.assertRaises(tkinter.TclError, self.tv.tag_configure,
             'test', sky='blue')

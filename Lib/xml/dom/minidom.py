@@ -55,7 +55,7 @@ kundi Node(xml.dom.Node):
                                       errors="xmlcharrefreplace",
                                       newline='\n')
         ikiwa self.nodeType == Node.DOCUMENT_NODE:
-            # Can pass encoding only to document, to put it into XML header
+            # Can pita encoding only to document, to put it into XML header
             self.writexml(writer, "", indent, newl, encoding)
         isipokua:
             self.writexml(writer, "", indent, newl)
@@ -84,8 +84,8 @@ kundi Node(xml.dom.Node):
                 self.insertBefore(c, refChild)
             ### The DOM does sio clearly specify what to rudisha kwenye this case
             rudisha newChild
-        ikiwa newChild.nodeType sio kwenye self._child_node_types:
-             ashiria xml.dom.HierarchyRequestErr(
+        ikiwa newChild.nodeType haiko kwenye self._child_node_types:
+            ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(newChild), repr(self)))
         ikiwa newChild.parentNode ni sio Tupu:
             newChild.parentNode.removeChild(newChild)
@@ -94,8 +94,8 @@ kundi Node(xml.dom.Node):
         isipokua:
             jaribu:
                 index = self.childNodes.index(refChild)
-            except ValueError:
-                 ashiria xml.dom.NotFoundErr()
+            tatizo ValueError:
+                ashiria xml.dom.NotFoundErr()
             ikiwa newChild.nodeType kwenye _nodeTypes_with_children:
                 _clear_id_cache(self)
             self.childNodes.insert(index, newChild)
@@ -116,10 +116,10 @@ kundi Node(xml.dom.Node):
                 self.appendChild(c)
             ### The DOM does sio clearly specify what to rudisha kwenye this case
             rudisha node
-        ikiwa node.nodeType sio kwenye self._child_node_types:
-             ashiria xml.dom.HierarchyRequestErr(
+        ikiwa node.nodeType haiko kwenye self._child_node_types:
+            ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(node), repr(self)))
-        elikiwa node.nodeType kwenye _nodeTypes_with_children:
+        lasivyo node.nodeType kwenye _nodeTypes_with_children:
             _clear_id_cache(self)
         ikiwa node.parentNode ni sio Tupu:
             node.parentNode.removeChild(node)
@@ -132,8 +132,8 @@ kundi Node(xml.dom.Node):
             refChild = oldChild.nextSibling
             self.removeChild(oldChild)
             rudisha self.insertBefore(newChild, refChild)
-        ikiwa newChild.nodeType sio kwenye self._child_node_types:
-             ashiria xml.dom.HierarchyRequestErr(
+        ikiwa newChild.nodeType haiko kwenye self._child_node_types:
+            ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(newChild), repr(self)))
         ikiwa newChild ni oldChild:
             return
@@ -141,8 +141,8 @@ kundi Node(xml.dom.Node):
             newChild.parentNode.removeChild(newChild)
         jaribu:
             index = self.childNodes.index(oldChild)
-        except ValueError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo ValueError:
+            ashiria xml.dom.NotFoundErr()
         self.childNodes[index] = newChild
         newChild.parentNode = self
         oldChild.parentNode = Tupu
@@ -162,8 +162,8 @@ kundi Node(xml.dom.Node):
     eleza removeChild(self, oldChild):
         jaribu:
             self.childNodes.remove(oldChild)
-        except ValueError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo ValueError:
+            ashiria xml.dom.NotFoundErr()
         ikiwa oldChild.nextSibling ni sio Tupu:
             oldChild.nextSibling.previousSibling = oldChild.previousSibling
         ikiwa oldChild.previousSibling ni sio Tupu:
@@ -186,7 +186,7 @@ kundi Node(xml.dom.Node):
                     ikiwa child.nextSibling:
                         child.nextSibling.previousSibling = child.previousSibling
                     child.unlink()
-                elikiwa L na L[-1].nodeType == child.nodeType:
+                lasivyo L na L[-1].nodeType == child.nodeType:
                     # collapse text node
                     node = L[-1]
                     node.data = node.data + child.data
@@ -230,20 +230,20 @@ kundi Node(xml.dom.Node):
     eleza getUserData(self, key):
         jaribu:
             rudisha self._user_data[key][0]
-        except (AttributeError, KeyError):
+        tatizo (AttributeError, KeyError):
             rudisha Tupu
 
     eleza setUserData(self, key, data, handler):
         old = Tupu
         jaribu:
             d = self._user_data
-        except AttributeError:
+        tatizo AttributeError:
             d = {}
             self._user_data = d
         ikiwa key kwenye d:
             old = d[key][0]
         ikiwa data ni Tupu:
-            # ignore handlers passed kila Tupu
+            # ignore handlers pitaed kila Tupu
             handler = Tupu
             ikiwa old ni sio Tupu:
                 toa d[key]
@@ -317,7 +317,7 @@ eleza _get_elements_by_tagName_helper(parent, name, rc):
 eleza _get_elements_by_tagName_ns_helper(parent, nsURI, localName, rc):
     kila node kwenye parent.childNodes:
         ikiwa node.nodeType == Node.ELEMENT_NODE:
-            ikiwa ((localName == "*" ama node.localName == localName) and
+            ikiwa ((localName == "*" ama node.localName == localName) na
                 (nsURI == "*" ama node.namespaceURI == nsURI)):
                 rc.append(node)
             _get_elements_by_tagName_ns_helper(node, nsURI, localName, rc)
@@ -367,7 +367,7 @@ kundi Attr(Node):
     eleza _get_localName(self):
         jaribu:
             rudisha self._localName
-        except AttributeError:
+        tatizo AttributeError:
             rudisha self.nodeName.split(":", 1)[-1]
 
     eleza _get_specified(self):
@@ -402,7 +402,7 @@ kundi Attr(Node):
         nsuri = self.namespaceURI
         ikiwa prefix == "xmlns":
             ikiwa nsuri na nsuri != XMLNS_NAMESPACE:
-                 ashiria xml.dom.NamespaceErr(
+                ashiria xml.dom.NamespaceErr(
                     "illegal use of 'xmlns' prefix kila the wrong namespace")
         self._prefix = prefix
         ikiwa prefix ni Tupu:
@@ -473,7 +473,7 @@ kundi NamedNodeMap(object):
     dictionary.
 
     Ordering ni imposed artificially na does sio reflect the order of
-    attributes as found kwenye an input document.
+    attributes kama found kwenye an input document.
     """
 
     __slots__ = ('_attrs', '_attrsNS', '_ownerElement')
@@ -489,7 +489,7 @@ kundi NamedNodeMap(object):
     eleza item(self, index):
         jaribu:
             rudisha self[list(self._attrs.keys())[index]]
-        except IndexError:
+        tatizo IndexError:
             rudisha Tupu
 
     eleza items(self):
@@ -551,32 +551,32 @@ kundi NamedNodeMap(object):
         isipokua:
             rudisha self._attrs[attname_or_tuple]
 
-    # same as set
+    # same kama set
     eleza __setitem__(self, attname, value):
         ikiwa isinstance(value, str):
             jaribu:
                 node = self._attrs[attname]
-            except KeyError:
+            tatizo KeyError:
                 node = Attr(attname)
                 node.ownerDocument = self._ownerElement.ownerDocument
                 self.setNamedItem(node)
             node.value = value
         isipokua:
             ikiwa sio isinstance(value, Attr):
-                 ashiria TypeError("value must be a string ama Attr object")
+                ashiria TypeError("value must be a string ama Attr object")
             node = value
             self.setNamedItem(node)
 
     eleza getNamedItem(self, name):
         jaribu:
             rudisha self._attrs[name]
-        except KeyError:
+        tatizo KeyError:
             rudisha Tupu
 
     eleza getNamedItemNS(self, namespaceURI, localName):
         jaribu:
             rudisha self._attrsNS[(namespaceURI, localName)]
-        except KeyError:
+        tatizo KeyError:
             rudisha Tupu
 
     eleza removeNamedItem(self, name):
@@ -589,7 +589,7 @@ kundi NamedNodeMap(object):
                 n.ownerElement = Tupu
             rudisha n
         isipokua:
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
 
     eleza removeNamedItemNS(self, namespaceURI, localName):
         n = self.getNamedItemNS(namespaceURI, localName)
@@ -601,11 +601,11 @@ kundi NamedNodeMap(object):
                 n.ownerElement = Tupu
             rudisha n
         isipokua:
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
 
     eleza setNamedItem(self, node):
         ikiwa sio isinstance(node, Attr):
-             ashiria xml.dom.HierarchyRequestErr(
+            ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(node), repr(self)))
         old = self._attrs.get(node.name)
         ikiwa old:
@@ -703,7 +703,7 @@ kundi Element(Node):
     eleza _get_localName(self):
         jaribu:
             rudisha self._localName
-        except AttributeError:
+        tatizo AttributeError:
             rudisha self.tagName.split(":", 1)[-1]
 
     eleza _get_tagName(self):
@@ -722,7 +722,7 @@ kundi Element(Node):
             rudisha ""
         jaribu:
             rudisha self._attrs[attname].value
-        except KeyError:
+        tatizo KeyError:
             rudisha ""
 
     eleza getAttributeNS(self, namespaceURI, localName):
@@ -730,7 +730,7 @@ kundi Element(Node):
             rudisha ""
         jaribu:
             rudisha self._attrsNS[(namespaceURI, localName)].value
-        except KeyError:
+        tatizo KeyError:
             rudisha ""
 
     eleza setAttribute(self, attname, value):
@@ -740,7 +740,7 @@ kundi Element(Node):
             attr.value = value # also sets nodeValue
             attr.ownerDocument = self.ownerDocument
             self.setAttributeNode(attr)
-        elikiwa value != attr.value:
+        lasivyo value != attr.value:
             attr.value = value
             ikiwa attr.isId:
                 _clear_id_cache(self)
@@ -773,8 +773,8 @@ kundi Element(Node):
         rudisha self._attrsNS.get((namespaceURI, localName))
 
     eleza setAttributeNode(self, attr):
-        ikiwa attr.ownerElement sio kwenye (Tupu, self):
-             ashiria xml.dom.InuseAttributeErr("attribute node already owned")
+        ikiwa attr.ownerElement haiko kwenye (Tupu, self):
+            ashiria xml.dom.InuseAttributeErr("attribute node already owned")
         self._ensure_attributes()
         old1 = self._attrs.get(attr.name, Tupu)
         ikiwa old1 ni sio Tupu:
@@ -795,29 +795,29 @@ kundi Element(Node):
 
     eleza removeAttribute(self, name):
         ikiwa self._attrsNS ni Tupu:
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
         jaribu:
             attr = self._attrs[name]
-        except KeyError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo KeyError:
+            ashiria xml.dom.NotFoundErr()
         self.removeAttributeNode(attr)
 
     eleza removeAttributeNS(self, namespaceURI, localName):
         ikiwa self._attrsNS ni Tupu:
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
         jaribu:
             attr = self._attrsNS[(namespaceURI, localName)]
-        except KeyError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo KeyError:
+            ashiria xml.dom.NotFoundErr()
         self.removeAttributeNode(attr)
 
     eleza removeAttributeNode(self, node):
         ikiwa node ni Tupu:
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
         jaribu:
             self._attrs[node.name]
-        except KeyError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo KeyError:
+            ashiria xml.dom.NotFoundErr()
         _clear_id_cache(self)
         node.unlink()
         # Restore this since the node ni still useful na otherwise
@@ -861,7 +861,7 @@ kundi Element(Node):
             writer.write("\"")
         ikiwa self.childNodes:
             writer.write(">")
-            ikiwa (len(self.childNodes) == 1 and
+            ikiwa (len(self.childNodes) == 1 na
                 self.childNodes[0].nodeType kwenye (
                         Node.TEXT_NODE, Node.CDATA_SECTION_NODE)):
                 self.childNodes[0].writexml(writer, '', '', '')
@@ -896,9 +896,9 @@ kundi Element(Node):
 
     eleza setIdAttributeNode(self, idAttr):
         ikiwa idAttr ni Tupu ama sio self.isSameNode(idAttr.ownerElement):
-             ashiria xml.dom.NotFoundErr()
+            ashiria xml.dom.NotFoundErr()
         ikiwa _get_containing_entref(self) ni sio Tupu:
-             ashiria xml.dom.NoModificationAllowedErr()
+            ashiria xml.dom.NoModificationAllowedErr()
         ikiwa sio idAttr._is_id:
             idAttr._is_id = Kweli
             self._magic_id_nodes += 1
@@ -940,26 +940,26 @@ kundi Childless:
         rudisha Tupu
 
     eleza appendChild(self, node):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             self.nodeName + " nodes cannot have children")
 
     eleza hasChildNodes(self):
         rudisha Uongo
 
     eleza insertBefore(self, newChild, refChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             self.nodeName + " nodes do sio have children")
 
     eleza removeChild(self, oldChild):
-         ashiria xml.dom.NotFoundErr(
+        ashiria xml.dom.NotFoundErr(
             self.nodeName + " nodes do sio have children")
 
     eleza normalize(self):
         # For childless nodes, normalize() has nothing to do.
-        pass
+        pita
 
     eleza replaceChild(self, newChild, oldChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             self.nodeName + " nodes do sio have children")
 
 
@@ -1020,11 +1020,11 @@ kundi CharacterData(Childless, Node):
 
     eleza substringData(self, offset, count):
         ikiwa offset < 0:
-             ashiria xml.dom.IndexSizeErr("offset cannot be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-             ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-             ashiria xml.dom.IndexSizeErr("count cannot be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         rudisha self.data[offset:offset+count]
 
     eleza appendData(self, arg):
@@ -1032,30 +1032,30 @@ kundi CharacterData(Childless, Node):
 
     eleza insertData(self, offset, arg):
         ikiwa offset < 0:
-             ashiria xml.dom.IndexSizeErr("offset cannot be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-             ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa arg:
             self.data = "%s%s%s" % (
                 self.data[:offset], arg, self.data[offset:])
 
     eleza deleteData(self, offset, count):
         ikiwa offset < 0:
-             ashiria xml.dom.IndexSizeErr("offset cannot be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-             ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-             ashiria xml.dom.IndexSizeErr("count cannot be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         ikiwa count:
             self.data = self.data[:offset] + self.data[offset+count:]
 
     eleza replaceData(self, offset, count, arg):
         ikiwa offset < 0:
-             ashiria xml.dom.IndexSizeErr("offset cannot be negative")
+            ashiria xml.dom.IndexSizeErr("offset cannot be negative")
         ikiwa offset >= len(self.data):
-             ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
+            ashiria xml.dom.IndexSizeErr("offset cannot be beyond end of data")
         ikiwa count < 0:
-             ashiria xml.dom.IndexSizeErr("count cannot be negative")
+            ashiria xml.dom.IndexSizeErr("count cannot be negative")
         ikiwa count:
             self.data = "%s%s%s" % (
                 self.data[:offset], arg, self.data[offset+count:])
@@ -1072,7 +1072,7 @@ kundi Text(CharacterData):
 
     eleza splitText(self, offset):
         ikiwa offset < 0 ama offset > len(self.data):
-             ashiria xml.dom.IndexSizeErr("illegal offset value")
+            ashiria xml.dom.IndexSizeErr("illegal offset value")
         newText = self.__class__()
         newText.data = self.data[offset:]
         newText.ownerDocument = self.ownerDocument
@@ -1182,7 +1182,7 @@ kundi Comment(CharacterData):
 
     eleza writexml(self, writer, indent="", addindent="", newl=""):
         ikiwa "--" kwenye self.data:
-             ashiria ValueError("'--' ni sio allowed kwenye a comment node")
+            ashiria ValueError("'--' ni sio allowed kwenye a comment node")
         writer.write("%s<!--%s-->%s" % (indent, self.data, newl))
 
 
@@ -1194,7 +1194,7 @@ kundi CDATASection(Text):
 
     eleza writexml(self, writer, indent="", addindent="", newl=""):
         ikiwa self.data.find("]]>") >= 0:
-             ashiria ValueError("']]>' sio allowed kwenye a CDATA section")
+            ashiria ValueError("']]>' sio allowed kwenye a CDATA section")
         writer.write("<![CDATA[%s]]>" % self.data)
 
 
@@ -1227,7 +1227,7 @@ kundi ReadOnlySequentialNamedNodeMap(object):
         isipokua:
             node = self.getNamedItem(name_or_tuple)
         ikiwa node ni Tupu:
-             ashiria KeyError(name_or_tuple)
+            ashiria KeyError(name_or_tuple)
         rudisha node
 
     eleza item(self, index):
@@ -1235,23 +1235,23 @@ kundi ReadOnlySequentialNamedNodeMap(object):
             rudisha Tupu
         jaribu:
             rudisha self._seq[index]
-        except IndexError:
+        tatizo IndexError:
             rudisha Tupu
 
     eleza removeNamedItem(self, name):
-         ashiria xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "NamedNodeMap instance ni read-only")
 
     eleza removeNamedItemNS(self, namespaceURI, localName):
-         ashiria xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "NamedNodeMap instance ni read-only")
 
     eleza setNamedItem(self, node):
-         ashiria xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "NamedNodeMap instance ni read-only")
 
     eleza setNamedItemNS(self, node):
-         ashiria xml.dom.NoModificationAllowedErr(
+        ashiria xml.dom.NoModificationAllowedErr(
             "NamedNodeMap instance ni read-only")
 
     eleza __getstate__(self):
@@ -1331,7 +1331,7 @@ kundi DocumentType(Identified, Childless, Node):
         ikiwa self.publicId:
             writer.write("%s  PUBLIC '%s'%s  '%s'"
                          % (newl, self.publicId, newl, self.systemId))
-        elikiwa self.systemId:
+        lasivyo self.systemId:
             writer.write("%s  SYSTEM '%s'" % (newl, self.systemId))
         ikiwa self.internalSubset ni sio Tupu:
             writer.write(" [")
@@ -1364,19 +1364,19 @@ kundi Entity(Identified, Node):
         rudisha self.version
 
     eleza appendChild(self, newChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             "cannot append children to an entity node")
 
     eleza insertBefore(self, newChild, refChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             "cannot insert children below an entity node")
 
     eleza removeChild(self, oldChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             "cannot remove children kutoka an entity node")
 
     eleza replaceChild(self, newChild, oldChild):
-         ashiria xml.dom.HierarchyRequestErr(
+        ashiria xml.dom.HierarchyRequestErr(
             "cannot replace children of an entity node")
 
 kundi Notation(Identified, Childless, Node):
@@ -1406,7 +1406,7 @@ kundi DOMImplementation(DOMImplementationLS):
 
     eleza createDocument(self, namespaceURI, qualifiedName, doctype):
         ikiwa doctype na doctype.parentNode ni sio Tupu:
-             ashiria xml.dom.WrongDocumentErr(
+            ashiria xml.dom.WrongDocumentErr(
                 "doctype object owned by another DOM tree")
         doc = self._create_document()
 
@@ -1415,7 +1415,7 @@ kundi DOMImplementation(DOMImplementationLS):
                                 na doctype ni Tupu)
 
         ikiwa sio qualifiedName na add_root_element:
-            # The spec ni unclear what to  ashiria here; SyntaxErr
+            # The spec ni unclear what to ashiria here; SyntaxErr
             # would be the other obvious candidate. Since Xerces raises
             # InvalidCharacterErr, na since SyntaxErr ni sio listed
             # kila createDocument, that seems to be the better choice.
@@ -1427,15 +1427,15 @@ kundi DOMImplementation(DOMImplementationLS):
             # Null the document ni returned without a document element
             # Otherwise ikiwa doctype ama namespaceURI are sio Tupu
             # Then we go back to the above problem
-             ashiria xml.dom.InvalidCharacterErr("Element ukijumuisha no name")
+            ashiria xml.dom.InvalidCharacterErr("Element ukijumuisha no name")
 
         ikiwa add_root_element:
             prefix, localname = _nssplit(qualifiedName)
             ikiwa prefix == "xml" \
                na namespaceURI != "http://www.w3.org/XML/1998/namespace":
-                 ashiria xml.dom.NamespaceErr("illegal use of 'xml' prefix")
+                ashiria xml.dom.NamespaceErr("illegal use of 'xml' prefix")
             ikiwa prefix na sio namespaceURI:
-                 ashiria xml.dom.NamespaceErr(
+                ashiria xml.dom.NamespaceErr(
                     "illegal use of prefix without namespaces")
             element = doc.createElementNS(namespaceURI, qualifiedName)
             ikiwa doctype:
@@ -1513,7 +1513,7 @@ eleza _clear_id_cache(node):
     ikiwa node.nodeType == Node.DOCUMENT_NODE:
         node._id_cache.clear()
         node._id_search_stack = Tupu
-    elikiwa _in_document(node):
+    lasivyo _in_document(node):
         node.ownerDocument._id_cache.clear()
         node.ownerDocument._id_search_stack= Tupu
 
@@ -1585,8 +1585,8 @@ kundi Document(Node, DocumentLS):
         rudisha self.version
 
     eleza appendChild(self, node):
-        ikiwa node.nodeType sio kwenye self._child_node_types:
-             ashiria xml.dom.HierarchyRequestErr(
+        ikiwa node.nodeType haiko kwenye self._child_node_types:
+            ashiria xml.dom.HierarchyRequestErr(
                 "%s cannot be child of %s" % (repr(node), repr(self)))
         ikiwa node.parentNode ni sio Tupu:
             # This needs to be done before the next test since this
@@ -1596,15 +1596,15 @@ kundi Document(Node, DocumentLS):
 
         ikiwa node.nodeType == Node.ELEMENT_NODE \
            na self._get_documentElement():
-             ashiria xml.dom.HierarchyRequestErr(
+            ashiria xml.dom.HierarchyRequestErr(
                 "two document elements disallowed")
         rudisha Node.appendChild(self, node)
 
     eleza removeChild(self, oldChild):
         jaribu:
             self.childNodes.remove(oldChild)
-        except ValueError:
-             ashiria xml.dom.NotFoundErr()
+        tatizo ValueError:
+            ashiria xml.dom.NotFoundErr()
         oldChild.nextSibling = oldChild.previousSibling = Tupu
         oldChild.parentNode = Tupu
         ikiwa self.documentElement ni oldChild:
@@ -1636,7 +1636,7 @@ kundi Document(Node, DocumentLS):
             clone.childNodes.append(childclone)
             ikiwa childclone.nodeType == Node.DOCUMENT_NODE:
                 assert clone.documentElement ni Tupu
-            elikiwa childclone.nodeType == Node.DOCUMENT_TYPE_NODE:
+            lasivyo childclone.nodeType == Node.DOCUMENT_TYPE_NODE:
                 assert clone.doctype ni Tupu
                 clone.doctype = childclone
             childclone.parentNode = clone
@@ -1656,7 +1656,7 @@ kundi Document(Node, DocumentLS):
 
     eleza createTextNode(self, data):
         ikiwa sio isinstance(data, str):
-             ashiria TypeError("node contents must be a string")
+            ashiria TypeError("node contents must be a string")
         t = Text()
         t.data = data
         t.ownerDocument = self
@@ -1664,7 +1664,7 @@ kundi Document(Node, DocumentLS):
 
     eleza createCDATASection(self, data):
         ikiwa sio isinstance(data, str):
-             ashiria TypeError("node contents must be a string")
+            ashiria TypeError("node contents must be a string")
         c = CDATASection()
         c.data = data
         c.ownerDocument = self
@@ -1723,7 +1723,7 @@ kundi Document(Node, DocumentLS):
             # we never searched before, ama the cache has been cleared
             stack = [self.documentElement]
             self._id_search_stack = stack
-        elikiwa sio stack:
+        lasivyo sio stack:
             # Previous search was completed na cache ni still valid;
             # no matching node.
             rudisha Tupu
@@ -1746,21 +1746,21 @@ kundi Document(Node, DocumentLS):
                             self._id_cache[attr.value] = node
                             ikiwa attr.value == id:
                                 result = node
-                            elikiwa sio node._magic_id_nodes:
+                            lasivyo sio node._magic_id_nodes:
                                 koma
-                    elikiwa info.isId(attr.name):
+                    lasivyo info.isId(attr.name):
                         self._id_cache[attr.value] = node
                         ikiwa attr.value == id:
                             result = node
-                        elikiwa sio node._magic_id_nodes:
+                        lasivyo sio node._magic_id_nodes:
                             koma
-                    elikiwa attr._is_id:
+                    lasivyo attr._is_id:
                         self._id_cache[attr.value] = node
                         ikiwa attr.value == id:
                             result = node
-                        elikiwa node._magic_id_nodes == 1:
+                        lasivyo node._magic_id_nodes == 1:
                             koma
-            elikiwa node._magic_id_nodes:
+            lasivyo node._magic_id_nodes:
                 kila attr kwenye node.attributes.values():
                     ikiwa attr._is_id:
                         self._id_cache[attr.value] = node
@@ -1782,9 +1782,9 @@ kundi Document(Node, DocumentLS):
 
     eleza importNode(self, node, deep):
         ikiwa node.nodeType == Node.DOCUMENT_NODE:
-             ashiria xml.dom.NotSupportedErr("cannot agiza document nodes")
-        elikiwa node.nodeType == Node.DOCUMENT_TYPE_NODE:
-             ashiria xml.dom.NotSupportedErr("cannot agiza document type nodes")
+            ashiria xml.dom.NotSupportedErr("cannot agiza document nodes")
+        lasivyo node.nodeType == Node.DOCUMENT_TYPE_NODE:
+            ashiria xml.dom.NotSupportedErr("cannot agiza document type nodes")
         rudisha _clone_node(node, deep, self)
 
     eleza writexml(self, writer, indent="", addindent="", newl="", encoding=Tupu):
@@ -1800,24 +1800,24 @@ kundi Document(Node, DocumentLS):
 
     eleza renameNode(self, n, namespaceURI, name):
         ikiwa n.ownerDocument ni sio self:
-             ashiria xml.dom.WrongDocumentErr(
+            ashiria xml.dom.WrongDocumentErr(
                 "cannot rename nodes kutoka other documents;\n"
                 "expected %s,\nfound %s" % (self, n.ownerDocument))
-        ikiwa n.nodeType sio kwenye (Node.ELEMENT_NODE, Node.ATTRIBUTE_NODE):
-             ashiria xml.dom.NotSupportedErr(
+        ikiwa n.nodeType haiko kwenye (Node.ELEMENT_NODE, Node.ATTRIBUTE_NODE):
+            ashiria xml.dom.NotSupportedErr(
                 "renameNode() only applies to element na attribute nodes")
         ikiwa namespaceURI != EMPTY_NAMESPACE:
             ikiwa ':' kwenye name:
                 prefix, localName = name.split(':', 1)
                 ikiwa (  prefix == "xmlns"
                       na namespaceURI != xml.dom.XMLNS_NAMESPACE):
-                     ashiria xml.dom.NamespaceErr(
+                    ashiria xml.dom.NamespaceErr(
                         "illegal use of 'xmlns' prefix")
             isipokua:
                 ikiwa (  name == "xmlns"
                       na namespaceURI != xml.dom.XMLNS_NAMESPACE
                       na n.nodeType == Node.ATTRIBUTE_NODE):
-                     ashiria xml.dom.NamespaceErr(
+                    ashiria xml.dom.NamespaceErr(
                         "illegal use of the 'xmlns' attribute")
                 prefix = Tupu
                 localName = name
@@ -1847,7 +1847,7 @@ kundi Document(Node, DocumentLS):
         # It's sio clear kutoka a semantic perspective whether we should
         # call the user data handlers kila the NODE_RENAMED event since
         # we're re-using the existing node.  The draft spec has been
-        # interpreted as meaning "no, don't call the handler unless a
+        # interpreted kama meaning "no, don't call the handler unless a
         # new node ni created."
         rudisha n
 
@@ -1877,28 +1877,28 @@ eleza _clone_node(node, deep, newOwnerDocument):
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
-    elikiwa node.nodeType == Node.DOCUMENT_FRAGMENT_NODE:
+    lasivyo node.nodeType == Node.DOCUMENT_FRAGMENT_NODE:
         clone = newOwnerDocument.createDocumentFragment()
         ikiwa deep:
             kila child kwenye node.childNodes:
                 c = _clone_node(child, deep, newOwnerDocument)
                 clone.appendChild(c)
 
-    elikiwa node.nodeType == Node.TEXT_NODE:
+    lasivyo node.nodeType == Node.TEXT_NODE:
         clone = newOwnerDocument.createTextNode(node.data)
-    elikiwa node.nodeType == Node.CDATA_SECTION_NODE:
+    lasivyo node.nodeType == Node.CDATA_SECTION_NODE:
         clone = newOwnerDocument.createCDATASection(node.data)
-    elikiwa node.nodeType == Node.PROCESSING_INSTRUCTION_NODE:
+    lasivyo node.nodeType == Node.PROCESSING_INSTRUCTION_NODE:
         clone = newOwnerDocument.createProcessingInstruction(node.target,
                                                              node.data)
-    elikiwa node.nodeType == Node.COMMENT_NODE:
+    lasivyo node.nodeType == Node.COMMENT_NODE:
         clone = newOwnerDocument.createComment(node.data)
-    elikiwa node.nodeType == Node.ATTRIBUTE_NODE:
+    lasivyo node.nodeType == Node.ATTRIBUTE_NODE:
         clone = newOwnerDocument.createAttributeNS(node.namespaceURI,
                                                    node.nodeName)
         clone.specified = Kweli
         clone.value = node.value
-    elikiwa node.nodeType == Node.DOCUMENT_TYPE_NODE:
+    lasivyo node.nodeType == Node.DOCUMENT_TYPE_NODE:
         assert node.ownerDocument ni sio newOwnerDocument
         operation = xml.dom.UserDataHandler.NODE_IMPORTED
         clone = newOwnerDocument.implementation.createDocumentType(
@@ -1927,7 +1927,7 @@ eleza _clone_node(node, deep, newOwnerDocument):
         # Note the cloning of Document na DocumentType nodes is
         # implementation specific.  minidom handles those cases
         # directly kwenye the cloneNode() methods.
-         ashiria xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
+        ashiria xml.dom.NotSupportedErr("Cannot clone node %s" % repr(node))
 
     # Check kila _call_user_data_handler() since this could conceivably
     # used ukijumuisha other DOM implementations (one of the FourThought

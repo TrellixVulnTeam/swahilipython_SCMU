@@ -17,7 +17,7 @@ MAPPING = {"urllib":  [
                 ("urllib.parse",
                     ["quote", "quote_plus", "unquote", "unquote_plus",
                      "urlencode", "splitattr", "splithost", "splitnport",
-                     "splitpasswd", "splitport", "splitquery", "splittag",
+                     "splitpitawd", "splitport", "splitquery", "splittag",
                      "splittype", "splituser", "splitvalue", ]),
                 ("urllib.error",
                     ["ContentTooShortError"])],
@@ -130,7 +130,7 @@ kundi FixUrllib(FixImports):
                 ikiwa member_name != ",":
                     kila change kwenye MAPPING[mod_member.value]:
                         ikiwa member_name kwenye change[1]:
-                            ikiwa change[0] sio kwenye mod_dict:
+                            ikiwa change[0] haiko kwenye mod_dict:
                                 modules.append(change[0])
                             mod_dict.setdefault(change[0], []).append(member)
 
@@ -185,12 +185,12 @@ kundi FixUrllib(FixImports):
     eleza transform(self, node, results):
         ikiwa results.get("module"):
             self.transform_import(node, results)
-        elikiwa results.get("mod_member"):
+        lasivyo results.get("mod_member"):
             self.transform_member(node, results)
-        elikiwa results.get("bare_with_attr"):
+        lasivyo results.get("bare_with_attr"):
             self.transform_dot(node, results)
         # Renaming na star imports are sio supported kila these modules.
-        elikiwa results.get("module_star"):
+        lasivyo results.get("module_star"):
             self.cannot_convert(node, "Cannot handle star imports.")
-        elikiwa results.get("module_as"):
+        lasivyo results.get("module_as"):
             self.cannot_convert(node, "This module ni now multiple modules")

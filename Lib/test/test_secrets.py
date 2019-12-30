@@ -84,11 +84,11 @@ kundi Token_Tests(unittest.TestCase):
                 name = func.__name__
                 jaribu:
                     func()
-                except TypeError:
+                tatizo TypeError:
                     self.fail("%s cannot be called ukijumuisha no argument" % name)
                 jaribu:
                     func(Tupu)
-                except TypeError:
+                tatizo TypeError:
                     self.fail("%s cannot be called ukijumuisha Tupu" % name)
         size = secrets.DEFAULT_ENTROPY
         self.assertEqual(len(secrets.token_bytes(Tupu)), size)

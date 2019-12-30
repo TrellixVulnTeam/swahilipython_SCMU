@@ -13,7 +13,7 @@ kundi Test_OpenGL_libs(unittest.TestCase):
         ikiwa sys.platform == "win32":
             lib_gl = find_library("OpenGL32")
             lib_glu = find_library("Glu32")
-        elikiwa sys.platform == "darwin":
+        lasivyo sys.platform == "darwin":
             lib_gl = lib_glu = find_library("OpenGL")
         isipokua:
             lib_gl = find_library("GL")
@@ -32,18 +32,18 @@ kundi Test_OpenGL_libs(unittest.TestCase):
         ikiwa lib_gl:
             jaribu:
                 cls.gl = CDLL(lib_gl, mode=RTLD_GLOBAL)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         ikiwa lib_glu:
             jaribu:
                 cls.glu = CDLL(lib_glu, RTLD_GLOBAL)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         ikiwa lib_gle:
             jaribu:
                 cls.gle = CDLL(lib_gle)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     @classmethod
     eleza tearDownClass(cls):
@@ -81,15 +81,15 @@ kundi LibPathFindTest(unittest.TestCase):
             p = subprocess.Popen(['gcc', '--version'], stdout=subprocess.PIPE,
                                  stderr=subprocess.DEVNULL)
             out, _ = p.communicate()
-        except OSError:
-             ashiria unittest.SkipTest('gcc, needed kila test, sio available')
-        ukijumuisha tempfile.TemporaryDirectory() as d:
+        tatizo OSError:
+            ashiria unittest.SkipTest('gcc, needed kila test, sio available')
+        ukijumuisha tempfile.TemporaryDirectory() kama d:
             # create an empty temporary file
             srcname = os.path.join(d, 'dummy.c')
             libname = 'py_ctypes_test_dummy'
             dstname = os.path.join(d, 'lib%s.so' % libname)
-            ukijumuisha open(srcname, 'w') as f:
-                pass
+            ukijumuisha open(srcname, 'w') kama f:
+                pita
             self.assertKweli(os.path.exists(srcname))
             # compile the file to a shared library
             cmd = ['gcc', '-o', dstname, '--shared',
@@ -100,9 +100,9 @@ kundi LibPathFindTest(unittest.TestCase):
             # LD_LIBRARY_PATH)
             self.assertIsTupu(find_library(libname))
             # now add the location to LD_LIBRARY_PATH
-            ukijumuisha test.support.EnvironmentVarGuard() as env:
+            ukijumuisha test.support.EnvironmentVarGuard() kama env:
                 KEY = 'LD_LIBRARY_PATH'
-                ikiwa KEY sio kwenye env:
+                ikiwa KEY haiko kwenye env:
                     v = d
                 isipokua:
                     v = '%s:%s' % (env[KEY], d)

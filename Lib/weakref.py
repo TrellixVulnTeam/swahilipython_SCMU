@@ -45,8 +45,8 @@ kundi WeakMethod(ref):
         jaribu:
             obj = meth.__self__
             func = meth.__func__
-        except AttributeError:
-             ashiria TypeError("argument should be a bound method, sio {}"
+        tatizo AttributeError:
+            ashiria TypeError("argument should be a bound method, sio {}"
                             .format(type(meth))) kutoka Tupu
         eleza _cb(arg):
             # The self-weakref trick ni needed to avoid creating a reference
@@ -130,7 +130,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         o = self.data[key]()
         ikiwa o ni Tupu:
-             ashiria KeyError(key)
+            ashiria KeyError(key)
         isipokua:
             rudisha o
 
@@ -149,7 +149,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         jaribu:
             o = self.data[key]()
-        except KeyError:
+        tatizo KeyError:
             rudisha Uongo
         rudisha o ni sio Tupu
 
@@ -191,7 +191,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         jaribu:
             wr = self.data[key]
-        except KeyError:
+        tatizo KeyError:
             rudisha default
         isipokua:
             o = wr()
@@ -221,7 +221,7 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
     __iter__ = keys
 
     eleza itervaluerefs(self):
-        """Return an iterator that yields the weak references to the values.
+        """Return an iterator that tumas the weak references to the values.
 
         The references are sio guaranteed to be 'live' at the time
         they are used, so the result of calling the references needs
@@ -258,20 +258,20 @@ kundi WeakValueDictionary(_collections_abc.MutableMapping):
             self._commit_removals()
         jaribu:
             o = self.data.pop(key)()
-        except KeyError:
+        tatizo KeyError:
             o = Tupu
         ikiwa o ni Tupu:
             ikiwa args:
                 rudisha args[0]
             isipokua:
-                 ashiria KeyError(key)
+                ashiria KeyError(key)
         isipokua:
             rudisha o
 
     eleza setdefault(self, key, default=Tupu):
         jaribu:
             o = self.data[key]()
-        except KeyError:
+        tatizo KeyError:
             o = Tupu
         ikiwa o ni Tupu:
             ikiwa self._pending_removals:
@@ -367,8 +367,8 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
         wakati l:
             jaribu:
                 toa d[l.pop()]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
 
     eleza _scrub_removals(self):
         d = self.data
@@ -422,7 +422,7 @@ kundi WeakKeyDictionary(_collections_abc.MutableMapping):
     eleza __contains__(self, key):
         jaribu:
             wr = ref(key)
-        except TypeError:
+        tatizo TypeError:
             rudisha Uongo
         rudisha wr kwenye self.data
 
@@ -492,7 +492,7 @@ kundi finalize:
     finalize(obj, func, *args, **kwargs) returns a callable finalizer
     object which will be called when obj ni garbage collected. The
     first time the finalizer ni called it evaluates func(*arg, **kwargs)
-    na returns the result. After this the finalizer ni dead, and
+    na returns the result. After this the finalizer ni dead, na
     calling it just returns Tupu.
 
     When the program exits any remaining finalizers kila which the
@@ -501,7 +501,7 @@ kundi finalize:
     """
 
     # Finalizer objects don't have any state of their own.  They are
-    # just used as keys to lookup _Info objects kwenye the registry.  This
+    # just used kama keys to lookup _Info objects kwenye the registry.  This
     # ensures that they cannot be part of a ref-cycle.
 
     __slots__ = ()
@@ -517,27 +517,27 @@ kundi finalize:
     eleza __init__(*args, **kwargs):
         ikiwa len(args) >= 3:
             self, obj, func, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor '__init__' of 'finalize' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor '__init__' of 'finalize' object "
                             "needs an argument")
         isipokua:
-            ikiwa 'func' sio kwenye kwargs:
-                 ashiria TypeError('finalize expected at least 2 positional '
+            ikiwa 'func' haiko kwenye kwargs:
+                ashiria TypeError('finalize expected at least 2 positional '
                                 'arguments, got %d' % (len(args)-1))
             func = kwargs.pop('func')
             ikiwa len(args) >= 2:
                 self, obj, *args = args
                 agiza warnings
-                warnings.warn("Passing 'func' as keyword argument ni deprecated",
+                warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
             isipokua:
-                ikiwa 'obj' sio kwenye kwargs:
-                     ashiria TypeError('finalize expected at least 2 positional '
+                ikiwa 'obj' haiko kwenye kwargs:
+                    ashiria TypeError('finalize expected at least 2 positional '
                                     'arguments, got %d' % (len(args)-1))
                 obj = kwargs.pop('obj')
                 self, *args = args
                 agiza warnings
-                warnings.warn("Passing 'obj' as keyword argument ni deprecated",
+                warnings.warn("Passing 'obj' kama keyword argument ni deprecated",
                               DeprecationWarning, stacklevel=2)
         args = tuple(args)
 
@@ -559,14 +559,14 @@ kundi finalize:
     __init__.__text_signature__ = '($self, obj, func, /, *args, **kwargs)'
 
     eleza __call__(self, _=Tupu):
-        """If alive then mark as dead na rudisha func(*args, **kwargs);
+        """If alive then mark kama dead na rudisha func(*args, **kwargs);
         otherwise rudisha Tupu"""
         info = self._registry.pop(self, Tupu)
         ikiwa info na sio self._shutdown:
             rudisha info.func(*info.args, **(info.kwargs ama {}))
 
     eleza detach(self):
-        """If alive then mark as dead na rudisha (obj, func, args, kwargs);
+        """If alive then mark kama dead na rudisha (obj, func, args, kwargs);
         otherwise rudisha Tupu"""
         info = self._registry.get(self)
         obj = info na info.weakref()
@@ -640,9 +640,9 @@ kundi finalize:
                         # this function which might trigger creation
                         # of a new finalizer
                         f()
-                    except Exception:
+                    tatizo Exception:
                         sys.excepthook(*sys.exc_info())
-                    assert f sio kwenye cls._registry
+                    assert f haiko kwenye cls._registry
         mwishowe:
             # prevent any more finalizers kutoka executing during shutdown
             finalize._shutdown = Kweli

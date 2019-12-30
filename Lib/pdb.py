@@ -22,13 +22,13 @@ traceback:
         >>> pdb.pm()
 
 The commands recognized by the debugger are listed kwenye the next
-section.  Most can be abbreviated as indicated; e.g., h(elp) means
-that 'help' can be typed as 'h' ama 'help' (but sio as 'he' ama 'hel',
-nor as 'H' ama 'Help' ama 'HELP').  Optional arguments are enclosed in
+section.  Most can be abbreviated kama indicated; e.g., h(elp) means
+that 'help' can be typed kama 'h' ama 'help' (but sio kama 'he' ama 'hel',
+nor kama 'H' ama 'Help' ama 'HELP').  Optional arguments are enclosed in
 square brackets.  Alternatives kwenye the command syntax are separated
 by a vertical bar (|).
 
-A blank line repeats the previous command literally, except for
+A blank line repeats the previous command literally, tatizo for
 'list', where it lists the next 11 lines.
 
 Commands that the debugger doesn't recognize are assumed to be Python
@@ -49,15 +49,15 @@ input ni split at the first ';;', even ikiwa it ni kwenye the middle of a
 quoted string.
 
 If a file ".pdbrc" exists kwenye your home directory ama kwenye the current
-directory, it ni read kwenye na executed as ikiwa it had been typed at the
+directory, it ni read kwenye na executed kama ikiwa it had been typed at the
 debugger prompt.  This ni particularly useful kila aliases.  If both
 files exist, the one kwenye the home directory ni read first na aliases
 defined there can be overridden by the local file.  This behavior can be
-disabled by passing the "readrc=Uongo" argument to the Pdb constructor.
+disabled by pitaing the "readrc=Uongo" argument to the Pdb constructor.
 
 Aside kutoka aliases, the debugger ni sio directly programmable; but it
-is implemented as a kundi kutoka which you can derive your own debugger
-class, which you can make as fancy as you like.
+is implemented kama a kundi kutoka which you can derive your own debugger
+class, which you can make kama fancy kama you like.
 
 
 Debugger commands
@@ -84,7 +84,7 @@ agiza linecache
 
 kundi Restart(Exception):
     """Causes a debugger to be restarted kila the debugged python program."""
-    pass
+    pita
 
 __all__ = ["run", "pm", "Pdb", "runeval", "runctx", "runcall", "set_trace",
            "post_mortem", "help"]
@@ -93,7 +93,7 @@ eleza find_function(funcname, filename):
     cre = re.compile(r'def\s+%s\s*[(]' % re.escape(funcname))
     jaribu:
         fp = open(filename)
-    except OSError:
+    tatizo OSError:
         rudisha Tupu
     # consumer of this info expects the first line to be 1
     ukijumuisha fp:
@@ -107,7 +107,7 @@ eleza getsourcelines(obj):
     ikiwa inspect.isframe(obj) na obj.f_globals ni obj.f_locals:
         # must be a module frame: do sio try to cut a block out of it
         rudisha lines, 1
-    elikiwa inspect.ismodule(obj):
+    lasivyo inspect.ismodule(obj):
         rudisha lines, 1
     rudisha inspect.getblock(lines[lineno:]), lineno+1
 
@@ -155,8 +155,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             agiza readline
             # remove some common file name delimiters
             readline.set_completer_delims(' \t\n`@#$%^&*()=+[{]}\\|;:\'",<>?')
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         self.allow_kbdint = Uongo
         self.nosigint = nosigint
 
@@ -164,15 +164,15 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self.rcLines = []
         ikiwa readrc:
             jaribu:
-                ukijumuisha open(os.path.expanduser('~/.pdbrc')) as rcFile:
+                ukijumuisha open(os.path.expanduser('~/.pdbrc')) kama rcFile:
                     self.rcLines.extend(rcFile)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
             jaribu:
-                ukijumuisha open(".pdbrc") as rcFile:
+                ukijumuisha open(".pdbrc") kama rcFile:
                     self.rcLines.extend(rcFile)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         self.commands = {} # associates a command list to komapoint numbers
         self.commands_doprompt = {} # kila each bp num, tells ikiwa the prompt
@@ -186,7 +186,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza sigint_handler(self, signum, frame):
         ikiwa self.allow_kbdint:
-             ashiria KeyboardInterrupt
+            ashiria KeyboardInterrupt
         self.message("\nProgram interrupted. (Use 'cont' to resume).")
         self.set_step()
         self.set_trace(frame)
@@ -304,7 +304,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # 'tuma from' ama a generator controlled by a kila loop. No exception has
         # actually occurred kwenye this case. The debugger uses this debug event to
         # stop when the debuggee ni returning kutoka such generators.
-        prefix = 'Internal ' ikiwa (not exc_traceback
+        prefix = 'Internal ' ikiwa (sio exc_traceback
                                     na exc_type ni StopIteration) isipokua ''
         self.message('%s%s' % (prefix,
             traceback.format_exception_only(exc_type, exc_value)[-1].strip()))
@@ -320,7 +320,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 self.cmdloop()
                 self.allow_kbdint = Uongo
                 koma
-            except KeyboardInterrupt:
+            tatizo KeyboardInterrupt:
                 self.message('--KeyboardInterrupt--')
 
     # Called before loop, handles display expressions
@@ -342,8 +342,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa Pdb._previous_sigint_handler:
             jaribu:
                 signal.signal(signal.SIGINT, Pdb._previous_sigint_handler)
-            except ValueError:  # ValueError: signal only works kwenye main thread
-                pass
+            tatizo ValueError:  # ValueError: signal only works kwenye main thread
+                pita
             isipokua:
                 Pdb._previous_sigint_handler = Tupu
         ikiwa self.setup(frame, traceback):
@@ -411,7 +411,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         rudisha line
 
     eleza onecmd(self, line):
-        """Interpret the argument as though it had been typed kwenye response
+        """Interpret the argument kama though it had been typed kwenye response
         to the prompt.
 
         Checks whether this line ni typed at the normal prompt ama in
@@ -430,7 +430,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa cmd == 'silent':
             self.commands_silent[self.commands_bnum] = Kweli
             rudisha # endelea to handle other cmd eleza kwenye the cmd list
-        elikiwa cmd == 'end':
+        lasivyo cmd == 'end':
             self.cmdqueue = []
             rudisha 1 # end of cmd list
         cmdlist = self.commands[self.commands_bnum]
@@ -441,7 +441,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # Determine ikiwa we must stop
         jaribu:
             func = getattr(self, 'do_' + cmd)
-        except AttributeError:
+        tatizo AttributeError:
             func = self.default
         # one of the resuming commands
         ikiwa func.__name__ kwenye self.commands_resuming:
@@ -469,20 +469,20 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # First, try to find matching functions (i.e. expressions).
         jaribu:
             ret = self._complete_expression(text, line, begidx, endidx)
-        except Exception:
+        tatizo Exception:
             ret = []
-        # Then, try to complete file names as well.
+        # Then, try to complete file names kama well.
         globs = glob.glob(text + '*')
         kila fn kwenye globs:
             ikiwa os.path.isdir(fn):
                 ret.append(fn + '/')
-            elikiwa os.path.isfile(fn) na fn.lower().endswith(('.py', '.pyw')):
+            lasivyo os.path.isfile(fn) na fn.lower().endswith(('.py', '.pyw')):
                 ret.append(fn + ':')
         rudisha ret
 
     eleza _complete_bpnumber(self, text, line, begidx, endidx):
         # Complete a komapoint number.  (This would be more helpful ikiwa we could
-        # display additional info along ukijumuisha the completions, such as file/line
+        # display additional info along ukijumuisha the completions, such kama file/line
         # of the komapoint.)
         rudisha [str(i) kila i, bp kwenye enumerate(bdb.Breakpoint.bpbynumber)
                 ikiwa bp ni sio Tupu na str(i).startswith(text)]
@@ -504,7 +504,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 obj = ns[dotted[0]]
                 kila part kwenye dotted[1:-1]:
                     obj = getattr(obj, part)
-            except (KeyError, AttributeError):
+            tatizo (KeyError, AttributeError):
                 rudisha []
             prefix = '.'.join(dotted[:-1]) + '.'
             rudisha [prefix + n kila n kwenye dir(obj) ikiwa n.startswith(dotted[-1])]
@@ -527,7 +527,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         Type a line containing just 'end' to terminate the commands.
         The commands are executed when the komapoint ni hit.
 
-        To remove all commands kutoka a komapoint, type commands and
+        To remove all commands kutoka a komapoint, type commands na
         follow it immediately ukijumuisha end; that is, give no commands.
 
         With no bpnumber argument, commands refers to the last
@@ -578,7 +578,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self.commands_defining = Kweli
         jaribu:
             self.cmdloop()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             # Restore old definitions.
             ikiwa old_command_defs:
                 self.commands[bnum] = old_command_defs[0]
@@ -641,14 +641,14 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             arg = arg[colon+1:].lstrip()
             jaribu:
                 lineno = int(arg)
-            except ValueError:
+            tatizo ValueError:
                 self.error('Bad lineno: %s' % arg)
                 return
         isipokua:
             # no colon; can be lineno ama function
             jaribu:
                 lineno = int(arg)
-            except ValueError:
+            tatizo ValueError:
                 jaribu:
                     func = eval(arg,
                                 self.curframe.f_globals,
@@ -702,7 +702,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_tkoma(self, arg):
         """tkoma [ ([filename:]lineno | function) [, condition] ]
-        Same arguments as koma, but sets a temporary komapoint: it
+        Same arguments kama koma, but sets a temporary komapoint: it
         ni automatically deleted when first hit.
         """
         self.do_koma(arg, 1)
@@ -714,9 +714,9 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # Input ni identifier, may be kwenye single quotes
         idstring = identifier.split("'")
         ikiwa len(idstring) == 1:
-            # sio kwenye single quotes
+            # haiko kwenye single quotes
             id = idstring[0].strip()
-        elikiwa len(idstring) == 3:
+        lasivyo len(idstring) == 3:
             # quoted
             id = idstring[1].strip()
         isipokua:
@@ -757,7 +757,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             rudisha 0
         line = line.strip()
         # Don't allow setting komapoint at a blank line
-        ikiwa (not line ama (line[0] == '#') or
+        ikiwa (sio line ama (line[0] == '#') ama
              (line[:3] == '"""') ama line[:3] == "'''"):
             self.error('Blank ama comment')
             rudisha 0
@@ -765,14 +765,14 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_enable(self, arg):
         """enable bpnumber [bpnumber ...]
-        Enables the komapoints given as a space separated list of
+        Enables the komapoints given kama a space separated list of
         komapoint numbers.
         """
         args = arg.split()
         kila i kwenye args:
             jaribu:
                 bp = self.get_bpbynumber(i)
-            except ValueError as err:
+            tatizo ValueError kama err:
                 self.error(err)
             isipokua:
                 bp.enable()
@@ -782,7 +782,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_disable(self, arg):
         """disable bpnumber [bpnumber ...]
-        Disables the komapoints given as a space separated list of
+        Disables the komapoints given kama a space separated list of
         komapoint numbers.  Disabling a komapoint means it cannot
         cause the program to stop execution, but unlike clearing a
         komapoint, it remains kwenye the list of komapoints na can be
@@ -792,7 +792,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         kila i kwenye args:
             jaribu:
                 bp = self.get_bpbynumber(i)
-            except ValueError as err:
+            tatizo ValueError kama err:
                 self.error(err)
             isipokua:
                 bp.disable()
@@ -810,13 +810,13 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         args = arg.split(' ', 1)
         jaribu:
             cond = args[1]
-        except IndexError:
+        tatizo IndexError:
             cond = Tupu
         jaribu:
             bp = self.get_bpbynumber(args[0].strip())
-        except IndexError:
+        tatizo IndexError:
             self.error('Breakpoint number expected')
-        except ValueError as err:
+        tatizo ValueError kama err:
             self.error(err)
         isipokua:
             bp.cond = cond
@@ -843,9 +843,9 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             count = 0
         jaribu:
             bp = self.get_bpbynumber(args[0].strip())
-        except IndexError:
+        tatizo IndexError:
             self.error('Breakpoint number expected')
-        except ValueError as err:
+        tatizo ValueError kama err:
             self.error(err)
         isipokua:
             bp.ignore = count
@@ -872,7 +872,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa sio arg:
             jaribu:
                 reply = uliza('Clear all komas? ')
-            except EOFError:
+            tatizo EOFError:
                 reply = 'no'
             reply = reply.strip().lower()
             ikiwa reply kwenye ('y', 'yes'):
@@ -888,7 +888,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             arg = arg[i+1:]
             jaribu:
                 lineno = int(arg)
-            except ValueError:
+            tatizo ValueError:
                 err = "Invalid line number (%s)" % arg
             isipokua:
                 bplist = self.get_komas(filename, lineno)
@@ -903,7 +903,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         kila i kwenye numberlist:
             jaribu:
                 bp = self.get_bpbynumber(i)
-            except ValueError as err:
+            tatizo ValueError kama err:
                 self.error(err)
             isipokua:
                 self.clear_bpbynumber(i)
@@ -941,7 +941,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             return
         jaribu:
             count = int(arg ama 1)
-        except ValueError:
+        tatizo ValueError:
             self.error('Invalid frame count (%s)' % arg)
             return
         ikiwa count < 0:
@@ -961,7 +961,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             return
         jaribu:
             count = int(arg ama 1)
-        except ValueError:
+        tatizo ValueError:
             self.error('Invalid frame count (%s)' % arg)
             return
         ikiwa count < 0:
@@ -982,7 +982,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa arg:
             jaribu:
                 lineno = int(arg)
-            except ValueError:
+            tatizo ValueError:
                 self.error('Error kwenye argument: %r' % arg)
                 return
             ikiwa lineno <= self.curframe.f_lineno:
@@ -1017,7 +1017,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     eleza do_run(self, arg):
         """run [args...]
         Restart the debugged python program. If a string ni supplied
-        it ni split ukijumuisha "shlex", na the result ni used as the new
+        it ni split ukijumuisha "shlex", na the result ni used kama the new
         sys.argv.  History, komapoints, actions na debugger options
         are preserved.  "restart" ni an alias kila "run".
         """
@@ -1027,7 +1027,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             sys.argv = shlex.split(arg)
             sys.argv[:0] = argv0
         # this ni caught kwenye the main debugger loop
-         ashiria Restart
+        ashiria Restart
 
     do_restart = do_run
 
@@ -1047,12 +1047,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             jaribu:
                 Pdb._previous_sigint_handler = \
                     signal.signal(signal.SIGINT, self.sigint_handler)
-            except ValueError:
+            tatizo ValueError:
                 # ValueError happens when do_endelea() ni invoked from
                 # a non-main thread kwenye which case we just endelea without
                 # SIGINT set. Would printing a message here (once) make
                 # sense?
-                pass
+                pita
         self.set_endelea()
         rudisha 1
     do_c = do_cont = do_endelea
@@ -1073,7 +1073,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             return
         jaribu:
             arg = int(arg)
-        except ValueError:
+        tatizo ValueError:
             self.error("The 'jump' command requires a line number")
         isipokua:
             jaribu:
@@ -1082,7 +1082,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 self.curframe.f_lineno = arg
                 self.stack[self.curindex] = self.stack[self.curindex][0], arg
                 self.print_stack_entry(self.stack[self.curindex])
-            except ValueError as e:
+            tatizo ValueError kama e:
                 self.error('Jump failed: %s' % e)
     do_j = do_jump
 
@@ -1100,7 +1100,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         self.message("ENTERING RECURSIVE DEBUGGER")
         jaribu:
             sys.call_tracing(p.run, (arg, globals, locals))
-        except Exception:
+        tatizo Exception:
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
         self.message("LEAVING RECURSIVE DEBUGGER")
@@ -1122,7 +1122,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
     eleza do_EOF(self, arg):
         """EOF
-        Handles the receipt of EOF as a command.
+        Handles the receipt of EOF kama a command.
         """
         self.message('')
         self._user_requested_quit = Kweli
@@ -1182,7 +1182,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         jaribu:
             self.message(repr(self._getval(arg)))
         tatizo:
-            pass
+            pita
 
     eleza do_pp(self, arg):
         """pp expression
@@ -1191,7 +1191,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         jaribu:
             self.message(pprint.pformat(self._getval(arg)))
         tatizo:
-            pass
+            pita
 
     complete_print = _complete_expression
     complete_p = _complete_expression
@@ -1202,7 +1202,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
 
         List source code kila the current file.  Without arguments,
         list 11 lines around the current line ama endelea the previous
-        listing.  With . as argument, list 11 lines around the current
+        listing.  With . kama argument, list 11 lines around the current
         line.  With one argument, list 11 lines starting at that line.
         With two arguments, list the given range; ikiwa the second
         argument ni less than the first, it ni a count.
@@ -1226,10 +1226,10 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 isipokua:
                     first = int(arg.strip())
                     first = max(1, first - 5)
-            except ValueError:
+            tatizo ValueError:
                 self.error('Error kwenye argument: %r' % arg)
                 return
-        elikiwa self.lineno ni Tupu ama arg == '.':
+        lasivyo self.lineno ni Tupu ama arg == '.':
             first = max(1, self.curframe.f_lineno - 5)
         isipokua:
             first = self.lineno + 1
@@ -1244,8 +1244,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             self.lineno = min(last, len(lines))
             ikiwa len(lines) < last:
                 self.message('[EOF]')
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
     do_l = do_list
 
     eleza do_longlist(self, arg):
@@ -1256,7 +1256,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         komalist = self.get_file_komas(filename)
         jaribu:
             lines, lineno = getsourcelines(self.curframe)
-        except OSError as err:
+        tatizo OSError kama err:
             self.error(err)
             return
         self._print_lines(lines, lineno, komalist, self.curframe)
@@ -1272,7 +1272,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             return
         jaribu:
             lines, lineno = getsourcelines(obj)
-        except (OSError, TypeError) as err:
+        tatizo (OSError, TypeError) kama err:
             self.error(err)
             return
         self._print_lines(lines, lineno)
@@ -1296,7 +1296,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
                 s += ' '
             ikiwa lineno == current_lineno:
                 s += '->'
-            elikiwa lineno == exc_lineno:
+            lasivyo lineno == exc_lineno:
                 s += '>>'
             self.message(s + '\t' + line.rstrip())
 
@@ -1313,16 +1313,16 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # Is it a function?
         jaribu:
             code = value.__code__
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
         ikiwa code:
             self.message('Function %s' % code.co_name)
             return
         # Is it an instance method?
         jaribu:
             code = value.__func__.__code__
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
         ikiwa code:
             self.message('Method %s' % code.co_name)
             return
@@ -1364,7 +1364,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         ikiwa arg:
             jaribu:
                 toa self.displaying.get(self.curframe, {})[arg]
-            except KeyError:
+            tatizo KeyError:
                 self.error('not displaying %s' % arg)
         isipokua:
             self.displaying.pop(self.curframe, Tupu)
@@ -1445,8 +1445,8 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         jaribu:
             kila frame_lineno kwenye self.stack:
                 self.print_stack_entry(frame_lineno)
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
 
     eleza print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
         frame, lineno = frame_lineno
@@ -1462,7 +1462,7 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
     eleza do_help(self, arg):
         """h(elp)
         Without argument, print the list of available commands.
-        With a command name as argument, print help about that command.
+        With a command name kama argument, print help about that command.
         "help pdb" shows the full pdb documentation.
         "help exec" gives help on the ! command.
         """
@@ -1472,9 +1472,9 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
             jaribu:
                 topic = getattr(self, 'help_' + arg)
                 rudisha topic()
-            except AttributeError:
+            tatizo AttributeError:
                 command = getattr(self, 'do_' + arg)
-        except AttributeError:
+        tatizo AttributeError:
             self.error('No help kila %r' % arg)
         isipokua:
             ikiwa sys.flags.optimize >= 2:
@@ -1560,12 +1560,12 @@ kundi Pdb(bdb.Bdb, cmd.Cmd):
         # When bdb sets tracing, a number of call na line events happens
         # BEFORE debugger even reaches user's code (and the exact sequence of
         # events depends on python version). So we take special measures to
-        # avoid stopping before we reach the main script (see user_line and
+        # avoid stopping before we reach the main script (see user_line na
         # user_call kila details).
         self._wait_for_mainpyfile = Kweli
         self.mainpyfile = self.canonic(filename)
         self._user_requested_quit = Uongo
-        ukijumuisha open(filename, "rb") as fp:
+        ukijumuisha open(filename, "rb") kama fp:
             statement = "exec(compile(%r, %r, 'exec'))" % \
                         (fp.read(), self.mainpyfile)
         self.run(statement)
@@ -1619,7 +1619,7 @@ eleza post_mortem(t=Tupu):
         # being handled, otherwise it returns Tupu
         t = sys.exc_info()[2]
     ikiwa t ni Tupu:
-         ashiria ValueError("A valid traceback must be passed ikiwa no "
+        ashiria ValueError("A valid traceback must be pitaed ikiwa no "
                          "exception ni being handled")
 
     p = Pdb()
@@ -1672,9 +1672,9 @@ eleza main():
         ikiwa opt kwenye ['-h', '--help']:
             andika(_usage)
             sys.exit()
-        elikiwa opt kwenye ['-c', '--command']:
+        lasivyo opt kwenye ['-c', '--command']:
             commands.append(optarg)
-        elikiwa opt kwenye ['-m']:
+        lasivyo opt kwenye ['-m']:
             run_as_module = Kweli
 
     mainpyfile = args[0]     # Get script filename
@@ -1703,14 +1703,14 @@ eleza main():
             ikiwa pdb._user_requested_quit:
                 koma
             andika("The program finished na will be restarted")
-        except Restart:
+        tatizo Restart:
             andika("Restarting", mainpyfile, "ukijumuisha arguments:")
             andika("\t" + " ".join(args))
-        except SystemExit:
+        tatizo SystemExit:
             # In most cases SystemExit does sio warrant a post-mortem session.
             andika("The program exited via sys.exit(). Exit status:", end=' ')
             andika(sys.exc_info()[1])
-        except SyntaxError:
+        tatizo SyntaxError:
             traceback.print_exc()
             sys.exit(1)
         tatizo:
@@ -1723,7 +1723,7 @@ eleza main():
                   " will be restarted")
 
 
-# When invoked as main program, invoke the debugger on a script
+# When invoked kama main program, invoke the debugger on a script
 ikiwa __name__ == '__main__':
     agiza pdb
     pdb.main()

@@ -24,14 +24,14 @@ kutoka distutils agiza log
 
 kundi BCPPCompiler(CCompiler) :
     """Concrete kundi that implements an interface to the Borland C/C++
-    compiler, as defined by the CCompiler abstract class.
+    compiler, kama defined by the CCompiler abstract class.
     """
 
     compiler_type = 'bcpp'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary kila this sort of single-compiler class.
+    # kama it really isn't necessary kila this sort of single-compiler class.
     # Would be nice to have a consistent interface ukijumuisha UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
@@ -95,7 +95,7 @@ kundi BCPPCompiler(CCompiler) :
         kila obj kwenye objects:
             jaribu:
                 src, ext = build[obj]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             # XXX why do the normpath here?
             src = os.path.normpath(src)
@@ -111,14 +111,14 @@ kundi BCPPCompiler(CCompiler) :
                 # This needs to be compiled to a .res file -- do it now.
                 jaribu:
                     self.spawn (["brcc32", "-fo", obj, src])
-                except DistutilsExecError as msg:
-                     ashiria CompileError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria CompileError(msg)
                 endelea # the 'for' loop
 
             # The next two are both kila the real compiler.
             ikiwa ext kwenye self._c_extensions:
                 input_opt = ""
-            elikiwa ext kwenye self._cpp_extensions:
+            lasivyo ext kwenye self._cpp_extensions:
                 input_opt = "-P"
             isipokua:
                 # Unknown file type -- no extra options.  The compiler
@@ -135,8 +135,8 @@ kundi BCPPCompiler(CCompiler) :
                 self.spawn ([self.cc] + compile_opts + pp_opts +
                             [input_opt, output_opt] +
                             extra_postargs + [src])
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
 
         rudisha objects
 
@@ -157,11 +157,11 @@ kundi BCPPCompiler(CCompiler) :
         ikiwa self._need_link (objects, output_filename):
             lib_args = [output_filename, '/u'] + objects
             ikiwa debug:
-                pass                    # XXX what goes here?
+                pita                    # XXX what goes here?
             jaribu:
                 self.spawn ([self.lib] + lib_args)
-            except DistutilsExecError as msg:
-                 ashiria LibError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -257,7 +257,7 @@ kundi BCPPCompiler(CCompiler) :
             # awkward.  Note that doing the obvious thing na jamming all
             # the filenames na commas into one argument would be wrong,
             # because 'spawn()' would quote any filenames ukijumuisha spaces in
-            # them.  Arghghh!.  Apparently it works fine as coded...
+            # them.  Arghghh!.  Apparently it works fine kama coded...
 
             # name of dll/exe file
             ld_args.extend([',',output_filename])
@@ -294,8 +294,8 @@ kundi BCPPCompiler(CCompiler) :
             self.mkpath (os.path.dirname (output_filename))
             jaribu:
                 self.spawn ([self.linker] + ld_args)
-            except DistutilsExecError as msg:
-                 ashiria LinkError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LinkError(msg)
 
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
@@ -340,15 +340,15 @@ kundi BCPPCompiler(CCompiler) :
         kila src_name kwenye source_filenames:
             # use normcase to make sure '.rc' ni really '.rc' na sio '.RC'
             (base, ext) = os.path.splitext (os.path.normcase(src_name))
-            ikiwa ext sio kwenye (self.src_extensions + ['.rc','.res']):
-                 ashiria UnknownFileError("unknown file type '%s' (kutoka '%s')" % \
+            ikiwa ext haiko kwenye (self.src_extensions + ['.rc','.res']):
+                ashiria UnknownFileError("unknown file type '%s' (kutoka '%s')" % \
                       (ext, src_name))
             ikiwa strip_dir:
                 base = os.path.basename (base)
             ikiwa ext == '.res':
                 # these can go unchanged
                 obj_names.append (os.path.join (output_dir, base + ext))
-            elikiwa ext == '.rc':
+            lasivyo ext == '.rc':
                 # these need to be compiled to .res-files
                 obj_names.append (os.path.join (output_dir, base + '.res'))
             isipokua:
@@ -386,8 +386,8 @@ kundi BCPPCompiler(CCompiler) :
                 self.mkpath(os.path.dirname(output_file))
             jaribu:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
+            tatizo DistutilsExecError kama msg:
                 andika(msg)
-                 ashiria CompileError(msg)
+                ashiria CompileError(msg)
 
     # preprocess()

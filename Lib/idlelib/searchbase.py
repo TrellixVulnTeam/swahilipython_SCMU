@@ -21,13 +21,13 @@ kundi SearchDialogBase:
     common to all three subclasses.  Rather, it ni the Find dialog minus
     the "Find Next" command, its execution function, na the
     default_command attribute needed kwenye create_widgets. The other
-    dialogs override attributes na methods, the latter to replace and
+    dialogs override attributes na methods, the latter to replace na
     add widgets.
     '''
 
     title = "Search Dialog"  # replace kwenye subclasses
     icon = "Search"
-    needwrapbutton = 1  # sio kwenye Find kwenye Files
+    needwrapbutton = 1  # haiko kwenye Find kwenye Files
 
     eleza __init__(self, root, engine):
         '''Initialize root, engine, na top attributes.
@@ -73,7 +73,7 @@ kundi SearchDialogBase:
     eleza create_widgets(self):
         '''Create basic 3 row x 3 col search (find) dialog.
 
-        Other dialogs override subsidiary create_x methods as needed.
+        Other dialogs override subsidiary create_x methods kama needed.
         Replace na Find-in-Files add another entry row.
         '''
         top = Toplevel(self.root)
@@ -192,7 +192,7 @@ kundi _searchbase(SearchDialogBase):  # htest #
         width,height, x,y = list(map(int, re.split('[x+]', parent.geometry())))
         self.top.geometry("+%d+%d" % (x + 40, y + 175))
 
-    eleza default_command(self, dummy): pass
+    eleza default_command(self, dummy): pita
 
 
 ikiwa __name__ == '__main__':

@@ -57,14 +57,14 @@ kundi _Outcome(object):
         old_success = self.success
         self.success = Kweli
         jaribu:
-            yield
-        except KeyboardInterrupt:
+            tuma
+        tatizo KeyboardInterrupt:
             raise
-        except SkipTest as e:
+        tatizo SkipTest kama e:
             self.success = Uongo
             self.skipped.append((test_case, str(e)))
-        except _ShouldStop:
-            pass
+        tatizo _ShouldStop:
+            pita
         tatizo:
             exc_info = sys.exc_info()
             ikiwa self.expecting_failure:
@@ -88,7 +88,7 @@ eleza _id(obj):
 
 _module_cleanups = []
 eleza addModuleCleanup(function, /, *args, **kwargs):
-    """Same as addCleanup, except the cleanup items are called even if
+    """Same kama addCleanup, tatizo the cleanup items are called even if
     setUpModule fails (unlike tearDownModule)."""
     _module_cleanups.append((function, args, kwargs))
 
@@ -101,12 +101,12 @@ eleza doModuleCleanups():
         function, args, kwargs = _module_cleanups.pop()
         jaribu:
             function(*args, **kwargs)
-        except Exception as exc:
+        tatizo Exception kama exc:
             exceptions.append(exc)
     ikiwa exceptions:
         # Swallows all but first exception. If a multi-exception handler
         # gets written we should use that here instead.
-         ashiria exceptions[0]
+        ashiria exceptions[0]
 
 
 eleza skip(reason):
@@ -117,7 +117,7 @@ eleza skip(reason):
         ikiwa sio isinstance(test_item, type):
             @functools.wraps(test_item)
             eleza skip_wrapper(*args, **kwargs):
-                 ashiria SkipTest(reason)
+                ashiria SkipTest(reason)
             test_item = skip_wrapper
 
         test_item.__unittest_skip__ = Kweli
@@ -161,7 +161,7 @@ kundi _BaseTestCaseContext:
 
     eleza _raiseFailure(self, standardMsg):
         msg = self.test_case._formatMessage(self.msg, standardMsg)
-         ashiria self.test_case.failureException(msg)
+        ashiria self.test_case.failureException(msg)
 
 kundi _AssertRaisesBaseContext(_BaseTestCaseContext):
 
@@ -177,26 +177,26 @@ kundi _AssertRaisesBaseContext(_BaseTestCaseContext):
 
     eleza handle(self, name, args, kwargs):
         """
-        If args ni empty, assertRaises/Warns ni being used as a
+        If args ni empty, assertRaises/Warns ni being used kama a
         context manager, so check kila a 'msg' kwarg na rudisha self.
-        If args ni sio empty, call a callable passing positional na keyword
+        If args ni sio empty, call a callable pitaing positional na keyword
         arguments.
         """
         jaribu:
             ikiwa sio _is_subtype(self.expected, self._base_type):
-                 ashiria TypeError('%s() arg 1 must be %s' %
+                ashiria TypeError('%s() arg 1 must be %s' %
                                 (name, self._base_type_str))
             ikiwa sio args:
                 self.msg = kwargs.pop('msg', Tupu)
                 ikiwa kwargs:
-                     ashiria TypeError('%r ni an invalid keyword argument kila '
+                    ashiria TypeError('%r ni an invalid keyword argument kila '
                                     'this function' % (next(iter(kwargs)),))
                 rudisha self
 
             callable_obj, *args = args
             jaribu:
                 self.obj_name = callable_obj.__name__
-            except AttributeError:
+            tatizo AttributeError:
                 self.obj_name = str(callable_obj)
             ukijumuisha self:
                 callable_obj(*args, **kwargs)
@@ -218,7 +218,7 @@ kundi _AssertRaisesContext(_AssertRaisesBaseContext):
         ikiwa exc_type ni Tupu:
             jaribu:
                 exc_name = self.expected.__name__
-            except AttributeError:
+            tatizo AttributeError:
                 exc_name = str(self.expected)
             ikiwa self.obj_name:
                 self._raiseFailure("{} sio raised by {}".format(exc_name,
@@ -228,7 +228,7 @@ kundi _AssertRaisesContext(_AssertRaisesBaseContext):
         isipokua:
             traceback.clear_frames(tb)
         ikiwa sio issubclass(exc_type, self.expected):
-            # let unexpected exceptions pass through
+            # let unexpected exceptions pita through
             rudisha Uongo
         # store exception, without traceback, kila later retrieval
         self.exception = exc_value.with_traceback(Tupu)
@@ -262,11 +262,11 @@ kundi _AssertWarnsContext(_AssertRaisesBaseContext):
     eleza __exit__(self, exc_type, exc_value, tb):
         self.warnings_manager.__exit__(exc_type, exc_value, tb)
         ikiwa exc_type ni sio Tupu:
-            # let unexpected exceptions pass through
+            # let unexpected exceptions pita through
             return
         jaribu:
             exc_name = self.expected.__name__
-        except AttributeError:
+        tatizo AttributeError:
             exc_name = str(self.expected)
         first_matching = Tupu
         kila m kwenye self.warnings:
@@ -275,7 +275,7 @@ kundi _AssertWarnsContext(_AssertRaisesBaseContext):
                 endelea
             ikiwa first_matching ni Tupu:
                 first_matching = w
-            ikiwa (self.expected_regex ni sio Tupu and
+            ikiwa (self.expected_regex ni sio Tupu na
                 sio self.expected_regex.search(str(w))):
                 endelea
             # store warning kila later retrieval
@@ -309,7 +309,7 @@ kundi _CapturingHandler(logging.Handler):
         self.watcher = _LoggingWatcher([], [])
 
     eleza flush(self):
-        pass
+        pita
 
     eleza emit(self, record):
         self.watcher.records.append(record)
@@ -354,7 +354,7 @@ kundi _AssertLogsContext(_BaseTestCaseContext):
         self.logger.propagate = self.old_propagate
         self.logger.setLevel(self.old_level)
         ikiwa exc_type ni sio Tupu:
-            # let unexpected exceptions pass through
+            # let unexpected exceptions pita through
             rudisha Uongo
         ikiwa len(self.watcher.records) == 0:
             self._raiseFailure(
@@ -367,7 +367,7 @@ kundi _OrderedChainMap(collections.ChainMap):
         seen = set()
         kila mapping kwenye self.maps:
             kila k kwenye mapping:
-                ikiwa k sio kwenye seen:
+                ikiwa k haiko kwenye seen:
                     seen.add(k)
                     tuma k
 
@@ -379,7 +379,7 @@ kundi TestCase(object):
     'runTest'.
 
     If the fixture may be used kila many test cases, create as
-    many test methods as are needed. When instantiating such a TestCase
+    many test methods kama are needed. When instantiating such a TestCase
     subclass, specify kwenye the constructor arguments the name of the test method
     that the instance ni to execute.
 
@@ -399,9 +399,9 @@ kundi TestCase(object):
         exception will be deemed to have 'failed' rather than 'errored'.
     * longMessage: determines whether long messages (including repr of
         objects used kwenye assert methods) will be printed on failure kwenye *addition*
-        to any explicit message passed.
+        to any explicit message pitaed.
     * maxDiff: sets the maximum length of a diff kwenye failure messages
-        by assert methods using difflib. It ni looked up as an instance
+        by assert methods using difflib. It ni looked up kama an instance
         attribute so can be configured by individual tests ikiwa required.
     """
 
@@ -431,11 +431,11 @@ kundi TestCase(object):
         self._testMethodDoc = 'No test'
         jaribu:
             testMethod = getattr(self, methodName)
-        except AttributeError:
+        tatizo AttributeError:
             ikiwa methodName != 'runTest':
                 # we allow instantiation ukijumuisha no explicit method name
                 # but sio an *incorrect* ama missing method name
-                 ashiria ValueError("no such test method kwenye %s: %s" %
+                ashiria ValueError("no such test method kwenye %s: %s" %
                       (self.__class__, methodName))
         isipokua:
             self._testMethodDoc = testMethod.__doc__
@@ -476,17 +476,17 @@ kundi TestCase(object):
         Cleanup items are called even ikiwa setUp fails (unlike tearDown)."""
         ikiwa len(args) >= 2:
             self, function, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor 'addCleanup' of 'TestCase' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor 'addCleanup' of 'TestCase' object "
                             "needs an argument")
-        elikiwa 'function' kwenye kwargs:
+        lasivyo 'function' kwenye kwargs:
             function = kwargs.pop('function')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'function' as keyword argument ni deprecated",
+            warnings.warn("Passing 'function' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError('addCleanup expected at least 1 positional '
+            ashiria TypeError('addCleanup expected at least 1 positional '
                             'argument, got %d' % (len(args)-1))
         args = tuple(args)
 
@@ -495,17 +495,17 @@ kundi TestCase(object):
 
     @classmethod
     eleza addClassCleanup(cls, function, /, *args, **kwargs):
-        """Same as addCleanup, except the cleanup items are called even if
+        """Same kama addCleanup, tatizo the cleanup items are called even if
         setUpClass fails (unlike tearDownClass)."""
         cls._class_cleanups.append((function, args, kwargs))
 
     eleza setUp(self):
         "Hook method kila setting up the test fixture before exercising it."
-        pass
+        pita
 
     eleza tearDown(self):
         "Hook method kila deconstructing the test fixture after testing it."
-        pass
+        pita
 
     @classmethod
     eleza setUpClass(cls):
@@ -563,13 +563,13 @@ kundi TestCase(object):
     @contextlib.contextmanager
     eleza subTest(self, msg=_subtest_msg_sentinel, **params):
         """Return a context manager that will rudisha the enclosed block
-        of code kwenye a subtest identified by the optional message and
+        of code kwenye a subtest identified by the optional message na
         keyword parameters.  A failure kwenye the subtest marks the test
-        case as failed but resumes execution at the end of the enclosed
+        case kama failed but resumes execution at the end of the enclosed
         block, allowing further test code to be executed.
         """
         ikiwa self._outcome ni Tupu ama sio self._outcome.result_supports_subtests:
-            yield
+            tuma
             return
         parent = self._subtest
         ikiwa parent ni Tupu:
@@ -579,15 +579,15 @@ kundi TestCase(object):
         self._subtest = _SubTest(self, msg, params_map)
         jaribu:
             ukijumuisha self._outcome.testPartExecutor(self._subtest, isTest=Kweli):
-                yield
+                tuma
             ikiwa sio self._outcome.success:
                 result = self._outcome.result
                 ikiwa result ni sio Tupu na result.failfast:
-                     ashiria _ShouldStop
-            elikiwa self._outcome.expectedFailure:
+                    ashiria _ShouldStop
+            lasivyo self._outcome.expectedFailure:
                 # If the test ni expecting a failure, we really want to
                 # stop now na register the expected failure.
-                 ashiria _ShouldStop
+                ashiria _ShouldStop
         mwishowe:
             self._subtest = parent
 
@@ -595,7 +595,7 @@ kundi TestCase(object):
         kila test, exc_info kwenye errors:
             ikiwa isinstance(test, _SubTest):
                 result.addSubTest(test.test_case, test, exc_info)
-            elikiwa exc_info ni sio Tupu:
+            lasivyo exc_info ni sio Tupu:
                 ikiwa issubclass(exc_info[0], self.failureException):
                     result.addFailure(test, exc_info)
                 isipokua:
@@ -604,8 +604,8 @@ kundi TestCase(object):
     eleza _addExpectedFailure(self, result, exc_info):
         jaribu:
             addExpectedFailure = result.addExpectedFailure
-        except AttributeError:
-            warnings.warn("TestResult has no addExpectedFailure method, reporting as passes",
+        tatizo AttributeError:
+            warnings.warn("TestResult has no addExpectedFailure method, reporting kama pitaes",
                           RuntimeWarning)
             result.addSuccess(self)
         isipokua:
@@ -614,14 +614,14 @@ kundi TestCase(object):
     eleza _addUnexpectedSuccess(self, result):
         jaribu:
             addUnexpectedSuccess = result.addUnexpectedSuccess
-        except AttributeError:
-            warnings.warn("TestResult has no addUnexpectedSuccess method, reporting as failure",
+        tatizo AttributeError:
+            warnings.warn("TestResult has no addUnexpectedSuccess method, reporting kama failure",
                           RuntimeWarning)
-            # We need to pass an actual exception na traceback to addFailure,
+            # We need to pita an actual exception na traceback to addFailure,
             # otherwise the legacy result can choke.
             jaribu:
-                 ashiria _UnexpectedSuccess kutoka Tupu
-            except _UnexpectedSuccess:
+                ashiria _UnexpectedSuccess kutoka Tupu
+            tatizo _UnexpectedSuccess:
                 result.addFailure(self, sys.exc_info())
         isipokua:
             addUnexpectedSuccess(self)
@@ -649,7 +649,7 @@ kundi TestCase(object):
         result.startTest(self)
 
         testMethod = getattr(self, self._testMethodName)
-        ikiwa (getattr(self.__class__, "__unittest_skip__", Uongo) or
+        ikiwa (getattr(self.__class__, "__unittest_skip__", Uongo) ama
             getattr(testMethod, "__unittest_skip__", Uongo)):
             # If the kundi ama method was skipped.
             jaribu:
@@ -729,7 +729,7 @@ kundi TestCase(object):
             function, args, kwargs = cls._class_cleanups.pop()
             jaribu:
                 function(*args, **kwargs)
-            except Exception as exc:
+            tatizo Exception kama exc:
                 cls.tearDown_exceptions.append(sys.exc_info())
 
     eleza __call__(self, *args, **kwds):
@@ -746,23 +746,23 @@ kundi TestCase(object):
 
     eleza skipTest(self, reason):
         """Skip this test."""
-         ashiria SkipTest(reason)
+        ashiria SkipTest(reason)
 
     eleza fail(self, msg=Tupu):
         """Fail immediately, ukijumuisha the given message."""
-         ashiria self.failureException(msg)
+        ashiria self.failureException(msg)
 
     eleza assertUongo(self, expr, msg=Tupu):
         """Check that the expression ni false."""
         ikiwa expr:
             msg = self._formatMessage(msg, "%s ni sio false" % safe_repr(expr))
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
     eleza assertKweli(self, expr, msg=Tupu):
         """Check that the expression ni true."""
         ikiwa sio expr:
             msg = self._formatMessage(msg, "%s ni sio true" % safe_repr(expr))
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
     eleza _formatMessage(self, msg, standardMsg):
         """Honour the longMessage attribute when generating failure messages.
@@ -782,15 +782,15 @@ kundi TestCase(object):
             # don't switch to '{}' formatting kwenye Python 2.X
             # it changes the way unicode input ni handled
             rudisha '%s : %s' % (standardMsg, msg)
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             rudisha  '%s : %s' % (safe_repr(standardMsg), safe_repr(msg))
 
     eleza assertRaises(self, expected_exception, *args, **kwargs):
         """Fail unless an exception of kundi expected_exception ni raised
-           by the callable when invoked ukijumuisha specified positional and
+           by the callable when invoked ukijumuisha specified positional na
            keyword arguments. If a different type of exception is
            raised, it will sio be caught, na the test case will be
-           deemed to have suffered an error, exactly as kila an
+           deemed to have suffered an error, exactly kama kila an
            unexpected exception.
 
            If called ukijumuisha the callable na arguments omitted, will rudisha a
@@ -800,13 +800,13 @@ kundi TestCase(object):
                     do_something()
 
            An optional keyword argument 'msg' can be provided when assertRaises
-           ni used as a context object.
+           ni used kama a context object.
 
            The context manager keeps a reference to the exception as
            the 'exception' attribute. This allows you to inspect the
            exception after the assertion::
 
-               ukijumuisha self.assertRaises(SomeException) as cm:
+               ukijumuisha self.assertRaises(SomeException) kama cm:
                    do_something()
                the_exception = cm.exception
                self.assertEqual(the_exception.error_code, 3)
@@ -820,11 +820,11 @@ kundi TestCase(object):
 
     eleza assertWarns(self, expected_warning, *args, **kwargs):
         """Fail unless a warning of kundi warnClass ni triggered
-           by the callable when invoked ukijumuisha specified positional and
+           by the callable when invoked ukijumuisha specified positional na
            keyword arguments.  If a different type of warning is
            triggered, it will sio be handled: depending on the other
            warning filtering rules kwenye effect, it might be silenced, printed
-           out, ama raised as an exception.
+           out, ama raised kama an exception.
 
            If called ukijumuisha the callable na arguments omitted, will rudisha a
            context object used like this::
@@ -833,15 +833,15 @@ kundi TestCase(object):
                     do_something()
 
            An optional keyword argument 'msg' can be provided when assertWarns
-           ni used as a context object.
+           ni used kama a context object.
 
            The context manager keeps a reference to the first matching
-           warning as the 'warning' attribute; similarly, the 'filename'
+           warning kama the 'warning' attribute; similarly, the 'filename'
            na 'lineno' attributes give you information about the line
            of Python code kutoka which the warning was triggered.
            This allows you to inspect the warning after the assertion::
 
-               ukijumuisha self.assertWarns(SomeWarning) as cm:
+               ukijumuisha self.assertWarns(SomeWarning) kama cm:
                    do_something()
                the_warning = cm.warning
                self.assertEqual(the_warning.some_attribute, 147)
@@ -854,7 +854,7 @@ kundi TestCase(object):
         on *logger_name* ama its children.  If omitted, *level* defaults to
         INFO na *logger* defaults to the root logger.
 
-        This method must be used as a context manager, na will yield
+        This method must be used kama a context manager, na will tuma
         a recording object ukijumuisha two attributes: `output` na `records`.
         At the end of the context manager, the `output` attribute will
         be a list of the matching formatted log messages na the
@@ -863,7 +863,7 @@ kundi TestCase(object):
 
         Example::
 
-            ukijumuisha self.assertLogs('foo', level='INFO') as cm:
+            ukijumuisha self.assertLogs('foo', level='INFO') kama cm:
                 logging.getLogger('foo').info('first message')
                 logging.getLogger('foo.bar').error('second message')
             self.assertEqual(cm.output, ['INFO:foo:first message',
@@ -875,7 +875,7 @@ kundi TestCase(object):
         """Get a detailed comparison function kila the types of the two args.
 
         Returns: A callable accepting (first, second, msg=Tupu) that will
-         ashiria a failure exception ikiwa first != second ukijumuisha a useful human
+        ashiria a failure exception ikiwa first != second ukijumuisha a useful human
         readable error message kila those types.
         """
         #
@@ -902,34 +902,34 @@ kundi TestCase(object):
         ikiwa sio first == second:
             standardMsg = '%s != %s' % _common_shorten_repr(first, second)
             msg = self._formatMessage(msg, standardMsg)
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
     eleza assertEqual(self, first, second, msg=Tupu):
-        """Fail ikiwa the two objects are unequal as determined by the '=='
+        """Fail ikiwa the two objects are unequal kama determined by the '=='
            operator.
         """
         assertion_func = self._getAssertEqualityFunc(first, second)
         assertion_func(first, second, msg=msg)
 
     eleza assertNotEqual(self, first, second, msg=Tupu):
-        """Fail ikiwa the two objects are equal as determined by the '!='
+        """Fail ikiwa the two objects are equal kama determined by the '!='
            operator.
         """
         ikiwa sio first != second:
             msg = self._formatMessage(msg, '%s == %s' % (safe_repr(first),
                                                           safe_repr(second)))
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
     eleza assertAlmostEqual(self, first, second, places=Tupu, msg=Tupu,
                           delta=Tupu):
-        """Fail ikiwa the two objects are unequal as determined by their
+        """Fail ikiwa the two objects are unequal kama determined by their
            difference rounded to the given number of decimal places
            (default 7) na comparing to zero, ama by comparing that the
            difference between the two objects ni more than the given
            delta.
 
            Note that decimal places (kutoka zero) are usually sio the same
-           as significant digits (measured kutoka the most significant digit).
+           kama significant digits (measured kutoka the most significant digit).
 
            If the two objects compare equal then they will automatically
            compare almost equal.
@@ -938,7 +938,7 @@ kundi TestCase(object):
             # shortcut
             return
         ikiwa delta ni sio Tupu na places ni sio Tupu:
-             ashiria TypeError("specify delta ama places sio both")
+            ashiria TypeError("specify delta ama places sio both")
 
         diff = abs(first - second)
         ikiwa delta ni sio Tupu:
@@ -963,22 +963,22 @@ kundi TestCase(object):
                 places,
                 safe_repr(diff))
         msg = self._formatMessage(msg, standardMsg)
-         ashiria self.failureException(msg)
+        ashiria self.failureException(msg)
 
     eleza assertNotAlmostEqual(self, first, second, places=Tupu, msg=Tupu,
                              delta=Tupu):
-        """Fail ikiwa the two objects are equal as determined by their
+        """Fail ikiwa the two objects are equal kama determined by their
            difference rounded to the given number of decimal places
            (default 7) na comparing to zero, ama by comparing that the
            difference between the two objects ni less than the given delta.
 
            Note that decimal places (kutoka zero) are usually sio the same
-           as significant digits (measured kutoka the most significant digit).
+           kama significant digits (measured kutoka the most significant digit).
 
            Objects that are equal automatically fail.
         """
         ikiwa delta ni sio Tupu na places ni sio Tupu:
-             ashiria TypeError("specify delta ama places sio both")
+            ashiria TypeError("specify delta ama places sio both")
         diff = abs(first - second)
         ikiwa delta ni sio Tupu:
             ikiwa sio (first == second) na diff > delta:
@@ -998,7 +998,7 @@ kundi TestCase(object):
                                                          places)
 
         msg = self._formatMessage(msg, standardMsg)
-         ashiria self.failureException(msg)
+        ashiria self.failureException(msg)
 
     eleza assertSequenceEqual(self, seq1, seq2, msg=Tupu, seq_type=Tupu):
         """An equality assertion kila ordered sequences (like lists na tuples).
@@ -1017,10 +1017,10 @@ kundi TestCase(object):
         ikiwa seq_type ni sio Tupu:
             seq_type_name = seq_type.__name__
             ikiwa sio isinstance(seq1, seq_type):
-                 ashiria self.failureException('First sequence ni sio a %s: %s'
+                ashiria self.failureException('First sequence ni sio a %s: %s'
                                         % (seq_type_name, safe_repr(seq1)))
             ikiwa sio isinstance(seq2, seq_type):
-                 ashiria self.failureException('Second sequence ni sio a %s: %s'
+                ashiria self.failureException('Second sequence ni sio a %s: %s'
                                         % (seq_type_name, safe_repr(seq2)))
         isipokua:
             seq_type_name = "sequence"
@@ -1028,14 +1028,14 @@ kundi TestCase(object):
         differing = Tupu
         jaribu:
             len1 = len(seq1)
-        except (TypeError, NotImplementedError):
+        tatizo (TypeError, NotImplementedError):
             differing = 'First %s has no length.    Non-sequence?' % (
                     seq_type_name)
 
         ikiwa differing ni Tupu:
             jaribu:
                 len2 = len(seq2)
-            except (TypeError, NotImplementedError):
+            tatizo (TypeError, NotImplementedError):
                 differing = 'Second %s has no length.    Non-sequence?' % (
                         seq_type_name)
 
@@ -1050,14 +1050,14 @@ kundi TestCase(object):
             kila i kwenye range(min(len1, len2)):
                 jaribu:
                     item1 = seq1[i]
-                except (TypeError, IndexError, NotImplementedError):
+                tatizo (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of first %s\n' %
                                  (i, seq_type_name))
                     koma
 
                 jaribu:
                     item2 = seq2[i]
-                except (TypeError, IndexError, NotImplementedError):
+                tatizo (TypeError, IndexError, NotImplementedError):
                     differing += ('\nUnable to index element %d of second %s\n' %
                                  (i, seq_type_name))
                     koma
@@ -1067,7 +1067,7 @@ kundi TestCase(object):
                                  ((i,) + _common_shorten_repr(item1, item2)))
                     koma
             isipokua:
-                ikiwa (len1 == len2 na seq_type ni Tupu and
+                ikiwa (len1 == len2 na seq_type ni Tupu na
                     type(seq1) != type(seq2)):
                     # The sequences are the same, but have differing types.
                     return
@@ -1078,16 +1078,16 @@ kundi TestCase(object):
                 jaribu:
                     differing += ('First extra element %d:\n%s\n' %
                                   (len2, safe_repr(seq1[len2])))
-                except (TypeError, IndexError, NotImplementedError):
+                tatizo (TypeError, IndexError, NotImplementedError):
                     differing += ('Unable to index element %d '
                                   'of first %s\n' % (len2, seq_type_name))
-            elikiwa len1 < len2:
+            lasivyo len1 < len2:
                 differing += ('\nSecond %s contains %d additional '
                              'elements.\n' % (seq_type_name, len2 - len1))
                 jaribu:
                     differing += ('First extra element %d:\n%s\n' %
                                   (len1, safe_repr(seq2[len1])))
-                except (TypeError, IndexError, NotImplementedError):
+                tatizo (TypeError, IndexError, NotImplementedError):
                     differing += ('Unable to index element %d '
                                   'of second %s\n' % (len1, seq_type_name))
         standardMsg = differing
@@ -1137,22 +1137,22 @@ kundi TestCase(object):
             msg: Optional message to use on failure instead of a list of
                     differences.
 
-        assertSetEqual uses ducktyping to support different types of sets, and
+        assertSetEqual uses ducktyping to support different types of sets, na
         ni optimized kila sets specifically (parameters must support a
         difference method).
         """
         jaribu:
             difference1 = set1.difference(set2)
-        except TypeError as e:
+        tatizo TypeError kama e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError as e:
+        tatizo AttributeError kama e:
             self.fail('first argument does sio support set difference: %s' % e)
 
         jaribu:
             difference2 = set2.difference(set1)
-        except TypeError as e:
+        tatizo TypeError kama e:
             self.fail('invalid type when attempting set difference: %s' % e)
-        except AttributeError as e:
+        tatizo AttributeError kama e:
             self.fail('second argument does sio support set difference: %s' % e)
 
         ikiwa sio (difference1 ama difference2):
@@ -1173,13 +1173,13 @@ kundi TestCase(object):
 
     eleza assertIn(self, member, container, msg=Tupu):
         """Just like self.assertKweli(a kwenye b), but ukijumuisha a nicer default message."""
-        ikiwa member sio kwenye container:
+        ikiwa member haiko kwenye container:
             standardMsg = '%s sio found kwenye %s' % (safe_repr(member),
                                                   safe_repr(container))
             self.fail(self._formatMessage(msg, standardMsg))
 
     eleza assertNotIn(self, member, container, msg=Tupu):
-        """Just like self.assertKweli(a sio kwenye b), but ukijumuisha a nicer default message."""
+        """Just like self.assertKweli(a haiko kwenye b), but ukijumuisha a nicer default message."""
         ikiwa member kwenye container:
             standardMsg = '%s unexpectedly found kwenye %s' % (safe_repr(member),
                                                         safe_repr(container))
@@ -1217,9 +1217,9 @@ kundi TestCase(object):
         missing = []
         mismatched = []
         kila key, value kwenye subset.items():
-            ikiwa key sio kwenye dictionary:
+            ikiwa key haiko kwenye dictionary:
                 missing.append(key)
-            elikiwa value != dictionary[key]:
+            lasivyo value != dictionary[key]:
                 mismatched.append('%s, expected: %s, actual: %s' %
                                   (safe_repr(key), safe_repr(value),
                                    safe_repr(dictionary[key])))
@@ -1255,7 +1255,7 @@ kundi TestCase(object):
         jaribu:
             first = collections.Counter(first_seq)
             second = collections.Counter(second_seq)
-        except TypeError:
+        tatizo TypeError:
             # Handle case ukijumuisha unhashable elements
             differences = _count_diff_all_purpose(first_seq, second_seq)
         isipokua:
@@ -1278,7 +1278,7 @@ kundi TestCase(object):
 
         ikiwa first != second:
             # don't use difflib ikiwa the strings are too long
-            ikiwa (len(first) > self._diffThreshold or
+            ikiwa (len(first) > self._diffThreshold ama
                 len(second) > self._diffThreshold):
                 self._baseAssertEqual(first, second, msg)
             firstlines = first.splitlines(keepends=Kweli)
@@ -1316,7 +1316,7 @@ kundi TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     eleza assertIsTupu(self, obj, msg=Tupu):
-        """Same as self.assertKweli(obj ni Tupu), ukijumuisha a nicer default message."""
+        """Same kama self.assertKweli(obj ni Tupu), ukijumuisha a nicer default message."""
         ikiwa obj ni sio Tupu:
             standardMsg = '%s ni sio Tupu' % (safe_repr(obj),)
             self.fail(self._formatMessage(msg, standardMsg))
@@ -1328,7 +1328,7 @@ kundi TestCase(object):
             self.fail(self._formatMessage(msg, standardMsg))
 
     eleza assertIsInstance(self, obj, cls, msg=Tupu):
-        """Same as self.assertKweli(isinstance(obj, cls)), ukijumuisha a nicer
+        """Same kama self.assertKweli(isinstance(obj, cls)), ukijumuisha a nicer
         default message."""
         ikiwa sio isinstance(obj, cls):
             standardMsg = '%s ni sio an instance of %r' % (safe_repr(obj), cls)
@@ -1351,7 +1351,7 @@ kundi TestCase(object):
             args: Function to be called na extra positional args.
             kwargs: Extra kwargs.
             msg: Optional message used kwenye case of failure. Can only be used
-                    when assertRaisesRegex ni used as a context manager.
+                    when assertRaisesRegex ni used kama a context manager.
         """
         context = _AssertRaisesContext(expected_exception, self, expected_regex)
         rudisha context.handle('assertRaisesRegex', args, kwargs)
@@ -1370,7 +1370,7 @@ kundi TestCase(object):
             args: Function to be called na extra positional args.
             kwargs: Extra kwargs.
             msg: Optional message used kwenye case of failure. Can only be used
-                    when assertWarnsRegex ni used as a context manager.
+                    when assertWarnsRegex ni used kama a context manager.
         """
         context = _AssertWarnsContext(expected_warning, self, expected_regex)
         rudisha context.handle('assertWarnsRegex', args, kwargs)
@@ -1385,7 +1385,7 @@ kundi TestCase(object):
                 expected_regex.pattern, text)
             # _formatMessage ensures the longMessage option ni respected
             msg = self._formatMessage(msg, standardMsg)
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
     eleza assertNotRegex(self, text, unexpected_regex, msg=Tupu):
         """Fail the test ikiwa the text matches the regular expression."""
@@ -1399,7 +1399,7 @@ kundi TestCase(object):
                 text)
             # _formatMessage ensures the longMessage option ni respected
             msg = self._formatMessage(msg, standardMsg)
-             ashiria self.failureException(msg)
+            ashiria self.failureException(msg)
 
 
     eleza _deprecate(original_func):
@@ -1492,7 +1492,7 @@ kundi _SubTest(TestCase):
         self.failureException = test_case.failureException
 
     eleza runTest(self):
-         ashiria NotImplementedError("subtests cannot be run directly")
+        ashiria NotImplementedError("subtests cannot be run directly")
 
     eleza _subDescription(self):
         parts = []

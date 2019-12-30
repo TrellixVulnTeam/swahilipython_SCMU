@@ -22,8 +22,8 @@ kundi Quitter(object):
         jaribu:
             sys.stdin.close()
         tatizo:
-            pass
-         ashiria SystemExit(code)
+            pita
+        ashiria SystemExit(code)
 
 
 kundi _Printer(object):
@@ -47,11 +47,11 @@ kundi _Printer(object):
         data = Tupu
         kila filename kwenye self.__filenames:
             jaribu:
-                ukijumuisha open(filename, "r") as fp:
+                ukijumuisha open(filename, "r") kama fp:
                     data = fp.read()
                 koma
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         ikiwa sio data:
             data = self.__data
         self.__lines = data.split('\n')
@@ -72,14 +72,14 @@ kundi _Printer(object):
             jaribu:
                 kila i kwenye range(lineno, lineno + self.MAXLINES):
                     andika(self.__lines[i])
-            except IndexError:
+            tatizo IndexError:
                 koma
             isipokua:
                 lineno += self.MAXLINES
                 key = Tupu
                 wakati key ni Tupu:
                     key = uliza(prompt)
-                    ikiwa key sio kwenye ('', 'q'):
+                    ikiwa key haiko kwenye ('', 'q'):
                         key = Tupu
                 ikiwa key == 'q':
                     koma

@@ -1,7 +1,7 @@
 """distutils.errors
 
 Provides exceptions used by the Distutils modules.  Note that Distutils
-modules may  ashiria standard exceptions; kwenye particular, SystemExit is
+modules may ashiria standard exceptions; kwenye particular, SystemExit is
 usually raised kila errors that are obviously the end-user's fault
 (eg. bad command-line arguments).
 
@@ -10,64 +10,64 @@ symbols whose names start ukijumuisha "Distutils" na end ukijumuisha "Error"."""
 
 kundi DistutilsError (Exception):
     """The root of all Distutils evil."""
-    pass
+    pita
 
 kundi DistutilsModuleError (DistutilsError):
     """Unable to load an expected module, ama to find an expected class
     within some module (in particular, command modules na classes)."""
-    pass
+    pita
 
 kundi DistutilsClassError (DistutilsError):
     """Some command kundi (or possibly distribution class, ikiwa anyone
     feels a need to subkundi Distribution) ni found sio to be holding
     up its end of the bargain, ie. implementing some part of the
     "command "interface."""
-    pass
+    pita
 
 kundi DistutilsGetoptError (DistutilsError):
     """The option table provided to 'fancy_getopt()' ni bogus."""
-    pass
+    pita
 
 kundi DistutilsArgError (DistutilsError):
     """Raised by fancy_getopt kwenye response to getopt.error -- ie. an
     error kwenye the command line usage."""
-    pass
+    pita
 
 kundi DistutilsFileError (DistutilsError):
     """Any problems kwenye the filesystem: expected file sio found, etc.
     Typically this ni kila problems that we detect before OSError
     could be raised."""
-    pass
+    pita
 
 kundi DistutilsOptionError (DistutilsError):
-    """Syntactic/semantic errors kwenye command options, such as use of
+    """Syntactic/semantic errors kwenye command options, such kama use of
     mutually conflicting options, ama inconsistent options,
     badly-spelled values, etc.  No distinction ni made between option
     values originating kwenye the setup script, the command line, config
     files, ama what-have-you -- but ikiwa we *know* something originated in
-    the setup script, we'll  ashiria DistutilsSetupError instead."""
-    pass
+    the setup script, we'll ashiria DistutilsSetupError instead."""
+    pita
 
 kundi DistutilsSetupError (DistutilsError):
     """For errors that can be definitely blamed on the setup script,
-    such as invalid keyword arguments to 'setup()'."""
-    pass
+    such kama invalid keyword arguments to 'setup()'."""
+    pita
 
 kundi DistutilsPlatformError (DistutilsError):
     """We don't know how to do something on the current platform (but
     we do know how to do it on some platform) -- eg. trying to compile
     C files on a platform sio supported by a CCompiler subclass."""
-    pass
+    pita
 
 kundi DistutilsExecError (DistutilsError):
-    """Any problems executing an external program (such as the C
+    """Any problems executing an external program (such kama the C
     compiler, when compiling C files)."""
-    pass
+    pita
 
 kundi DistutilsInternalError (DistutilsError):
     """Internal inconsistencies ama impossibilities (obviously, this
     should never be seen ikiwa the code ni working!)."""
-    pass
+    pita
 
 kundi DistutilsTemplateError (DistutilsError):
     """Syntax error kwenye a file list template."""

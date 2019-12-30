@@ -7,5 +7,5 @@ ikiwa __name__ == '__main__':
             koma
         jaribu:
             os.write(1, b'OUT:'+buf)
-        except OSError as ex:
+        tatizo OSError kama ex:
             os.write(2, b'ERR:' + ex.__class__.__name__.encode('ascii'))

@@ -87,7 +87,7 @@ kundi Callbacks(unittest.TestCase):
         self.check_type(c_char, b"x")
         self.check_type(c_char, b"a")
 
-    # disabled: would now (correctly)  ashiria a RuntimeWarning about
+    # disabled: would now (correctly) ashiria a RuntimeWarning about
     # a memory leak.  A callback function cannot rudisha a non-integral
     # C type without causing a memory leak.
     @unittest.skip('test disabled')
@@ -97,7 +97,7 @@ kundi Callbacks(unittest.TestCase):
 
     eleza test_pyobject(self):
         o = ()
-        kutoka sys agiza getrefcount as grc
+        kutoka sys agiza getrefcount kama grc
         kila o kwenye (), [], object():
             initial = grc(o)
             # This call leaks a reference to 'o'...
@@ -125,7 +125,7 @@ kundi Callbacks(unittest.TestCase):
         proto = self.functype.__func__(Tupu)
 
         kundi X(object):
-            eleza func(self): pass
+            eleza func(self): pita
             eleza __init__(self):
                 self.v = proto(self.func)
 
@@ -149,8 +149,8 @@ kundi Callbacks(unittest.TestCase):
 kundi StdcallCallbacks(Callbacks):
     jaribu:
         functype = WINFUNCTYPE
-    except NameError:
-        pass
+    tatizo NameError:
+        pita
 
 ################################################################
 
@@ -208,7 +208,7 @@ kundi SampleCallbacksTestCase(unittest.TestCase):
 
     eleza test_callback_register_int(self):
         # Issue #8275: buggy handling of callback args under Win64
-        # NOTE: should be run on release builds as well
+        # NOTE: should be run on release builds kama well
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_int, c_int, c_int, c_int, c_int, c_int)
         # All this function does ni call the callback ukijumuisha its args squared
@@ -224,7 +224,7 @@ kundi SampleCallbacksTestCase(unittest.TestCase):
 
     eleza test_callback_register_double(self):
         # Issue #8275: buggy handling of callback args under Win64
-        # NOTE: should be run on release builds as well
+        # NOTE: should be run on release builds kama well
         dll = CDLL(_ctypes_test.__file__)
         CALLBACK = CFUNCTYPE(c_double, c_double, c_double, c_double,
                              c_double, c_double)
@@ -242,7 +242,7 @@ kundi SampleCallbacksTestCase(unittest.TestCase):
                          callback(1.1*1.1, 2.2*2.2, 3.3*3.3, 4.4*4.4, 5.5*5.5))
 
     eleza test_callback_large_struct(self):
-        kundi Check: pass
+        kundi Check: pita
 
         # This should mirror the structure kwenye Modules/_ctypes/_ctypes_test.c
         kundi X(Structure):
@@ -257,9 +257,9 @@ kundi SampleCallbacksTestCase(unittest.TestCase):
             check.second = s.second
             check.third = s.third
             # See issue #29565.
-            # The structure should be passed by value, so
+            # The structure should be pitaed by value, so
             # any changes to it should sio be reflected in
-            # the value passed
+            # the value pitaed
             s.first = s.second = s.third = 0x0badf00d
 
         check = Check()
@@ -273,7 +273,7 @@ kundi SampleCallbacksTestCase(unittest.TestCase):
         func = dll._testfunc_cbk_large_struct
         func.argtypes = (X, CALLBACK)
         func.restype = Tupu
-        # the function just calls the callback ukijumuisha the passed structure
+        # the function just calls the callback ukijumuisha the pitaed structure
         func(s, CALLBACK(functools.partial(callback, check)))
         self.assertEqual(check.first, s.first)
         self.assertEqual(check.second, s.second)

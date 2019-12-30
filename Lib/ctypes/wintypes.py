@@ -37,12 +37,12 @@ LPCWSTR = LPWSTR = ctypes.c_wchar_p
 LPCSTR = LPSTR = ctypes.c_char_p
 LPCVOID = LPVOID = ctypes.c_void_p
 
-# WPARAM ni defined as UINT_PTR (unsigned type)
-# LPARAM ni defined as LONG_PTR (signed type)
+# WPARAM ni defined kama UINT_PTR (unsigned type)
+# LPARAM ni defined kama LONG_PTR (signed type)
 ikiwa ctypes.sizeof(ctypes.c_long) == ctypes.sizeof(ctypes.c_void_p):
     WPARAM = ctypes.c_ulong
     LPARAM = ctypes.c_long
-elikiwa ctypes.sizeof(ctypes.c_longlong) == ctypes.sizeof(ctypes.c_void_p):
+lasivyo ctypes.sizeof(ctypes.c_longlong) == ctypes.sizeof(ctypes.c_void_p):
     WPARAM = ctypes.c_ulonglong
     LPARAM = ctypes.c_longlong
 

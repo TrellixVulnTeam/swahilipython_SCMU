@@ -34,7 +34,7 @@ _synchre = re.compile(r"""
     |   except
     |   raise
     |   import
-    |   yield
+    |   tuma
     )
     \b
 """, re.VERBOSE | re.MULTILINE).search
@@ -84,12 +84,12 @@ _closere = re.compile(r"""
     |   koma
     |   endelea
     |   raise
-    |   pass
+    |   pita
     )
     \b
 """, re.VERBOSE).match
 
-# Chew up non-special chars as quickly as possible.  If match is
+# Chew up non-special chars kama quickly kama possible.  If match is
 # successful, m.end() less 1 ni the index of the last boring char
 # matched.  If match ni unsuccessful, the string starts ukijumuisha an
 # interesting char.
@@ -100,11 +100,11 @@ _chew_ordinaryre = re.compile(r"""
 
 
 kundi ParseMap(dict):
-    r"""Dict subkundi that maps anything sio kwenye dict to 'x'.
+    r"""Dict subkundi that maps anything haiko kwenye dict to 'x'.
 
     This ni designed to be used ukijumuisha str.translate kwenye study1.
     Anything sio specifically mapped otherwise becomes 'x'.
-    Example: replace everything except whitespace ukijumuisha 'x'.
+    Example: replace everything tatizo whitespace ukijumuisha 'x'.
 
     >>> keepwhite = ParseMap((ord(c), ord(c)) kila c kwenye ' \t\n\r')
     >>> "a + b\tc\nd".translate(keepwhite)
@@ -136,25 +136,25 @@ kundi Parser:
     eleza find_good_parse_start(self, is_char_in_string=Tupu,
                               _synchre=_synchre):
         """
-        Return index of a good place to begin parsing, as close to the
-        end of the string as possible.  This will be the start of some
+        Return index of a good place to begin parsing, kama close to the
+        end of the string kama possible.  This will be the start of some
         popular stmt like "if" ama "def".  Return Tupu ikiwa none found:
-        the caller should pass more prior context then, ikiwa possible, or
+        the caller should pita more prior context then, ikiwa possible, ama
         ikiwa sio (the entire program text up until the point of interest
-        has already been tried) pass 0 to set_lo().
+        has already been tried) pita 0 to set_lo().
 
         This will be reliable iff given a reliable is_char_in_string()
         function, meaning that when it says "no", it's absolutely
-        guaranteed that the char ni sio kwenye a string.
+        guaranteed that the char ni haiko kwenye a string.
         """
         code, pos = self.code, Tupu
 
         ikiwa sio is_char_in_string:
-            # no clue -- make the caller pass everything
+            # no clue -- make the caller pita everything
             rudisha Tupu
 
         # Peek back kutoka the end kila a good place to start,
-        # but don't try too often; pos will be left Tupu, or
+        # but don't try too often; pos will be left Tupu, ama
         # bumped to a legitimate synch point.
         limit = len(code)
         kila tries kwenye range(5):
@@ -206,7 +206,7 @@ kundi Parser:
     eleza _study1(self):
         """Find the line numbers of non-continuation lines.
 
-        As quickly as humanly possible <wink>, find the line numbers (0-
+        As quickly kama humanly possible <wink>, find the line numbers (0-
         based) of the non-continuation lines.
         Creates self.{goodlines, continuation}.
         """
@@ -331,7 +331,7 @@ kundi Parser:
             continuation = C_BRACKET
         self.continuation = continuation
 
-        # Push the final line number as a sentinel value, regardless of
+        # Push the final line number kama a sentinel value, regardless of
         # whether it's endelead.
         assert (continuation == C_NONE) == (goodlines[-1] == lno)
         ikiwa goodlines[-1] != lno:
@@ -353,7 +353,7 @@ kundi Parser:
                 the bracketing structure of the last interesting stmt; for
                 example, kila the statement "say(boo) ama die",
                 stmt_bracketing will be ((0, 0), (0, 1), (2, 0), (2, 1),
-                (4, 0)). Strings na comments are treated as brackets, for
+                (4, 0)). Strings na comments are treated kama brackets, for
                 the matter.
             self.lastch
                 last interesting character before optional trailing comment
@@ -396,7 +396,7 @@ kundi Parser:
         push_stack = stack.append
         bracketing = [(p, 0)]
         wakati p < q:
-            # suck up all except ()[]{}'"#\\
+            # suck up all tatizo ()[]{}'"#\\
             m = _chew_ordinaryre(code, p, q)
             ikiwa m:
                 # we skipped at least one boring char
@@ -528,18 +528,18 @@ kundi Parser:
             ikiwa ch kwenye "([{":
                 level = level + 1
                 i = i+1
-            elikiwa ch kwenye ")]}":
+            lasivyo ch kwenye ")]}":
                 ikiwa level:
                     level = level - 1
                 i = i+1
-            elikiwa ch == '"' ama ch == "'":
+            lasivyo ch == '"' ama ch == "'":
                 i = _match_stringre(code, i, endpos).end()
-            elikiwa ch == '#':
+            lasivyo ch == '#':
                 # This line ni unreachable because the # makes a comment of
                 # everything after it.
                 koma
-            elikiwa level == 0 na ch == '=' na \
-                   (i == 0 ama code[i-1] sio kwenye "=<>!") na \
+            lasivyo level == 0 na ch == '=' na \
+                   (i == 0 ama code[i-1] haiko kwenye "=<>!") na \
                    code[i+1] != '=':
                 found = 1
                 koma
@@ -556,7 +556,7 @@ kundi Parser:
             # oh well ... settle kila moving beyond the first chunk
             # of non-whitespace chars
             i = startpos
-            wakati code[i] sio kwenye " \t\n":
+            wakati code[i] haiko kwenye " \t\n":
                 i = i+1
 
         rudisha len(code[self.stmt_start:i].expandtabs(\

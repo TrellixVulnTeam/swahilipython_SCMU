@@ -8,8 +8,8 @@
 #    na Tim Peters
 
 # This module should be kept kwenye sync ukijumuisha the latest updates of the
-# IBM specification as it evolves.  Those updates will be treated
-# as bug fixes (deviation kutoka the spec ni a compatibility, usability
+# IBM specification kama it evolves.  Those updates will be treated
+# kama bug fixes (deviation kutoka the spec ni a compatibility, usability
 # bug) na will be backported.  At this point the spec ni stabilizing
 # na the updates are becoming fewer, smaller, na less significant.
 
@@ -150,14 +150,14 @@ __version__ = '1.70'    # Highest version of the spec this complies with
                         # See http://speleotrove.com/decimal/
 __libmpdec_version__ = "2.4.2" # compatible libmpdec version
 
-agiza math as _math
-agiza numbers as _numbers
+agiza math kama _math
+agiza numbers kama _numbers
 agiza sys
 
 jaribu:
-    kutoka collections agiza namedtuple as _namedtuple
+    kutoka collections agiza namedtuple kama _namedtuple
     DecimalTuple = _namedtuple('DecimalTuple', 'sign digits exponent')
-except ImportError:
+tatizo ImportError:
     DecimalTuple = lambda *args: args
 
 # Rounding
@@ -205,7 +205,7 @@ kundi DecimalException(ArithmeticError):
     kutoka DecimalException.
     """
     eleza handle(self, context, *args):
-        pass
+        pita
 
 
 kundi Clamped(DecimalException):
@@ -239,7 +239,7 @@ kundi InvalidOperation(DecimalException):
     An operand ni invalid
 
     The result of the operation after these ni a quiet positive NaN,
-    except when the cause ni a signaling NaN, kwenye which case the result is
+    tatizo when the cause ni a signaling NaN, kwenye which case the result is
     also a quiet NaN, but ukijumuisha the original sign, na an optional
     diagnostic information.
     """
@@ -290,7 +290,7 @@ kundi DivisionUndefined(InvalidOperation, ZeroDivisionError):
     """Undefined result of division.
 
     This occurs na signals invalid-operation ikiwa division by zero was
-    attempted (during a divide-integer, divide, ama remainder operation), and
+    attempted (during a divide-integer, divide, ama remainder operation), na
     the dividend ni also zero.  The result ni [0,qNaN].
     """
 
@@ -324,7 +324,7 @@ kundi InvalidContext(InvalidOperation):
         rudisha _NaN
 
 kundi Rounded(DecimalException):
-    """Number got rounded (not  necessarily changed during rounding).
+    """Number got rounded (sio  necessarily changed during rounding).
 
     This occurs na signals rounded whenever the result of an operation is
     rounded (that is, some zero ama non-zero digits were discarded kutoka the
@@ -338,12 +338,12 @@ kundi Rounded(DecimalException):
 kundi Subnormal(DecimalException):
     """Exponent < Emin before rounding.
 
-    This occurs na signals subnormal whenever the result of a conversion or
+    This occurs na signals subnormal whenever the result of a conversion ama
     operation ni subnormal (that is, its adjusted exponent ni less than
     Emin, before any rounding).  The result kwenye all cases ni unchanged.
 
     The subnormal signal may be tested (or trapped) to determine ikiwa a given
-    ama operation (or sequence of operations) yielded a subnormal result.
+    ama operation (or sequence of operations) tumaed a subnormal result.
     """
 
 kundi Overflow(Inexact, Rounded):
@@ -356,14 +356,14 @@ kundi Overflow(Inexact, Rounded):
 
     The result depends on the rounding mode:
 
-    For round-half-up na round-half-even (and kila round-half-down and
+    For round-half-up na round-half-even (and kila round-half-down na
     round-up, ikiwa implemented), the result of the operation ni [sign,inf],
     where sign ni the sign of the intermediate result.  For round-down, the
     result ni the largest finite number that can be represented kwenye the
     current precision, ukijumuisha the sign of the intermediate result.  For
-    round-ceiling, the result ni the same as kila round-down ikiwa the sign of
+    round-ceiling, the result ni the same kama kila round-down ikiwa the sign of
     the intermediate result ni 1, ama ni [0,inf] otherwise.  For round-floor,
-    the result ni the same as kila round-down ikiwa the sign of the intermediate
+    the result ni the same kama kila round-down ikiwa the sign of the intermediate
     result ni 0, ama ni [1,inf] otherwise.  In all cases, Inexact na Rounded
     will also be raised.
     """
@@ -403,7 +403,7 @@ kundi FloatOperation(DecimalException, TypeError):
     """Enable stricter semantics kila mixing floats na Decimals.
 
     If the signal ni sio trapped (default), mixing floats na Decimals is
-    permitted kwenye the Decimal() constructor, context.create_decimal() and
+    permitted kwenye the Decimal() constructor, context.create_decimal() na
     all comparison operators. Both conversion na comparisons are exact.
     Any occurrence of a mixed operation ni silently recorded by setting
     FloatOperation kwenye the context flags.  Explicit conversions with
@@ -411,7 +411,7 @@ kundi FloatOperation(DecimalException, TypeError):
     set the flag.
 
     Otherwise (the signal ni trapped), only equality comparisons na explicit
-    conversions are silent. All other mixed operations  ashiria FloatOperation.
+    conversions are silent. All other mixed operations ashiria FloatOperation.
     """
 
 # List of public traps na flags
@@ -446,7 +446,7 @@ eleza getcontext():
     """
     jaribu:
         rudisha _current_context_var.get()
-    except LookupError:
+    tatizo LookupError:
         context = Context()
         _current_context_var.set(context)
         rudisha context
@@ -467,7 +467,7 @@ eleza localcontext(ctx=Tupu):
     The returned context manager creates a local decimal context
     kwenye a ukijumuisha statement:
         eleza sin(x):
-             ukijumuisha localcontext() as ctx:
+             ukijumuisha localcontext() kama ctx:
                  ctx.prec += 2
                  # Rest of sin calculation algorithm
                  # uses a precision 2 greater than normal
@@ -502,7 +502,7 @@ eleza localcontext(ctx=Tupu):
 
 ##### Decimal kundi #######################################################
 
-# Do sio subkundi Decimal kutoka numbers.Real na do sio register it as such
+# Do sio subkundi Decimal kutoka numbers.Real na do sio register it kama such
 # (because Decimals are sio interoperable ukijumuisha floats).  See the notes in
 # numbers.py kila more detail.
 
@@ -531,7 +531,7 @@ kundi Decimal(object):
         """
 
         # Note that the coefficient, self._int, ni actually stored as
-        # a string rather than as a tuple of digits.  This speeds up
+        # a string rather than kama a tuple of digits.  This speeds up
         # the "digits to integer" na "integer to digits" conversions
         # that are used kwenye almost every arithmetic operation on
         # Decimals.  This ni an internal detail: the as_tuple function
@@ -608,12 +608,12 @@ kundi Decimal(object):
         # tuple/list conversion (possibly kutoka as_tuple())
         ikiwa isinstance(value, (list,tuple)):
             ikiwa len(value) != 3:
-                 ashiria ValueError('Invalid tuple size kwenye creation of Decimal '
+                ashiria ValueError('Invalid tuple size kwenye creation of Decimal '
                                  'kutoka list ama tuple.  The list ama tuple '
                                  'should have exactly three elements.')
             # process sign.  The isinstance test rejects floats
             ikiwa sio (isinstance(value[0], int) na value[0] kwenye (0,1)):
-                 ashiria ValueError("Invalid sign.  The first value kwenye the tuple "
+                ashiria ValueError("Invalid sign.  The first value kwenye the tuple "
                                  "should be an integer; either 0 kila a "
                                  "positive number ama 1 kila a negative number.")
             self._sign = value[0]
@@ -631,7 +631,7 @@ kundi Decimal(object):
                         ikiwa digits ama digit != 0:
                             digits.append(digit)
                     isipokua:
-                         ashiria ValueError("The second value kwenye the tuple must "
+                        ashiria ValueError("The second value kwenye the tuple must "
                                          "be composed of integers kwenye the range "
                                          "0 through 9.")
                 ikiwa value[2] kwenye ('n', 'N'):
@@ -639,13 +639,13 @@ kundi Decimal(object):
                     self._int = ''.join(map(str, digits))
                     self._exp = value[2]
                     self._is_special = Kweli
-                elikiwa isinstance(value[2], int):
+                lasivyo isinstance(value[2], int):
                     # finite number: digits give the coefficient
                     self._int = ''.join(map(str, digits ama [0]))
                     self._exp = value[2]
                     self._is_special = Uongo
                 isipokua:
-                     ashiria ValueError("The third value kwenye the tuple must "
+                    ashiria ValueError("The third value kwenye the tuple must "
                                      "be an integer, ama one of the "
                                      "strings 'F', 'n', 'N'.")
             rudisha self
@@ -663,15 +663,15 @@ kundi Decimal(object):
             self._is_special  = value._is_special
             rudisha self
 
-         ashiria TypeError("Cannot convert %r to Decimal" % value)
+        ashiria TypeError("Cannot convert %r to Decimal" % value)
 
     @classmethod
     eleza from_float(cls, f):
         """Converts a float to a decimal number, exactly.
 
-        Note that Decimal.from_float(0.1) ni sio the same as Decimal('0.1').
+        Note that Decimal.from_float(0.1) ni sio the same kama Decimal('0.1').
         Since 0.1 ni sio exactly representable kwenye binary floating point, the
-        value ni stored as the nearest representable value which is
+        value ni stored kama the nearest representable value which is
         0x1.999999999999ap-4.  The exact equivalent of the value kwenye decimal
         ni 0.1000000000000000055511151231257827021181583404541015625.
 
@@ -691,7 +691,7 @@ kundi Decimal(object):
             sign = 0 ikiwa f >= 0 isipokua 1
             k = 0
             coeff = str(abs(f))
-        elikiwa isinstance(f, float):
+        lasivyo isinstance(f, float):
             ikiwa _math.isinf(f) ama _math.isnan(f):
                 rudisha cls(repr(f))
             ikiwa _math.copysign(1.0, f) == 1.0:
@@ -702,7 +702,7 @@ kundi Decimal(object):
             k = d.bit_length() - 1
             coeff = str(n*5**k)
         isipokua:
-             ashiria TypeError("argument must be int ama float.")
+            ashiria TypeError("argument must be int ama float.")
 
         result = _dec_from_triple(sign, coeff, -k)
         ikiwa cls ni Decimal:
@@ -721,7 +721,7 @@ kundi Decimal(object):
             exp = self._exp
             ikiwa exp == 'n':
                 rudisha 1
-            elikiwa exp == 'N':
+            lasivyo exp == 'N':
                 rudisha 2
         rudisha 0
 
@@ -789,15 +789,15 @@ kundi Decimal(object):
                 rudisha context._raise_error(InvalidOperation,
                                             'comparison involving sNaN',
                                             self)
-            elikiwa other.is_snan():
+            lasivyo other.is_snan():
                 rudisha context._raise_error(InvalidOperation,
                                             'comparison involving sNaN',
                                             other)
-            elikiwa self.is_qnan():
+            lasivyo self.is_qnan():
                 rudisha context._raise_error(InvalidOperation,
                                             'comparison involving NaN',
                                             self)
-            elikiwa other.is_qnan():
+            lasivyo other.is_qnan():
                 rudisha context._raise_error(InvalidOperation,
                                             'comparison involving NaN',
                                             other)
@@ -821,7 +821,7 @@ kundi Decimal(object):
             other_inf = other._isinfinity()
             ikiwa self_inf == other_inf:
                 rudisha 0
-            elikiwa self_inf < other_inf:
+            lasivyo self_inf < other_inf:
                 rudisha -1
             isipokua:
                 rudisha 1
@@ -848,11 +848,11 @@ kundi Decimal(object):
             other_padded = other._int + '0'*(other._exp - self._exp)
             ikiwa self_padded == other_padded:
                 rudisha 0
-            elikiwa self_padded < other_padded:
+            lasivyo self_padded < other_padded:
                 rudisha -(-1)**self._sign
             isipokua:
                 rudisha (-1)**self._sign
-        elikiwa self_adjusted > other_adjusted:
+        lasivyo self_adjusted > other_adjusted:
             rudisha (-1)**self._sign
         isipokua: # self_adjusted < other_adjusted
             rudisha -((-1)**self._sign)
@@ -865,13 +865,13 @@ kundi Decimal(object):
     #   == comparisons involving a quiet NaN always rudisha Uongo
     #   != comparisons involving a quiet NaN always rudisha Kweli
     #   == ama != comparisons involving a signaling NaN signal
-    #      InvalidOperation, na rudisha Uongo ama Kweli as above ikiwa the
+    #      InvalidOperation, na rudisha Uongo ama Kweli kama above ikiwa the
     #      InvalidOperation ni sio trapped.
     #   <, >, <= na >= comparisons involving a (quiet ama signaling)
     #      NaN signal InvalidOperation, na rudisha Uongo ikiwa the
     #      InvalidOperation ni sio trapped.
     #
-    # This behavior ni designed to conform as closely as possible to
+    # This behavior ni designed to conform kama closely kama possible to
     # that specified by IEEE 754.
 
     eleza __eq__(self, other, context=Tupu):
@@ -945,8 +945,8 @@ kundi Decimal(object):
         # kwenye the documentation.  (See library docs, 'Built-in Types').
         ikiwa self._is_special:
             ikiwa self.is_snan():
-                 ashiria TypeError('Cannot hash a signaling NaN value.')
-            elikiwa self.is_nan():
+                ashiria TypeError('Cannot hash a signaling NaN value.')
+            lasivyo self.is_nan():
                 rudisha _PyHASH_NAN
             isipokua:
                 ikiwa self._sign:
@@ -963,9 +963,9 @@ kundi Decimal(object):
         rudisha -2 ikiwa ans == -1 isipokua ans
 
     eleza as_tuple(self):
-        """Represents the number as a triple tuple.
+        """Represents the number kama a triple tuple.
 
-        To show the internals exactly as they are.
+        To show the internals exactly kama they are.
         """
         rudisha DecimalTuple(self._sign, tuple(map(int, self._int)), self._exp)
 
@@ -985,9 +985,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                 ashiria ValueError("cannot convert NaN to integer ratio")
+                ashiria ValueError("cannot convert NaN to integer ratio")
             isipokua:
-                 ashiria OverflowError("cannot convert Infinity to integer ratio")
+                ashiria OverflowError("cannot convert Infinity to integer ratio")
 
         ikiwa sio self:
             rudisha 0, 1
@@ -1020,7 +1020,7 @@ kundi Decimal(object):
         rudisha n, d
 
     eleza __repr__(self):
-        """Represents the number as an instance of Decimal."""
+        """Represents the number kama an instance of Decimal."""
         # Invariant:  eval(repr(d)) == d
         rudisha "Decimal('%s')" % str(self)
 
@@ -1034,7 +1034,7 @@ kundi Decimal(object):
         ikiwa self._is_special:
             ikiwa self._exp == 'F':
                 rudisha sign + 'Infinity'
-            elikiwa self._exp == 'n':
+            lasivyo self._exp == 'n':
                 rudisha sign + 'NaN' + self._int
             isipokua: # self._exp == 'N'
                 rudisha sign + 'sNaN' + self._int
@@ -1048,10 +1048,10 @@ kundi Decimal(object):
         ikiwa self._exp <= 0 na leftdigits > -6:
             # no exponent required
             dotplace = leftdigits
-        elikiwa sio eng:
+        lasivyo sio eng:
             # usual scientific notation: 1 digit on left of the point
             dotplace = 1
-        elikiwa self._int == '0':
+        lasivyo self._int == '0':
             # engineering notation, zero
             dotplace = (leftdigits + 1) % 3 - 1
         isipokua:
@@ -1061,7 +1061,7 @@ kundi Decimal(object):
         ikiwa dotplace <= 0:
             intpart = '0'
             fracpart = '.' + '0'*(-dotplace) + self._int
-        elikiwa dotplace >= len(self._int):
+        lasivyo dotplace >= len(self._int):
             intpart = self._int+'0'*(dotplace-len(self._int))
             fracpart = ''
         isipokua:
@@ -1121,7 +1121,7 @@ kundi Decimal(object):
             context = getcontext()
 
         ikiwa sio self na context.rounding != ROUND_FLOOR:
-            # + (-0) = 0, except kwenye ROUND_FLOOR rounding mode.
+            # + (-0) = 0, tatizo kwenye ROUND_FLOOR rounding mode.
             ans = self.copy_abs()
         isipokua:
             ans = Decimal(self)
@@ -1168,7 +1168,7 @@ kundi Decimal(object):
                 rudisha ans
 
             ikiwa self._isinfinity():
-                # If both INF, same sign => same as both, opposite => error.
+                # If both INF, same sign => same kama both, opposite => error.
                 ikiwa self._sign != other._sign na other._isinfinity():
                     rudisha context._raise_error(InvalidOperation, '-INF + INF')
                 rudisha Decimal(self)
@@ -1219,7 +1219,7 @@ kundi Decimal(object):
             isipokua:
                 result.sign = 0
                 # So we know the sign, na op1 > 0.
-        elikiwa op1.sign == 1:
+        lasivyo op1.sign == 1:
             result.sign = 1
             op1.sign, op2.sign = (0, 0)
         isipokua:
@@ -1249,7 +1249,7 @@ kundi Decimal(object):
             ikiwa ans:
                 rudisha ans
 
-        # self - other ni computed as self + other.copy_negate()
+        # self - other ni computed kama self + other.copy_negate()
         rudisha self.__add__(other.copy_negate(), context=context)
 
     eleza __rsub__(self, other, context=Tupu):
@@ -1263,7 +1263,7 @@ kundi Decimal(object):
     eleza __mul__(self, other, context=Tupu):
         """Return self * other.
 
-        (+-) INF * 0 (or its reverse)  ashiria InvalidOperation.
+        (+-) INF * 0 (or its reverse) ashiria InvalidOperation.
         """
         other = _convert_other(other)
         ikiwa other ni NotImplemented:
@@ -1367,7 +1367,7 @@ kundi Decimal(object):
                 ikiwa coeff % 5 == 0:
                     coeff += 1
             isipokua:
-                # result ni exact; get as close to ideal exponent as possible
+                # result ni exact; get kama close to ideal exponent kama possible
                 ideal_exp = self._exp - other._exp
                 wakati exp < ideal_exp na coeff % 10 == 0:
                     coeff //= 10
@@ -1476,7 +1476,7 @@ kundi Decimal(object):
 
         ikiwa self._isinfinity():
             rudisha context._raise_error(InvalidOperation, 'INF % x')
-        elikiwa sio other:
+        lasivyo sio other:
             ikiwa self:
                 rudisha context._raise_error(InvalidOperation, 'x % 0')
             isipokua:
@@ -1559,7 +1559,7 @@ kundi Decimal(object):
         ikiwa q >= 10**context.prec:
             rudisha context._raise_error(DivisionImpossible)
 
-        # result has same sign as self unless r ni negative
+        # result has same sign kama self unless r ni negative
         sign = self._sign
         ikiwa r < 0:
             sign = 1-sign
@@ -1607,7 +1607,7 @@ kundi Decimal(object):
         """Float representation."""
         ikiwa self._isnan():
             ikiwa self.is_snan():
-                 ashiria ValueError("Cannot convert signaling NaN to float")
+                ashiria ValueError("Cannot convert signaling NaN to float")
             s = "-nan" ikiwa self._sign isipokua "nan"
         isipokua:
             s = str(self)
@@ -1617,9 +1617,9 @@ kundi Decimal(object):
         """Converts self to an int, truncating ikiwa necessary."""
         ikiwa self._is_special:
             ikiwa self._isnan():
-                 ashiria ValueError("Cannot convert NaN to integer")
-            elikiwa self._isinfinity():
-                 ashiria OverflowError("Cannot convert infinity to integer")
+                ashiria ValueError("Cannot convert NaN to integer")
+            lasivyo self._isinfinity():
+                ashiria OverflowError("Cannot convert infinity to integer")
         s = (-1)**self._sign
         ikiwa self._exp >= 0:
             rudisha s*int(self._int)*10**self._exp
@@ -1657,7 +1657,7 @@ kundi Decimal(object):
     eleza _fix(self, context):
         """Round ikiwa it ni necessary to keep self within prec precision.
 
-        Rounds na fixes the exponent.  Does sio  ashiria on a sNaN.
+        Rounds na fixes the exponent.  Does sio ashiria on a sNaN.
 
         Arguments:
         self - Decimal instance
@@ -1672,7 +1672,7 @@ kundi Decimal(object):
                 # self ni +/-Infinity; rudisha unaltered
                 rudisha Decimal(self)
 
-        # ikiwa self ni zero then exponent should be between Etiny and
+        # ikiwa self ni zero then exponent should be between Etiny na
         # Emax ikiwa clamp==0, na between Etiny na Etop ikiwa clamp==1.
         Etiny = context.Etiny()
         Etop = context.Etop()
@@ -1720,7 +1720,7 @@ kundi Decimal(object):
             isipokua:
                 ans = _dec_from_triple(self._sign, coeff, exp_min)
 
-            #  ashiria the appropriate signals, taking care to respect
+            # ashiria the appropriate signals, taking care to respect
             # the precedence described kwenye the specification
             ikiwa changed na self_is_subnormal:
                 context._raise_error(Underflow)
@@ -1730,7 +1730,7 @@ kundi Decimal(object):
                 context._raise_error(Inexact)
             context._raise_error(Rounded)
             ikiwa sio ans:
-                #  ashiria Clamped on underflow to 0
+                # ashiria Clamped on underflow to 0
                 context._raise_error(Clamped)
             rudisha ans
 
@@ -1750,14 +1750,14 @@ kundi Decimal(object):
     #   self ni a finite, nonzero Decimal
     #   prec ni an integer satisfying 0 <= prec < len(self._int)
     #
-    # each function returns either -1, 0, ama 1, as follows:
+    # each function returns either -1, 0, ama 1, kama follows:
     #   1 indicates that self should be rounded up (away kutoka zero)
     #   0 indicates that self should be truncated, na that all the
     #     digits to be truncated are zeros (so the value ni unchanged)
     #  -1 indicates that there are nonzero digits to be truncated
 
     eleza _round_down(self, prec):
-        """Also known as round-towards-0, truncate."""
+        """Also known kama round-towards-0, truncate."""
         ikiwa _all_zeros(self._int, prec):
             rudisha 0
         isipokua:
@@ -1771,7 +1771,7 @@ kundi Decimal(object):
         """Rounds 5 up (away kutoka 0)"""
         ikiwa self._int[prec] kwenye '56789':
             rudisha 1
-        elikiwa _all_zeros(self._int, prec):
+        lasivyo _all_zeros(self._int, prec):
             rudisha 0
         isipokua:
             rudisha -1
@@ -1792,14 +1792,14 @@ kundi Decimal(object):
             rudisha self._round_half_up(prec)
 
     eleza _round_ceiling(self, prec):
-        """Rounds up (not away kutoka 0 ikiwa negative.)"""
+        """Rounds up (sio away kutoka 0 ikiwa negative.)"""
         ikiwa self._sign:
             rudisha self._round_down(prec)
         isipokua:
             rudisha -self._round_down(prec)
 
     eleza _round_floor(self, prec):
-        """Rounds down (not towards 0 ikiwa negative)"""
+        """Rounds down (sio towards 0 ikiwa negative)"""
         ikiwa sio self._sign:
             rudisha self._round_down(prec)
         isipokua:
@@ -1807,7 +1807,7 @@ kundi Decimal(object):
 
     eleza _round_05up(self, prec):
         """Round down unless digit prec-1 ni 0 ama 5."""
-        ikiwa prec na self._int[prec-1] sio kwenye '05':
+        ikiwa prec na self._int[prec-1] haiko kwenye '05':
             rudisha self._round_down(prec)
         isipokua:
             rudisha -self._round_down(prec)
@@ -1827,7 +1827,7 @@ kundi Decimal(object):
         """Round self to the nearest integer, ama to a given precision.
 
         If only one argument ni supplied, round a finite Decimal
-        instance self to the nearest integer.  If self ni infinite or
+        instance self to the nearest integer.  If self ni infinite ama
         a NaN then a Python exception ni raised.  If self ni finite
         na lies exactly halfway between two integers then it is
         rounded to the integer ukijumuisha even last digit.
@@ -1873,20 +1873,20 @@ kundi Decimal(object):
         ikiwa n ni sio Tupu:
             # two-argument form: use the equivalent quantize call
             ikiwa sio isinstance(n, int):
-                 ashiria TypeError('Second argument to round should be integral')
+                ashiria TypeError('Second argument to round should be integral')
             exp = _dec_from_triple(0, '1', -n)
             rudisha self.quantize(exp)
 
         # one-argument form
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                 ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                 ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_HALF_EVEN))
 
     eleza __floor__(self):
-        """Return the floor of self, as an integer.
+        """Return the floor of self, kama an integer.
 
         For a finite Decimal instance self, rudisha the greatest
         integer n such that n <= self.  If self ni infinite ama a NaN
@@ -1895,13 +1895,13 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                 ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                 ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_FLOOR))
 
     eleza __ceil__(self):
-        """Return the ceiling of self, as an integer.
+        """Return the ceiling of self, kama an integer.
 
         For a finite Decimal instance self, rudisha the least integer n
         such that n >= self.  If self ni infinite ama a NaN then a
@@ -1910,9 +1910,9 @@ kundi Decimal(object):
         """
         ikiwa self._is_special:
             ikiwa self.is_nan():
-                 ashiria ValueError("cannot round a NaN")
+                ashiria ValueError("cannot round a NaN")
             isipokua:
-                 ashiria OverflowError("cannot round an infinity")
+                ashiria OverflowError("cannot round an infinity")
         rudisha int(self._rescale(0, ROUND_CEILING))
 
     eleza fma(self, other, third, context=Tupu):
@@ -1929,7 +1929,7 @@ kundi Decimal(object):
         other = _convert_other(other, raiseit=Kweli)
         third = _convert_other(third, raiseit=Kweli)
 
-        # compute product;  ashiria InvalidOperation ikiwa either operand is
+        # compute product; ashiria InvalidOperation ikiwa either operand is
         # a signaling NaN ama ikiwa the product ni zero times infinity.
         ikiwa self._is_special ama other._is_special:
             ikiwa context ni Tupu:
@@ -1940,14 +1940,14 @@ kundi Decimal(object):
                 rudisha context._raise_error(InvalidOperation, 'sNaN', other)
             ikiwa self._exp == 'n':
                 product = self
-            elikiwa other._exp == 'n':
+            lasivyo other._exp == 'n':
                 product = other
-            elikiwa self._exp == 'F':
+            lasivyo self._exp == 'F':
                 ikiwa sio other:
                     rudisha context._raise_error(InvalidOperation,
                                                 'INF * 0 kwenye fma')
                 product = _SignedInfinity[self._sign ^ other._sign]
-            elikiwa other._exp == 'F':
+            lasivyo other._exp == 'F':
                 ikiwa sio self:
                     rudisha context._raise_error(InvalidOperation,
                                                 '0 * INF kwenye fma')
@@ -1993,9 +1993,9 @@ kundi Decimal(object):
                 rudisha other._fix_nan(context)
             rudisha modulo._fix_nan(context)
 
-        # check inputs: we apply same restrictions as Python's pow()
-        ikiwa sio (self._isinteger() and
-                other._isinteger() and
+        # check inputs: we apply same restrictions kama Python's pow()
+        ikiwa sio (self._isinteger() na
+                other._isinteger() na
                 modulo._isinteger()):
             rudisha context._raise_error(InvalidOperation,
                                         'pow() 3rd argument sio allowed '
@@ -2063,19 +2063,19 @@ kundi Decimal(object):
         # na yc positive integers sio divisible by 10.
 
         # The main purpose of this method ni to identify the *failure*
-        # of x**y to be exactly representable ukijumuisha as little effort as
+        # of x**y to be exactly representable ukijumuisha kama little effort as
         # possible.  So we look kila cheap na easy tests that
         # eliminate the possibility of x**y being exact.  Only ikiwa all
-        # these tests are passed do we go on to actually compute x**y.
+        # these tests are pitaed do we go on to actually compute x**y.
 
-        # Here's the main idea.  Express y as a rational number m/n, ukijumuisha m and
+        # Here's the main idea.  Express y kama a rational number m/n, ukijumuisha m na
         # n relatively prime na n>0.  Then kila x**y to be exactly
         # representable (at *any* precision), xc must be the nth power of a
         # positive integer na xe must be divisible by n.  If y ni negative
         # then additionally xc must be a power of either 2 ama 5, hence a power
         # of 2**n ama 5**n.
         #
-        # There's a limit to how small |y| can be: ikiwa y=m/n as above
+        # There's a limit to how small |y| can be: ikiwa y=m/n kama above
         # then:
         #
         #  (1) ikiwa xc != 1 then kila the result to be representable we
@@ -2087,7 +2087,7 @@ kundi Decimal(object):
         #  (2) ikiwa xe != 0, |xe|*(1/n) >= 1, so |xe|*|y| >= 1.  Hence if
         #      |y| < 1/|xe| then the result ni sio representable.
         #
-        # Note that since x ni sio equal to 1, at least one of (1) and
+        # Note that since x ni sio equal to 1, at least one of (1) na
         # (2) must apply.  Now |y| < 1/nbits(xc) iff |yc|*nbits(xc) <
         # 10**-ye iff len(str(|yc|*nbits(xc)) <= -ye.
         #
@@ -2185,7 +2185,7 @@ kundi Decimal(object):
                     rudisha Tupu
                 xc = 5**e
 
-            elikiwa last_digit == 5:
+            lasivyo last_digit == 5:
                 # e >= log_5(xc) ikiwa xc ni a power of 5; we have
                 # equality all the way up to xc=5**2658
                 e = _nbits(xc)*28//65
@@ -2196,7 +2196,7 @@ kundi Decimal(object):
                     xc //= 5
                     e -= 1
 
-                # Guard against large values of ye, using the same logic as in
+                # Guard against large values of ye, using the same logic kama in
                 # the 'xc ni a power of 2' branch.  10/3 ni an upper bound for
                 # log(10)/log(2).
                 emax = p*10//3
@@ -2271,7 +2271,7 @@ kundi Decimal(object):
             rudisha Tupu
 
         # by this point the result *is* exactly representable
-        # adjust the exponent to get as close as possible to the ideal
+        # adjust the exponent to get kama close kama possible to the ideal
         # exponent, ikiwa necessary
         str_xc = str(xc)
         ikiwa other._isinteger() na other._sign == 0:
@@ -2367,7 +2367,7 @@ kundi Decimal(object):
                 # could be 1e999999999)
                 ikiwa other._sign == 1:
                     multiplier = 0
-                elikiwa other > context.prec:
+                lasivyo other > context.prec:
                     multiplier = context.prec
                 isipokua:
                     multiplier = int(other)
@@ -2425,7 +2425,7 @@ kundi Decimal(object):
                     ans = _dec_from_triple(1, ans._int, ans._exp)
                 exact = Kweli
 
-        # usual case: inexact result, x**y computed directly as exp(y*log(x))
+        # usual case: inexact result, x**y computed directly kama exp(y*log(x))
         ikiwa ans ni Tupu:
             p = context.prec
             x = _WorkRep(self)
@@ -2449,7 +2449,7 @@ kundi Decimal(object):
         # unlike exp, ln na log10, the power function respects the
         # rounding mode; no need to switch to ROUND_HALF_EVEN here
 
-        # There's a difficulty here when 'other' ni sio an integer and
+        # There's a difficulty here when 'other' ni sio an integer na
         # the result ni exact.  In this case, the specification
         # requires that the Inexact flag be raised (in spite of
         # exactness), but since the result ni exact _fix won't do this
@@ -2476,7 +2476,7 @@ kundi Decimal(object):
             # round kwenye the new context
             ans = ans._fix(newcontext)
 
-            #  ashiria Inexact, na ikiwa necessary, Underflow
+            # ashiria Inexact, na ikiwa necessary, Underflow
             newcontext._raise_error(Inexact)
             ikiwa newcontext.flags[Subnormal]:
                 newcontext._raise_error(Underflow)
@@ -2530,7 +2530,7 @@ kundi Decimal(object):
         rudisha _dec_from_triple(dup._sign, dup._int[:end], exp)
 
     eleza quantize(self, exp, rounding=Tupu, context=Tupu):
-        """Quantize self so its exponent ni the same as that of exp.
+        """Quantize self so its exponent ni the same kama that of exp.
 
         Similar to self._rescale(exp._exp) but ukijumuisha error checking.
         """
@@ -2577,7 +2577,7 @@ kundi Decimal(object):
             rudisha context._raise_error(InvalidOperation,
                                         'quantize result has too many digits kila current context')
 
-        #  ashiria appropriate flags
+        # ashiria appropriate flags
         ikiwa ans na ans.adjusted() < context.Emin:
             context._raise_error(Subnormal)
         ikiwa ans._exp > self._exp:
@@ -2585,7 +2585,7 @@ kundi Decimal(object):
                 context._raise_error(Inexact)
             context._raise_error(Rounded)
 
-        # call to fix takes care of any necessary folddown, and
+        # call to fix takes care of any necessary folddown, na
         # signals Clamped ikiwa necessary
         ans = ans._fix(context)
         rudisha ans
@@ -2601,7 +2601,7 @@ kundi Decimal(object):
         """
         other = _convert_other(other, raiseit=Kweli)
         ikiwa self._is_special ama other._is_special:
-            rudisha (self.is_nan() na other.is_nan() or
+            rudisha (self.is_nan() na other.is_nan() ama
                     self.is_infinite() na other.is_infinite())
         rudisha self._exp == other._exp
 
@@ -2650,7 +2650,7 @@ kundi Decimal(object):
 
         """
         ikiwa places <= 0:
-             ashiria ValueError("argument should be at least 1 kwenye _round")
+            ashiria ValueError("argument should be at least 1 kwenye _round")
         ikiwa self._is_special ama sio self:
             rudisha Decimal(self)
         ans = self._rescale(self.adjusted()+1-places, rounding)
@@ -2670,7 +2670,7 @@ kundi Decimal(object):
         when appropriate.
 
         See also: to_integral_value, which does exactly the same as
-        this method except that it doesn't  ashiria Inexact ama Rounded.
+        this method tatizo that it doesn't ashiria Inexact ama Rounded.
         """
         ikiwa self._is_special:
             ans = self._check_nans(context=context)
@@ -2748,7 +2748,7 @@ kundi Decimal(object):
         # we increase the last digit to 1 ama 6 respectively; ikiwa it's
         # exact we leave the last digit alone.  Now the final round to
         # p places (or fewer kwenye the case of underflow) will round
-        # correctly na  ashiria the appropriate flags.
+        # correctly na ashiria the appropriate flags.
 
         # use an extra digit of precision
         prec = context.prec+1
@@ -2795,7 +2795,7 @@ kundi Decimal(object):
                 n *= 10**-shift
             e += shift
         isipokua:
-            # result ni sio exact; fix last digit as described above
+            # result ni sio exact; fix last digit kama described above
             ikiwa n % 5 == 0:
                 n += 1
 
@@ -2812,7 +2812,7 @@ kundi Decimal(object):
     eleza max(self, other, context=Tupu):
         """Returns the larger value.
 
-        Like max(self, other) except ikiwa one ni sio a number, returns
+        Like max(self, other) tatizo ikiwa one ni sio a number, returns
         NaN (and signals ikiwa one ni sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=Kweli)
@@ -2854,7 +2854,7 @@ kundi Decimal(object):
     eleza min(self, other, context=Tupu):
         """Returns the smaller value.
 
-        Like min(self, other) except ikiwa one ni sio a number, returns
+        Like min(self, other) tatizo ikiwa one ni sio a number, returns
         NaN (and signals ikiwa one ni sNaN).  Also rounds.
         """
         other = _convert_other(other, raiseit=Kweli)
@@ -2905,7 +2905,7 @@ kundi Decimal(object):
         jaribu:
             rudisha self._exp + len(self._int) - 1
         # If NaN ama Infinity, self._exp ni string
-        except TypeError:
+        tatizo TypeError:
             rudisha 0
 
     eleza canonical(self):
@@ -2949,7 +2949,7 @@ kundi Decimal(object):
         other_nan = other._isnan()
         ikiwa self_nan ama other_nan:
             ikiwa self_nan == other_nan:
-                # compare payloads as though they're integers
+                # compare payloads kama though they're integers
                 self_key = len(self._int), self._int
                 other_key = len(other._int), other._int
                 ikiwa self_key < other_key:
@@ -3054,7 +3054,7 @@ kundi Decimal(object):
 
         # the result ni now guaranteed to be inexact (the true
         # mathematical result ni transcendental). There's no need to
-        #  ashiria Rounded na Inexact here---they'll always be raised as
+        # ashiria Rounded na Inexact here---they'll always be raised as
         # a result of the call to _fix.
         p = context.prec
         adj = self.adjusted()
@@ -3067,14 +3067,14 @@ kundi Decimal(object):
         ikiwa self._sign == 0 na adj > len(str((context.Emax+1)*3)):
             # overflow
             ans = _dec_from_triple(0, '1', context.Emax+1)
-        elikiwa self._sign == 1 na adj > len(str((-context.Etiny()+1)*3)):
+        lasivyo self._sign == 1 na adj > len(str((-context.Etiny()+1)*3)):
             # underflow to 0
             ans = _dec_from_triple(0, '1', context.Etiny()-1)
-        elikiwa self._sign == 0 na adj < -p:
-            # p+1 digits; final round will  ashiria correct flags
+        lasivyo self._sign == 0 na adj < -p:
+            # p+1 digits; final round will ashiria correct flags
             ans = _dec_from_triple(0, '1' + '0'*(p-1) + '1', -p)
-        elikiwa self._sign == 1 na adj < -p-1:
-            # p+1 digits; final round will  ashiria correct flags
+        lasivyo self._sign == 1 na adj < -p-1:
+            # p+1 digits; final round will ashiria correct flags
             ans = _dec_from_triple(0, '9'*(p+1), -p-1)
         # general case
         isipokua:
@@ -3169,7 +3169,7 @@ kundi Decimal(object):
         # kila 0.1 <= x <= 10 we use the inequalities 1-1/x <= ln(x) <= x-1
         adj = self._exp + len(self._int) - 1
         ikiwa adj >= 1:
-            # argument >= 10; we use 23/10 = 2.3 as a lower bound kila ln(10)
+            # argument >= 10; we use 23/10 = 2.3 kama a lower bound kila ln(10)
             rudisha len(str(adj*23//10)) - 1
         ikiwa adj <= -2:
             # argument <= 0.1
@@ -3321,7 +3321,7 @@ kundi Decimal(object):
 
         The result ni the integer which ni the exponent of the magnitude
         of the most significant digit of self (as though it were truncated
-        to a single digit wakati maintaining the value of that digit and
+        to a single digit wakati maintaining the value of that digit na
         without limiting the resulting exponent).
         """
         # logb(NaN) = NaN
@@ -3340,7 +3340,7 @@ kundi Decimal(object):
         ikiwa sio self:
             rudisha context._raise_error(DivisionByZero, 'logb(0)', 1)
 
-        # otherwise, simply rudisha the adjusted exponent of self, as a
+        # otherwise, simply rudisha the adjusted exponent of self, kama a
         # Decimal.  Note that no attempt ni made to fit the result
         # into the current context.
         ans = Decimal(self.adjusted())
@@ -3356,7 +3356,7 @@ kundi Decimal(object):
         ikiwa self._sign != 0 ama self._exp != 0:
             rudisha Uongo
         kila dig kwenye self._int:
-            ikiwa dig sio kwenye '01':
+            ikiwa dig haiko kwenye '01':
                 rudisha Uongo
         rudisha Kweli
 
@@ -3364,12 +3364,12 @@ kundi Decimal(object):
         dikiwa = context.prec - len(opa)
         ikiwa dikiwa > 0:
             opa = '0'*dikiwa + opa
-        elikiwa dikiwa < 0:
+        lasivyo dikiwa < 0:
             opa = opa[-context.prec:]
         dikiwa = context.prec - len(opb)
         ikiwa dikiwa > 0:
             opb = '0'*dikiwa + opb
-        elikiwa dikiwa < 0:
+        lasivyo dikiwa < 0:
             opb = opb[-context.prec:]
         rudisha opa, opb
 
@@ -3544,7 +3544,7 @@ kundi Decimal(object):
         (excluding self) that ni kwenye the direction towards other,
         unless both have the same value.  If the two operands are
         numerically equal, then the result ni a copy of self ukijumuisha the
-        sign set to be the same as the sign of other.
+        sign set to be the same kama the sign of other.
         """
         other = _convert_other(other, raiseit=Kweli)
 
@@ -3564,19 +3564,19 @@ kundi Decimal(object):
         isipokua: # comparison == 1
             ans = self.next_minus(context)
 
-        # decide which flags to  ashiria using value of ans
+        # decide which flags to ashiria using value of ans
         ikiwa ans._isinfinity():
             context._raise_error(Overflow,
                                  'Infinite result kutoka next_toward',
                                  ans._sign)
             context._raise_error(Inexact)
             context._raise_error(Rounded)
-        elikiwa ans.adjusted() < context.Emin:
+        lasivyo ans.adjusted() < context.Emin:
             context._raise_error(Underflow)
             context._raise_error(Subnormal)
             context._raise_error(Inexact)
             context._raise_error(Rounded)
-            # ikiwa precision == 1 then we don't  ashiria Clamped kila a
+            # ikiwa precision == 1 then we don't ashiria Clamped kila a
             # result 0E-Etiny.
             ikiwa sio ans:
                 context._raise_error(Clamped)
@@ -3626,7 +3626,7 @@ kundi Decimal(object):
             rudisha "+Normal"
 
     eleza radix(self):
-        """Just returns 10, as this ni Decimal, :)"""
+        """Just returns 10, kama this ni Decimal, :)"""
         rudisha Decimal(10)
 
     eleza rotate(self, other, context=Tupu):
@@ -3654,7 +3654,7 @@ kundi Decimal(object):
         topad = context.prec - len(rotdig)
         ikiwa topad > 0:
             rotdig = '0'*topad + rotdig
-        elikiwa topad < 0:
+        lasivyo topad < 0:
             rotdig = rotdig[-topad:]
 
         # let's rotate!
@@ -3712,7 +3712,7 @@ kundi Decimal(object):
         topad = context.prec - len(rotdig)
         ikiwa topad > 0:
             rotdig = '0'*topad + rotdig
-        elikiwa topad < 0:
+        lasivyo topad < 0:
             rotdig = rotdig[-topad:]
 
         # let's shift!
@@ -3783,9 +3783,9 @@ kundi Decimal(object):
         ikiwa precision ni sio Tupu:
             ikiwa spec['type'] kwenye 'eE':
                 self = self._round(precision+1, rounding)
-            elikiwa spec['type'] kwenye 'fF%':
+            lasivyo spec['type'] kwenye 'fF%':
                 self = self._rescale(-precision, rounding)
-            elikiwa spec['type'] kwenye 'gG' na len(self._int) > precision:
+            lasivyo spec['type'] kwenye 'gG' na len(self._int) > precision:
                 self = self._round(precision, rounding)
         # special case: zeros ukijumuisha a positive exponent can't be
         # represented kwenye fixed point; rescale them to 0e0.
@@ -3799,9 +3799,9 @@ kundi Decimal(object):
                 dotplace = 1 - precision
             isipokua:
                 dotplace = 1
-        elikiwa spec['type'] kwenye 'fF%':
+        lasivyo spec['type'] kwenye 'fF%':
             dotplace = leftdigits
-        elikiwa spec['type'] kwenye 'gG':
+        lasivyo spec['type'] kwenye 'gG':
             ikiwa self._exp <= 0 na leftdigits > -6:
                 dotplace = leftdigits
             isipokua:
@@ -3811,7 +3811,7 @@ kundi Decimal(object):
         ikiwa dotplace < 0:
             intpart = '0'
             fracpart = '0'*(-dotplace) + self._int
-        elikiwa dotplace > len(self._int):
+        lasivyo dotplace > len(self._int):
             intpart = self._int + '0'*(dotplace-len(self._int))
             fracpart = ''
         isipokua:
@@ -3839,8 +3839,8 @@ eleza _dec_from_triple(sign, coefficient, exponent, special=Uongo):
 
     rudisha self
 
-# Register Decimal as a kind of Number (an abstract base class).
-# However, do sio register it as Real (because Decimals are not
+# Register Decimal kama a kind of Number (an abstract base class).
+# However, do sio register it kama Real (because Decimals are not
 # interoperable ukijumuisha floats).
 _numbers.Number.register(Decimal)
 
@@ -3876,20 +3876,20 @@ kundi Context(object):
              Should be reset by user of Decimal instance.
     Emin -   Minimum exponent
     Emax -   Maximum exponent
-    capitals -      If 1, 1*10^1 ni printed as 1E+1.
-                    If 0, printed as 1e1
+    capitals -      If 1, 1*10^1 ni printed kama 1E+1.
+                    If 0, printed kama 1e1
     clamp -  If 1, change exponents ikiwa too high (Default 0)
     """
 
     eleza __init__(self, prec=Tupu, rounding=Tupu, Emin=Tupu, Emax=Tupu,
                        capitals=Tupu, clamp=Tupu, flags=Tupu, traps=Tupu,
                        _ignored_flags=Tupu):
-        # Set defaults; kila everything except flags na _ignored_flags,
+        # Set defaults; kila everything tatizo flags na _ignored_flags,
         # inherit kutoka DefaultContext.
         jaribu:
             dc = DefaultContext
-        except NameError:
-            pass
+        tatizo NameError:
+            pita
 
         self.prec = prec ikiwa prec ni sio Tupu isipokua dc.prec
         self.rounding = rounding ikiwa rounding ni sio Tupu isipokua dc.rounding
@@ -3905,70 +3905,70 @@ kundi Context(object):
 
         ikiwa traps ni Tupu:
             self.traps = dc.traps.copy()
-        elikiwa sio isinstance(traps, dict):
+        lasivyo sio isinstance(traps, dict):
             self.traps = dict((s, int(s kwenye traps)) kila s kwenye _signals + traps)
         isipokua:
             self.traps = traps
 
         ikiwa flags ni Tupu:
             self.flags = dict.fromkeys(_signals, 0)
-        elikiwa sio isinstance(flags, dict):
+        lasivyo sio isinstance(flags, dict):
             self.flags = dict((s, int(s kwenye flags)) kila s kwenye _signals + flags)
         isipokua:
             self.flags = flags
 
     eleza _set_integer_check(self, name, value, vmin, vmax):
         ikiwa sio isinstance(value, int):
-             ashiria TypeError("%s must be an integer" % name)
+            ashiria TypeError("%s must be an integer" % name)
         ikiwa vmin == '-inf':
             ikiwa value > vmax:
-                 ashiria ValueError("%s must be kwenye [%s, %d]. got: %s" % (name, vmin, vmax, value))
-        elikiwa vmax == 'inf':
+                ashiria ValueError("%s must be kwenye [%s, %d]. got: %s" % (name, vmin, vmax, value))
+        lasivyo vmax == 'inf':
             ikiwa value < vmin:
-                 ashiria ValueError("%s must be kwenye [%d, %s]. got: %s" % (name, vmin, vmax, value))
+                ashiria ValueError("%s must be kwenye [%d, %s]. got: %s" % (name, vmin, vmax, value))
         isipokua:
             ikiwa value < vmin ama value > vmax:
-                 ashiria ValueError("%s must be kwenye [%d, %d]. got %s" % (name, vmin, vmax, value))
+                ashiria ValueError("%s must be kwenye [%d, %d]. got %s" % (name, vmin, vmax, value))
         rudisha object.__setattr__(self, name, value)
 
     eleza _set_signal_dict(self, name, d):
         ikiwa sio isinstance(d, dict):
-             ashiria TypeError("%s must be a signal dict" % d)
+            ashiria TypeError("%s must be a signal dict" % d)
         kila key kwenye d:
             ikiwa sio key kwenye _signals:
-                 ashiria KeyError("%s ni sio a valid signal dict" % d)
+                ashiria KeyError("%s ni sio a valid signal dict" % d)
         kila key kwenye _signals:
             ikiwa sio key kwenye d:
-                 ashiria KeyError("%s ni sio a valid signal dict" % d)
+                ashiria KeyError("%s ni sio a valid signal dict" % d)
         rudisha object.__setattr__(self, name, d)
 
     eleza __setattr__(self, name, value):
         ikiwa name == 'prec':
             rudisha self._set_integer_check(name, value, 1, 'inf')
-        elikiwa name == 'Emin':
+        lasivyo name == 'Emin':
             rudisha self._set_integer_check(name, value, '-inf', 0)
-        elikiwa name == 'Emax':
+        lasivyo name == 'Emax':
             rudisha self._set_integer_check(name, value, 0, 'inf')
-        elikiwa name == 'capitals':
+        lasivyo name == 'capitals':
             rudisha self._set_integer_check(name, value, 0, 1)
-        elikiwa name == 'clamp':
+        lasivyo name == 'clamp':
             rudisha self._set_integer_check(name, value, 0, 1)
-        elikiwa name == 'rounding':
+        lasivyo name == 'rounding':
             ikiwa sio value kwenye _rounding_modes:
-                #  ashiria TypeError even kila strings to have consistency
+                # ashiria TypeError even kila strings to have consistency
                 # among various implementations.
-                 ashiria TypeError("%s: invalid rounding mode" % value)
+                ashiria TypeError("%s: invalid rounding mode" % value)
             rudisha object.__setattr__(self, name, value)
-        elikiwa name == 'flags' ama name == 'traps':
+        lasivyo name == 'flags' ama name == 'traps':
             rudisha self._set_signal_dict(name, value)
-        elikiwa name == '_ignored_flags':
+        lasivyo name == '_ignored_flags':
             rudisha object.__setattr__(self, name, value)
         isipokua:
-             ashiria AttributeError(
+            ashiria AttributeError(
                 "'decimal.Context' object has no attribute '%s'" % name)
 
     eleza __delattr__(self, name):
-         ashiria AttributeError("%s cannot be deleted" % name)
+        ashiria AttributeError("%s cannot be deleted" % name)
 
     # Support kila pickling, copy, na deepcopy
     eleza __reduce__(self):
@@ -4037,7 +4037,7 @@ kundi Context(object):
 
         # Errors should only be risked on copies of the context
         # self._ignored_flags = []
-         ashiria error(explanation)
+        ashiria error(explanation)
 
     eleza _ignore_all_flags(self):
         """Ignore all flags, ikiwa they are raised"""
@@ -4088,7 +4088,7 @@ kundi Context(object):
         rudisha rounding
 
     eleza create_decimal(self, num='0'):
-        """Creates a new Decimal instance but using self as context.
+        """Creates a new Decimal instance but using self kama context.
 
         This method implements the to-number operation of the
         IBM Decimal specification."""
@@ -4106,7 +4106,7 @@ kundi Context(object):
 
     eleza create_decimal_from_float(self, f):
         """Creates a new Decimal instance kutoka a float but rounding using self
-        as the context.
+        kama the context.
 
         >>> context = Context(prec=5, rounding=ROUND_DOWN)
         >>> context.create_decimal_from_float(3.1415926535897932)
@@ -4125,8 +4125,8 @@ kundi Context(object):
     eleza abs(self, a):
         """Returns the absolute value of the operand.
 
-        If the operand ni negative, the result ni the same as using the minus
-        operation on the operand.  Otherwise, the result ni the same as using
+        If the operand ni negative, the result ni the same kama using the minus
+        operation on the operand.  Otherwise, the result ni the same kama using
         the plus operation on the operand.
 
         >>> ExtendedContext.abs(Decimal('2.1'))
@@ -4160,7 +4160,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__add__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -4177,14 +4177,14 @@ kundi Context(object):
         Decimal('2.50')
         """
         ikiwa sio isinstance(a, Decimal):
-             ashiria TypeError("canonical requires a Decimal as an argument.")
+            ashiria TypeError("canonical requires a Decimal kama an argument.")
         rudisha a.canonical()
 
     eleza compare(self, a, b):
         """Compares values numerically.
 
         If the signs of the operands differ, a value representing each operand
-        ('-1' ikiwa the operand ni less than zero, '0' ikiwa the operand ni zero or
+        ('-1' ikiwa the operand ni less than zero, '0' ikiwa the operand ni zero ama
         negative zero, ama '1' ikiwa the operand ni greater than zero) ni used in
         place of that operand kila the comparison instead of the actual
         operand.
@@ -4384,7 +4384,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__truediv__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -4407,7 +4407,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__floordiv__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -4428,7 +4428,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__divmod__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -4489,7 +4489,7 @@ kundi Context(object):
         Kweli
         """
         ikiwa sio isinstance(a, Decimal):
-             ashiria TypeError("is_canonical requires a Decimal as an argument.")
+            ashiria TypeError("is_canonical requires a Decimal kama an argument.")
         rudisha a.is_canonical()
 
     eleza is_finite(self, a):
@@ -4835,10 +4835,10 @@ kundi Context(object):
         """max compares two values numerically na returns the maximum.
 
         If either operand ni a NaN then the general rules apply.
-        Otherwise, the operands are compared as though by the compare
+        Otherwise, the operands are compared kama though by the compare
         operation.  If they are numerically equal then the left-hand operand
-        ni chosen as the result.  Otherwise the maximum (closer to positive
-        infinity) of the two operands ni chosen as the result.
+        ni chosen kama the result.  Otherwise the maximum (closer to positive
+        infinity) of the two operands ni chosen kama the result.
 
         >>> ExtendedContext.max(Decimal('3'), Decimal('2'))
         Decimal('3')
@@ -4879,10 +4879,10 @@ kundi Context(object):
         """min compares two values numerically na returns the minimum.
 
         If either operand ni a NaN then the general rules apply.
-        Otherwise, the operands are compared as though by the compare
+        Otherwise, the operands are compared kama though by the compare
         operation.  If they are numerically equal then the left-hand operand
-        ni chosen as the result.  Otherwise the minimum (closer to negative
-        infinity) of the two operands ni chosen as the result.
+        ni chosen kama the result.  Otherwise the minimum (closer to negative
+        infinity) of the two operands ni chosen kama the result.
 
         >>> ExtendedContext.min(Decimal('3'), Decimal('2'))
         Decimal('2')
@@ -4922,9 +4922,9 @@ kundi Context(object):
     eleza minus(self, a):
         """Minus corresponds to unary prefix minus kwenye Python.
 
-        The operation ni evaluated using the same rules as subtract; the
-        operation minus(a) ni calculated as subtract('0', a) where the '0'
-        has the same exponent as the operand.
+        The operation ni evaluated using the same rules kama subtract; the
+        operation minus(a) ni calculated kama subtract('0', a) where the '0'
+        has the same exponent kama the operand.
 
         >>> ExtendedContext.minus(Decimal('1.3'))
         Decimal('-1.3')
@@ -4941,7 +4941,7 @@ kundi Context(object):
 
         If either operand ni a special value then the general rules apply.
         Otherwise, the operands are multiplied together
-        ('long multiplication'), resulting kwenye a number which may be as long as
+        ('long multiplication'), resulting kwenye a number which may be kama long as
         the sum of the lengths of the two operands.
 
         >>> ExtendedContext.multiply(Decimal('1.20'), Decimal('3'))
@@ -4964,7 +4964,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__mul__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -5120,9 +5120,9 @@ kundi Context(object):
     eleza plus(self, a):
         """Plus corresponds to unary prefix plus kwenye Python.
 
-        The operation ni evaluated using the same rules as add; the
-        operation plus(a) ni calculated as add('0', a) where the '0'
-        has the same exponent as the operand.
+        The operation ni evaluated using the same rules kama add; the
+        operation plus(a) ni calculated kama add('0', a) where the '0'
+        has the same exponent kama the operand.
 
         >>> ExtendedContext.plus(Decimal('1.3'))
         Decimal('1.3')
@@ -5210,7 +5210,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__pow__(b, modulo, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -5229,7 +5229,7 @@ kundi Context(object):
         an error condition, the exponent of the result of a quantize ni always
         equal to that of the right-hand operand.
 
-        Also unlike other operations, quantize will never  ashiria Underflow, even
+        Also unlike other operations, quantize will never ashiria Underflow, even
         ikiwa the result ni subnormal na inexact.
 
         >>> ExtendedContext.quantize(Decimal('2.17'), Decimal('0.001'))
@@ -5273,7 +5273,7 @@ kundi Context(object):
         rudisha a.quantize(b, context=self)
 
     eleza radix(self):
-        """Just returns 10, as this ni Decimal, :)
+        """Just returns 10, kama this ni Decimal, :)
 
         >>> ExtendedContext.radix()
         Decimal('10')
@@ -5284,11 +5284,11 @@ kundi Context(object):
         """Returns the remainder kutoka integer division.
 
         The result ni the residue of the dividend after the operation of
-        calculating integer division as described kila divide-integer, rounded
+        calculating integer division kama described kila divide-integer, rounded
         to precision digits ikiwa necessary.  The sign of the result, if
-        non-zero, ni the same as that of the original dividend.
+        non-zero, ni the same kama that of the original dividend.
 
-        This operation will fail under the same conditions as integer division
+        This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
         remainder cannot be calculated).
 
@@ -5314,7 +5314,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__mod__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -5324,7 +5324,7 @@ kundi Context(object):
         ni chosen).  If the result ni equal to 0 then its sign will be the
         sign of a.
 
-        This operation will fail under the same conditions as integer division
+        This operation will fail under the same conditions kama integer division
         (that is, ikiwa integer division on the same two operands would fail, the
         remainder cannot be calculated).
 
@@ -5505,7 +5505,7 @@ kundi Context(object):
         a = _convert_other(a, raiseit=Kweli)
         r = a.__sub__(b, context=self)
         ikiwa r ni NotImplemented:
-             ashiria TypeError("Unable to convert %s to Decimal" % b)
+            ashiria TypeError("Unable to convert %s to Decimal" % b)
         isipokua:
             rudisha r
 
@@ -5549,9 +5549,9 @@ kundi Context(object):
         """Rounds to an integer.
 
         When the operand has a negative exponent, the result ni the same
-        as using the quantize() operation using the given operand as the
-        left-hand-operand, 1E+0 as the right-hand-operand, na the precision
-        of the operand as the precision setting; Inexact na Rounded flags
+        kama using the quantize() operation using the given operand kama the
+        left-hand-operand, 1E+0 kama the right-hand-operand, na the precision
+        of the operand kama the precision setting; Inexact na Rounded flags
         are allowed kwenye this operation.  The rounding mode ni taken kutoka the
         context.
 
@@ -5579,9 +5579,9 @@ kundi Context(object):
         """Rounds to an integer.
 
         When the operand has a negative exponent, the result ni the same
-        as using the quantize() operation using the given operand as the
-        left-hand-operand, 1E+0 as the right-hand-operand, na the precision
-        of the operand as the precision setting, except that no flags will
+        kama using the quantize() operation using the given operand kama the
+        left-hand-operand, 1E+0 kama the right-hand-operand, na the precision
+        of the operand kama the precision setting, tatizo that no flags will
         be set.  The rounding mode ni taken kutoka the context.
 
         >>> ExtendedContext.to_integral_value(Decimal('2.1'))
@@ -5618,7 +5618,7 @@ kundi _WorkRep(object):
             self.sign = Tupu
             self.int = 0
             self.exp = Tupu
-        elikiwa isinstance(value, Decimal):
+        lasivyo isinstance(value, Decimal):
             self.sign = value._sign
             self.int = int(value._int)
             self.exp = value._exp
@@ -5647,7 +5647,7 @@ eleza _normalize(op1, op2, prec = 0):
 
     # Let exp = min(tmp.exp - 1, tmp.adjusted() - precision - 1).
     # Then adding 10**exp to tmp has the same effect (after rounding)
-    # as adding any positive quantity smaller than 10**exp; similarly
+    # kama adding any positive quantity smaller than 10**exp; similarly
     # kila subtraction.  So ikiwa other ni smaller than 10**exp we replace
     # it ukijumuisha 10**exp.  This avoids tmp.exp - other.exp getting too large.
     tmp_len = len(str(tmp.int))
@@ -5678,7 +5678,7 @@ eleza _decimal_lshift_exact(n, e):
     """
     ikiwa n == 0:
         rudisha 0
-    elikiwa e >= 0:
+    lasivyo e >= 0:
         rudisha n * 10**e
     isipokua:
         # val_n = largest power of 10 dividing n.
@@ -5694,7 +5694,7 @@ eleza _sqrt_nearest(n, a):
 
     """
     ikiwa n <= 0 ama a <= 0:
-         ashiria ValueError("Both arguments to _sqrt_nearest should be positive.")
+        ashiria ValueError("Both arguments to _sqrt_nearest should be positive.")
 
     b=0
     wakati a != b:
@@ -5750,7 +5750,7 @@ eleza _ilog(x, M, L = 8):
     y = x-M
     # argument reduction; R = number of reductions performed
     R = 0
-    wakati (R <= L na abs(y) << L-R >= M or
+    wakati (R <= L na abs(y) << L-R >= M ama
            R > L na abs(y) >> R-L >= M):
         y = _div_nearest((M*y) << 1,
                          M + _sqrt_nearest(M*(M+_rshift_nearest(y, R)), M))
@@ -5774,8 +5774,8 @@ eleza _dlog10(c, e, p):
     # final result by 100
     p += 2
 
-    # write c*10**e as d*10**f ukijumuisha either:
-    #   f >= 0 na 1 <= d <= 10, or
+    # write c*10**e kama d*10**f ukijumuisha either:
+    #   f >= 0 na 1 <= d <= 10, ama
     #   f <= 0 na 0.1 <= d <= 1.
     # Thus kila c*10**e close to 1, f = 0
     l = len(str(c))
@@ -5808,9 +5808,9 @@ eleza _dlog(c, e, p):
     # kila at the end ukijumuisha a division by 100.
     p += 2
 
-    # rewrite c*10**e as d*10**f ukijumuisha either f >= 0 na 1 <= d <= 10,
+    # rewrite c*10**e kama d*10**f ukijumuisha either f >= 0 na 1 <= d <= 10,
     # ama f <= 0 na 0.1 <= d <= 1.  Then we can compute 10**p * log(c*10**e)
-    # as 10**p * log(d) + 10**p*f * log(10).
+    # kama 10**p * log(d) + 10**p*f * log(10).
     l = len(str(c))
     f = e+l - (e+l >= 1)
 
@@ -5855,12 +5855,12 @@ kundi _Log10Memoize(object):
 
         For example, self.getdigits(3) returns 2302.
         """
-        # digits are stored as a string, kila quick conversion to
+        # digits are stored kama a string, kila quick conversion to
         # integer kwenye the case that we've already computed enough
         # digits; the stored digits should always be correct
         # (truncated, sio rounded to nearest).
         ikiwa p < 0:
-             ashiria ValueError("p should be nonnegative")
+            ashiria ValueError("p should be nonnegative")
 
         ikiwa p >= len(self.digits):
             # compute p+3, p+6, p+9, ... digits; endelea until at
@@ -5923,12 +5923,12 @@ eleza _dexp(c, e, p):
 
     Returns integers d, f such that:
 
-      10**(p-1) <= d <= 10**p, and
+      10**(p-1) <= d <= 10**p, na
       (d-1)*10**f < exp(c*10**e) < (d+1)*10**f
 
     In other words, d*10**f ni an approximation to exp(c*10**e) ukijumuisha p
     digits of precision, na ukijumuisha an error kwenye d of at most 1.  This is
-    almost, but sio quite, the same as the error being < 1ulp: when d
+    almost, but sio quite, the same kama the error being < 1ulp: when d
     = 10**(p-1) the error could be up to 10 ulp."""
 
     # we'll call iexp ukijumuisha M = 10**(p+2), giving p+3 digits of precision
@@ -5954,15 +5954,15 @@ eleza _dexp(c, e, p):
     rudisha _div_nearest(_iexp(rem, 10**p), 1000), quot - p + 3
 
 eleza _dpower(xc, xe, yc, ye, p):
-    """Given integers xc, xe, yc na ye representing Decimals x = xc*10**xe and
+    """Given integers xc, xe, yc na ye representing Decimals x = xc*10**xe na
     y = yc*10**ye, compute x**y.  Returns a pair of integers (c, e) such that:
 
-      10**(p-1) <= c <= 10**p, and
+      10**(p-1) <= c <= 10**p, na
       (c-1)*10**e < x**y < (c+1)*10**e
 
     kwenye other words, c*10**e ni an approximation to x**y ukijumuisha p digits
     of precision, na ukijumuisha an error kwenye c of at most 1.  (This is
-    almost, but sio quite, the same as the error being < 1ulp: when c
+    almost, but sio quite, the same kama the error being < 1ulp: when c
     == 10**(p-1) we can only guarantee error < 10ulp.)
 
     We assume that: x ni positive na sio equal to 1, na y ni nonzero.
@@ -6000,7 +6000,7 @@ eleza _log10_lb(c, correction = {
         '6': 23, '7': 16, '8': 10, '9': 5}):
     """Compute a lower bound kila 100*log10(c) kila a positive integer c."""
     ikiwa c <= 0:
-         ashiria ValueError("The argument to _log10_lb should be nonnegative.")
+        ashiria ValueError("The argument to _log10_lb should be nonnegative.")
     str_c = str(c)
     rudisha 100*len(str_c) - correction[str_c[0]]
 
@@ -6022,7 +6022,7 @@ eleza _convert_other(other, raiseit=Uongo, allow_float=Uongo):
         rudisha Decimal.from_float(other)
 
     ikiwa raiseit:
-         ashiria TypeError("Unable to convert %s to Decimal" % other)
+        ashiria TypeError("Unable to convert %s to Decimal" % other)
     rudisha NotImplemented
 
 eleza _convert_for_comparison(self, other, equality_op=Uongo):
@@ -6048,7 +6048,7 @@ eleza _convert_for_comparison(self, other, equality_op=Uongo):
 
     # Comparisons ukijumuisha float na complex types.  == na != comparisons
     # ukijumuisha complex numbers should succeed, returning either Kweli ama Uongo
-    # as appropriate.  Other comparisons rudisha NotImplemented.
+    # kama appropriate.  Other comparisons rudisha NotImplemented.
     ikiwa equality_op na isinstance(other, _numbers.Complex) na other.imag == 0:
         other = other.real
     ikiwa isinstance(other, float):
@@ -6104,7 +6104,7 @@ ExtendedContext = Context(
 # whitespace.  But note that the specification disallows whitespace in
 # a numeric string.
 #
-# 2. For finite numbers (not infinities na NaNs) the body of the
+# 2. For finite numbers (sio infinities na NaNs) the body of the
 # number between the optional sign na the optional exponent must have
 # at least one decimal digit, possibly after the decimal point.  The
 # lookahead expression '(?=\d|\.\d)' checks this.
@@ -6162,9 +6162,9 @@ toa re
 # rest of the PEP 3101 code functions quite happily without it, so we
 # don't care too much ikiwa locale isn't present.
 jaribu:
-    agiza locale as _locale
-except ImportError:
-    pass
+    agiza locale kama _locale
+tatizo ImportError:
+    pita
 
 eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
     """Parse na validate a format specifier.
@@ -6177,7 +6177,7 @@ eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
       sign: either '+', '-' ama ' '
       minimumwidth: nonnegative integer giving minimum width
       zeropad: boolean, indicating whether to pad ukijumuisha zeros
-      thousands_sep: string to use as thousands separator, ama ''
+      thousands_sep: string to use kama thousands separator, ama ''
       grouping: grouping kila thousands separators, kwenye format
         used by localeconv
       decimal_point: string to use kila decimal point
@@ -6187,7 +6187,7 @@ eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
     """
     m = _parse_format_specifier_regex.match(format_spec)
     ikiwa m ni Tupu:
-         ashiria ValueError("Invalid format specifier: " + format_spec)
+        ashiria ValueError("Invalid format specifier: " + format_spec)
 
     # get the dictionary
     format_dict = m.groupdict()
@@ -6199,10 +6199,10 @@ eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
     format_dict['zeropad'] = (format_dict['zeropad'] ni sio Tupu)
     ikiwa format_dict['zeropad']:
         ikiwa fill ni sio Tupu:
-             ashiria ValueError("Fill character conflicts ukijumuisha '0'"
+            ashiria ValueError("Fill character conflicts ukijumuisha '0'"
                              " kwenye format specifier: " + format_spec)
         ikiwa align ni sio Tupu:
-             ashiria ValueError("Alignment conflicts ukijumuisha '0' kwenye "
+            ashiria ValueError("Alignment conflicts ukijumuisha '0' kwenye "
                              "format specifier: " + format_spec)
     format_dict['fill'] = fill ama ' '
     # PEP 3101 originally specified that the default alignment should
@@ -6225,7 +6225,7 @@ eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
         ikiwa format_dict['type'] ni Tupu ama format_dict['type'] kwenye 'gGn':
             format_dict['precision'] = 1
 
-    # determine thousands separator, grouping, na decimal separator, and
+    # determine thousands separator, grouping, na decimal separator, na
     # add appropriate entries to format_dict
     ikiwa format_dict['type'] == 'n':
         # apart kutoka separators, 'n' behaves just like 'g'
@@ -6233,7 +6233,7 @@ eleza _parse_format_specifier(format_spec, _localeconv=Tupu):
         ikiwa _localeconv ni Tupu:
             _localeconv = _locale.localeconv()
         ikiwa format_dict['thousands_sep'] ni sio Tupu:
-             ashiria ValueError("Explicit thousands separator conflicts ukijumuisha "
+            ashiria ValueError("Explicit thousands separator conflicts ukijumuisha "
                              "'n' type kwenye format specifier: " + format_spec)
         format_dict['thousands_sep'] = _localeconv['thousands_sep']
         format_dict['grouping'] = _localeconv['grouping']
@@ -6261,15 +6261,15 @@ eleza _format_align(sign, body, spec):
     align = spec['align']
     ikiwa align == '<':
         result = sign + body + padding
-    elikiwa align == '>':
+    lasivyo align == '>':
         result = padding + sign + body
-    elikiwa align == '=':
+    lasivyo align == '=':
         result = sign + padding + body
-    elikiwa align == '^':
+    lasivyo align == '^':
         half = len(padding)//2
         result = padding[:half] + sign + body + padding[half:]
     isipokua:
-         ashiria ValueError('Unrecognised alignment field')
+        ashiria ValueError('Unrecognised alignment field')
 
     rudisha result
 
@@ -6282,24 +6282,24 @@ eleza _group_lengths(grouping):
     # function, should be a list of integers kwenye one of the
     # following three forms:
     #
-    #   (1) an empty list, or
+    #   (1) an empty list, ama
     #   (2) nonempty list of positive integers + [0]
-    #   (3) list of positive integers + [locale.CHAR_MAX], or
+    #   (3) list of positive integers + [locale.CHAR_MAX], ama
 
     kutoka itertools agiza chain, repeat
     ikiwa sio grouping:
         rudisha []
-    elikiwa grouping[-1] == 0 na len(grouping) >= 2:
+    lasivyo grouping[-1] == 0 na len(grouping) >= 2:
         rudisha chain(grouping[:-1], repeat(grouping[-2]))
-    elikiwa grouping[-1] == _locale.CHAR_MAX:
+    lasivyo grouping[-1] == _locale.CHAR_MAX:
         rudisha grouping[:-1]
     isipokua:
-         ashiria ValueError('unrecognised format kila grouping')
+        ashiria ValueError('unrecognised format kila grouping')
 
 eleza _insert_thousands_sep(digits, spec, min_width=1):
     """Insert thousands separators into a digit string.
 
-    spec ni a dictionary whose keys should include 'thousands_sep' and
+    spec ni a dictionary whose keys should include 'thousands_sep' na
     'grouping'; typically it's the result of parsing the format
     specifier using _parse_format_specifier.
 
@@ -6319,7 +6319,7 @@ eleza _insert_thousands_sep(digits, spec, min_width=1):
     groups = []
     kila l kwenye _group_lengths(grouping):
         ikiwa l <= 0:
-             ashiria ValueError("group length should be positive")
+            ashiria ValueError("group length should be positive")
         # max(..., 1) forces at least 1 digit to the left of a separator
         l = min(max(len(digits), min_width, 1), l)
         groups.append('0'*(l - len(digits)) + digits[-l:])
@@ -6338,7 +6338,7 @@ eleza _format_sign(is_negative, spec):
 
     ikiwa is_negative:
         rudisha '-'
-    elikiwa spec['sign'] kwenye ' +':
+    lasivyo spec['sign'] kwenye ' +':
         rudisha spec['sign']
     isipokua:
         rudisha ''
@@ -6349,7 +6349,7 @@ eleza _format_number(is_negative, intpart, fracpart, exp, spec):
     is_negative: true ikiwa the number ni negative, isipokua false
     intpart: string of digits that must appear before the decimal point
     fracpart: string of digits that must come after the point
-    exp: exponent, as an integer
+    exp: exponent, kama an integer
     spec: dictionary resulting kutoka parsing the format specifier
 
     This function uses the information kwenye spec to:

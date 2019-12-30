@@ -12,7 +12,7 @@ agiza threading
 __all__ = ["Error", "open", "open_new", "open_new_tab", "get", "register"]
 
 kundi Error(Exception):
-    pass
+    pita
 
 _lock = threading.RLock()
 _browsers = {}                  # Dictionary of available browser controllers
@@ -56,13 +56,13 @@ eleza get(using=Tupu):
             # User gave us a browser name ama path.
             jaribu:
                 command = _browsers[browser.lower()]
-            except KeyError:
+            tatizo KeyError:
                 command = _synthesize(browser)
             ikiwa command[1] ni sio Tupu:
                 rudisha command[1]
-            elikiwa command[0] ni sio Tupu:
+            lasivyo command[0] ni sio Tupu:
                 rudisha command[0]()
-     ashiria Error("could sio locate runnable browser")
+    ashiria Error("could sio locate runnable browser")
 
 # Please note: the following definition hides a builtin function.
 # It ni recommended one does "agiza webbrowser" na uses webbrowser.open(url)
@@ -104,7 +104,7 @@ eleza _synthesize(browser, *, preferred=Uongo):
     name = os.path.basename(cmd)
     jaribu:
         command = _browsers[name.lower()]
-    except KeyError:
+    tatizo KeyError:
         rudisha [Tupu, Tupu]
     # now attempt to clone to fit the new name:
     controller = command[1]
@@ -130,7 +130,7 @@ kundi BaseBrowser(object):
         self.basename = name
 
     eleza open(self, url, new=0, autoraise=Kweli):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza open_new(self, url):
         rudisha self.open(url, 1)
@@ -163,7 +163,7 @@ kundi GenericBrowser(BaseBrowser):
             isipokua:
                 p = subprocess.Popen(cmdline, close_fds=Kweli)
             rudisha sio p.wait()
-        except OSError:
+        tatizo OSError:
             rudisha Uongo
 
 
@@ -182,7 +182,7 @@ kundi BackgroundBrowser(GenericBrowser):
                 p = subprocess.Popen(cmdline, close_fds=Kweli,
                                      start_new_session=Kweli)
             rudisha (p.poll() ni Tupu)
-        except OSError:
+        tatizo OSError:
             rudisha Uongo
 
 
@@ -193,7 +193,7 @@ kundi UnixBrowser(BaseBrowser):
     background = Uongo
     redirect_stdout = Kweli
     # In remote_args, %s will be replaced ukijumuisha the requested URL.  %action will
-    # be replaced depending on the value of 'new' passed to open.
+    # be replaced depending on the value of 'new' pitaed to open.
     # remote_action ni used kila new=0 (open).  If newwin ni sio Tupu, it is
     # used kila new=1 (open_new).  If newtab ni sio Tupu, it ni used for
     # new=3 (open_new_tab).  After both substitutions are made, any empty
@@ -206,8 +206,8 @@ kundi UnixBrowser(BaseBrowser):
     eleza _invoke(self, args, remote, autoraise, url=Tupu):
         raise_opt = []
         ikiwa remote na self.raise_opts:
-            # use auto ashiria argument only kila remote invocation
-            auto ashiria = int(autoraise)
+            # use autoashiria argument only kila remote invocation
+            autoashiria = int(autoraise)
             opt = self.raise_opts[autoraise]
             ikiwa opt: raise_opt = [opt]
 
@@ -228,9 +228,9 @@ kundi UnixBrowser(BaseBrowser):
                 rc = p.wait(5)
                 # ikiwa remote call failed, open() will try direct invocation
                 rudisha sio rc
-            except subprocess.TimeoutExpired:
+            tatizo subprocess.TimeoutExpired:
                 rudisha Kweli
-        elikiwa self.background:
+        lasivyo self.background:
             ikiwa p.poll() ni Tupu:
                 rudisha Kweli
             isipokua:
@@ -242,15 +242,15 @@ kundi UnixBrowser(BaseBrowser):
         sys.audit("webbrowser.open", url)
         ikiwa new == 0:
             action = self.remote_action
-        elikiwa new == 1:
+        lasivyo new == 1:
             action = self.remote_action_newwin
-        elikiwa new == 2:
+        lasivyo new == 2:
             ikiwa self.remote_action_newtab ni Tupu:
                 action = self.remote_action_newwin
             isipokua:
                 action = self.remote_action_newtab
         isipokua:
-             ashiria Error("Bad 'new' parameter to open(); " +
+            ashiria Error("Bad 'new' parameter to open(); " +
                         "expected 0, 1, ama 2, got %s" % new)
 
         args = [arg.replace("%s", url).replace("%action", action)
@@ -328,7 +328,7 @@ kundi Elinks(UnixBrowser):
     background = Uongo
 
     # elinks doesn't like its stdout to be redirected -
-    # it uses redirected stdout as a signal to do -dump
+    # it uses redirected stdout kama a signal to do -dump
     redirect_stdout = Uongo
 
 
@@ -353,12 +353,12 @@ kundi Konqueror(BaseBrowser):
             p = subprocess.Popen(["kfmclient", action, url],
                                  close_fds=Kweli, stdin=devnull,
                                  stdout=devnull, stderr=devnull)
-        except OSError:
+        tatizo OSError:
             # fall through to next variant
-            pass
+            pita
         isipokua:
             p.wait()
-            # kfmclient's rudisha code unfortunately has no meaning as it seems
+            # kfmclient's rudisha code unfortunately has no meaning kama it seems
             rudisha Kweli
 
         jaribu:
@@ -366,9 +366,9 @@ kundi Konqueror(BaseBrowser):
                                  close_fds=Kweli, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=Kweli)
-        except OSError:
+        tatizo OSError:
             # fall through to next variant
-            pass
+            pita
         isipokua:
             ikiwa p.poll() ni Tupu:
                 # Should be running now.
@@ -379,7 +379,7 @@ kundi Konqueror(BaseBrowser):
                                  close_fds=Kweli, stdin=devnull,
                                  stdout=devnull, stderr=devnull,
                                  start_new_session=Kweli)
-        except OSError:
+        tatizo OSError:
             rudisha Uongo
         isipokua:
             rudisha (p.poll() ni Tupu)
@@ -406,12 +406,12 @@ kundi Grail(BaseBrowser):
             # need to PING each one until we find one that's live
             jaribu:
                 s.connect(fn)
-            except OSError:
+            tatizo OSError:
                 # no good; attempt to clean it out, but don't fail:
                 jaribu:
                     os.unlink(fn)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
             isipokua:
                 rudisha s
 
@@ -475,7 +475,7 @@ eleza register_X_browsers():
     # Konqueror/kfm, the KDE browser.
     ikiwa shutil.which("kfm"):
         register("kfm", Konqueror, Konqueror("kfm"))
-    elikiwa shutil.which("konqueror"):
+    lasivyo shutil.which("konqueror"):
         register("konqueror", Konqueror, Konqueror("konqueror"))
 
     # Gnome's Galeon na Epiphany
@@ -534,8 +534,8 @@ eleza register_standard_browsers():
                 cmd = "xdg-settings get default-web-browser".split()
                 raw_result = subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
                 result = raw_result.decode().strip()
-            except (FileNotFoundError, subprocess.CalledProcessError):
-                pass
+            tatizo (FileNotFoundError, subprocess.CalledProcessError):
+                pita
             isipokua:
                 global _os_preferred_browser
                 _os_preferred_browser = result
@@ -564,7 +564,7 @@ eleza register_standard_browsers():
         userchoices = os.environ["BROWSER"].split(os.pathsep)
         userchoices.reverse()
 
-        # Treat choices kwenye same way as ikiwa passed into get() but do register
+        # Treat choices kwenye same way kama ikiwa pitaed into get() but do register
         # na prepend to _tryorder
         kila cmdline kwenye userchoices:
             ikiwa cmdline != '':
@@ -585,7 +585,7 @@ ikiwa sys.platform[:3] == "win":
             sys.audit("webbrowser.open", url)
             jaribu:
                 os.startfile(url)
-            except OSError:
+            tatizo OSError:
                 # [Error 22] No application ni associated ukijumuisha the specified
                 # file kila this operation: '<URL>'
                 rudisha Uongo
@@ -605,7 +605,7 @@ ikiwa sys.platform == 'darwin':
         will sio work kila Aqua browsers ikiwa the user has moved the application
         package after installation.
 
-        If no browser ni specified, the default browser, as specified kwenye the
+        If no browser ni specified, the default browser, kama specified kwenye the
         Internet System Preferences panel, will be used.
         """
         eleza __init__(self, name):
@@ -613,7 +613,7 @@ ikiwa sys.platform == 'darwin':
 
         eleza open(self, url, new=0, autoraise=Kweli):
             sys.audit("webbrowser.open", url)
-            assert "'" sio kwenye url
+            assert "'" haiko kwenye url
             # hack kila local urls
             ikiwa sio ':' kwenye url:
                 url = 'file:'+url
@@ -676,14 +676,14 @@ eleza main():
     -t: open new tab""" % sys.argv[0]
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'ntd')
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         andika(msg, file=sys.stderr)
         andika(usage, file=sys.stderr)
         sys.exit(1)
     new_win = 0
     kila o, a kwenye opts:
         ikiwa o == '-n': new_win = 1
-        elikiwa o == '-t': new_win = 2
+        lasivyo o == '-t': new_win = 2
     ikiwa len(args) != 1:
         andika(usage, file=sys.stderr)
         sys.exit(1)

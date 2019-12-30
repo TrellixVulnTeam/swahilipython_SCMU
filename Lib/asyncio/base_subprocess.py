@@ -60,7 +60,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
             info.append(f'pid={self._pid}')
         ikiwa self._returncode ni sio Tupu:
             info.append(f'returncode={self._returncode}')
-        elikiwa self._pid ni sio Tupu:
+        lasivyo self._pid ni sio Tupu:
             info.append('running')
         isipokua:
             info.append('not started')
@@ -82,7 +82,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
         rudisha '<{}>'.format(' '.join(info))
 
     eleza _start(self, args, shell, stdin, stdout, stderr, bufsize, **kwargs):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_protocol(self, protocol):
         self._protocol = protocol
@@ -103,9 +103,9 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
                 endelea
             proto.pipe.close()
 
-        ikiwa (self._proc ni sio Tupu and
+        ikiwa (self._proc ni sio Tupu na
                 # has the child process finished?
-                self._returncode ni Tupu and
+                self._returncode ni Tupu na
                 # the child process has finished, but the
                 # transport hasn't been notified yet?
                 self._proc.poll() ni Tupu):
@@ -115,8 +115,8 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
 
             jaribu:
                 self._proc.kill()
-            except ProcessLookupError:
-                pass
+            tatizo ProcessLookupError:
+                pita
 
             # Don't clear the _proc reference yet: _post_init() may still run
 
@@ -139,7 +139,7 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
 
     eleza _check_proc(self):
         ikiwa self._proc ni Tupu:
-             ashiria ProcessLookupError()
+            ashiria ProcessLookupError()
 
     eleza send_signal(self, signal):
         self._check_proc()
@@ -182,9 +182,9 @@ kundi BaseSubprocessTransport(transports.SubprocessTransport):
             kila callback, data kwenye self._pending_calls:
                 loop.call_soon(callback, *data)
             self._pending_calls = Tupu
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             ikiwa waiter ni sio Tupu na sio waiter.cancelled():
                 waiter.set_exception(exc)
         isipokua:

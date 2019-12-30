@@ -16,8 +16,8 @@ Every version number kundi implements the following interface:
     representation; ikiwa the string ni an invalid version number,
     'parse' raises a ValueError exception
   * the kundi constructor takes an optional string argument which,
-    ikiwa supplied, ni passed to 'parse'
-  * __str__ reconstructs the string that was passed to 'parse' (or
+    ikiwa supplied, ni pitaed to 'parse'
+  * __str__ reconstructs the string that was pitaed to 'parse' (or
     an equivalent string -- ie. one that will generate an equivalent
     version number instance)
   * __repr__ generates Python code to recreate the version number instance
@@ -75,8 +75,8 @@ kundi Version:
 
 # Interface kila version-number classes -- must be implemented
 # by the following classes (the concrete ones -- Version should
-# be treated as an abstract class).
-#    __init__ (string) - create na take same action as 'parse'
+# be treated kama an abstract class).
+#    __init__ (string) - create na take same action kama 'parse'
 #                        (string parameter ni optional)
 #    parse (string)    - convert a string representation to whatever
 #                        internal representation ni appropriate for
@@ -134,7 +134,7 @@ kundi StrictVersion (Version):
     eleza parse (self, vstring):
         match = self.version_re.match(vstring)
         ikiwa sio match:
-             ashiria ValueError("invalid version number '%s'" % vstring)
+            ashiria ValueError("invalid version number '%s'" % vstring)
 
         (major, minor, patch, prerelease, prerelease_num) = \
             match.group(1, 2, 4, 5, 6)
@@ -181,16 +181,16 @@ kundi StrictVersion (Version):
         # case 3: self doesn't have prerelease, other does: self ni greater
         # case 4: both have prerelease: must compare them!
 
-        ikiwa (not self.prerelease na sio other.prerelease):
+        ikiwa (sio self.prerelease na sio other.prerelease):
             rudisha 0
-        elikiwa (self.prerelease na sio other.prerelease):
+        lasivyo (self.prerelease na sio other.prerelease):
             rudisha -1
-        elikiwa (not self.prerelease na other.prerelease):
+        lasivyo (sio self.prerelease na other.prerelease):
             rudisha 1
-        elikiwa (self.prerelease na other.prerelease):
+        lasivyo (self.prerelease na other.prerelease):
             ikiwa self.prerelease == other.prerelease:
                 rudisha 0
-            elikiwa self.prerelease < other.prerelease:
+            lasivyo self.prerelease < other.prerelease:
                 rudisha -1
             isipokua:
                 rudisha 1
@@ -209,12 +209,12 @@ kundi StrictVersion (Version):
 # 3) recognize the numeric components may have leading zeroes
 #
 # The LooseVersion kundi below implements these rules: a version number
-# string ni split up into a tuple of integer na string components, and
+# string ni split up into a tuple of integer na string components, na
 # comparison ni a simple tuple comparison.  This means that version
 # numbers behave kwenye a predictable na obvious way, but a way that might
 # sio necessarily be how people *want* version numbers to behave.  There
 # wouldn't be a problem ikiwa people could stick to purely numeric version
-# numbers: just split on period na compare the numbers as tuples.
+# numbers: just split on period na compare the numbers kama tuples.
 # However, people insist on putting letters into their version numbers;
 # the most common purpose seems to be:
 #   - indicating a "pre-release" version
@@ -225,7 +225,7 @@ kundi StrictVersion (Version):
 #
 # The problem ni what to do ukijumuisha letters (and other non-numeric
 # characters) kwenye a version number.  The current implementation does the
-# obvious na predictable thing: keep them as strings na compare
+# obvious na predictable thing: keep them kama strings na compare
 # lexically within a tuple comparison.  This has the desired effect if
 # an appended letter sequence implies something "post-release":
 # eg. "0.99" < "0.99pl14" < "1.0", na "5.001" < "5.001m" < "5.002".
@@ -236,9 +236,9 @@ kundi StrictVersion (Version):
 # implemented here, this just isn't so.
 #
 # Two possible solutions come to mind.  The first ni to tie the
-# comparison algorithm to a particular set of semantic rules, as has
-# been done kwenye the StrictVersion kundi above.  This works great as long
-# as everyone can go along ukijumuisha bondage na discipline.  Hopefully a
+# comparison algorithm to a particular set of semantic rules, kama has
+# been done kwenye the StrictVersion kundi above.  This works great kama long
+# kama everyone can go along ukijumuisha bondage na discipline.  Hopefully a
 # (large) subset of Python module programmers will agree that the
 # particular flavour of bondage na discipline provided by StrictVersion
 # provides enough benefit to be worth using, na will submit their
@@ -249,10 +249,10 @@ kundi StrictVersion (Version):
 # Perhaps a "moderately strict" version kundi could be implemented that
 # lets almost anything slide (syntactically), na makes some heuristic
 # assumptions about non-digits kwenye version number strings.  This could
-# sink into special-case-hell, though; ikiwa I was as talented and
-# idiosyncratic as Larry Wall, I'd go ahead na implement a kundi that
+# sink into special-case-hell, though; ikiwa I was kama talented na
+# idiosyncratic kama Larry Wall, I'd go ahead na implement a kundi that
 # somehow knows that "1.2.1" < "1.2.2a2" < "1.2.2" < "1.2.2pl3", na is
-# just as happy dealing ukijumuisha things like "2g6" na "1.13++".  I don't
+# just kama happy dealing ukijumuisha things like "2g6" na "1.13++".  I don't
 # think I'm smart enough to do it right though.
 #
 # In any case, I've coded the test suite kila this module (see
@@ -291,7 +291,7 @@ kundi LooseVersion (Version):
         5.5.kw
         2.0b1pl0
 
-    In fact, there ni no such thing as an invalid version number under
+    In fact, there ni no such thing kama an invalid version number under
     this scheme; the rules kila comparison are simple na predictable,
     but may sio always give the results you want (kila some definition
     of "want").
@@ -314,8 +314,8 @@ kundi LooseVersion (Version):
         kila i, obj kwenye enumerate(components):
             jaribu:
                 components[i] = int(obj)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
         self.version = components
 

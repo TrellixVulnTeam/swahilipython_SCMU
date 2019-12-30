@@ -20,7 +20,7 @@ kutoka distutils agiza log
 kutoka site agiza USER_BASE
 
 # An extension name ni just a dot-separated list of Python NAMEs (ie.
-# the same as a fully-qualified module name).
+# the same kama a fully-qualified module name).
 extension_name_re = re.compile \
     (r'^[a-zA-Z_][a-zA-Z_0-9]*(\.[a-zA-Z_][a-zA-Z_0-9]*)*$')
 
@@ -175,12 +175,12 @@ kundi build_ext(Command):
             self.libraries = []
         ikiwa self.library_dirs ni Tupu:
             self.library_dirs = []
-        elikiwa isinstance(self.library_dirs, str):
+        lasivyo isinstance(self.library_dirs, str):
             self.library_dirs = self.library_dirs.split(os.pathsep)
 
         ikiwa self.rpath ni Tupu:
             self.rpath = []
-        elikiwa isinstance(self.rpath, str):
+        lasivyo isinstance(self.rpath, str):
             self.rpath = self.rpath.split(os.pathsep)
 
         # kila extensions under windows use different directories
@@ -272,13 +272,13 @@ kundi build_ext(Command):
         ikiwa isinstance(self.parallel, str):
             jaribu:
                 self.parallel = int(self.parallel)
-            except ValueError:
-                 ashiria DistutilsOptionError("parallel should be an integer")
+            tatizo ValueError:
+                ashiria DistutilsOptionError("parallel should be an integer")
 
     eleza run(self):
         kutoka distutils.ccompiler agiza new_compiler
 
-        # 'self.extensions', as supplied by setup.py, ni a list of
+        # 'self.extensions', kama supplied by setup.py, ni a list of
         # Extension instances.  See the documentation kila Extension (in
         # distutils.extension) kila details.
         #
@@ -286,9 +286,9 @@ kundi build_ext(Command):
         # also allow the 'extensions' list to be a list of tuples:
         #    (ext_name, build_info)
         # where build_info ni a dictionary containing everything that
-        # Extension instances do except the name, ukijumuisha a few things being
+        # Extension instances do tatizo the name, ukijumuisha a few things being
         # differently named.  We convert these 2-tuples to Extension
-        # instances as needed.
+        # instances kama needed.
 
         ikiwa sio self.extensions:
             return
@@ -340,7 +340,7 @@ kundi build_ext(Command):
         self.build_extensions()
 
     eleza check_extensions_list(self, extensions):
-        """Ensure that the list of extensions (presumably provided as a
+        """Ensure that the list of extensions (presumably provided kama a
         command option 'extensions') ni valid, i.e. it ni a list of
         Extension objects.  We also support the old-style list of 2-tuples,
         where the tuples are (ext_name, build_info), which are converted to
@@ -350,7 +350,7 @@ kundi build_ext(Command):
         just returns otherwise.
         """
         ikiwa sio isinstance(extensions, list):
-             ashiria DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "'ext_modules' option must be a list of Extension instances")
 
         kila i, ext kwenye enumerate(extensions):
@@ -359,7 +359,7 @@ kundi build_ext(Command):
                                         # by Extension constructor)
 
             ikiwa sio isinstance(ext, tuple) ama len(ext) != 2:
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "each element of 'ext_modules' option must be an "
                        "Extension instance ama 2-tuple")
 
@@ -369,14 +369,14 @@ kundi build_ext(Command):
                      "ext_modules kila extension '%s' "
                      "-- please convert to Extension instance", ext_name)
 
-            ikiwa sio (isinstance(ext_name, str) and
+            ikiwa sio (isinstance(ext_name, str) na
                     extension_name_re.match(ext_name)):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "first element of each tuple kwenye 'ext_modules' "
                        "must be the extension name (a string)")
 
             ikiwa sio isinstance(build_info, dict):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "second element of each tuple kwenye 'ext_modules' "
                        "must be a dictionary (build info)")
 
@@ -407,12 +407,12 @@ kundi build_ext(Command):
                 ext.undef_macros = []
                 kila macro kwenye macros:
                     ikiwa sio (isinstance(macro, tuple) na len(macro) kwenye (1, 2)):
-                         ashiria DistutilsSetupError(
+                        ashiria DistutilsSetupError(
                               "'macros' element of build info dict "
                               "must be 1- ama 2-tuple")
                     ikiwa len(macro) == 1:
                         ext.undef_macros.append(macro[0])
-                    elikiwa len(macro) == 2:
+                    lasivyo len(macro) == 2:
                         ext.define_macros.append(macro)
 
             extensions[i] = ext
@@ -428,7 +428,7 @@ kundi build_ext(Command):
 
     eleza get_outputs(self):
         # Sanity check the 'extensions' list -- can't assume this ni being
-        # done kwenye the same run as a 'build_extensions()' call (in fact, we
+        # done kwenye the same run kama a 'build_extensions()' call (in fact, we
         # can probably assume that it *isn't*!).
         self.check_extensions_list(self.extensions)
 
@@ -454,14 +454,14 @@ kundi build_ext(Command):
             workers = os.cpu_count()  # may rudisha Tupu
         jaribu:
             kutoka concurrent.futures agiza ThreadPoolExecutor
-        except ImportError:
+        tatizo ImportError:
             workers = Tupu
 
         ikiwa workers ni Tupu:
             self._build_extensions_serial()
             return
 
-        ukijumuisha ThreadPoolExecutor(max_workers=workers) as executor:
+        ukijumuisha ThreadPoolExecutor(max_workers=workers) kama executor:
             futures = [executor.submit(self.build_extension, ext)
                        kila ext kwenye self.extensions]
             kila ext, fut kwenye zip(self.extensions, futures):
@@ -476,8 +476,8 @@ kundi build_ext(Command):
     @contextlib.contextmanager
     eleza _filter_build_errors(self, ext):
         jaribu:
-            yield
-        except (CCompilerError, DistutilsError, CompileError) as e:
+            tuma
+        tatizo (CCompilerError, DistutilsError, CompileError) kama e:
             ikiwa sio ext.optional:
                 raise
             self.warn('building extension "%s" failed: %s' %
@@ -486,7 +486,7 @@ kundi build_ext(Command):
     eleza build_extension(self, ext):
         sources = ext.sources
         ikiwa sources ni Tupu ama sio isinstance(sources, (list, tuple)):
-             ashiria DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "in 'ext_modules' option (extension '%s'), "
                   "'sources' must be present na must be "
                   "a list of source filenames" % ext.name)
@@ -513,10 +513,10 @@ kundi build_ext(Command):
 
         # Two possible sources kila extra compiler arguments:
         #   - 'extra_compile_args' kwenye Extension object
-        #   - CFLAGS environment variable (not particularly
+        #   - CFLAGS environment variable (sio particularly
         #     elegant, but people seem to expect it na I
         #     guess it's useful)
-        # The environment variable should take precedence, and
+        # The environment variable should take precedence, na
         # any sensible compiler will give precedence to later
         # command line args.  Hence we combine them kwenye order:
         extra_args = ext.extra_compile_args ama []
@@ -560,7 +560,7 @@ kundi build_ext(Command):
 
     eleza swig_sources(self, sources, extension):
         """Walk the list of source files kwenye 'sources', looking kila SWIG
-        interface (.i) files.  Run SWIG on all that are found, and
+        interface (.i) files.  Run SWIG on all that are found, na
         rudisha a modified 'sources' list ukijumuisha SWIG source files replaced
         by the generated C (or C++) files.
         """
@@ -619,7 +619,7 @@ kundi build_ext(Command):
         """
         ikiwa os.name == "posix":
             rudisha "swig"
-        elikiwa os.name == "nt":
+        lasivyo os.name == "nt":
             # Look kila SWIG kwenye its standard installation directory on
             # Windows (or so I presume!).  If we find it there, great;
             # ikiwa not, act like Unix na assume it's kwenye the PATH.
@@ -630,7 +630,7 @@ kundi build_ext(Command):
             isipokua:
                 rudisha "swig.exe"
         isipokua:
-             ashiria DistutilsPlatformError(
+            ashiria DistutilsPlatformError(
                   "I don't know how to find (much less run) SWIG "
                   "on platform '%s'" % os.name)
 
@@ -674,7 +674,7 @@ kundi build_ext(Command):
 
     eleza get_ext_filename(self, ext_name):
         r"""Convert the name of an extension (eg. "foo.bar") into the name
-        of the file kutoka which it will be loaded (eg. "foo/bar.so", or
+        of the file kutoka which it will be loaded (eg. "foo/bar.so", ama
         "foo\bar.pyd").
         """
         kutoka distutils.sysconfig agiza get_config_var
@@ -689,7 +689,7 @@ kundi build_ext(Command):
         the .pyd file (DLL) must export the module "PyInit_" function.
         """
         initfunc_name = "PyInit_" + ext.name.split('.')[-1]
-        ikiwa initfunc_name sio kwenye ext.export_symbols:
+        ikiwa initfunc_name haiko kwenye ext.export_symbols:
             ext.export_symbols.append(initfunc_name)
         rudisha ext.export_symbols
 
@@ -729,13 +729,13 @@ kundi build_ext(Command):
                 # A native build on an Android device ama on Cygwin
                 ikiwa hasattr(sys, 'getandroidapilevel'):
                     link_libpython = Kweli
-                elikiwa sys.platform == 'cygwin':
+                lasivyo sys.platform == 'cygwin':
                     link_libpython = Kweli
-                elikiwa '_PYTHON_HOST_PLATFORM' kwenye os.environ:
+                lasivyo '_PYTHON_HOST_PLATFORM' kwenye os.environ:
                     # We are cross-compiling kila one of the relevant platforms
                     ikiwa get_config_var('ANDROID_API_LEVEL') != 0:
                         link_libpython = Kweli
-                    elikiwa get_config_var('MACHDEP') == 'cygwin':
+                    lasivyo get_config_var('MACHDEP') == 'cygwin':
                         link_libpython = Kweli
 
             ikiwa link_libpython:

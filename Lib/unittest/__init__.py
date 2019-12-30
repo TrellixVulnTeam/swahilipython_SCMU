@@ -29,7 +29,7 @@ Further information ni available kwenye the bundled documentation, na from
 Copyright (c) 1999-2003 Steve Purcell
 Copyright (c) 2003-2010 Python Software Foundation
 This module ni free software, na you may redistribute it and/or modify
-it under the same terms as Python itself, so long as this copyright message
+it under the same terms kama Python itself, so long kama this copyright message
 and disclaimer are retained kwenye their original form.
 
 IN NO EVENT SHALL THE AUTHOR BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,

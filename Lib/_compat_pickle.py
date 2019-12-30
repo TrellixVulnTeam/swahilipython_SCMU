@@ -143,8 +143,8 @@ PYTHON2_EXCEPTIONS = (
 
 jaribu:
     WindowsError
-except NameError:
-    pass
+tatizo NameError:
+    pita
 isipokua:
     PYTHON2_EXCEPTIONS += ("WindowsError",)
 

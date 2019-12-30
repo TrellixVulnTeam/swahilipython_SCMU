@@ -8,7 +8,7 @@ hexbin(inputfilename, outputfilename)
 #
 # Jack Jansen, CWI, August 1995.
 #
-# The module ni supposed to be as compatible as possible. Especially the
+# The module ni supposed to be kama compatible kama possible. Especially the
 # easy interface should work "as expected" on any platform.
 # XXXX Note: currently, textfiles appear kwenye mac-form on all platforms.
 # We seem to lack a simple character-translate kwenye python.
@@ -18,7 +18,7 @@ hexbin(inputfilename, outputfilename)
 # XXXX It would be nice to handle AppleDouble format on unix
 # (kila servers serving macs).
 # XXXX I don't understand what happens when you get 0x90 times the same byte on
-# input. The resulting code (xx 90 90) would appear to be interpreted as an
+# input. The resulting code (xx 90 90) would appear to be interpreted kama an
 # escaped *value* of 0x90. All coders I've seen appear to ignore this nicety...
 #
 agiza io
@@ -29,14 +29,14 @@ agiza binascii
 __all__ = ["binhex","hexbin","Error"]
 
 kundi Error(Exception):
-    pass
+    pita
 
 # States (what have we written)
 _DID_HEADER = 0
 _DID_DATA = 1
 
 # Various constants
-REASONABLY_LARGE = 32768  # Minimal amount we pass the rle-coder
+REASONABLY_LARGE = 32768  # Minimal amount we pita the rle-coder
 LINELEN = 64
 RUNCHAR = b"\x90"
 
@@ -52,10 +52,10 @@ kundi FInfo:
 
 eleza getfileinfo(name):
     finfo = FInfo()
-    ukijumuisha io.open(name, 'rb') as fp:
+    ukijumuisha io.open(name, 'rb') kama fp:
         # Quick check kila textfile
         data = fp.read(512)
-        ikiwa 0 sio kwenye data:
+        ikiwa 0 haiko kwenye data:
             finfo.Type = 'TEXT'
         fp.seek(0, 2)
         dsize = fp.tell()
@@ -65,16 +65,16 @@ eleza getfileinfo(name):
 
 kundi openrsrc:
     eleza __init__(self, *args):
-        pass
+        pita
 
     eleza read(self, *args):
         rudisha b''
 
     eleza write(self, *args):
-        pass
+        pita
 
     eleza close(self):
-        pass
+        pita
 
 kundi _Hqxcoderengine:
     """Write data to the coder kwenye 3-byte chunks"""
@@ -163,7 +163,7 @@ kundi BinHex:
     eleza _writeinfo(self, name, finfo):
         nl = len(name)
         ikiwa nl > 63:
-             ashiria Error('Filename too long')
+            ashiria Error('Filename too long')
         d = bytes([nl]) + name.encode("latin-1") + b'\0'
         tp, cr = finfo.Type, finfo.Creator
         ikiwa isinstance(tp, str):
@@ -195,13 +195,13 @@ kundi BinHex:
 
     eleza write(self, data):
         ikiwa self.state != _DID_HEADER:
-             ashiria Error('Writing data at the wrong time')
+            ashiria Error('Writing data at the wrong time')
         self.dlen = self.dlen - len(data)
         self._write(data)
 
     eleza close_data(self):
         ikiwa self.dlen != 0:
-             ashiria Error('Incorrect data size, diff=%r' % (self.rlen,))
+            ashiria Error('Incorrect data size, diff=%r' % (self.rlen,))
         self._writecrc()
         self.state = _DID_DATA
 
@@ -209,7 +209,7 @@ kundi BinHex:
         ikiwa self.state < _DID_DATA:
             self.close_data()
         ikiwa self.state != _DID_DATA:
-             ashiria Error('Writing resource data at the wrong time')
+            ashiria Error('Writing resource data at the wrong time')
         self.rlen = self.rlen - len(data)
         self._write(data)
 
@@ -220,9 +220,9 @@ kundi BinHex:
             ikiwa self.state < _DID_DATA:
                 self.close_data()
             ikiwa self.state != _DID_DATA:
-                 ashiria Error('Close at the wrong time')
+                ashiria Error('Close at the wrong time')
             ikiwa self.rlen != 0:
-                 ashiria Error("Incorrect resource-datasize, diff=%r" % (self.rlen,))
+                ashiria Error("Incorrect resource-datasize, diff=%r" % (self.rlen,))
             self._writecrc()
         mwishowe:
             self.state = Tupu
@@ -235,7 +235,7 @@ eleza binhex(inp, out):
     finfo = getfileinfo(inp)
     ofp = BinHex(finfo, out)
 
-    ukijumuisha io.open(inp, 'rb') as ifp:
+    ukijumuisha io.open(inp, 'rb') kama ifp:
         # XXXX Do textfile translation on non-mac systems
         wakati Kweli:
             d = ifp.read(128000)
@@ -271,23 +271,23 @@ kundi _Hqxdecoderengine:
             data = self.ifp.read(wtd)
             #
             # Next problem: there may sio be a complete number of
-            # bytes kwenye what we pass to a2b. Solve by yet another
+            # bytes kwenye what we pita to a2b. Solve by yet another
             # loop.
             #
             wakati Kweli:
                 jaribu:
                     decdatacur, self.eof = binascii.a2b_hqx(data)
                     koma
-                except binascii.Incomplete:
-                    pass
+                tatizo binascii.Incomplete:
+                    pita
                 newdata = self.ifp.read(1)
                 ikiwa sio newdata:
-                     ashiria Error('Premature EOF on binhex file')
+                    ashiria Error('Premature EOF on binhex file')
                 data = data + newdata
             decdata = decdata + decdatacur
             wtd = totalwtd - len(decdata)
             ikiwa sio decdata na sio self.eof:
-                 ashiria Error('Premature EOF on binhex file')
+                ashiria Error('Premature EOF on binhex file')
         rudisha decdata
 
     eleza close(self):
@@ -322,7 +322,7 @@ kundi _Rledecoderengine:
         # end up ukijumuisha an orphaned RUNCHAR later on. So, we keep a couple
         # of bytes kwenye the buffer, depending on what the end of
         # the buffer looks like:
-        # '\220\0\220' - Keep 3 bytes: repeated \220 (escaped as \220\0)
+        # '\220\0\220' - Keep 3 bytes: repeated \220 (escaped kama \220\0)
         # '?\220' - Keep 2 bytes: repeated something-else
         # '\220\0' - Escaped \220: Keep 2 bytes.
         # '?\220?' - Complete repeat sequence: decode all
@@ -331,12 +331,12 @@ kundi _Rledecoderengine:
         mark = len(self.pre_buffer)
         ikiwa self.pre_buffer[-3:] == RUNCHAR + b'\0' + RUNCHAR:
             mark = mark - 3
-        elikiwa self.pre_buffer[-1:] == RUNCHAR:
+        lasivyo self.pre_buffer[-1:] == RUNCHAR:
             mark = mark - 2
-        elikiwa self.pre_buffer[-2:] == RUNCHAR + b'\0':
+        lasivyo self.pre_buffer[-2:] == RUNCHAR + b'\0':
             mark = mark - 2
-        elikiwa self.pre_buffer[-2:-1] == RUNCHAR:
-            pass # Decode all
+        lasivyo self.pre_buffer[-2:-1] == RUNCHAR:
+            pita # Decode all
         isipokua:
             mark = mark - 1
 
@@ -357,8 +357,8 @@ kundi HexBin:
         wakati Kweli:
             ch = ifp.read(1)
             ikiwa sio ch:
-                 ashiria Error("No binhex data found")
-            # Cater kila \r\n terminated lines (which show up as \n\r, hence
+                ashiria Error("No binhex data found")
+            # Cater kila \r\n terminated lines (which show up kama \n\r, hence
             # all lines start ukijumuisha \r)
             ikiwa ch == b'\r':
                 endelea
@@ -381,7 +381,7 @@ kundi HexBin:
         # XXXX Is this needed??
         self.crc = self.crc & 0xffff
         ikiwa filecrc != self.crc:
-             ashiria Error('CRC error, computed %x, read %x'
+            ashiria Error('CRC error, computed %x, read %x'
                         % (self.crc, filecrc))
         self.crc = 0
 
@@ -407,7 +407,7 @@ kundi HexBin:
 
     eleza read(self, *n):
         ikiwa self.state != _DID_HEADER:
-             ashiria Error('Read data at wrong time')
+            ashiria Error('Read data at wrong time')
         ikiwa n:
             n = n[0]
             n = min(n, self.dlen)
@@ -421,7 +421,7 @@ kundi HexBin:
 
     eleza close_data(self):
         ikiwa self.state != _DID_HEADER:
-             ashiria Error('close_data at wrong time')
+            ashiria Error('close_data at wrong time')
         ikiwa self.dlen:
             dummy = self._read(self.dlen)
         self._checkcrc()
@@ -431,7 +431,7 @@ kundi HexBin:
         ikiwa self.state == _DID_HEADER:
             self.close_data()
         ikiwa self.state != _DID_DATA:
-             ashiria Error('Read resource data at wrong time')
+            ashiria Error('Read resource data at wrong time')
         ikiwa n:
             n = n[0]
             n = min(n, self.rlen)
@@ -458,7 +458,7 @@ eleza hexbin(inp, out):
     ikiwa sio out:
         out = ifp.FName
 
-    ukijumuisha io.open(out, 'wb') as ofp:
+    ukijumuisha io.open(out, 'wb') kama ofp:
         # XXXX Do translation on non-mac systems
         wakati Kweli:
             d = ifp.read(128000)

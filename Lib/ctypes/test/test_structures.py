@@ -16,7 +16,7 @@ kundi SubclassesTest(unittest.TestCase):
             _fields_ = [("b", c_int)]
 
         kundi Z(X):
-            pass
+            pita
 
         self.assertEqual(sizeof(X), sizeof(c_int))
         self.assertEqual(sizeof(Y), sizeof(c_int)*2)
@@ -27,17 +27,17 @@ kundi SubclassesTest(unittest.TestCase):
 
     eleza test_subclass_delayed(self):
         kundi X(Structure):
-            pass
+            pita
         self.assertEqual(sizeof(X), 0)
         X._fields_ = [("a", c_int)]
 
         kundi Y(X):
-            pass
+            pita
         self.assertEqual(sizeof(Y), sizeof(X))
         Y._fields_ = [("b", c_int)]
 
         kundi Z(X):
-            pass
+            pita
 
         self.assertEqual(sizeof(X), sizeof(c_int))
         self.assertEqual(sizeof(Y), sizeof(c_int)*2)
@@ -252,7 +252,7 @@ kundi StructureTestCase(unittest.TestCase):
 
     eleza test_invalid_field_types(self):
         kundi POINT(Structure):
-            pass
+            pita
         self.assertRaises(TypeError, setattr, POINT, "_fields_", [("x", 1), ("y", 2)])
 
     eleza test_invalid_name(self):
@@ -277,7 +277,7 @@ kundi StructureTestCase(unittest.TestCase):
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[:], [1, 2, 3, 4])
         self.assertEqual(SomeInts((1, 2, 3, 4)).a[::], [1, 2, 3, 4])
         # too long
-        # XXX Should  ashiria ValueError?, sio RuntimeError
+        # XXX Should ashiria ValueError?, sio RuntimeError
         self.assertRaises(RuntimeError, SomeInts, (1, 2, 3, 4, 5))
 
     eleza test_nested_initializers(self):
@@ -344,20 +344,20 @@ kundi StructureTestCase(unittest.TestCase):
         kila length kwenye [10 ** i kila i kwenye range(0, 8)]:
             jaribu:
                 create_class(length)
-            except MemoryError:
+            tatizo MemoryError:
                 # MemoryErrors are OK, we just don't want to segfault
-                pass
+                pita
 
     eleza get_except(self, func, *args):
         jaribu:
             func(*args)
-        except Exception as detail:
+        tatizo Exception kama detail:
             rudisha detail.__class__, str(detail)
 
     @unittest.skip('test disabled')
     eleza test_subclass_creation(self):
         meta = type(Structure)
-        # same as 'kundi X(Structure): pass'
+        # same kama 'kundi X(Structure): pita'
         # fails, since we need either a _fields_ ama a _abstract_ attribute
         cls, msg = self.get_except(meta, "X", (Structure,), {})
         self.assertEqual((cls, msg),
@@ -385,7 +385,7 @@ kundi StructureTestCase(unittest.TestCase):
         kundi X(W):
             _fields_ = [("c", c_int)]
         kundi Y(X):
-            pass
+            pita
         kundi Z(Y):
             _fields_ = [("d", c_int), ("e", c_int), ("f", c_int)]
 
@@ -397,7 +397,7 @@ kundi StructureTestCase(unittest.TestCase):
                          (1, 0, 0, 0, 0, 0))
         self.assertRaises(TypeError, lambda: Z(1, 2, 3, 4, 5, 6, 7))
 
-    eleza test_pass_by_value(self):
+    eleza test_pita_by_value(self):
         # This should mirror the Test structure
         # kwenye Modules/_ctypes/_ctypes_test.c
         kundi Test(Structure):
@@ -420,8 +420,8 @@ kundi StructureTestCase(unittest.TestCase):
         self.assertEqual(s.second, 0xcafebabe)
         self.assertEqual(s.third, 0x0bad1dea)
 
-    eleza test_pass_by_value_finalizer(self):
-        # bpo-37140: Similar to test_pass_by_value(), but the Python structure
+    eleza test_pita_by_value_finalizer(self):
+        # bpo-37140: Similar to test_pita_by_value(), but the Python structure
         # has a finalizer (__del__() method): the finalizer must only be called
         # once.
 
@@ -458,7 +458,7 @@ kundi StructureTestCase(unittest.TestCase):
         support.gc_collect()
         self.assertEqual(finalizer_calls, ["called"])
 
-    eleza test_pass_by_value_in_register(self):
+    eleza test_pita_by_value_in_register(self):
         kundi X(Structure):
             _fields_ = [
                 ('first', c_uint),
@@ -514,7 +514,7 @@ kundi StructureTestCase(unittest.TestCase):
         func.argtypes = (Test2,)
         result = func(s)
         self.assertEqual(result, expected)
-        # check the passed-in struct hasn't changed
+        # check the pitaed-in struct hasn't changed
         kila i kwenye range(16):
             self.assertEqual(s.data[i], i)
 
@@ -527,7 +527,7 @@ kundi StructureTestCase(unittest.TestCase):
         func.argtypes = (Test3,)
         result = func(s)
         self.assertEqual(result, expected)
-        # check the passed-in struct hasn't changed
+        # check the pitaed-in struct hasn't changed
         self.assertEqual(s.data[0], 3.14159)
         self.assertEqual(s.data[1], 2.71828)
 
@@ -543,7 +543,7 @@ kundi StructureTestCase(unittest.TestCase):
         func.argtypes = (Test3B,)
         result = func(s)
         self.assertAlmostEqual(result, expected, places=6)
-        # check the passed-in struct hasn't changed
+        # check the pitaed-in struct hasn't changed
         self.assertAlmostEqual(s.data[0], 3.14159, places=6)
         self.assertAlmostEqual(s.data[1], 2.71828, places=6)
         self.assertAlmostEqual(s.more_data[0], -3.0, places=6)
@@ -615,11 +615,11 @@ kundi PointerMemberTestCase(unittest.TestCase):
 kundi TestRecursiveStructure(unittest.TestCase):
     eleza test_contains_itself(self):
         kundi Recursive(Structure):
-            pass
+            pita
 
         jaribu:
             Recursive._fields_ = [("next", Recursive)]
-        except AttributeError as details:
+        tatizo AttributeError kama details:
             self.assertIn("Structure ama union cannot contain itself",
                           str(details))
         isipokua:
@@ -628,15 +628,15 @@ kundi TestRecursiveStructure(unittest.TestCase):
 
     eleza test_vice_versa(self):
         kundi First(Structure):
-            pass
+            pita
         kundi Second(Structure):
-            pass
+            pita
 
         First._fields_ = [("second", Second)]
 
         jaribu:
             Second._fields_ = [("first", First)]
-        except AttributeError as details:
+        tatizo AttributeError kama details:
             self.assertIn("_fields_ ni final", str(details))
         isipokua:
             self.fail("AttributeError sio raised")

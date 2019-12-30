@@ -3,7 +3,7 @@ agiza unittest
 kutoka test.support agiza cpython_only
 jaribu:
     agiza _testcapi
-except ImportError:
+tatizo ImportError:
     _testcapi = Tupu
 agiza struct
 agiza collections
@@ -14,7 +14,7 @@ agiza gc
 kundi FunctionCalls(unittest.TestCase):
 
     eleza test_kwargs_order(self):
-        # bpo-34320:  **kwargs should preserve order of passed OrderedDict
+        # bpo-34320:  **kwargs should preserve order of pitaed OrderedDict
         od = collections.OrderedDict([('a', 1), ('b', 2)])
         od.move_to_end('a')
         expected = list(od.items())
@@ -46,8 +46,8 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_varargs0_ext(self):
         jaribu:
             {}.__contains__(*())
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
     eleza test_varargs1_ext(self):
         {}.__contains__(*(0,))
@@ -55,10 +55,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_varargs2_ext(self):
         jaribu:
             {}.__contains__(*(1, 2))
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_varargs1_kw(self):
         self.assertRaises(TypeError, {}.__contains__, x=2)
@@ -81,26 +81,26 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs0_1_ext(self):
         jaribu:
             {}.keys(*(0,))
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_oldargs0_2_ext(self):
         jaribu:
             {}.keys(*(1, 2))
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_oldargs0_0_kw(self):
         jaribu:
             {}.keys(x=2)
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_oldargs0_1_kw(self):
         self.assertRaises(TypeError, {}.keys, x=2)
@@ -120,10 +120,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs1_0_ext(self):
         jaribu:
             [].count(*())
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_oldargs1_1_ext(self):
         [].count(*(1,))
@@ -131,10 +131,10 @@ kundi CFunctionCalls(unittest.TestCase):
     eleza test_oldargs1_2_ext(self):
         jaribu:
             [].count(*(1, 2))
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-             ashiria RuntimeError
+            ashiria RuntimeError
 
     eleza test_oldargs1_0_kw(self):
         self.assertRaises(TypeError, [].count, x=2)
@@ -471,9 +471,9 @@ kundi FastCallTests(unittest.TestCase):
                 rudisha 0
         x = IntWithDict(dont_inherit=IntWithDict())
         # We test the argument handling of "compile" here, the compilation
-        # itself ni sio relevant. When we pass flags=x below, x.__index__() is
+        # itself ni sio relevant. When we pita flags=x below, x.__index__() is
         # called, which changes the keywords dict.
-        compile("pass", "", "exec", x, **x.kwargs)
+        compile("pita", "", "exec", x, **x.kwargs)
 
 
 Py_TPFLAGS_HAVE_VECTORCALL = 1 << 11
@@ -508,7 +508,7 @@ kundi TestPEP590(unittest.TestCase):
 
         # Heap type should sio inherit Py_TPFLAGS_METHOD_DESCRIPTOR
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
+            pita
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_METHOD_DESCRIPTOR)
 
     eleza test_vectorcall_flag(self):
@@ -519,7 +519,7 @@ kundi TestPEP590(unittest.TestCase):
 
         # Heap type should sio inherit Py_TPFLAGS_HAVE_VECTORCALL
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
+            pita
         self.assertUongo(MethodDescriptorHeap.__flags__ & Py_TPFLAGS_HAVE_VECTORCALL)
 
     eleza test_vectorcall_override(self):
@@ -538,7 +538,7 @@ kundi TestPEP590(unittest.TestCase):
         #   (only kila objects that support vectorcall directly)
         # 2. normal call
         # 3. vectorcall using _PyObject_Vectorcall()
-        # 4. call as bound method
+        # 4. call kama bound method
         # 5. call using functools.partial
 
         # A list of (function, args, kwargs, result) calls to test
@@ -571,7 +571,7 @@ kundi TestPEP590(unittest.TestCase):
         # but do support all other ways of calling).
 
         kundi MethodDescriptorHeap(_testcapi.MethodDescriptorBase):
-            pass
+            pita
 
         kundi MethodDescriptorOverridden(_testcapi.MethodDescriptorBase):
             eleza __call__(self, n):

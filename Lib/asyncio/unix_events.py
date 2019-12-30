@@ -36,12 +36,12 @@ __all__ = (
 
 
 ikiwa sys.platform == 'win32':  # pragma: no cover
-     ashiria ImportError('Signals are sio really supported on Windows')
+    ashiria ImportError('Signals are sio really supported on Windows')
 
 
 eleza _sighandler_noop(signum, frame):
     """Dummy signal handler."""
-    pass
+    pita
 
 
 kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
@@ -81,9 +81,9 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         Raise ValueError ikiwa the signal number ni invalid ama uncatchable.
         Raise RuntimeError ikiwa there ni a problem setting up the handler.
         """
-        ikiwa (coroutines.iscoroutine(callback) or
+        ikiwa (coroutines.iscoroutine(callback) ama
                 coroutines.iscoroutinefunction(callback)):
-             ashiria TypeError("coroutines cannot be used "
+            ashiria TypeError("coroutines cannot be used "
                             "ukijumuisha add_signal_handler()")
         self._check_signal(sig)
         self._check_closed()
@@ -93,8 +93,8 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             # event loop running kwenye another thread cannot add a signal
             # handler.
             signal.set_wakeup_fd(self._csock.fileno())
-        except (ValueError, OSError) as exc:
-             ashiria RuntimeError(str(exc))
+        tatizo (ValueError, OSError) kama exc:
+            ashiria RuntimeError(str(exc))
 
         handle = events.Handle(callback, args, self, Tupu)
         self._signal_handlers[sig] = handle
@@ -107,16 +107,16 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
             # Set SA_RESTART to limit EINTR occurrences.
             signal.siginterrupt(sig, Uongo)
-        except OSError as exc:
+        tatizo OSError kama exc:
             toa self._signal_handlers[sig]
             ikiwa sio self._signal_handlers:
                 jaribu:
                     signal.set_wakeup_fd(-1)
-                except (ValueError, OSError) as nexc:
+                tatizo (ValueError, OSError) kama nexc:
                     logger.info('set_wakeup_fd(-1) failed: %s', nexc)
 
             ikiwa exc.errno == errno.EINVAL:
-                 ashiria RuntimeError(f'sig {sig} cannot be caught')
+                ashiria RuntimeError(f'sig {sig} cannot be caught')
             isipokua:
                 raise
 
@@ -138,7 +138,7 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         self._check_signal(sig)
         jaribu:
             toa self._signal_handlers[sig]
-        except KeyError:
+        tatizo KeyError:
             rudisha Uongo
 
         ikiwa sig == signal.SIGINT:
@@ -148,16 +148,16 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         jaribu:
             signal.signal(sig, handler)
-        except OSError as exc:
+        tatizo OSError kama exc:
             ikiwa exc.errno == errno.EINVAL:
-                 ashiria RuntimeError(f'sig {sig} cannot be caught')
+                ashiria RuntimeError(f'sig {sig} cannot be caught')
             isipokua:
                 raise
 
         ikiwa sio self._signal_handlers:
             jaribu:
                 signal.set_wakeup_fd(-1)
-            except (ValueError, OSError) as exc:
+            tatizo (ValueError, OSError) kama exc:
                 logger.info('set_wakeup_fd(-1) failed: %s', exc)
 
         rudisha Kweli
@@ -169,10 +169,10 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         Raise RuntimeError ikiwa there ni a problem setting up the handler.
         """
         ikiwa sio isinstance(sig, int):
-             ashiria TypeError(f'sig must be an int, sio {sig!r}')
+            ashiria TypeError(f'sig must be an int, sio {sig!r}')
 
-        ikiwa sig sio kwenye signal.valid_signals():
-             ashiria ValueError(f'invalid signal number {sig}')
+        ikiwa sig haiko kwenye signal.valid_signals():
+            ashiria ValueError(f'invalid signal number {sig}')
 
     eleza _make_read_pipe_transport(self, pipe, protocol, waiter=Tupu,
                                   extra=Tupu):
@@ -185,13 +185,13 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     async eleza _make_subprocess_transport(self, protocol, args, shell,
                                          stdin, stdout, stderr, bufsize,
                                          extra=Tupu, **kwargs):
-        ukijumuisha events.get_child_watcher() as watcher:
+        ukijumuisha events.get_child_watcher() kama watcher:
             ikiwa sio watcher.is_active():
                 # Check early.
                 # Raising exception before process creation
                 # prevents subprocess execution ikiwa the watcher
                 # ni sio ready to handle it.
-                 ashiria RuntimeError("asyncio.get_child_watcher() ni sio activated, "
+                ashiria RuntimeError("asyncio.get_child_watcher() ni sio activated, "
                                    "subprocess support ni sio installed.")
             waiter = self.create_future()
             transp = _UnixSubprocessTransport(self, protocol, args, shell,
@@ -203,9 +203,9 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                                       self._child_watcher_callback, transp)
             jaribu:
                 await waiter
-            except (SystemExit, KeyboardInterrupt):
+            tatizo (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException:
+            tatizo BaseException:
                 transp.close()
                 await transp._wait()
                 raise
@@ -223,18 +223,18 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
         assert server_hostname ni Tupu ama isinstance(server_hostname, str)
         ikiwa ssl:
             ikiwa server_hostname ni Tupu:
-                 ashiria ValueError(
-                    'you have to pass server_hostname when using ssl')
+                ashiria ValueError(
+                    'you have to pita server_hostname when using ssl')
         isipokua:
             ikiwa server_hostname ni sio Tupu:
-                 ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
+                ashiria ValueError('server_hostname ni only meaningful ukijumuisha ssl')
             ikiwa ssl_handshake_timeout ni sio Tupu:
-                 ashiria ValueError(
+                ashiria ValueError(
                     'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa path ni sio Tupu:
             ikiwa sock ni sio Tupu:
-                 ashiria ValueError(
+                ashiria ValueError(
                     'path na sock can sio be specified at the same time')
 
             path = os.fspath(path)
@@ -248,10 +248,10 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         isipokua:
             ikiwa sock ni Tupu:
-                 ashiria ValueError('no path na sock were specified')
-            ikiwa (sock.family != socket.AF_UNIX or
+                ashiria ValueError('no path na sock were specified')
+            ikiwa (sock.family != socket.AF_UNIX ama
                     sock.type != socket.SOCK_STREAM):
-                 ashiria ValueError(
+                ashiria ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
             sock.setblocking(Uongo)
 
@@ -266,41 +266,41 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             ssl_handshake_timeout=Tupu,
             start_serving=Kweli):
         ikiwa isinstance(ssl, bool):
-             ashiria TypeError('ssl argument must be an SSLContext ama Tupu')
+            ashiria TypeError('ssl argument must be an SSLContext ama Tupu')
 
         ikiwa ssl_handshake_timeout ni sio Tupu na sio ssl:
-             ashiria ValueError(
+            ashiria ValueError(
                 'ssl_handshake_timeout ni only meaningful ukijumuisha ssl')
 
         ikiwa path ni sio Tupu:
             ikiwa sock ni sio Tupu:
-                 ashiria ValueError(
+                ashiria ValueError(
                     'path na sock can sio be specified at the same time')
 
             path = os.fspath(path)
             sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
             # Check kila abstract socket. `str` na `bytes` paths are supported.
-            ikiwa path[0] sio kwenye (0, '\x00'):
+            ikiwa path[0] haiko kwenye (0, '\x00'):
                 jaribu:
                     ikiwa stat.S_ISSOCK(os.stat(path).st_mode):
                         os.remove(path)
-                except FileNotFoundError:
-                    pass
-                except OSError as err:
+                tatizo FileNotFoundError:
+                    pita
+                tatizo OSError kama err:
                     # Directory may have permissions only to create socket.
                     logger.error('Unable to check ama remove stale UNIX socket '
                                  '%r: %r', path, err)
 
             jaribu:
                 sock.bind(path)
-            except OSError as exc:
+            tatizo OSError kama exc:
                 sock.close()
                 ikiwa exc.errno == errno.EADDRINUSE:
                     # Let's improve the error message by adding
                     # ukijumuisha what exact address it occurs.
                     msg = f'Address {path!r} ni already kwenye use'
-                     ashiria OSError(errno.EADDRINUSE, msg) kutoka Tupu
+                    ashiria OSError(errno.EADDRINUSE, msg) kutoka Tupu
                 isipokua:
                     raise
             tatizo:
@@ -308,12 +308,12 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
                 raise
         isipokua:
             ikiwa sock ni Tupu:
-                 ashiria ValueError(
+                ashiria ValueError(
                     'path was sio specified, na no sock specified')
 
-            ikiwa (sock.family != socket.AF_UNIX or
+            ikiwa (sock.family != socket.AF_UNIX ama
                     sock.type != socket.SOCK_STREAM):
-                 ashiria ValueError(
+                ashiria ValueError(
                     f'A UNIX Domain Stream Socket was expected, got {sock!r}')
 
         sock.setblocking(Uongo)
@@ -330,17 +330,17 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
     async eleza _sock_sendfile_native(self, sock, file, offset, count):
         jaribu:
             os.sendfile
-        except AttributeError as exc:
-             ashiria exceptions.SendfileNotAvailableError(
+        tatizo AttributeError kama exc:
+            ashiria exceptions.SendfileNotAvailableError(
                 "os.sendfile() ni sio available")
         jaribu:
             fileno = file.fileno()
-        except (AttributeError, io.UnsupportedOperation) as err:
-             ashiria exceptions.SendfileNotAvailableError("not a regular file")
+        tatizo (AttributeError, io.UnsupportedOperation) kama err:
+            ashiria exceptions.SendfileNotAvailableError("not a regular file")
         jaribu:
             fsize = os.fstat(fileno).st_size
-        except OSError as err:
-             ashiria exceptions.SendfileNotAvailableError("not a regular file")
+        tatizo OSError kama err:
+            ashiria exceptions.SendfileNotAvailableError("not a regular file")
         blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file
@@ -371,15 +371,15 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
 
         jaribu:
             sent = os.sendfile(fd, fileno, offset, blocksize)
-        except (BlockingIOError, InterruptedError):
+        tatizo (BlockingIOError, InterruptedError):
             ikiwa registered_fd ni Tupu:
                 self._sock_add_cancellation_callback(fut, sock)
             self.add_writer(fd, self._sock_sendfile_native_impl, fut,
                             fd, sock, fileno,
                             offset, count, blocksize, total_sent)
-        except OSError as exc:
-            ikiwa (registered_fd ni sio Tupu and
-                    exc.errno == errno.ENOTCONN and
+        tatizo OSError kama exc:
+            ikiwa (registered_fd ni sio Tupu na
+                    exc.errno == errno.ENOTCONN na
                     type(exc) ni sio ConnectionError):
                 # If we have an ENOTCONN na this isn't a first call to
                 # sendfile(), i.e. the connection was closed kwenye the middle
@@ -401,9 +401,9 @@ kundi _UnixSelectorEventLoop(selector_events.BaseSelectorEventLoop):
             isipokua:
                 self._sock_sendfile_update_filepos(fileno, offset, total_sent)
                 fut.set_exception(exc)
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             self._sock_sendfile_update_filepos(fileno, offset, total_sent)
             fut.set_exception(exc)
         isipokua:
@@ -448,13 +448,13 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
         self._paused = Uongo
 
         mode = os.fstat(self._fileno).st_mode
-        ikiwa sio (stat.S_ISFIFO(mode) or
-                stat.S_ISSOCK(mode) or
+        ikiwa sio (stat.S_ISFIFO(mode) ama
+                stat.S_ISSOCK(mode) ama
                 stat.S_ISCHR(mode)):
             self._pipe = Tupu
             self._fileno = Tupu
             self._protocol = Tupu
-             ashiria ValueError("Pipe transport ni kila pipes/sockets only.")
+            ashiria ValueError("Pipe transport ni kila pipes/sockets only.")
 
         os.set_blocking(self._fileno, Uongo)
 
@@ -471,7 +471,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
         info = [self.__class__.__name__]
         ikiwa self._pipe ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Tupu)
@@ -482,7 +482,7 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
                 info.append('polling')
             isipokua:
                 info.append('idle')
-        elikiwa self._pipe ni sio Tupu:
+        lasivyo self._pipe ni sio Tupu:
             info.append('open')
         isipokua:
             info.append('closed')
@@ -491,9 +491,9 @@ kundi _UnixReadPipeTransport(transports.ReadTransport):
     eleza _read_ready(self):
         jaribu:
             data = os.read(self._fileno, self.max_size)
-        except (BlockingIOError, InterruptedError):
-            pass
-        except OSError as exc:
+        tatizo (BlockingIOError, InterruptedError):
+            pita
+        tatizo OSError kama exc:
             self._fatal_error(exc, 'Fatal read error on pipe transport')
         isipokua:
             ikiwa data:
@@ -590,7 +590,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
             self._pipe = Tupu
             self._fileno = Tupu
             self._protocol = Tupu
-             ashiria ValueError("Pipe transport ni only kila "
+            ashiria ValueError("Pipe transport ni only kila "
                              "pipes, sockets na character devices")
 
         os.set_blocking(self._fileno, Uongo)
@@ -613,7 +613,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
         info = [self.__class__.__name__]
         ikiwa self._pipe ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         info.append(f'fd={self._fileno}')
         selector = getattr(self._loop, '_selector', Tupu)
@@ -627,7 +627,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
 
             bufsize = self.get_write_buffer_size()
             info.append(f'bufsize={bufsize}')
-        elikiwa self._pipe ni sio Tupu:
+        lasivyo self._pipe ni sio Tupu:
             info.append('open')
         isipokua:
             info.append('closed')
@@ -663,17 +663,17 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
             # Attempt to send it right away first.
             jaribu:
                 n = os.write(self._fileno, data)
-            except (BlockingIOError, InterruptedError):
+            tatizo (BlockingIOError, InterruptedError):
                 n = 0
-            except (SystemExit, KeyboardInterrupt):
+            tatizo (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 self._conn_lost += 1
                 self._fatal_error(exc, 'Fatal write error on pipe transport')
                 return
             ikiwa n == len(data):
                 return
-            elikiwa n > 0:
+            lasivyo n > 0:
                 data = memoryview(data)[n:]
             self._loop._add_writer(self._fileno, self._write_ready)
 
@@ -685,11 +685,11 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
 
         jaribu:
             n = os.write(self._fileno, self._buffer)
-        except (BlockingIOError, InterruptedError):
-            pass
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (BlockingIOError, InterruptedError):
+            pita
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             self._buffer.clear()
             self._conn_lost += 1
             # Remove writer here, _fatal_error() doesn't it
@@ -705,7 +705,7 @@ kundi _UnixWritePipeTransport(transports._FlowControlMixin,
                     self._loop._remove_reader(self._fileno)
                     self._call_connection_lost(Tupu)
                 return
-            elikiwa n > 0:
+            lasivyo n > 0:
                 toa self._buffer[:n]
 
     eleza can_write_eof(self):
@@ -802,7 +802,7 @@ kundi _UnixSubprocessTransport(base_subprocess.BaseSubprocessTransport):
 kundi AbstractChildWatcher:
     """Abstract base kundi kila monitoring child processes.
 
-    Objects derived kutoka this kundi monitor a collection of subprocesses and
+    Objects derived kutoka this kundi monitor a collection of subprocesses na
     report their termination ama interruption by a signal.
 
     New callbacks are registered ukijumuisha .add_child_handler(). Starting a new
@@ -831,7 +831,7 @@ kundi AbstractChildWatcher:
 
         Note: callback() must be thread-safe.
         """
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza remove_child_handler(self, pid):
         """Removes the handler kila process 'pid'.
@@ -839,7 +839,7 @@ kundi AbstractChildWatcher:
         The function returns Kweli ikiwa the handler was successfully removed,
         Uongo ikiwa there was nothing to remove."""
 
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza attach_loop(self, loop):
         """Attach the watcher to an event loop.
@@ -849,14 +849,14 @@ kundi AbstractChildWatcher:
 
         Note: loop may be Tupu.
         """
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza close(self):
         """Close the watcher.
 
         This must be called to make sure that any underlying resource ni freed.
         """
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza is_active(self):
         """Return ``Kweli`` ikiwa the watcher ni active na ni used by the event loop.
@@ -865,24 +865,24 @@ kundi AbstractChildWatcher:
         notifications.
 
         """
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza __enter__(self):
         """Enter the watcher's context na allow starting new processes
 
         This function must rudisha self"""
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza __exit__(self, a, b, c):
         """Exit the watcher's context"""
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
 
 eleza _compute_returncode(status):
     ikiwa os.WIFSIGNALED(status):
         # The child process died because of a signal.
         rudisha -os.WTERMSIG(status)
-    elikiwa os.WIFEXITED(status):
+    lasivyo os.WIFEXITED(status):
         # The child process exited (e.g sys.exit()).
         rudisha os.WEXITSTATUS(status)
     isipokua:
@@ -905,10 +905,10 @@ kundi BaseChildWatcher(AbstractChildWatcher):
         rudisha self._loop ni sio Tupu na self._loop.is_running()
 
     eleza _do_waitpid(self, expected_pid):
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza _do_waitpid_all(self):
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza attach_loop(self, loop):
         assert loop ni Tupu ama isinstance(loop, events.AbstractEventLoop)
@@ -933,11 +933,11 @@ kundi BaseChildWatcher(AbstractChildWatcher):
     eleza _sig_chld(self):
         jaribu:
             self._do_waitpid_all()
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             # self._loop should always be available here
-            # as '_sig_chld' ni added as a signal handler
+            # kama '_sig_chld' ni added kama a signal handler
             # kwenye 'attach_loop'
             self._loop.call_exception_handler({
                 'message': 'Unknown exception kwenye SIGCHLD handler',
@@ -964,7 +964,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
         rudisha self
 
     eleza __exit__(self, a, b, c):
-        pass
+        pita
 
     eleza add_child_handler(self, pid, callback, *args):
         self._callbacks[pid] = (callback, args)
@@ -976,7 +976,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
         jaribu:
             toa self._callbacks[pid]
             rudisha Kweli
-        except KeyError:
+        tatizo KeyError:
             rudisha Uongo
 
     eleza _do_waitpid_all(self):
@@ -989,7 +989,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
 
         jaribu:
             pid, status = os.waitpid(expected_pid, os.WNOHANG)
-        except ChildProcessError:
+        tatizo ChildProcessError:
             # The child process ni already reaped
             # (may happen ikiwa waitpid() ni called elsewhere).
             pid = expected_pid
@@ -1009,7 +1009,7 @@ kundi SafeChildWatcher(BaseChildWatcher):
 
         jaribu:
             callback, args = self._callbacks.pop(pid)
-        except KeyError:  # pragma: no cover
+        tatizo KeyError:  # pragma: no cover
             # May happen ikiwa .remove_child_handler() ni called
             # after os.waitpid() returns.
             ikiwa self._loop.get_debug():
@@ -1066,7 +1066,7 @@ kundi FastChildWatcher(BaseChildWatcher):
         ukijumuisha self._lock:
             jaribu:
                 returncode = self._zombies.pop(pid)
-            except KeyError:
+            tatizo KeyError:
                 # The child ni running.
                 self._callbacks[pid] = callback, args
                 return
@@ -1078,16 +1078,16 @@ kundi FastChildWatcher(BaseChildWatcher):
         jaribu:
             toa self._callbacks[pid]
             rudisha Kweli
-        except KeyError:
+        tatizo KeyError:
             rudisha Uongo
 
     eleza _do_waitpid_all(self):
         # Because of signal coalescing, we must keep calling waitpid() as
-        # long as we're able to reap a child.
+        # long kama we're able to reap a child.
         wakati Kweli:
             jaribu:
                 pid, status = os.waitpid(-1, os.WNOHANG)
-            except ChildProcessError:
+            tatizo ChildProcessError:
                 # No more child processes exist.
                 return
             isipokua:
@@ -1100,7 +1100,7 @@ kundi FastChildWatcher(BaseChildWatcher):
             ukijumuisha self._lock:
                 jaribu:
                     callback, args = self._callbacks.pop(pid)
-                except KeyError:
+                tatizo KeyError:
                     # unknown child
                     ikiwa self._forks:
                         # It may sio be registered yet.
@@ -1164,7 +1164,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
         rudisha self
 
     eleza __exit__(self, exc_type, exc_val, exc_tb):
-        pass
+        pita
 
     eleza add_child_handler(self, pid, callback, *args):
         loop = events.get_running_loop()
@@ -1177,7 +1177,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
         jaribu:
             toa self._callbacks[pid]
             rudisha Kweli
-        except KeyError:
+        tatizo KeyError:
             rudisha Uongo
 
     eleza attach_loop(self, loop):
@@ -1204,7 +1204,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
 
         jaribu:
             pid, status = os.waitpid(expected_pid, os.WNOHANG)
-        except ChildProcessError:
+        tatizo ChildProcessError:
             # The child process ni already reaped
             # (may happen ikiwa waitpid() ni called elsewhere).
             pid = expected_pid
@@ -1222,7 +1222,7 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
             debug_log = Kweli
         jaribu:
             loop, callback, args = self._callbacks.pop(pid)
-        except KeyError:  # pragma: no cover
+        tatizo KeyError:  # pragma: no cover
             # May happen ikiwa .remove_child_handler() ni called
             # after os.waitpid() returns.
             logger.warning("Child watcher got an unexpected pid: %r",
@@ -1239,9 +1239,9 @@ kundi MultiLoopChildWatcher(AbstractChildWatcher):
     eleza _sig_chld(self, signum, frame):
         jaribu:
             self._do_waitpid_all()
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException:
+        tatizo BaseException:
             logger.warning('Unknown exception kwenye SIGCHLD handler', exc_info=Kweli)
 
 
@@ -1266,13 +1266,13 @@ kundi ThreadedChildWatcher(AbstractChildWatcher):
         rudisha Kweli
 
     eleza close(self):
-        pass
+        pita
 
     eleza __enter__(self):
         rudisha self
 
     eleza __exit__(self, exc_type, exc_val, exc_tb):
-        pass
+        pita
 
     eleza __del__(self, _warn=warnings.warn):
         threads = [thread kila thread kwenye list(self._threads.values())
@@ -1298,14 +1298,14 @@ kundi ThreadedChildWatcher(AbstractChildWatcher):
         rudisha Kweli
 
     eleza attach_loop(self, loop):
-        pass
+        pita
 
     eleza _do_waitpid(self, loop, expected_pid, callback, args):
         assert expected_pid > 0
 
         jaribu:
             pid, status = os.waitpid(expected_pid, 0)
-        except ChildProcessError:
+        tatizo ChildProcessError:
             # The child process ni already reaped
             # (may happen ikiwa waitpid() ni called elsewhere).
             pid = expected_pid
@@ -1353,7 +1353,7 @@ kundi _UnixDefaultEventLoopPolicy(events.BaseDefaultEventLoopPolicy):
 
         super().set_event_loop(loop)
 
-        ikiwa (self._watcher ni sio Tupu and
+        ikiwa (self._watcher ni sio Tupu na
                 isinstance(threading.current_thread(), threading._MainThread)):
             self._watcher.attach_loop(loop)
 

@@ -53,12 +53,12 @@ kundi WindowsLoadTracker():
             pipe_name, open_mode, _winapi.PIPE_WAIT,
             1, BUFSIZE, BUFSIZE, _winapi.NMPWAIT_WAIT_FOREVER, _winapi.NULL
         )
-        # The write end of the pipe which ni passed to the created process
+        # The write end of the pipe which ni pitaed to the created process
         pipe_write_end = _winapi.CreateFile(
             pipe_name, _winapi.GENERIC_WRITE, 0, _winapi.NULL,
             _winapi.OPEN_EXISTING, 0, _winapi.NULL
         )
-        # Open up the handle as a python file object so we can pass it to
+        # Open up the handle kama a python file object so we can pita it to
         # subprocess
         command_stdout = msvcrt.open_osfhandle(pipe_write_end, 0)
 
@@ -76,7 +76,7 @@ kundi WindowsLoadTracker():
 
     eleza _get_counter_name(self):
         # accessing the registry to get the counter localization name
-        ukijumuisha winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, COUNTER_REGISTRY_KEY) as perfkey:
+        ukijumuisha winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, COUNTER_REGISTRY_KEY) kama perfkey:
             counters = winreg.QueryValueEx(perfkey, 'Counter')[0]
 
         # Convert [key1, value1, key2, value2, ...] list
@@ -109,11 +109,11 @@ kundi WindowsLoadTracker():
         # (date, process queue length)
         tokens = line.split(',')
         ikiwa len(tokens) != 2:
-             ashiria ValueError
+            ashiria ValueError
 
         value = tokens[1]
         ikiwa sio value.startswith('"') ama sio value.endswith('"'):
-             ashiria ValueError
+            ashiria ValueError
         value = value[1:-1]
         rudisha float(value)
 
@@ -130,12 +130,12 @@ kundi WindowsLoadTracker():
 
         # bpo-36670: typeperf only writes a newline *before* writing a value,
         # sio after. Sometimes, the written line kwenye incomplete (ex: only
-        # timestamp, without the process queue length). Only pass the last line
+        # timestamp, without the process queue length). Only pita the last line
         # to the parser ikiwa it's a valid value, otherwise store it in
         # self._buffer.
         jaribu:
             self._parse_line(lines[-1])
-        except ValueError:
+        tatizo ValueError:
             self._buffer = lines.pop(-1)
         isipokua:
             self._buffer = ''
@@ -153,7 +153,7 @@ kundi WindowsLoadTracker():
 
         jaribu:
             lines = self._read_lines()
-        except BrokenPipeError:
+        tatizo BrokenPipeError:
             self.close()
             rudisha Tupu
 
@@ -171,7 +171,7 @@ kundi WindowsLoadTracker():
 
             jaribu:
                 processor_queue_length = self._parse_line(line)
-            except ValueError:
+            tatizo ValueError:
                 print_warning("Failed to parse typeperf output: %a" % line)
                 endelea
 
@@ -182,7 +182,7 @@ kundi WindowsLoadTracker():
             ikiwa self._load ni sio Tupu:
                 self._load = (self._load * LOAD_FACTOR_1
                               + processor_queue_length  * (1.0 - LOAD_FACTOR_1))
-            elikiwa len(self._values) < NVALUE:
+            lasivyo len(self._values) < NVALUE:
                 self._values.append(processor_queue_length)
             isipokua:
                 self._load = sum(self._values) / len(self._values)

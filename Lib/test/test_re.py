@@ -36,7 +36,7 @@ kundi ReTests(unittest.TestCase):
         recurse(actual, expect)
 
     eleza checkPatternError(self, pattern, errmsg, pos=Tupu):
-        ukijumuisha self.assertRaises(re.error) as cm:
+        ukijumuisha self.assertRaises(re.error) kama cm:
             re.compile(pattern)
         ukijumuisha self.subTest(pattern=pattern):
             err = cm.exception
@@ -45,7 +45,7 @@ kundi ReTests(unittest.TestCase):
                 self.assertEqual(err.pos, pos)
 
     eleza checkTemplateError(self, pattern, repl, string, errmsg, pos=Tupu):
-        ukijumuisha self.assertRaises(re.error) as cm:
+        ukijumuisha self.assertRaises(re.error) kama cm:
             re.sub(pattern, repl, string)
         ukijumuisha self.subTest(pattern=pattern, repl=repl):
             err = cm.exception
@@ -218,7 +218,7 @@ kundi ReTests(unittest.TestCase):
         re.compile(r'(?P<a1>x)(?P=a1)(?(a1)y)')
         re.compile(r'(?P<a1>x)\1(?(1)y)')
         self.checkPatternError(r'(?P<a>)(?P<a>)',
-                               "redefinition of group name 'a' as group 2; "
+                               "redefinition of group name 'a' kama group 2; "
                                "was group 1")
         self.checkPatternError(r'(?P<a>(?P=a))',
                                "cannot refer to an open group", 10)
@@ -708,7 +708,7 @@ kundi ReTests(unittest.TestCase):
         self.assertIsTupu(re.match(r'[\N{LESS-THAN SIGN}-\N{GREATER-THAN SIGN}]',
                                    ';'))
 
-        # test errors kwenye \N{name} handling - only valid names should pass
+        # test errors kwenye \N{name} handling - only valid names should pita
         self.checkPatternError(r'\N', 'missing {', 2)
         self.checkPatternError(r'[\N]', 'missing {', 3)
         self.checkPatternError(r'\N{', 'missing character name', 3)
@@ -999,8 +999,8 @@ kundi ReTests(unittest.TestCase):
             # the pattern matches the whole text
             match = text
             span = (0, len(text))
-        elikiwa match ni Tupu ama span ni Tupu:
-             ashiria ValueError('If match ni sio Tupu, span should be specified '
+        lasivyo match ni Tupu ama span ni Tupu:
+            ashiria ValueError('If match ni sio Tupu, span should be specified '
                              '(and vice versa).')
         m = matcher(pattern, text)
         self.assertKweli(m)
@@ -1186,7 +1186,7 @@ kundi ReTests(unittest.TestCase):
         self.checkPatternError(r'[', 'unterminated character set', 0)
         self.checkPatternError(r'[^', 'unterminated character set', 0)
         self.checkPatternError(r'[a', 'unterminated character set', 0)
-        # bug 545855 -- This pattern failed to cause a compile error as it
+        # bug 545855 -- This pattern failed to cause a compile error kama it
         # should, instead provoking a TypeError.
         self.checkPatternError(r"[a-", 'unterminated character set', 0)
         self.checkPatternError(r"[\w-b]", r'bad character range \w-b', 1)
@@ -1313,7 +1313,7 @@ kundi ReTests(unittest.TestCase):
 
     eleza test_bug_764548(self):
         # bug 764548, re.compile() barfs on str/unicode subclasses
-        kundi my_unicode(str): pass
+        kundi my_unicode(str): pita
         pat = re.compile(my_unicode("abc"))
         self.assertIsTupu(pat.match("xyz"))
 
@@ -1439,7 +1439,7 @@ kundi ReTests(unittest.TestCase):
         self.assertKweli(re.match(' (?x) (?i) ' + upper_char, lower_char, re.X))
 
         p = upper_char + '(?i)'
-        ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+        ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
             self.assertKweli(re.match(p, lower_char))
         self.assertEqual(
             str(warns.warnings[0].message),
@@ -1448,7 +1448,7 @@ kundi ReTests(unittest.TestCase):
         self.assertEqual(warns.warnings[0].filename, __file__)
 
         p = upper_char + '(?i)%s' % ('.?' * 100)
-        ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+        ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
             self.assertKweli(re.match(p, lower_char))
         self.assertEqual(
             str(warns.warnings[0].message),
@@ -1460,7 +1460,7 @@ kundi ReTests(unittest.TestCase):
         ukijumuisha warnings.catch_warnings():
             warnings.simplefilter('error', BytesWarning)
             p = b'A(?i)'
-            ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+            ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
                 self.assertKweli(re.match(p, b'a'))
             self.assertEqual(
                 str(warns.warnings[0].message),
@@ -1478,18 +1478,18 @@ kundi ReTests(unittest.TestCase):
             self.assertKweli(re.match('^(?i)' + upper_char, lower_char))
         ukijumuisha self.assertWarns(DeprecationWarning):
             self.assertKweli(re.match('$|(?i)' + upper_char, lower_char))
-        ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+        ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
             self.assertKweli(re.match('(?:(?i)' + upper_char + ')', lower_char))
         self.assertRegex(str(warns.warnings[0].message),
                          'Flags sio at the start')
         self.assertEqual(warns.warnings[0].filename, __file__)
-        ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+        ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
             self.assertKweli(re.fullmatch('(^)?(?(1)(?i)' + upper_char + ')',
                                          lower_char))
         self.assertRegex(str(warns.warnings[0].message),
                          'Flags sio at the start')
         self.assertEqual(warns.warnings[0].filename, __file__)
-        ukijumuisha self.assertWarns(DeprecationWarning) as warns:
+        ukijumuisha self.assertWarns(DeprecationWarning) kama warns:
             self.assertKweli(re.fullmatch('($)?(?(1)|(?i)' + upper_char + ')',
                                          lower_char))
         self.assertRegex(str(warns.warnings[0].message),
@@ -1564,8 +1564,8 @@ kundi ReTests(unittest.TestCase):
                 ikiwa bletter.decode(enc) != sletter: endelea
                 bpat = re.escape(bytes([i]))
                 koma
-            except (UnicodeError, TypeError):
-                pass
+            tatizo (UnicodeError, TypeError):
+                pita
         isipokua:
             bletter = Tupu
             bpat = b'A'
@@ -1674,13 +1674,13 @@ kundi ReTests(unittest.TestCase):
         self.assertKweli(re.search("123.*-", '123\xe9\u20ac\U0010ffff-'))
 
     eleza test_compile(self):
-        # Test rudisha value when given string na pattern as parameter
+        # Test rudisha value when given string na pattern kama parameter
         pattern = re.compile('random pattern')
         self.assertIsInstance(pattern, re.Pattern)
         same_pattern = re.compile(pattern)
         self.assertIsInstance(same_pattern, re.Pattern)
         self.assertIs(same_pattern, pattern)
-        # Test behaviour when sio given a string ama pattern as parameter
+        # Test behaviour when sio given a string ama pattern kama parameter
         self.assertRaises(TypeError, re.compile, 0)
 
     @bigmemtest(size=_2G, memuse=1)
@@ -1727,7 +1727,7 @@ kundi ReTests(unittest.TestCase):
     eleza test_repeat_minmax_overflow_maxrepeat(self):
         jaribu:
             kutoka _sre agiza MAXREPEAT
-        except ImportError:
+        tatizo ImportError:
             self.skipTest('requires _sre.MAXREPEAT constant')
         string = "x" * 100000
         self.assertIsTupu(re.match(r".{%d}" % (MAXREPEAT - 1), string))
@@ -1817,7 +1817,7 @@ kundi ReTests(unittest.TestCase):
     @cpython_only
     eleza test_debug_flag(self):
         pat = r'(\.)(?:[ch]|py)(?(1)$|: )'
-        ukijumuisha captured_stdout() as out:
+        ukijumuisha captured_stdout() kama out:
             re.compile(pat, re.DEBUG)
         self.maxDiff = Tupu
         dump = '''\
@@ -1862,9 +1862,9 @@ ELSE
 45: SUCCESS
 '''
         self.assertEqual(out.getvalue(), dump)
-        # Debug output ni output again even a second time (bypassing
+        # Debug output ni output again even a second time (bypitaing
         # the cache -- issue #20426).
-        ukijumuisha captured_stdout() as out:
+        ukijumuisha captured_stdout() kama out:
             re.compile(pat, re.DEBUG)
         self.assertEqual(out.getvalue(), dump)
 
@@ -1898,7 +1898,7 @@ ELSE
         kila loc kwenye 'en_US.iso88591', 'en_US.utf8':
             jaribu:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            tatizo locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -1933,7 +1933,7 @@ ELSE
         kila loc kwenye 'en_US.iso88591', 'en_US.utf8':
             jaribu:
                 locale.setlocale(locale.LC_CTYPE, loc)
-            except locale.Error:
+            tatizo locale.Error:
                 # Unsupported locale on this system
                 self.skipTest('test needs %s locale' % loc)
 
@@ -1960,7 +1960,7 @@ ELSE
         self.assertIsTupu(p4.match(b'\xc5\xc5'))
 
     eleza test_error(self):
-        ukijumuisha self.assertRaises(re.error) as cm:
+        ukijumuisha self.assertRaises(re.error) kama cm:
             re.compile('(\u20ac))')
         err = cm.exception
         self.assertIsInstance(err.pattern, str)
@@ -1972,14 +1972,14 @@ ELSE
         self.assertIn(' at position 3', str(err))
         self.assertNotIn(' at position 3', err.msg)
         # Bytes pattern
-        ukijumuisha self.assertRaises(re.error) as cm:
+        ukijumuisha self.assertRaises(re.error) kama cm:
             re.compile(b'(\xa4))')
         err = cm.exception
         self.assertIsInstance(err.pattern, bytes)
         self.assertEqual(err.pattern, b'(\xa4))')
         self.assertEqual(err.pos, 3)
         # Multiline pattern
-        ukijumuisha self.assertRaises(re.error) as cm:
+        ukijumuisha self.assertRaises(re.error) kama cm:
             re.compile("""
                 (
                     abc
@@ -2053,7 +2053,7 @@ ELSE
         self.assertEqual(pattern2, pattern1)
 
         # sio equal: pattern of a different types (str vs bytes),
-        # comparison must sio  ashiria a BytesWarning
+        # comparison must sio ashiria a BytesWarning
         re.purge()
         pattern3 = re.compile('abc')
         ukijumuisha warnings.catch_warnings():
@@ -2222,10 +2222,10 @@ kundi ExternalTests(unittest.TestCase):
             pattern = s = outcome = repl = expected = Tupu
             ikiwa len(t) == 5:
                 pattern, s, outcome, repl, expected = t
-            elikiwa len(t) == 3:
+            lasivyo len(t) == 3:
                 pattern, s, outcome = t
             isipokua:
-                 ashiria ValueError('Test tuples should have 3 ama 5 fields', t)
+                ashiria ValueError('Test tuples should have 3 ama 5 fields', t)
 
             ukijumuisha self.subTest(pattern=pattern, string=s):
                 ikiwa outcome == SYNTAX_ERROR:  # Expected a syntax error
@@ -2241,7 +2241,7 @@ kundi ExternalTests(unittest.TestCase):
 
                 ukijumuisha self.subTest():
                     self.assertKweli(result, 'Failed incorrectly')
-                    # Matched, as expected, so now we compute the
+                    # Matched, kama expected, so now we compute the
                     # result string na compare it to our expected result.
                     start, end = result.span(0)
                     vardict = {'found': result.group(0),
@@ -2253,7 +2253,7 @@ kundi ExternalTests(unittest.TestCase):
                             # Special hack because isipokua the string concat fails:
                             ikiwa gi ni Tupu:
                                 gi = "Tupu"
-                        except IndexError:
+                        tatizo IndexError:
                             gi = "Error"
                         vardict['g%d' % i] = gi
                     kila i kwenye result.re.groupindex.keys():
@@ -2261,7 +2261,7 @@ kundi ExternalTests(unittest.TestCase):
                             gi = result.group(i)
                             ikiwa gi ni Tupu:
                                 gi = "Tupu"
-                        except IndexError:
+                        tatizo IndexError:
                             gi = "Error"
                         vardict[i] = gi
                     self.assertEqual(eval(repl, vardict), expected,
@@ -2272,9 +2272,9 @@ kundi ExternalTests(unittest.TestCase):
                 jaribu:
                     bpat = bytes(pattern, "ascii")
                     bs = bytes(s, "ascii")
-                except UnicodeEncodeError:
+                tatizo UnicodeEncodeError:
                     # skip non-ascii tests
-                    pass
+                    pita
                 isipokua:
                     ukijumuisha self.subTest('bytes pattern match'):
                         obj = re.compile(bpat)

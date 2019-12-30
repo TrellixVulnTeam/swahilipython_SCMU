@@ -30,15 +30,15 @@ eleza _set_socket_extra(transport, sock):
 
     jaribu:
         transport._extra['sockname'] = sock.getsockname()
-    except socket.error:
+    tatizo socket.error:
         ikiwa transport._loop.get_debug():
             logger.warning(
                 "getsockname() failed on %r", sock, exc_info=Kweli)
 
-    ikiwa 'peername' sio kwenye transport._extra:
+    ikiwa 'peername' haiko kwenye transport._extra:
         jaribu:
             transport._extra['peername'] = sock.getpeername()
-        except socket.error:
+        tatizo socket.error:
             # UDP sockets may sio have a peer name
             transport._extra['peername'] = Tupu
 
@@ -73,7 +73,7 @@ kundi _ProactorBasePipeTransport(transports._FlowControlMixin,
         info = [self.__class__.__name__]
         ikiwa self._sock ni Tupu:
             info.append('closed')
-        elikiwa self._closing:
+        lasivyo self._closing:
             info.append('closing')
         ikiwa self._sock ni sio Tupu:
             info.append(f'fd={self._sock.fileno()}')
@@ -233,9 +233,9 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
 
         jaribu:
             keep_open = self._protocol.eof_received()
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             self._fatal_error(
                 exc, 'Fatal error: protocol.eof_received() call failed.')
             return
@@ -258,9 +258,9 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         ikiwa isinstance(self._protocol, protocols.BufferedProtocol):
             jaribu:
                 protocols._feed_data_to_buffered_proto(self._protocol, data)
-            except (SystemExit, KeyboardInterrupt):
+            tatizo (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 self._fatal_error(exc,
                                   'Fatal error: protocol.buffer_updated() '
                                   'call failed.')
@@ -272,7 +272,7 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
         data = Tupu
         jaribu:
             ikiwa fut ni sio Tupu:
-                assert self._read_fut ni fut ama (self._read_fut ni Tupu and
+                assert self._read_fut ni fut ama (self._read_fut ni Tupu na
                                                  self._closing)
                 self._read_fut = Tupu
                 ikiwa fut.done():
@@ -297,17 +297,17 @@ kundi _ProactorReadPipeTransport(_ProactorBasePipeTransport,
             ikiwa sio self._paused:
                 # reschedule a new read
                 self._read_fut = self._loop._proactor.recv(self._sock, 32768)
-        except ConnectionAbortedError as exc:
+        tatizo ConnectionAbortedError kama exc:
             ikiwa sio self._closing:
                 self._fatal_error(exc, 'Fatal read error on pipe transport')
-            elikiwa self._loop.get_debug():
+            lasivyo self._loop.get_debug():
                 logger.debug("Read error on pipe transport wakati closing",
                              exc_info=Kweli)
-        except ConnectionResetError as exc:
+        tatizo ConnectionResetError kama exc:
             self._force_close(exc)
-        except OSError as exc:
+        tatizo OSError kama exc:
             self._fatal_error(exc, 'Fatal read error on pipe transport')
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             ikiwa sio self._closing:
                 raise
         isipokua:
@@ -330,13 +330,13 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
 
     eleza write(self, data):
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
-             ashiria TypeError(
+            ashiria TypeError(
                 f"data argument must be a bytes-like object, "
                 f"not {type(data).__name__}")
         ikiwa self._eof_written:
-             ashiria RuntimeError('write_eof() already called')
+            ashiria RuntimeError('write_eof() already called')
         ikiwa self._empty_waiter ni sio Tupu:
-             ashiria RuntimeError('unable to write; sendfile ni kwenye progress')
+            ashiria RuntimeError('unable to write; sendfile ni kwenye progress')
 
         ikiwa sio data:
             return
@@ -355,9 +355,9 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
         # wakati we're still waiting kila the I/O to happen.
         ikiwa self._write_fut ni Tupu:  # IDLE -> WRITING
             assert self._buffer ni Tupu
-            # Pass a copy, except ikiwa it's already immutable.
+            # Pass a copy, tatizo ikiwa it's already immutable.
             self._loop_writing(data=bytes(data))
-        elikiwa sio self._buffer:  # WRITING -> BACKED UP
+        lasivyo sio self._buffer:  # WRITING -> BACKED UP
             # Make a mutable copy which we can extend.
             self._buffer = bytearray(data)
             self._maybe_pause_protocol()
@@ -369,7 +369,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
     eleza _loop_writing(self, f=Tupu, data=Tupu):
         jaribu:
             ikiwa f ni sio Tupu na self._write_fut ni Tupu na self._closing:
-                # XXX most likely self._force_close() has been called, and
+                # XXX most likely self._force_close() has been called, na
                 # it has set self._write_fut to Tupu.
                 return
             assert f ni self._write_fut
@@ -402,9 +402,9 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
                     self._write_fut.add_done_callback(self._loop_writing)
             ikiwa self._empty_waiter ni sio Tupu na self._write_fut ni Tupu:
                 self._empty_waiter.set_result(Tupu)
-        except ConnectionResetError as exc:
+        tatizo ConnectionResetError kama exc:
             self._force_close(exc)
-        except OSError as exc:
+        tatizo OSError kama exc:
             self._fatal_error(exc, 'Fatal write error on pipe transport')
 
     eleza can_write_eof(self):
@@ -418,7 +418,7 @@ kundi _ProactorBaseWritePipeTransport(_ProactorBasePipeTransport,
 
     eleza _make_empty_waiter(self):
         ikiwa self._empty_waiter ni sio Tupu:
-             ashiria RuntimeError("Empty waiter ni already set")
+            ashiria RuntimeError("Empty waiter ni already set")
         self._empty_waiter = self._loop.create_future()
         ikiwa self._write_fut ni Tupu:
             self._empty_waiter.set_result(Tupu)
@@ -475,14 +475,14 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
 
     eleza sendto(self, data, addr=Tupu):
         ikiwa sio isinstance(data, (bytes, bytearray, memoryview)):
-             ashiria TypeError('data argument must be bytes-like object (%r)',
+            ashiria TypeError('data argument must be bytes-like object (%r)',
                             type(data))
 
         ikiwa sio data:
             return
 
-        ikiwa self._address ni sio Tupu na addr sio kwenye (Tupu, self._address):
-             ashiria ValueError(
+        ikiwa self._address ni sio Tupu na addr haiko kwenye (Tupu, self._address):
+            ashiria ValueError(
                 f'Invalid address: must be Tupu ama {self._address}')
 
         ikiwa self._conn_lost na self._address:
@@ -526,9 +526,9 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
                 self._write_fut = self._loop._proactor.sendto(self._sock,
                                                               data,
                                                               addr=addr)
-        except OSError as exc:
+        tatizo OSError kama exc:
             self._protocol.error_received(exc)
-        except Exception as exc:
+        tatizo Exception kama exc:
             self._fatal_error(exc, 'Fatal write error on datagram transport')
         isipokua:
             self._write_fut.add_done_callback(self._loop_writing)
@@ -540,7 +540,7 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
             ikiwa self._conn_lost:
                 return
 
-            assert self._read_fut ni fut ama (self._read_fut ni Tupu and
+            assert self._read_fut ni fut ama (self._read_fut ni Tupu na
                                              self._closing)
 
             self._read_fut = Tupu
@@ -565,9 +565,9 @@ kundi _ProactorDatagramTransport(_ProactorBasePipeTransport):
             isipokua:
                 self._read_fut = self._loop._proactor.recvfrom(self._sock,
                                                                self.max_size)
-        except OSError as exc:
+        tatizo OSError kama exc:
             self._protocol.error_received(exc)
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             ikiwa sio self._closing:
                 raise
         isipokua:
@@ -587,7 +587,7 @@ kundi _ProactorDuplexPipeTransport(_ProactorReadPipeTransport,
         rudisha Uongo
 
     eleza write_eof(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi _ProactorSocketTransport(_ProactorReadPipeTransport,
@@ -672,7 +672,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
 
     eleza close(self):
         ikiwa self.is_running():
-             ashiria RuntimeError("Cannot close a running event loop")
+            ashiria RuntimeError("Cannot close a running event loop")
         ikiwa self.is_closed():
             return
 
@@ -707,12 +707,12 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
     async eleza _sock_sendfile_native(self, sock, file, offset, count):
         jaribu:
             fileno = file.fileno()
-        except (AttributeError, io.UnsupportedOperation) as err:
-             ashiria exceptions.SendfileNotAvailableError("not a regular file")
+        tatizo (AttributeError, io.UnsupportedOperation) kama err:
+            ashiria exceptions.SendfileNotAvailableError("not a regular file")
         jaribu:
             fsize = os.fstat(fileno).st_size
-        except OSError as err:
-             ashiria exceptions.SendfileNotAvailableError("not a regular file")
+        tatizo OSError kama err:
+            ashiria exceptions.SendfileNotAvailableError("not a regular file")
         blocksize = count ikiwa count isipokua fsize
         ikiwa sio blocksize:
             rudisha 0  # empty file
@@ -767,12 +767,12 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
             ikiwa f ni sio Tupu:
                 f.result()  # may raise
             f = self._proactor.recv(self._ssock, 4096)
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             # _close_self_pipe() has been called, stop waiting kila data
             return
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             self.call_exception_handler({
                 'message': 'Error on reading kutoka the event loop self pipe',
                 'exception': exc,
@@ -785,7 +785,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
     eleza _write_to_self(self):
         jaribu:
             self._csock.send(b'\0')
-        except OSError:
+        tatizo OSError:
             ikiwa self._debug:
                 logger.debug("Fail to write a null byte into the "
                              "self-pipe socket",
@@ -815,7 +815,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
                 ikiwa self.is_closed():
                     return
                 f = self._proactor.accept(sock)
-            except OSError as exc:
+            tatizo OSError kama exc:
                 ikiwa sock.fileno() != -1:
                     self.call_exception_handler({
                         'message': 'Accept failed on a socket',
@@ -823,10 +823,10 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
                         'socket': trsock.TransportSocket(sock),
                     })
                     sock.close()
-                elikiwa self._debug:
+                lasivyo self._debug:
                     logger.debug("Accept failed on socket %r",
                                  sock, exc_info=Kweli)
-            except exceptions.CancelledError:
+            tatizo exceptions.CancelledError:
                 sock.close()
             isipokua:
                 self._accept_futures[sock.fileno()] = f
@@ -836,7 +836,7 @@ kundi BaseProactorEventLoop(base_events.BaseEventLoop):
 
     eleza _process_events(self, event_list):
         # Events are processed kwenye the IocpProactor._poll() method
-        pass
+        pita
 
     eleza _stop_accept_futures(self):
         kila future kwenye self._accept_futures.values():

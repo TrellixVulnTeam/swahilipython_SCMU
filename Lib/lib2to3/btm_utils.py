@@ -14,7 +14,7 @@ TYPE_ALTERNATIVES = -2
 TYPE_GROUP = -3
 
 kundi MinNode(object):
-    """This kundi serves as an intermediate representation of the
+    """This kundi serves kama an intermediate representation of the
     pattern tree during the conversion to sets of leaf-to-root
     subpatterns"""
 
@@ -129,7 +129,7 @@ eleza reduce_tree(node, parent=Tupu):
                 reduced = reduce_tree(child, new_node)
                 ikiwa reduced ni sio Tupu:
                     new_node.children.append(reduced)
-    elikiwa node.type == syms.Alternative:
+    lasivyo node.type == syms.Alternative:
         ikiwa len(node.children) > 1:
 
             new_node = MinNode(type=TYPE_GROUP)
@@ -144,16 +144,16 @@ eleza reduce_tree(node, parent=Tupu):
         isipokua:
             new_node = reduce_tree(node.children[0], parent)
 
-    elikiwa node.type == syms.Unit:
-        ikiwa (isinstance(node.children[0], pytree.Leaf) and
+    lasivyo node.type == syms.Unit:
+        ikiwa (isinstance(node.children[0], pytree.Leaf) na
             node.children[0].value == '('):
             #skip parentheses
             rudisha reduce_tree(node.children[1], parent)
-        ikiwa ((isinstance(node.children[0], pytree.Leaf) and
+        ikiwa ((isinstance(node.children[0], pytree.Leaf) na
                node.children[0].value == '[')
-               or
-               (len(node.children)>1 and
-               hasattr(node.children[1], "value") and
+               ama
+               (len(node.children)>1 na
+               hasattr(node.children[1], "value") na
                node.children[1].value == '[')):
             #skip whole unit ikiwa its optional
             rudisha Tupu
@@ -169,10 +169,10 @@ eleza reduce_tree(node, parent=Tupu):
             ikiwa child.type == syms.Details:
                 leaf = Uongo
                 details_node = child
-            elikiwa child.type == syms.Repeater:
+            lasivyo child.type == syms.Repeater:
                 has_repeater = Kweli
                 repeater_node = child
-            elikiwa child.type == syms.Alternatives:
+            lasivyo child.type == syms.Alternatives:
                 alternatives_node = child
             ikiwa hasattr(child, 'value') na child.value == '=': # variable name
                 has_variable_name = Kweli
@@ -198,7 +198,7 @@ eleza reduce_tree(node, parent=Tupu):
                 isipokua:
                     new_node = MinNode(type=getattr(pysyms, name_leaf.value))
 
-        elikiwa name_leaf.type == token_labels.STRING:
+        lasivyo name_leaf.type == token_labels.STRING:
             #(python) name ama character; remove the apostrophes from
             #the string value
             name = name_leaf.value.strip("'")
@@ -206,7 +206,7 @@ eleza reduce_tree(node, parent=Tupu):
                 new_node = MinNode(type=tokens[name])
             isipokua:
                 new_node = MinNode(type=token_labels.NAME, name=name)
-        elikiwa name_leaf.type == syms.Alternatives:
+        lasivyo name_leaf.type == syms.Alternatives:
             new_node = reduce_tree(alternatives_node, parent)
 
         #handle repeaters
@@ -214,13 +214,13 @@ eleza reduce_tree(node, parent=Tupu):
             ikiwa repeater_node.children[0].value == '*':
                 #reduce to Tupu
                 new_node = Tupu
-            elikiwa repeater_node.children[0].value == '+':
+            lasivyo repeater_node.children[0].value == '+':
                 #reduce to a single occurrence i.e. do nothing
-                pass
+                pita
             isipokua:
                 #TODO: handle {min, max} repeaters
-                 ashiria NotImplementedError
-                pass
+                ashiria NotImplementedError
+                pita
 
         #add children
         ikiwa details_node na new_node ni sio Tupu:
@@ -255,7 +255,7 @@ eleza get_characteristic_subpattern(subpatterns):
             ikiwa any(rec_test(subpattern,
                             lambda x: isinstance(x, str) na x kwenye common_chars)):
                 subpatterns_with_common_chars.append(subpattern)
-            elikiwa any(rec_test(subpattern,
+            lasivyo any(rec_test(subpattern,
                               lambda x: isinstance(x, str) na x kwenye common_names)):
                 subpatterns_with_common_names.append(subpattern)
 
@@ -264,9 +264,9 @@ eleza get_characteristic_subpattern(subpatterns):
 
     ikiwa subpatterns_with_names:
         subpatterns = subpatterns_with_names
-    elikiwa subpatterns_with_common_names:
+    lasivyo subpatterns_with_common_names:
         subpatterns = subpatterns_with_common_names
-    elikiwa subpatterns_with_common_chars:
+    lasivyo subpatterns_with_common_chars:
         subpatterns = subpatterns_with_common_chars
     # of the remaining subpatterns pick out the longest one
     rudisha max(subpatterns, key=len)

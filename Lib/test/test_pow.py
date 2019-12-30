@@ -41,9 +41,9 @@ kundi PowTest(unittest.TestCase):
         ikiwa type == float:
             il = 1
             asseq = self.assertAlmostEqual
-        elikiwa type == int:
+        lasivyo type == int:
             jl = 0
-        elikiwa type == int:
+        lasivyo type == int:
             jl, jh = 0, 15
         kila i kwenye range(il, ih+1):
             kila j kwenye range(jl, jh+1):
@@ -105,7 +105,7 @@ kundi PowTest(unittest.TestCase):
         eq = self.assertEqual
         a = -1.0
         # The next two tests can still fail ikiwa the platform floor()
-        # function doesn't treat all large inputs as integers
+        # function doesn't treat all large inputs kama integers
         # test_math should also fail ikiwa that ni happening
         eq(pow(a, 1.23e167), 1.0)
         eq(pow(a, -1.23e167), 1.0)
@@ -126,7 +126,7 @@ kundi PowTest(unittest.TestCase):
                 ukijumuisha self.subTest(a=a, m=m):
                     ikiwa m != 0 na math.gcd(a, m) == 1:
                         # Exponent -1 should give an inverse, ukijumuisha the
-                        # same sign as m.
+                        # same sign kama m.
                         inv = pow(a, -1, m)
                         self.assertEqual(inv, inv % m)
                         self.assertEqual((inv * a - 1) % m, 0)

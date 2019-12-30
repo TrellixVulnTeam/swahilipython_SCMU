@@ -19,14 +19,14 @@ kundi RunTest(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         jaribu:
-             ashiria ex2 kutoka ex1
-        except UnhashableException:
+            ashiria ex2 kutoka ex1
+        tatizo UnhashableException:
             jaribu:
-                 ashiria ex1
-            except UnhashableException:
-                ukijumuisha captured_stderr() as output:
+                ashiria ex1
+            tatizo UnhashableException:
+                ukijumuisha captured_stderr() kama output:
                     ukijumuisha mock.patch.object(run,
-                                           'cleanup_traceback') as ct:
+                                           'cleanup_traceback') kama ct:
                         ct.side_effect = lambda t, e: t
                         run.print_exception()
 
@@ -61,7 +61,7 @@ kundi MockShell:
     eleza readline(self):
         rudisha self.lines.pop()
     eleza close(self):
-        pass
+        pita
     eleza reset(self):
         self.written = []
     eleza push(self, lines):

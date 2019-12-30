@@ -16,7 +16,7 @@ byteorders = '', '@', '=', '<', '>', '!'
 eleza iter_integer_formats(byteorders=byteorders):
     kila code kwenye integer_codes:
         kila byteorder kwenye byteorders:
-            ikiwa (byteorder sio kwenye ('', '@') na code kwenye ('n', 'N')):
+            ikiwa (byteorder haiko kwenye ('', '@') na code kwenye ('n', 'N')):
                 endelea
             tuma code, byteorder
 
@@ -176,7 +176,7 @@ kundi StructTest(unittest.TestCase):
                 self.code = format[-1]
                 self.byteorder = format[:-1]
                 ikiwa sio self.byteorder kwenye byteorders:
-                     ashiria ValueError("unrecognized packing byteorder: %s" %
+                    ashiria ValueError("unrecognized packing byteorder: %s" %
                                      self.byteorder)
                 self.bytesize = struct.calcsize(format)
                 self.bitsize = self.bytesize * 8
@@ -184,12 +184,12 @@ kundi StructTest(unittest.TestCase):
                     self.signed = Kweli
                     self.min_value = -(2**(self.bitsize-1))
                     self.max_value = 2**(self.bitsize-1) - 1
-                elikiwa self.code kwenye tuple('BHILQN'):
+                lasivyo self.code kwenye tuple('BHILQN'):
                     self.signed = Uongo
                     self.min_value = 0
                     self.max_value = 2**self.bitsize - 1
                 isipokua:
-                     ashiria ValueError("unrecognized format code: %s" %
+                    ashiria ValueError("unrecognized format code: %s" %
                                      self.code)
 
             eleza test_one(self, x, pack=struct.pack,
@@ -209,7 +209,7 @@ kundi StructTest(unittest.TestCase):
                     expected = unhexlify(expected)
                     expected = (b"\x00" * (self.bytesize - len(expected)) +
                                 expected)
-                    ikiwa (self.byteorder == '<' or
+                    ikiwa (self.byteorder == '<' ama
                         self.byteorder kwenye ('', '@', '=') na sio ISBIGENDIAN):
                         expected = string_reverse(expected)
                     self.assertEqual(len(expected), self.bytesize)
@@ -264,7 +264,7 @@ kundi StructTest(unittest.TestCase):
                         rudisha 42
 
                 # Objects ukijumuisha an '__index__' method should be allowed
-                # to pack as integers.  That ni assuming the implemented
+                # to pack kama integers.  That ni assuming the implemented
                 # '__index__' method returns an 'int'.
                 kundi Indexable(object):
                     eleza __init__(self, value):
@@ -277,7 +277,7 @@ kundi StructTest(unittest.TestCase):
                 # '__int__' should be used ukijumuisha a deprecation warning.
                 kundi BadIndex(object):
                     eleza __index__(self):
-                         ashiria TypeError
+                        ashiria TypeError
 
                     eleza __int__(self):
                         rudisha 42
@@ -322,7 +322,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_nN_code(self):
         # n na N don't exist kwenye standard sizes
         eleza assertStructError(func, *args, **kwargs):
-            ukijumuisha self.assertRaises(struct.error) as cm:
+            ukijumuisha self.assertRaises(struct.error) kama cm:
                 func(*args, **kwargs)
             self.assertIn("bad char kwenye struct format", str(cm.exception))
         kila code kwenye 'nN':
@@ -361,7 +361,7 @@ kundi StructTest(unittest.TestCase):
             # Packing this rounds away a solid string of trailing 1 bits.
             packed = struct.pack("<f", smaller)
             unpacked = struct.unpack("<f", packed)[0]
-            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, and
+            # This failed at base = 2, 4, na 32, ukijumuisha unpacked = 1, 2, na
             # 16, respectively.
             self.assertEqual(base, unpacked)
             bigpacked = struct.pack(">f", smaller)
@@ -478,7 +478,7 @@ kundi StructTest(unittest.TestCase):
     eleza test_bool(self):
         kundi ExplodingBool(object):
             eleza __bool__(self):
-                 ashiria OSError
+                ashiria OSError
         kila prefix kwenye tuple("<>!=")+('',):
             false = (), [], [], '', 0
             true = [1], 'test', 5, -1, 0xffffffff+1, 0xffffffff/2
@@ -509,8 +509,8 @@ kundi StructTest(unittest.TestCase):
 
             jaribu:
                 struct.pack(prefix + '?', ExplodingBool())
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
             isipokua:
                 self.fail("Expected OSError: struct.pack(%r, "
                           "ExplodingBool())" % (prefix + '?'))

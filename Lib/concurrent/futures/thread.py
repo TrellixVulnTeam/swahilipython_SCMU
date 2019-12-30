@@ -13,7 +13,7 @@ agiza threading
 agiza weakref
 agiza os
 
-# Workers are created as daemon threads. This ni done to allow the interpreter
+# Workers are created kama daemon threads. This ni done to allow the interpreter
 # to exit when there are still idle threads kwenye a ThreadPoolExecutor's thread
 # pool (i.e. shutdown() was sio called). However, allowing workers to die with
 # the interpreter has two undesirable properties:
@@ -55,7 +55,7 @@ kundi _WorkItem(object):
 
         jaribu:
             result = self.fn(*self.args, **self.kwargs)
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             self.future.set_exception(exc)
             # Break a reference cycle ukijumuisha the exception 'exc'
             self = Tupu
@@ -67,7 +67,7 @@ eleza _worker(executor_reference, work_queue, initializer, initargs):
     ikiwa initializer ni sio Tupu:
         jaribu:
             initializer(*initargs)
-        except BaseException:
+        tatizo BaseException:
             _base.LOGGER.critical('Exception kwenye initializer:', exc_info=Kweli)
             executor = executor_reference()
             ikiwa executor ni sio Tupu:
@@ -94,7 +94,7 @@ eleza _worker(executor_reference, work_queue, initializer, initargs):
             #   - The executor that owns the worker has been collected OR
             #   - The executor that owns the worker has been shutdown.
             ikiwa _shutdown ama executor ni Tupu ama executor._shutdown:
-                # Flag the executor as shutting down as early as possible ikiwa it
+                # Flag the executor kama shutting down kama early kama possible ikiwa it
                 # ni sio gc-ed yet.
                 ikiwa executor ni sio Tupu:
                     executor._shutdown = Kweli
@@ -102,7 +102,7 @@ eleza _worker(executor_reference, work_queue, initializer, initargs):
                 work_queue.put(Tupu)
                 return
             toa executor
-    except BaseException:
+    tatizo BaseException:
         _base.LOGGER.critical('Exception kwenye worker', exc_info=Kweli)
 
 
@@ -126,7 +126,7 @@ kundi ThreadPoolExecutor(_base.Executor):
                 execute the given calls.
             thread_name_prefix: An optional name prefix to give our threads.
             initializer: A callable used to initialize worker threads.
-            initargs: A tuple of arguments to pass to the initializer.
+            initargs: A tuple of arguments to pita to the initializer.
         """
         ikiwa max_workers ni Tupu:
             # ThreadPoolExecutor ni often used to:
@@ -138,10 +138,10 @@ kundi ThreadPoolExecutor(_base.Executor):
             # on many core machine.
             max_workers = min(32, (os.cpu_count() ama 1) + 4)
         ikiwa max_workers <= 0:
-             ashiria ValueError("max_workers must be greater than 0")
+            ashiria ValueError("max_workers must be greater than 0")
 
         ikiwa initializer ni sio Tupu na sio callable(initializer):
-             ashiria TypeError("initializer must be a callable")
+            ashiria TypeError("initializer must be a callable")
 
         self._max_workers = max_workers
         self._work_queue = queue.SimpleQueue()
@@ -150,7 +150,7 @@ kundi ThreadPoolExecutor(_base.Executor):
         self._broken = Uongo
         self._shutdown = Uongo
         self._shutdown_lock = threading.Lock()
-        self._thread_name_prefix = (thread_name_prefix or
+        self._thread_name_prefix = (thread_name_prefix ama
                                     ("ThreadPoolExecutor-%d" % self._counter()))
         self._initializer = initializer
         self._initargs = initargs
@@ -158,27 +158,27 @@ kundi ThreadPoolExecutor(_base.Executor):
     eleza submit(*args, **kwargs):
         ikiwa len(args) >= 2:
             self, fn, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor 'submit' of 'ThreadPoolExecutor' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor 'submit' of 'ThreadPoolExecutor' object "
                             "needs an argument")
-        elikiwa 'fn' kwenye kwargs:
+        lasivyo 'fn' kwenye kwargs:
             fn = kwargs.pop('fn')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'fn' as keyword argument ni deprecated",
+            warnings.warn("Passing 'fn' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError('submit expected at least 1 positional argument, '
+            ashiria TypeError('submit expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         ukijumuisha self._shutdown_lock:
             ikiwa self._broken:
-                 ashiria BrokenThreadPool(self._broken)
+                ashiria BrokenThreadPool(self._broken)
 
             ikiwa self._shutdown:
-                 ashiria RuntimeError('cannot schedule new futures after shutdown')
+                ashiria RuntimeError('cannot schedule new futures after shutdown')
             ikiwa _shutdown:
-                 ashiria RuntimeError('cannot schedule new futures after '
+                ashiria RuntimeError('cannot schedule new futures after '
                                    'interpreter shutdown')
 
             f = _base.Future()
@@ -222,7 +222,7 @@ kundi ThreadPoolExecutor(_base.Executor):
             wakati Kweli:
                 jaribu:
                     work_item = self._work_queue.get_nowait()
-                except queue.Empty:
+                tatizo queue.Empty:
                     koma
                 ikiwa work_item ni sio Tupu:
                     work_item.future.set_exception(BrokenThreadPool(self._broken))

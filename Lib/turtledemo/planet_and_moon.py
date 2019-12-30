@@ -17,7 +17,7 @@ pressing the left mouse button ukijumuisha the
 mouse over the scrollbar of the canvas.
 
 """
-kutoka turtle agiza Shape, Turtle, mainloop, Vec2D as Vec
+kutoka turtle agiza Shape, Turtle, mainloop, Vec2D kama Vec
 
 G = 8
 

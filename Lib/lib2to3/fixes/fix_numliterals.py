@@ -22,7 +22,7 @@ kundi FixNumliterals(fixer_base.BaseFix):
         val = node.value
         ikiwa val[-1] kwenye 'Ll':
             val = val[:-1]
-        elikiwa val.startswith('0') na val.isdigit() na len(set(val)) > 1:
+        lasivyo val.startswith('0') na val.isdigit() na len(set(val)) > 1:
             val = "0o" + val[1:]
 
         rudisha Number(val, prefix=node.prefix)

@@ -83,7 +83,7 @@ kundi ReadWriteTests(unittest.TestCase):
         ts.T_ULONGLONG = ULLONG_MAX
         self.assertEqual(ts.T_ULONGLONG, ULLONG_MAX)
 
-        ## make sure these will accept a plain int as well as a long
+        ## make sure these will accept a plain int kama well kama a long
         ts.T_LONGLONG = 3
         self.assertEqual(ts.T_LONGLONG, 3)
         ts.T_ULONGLONG = 4

@@ -8,39 +8,39 @@ kutoka . agiza util
 kundi CommonBinaryTests(util.CommonResourceTests, unittest.TestCase):
     eleza execute(self, package, path):
         ukijumuisha resources.open_binary(package, path):
-            pass
+            pita
 
 
 kundi CommonTextTests(util.CommonResourceTests, unittest.TestCase):
     eleza execute(self, package, path):
         ukijumuisha resources.open_text(package, path):
-            pass
+            pita
 
 
 kundi OpenTests:
     eleza test_open_binary(self):
-        ukijumuisha resources.open_binary(self.data, 'binary.file') as fp:
+        ukijumuisha resources.open_binary(self.data, 'binary.file') kama fp:
             result = fp.read()
             self.assertEqual(result, b'\x00\x01\x02\x03')
 
     eleza test_open_text_default_encoding(self):
-        ukijumuisha resources.open_text(self.data, 'utf-8.file') as fp:
+        ukijumuisha resources.open_text(self.data, 'utf-8.file') kama fp:
             result = fp.read()
             self.assertEqual(result, 'Hello, UTF-8 world!\n')
 
     eleza test_open_text_given_encoding(self):
         ukijumuisha resources.open_text(
-                self.data, 'utf-16.file', 'utf-16', 'strict') as fp:
+                self.data, 'utf-16.file', 'utf-16', 'strict') kama fp:
             result = fp.read()
         self.assertEqual(result, 'Hello, UTF-16 world!\n')
 
     eleza test_open_text_with_errors(self):
         # Raises UnicodeError without the 'errors' argument.
         ukijumuisha resources.open_text(
-                self.data, 'utf-16.file', 'utf-8', 'strict') as fp:
+                self.data, 'utf-16.file', 'utf-8', 'strict') kama fp:
             self.assertRaises(UnicodeError, fp.read)
         ukijumuisha resources.open_text(
-                self.data, 'utf-16.file', 'utf-8', 'ignore') as fp:
+                self.data, 'utf-16.file', 'utf-8', 'ignore') kama fp:
             result = fp.read()
         self.assertEqual(
             result,
@@ -65,7 +65,7 @@ kundi OpenDiskTests(OpenTests, unittest.TestCase):
 
 
 kundi OpenZipTests(OpenTests, util.ZipSetup, unittest.TestCase):
-    pass
+    pita
 
 
 ikiwa __name__ == '__main__':

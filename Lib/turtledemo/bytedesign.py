@@ -19,11 +19,11 @@ t.delay(0)
 
 in line 152, which sets the animation delay
 to 0, this animation runs kwenye "line per line"
-mode as fast as possible.
+mode kama fast kama possible.
 """
 
 kutoka turtle agiza Turtle, mainloop
-kutoka time agiza perf_counter as clock
+kutoka time agiza perf_counter kama clock
 
 # wrapper kila any additional drawing routines
 # that need to know about each other

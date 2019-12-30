@@ -7,8 +7,8 @@ agiza sys
 kutoka textwrap agiza dedent
 kutoka types agiza FunctionType, MethodType, BuiltinFunctionType
 agiza pyclbr
-kutoka unittest agiza TestCase, main as unittest_main
-kutoka test.test_importlib agiza util as test_importlib_util
+kutoka unittest agiza TestCase, main kama unittest_main
+kutoka test.test_importlib agiza util kama test_importlib_util
 
 
 StaticMethodType = type(staticmethod(lambda: Tupu))
@@ -41,13 +41,13 @@ kundi PyclbrTest(TestCase):
     eleza assertHaskey(self, obj, key, ignore):
         ''' succeed iff key kwenye obj ama key kwenye ignore. '''
         ikiwa key kwenye ignore: return
-        ikiwa key sio kwenye obj:
+        ikiwa key haiko kwenye obj:
             andika("***",key, file=sys.stderr)
         self.assertIn(key, obj)
 
     eleza assertEqualsOrIgnored(self, a, b, ignore):
         ''' succeed iff a == b ama a kwenye ignore ama b kwenye ignore '''
-        ikiwa a sio kwenye ignore na b sio kwenye ignore:
+        ikiwa a haiko kwenye ignore na b haiko kwenye ignore:
             self.assertEqual(a, b)
 
     eleza checkModule(self, moduleName, module=Tupu, ignore=()):
@@ -69,10 +69,10 @@ kundi PyclbrTest(TestCase):
             classdict = oclass.__dict__
             ikiwa isinstance(obj, MethodType):
                 # could be a classmethod
-                ikiwa (not isinstance(classdict[name], ClassMethodType) or
+                ikiwa (sio isinstance(classdict[name], ClassMethodType) ama
                     obj.__self__ ni sio oclass):
                     rudisha Uongo
-            elikiwa sio isinstance(obj, FunctionType):
+            lasivyo sio isinstance(obj, FunctionType):
                 rudisha Uongo
 
             objname = obj.__name__
@@ -162,9 +162,9 @@ kundi PyclbrTest(TestCase):
         source = dedent("""\
         eleza f0:
             eleza f1(a,b,c):
-                eleza f2(a=1, b=2, c=3): pass
+                eleza f2(a=1, b=2, c=3): pita
                     rudisha f1(a,b,d)
-            kundi c1: pass
+            kundi c1: pita
         kundi C0:
             "Test class."
             eleza F1():
@@ -194,7 +194,7 @@ kundi PyclbrTest(TestCase):
             """Return equality of tree pairs.
 
             Each parent,children pair define a tree.  The parents are
-            assumed equal.  Comparing the children dictionaries as such
+            assumed equal.  Comparing the children dictionaries kama such
             does sio work due to comparison by identity na double
             linkage.  We separate comparing string na number attributes
             kutoka comparing the children of input children.
@@ -211,7 +211,7 @@ kundi PyclbrTest(TestCase):
                 self.assertEqual(t1, t2)
                 ikiwa type(o1) ni mb.Class:
                     self.assertEqual(o1.methods, o2.methods)
-                # Skip superclasses kila now as sio part of example
+                # Skip superclasses kila now kama sio part of example
                 compare(o1, o1.children, o2, o2.children)
 
         compare(Tupu, actual, Tupu, expected)
@@ -220,10 +220,10 @@ kundi PyclbrTest(TestCase):
         cm = self.checkModule
 
         # These were once about the 10 longest modules
-        cm('random', ignore=('Random',))  # kutoka _random agiza Random as CoreGenerator
+        cm('random', ignore=('Random',))  # kutoka _random agiza Random kama CoreGenerator
         cm('cgi', ignore=('log',))      # set ukijumuisha = kwenye module
         cm('pickle', ignore=('partial', 'PickleBuffer'))
-        # TODO(briancurtin): openfp ni deprecated as of 3.7.
+        # TODO(briancurtin): openfp ni deprecated kama of 3.7.
         # Update this once it has been removed.
         cm('aifc', ignore=('openfp', '_aifc_params'))  # set ukijumuisha = kwenye module
         cm('sre_parse', ignore=('dump', 'groups', 'pos')) # kutoka sre_constants agiza *; property
@@ -253,7 +253,7 @@ kundi ReadmoduleTests(TestCase):
 
     eleza test_module_has_no_spec(self):
         module_name = "doesnotexist"
-        assert module_name sio kwenye pyclbr._modules
+        assert module_name haiko kwenye pyclbr._modules
         ukijumuisha test_importlib_util.uncache(module_name):
             ukijumuisha self.assertRaises(ModuleNotFoundError):
                 pyclbr.readmodule_ex(module_name)

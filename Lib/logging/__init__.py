@@ -26,7 +26,7 @@ To use, simply 'agiza logging' na log away!
 agiza sys, os, time, io, re, traceback, warnings, weakref, collections.abc
 
 kutoka string agiza Template
-kutoka string agiza Formatter as StrFormatter
+kutoka string agiza Formatter kama StrFormatter
 
 
 __all__ = ['BASIC_FORMAT', 'BufferingFormatter', 'CRITICAL', 'DEBUG', 'ERROR',
@@ -52,7 +52,7 @@ __date__    = "07 February 2010"
 #---------------------------------------------------------------------------
 
 #
-#_startTime ni used as the base when calculating the relative time of events
+#_startTime ni used kama the base when calculating the relative time of events
 #
 _startTime = time.time()
 
@@ -83,7 +83,7 @@ logProcesses = Kweli
 #
 # Default levels na level names, these can be replaced ukijumuisha any positive set
 # of values having corresponding names. There ni a pseudo-level, NOTSET, which
-# ni only really there as a lower limit kila user-defined levels. Handlers and
+# ni only really there kama a lower limit kila user-defined levels. Handlers na
 # loggers are initialized ukijumuisha NOTSET so that they will log all messages, even
 # at user-defined levels.
 #
@@ -125,7 +125,7 @@ eleza getLevelName(level):
     associated levels ukijumuisha names using addLevelName then the name you have
     associated ukijumuisha 'level' ni returned.
 
-    If a numeric value corresponding to one of the defined levels ni passed
+    If a numeric value corresponding to one of the defined levels ni pitaed
     in, the corresponding string representation ni returned.
 
     Otherwise, the string "Level %s" % level ni returned.
@@ -158,8 +158,8 @@ isipokua: #pragma: no cover
     eleza currentframe():
         """Return the frame object kila the caller's stack frame."""
         jaribu:
-             ashiria Exception
-        except Exception:
+            ashiria Exception
+        tatizo Exception:
             rudisha sys.exc_info()[2].tb_frame.f_back
 
 #
@@ -189,12 +189,12 @@ _srcfile = os.path.normcase(addLevelName.__code__.co_filename)
 eleza _checkLevel(level):
     ikiwa isinstance(level, int):
         rv = level
-    elikiwa str(level) == level:
-        ikiwa level sio kwenye _nameToLevel:
-             ashiria ValueError("Unknown level: %r" % level)
+    lasivyo str(level) == level:
+        ikiwa level haiko kwenye _nameToLevel:
+            ashiria ValueError("Unknown level: %r" % level)
         rv = _nameToLevel[level]
     isipokua:
-         ashiria TypeError("Level sio an integer ama a valid string: %r" % level)
+        ashiria TypeError("Level sio an integer ama a valid string: %r" % level)
     rudisha rv
 
 #---------------------------------------------------------------------------
@@ -232,12 +232,12 @@ eleza _releaseLock():
 
 ikiwa sio hasattr(os, 'register_at_fork'):  # Windows na friends.
     eleza _register_at_fork_reinit_lock(instance):
-        pass  # no-op when os.register_at_fork does sio exist.
+        pita  # no-op when os.register_at_fork does sio exist.
 isipokua:
     # A collection of instances ukijumuisha a createLock method (logging.Handler)
     # to be called kwenye the child after forking.  The weakref avoids us keeping
     # discarded Handler instances alive.  A set ni used to avoid accumulating
-    # duplicate registrations as createLock() ni responsible kila registering
+    # duplicate registrations kama createLock() ni responsible kila registering
     # a new Handler instance ukijumuisha this set kwenye the first place.
     _at_fork_reinit_lock_weakset = weakref.WeakSet()
 
@@ -253,7 +253,7 @@ isipokua:
         kila handler kwenye _at_fork_reinit_lock_weakset:
             jaribu:
                 handler.createLock()
-            except Exception as err:
+            tatizo Exception kama err:
                 # Similar to what PyErr_WriteUnraisable does.
                 andika("Ignoring exception kutoka logging atfork", instance,
                       "._reinit_lock() method:", err, file=sys.stderr)
@@ -275,9 +275,9 @@ kundi LogRecord(object):
 
     LogRecord instances are created every time something ni logged. They
     contain all the information pertinent to the event being logged. The
-    main information passed kwenye ni kwenye msg na args, which are combined
+    main information pitaed kwenye ni kwenye msg na args, which are combined
     using str(msg) % args to create the message field of the record. The
-    record also includes information such as when the record was created,
+    record also includes information such kama when the record was created,
     the source line where the logging call was made, na any exception
     information to be logged.
     """
@@ -290,23 +290,23 @@ kundi LogRecord(object):
         self.name = name
         self.msg = msg
         #
-        # The following statement allows passing of a dictionary as a sole
+        # The following statement allows pitaing of a dictionary kama a sole
         # argument, so that you can do something like
         #  logging.debug("a %(a)d b %(b)s", {'a':1, 'b':2})
         # Suggested by Stefan Behnel.
         # Note that without the test kila args[0], we get a problem because
         # during formatting, we test to see ikiwa the arg ni present using
         # 'ikiwa self.args:'. If the event being logged ni e.g. 'Value ni %d'
-        # na ikiwa the passed arg fails 'ikiwa self.args:' then no formatting
+        # na ikiwa the pitaed arg fails 'ikiwa self.args:' then no formatting
         # ni done. For example, logger.warning('Value ni %d', 0) would log
         # 'Value ni %d' instead of 'Value ni 0'.
-        # For the use case of passing a dictionary, this should sio be a
+        # For the use case of pitaing a dictionary, this should sio be a
         # problem.
         # Issue #21172: a request was made to relax the isinstance check
         # to hasattr(args[0], '__getitem__'). However, the docs on string
         # formatting still seem to suggest a mapping object ni required.
         # Thus, wakati sio removing the isinstance check, it does now look
-        # kila collections.abc.Mapping rather than, as before, dict.
+        # kila collections.abc.Mapping rather than, kama before, dict.
         ikiwa (args na len(args) == 1 na isinstance(args[0], collections.abc.Mapping)
             na args[0]):
             args = args[0]
@@ -317,7 +317,7 @@ kundi LogRecord(object):
         jaribu:
             self.filename = os.path.basename(pathname)
             self.module = os.path.splitext(self.filename)[0]
-        except (TypeError, ValueError, AttributeError):
+        tatizo (TypeError, ValueError, AttributeError):
             self.filename = pathname
             self.module = "Unknown module"
         self.exc_info = exc_info
@@ -346,8 +346,8 @@ kundi LogRecord(object):
                 # kila an example
                 jaribu:
                     self.processName = mp.current_process().name
-                except Exception: #pragma: no cover
-                    pass
+                tatizo Exception: #pragma: no cover
+                    pita
         ikiwa logProcesses na hasattr(os, 'getpid'):
             self.process = os.getpid()
         isipokua:
@@ -395,7 +395,7 @@ eleza makeLogRecord(dict):
     """
     Make a LogRecord whose attributes are defined by the specified dictionary,
     This function ni useful kila converting a logging event received over
-    a socket connection (which ni sent as a dictionary) into a LogRecord
+    a socket connection (which ni sent kama a dictionary) into a LogRecord
     instance.
     """
     rv = _logRecordFactory(Tupu, Tupu, "", 0, "", (), Tupu, Tupu)
@@ -426,7 +426,7 @@ kundi PercentStyle(object):
     eleza validate(self):
         """Validate the input format, ensure it matches the correct style"""
         ikiwa sio self.validation_pattern.search(self._fmt):
-             ashiria ValueError("Invalid format '%s' kila '%s' style" % (self._fmt, self.default_format[0]))
+            ashiria ValueError("Invalid format '%s' kila '%s' style" % (self._fmt, self.default_format[0]))
 
     eleza _format(self, record):
         rudisha self._fmt % record.__dict__
@@ -434,8 +434,8 @@ kundi PercentStyle(object):
     eleza format(self, record):
         jaribu:
             rudisha self._format(record)
-        except KeyError as e:
-             ashiria ValueError('Formatting field sio found kwenye record: %s' % e)
+        tatizo KeyError kama e:
+            ashiria ValueError('Formatting field sio found kwenye record: %s' % e)
 
 
 kundi StrFormatStyle(PercentStyle):
@@ -456,16 +456,16 @@ kundi StrFormatStyle(PercentStyle):
             kila _, fieldname, spec, conversion kwenye _str_formatter.parse(self._fmt):
                 ikiwa fieldname:
                     ikiwa sio self.field_spec.match(fieldname):
-                         ashiria ValueError('invalid field name/expression: %r' % fieldname)
+                        ashiria ValueError('invalid field name/expression: %r' % fieldname)
                     fields.add(fieldname)
-                ikiwa conversion na conversion sio kwenye 'rsa':
-                     ashiria ValueError('invalid conversion: %r' % conversion)
+                ikiwa conversion na conversion haiko kwenye 'rsa':
+                    ashiria ValueError('invalid conversion: %r' % conversion)
                 ikiwa spec na sio self.fmt_spec.match(spec):
-                     ashiria ValueError('bad specifier: %r' % spec)
-        except ValueError as e:
-             ashiria ValueError('invalid format: %s' % e)
+                    ashiria ValueError('bad specifier: %r' % spec)
+        tatizo ValueError kama e:
+            ashiria ValueError('invalid format: %s' % e)
         ikiwa sio fields:
-             ashiria ValueError('invalid format: no fields')
+            ashiria ValueError('invalid format: no fields')
 
 
 kundi StringTemplateStyle(PercentStyle):
@@ -488,12 +488,12 @@ kundi StringTemplateStyle(PercentStyle):
             d = m.groupdict()
             ikiwa d['named']:
                 fields.add(d['named'])
-            elikiwa d['braced']:
+            lasivyo d['braced']:
                 fields.add(d['braced'])
-            elikiwa m.group(0) == '$':
-                 ashiria ValueError('invalid format: bare \'$\' sio allowed')
+            lasivyo m.group(0) == '$':
+                ashiria ValueError('invalid format: bare \'$\' sio allowed')
         ikiwa sio fields:
-             ashiria ValueError('invalid format: no fields')
+            ashiria ValueError('invalid format: no fields')
 
     eleza _format(self, record):
         rudisha self._tpl.substitute(**record.__dict__)
@@ -515,7 +515,7 @@ kundi Formatter(object):
     responsible kila converting a LogRecord to (usually) a string which can
     be interpreted by either a human ama an external system. The base Formatter
     allows a formatting string to be specified. If none ni supplied, the
-    the style-dependent default value, "%(message)s", "{message}", or
+    the style-dependent default value, "%(message)s", "{message}", ama
     "${message}", ni used.
 
     The Formatter can be initialized ukijumuisha a format string which makes use of
@@ -557,19 +557,19 @@ kundi Formatter(object):
         Initialize the formatter ukijumuisha specified format strings.
 
         Initialize the formatter either ukijumuisha the specified format string, ama a
-        default as described above. Allow kila specialized date formatting with
+        default kama described above. Allow kila specialized date formatting with
         the optional datefmt argument. If datefmt ni omitted, you get an
         ISO8601-like (or RFC 3339-like) format.
 
         Use a style parameter of '%', '{' ama '$' to specify that you want to
-        use one of %-formatting, :meth:`str.format` (``{}``) formatting or
+        use one of %-formatting, :meth:`str.format` (``{}``) formatting ama
         :class:`string.Template` formatting kwenye your format string.
 
         .. versionchanged:: 3.2
            Added the ``style`` parameter.
         """
-        ikiwa style sio kwenye _STYLES:
-             ashiria ValueError('Style must be one of: %s' % ','.join(
+        ikiwa style haiko kwenye _STYLES:
+            ashiria ValueError('Style must be one of: %s' % ','.join(
                              _STYLES.keys()))
         self._style = _STYLES[style][0](fmt)
         ikiwa validate:
@@ -583,19 +583,19 @@ kundi Formatter(object):
 
     eleza formatTime(self, record, datefmt=Tupu):
         """
-        Return the creation time of the specified LogRecord as formatted text.
+        Return the creation time of the specified LogRecord kama formatted text.
 
         This method should be called kutoka format() by a formatter which
         wants to make use of a formatted time. This method can be overridden
         kwenye formatters to provide kila any specific requirement, but the
-        basic behaviour ni as follows: ikiwa datefmt (a string) ni specified,
+        basic behaviour ni kama follows: ikiwa datefmt (a string) ni specified,
         it ni used ukijumuisha time.strftime() to format the creation time of the
         record. Otherwise, an ISO8601-like (or RFC 3339-like) format ni used.
         The resulting string ni returned. This function uses a user-configurable
         function to convert the creation time to a tuple. By default,
         time.localtime() ni used; to change this kila a particular formatter
         instance, set the 'converter' attribute to a function ukijumuisha the same
-        signature as time.localtime() ama time.gmtime(). To change it kila all
+        signature kama time.localtime() ama time.gmtime(). To change it kila all
         formatters, kila example ikiwa you want all logging times to be shown kwenye GMT,
         set the 'converter' attribute kwenye the Formatter class.
         """
@@ -609,7 +609,7 @@ kundi Formatter(object):
 
     eleza formatException(self, ei):
         """
-        Format na rudisha the specified exception information as a string.
+        Format na rudisha the specified exception information kama a string.
 
         This default implementation just uses
         traceback.print_exception()
@@ -637,23 +637,23 @@ kundi Formatter(object):
 
     eleza formatStack(self, stack_info):
         """
-        This method ni provided as an extension point kila specialized
+        This method ni provided kama an extension point kila specialized
         formatting of stack information.
 
-        The input data ni a string as returned kutoka a call to
+        The input data ni a string kama returned kutoka a call to
         :func:`traceback.print_stack`, but ukijumuisha the last trailing newline
         removed.
 
-        The base implementation just returns the value passed in.
+        The base implementation just returns the value pitaed in.
         """
         rudisha stack_info
 
     eleza format(self, record):
         """
-        Format the specified record as text.
+        Format the specified record kama text.
 
-        The record's attribute dictionary ni used as the operand to a
-        string formatting operation which yields the returned string.
+        The record's attribute dictionary ni used kama the operand to a
+        string formatting operation which tumas the returned string.
         Before formatting the dictionary, a couple of preparatory steps
         are carried out. The message attribute of the record ni computed
         using LogRecord.getMessage(). If the formatting string uses the
@@ -713,7 +713,7 @@ kundi BufferingFormatter(object):
 
     eleza format(self, records):
         """
-        Format the specified records na rudisha the result as a string.
+        Format the specified records na rudisha the result kama a string.
         """
         rv = ""
         ikiwa len(records) > 0:
@@ -732,11 +732,11 @@ kundi Filter(object):
     Filter instances are used to perform arbitrary filtering of LogRecords.
 
     Loggers na Handlers can optionally use Filter instances to filter
-    records as desired. The base filter kundi only allows events which are
+    records kama desired. The base filter kundi only allows events which are
     below a certain point kwenye the logger hierarchy. For example, a filter
     initialized ukijumuisha "A.B" will allow events logged by loggers "A.B",
     "A.B.C", "A.B.C.D", "A.B.D" etc. but sio "A.BB", "B.A.B" etc. If
-    initialized ukijumuisha the empty string, all events are passed.
+    initialized ukijumuisha the empty string, all events are pitaed.
     """
     eleza __init__(self, name=''):
         """
@@ -758,9 +758,9 @@ kundi Filter(object):
         """
         ikiwa self.nlen == 0:
             rudisha Kweli
-        elikiwa self.name == record.name:
+        lasivyo self.name == record.name:
             rudisha Kweli
-        elikiwa record.name.find(self.name, 0, self.nlen) != 0:
+        lasivyo record.name.find(self.name, 0, self.nlen) != 0:
             rudisha Uongo
         rudisha (record.name[self.nlen] == ".")
 
@@ -806,7 +806,7 @@ kundi Filterer(object):
             ikiwa hasattr(f, 'filter'):
                 result = f.filter(record)
             isipokua:
-                result = f(record) # assume callable - will  ashiria ikiwa not
+                result = f(record) # assume callable - will ashiria ikiwa not
             ikiwa sio result:
                 rv = Uongo
                 koma
@@ -850,10 +850,10 @@ kundi Handler(Filterer):
     """
     Handler instances dispatch logging events to specific destinations.
 
-    The base handler class. Acts as a placeholder which defines the Handler
+    The base handler class. Acts kama a placeholder which defines the Handler
     interface. Handlers can optionally use Formatter instances to format
-    records as desired. By default, no formatter ni specified; kwenye this case,
-    the 'raw' message as determined by record.message ni logged.
+    records kama desired. By default, no formatter ni specified; kwenye this case,
+    the 'raw' message kama determined by record.message ni logged.
     """
     eleza __init__(self, level=NOTSET):
         """
@@ -931,7 +931,7 @@ kundi Handler(Filterer):
         This version ni intended to be implemented by subclasses na so
         raises a NotImplementedError.
         """
-         ashiria NotImplementedError('emit must be implemented '
+        ashiria NotImplementedError('emit must be implemented '
                                   'by Handler subclasses')
 
     eleza handle(self, record):
@@ -940,7 +940,7 @@ kundi Handler(Filterer):
 
         Emission depends on filters which may have been added to the handler.
         Wrap the actual emission of the record ukijumuisha acquisition/release of
-        the I/O thread lock. Returns whether the filter passed the record for
+        the I/O thread lock. Returns whether the filter pitaed the record for
         emission.
         """
         rv = self.filter(record)
@@ -965,7 +965,7 @@ kundi Handler(Filterer):
         This version does nothing na ni intended to be implemented by
         subclasses.
         """
-        pass
+        pita
 
     eleza close(self):
         """
@@ -976,9 +976,9 @@ kundi Handler(Filterer):
         should ensure that this gets called kutoka overridden close()
         methods.
         """
-        #get the module data lock, as we're updating a shared structure.
+        #get the module data lock, kama we're updating a shared structure.
         _acquireLock()
-        jaribu:    #unlikely to  ashiria an exception, but you never know...
+        jaribu:    #unlikely to ashiria an exception, but you never know...
             ikiwa self._name na self._name kwenye _handlers:
                 toa _handlers[self._name]
         mwishowe:
@@ -994,7 +994,7 @@ kundi Handler(Filterer):
         kila a logging system - most users will sio care about errors in
         the logging system, they are more interested kwenye application errors.
         You could, however, replace this ukijumuisha a custom handler ikiwa you wish.
-        The record which was being processed ni passed kwenye to this method.
+        The record which was being processed ni pitaed kwenye to this method.
         """
         ikiwa raiseExceptions na sys.stderr:  # see issue 13807
             t, v, tb = sys.exc_info()
@@ -1003,7 +1003,7 @@ kundi Handler(Filterer):
                 traceback.print_exception(t, v, tb, Tupu, sys.stderr)
                 sys.stderr.write('Call stack:\n')
                 # Walk the stack frame up until we're out of logging,
-                # so as to print the calling context.
+                # so kama to print the calling context.
                 frame = tb.tb_frame
                 wakati (frame na os.path.dirname(frame.f_code.co_filename) ==
                        __path__[0]):
@@ -1019,15 +1019,15 @@ kundi Handler(Filterer):
                     sys.stderr.write('Message: %r\n'
                                      'Arguments: %s\n' % (record.msg,
                                                           record.args))
-                except RecursionError:  # See issue 36272
+                tatizo RecursionError:  # See issue 36272
                     raise
-                except Exception:
+                tatizo Exception:
                     sys.stderr.write('Unable to print the message na arguments'
                                      ' - possible formatting error.\nUse the'
                                      ' traceback above to help find the error.\n'
                                     )
-            except OSError: #pragma: no cover
-                pass    # see issue 5971
+            tatizo OSError: #pragma: no cover
+                pita    # see issue 5971
             mwishowe:
                 toa t, v, tb
 
@@ -1083,9 +1083,9 @@ kundi StreamHandler(Handler):
             # issue 35046: merged two stream.writes into one.
             stream.write(msg + self.terminator)
             self.flush()
-        except RecursionError:  # See issue 36272
+        tatizo RecursionError:  # See issue 36272
             raise
-        except Exception:
+        tatizo Exception:
             self.handleError(record)
 
     eleza setStream(self, stream):
@@ -1124,9 +1124,9 @@ kundi FileHandler(StreamHandler):
     """
     eleza __init__(self, filename, mode='a', encoding=Tupu, delay=Uongo):
         """
-        Open the specified file na use it as the stream kila logging.
+        Open the specified file na use it kama the stream kila logging.
         """
-        # Issue #27493: add support kila Path objects to be passed in
+        # Issue #27493: add support kila Path objects to be pitaed in
         filename = os.fspath(filename)
         #keep the absolute path, otherwise derived classes which use this
         #may come a cropper when the current directory changes
@@ -1215,7 +1215,7 @@ kundi PlaceHolder(object):
     """
     PlaceHolder instances are used kwenye the Manager logger hierarchy to take
     the place of nodes kila which no loggers have been defined. This kundi is
-    intended kila internal use only na sio as part of the public API.
+    intended kila internal use only na sio kama part of the public API.
     """
     eleza __init__(self, alogger):
         """
@@ -1225,9 +1225,9 @@ kundi PlaceHolder(object):
 
     eleza append(self, alogger):
         """
-        Add the specified logger as a child of this placeholder.
+        Add the specified logger kama a child of this placeholder.
         """
-        ikiwa alogger sio kwenye self.loggerMap:
+        ikiwa alogger haiko kwenye self.loggerMap:
             self.loggerMap[alogger] = Tupu
 
 #
@@ -1242,7 +1242,7 @@ eleza setLoggerClass(klass):
     """
     ikiwa klass != Logger:
         ikiwa sio issubclass(klass, Logger):
-             ashiria TypeError("logger sio derived kutoka logging.Logger: "
+            ashiria TypeError("logger sio derived kutoka logging.Logger: "
                             + klass.__name__)
     global _loggerClass
     _loggerClass = klass
@@ -1273,7 +1273,7 @@ kundi Manager(object):
         """
         Get a logger ukijumuisha the specified name (channel name), creating it
         ikiwa it doesn't yet exist. This name ni a dot-separated hierarchical
-        name, such as "a", "a.b", "a.b.c" ama similar.
+        name, such kama "a", "a.b", "a.b.c" ama similar.
 
         If a PlaceHolder existed kila the specified name [i.e. the logger
         didn't exist but a child of it did], replace it ukijumuisha the created
@@ -1282,7 +1282,7 @@ kundi Manager(object):
         """
         rv = Tupu
         ikiwa sio isinstance(name, str):
-             ashiria TypeError('A logger name must be a string')
+            ashiria TypeError('A logger name must be a string')
         _acquireLock()
         jaribu:
             ikiwa name kwenye self.loggerDict:
@@ -1309,7 +1309,7 @@ kundi Manager(object):
         """
         ikiwa klass != Logger:
             ikiwa sio issubclass(klass, Logger):
-                 ashiria TypeError("logger sio derived kutoka logging.Logger: "
+                ashiria TypeError("logger sio derived kutoka logging.Logger: "
                                 + klass.__name__)
         self.loggerClass = klass
 
@@ -1330,7 +1330,7 @@ kundi Manager(object):
         rv = Tupu
         wakati (i > 0) na sio rv:
             substr = name[:i]
-            ikiwa substr sio kwenye self.loggerDict:
+            ikiwa substr haiko kwenye self.loggerDict:
                 self.loggerDict[substr] = PlaceHolder(alogger)
             isipokua:
                 obj = self.loggerDict[substr]
@@ -1413,7 +1413,7 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha severity 'DEBUG'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.debug("Houston, we have a %s", "thorny problem", exc_info=1)
@@ -1425,7 +1425,7 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha severity 'INFO'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.info("Houston, we have a %s", "interesting problem", exc_info=1)
@@ -1437,7 +1437,7 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha severity 'WARNING'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.warning("Houston, we have a %s", "bit of a problem", exc_info=1)
@@ -1454,7 +1454,7 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha severity 'ERROR'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.error("Houston, we have a %s", "major problem", exc_info=1)
@@ -1472,7 +1472,7 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha severity 'CRITICAL'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.critical("Houston, we have a %s", "major disaster", exc_info=1)
@@ -1486,14 +1486,14 @@ kundi Logger(Filterer):
         """
         Log 'msg % args' ukijumuisha the integer severity 'level'.
 
-        To pass exception information, use the keyword argument exc_info with
+        To pita exception information, use the keyword argument exc_info with
         a true value, e.g.
 
         logger.log(level, "We have a %s", "mysterious problem", exc_info=1)
         """
         ikiwa sio isinstance(level, int):
             ikiwa raiseExceptions:
-                 ashiria TypeError("level must be an integer")
+                ashiria TypeError("level must be an integer")
             isipokua:
                 return
         ikiwa self.isEnabledFor(level):
@@ -1546,7 +1546,7 @@ kundi Logger(Filterer):
         ikiwa extra ni sio Tupu:
             kila key kwenye extra:
                 ikiwa (key kwenye ["message", "asctime"]) ama (key kwenye rv.__dict__):
-                     ashiria KeyError("Attempt to overwrite %r kwenye LogRecord" % key)
+                    ashiria KeyError("Attempt to overwrite %r kwenye LogRecord" % key)
                 rv.__dict__[key] = extra[key]
         rudisha rv
 
@@ -1563,14 +1563,14 @@ kundi Logger(Filterer):
             #IronPython can use logging.
             jaribu:
                 fn, lno, func, sinfo = self.findCaller(stack_info, stacklevel)
-            except ValueError: # pragma: no cover
+            tatizo ValueError: # pragma: no cover
                 fn, lno, func = "(unknown file)", 0, "(unknown function)"
         isipokua: # pragma: no cover
             fn, lno, func = "(unknown file)", 0, "(unknown function)"
         ikiwa exc_info:
             ikiwa isinstance(exc_info, BaseException):
                 exc_info = (type(exc_info), exc_info, exc_info.__traceback__)
-            elikiwa sio isinstance(exc_info, tuple):
+            lasivyo sio isinstance(exc_info, tuple):
                 exc_info = sys.exc_info()
         record = self.makeRecord(self.name, level, fn, lno, msg, args,
                                  exc_info, func, extra, sinfo)
@@ -1581,9 +1581,9 @@ kundi Logger(Filterer):
         Call the handlers kila the specified record.
 
         This method ni used kila unpickled records received kutoka a socket, as
-        well as those created locally. Logger-level filtering ni applied.
+        well kama those created locally. Logger-level filtering ni applied.
         """
-        ikiwa (not self.disabled) na self.filter(record):
+        ikiwa (sio self.disabled) na self.filter(record):
             self.callHandlers(record)
 
     eleza addHandler(self, hdlr):
@@ -1655,7 +1655,7 @@ kundi Logger(Filterer):
             ikiwa lastResort:
                 ikiwa record.levelno >= lastResort.level:
                     lastResort.handle(record)
-            elikiwa raiseExceptions na sio self.manager.emittedNoHandlerWarning:
+            lasivyo raiseExceptions na sio self.manager.emittedNoHandlerWarning:
                 sys.stderr.write("No handlers could be found kila logger"
                                  " \"%s\"\n" % self.name)
                 self.manager.emittedNoHandlerWarning = Kweli
@@ -1683,7 +1683,7 @@ kundi Logger(Filterer):
 
         jaribu:
             rudisha self._cache[level]
-        except KeyError:
+        tatizo KeyError:
             _acquireLock()
             ikiwa self.manager.disable >= level:
                 is_enabled = self._cache[level] = Uongo
@@ -1721,13 +1721,13 @@ kundi Logger(Filterer):
         # However, the root logger's kundi has its own __reduce__ method.
         ikiwa getLogger(self.name) ni sio self:
             agiza pickle
-             ashiria pickle.PicklingError('logger cannot be pickled')
+            ashiria pickle.PicklingError('logger cannot be pickled')
         rudisha getLogger, (self.name,)
 
 
 kundi RootLogger(Logger):
     """
-    A root logger ni sio that different to any other logger, except that
+    A root logger ni sio that different to any other logger, tatizo that
     it must have a logging level na there ni only one instance of it in
     the hierarchy.
     """
@@ -1754,7 +1754,7 @@ kundi LoggerAdapter(object):
         provides contextual information. This constructor signature allows
         easy stacking of LoggerAdapters, ikiwa so desired.
 
-        You can effectively pass keyword arguments as shown kwenye the
+        You can effectively pita keyword arguments kama shown kwenye the
         following example:
 
         adapter = LoggerAdapter(someLogger, dict(p1=v1, p2="v2"))
@@ -1764,7 +1764,7 @@ kundi LoggerAdapter(object):
 
     eleza process(self, msg, kwargs):
         """
-        Process the logging message na keyword arguments passed kwenye to
+        Process the logging message na keyword arguments pitaed kwenye to
         a logging call to insert contextual information. You can either
         manipulate the message itself, the keyword args ama both. Return
         the message na kwargs modified (or not) to suit your needs.
@@ -1900,7 +1900,7 @@ eleza basicConfig(**kwargs):
     to do one-shot configuration of the logging package.
 
     The default behaviour ni to create a StreamHandler which writes to
-    sys.stderr, set a formatter using the BASIC_FORMAT format string, and
+    sys.stderr, set a formatter using the BASIC_FORMAT format string, na
     add the handler to the root logger.
 
     A number of optional keyword arguments may be specified, which can alter
@@ -1924,12 +1924,12 @@ eleza basicConfig(**kwargs):
               handlers, which will be added to the root handler. Any handler
               kwenye the list which does sio have a formatter assigned will be
               assigned the formatter created kwenye this function.
-    force     If this keyword  ni specified as true, any existing handlers
+    force     If this keyword  ni specified kama true, any existing handlers
               attached to the root logger are removed na closed, before
-              carrying out the configuration as specified by the other
+              carrying out the configuration kama specified by the other
               arguments.
     Note that you could specify a stream created using open(filename, mode)
-    rather than passing the filename na mode in. However, it should be
+    rather than pitaing the filename na mode in. However, it should be
     remembered that StreamHandler does sio close its stream (since it may be
     using sys.stdout ama sys.stderr), whereas FileHandler closes its stream
     when the handler ni closed.
@@ -1960,11 +1960,11 @@ eleza basicConfig(**kwargs):
             handlers = kwargs.pop("handlers", Tupu)
             ikiwa handlers ni Tupu:
                 ikiwa "stream" kwenye kwargs na "filename" kwenye kwargs:
-                     ashiria ValueError("'stream' na 'filename' should sio be "
+                    ashiria ValueError("'stream' na 'filename' should sio be "
                                      "specified together")
             isipokua:
                 ikiwa "stream" kwenye kwargs ama "filename" kwenye kwargs:
-                     ashiria ValueError("'stream' ama 'filename' should sio be "
+                    ashiria ValueError("'stream' ama 'filename' should sio be "
                                      "specified together ukijumuisha 'handlers'")
             ikiwa handlers ni Tupu:
                 filename = kwargs.pop("filename", Tupu)
@@ -1977,8 +1977,8 @@ eleza basicConfig(**kwargs):
                 handlers = [h]
             dfs = kwargs.pop("datefmt", Tupu)
             style = kwargs.pop("style", '%')
-            ikiwa style sio kwenye _STYLES:
-                 ashiria ValueError('Style must be one of: %s' % ','.join(
+            ikiwa style haiko kwenye _STYLES:
+                ashiria ValueError('Style must be one of: %s' % ','.join(
                                  _STYLES.keys()))
             fs = kwargs.pop("format", _STYLES[style][1])
             fmt = Formatter(fs, dfs, style)
@@ -1991,7 +1991,7 @@ eleza basicConfig(**kwargs):
                 root.setLevel(level)
             ikiwa kwargs:
                 keys = ', '.join(kwargs.keys())
-                 ashiria ValueError('Unrecognised argument(s): %s' % keys)
+                ashiria ValueError('Unrecognised argument(s): %s' % keys)
     mwishowe:
         _releaseLock()
 
@@ -2110,15 +2110,15 @@ eleza shutdown(handlerList=_handlerList):
                     h.acquire()
                     h.flush()
                     h.close()
-                except (OSError, ValueError):
+                tatizo (OSError, ValueError):
                     # Ignore errors which might be caused
                     # because handlers have been closed but
                     # references to them are still around at
                     # application exit.
-                    pass
+                    pita
                 mwishowe:
                     h.release()
-        tatizo: # ignore everything, as we're shutting down
+        tatizo: # ignore everything, kama we're shutting down
             ikiwa raiseExceptions:
                 raise
             #else, swallow
@@ -2136,7 +2136,7 @@ kundi NullHandler(Handler):
     important kila library code, which may contain code to log events. If a user
     of the library does sio configure logging, the one-off warning might be
     produced; to avoid this, the library developer simply needs to instantiate
-    a NullHandler na add it to the top-level logger of the library module or
+    a NullHandler na add it to the top-level logger of the library module ama
     package.
     """
     eleza handle(self, record):

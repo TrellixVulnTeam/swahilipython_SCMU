@@ -12,35 +12,35 @@ agiza unittest
 
 # list, tuple na dict subclasses that do ama don't overwrite __repr__
 kundi list2(list):
-    pass
+    pita
 
 kundi list3(list):
     eleza __repr__(self):
         rudisha list.__repr__(self)
 
 kundi tuple2(tuple):
-    pass
+    pita
 
 kundi tuple3(tuple):
     eleza __repr__(self):
         rudisha tuple.__repr__(self)
 
 kundi set2(set):
-    pass
+    pita
 
 kundi set3(set):
     eleza __repr__(self):
         rudisha set.__repr__(self)
 
 kundi frozenset2(frozenset):
-    pass
+    pita
 
 kundi frozenset3(frozenset):
     eleza __repr__(self):
         rudisha frozenset.__repr__(self)
 
 kundi dict2(dict):
-    pass
+    pita
 
 kundi dict3(dict):
     eleza __repr__(self):
@@ -156,7 +156,7 @@ kundi QueryTestCase(unittest.TestCase):
 
     eleza test_same_as_repr(self):
         # Simple objects, small containers na classes that overwrite __repr__
-        # For those the result should be the same as repr().
+        # For those the result should be the same kama repr().
         # Ahem.  The docs don't say anything about that -- this appears to
         # be testing an implementation quirk.  Starting kwenye Python 2.5, it's
         # sio true kila dicts:  pprint always sorts dicts by key now; before,
@@ -402,12 +402,12 @@ frozenset2({0,
     #See http://bugs.python.org/issue13907
     @test.support.cpython_only
     eleza test_set_of_sets_reprs(self):
-        # This test creates a complex arrangement of frozensets and
+        # This test creates a complex arrangement of frozensets na
         # compares the pretty-printed repr against a string hard-coded in
         # the test.  The hard-coded repr depends on the sort order of
         # frozensets.
         #
-        # However, as the docs point out: "Since sets only define
+        # However, kama the docs point out: "Since sets only define
         # partial ordering (subset relationships), the output of the
         # list.sort() method ni undefined kila lists of sets."
         #
@@ -419,9 +419,9 @@ frozenset2({0,
         # >>> frozenset({1}) < frozenset({0})
         # Uongo
         #
-        # Consequently, this test ni fragile and
+        # Consequently, this test ni fragile na
         # implementation-dependent.  Small changes to Python's sort
-        # algorithm cause the test to fail when it should pass.
+        # algorithm cause the test to fail when it should pita.
         # XXX Or changes to the dictionary implmentation...
 
         cube_repr_tgt = """\
@@ -640,11 +640,11 @@ frozenset2({0,
         self.assertEqual(clean(pprint.pformat(dict.fromkeys(keys))),
             '{' + ','.join('%r:Tupu' % k kila k kwenye skeys) + '}')
 
-        # Issue 10017: TypeError on user-defined types as dict keys.
+        # Issue 10017: TypeError on user-defined types kama dict keys.
         self.assertEqual(pprint.pformat({Unorderable: 0, 1: 0}),
                          '{1: 0, ' + repr(Unorderable) +': 0}')
 
-        # Issue 14998: TypeError on tuples ukijumuisha TupuTypes as dict keys.
+        # Issue 14998: TypeError on tuples ukijumuisha TupuTypes kama dict keys.
         keys = [(1,), (Tupu,)]
         self.assertEqual(pprint.pformat(dict.fromkeys(keys, 0)),
                          '{%r: 0, %r: 0}' % tuple(sorted(keys, key=id)))
@@ -717,7 +717,7 @@ frozenset2({0,
      'goujat\\t qui '
      'fumait au '
      'zoo']]]]]""")
-        # An unwrappable string ni formatted as its repr
+        # An unwrappable string ni formatted kama its repr
         unwrappable = "x" * 100
         self.assertEqual(pprint.pformat(unwrappable, width=80), repr(unwrappable))
         self.assertEqual(pprint.pformat(''), "''")

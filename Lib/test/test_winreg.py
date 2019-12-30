@@ -14,7 +14,7 @@ kutoka winreg agiza *
 
 jaribu:
     REMOTE_NAME = sys.argv[sys.argv.index("--remote")+1]
-except (IndexError, ValueError):
+tatizo (IndexError, ValueError):
     REMOTE_NAME = Tupu
 
 # tuple of (major, minor)
@@ -59,13 +59,13 @@ kundi BaseWinregTests(unittest.TestCase):
     eleza delete_tree(self, root, subkey):
         jaribu:
             hkey = OpenKey(root, subkey, 0, KEY_ALL_ACCESS)
-        except OSError:
+        tatizo OSError:
             # subkey does sio exist
             return
         wakati Kweli:
             jaribu:
                 subsubkey = EnumKey(hkey, 0)
-            except OSError:
+            tatizo OSError:
                 # no more subkeys
                 koma
             self.delete_tree(hkey, subsubkey)
@@ -85,7 +85,7 @@ kundi BaseWinregTests(unittest.TestCase):
         kila value_name, value_data, value_type kwenye test_data:
             SetValueEx(sub_key, value_name, 0, value_type, value_data)
 
-        # Check we wrote as many items as we thought.
+        # Check we wrote kama many items kama we thought.
         nkeys, nvalues, since_mod = QueryInfoKey(key)
         self.assertEqual(nkeys, 1, "Not the correct number of sub keys")
         self.assertEqual(nvalues, 1, "Not the correct number of values")
@@ -94,7 +94,7 @@ kundi BaseWinregTests(unittest.TestCase):
         self.assertEqual(nvalues, len(test_data),
                          "Not the correct number of values")
         # Close this key this way...
-        # (but before we do, copy the key as an integer - this allows
+        # (but before we do, copy the key kama an integer - this allows
         # us to test that the key really gets closed).
         int_sub_key = int(sub_key)
         CloseKey(sub_key)
@@ -102,8 +102,8 @@ kundi BaseWinregTests(unittest.TestCase):
             QueryInfoKey(int_sub_key)
             self.fail("It appears the CloseKey() function does "
                       "not close the actual key!")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         # ... na close that key that way :-)
         int_key = int(key)
         key.Close()
@@ -111,8 +111,8 @@ kundi BaseWinregTests(unittest.TestCase):
             QueryInfoKey(int_key)
             self.fail("It appears the key.Close() function "
                       "does sio close the actual key!")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     eleza _read_test_data(self, root_key, subkeystr="sub_key", OpenKey=OpenKey):
         # Check we can get default value kila this key.
@@ -122,13 +122,13 @@ kundi BaseWinregTests(unittest.TestCase):
 
         key = OpenKey(root_key, test_key_name)
         # Read the sub-keys
-        ukijumuisha OpenKey(key, subkeystr) as sub_key:
+        ukijumuisha OpenKey(key, subkeystr) kama sub_key:
             # Check I can enumerate over the values.
             index = 0
             wakati 1:
                 jaribu:
                     data = EnumValue(sub_key, index)
-                except OSError:
+                tatizo OSError:
                     koma
                 self.assertEqual(data kwenye test_data, Kweli,
                                  "Didn't read back the correct test data")
@@ -149,8 +149,8 @@ kundi BaseWinregTests(unittest.TestCase):
         jaribu:
             EnumKey(key, 1)
             self.fail("Was able to get a second key when I only have one!")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         key.Close()
 
@@ -173,16 +173,16 @@ kundi BaseWinregTests(unittest.TestCase):
             # Shouldn't be able to delete it twice!
             DeleteKey(key, subkeystr)
             self.fail("Deleting the key twice succeeded")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         key.Close()
         DeleteKey(root_key, test_key_name)
         # Opening should now fail!
         jaribu:
             key = OpenKey(root_key, test_key_name)
             self.fail("Could open the non-existent key")
-        except OSError: # Use this error name this time
-            pass
+        tatizo OSError: # Use this error name this time
+            pita
 
     eleza _test_all(self, root_key, subkeystr="sub_key"):
         self._write_test_data(root_key, subkeystr)
@@ -191,11 +191,11 @@ kundi BaseWinregTests(unittest.TestCase):
 
     eleza _test_named_args(self, key, sub_key):
         ukijumuisha CreateKeyEx(key=key, sub_key=sub_key, reserved=0,
-                         access=KEY_ALL_ACCESS) as ckey:
+                         access=KEY_ALL_ACCESS) kama ckey:
             self.assertKweli(ckey.handle != 0)
 
         ukijumuisha OpenKeyEx(key=key, sub_key=sub_key, reserved=0,
-                       access=KEY_ALL_ACCESS) as okey:
+                       access=KEY_ALL_ACCESS) kama okey:
             self.assertKweli(okey.handle != 0)
 
 
@@ -242,21 +242,21 @@ kundi LocalWinregTests(BaseWinregTests):
     eleza test_context_manager(self):
         # ensure that the handle ni closed ikiwa an exception occurs
         jaribu:
-            ukijumuisha ConnectRegistry(Tupu, HKEY_LOCAL_MACHINE) as h:
+            ukijumuisha ConnectRegistry(Tupu, HKEY_LOCAL_MACHINE) kama h:
                 self.assertNotEqual(h.handle, 0)
-                 ashiria OSError
-        except OSError:
+                ashiria OSError
+        tatizo OSError:
             self.assertEqual(h.handle, 0)
 
     eleza test_changing_value(self):
         # Issue2810: A race condition kwenye 2.6 na 3.1 may cause
-        # EnumValue ama QueryValue to  ashiria "WindowsError: More data is
+        # EnumValue ama QueryValue to ashiria "WindowsError: More data is
         # available"
         done = Uongo
 
         kundi VeryActiveThread(threading.Thread):
             eleza run(self):
-                ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as key:
+                ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
                     use_short = Kweli
                     long_string = 'x'*2000
                     wakati sio done:
@@ -268,7 +268,7 @@ kundi LocalWinregTests(BaseWinregTests):
         thread.start()
         jaribu:
             ukijumuisha CreateKey(HKEY_CURRENT_USER,
-                           test_key_name+'\\changing_value') as key:
+                           test_key_name+'\\changing_value') kama key:
                 kila _ kwenye range(1000):
                     num_subkeys, num_values, t = QueryInfoKey(key)
                     kila i kwenye range(num_values):
@@ -286,7 +286,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # available"
         name = 'x'*256
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as key:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama key:
                 SetValue(key, name, REG_SZ, 'x')
                 num_subkeys, num_values, t = QueryInfoKey(key)
                 EnumKey(key, 0)
@@ -296,10 +296,10 @@ kundi LocalWinregTests(BaseWinregTests):
 
     eleza test_dynamic_key(self):
         # Issue2810, when the value ni dynamically generated, these
-        #  ashiria "WindowsError: More data ni available" kwenye 2.6 na 3.1
+        # ashiria "WindowsError: More data ni available" kwenye 2.6 na 3.1
         jaribu:
             EnumValue(HKEY_PERFORMANCE_DATA, 0)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno kwenye (errno.EPERM, errno.EACCES):
                 self.skipTest("access denied to registry key "
                               "(are you running kwenye a non-interactive session?)")
@@ -311,7 +311,7 @@ kundi LocalWinregTests(BaseWinregTests):
     @unittest.skipUnless(WIN_VER < (5, 2), "Requires Windows XP")
     eleza test_reflection_unsupported(self):
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
 
             key = OpenKey(HKEY_CURRENT_USER, test_key_name)
@@ -334,7 +334,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # thus raising OverflowError. The implementation now uses
         # PyLong_AsUnsignedLong to match DWORD's size.
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 SetValueEx(ck, "test_name", Tupu, REG_DWORD, 0x80000000)
         mwishowe:
@@ -346,7 +346,7 @@ kundi LocalWinregTests(BaseWinregTests):
         # generated by PyLong_FromLong. The implementation now uses
         # PyLong_FromUnsignedLong to match DWORD's size.
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = 0x80000000
                 SetValueEx(ck, "test_name", Tupu, REG_DWORD, test_val)
@@ -357,9 +357,9 @@ kundi LocalWinregTests(BaseWinregTests):
             DeleteKey(HKEY_CURRENT_USER, test_key_name)
 
     eleza test_setvalueex_crash_with_none_arg(self):
-        # Test kila Issue #21151, segfault when Tupu ni passed to SetValueEx
+        # Test kila Issue #21151, segfault when Tupu ni pitaed to SetValueEx
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = Tupu
                 SetValueEx(ck, "test_name", 0, REG_BINARY, test_val)
@@ -372,7 +372,7 @@ kundi LocalWinregTests(BaseWinregTests):
     eleza test_read_string_containing_null(self):
         # Test kila issue 25778: REG_SZ should sio contain null characters
         jaribu:
-            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) as ck:
+            ukijumuisha CreateKey(HKEY_CURRENT_USER, test_key_name) kama ck:
                 self.assertNotEqual(ck.handle, 0)
                 test_val = "A string\x00 ukijumuisha a null"
                 SetValueEx(ck, "test_name", 0, REG_SZ, test_val)
@@ -404,7 +404,7 @@ kundi Win64WinregTests(BaseWinregTests):
     eleza test_reflection_functions(self):
         # Test that we can call the query, enable, na disable functions
         # on a key which isn't on the reflection list ukijumuisha no consequences.
-        ukijumuisha OpenKey(HKEY_LOCAL_MACHINE, "Software") as key:
+        ukijumuisha OpenKey(HKEY_LOCAL_MACHINE, "Software") kama key:
             # HKLM\Software ni redirected but sio reflected kwenye all OSes
             self.assertKweli(QueryReflectionKey(key))
             self.assertIsTupu(EnableReflectionKey(key))
@@ -419,12 +419,12 @@ kundi Win64WinregTests(BaseWinregTests):
         # reflection occurs (ie. when the created key ni closed).
         jaribu:
             ukijumuisha CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) as created_key:
+                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama created_key:
                 self.assertNotEqual(created_key.handle, 0)
 
                 # The key should now be available kwenye the 32-bit area
                 ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) as key:
+                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama key:
                     self.assertNotEqual(key.handle, 0)
 
                 # Write a value to what currently ni only kwenye the 32-bit area
@@ -439,7 +439,7 @@ kundi Win64WinregTests(BaseWinregTests):
 
             # Now explicitly open the 64-bit version of the key
             ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                         KEY_ALL_ACCESS | KEY_WOW64_64KEY) as key:
+                         KEY_ALL_ACCESS | KEY_WOW64_64KEY) kama key:
                 self.assertNotEqual(key.handle, 0)
                 # Make sure the original value we set ni there
                 self.assertEqual("32KEY", QueryValue(key, ""))
@@ -449,7 +449,7 @@ kundi Win64WinregTests(BaseWinregTests):
             # Reflection uses a "last-writer wins policy, so the value we set
             # on the 64-bit key should be the same on 32-bit
             ukijumuisha OpenKey(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                         KEY_READ | KEY_WOW64_32KEY) as key:
+                         KEY_READ | KEY_WOW64_32KEY) kama key:
                 self.assertEqual("64KEY", QueryValue(key, ""))
         mwishowe:
             DeleteKeyEx(HKEY_CURRENT_USER, test_reflect_key_name,
@@ -460,7 +460,7 @@ kundi Win64WinregTests(BaseWinregTests):
         # Make use of a key which gets redirected na reflected
         jaribu:
             ukijumuisha CreateKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) as created_key:
+                             KEY_ALL_ACCESS | KEY_WOW64_32KEY) kama created_key:
                 # QueryReflectionKey returns whether ama sio the key ni disabled
                 disabled = QueryReflectionKey(created_key)
                 self.assertEqual(type(disabled), bool)
@@ -479,14 +479,14 @@ kundi Win64WinregTests(BaseWinregTests):
 
             # Make sure the 32-bit key ni actually there
             ukijumuisha OpenKeyEx(HKEY_CURRENT_USER, test_reflect_key_name, 0,
-                           KEY_READ | KEY_WOW64_32KEY) as key:
+                           KEY_READ | KEY_WOW64_32KEY) kama key:
                 self.assertNotEqual(key.handle, 0)
         mwishowe:
             DeleteKeyEx(HKEY_CURRENT_USER, test_reflect_key_name,
                         KEY_WOW64_32KEY, 0)
 
     eleza test_exception_numbers(self):
-        ukijumuisha self.assertRaises(FileNotFoundError) as ctx:
+        ukijumuisha self.assertRaises(FileNotFoundError) kama ctx:
             QueryValue(HKEY_CLASSES_ROOT, 'some_value_that_does_not_exist')
 
 eleza test_main():

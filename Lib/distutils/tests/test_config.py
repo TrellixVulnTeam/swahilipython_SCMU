@@ -20,23 +20,23 @@ index-servers =
 
 [server1]
 username:me
-password:secret
+pitaword:secret
 
 [server2]
 username:meagain
-password: secret
+pitaword: secret
 realm:acme
 repository:http://another.pypi/
 
 [server3]
 username:cbiggles
-password:yh^%#rest-of-my-password
+pitaword:yh^%#rest-of-my-pitaword
 """
 
 PYPIRC_OLD = """\
 [server-login]
 username:tarek
-password:secret
+pitaword:secret
 """
 
 WANTED = """\
@@ -46,7 +46,7 @@ index-servers =
 
 [pypi]
 username:tarek
-password:xxx
+pitaword:xxx
 """
 
 
@@ -68,7 +68,7 @@ kundi BasePyPIRCCommandTestCase(support.TempdirManager,
             eleza __init__(self, dist):
                 PyPIRCCommand.__init__(self, dist)
             eleza initialize_options(self):
-                pass
+                pita
             finalize_options = initialize_options
 
         self._cmd = command
@@ -93,7 +93,7 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         config = cmd._read_pypirc()
 
         config = list(sorted(config.items()))
-        waited = [('password', 'secret'), ('realm', 'pypi'),
+        waited = [('pitaword', 'secret'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server1'), ('username', 'me')]
         self.assertEqual(config, waited)
@@ -102,7 +102,7 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
         self.write_file(self.rc, PYPIRC_OLD)
         config = cmd._read_pypirc()
         config = list(sorted(config.items()))
-        waited = [('password', 'secret'), ('realm', 'pypi'),
+        waited = [('pitaword', 'secret'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server-login'), ('username', 'tarek')]
         self.assertEqual(config, waited)
@@ -121,14 +121,14 @@ kundi PyPIRCCommandTestCase(BasePyPIRCCommandTestCase):
             f.close()
 
     eleza test_config_interpolation(self):
-        # using the % character kwenye .pypirc should sio  ashiria an error (#20120)
+        # using the % character kwenye .pypirc should sio ashiria an error (#20120)
         self.write_file(self.rc, PYPIRC)
         cmd = self._cmd(self.dist)
         cmd.repository = 'server3'
         config = cmd._read_pypirc()
 
         config = list(sorted(config.items()))
-        waited = [('password', 'yh^%#rest-of-my-password'), ('realm', 'pypi'),
+        waited = [('pitaword', 'yh^%#rest-of-my-pitaword'), ('realm', 'pypi'),
                   ('repository', 'https://upload.pypi.org/legacy/'),
                   ('server', 'server3'), ('username', 'cbiggles')]
         self.assertEqual(config, waited)

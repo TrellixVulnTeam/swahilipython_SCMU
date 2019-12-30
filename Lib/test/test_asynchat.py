@@ -18,7 +18,7 @@ TIMEOUT = 3.0
 
 
 kundi echo_server(threading.Thread):
-    # parameter to determine the number of bytes passed back to the
+    # parameter to determine the number of bytes pitaed back to the
     # client each send
     chunk_size = 1
 
@@ -37,7 +37,7 @@ kundi echo_server(threading.Thread):
         conn, client = self.sock.accept()
         self.buffer = b""
         # collect data until quit message ni seen
-        wakati SERVER_QUIT sio kwenye self.buffer:
+        wakati SERVER_QUIT haiko kwenye self.buffer:
             data = conn.recv(1)
             ikiwa sio data:
                 koma
@@ -51,14 +51,14 @@ kundi echo_server(threading.Thread):
 
         # re-send entire set of collected data
         jaribu:
-            # this may fail on some tests, such as test_close_when_done,
+            # this may fail on some tests, such kama test_close_when_done,
             # since the client closes the channel when it's done sending
             wakati self.buffer:
                 n = conn.send(self.buffer[:self.chunk_size])
                 time.sleep(0.001)
                 self.buffer = self.buffer[n:]
         tatizo:
-            pass
+            pita
 
         conn.close()
         self.sock.close()
@@ -74,13 +74,13 @@ kundi echo_client(asynchat.async_chat):
         self.buffer = b""
 
         eleza handle_connect(self):
-            pass
+            pita
 
         ikiwa sys.platform == 'darwin':
             # select.poll returns a select.POLLHUP at the end of the tests
             # on darwin, so just ignore it
             eleza handle_expt(self):
-                pass
+                pita
 
     eleza collect_incoming_data(self, data):
         self.buffer += data
@@ -234,7 +234,7 @@ kundi TestAsynchat(unittest.TestCase):
         self.assertGreater(len(s.buffer), 0)
 
     eleza test_push(self):
-        # Issue #12523: push() should  ashiria a TypeError ikiwa it doesn't get
+        # Issue #12523: push() should ashiria a TypeError ikiwa it doesn't get
         # a bytes string
         s, event = start_echo_server()
         c = echo_client(b'\n', s.port)
@@ -264,7 +264,7 @@ kundi TestAsynchatMocked(unittest.TestCase):
         dispatcher.set_socket(sock)
         self.addCleanup(dispatcher.del_channel)
 
-        ukijumuisha unittest.mock.patch.object(dispatcher, 'handle_error') as error:
+        ukijumuisha unittest.mock.patch.object(dispatcher, 'handle_error') kama error:
             dispatcher.handle_read()
         self.assertUongo(error.called)
 

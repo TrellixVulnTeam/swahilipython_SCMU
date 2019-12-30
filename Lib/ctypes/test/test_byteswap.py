@@ -177,7 +177,7 @@ kundi Test(unittest.TestCase):
             base = LittleEndianStructure
 
         kundi T(base):
-            pass
+            pita
         _fields_ = [("a", c_ubyte),
                     ("b", c_byte),
                     ("c", c_short),
@@ -202,7 +202,7 @@ kundi Test(unittest.TestCase):
         kila typ kwenye c_wchar, c_void_p, POINTER(c_int):
             _fields_.append(("x", typ))
             kundi T(base):
-                pass
+                pita
             self.assertRaises(TypeError, setattr, T, "_fields_", [("x", typ)])
 
     eleza test_struct_struct(self):

@@ -13,7 +13,7 @@ kundi TestDefectsBase:
 
     @contextlib.contextmanager
     eleza _raise_point(self, defect):
-        yield
+        tuma
 
     eleza test_same_boundary_inner_outer(self):
         source = textwrap.dedent("""\
@@ -330,7 +330,7 @@ kundi TestDefectRaising(TestDefectsBase, TestEmailBase):
     @contextlib.contextmanager
     eleza _raise_point(self, defect):
         ukijumuisha self.assertRaises(defect):
-            yield
+            tuma
 
 
 ikiwa __name__ == '__main__':

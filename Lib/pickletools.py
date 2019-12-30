@@ -4,7 +4,7 @@ Extensive comments about the pickle protocols na pickle-machine opcodes
 can be found here.  Some functions meant kila external use:
 
 genops(pickle)
-   Generate all the opcodes kwenye a pickle, as (opcode, arg, position) triples.
+   Generate all the opcodes kwenye a pickle, kama (opcode, arg, position) triples.
 
 dis(pickle, out=Tupu, memo=Tupu, indentlevel=4)
    Print a symbolic disassembly of a pickle.
@@ -39,7 +39,7 @@ bytes_types = pickle.bytes_types
 # called an unpickling machine).  It's a sequence of opcodes, interpreted by the
 # PM, building an arbitrarily complex Python object.
 #
-# For the most part, the PM ni very simple:  there are no looping, testing, or
+# For the most part, the PM ni very simple:  there are no looping, testing, ama
 # conditional instructions, no arithmetic na no function calls.  Opcodes are
 # executed once each, kutoka first to last, until a STOP opcode ni reached.
 #
@@ -51,8 +51,8 @@ bytes_types = pickle.bytes_types
 # opcodes take Python objects off the stack.  The result of unpickling is
 # whatever object ni left on the stack when the final STOP opcode ni executed.
 #
-# The memo ni simply an array of objects, ama it can be implemented as a dict
-# mapping little integers to objects.  The memo serves as the PM's "long term
+# The memo ni simply an array of objects, ama it can be implemented kama a dict
+# mapping little integers to objects.  The memo serves kama the PM's "long term
 # memory", na the little integers indexing the memo are akin to variable
 # names.  Some opcodes pop a stack object into the memo at a given index,
 # na others push a memo object at a given index onto the stack again.
@@ -84,8 +84,8 @@ bytes_types = pickle.bytes_types
 #   na LONG), protocol 1 added three more kila more-efficient pickling of short
 #   integers, na protocol 2 added two more kila more-efficient pickling of
 #   long integers (before protocol 2, the only ways to pickle a Python long
-#   took time quadratic kwenye the number of digits, kila both pickling and
-#   unpickling).  "Opcode bloat" isn't so much a subtlety as a source of
+#   took time quadratic kwenye the number of digits, kila both pickling na
+#   unpickling).  "Opcode bloat" isn't so much a subtlety kama a source of
 #   wearying complication.
 #
 #
@@ -113,7 +113,7 @@ bytes_types = pickle.bytes_types
 # consisting of arbitrary bytes, including NUL bytes na unprintable "high bit"
 # bytes.  Binary mode pickles can be substantially smaller than equivalent
 # text mode pickles, na sometimes faster too; e.g., BININT represents a 4-byte
-# int as 4 bytes following the opcode, which ni cheaper to unpickle than the
+# int kama 4 bytes following the opcode, which ni cheaper to unpickle than the
 # (perhaps) 11-character decimal string attached to INT.  Protocol 1 also added
 # a number of opcodes that operate on many stack elements at once (like APPENDS
 # na SETITEMS), na "shortcut" opcodes (like EMPTY_DICT na EMPTY_TUPLE).
@@ -145,7 +145,7 @@ bytes_types = pickle.bytes_types
 # To this end, all tests kila __safe_for_unpickling__ ama for
 # copyreg.safe_constructors are removed kutoka the unpickling code.
 # References to these variables kwenye the descriptions below are to be seen
-# as describing unpickling kwenye Python 2.2 na before.
+# kama describing unpickling kwenye Python 2.2 na before.
 
 
 # Meta-rule:  Descriptions are stored kwenye instances of descriptor objects,
@@ -176,7 +176,7 @@ kundi ArgumentDescriptor(object):
         # name of descriptor record, also a module global name; a string
         'name',
 
-        # length of argument, kwenye bytes; an int; UP_TO_NEWLINE and
+        # length of argument, kwenye bytes; an int; UP_TO_NEWLINE na
         # TAKEN_FROM_ARGUMENT{1,4,8} are negative values kila variable-length
         # cases
         'n',
@@ -194,7 +194,7 @@ kundi ArgumentDescriptor(object):
         assert isinstance(name, str)
         self.name = name
 
-        assert isinstance(n, int) na (n >= 0 or
+        assert isinstance(n, int) na (n >= 0 ama
                                        n kwenye (UP_TO_NEWLINE,
                                              TAKEN_FROM_ARGUMENT1,
                                              TAKEN_FROM_ARGUMENT4,
@@ -207,7 +207,7 @@ kundi ArgumentDescriptor(object):
         assert isinstance(doc, str)
         self.doc = doc
 
-kutoka struct agiza unpack as _unpack
+kutoka struct agiza unpack kama _unpack
 
 eleza read_uint1(f):
     r"""
@@ -219,7 +219,7 @@ eleza read_uint1(f):
     data = f.read(1)
     ikiwa data:
         rudisha data[0]
-     ashiria ValueError("not enough data kwenye stream to read uint1")
+    ashiria ValueError("not enough data kwenye stream to read uint1")
 
 uint1 = ArgumentDescriptor(
             name='uint1',
@@ -240,7 +240,7 @@ eleza read_uint2(f):
     data = f.read(2)
     ikiwa len(data) == 2:
         rudisha _unpack("<H", data)[0]
-     ashiria ValueError("not enough data kwenye stream to read uint2")
+    ashiria ValueError("not enough data kwenye stream to read uint2")
 
 uint2 = ArgumentDescriptor(
             name='uint2',
@@ -261,7 +261,7 @@ eleza read_int4(f):
     data = f.read(4)
     ikiwa len(data) == 4:
         rudisha _unpack("<i", data)[0]
-     ashiria ValueError("not enough data kwenye stream to read int4")
+    ashiria ValueError("not enough data kwenye stream to read int4")
 
 int4 = ArgumentDescriptor(
            name='int4',
@@ -282,7 +282,7 @@ eleza read_uint4(f):
     data = f.read(4)
     ikiwa len(data) == 4:
         rudisha _unpack("<I", data)[0]
-     ashiria ValueError("not enough data kwenye stream to read uint4")
+    ashiria ValueError("not enough data kwenye stream to read uint4")
 
 uint4 = ArgumentDescriptor(
             name='uint4',
@@ -303,7 +303,7 @@ eleza read_uint8(f):
     data = f.read(8)
     ikiwa len(data) == 8:
         rudisha _unpack("<Q", data)[0]
-     ashiria ValueError("not enough data kwenye stream to read uint8")
+    ashiria ValueError("not enough data kwenye stream to read uint8")
 
 uint8 = ArgumentDescriptor(
             name='uint8',
@@ -341,19 +341,19 @@ eleza read_stringnl(f, decode=Kweli, stripquotes=Kweli):
 
     data = f.readline()
     ikiwa sio data.endswith(b'\n'):
-         ashiria ValueError("no newline found when trying to read stringnl")
+        ashiria ValueError("no newline found when trying to read stringnl")
     data = data[:-1]    # lose the newline
 
     ikiwa stripquotes:
         kila q kwenye (b'"', b"'"):
             ikiwa data.startswith(q):
                 ikiwa sio data.endswith(q):
-                     ashiria ValueError("strinq quote %r sio found at both "
+                    ashiria ValueError("strinq quote %r sio found at both "
                                      "ends of %r" % (q, data))
                 data = data[1:-1]
                 koma
         isipokua:
-             ashiria ValueError("no string quotes around %r" % data)
+            ashiria ValueError("no string quotes around %r" % data)
 
     ikiwa decode:
         data = codecs.escape_decode(data)[0].decode("ascii")
@@ -365,7 +365,7 @@ stringnl = ArgumentDescriptor(
                reader=read_stringnl,
                doc="""A newline-terminated string.
 
-                   This ni a repr-style string, ukijumuisha embedded escapes, and
+                   This ni a repr-style string, ukijumuisha embedded escapes, na
                    bracketing quotes.
                    """)
 
@@ -401,7 +401,7 @@ stringnl_noescape_pair = ArgumentDescriptor(
                              These are str-style strings, without embedded
                              escapes, ama bracketing quotes.  They should
                              consist solely of printable ASCII characters.
-                             The pair ni returned as a single string, with
+                             The pair ni returned kama a single string, with
                              a single blank separating the two strings.
                              """)
 
@@ -420,7 +420,7 @@ eleza read_string1(f):
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha data.decode("latin-1")
-     ashiria ValueError("expected %d bytes kwenye a string1, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a string1, but only %d remain" %
                      (n, len(data)))
 
 string1 = ArgumentDescriptor(
@@ -450,11 +450,11 @@ eleza read_string4(f):
 
     n = read_int4(f)
     ikiwa n < 0:
-         ashiria ValueError("string4 byte count < 0: %d" % n)
+        ashiria ValueError("string4 byte count < 0: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha data.decode("latin-1")
-     ashiria ValueError("expected %d bytes kwenye a string4, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a string4, but only %d remain" %
                      (n, len(data)))
 
 string4 = ArgumentDescriptor(
@@ -483,7 +483,7 @@ eleza read_bytes1(f):
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha data
-     ashiria ValueError("expected %d bytes kwenye a bytes1, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a bytes1, but only %d remain" %
                      (n, len(data)))
 
 bytes1 = ArgumentDescriptor(
@@ -513,11 +513,11 @@ eleza read_bytes4(f):
     n = read_uint4(f)
     assert n >= 0
     ikiwa n > sys.maxsize:
-         ashiria ValueError("bytes4 byte count > sys.maxsize: %d" % n)
+        ashiria ValueError("bytes4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha data
-     ashiria ValueError("expected %d bytes kwenye a bytes4, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a bytes4, but only %d remain" %
                      (n, len(data)))
 
 bytes4 = ArgumentDescriptor(
@@ -548,11 +548,11 @@ eleza read_bytes8(f):
     n = read_uint8(f)
     assert n >= 0
     ikiwa n > sys.maxsize:
-         ashiria ValueError("bytes8 byte count > sys.maxsize: %d" % n)
+        ashiria ValueError("bytes8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha data
-     ashiria ValueError("expected %d bytes kwenye a bytes8, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a bytes8, but only %d remain" %
                      (n, len(data)))
 
 bytes8 = ArgumentDescriptor(
@@ -583,11 +583,11 @@ eleza read_bytearray8(f):
     n = read_uint8(f)
     assert n >= 0
     ikiwa n > sys.maxsize:
-         ashiria ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
+        ashiria ValueError("bytearray8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
         rudisha bytearray(data)
-     ashiria ValueError("expected %d bytes kwenye a bytearray8, but only %d remain" %
+    ashiria ValueError("expected %d bytes kwenye a bytearray8, but only %d remain" %
                      (n, len(data)))
 
 bytearray8 = ArgumentDescriptor(
@@ -609,7 +609,7 @@ eleza read_unicodestringnl(f):
 
     data = f.readline()
     ikiwa sio data.endswith(b'\n'):
-         ashiria ValueError("no newline found when trying to read "
+        ashiria ValueError("no newline found when trying to read "
                          "unicodestringnl")
     data = data[:-1]    # lose the newline
     rudisha str(data, 'raw-unicode-escape')
@@ -648,8 +648,8 @@ eleza read_unicodestring1(f):
     assert n >= 0
     data = f.read(n)
     ikiwa len(data) == n:
-        rudisha str(data, 'utf-8', 'surrogatepass')
-     ashiria ValueError("expected %d bytes kwenye a unicodestring1, but only %d "
+        rudisha str(data, 'utf-8', 'surrogatepita')
+    ashiria ValueError("expected %d bytes kwenye a unicodestring1, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring1 = ArgumentDescriptor(
@@ -686,11 +686,11 @@ eleza read_unicodestring4(f):
     n = read_uint4(f)
     assert n >= 0
     ikiwa n > sys.maxsize:
-         ashiria ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
+        ashiria ValueError("unicodestring4 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
-        rudisha str(data, 'utf-8', 'surrogatepass')
-     ashiria ValueError("expected %d bytes kwenye a unicodestring4, but only %d "
+        rudisha str(data, 'utf-8', 'surrogatepita')
+    ashiria ValueError("expected %d bytes kwenye a unicodestring4, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring4 = ArgumentDescriptor(
@@ -727,11 +727,11 @@ eleza read_unicodestring8(f):
     n = read_uint8(f)
     assert n >= 0
     ikiwa n > sys.maxsize:
-         ashiria ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
+        ashiria ValueError("unicodestring8 byte count > sys.maxsize: %d" % n)
     data = f.read(n)
     ikiwa len(data) == n:
-        rudisha str(data, 'utf-8', 'surrogatepass')
-     ashiria ValueError("expected %d bytes kwenye a unicodestring8, but only %d "
+        rudisha str(data, 'utf-8', 'surrogatepita')
+    ashiria ValueError("expected %d bytes kwenye a unicodestring8, but only %d "
                      "remain" % (n, len(data)))
 
 unicodestring8 = ArgumentDescriptor(
@@ -764,7 +764,7 @@ eleza read_decimalnl_short(f):
     # There's a hack kila Kweli na Uongo here.
     ikiwa s == b"00":
         rudisha Uongo
-    elikiwa s == b"01":
+    lasivyo s == b"01":
         rudisha Kweli
 
     rudisha int(s)
@@ -826,7 +826,7 @@ floatnl = ArgumentDescriptor(
               doc="""A newline-terminated decimal floating literal.
 
               In general this requires 17 significant digits kila roundtrip
-              identity, na pickling then unpickling infinities, NaNs, and
+              identity, na pickling then unpickling infinities, NaNs, na
               minus zero doesn't work across boxes, ama on some boxes even
               on itself (e.g., Windows can't read the strings it produces
               kila infinities ama NaNs).
@@ -845,7 +845,7 @@ eleza read_float8(f):
     data = f.read(8)
     ikiwa len(data) == 8:
         rudisha _unpack(">d", data)[0]
-     ashiria ValueError("not enough data kwenye stream to read float8")
+    ashiria ValueError("not enough data kwenye stream to read float8")
 
 
 float8 = ArgumentDescriptor(
@@ -888,7 +888,7 @@ eleza read_long1(f):
     n = read_uint1(f)
     data = f.read(n)
     ikiwa len(data) != n:
-         ashiria ValueError("not enough data kwenye stream to read long1")
+        ashiria ValueError("not enough data kwenye stream to read long1")
     rudisha decode_long(data)
 
 long1 = ArgumentDescriptor(
@@ -897,9 +897,9 @@ long1 = ArgumentDescriptor(
     reader=read_long1,
     doc="""A binary long, little-endian, using 1-byte size.
 
-    This first reads one byte as an unsigned size, then reads that
-    many bytes na interprets them as a little-endian 2's-complement long.
-    If the size ni 0, that's taken as a shortcut kila the long 0L.
+    This first reads one byte kama an unsigned size, then reads that
+    many bytes na interprets them kama a little-endian 2's-complement long.
+    If the size ni 0, that's taken kama a shortcut kila the long 0L.
     """)
 
 eleza read_long4(f):
@@ -919,10 +919,10 @@ eleza read_long4(f):
 
     n = read_int4(f)
     ikiwa n < 0:
-         ashiria ValueError("long4 byte count < 0: %d" % n)
+        ashiria ValueError("long4 byte count < 0: %d" % n)
     data = f.read(n)
     ikiwa len(data) != n:
-         ashiria ValueError("not enough data kwenye stream to read long4")
+        ashiria ValueError("not enough data kwenye stream to read long4")
     rudisha decode_long(data)
 
 long4 = ArgumentDescriptor(
@@ -931,10 +931,10 @@ long4 = ArgumentDescriptor(
     reader=read_long4,
     doc="""A binary representation of a long, little-endian.
 
-    This first reads four bytes as a signed size (but requires the
+    This first reads four bytes kama a signed size (but requires the
     size to be >= 0), then reads that many bytes na interprets them
-    as a little-endian 2's-complement long.  If the size ni 0, that's taken
-    as a shortcut kila the int 0, although LONG1 should really be used
+    kama a little-endian 2's-complement long.  If the size ni 0, that's taken
+    kama a shortcut kila the int 0, although LONG1 should really be used
     then instead (and kwenye any case where # of bytes < 256).
     """)
 
@@ -1170,10 +1170,10 @@ opcodes = [
       na LONG then ni that INT skips a trailing 'L', na produces a short
       int whenever possible.
 
-      Another difference ni due to that, when bool was introduced as a
+      Another difference ni due to that, when bool was introduced kama a
       distinct type kwenye 2.3, builtin names Kweli na Uongo were also added to
       2.2.2, mapping to ints 1 na 0.  For compatibility kwenye both directions,
-      Kweli gets pickled as INT + "I01\\n", na Uongo as INT + "I00\\n".
+      Kweli gets pickled kama INT + "I01\\n", na Uongo kama INT + "I00\\n".
       Leading zeroes are never produced kila a genuine integer.  The 2.3
       (and later) unpicklers special-case these na rudisha bool instead;
       earlier unpicklers ignore the leading "0" na rudisha the int.
@@ -1188,7 +1188,7 @@ opcodes = [
       doc="""Push a four-byte signed integer.
 
       This handles the full range of Python (short) integers on a 32-bit
-      box, directly as binary bytes (1 kila the opcode na 4 kila the integer).
+      box, directly kama binary bytes (1 kila the opcode na 4 kila the integer).
       If the integer ni non-negative na fits kwenye 1 ama 2 bytes, pickling via
       BININT1 ama BININT2 saves space.
       """),
@@ -1226,7 +1226,7 @@ opcodes = [
       proto=0,
       doc="""Push a long integer.
 
-      The same as INT, except that the literal ends ukijumuisha 'L', na always
+      The same kama INT, tatizo that the literal ends ukijumuisha 'L', na always
       unpickles to a Python long.  There doesn't seem a real purpose to the
       trailing 'L'.
 
@@ -1273,7 +1273,7 @@ opcodes = [
       newline character.  These are usually decoded into a str instance
       using the encoding given to the Unpickler constructor. ama the default,
       'ASCII'.  If the encoding given was 'bytes' however, they will be
-      decoded as bytes object instead.
+      decoded kama bytes object instead.
       """),
 
     I(name='BINSTRING',
@@ -1286,11 +1286,11 @@ opcodes = [
 
       There are two arguments: the first ni a 4-byte little-endian
       signed int giving the number of bytes kwenye the string, na the
-      second ni that many bytes, which are taken literally as the string
+      second ni that many bytes, which are taken literally kama the string
       content.  These are usually decoded into a str instance using the
       encoding given to the Unpickler constructor. ama the default,
       'ASCII'.  If the encoding given was 'bytes' however, they will be
-      decoded as bytes object instead.
+      decoded kama bytes object instead.
       """),
 
     I(name='SHORT_BINSTRING',
@@ -1303,10 +1303,10 @@ opcodes = [
 
       There are two arguments: the first ni a 1-byte unsigned int giving
       the number of bytes kwenye the string, na the second ni that many
-      bytes, which are taken literally as the string content.  These are
+      bytes, which are taken literally kama the string content.  These are
       usually decoded into a str instance using the encoding given to
       the Unpickler constructor. ama the default, 'ASCII'.  If the
-      encoding given was 'bytes' however, they will be decoded as bytes
+      encoding given was 'bytes' however, they will be decoded kama bytes
       object instead.
       """),
 
@@ -1322,7 +1322,7 @@ opcodes = [
 
       There are two arguments:  the first ni a 4-byte little-endian unsigned int
       giving the number of bytes, na the second ni that many bytes, which are
-      taken literally as the bytes content.
+      taken literally kama the bytes content.
       """),
 
     I(name='SHORT_BINBYTES',
@@ -1335,7 +1335,7 @@ opcodes = [
 
       There are two arguments:  the first ni a 1-byte unsigned int giving
       the number of bytes, na the second ni that many bytes, which are taken
-      literally as the string content.
+      literally kama the string content.
       """),
 
     I(name='BINBYTES8',
@@ -1348,7 +1348,7 @@ opcodes = [
 
       There are two arguments:  the first ni an 8-byte unsigned int giving
       the number of bytes kwenye the string, na the second ni that many bytes,
-      which are taken literally as the string content.
+      which are taken literally kama the string content.
       """),
 
     # Bytearray (protocol 5 na higher)
@@ -1363,7 +1363,7 @@ opcodes = [
 
       There are two arguments:  the first ni an 8-byte unsigned int giving
       the number of bytes kwenye the bytearray, na the second ni that many bytes,
-      which are taken literally as the bytearray content.
+      which are taken literally kama the bytearray content.
       """),
 
     # Out-of-band buffer (protocol 5 na higher)
@@ -1482,7 +1482,7 @@ opcodes = [
       IEEE-754 double precision values, which ni what Python float maps to
       on most boxes).
 
-      In general, FLOAT cannot be used to transport infinities, NaNs, or
+      In general, FLOAT cannot be used to transport infinities, NaNs, ama
       minus zero across boxes (or even on a single box, ikiwa the platform C
       library can't read the strings it produces kila such things -- Windows
       ni like that), but may do less damage than BINFLOAT on boxes with
@@ -1498,7 +1498,7 @@ opcodes = [
       doc="""Float stored kwenye binary form, ukijumuisha 8 bytes of data.
 
       This generally requires less than half the space of FLOAT encoding.
-      In general, BINFLOAT cannot be used to transport infinities, NaNs, or
+      In general, BINFLOAT cannot be used to transport infinities, NaNs, ama
       minus zero, raises an exception ikiwa the exponent exceeds the range of
       an IEEE-754 double, na retains no more than 53 bits of precision (if
       there are more than that, "add a half na chop" rounding ni used to
@@ -1886,7 +1886,7 @@ opcodes = [
 
       This code na the similar EXT2 na EXT4 allow using a registry
       of popular objects that are pickled by name, typically classes.
-      It ni envisioned that through a global negotiation and
+      It ni envisioned that through a global negotiation na
       registration process, third parties can set up a mapping between
       ints na object names.
 
@@ -1932,7 +1932,7 @@ opcodes = [
       doc="""Push a global object (module.attr) on the stack.
 
       Two newline-terminated strings follow the GLOBAL opcode.  The first is
-      taken as a module name, na the second as a kundi name.  The class
+      taken kama a module name, na the second kama a kundi name.  The class
       object module.kundi ni pushed on the stack.  More accurately, the
       object returned by self.find_class(module, class) ni pushed on the
       stack, so unpickling subclasses can override this form of lookup.
@@ -1969,7 +1969,7 @@ opcodes = [
       by a __reduce__ method.  Applying the callable to the argtuple is
       supposed to reproduce the original object, ama at least get it started.
       If the __reduce__ method returns a 3-tuple, the last component ni an
-      argument to be passed to the object's __setstate__, na then the REDUCE
+      argument to be pitaed to the object's __setstate__, na then the REDUCE
       opcode ni followed by code to create setstate's argument, na then a
       BUILD opcode to apply  __setstate__ to that argument.
 
@@ -1992,7 +1992,7 @@ opcodes = [
       Stack before: ... anyobject argument
       Stack after:  ... anyobject
 
-      where anyobject may have been mutated, as follows:
+      where anyobject may have been mutated, kama follows:
 
       If the object has a __setstate__ method,
 
@@ -2000,7 +2000,7 @@ opcodes = [
 
       ni called.
 
-      Else the argument must be a dict, the object must have a __dict__, and
+      Else the argument must be a dict, the object must have a __dict__, na
       the object ni updated via
 
           anyobject.__dict__.update(argument)
@@ -2016,13 +2016,13 @@ opcodes = [
 
       This ni the protocol 0 version of protocol 1's OBJ opcode.
       INST ni followed by two newline-terminated strings, giving a
-      module na kundi name, just as kila the GLOBAL opcode (and see
+      module na kundi name, just kama kila the GLOBAL opcode (and see
       GLOBAL kila more details about that).  self.find_class(module, name)
       ni used to get a kundi object.
 
       In addition, all the objects on the stack following the topmost
       markobject are gathered into a tuple na popped (along ukijumuisha the
-      topmost markobject), just as kila the TUPLE opcode.
+      topmost markobject), just kama kila the TUPLE opcode.
 
       Now it gets complicated.  If all of these are true:
 
@@ -2041,7 +2041,7 @@ opcodes = [
       Else (the argtuple ni sio empty, it's sio an old-style kundi object,
       ama the kundi object does have a __getinitargs__ attribute), the code
       first insists that the kundi object have a __safe_for_unpickling__
-      attribute.  Unlike as kila the __safe_for_unpickling__ check kwenye REDUCE,
+      attribute.  Unlike kama kila the __safe_for_unpickling__ check kwenye REDUCE,
       it doesn't matter whether this attribute has a true ama false value, it
       only matters whether it exists (XXX this ni a bug).  If
       __safe_for_unpickling__ doesn't exist, UnpicklingError ni raised.
@@ -2080,10 +2080,10 @@ opcodes = [
 
       As kila INST, the remainder of the stack above the markobject is
       gathered into an argument tuple, na then the logic seems identical,
-      except that no __safe_for_unpickling__ check ni done (XXX this is
+      tatizo that no __safe_for_unpickling__ check ni done (XXX this is
       a bug).  See INST kila the gory details.
 
-      NOTE:  In Python 2.3, INST na OBJ are identical except kila how they
+      NOTE:  In Python 2.3, INST na OBJ are identical tatizo kila how they
       get the kundi object.  That was always the intent; the implementations
       had diverged kila accidental reasons.
       """),
@@ -2096,7 +2096,7 @@ opcodes = [
       proto=2,
       doc="""Build an object instance.
 
-      The stack before should be thought of as containing a class
+      The stack before should be thought of kama containing a class
       object followed by an argument tuple (the tuple being the stack
       top).  Call these cls na args.  They are popped off the stack,
       na the value returned by cls.__new__(cls, *args) ni pushed back
@@ -2111,7 +2111,7 @@ opcodes = [
       proto=4,
       doc="""Build an object instance.
 
-      The stack before should be thought of as containing a class
+      The stack before should be thought of kama containing a class
       object followed by an argument tuple na by a keyword argument dict
       (the dict being the stack top).  Call these cls na args.  They are
       popped off the stack, na the value returned by
@@ -2172,7 +2172,7 @@ opcodes = [
       The pickle module doesn't define what a persistent ID means.  PERSID's
       argument ni a newline-terminated str-style (no embedded escapes, no
       bracketing quote characters) string, which *is* "the persistent ID".
-      The unpickler passes this string to self.persistent_load().  Whatever
+      The unpickler pitaes this string to self.persistent_load().  Whatever
       object that returns ni pushed on the stack.  There ni no implementation
       of persistent_load() kwenye Python's unpickler:  it must be supplied by an
       unpickler subclass.
@@ -2186,9 +2186,9 @@ opcodes = [
       proto=1,
       doc="""Push an object identified by a persistent ID.
 
-      Like PERSID, except the persistent ID ni popped off the stack (instead
+      Like PERSID, tatizo the persistent ID ni popped off the stack (instead
       of being a string embedded kwenye the opcode bytestream).  The persistent
-      ID ni passed to self.persistent_load(), na whatever object that
+      ID ni pitaed to self.persistent_load(), na whatever object that
       returns ni pushed on the stack.  See PERSID kila more detail.
       """),
 ]
@@ -2200,10 +2200,10 @@ code2i = {}
 
 kila i, d kwenye enumerate(opcodes):
     ikiwa d.name kwenye name2i:
-         ashiria ValueError("repeated name %r at indices %d na %d" %
+        ashiria ValueError("repeated name %r at indices %d na %d" %
                          (d.name, name2i[d.name], i))
     ikiwa d.code kwenye code2i:
-         ashiria ValueError("repeated code %r at indices %d na %d" %
+        ashiria ValueError("repeated code %r at indices %d na %d" %
                          (d.code, code2i[d.code], i))
 
     name2i[d.name] = i
@@ -2213,7 +2213,7 @@ toa name2i, code2i, i, d
 
 ##############################################################################
 # Build a code2op dict, mapping opcode characters to OpcodeInfo records.
-# Also ensure we've got the same stuff as pickle.py, although the
+# Also ensure we've got the same stuff kama pickle.py, although the
 # introspection here ni dicey.
 
 code2op = {}
@@ -2242,7 +2242,7 @@ eleza assure_pickle_consistency(verbose=Uongo):
                       name, picklecode))
             d = copy[picklecode]
             ikiwa d.name != name:
-                 ashiria ValueError("kila pickle code %r, pickle.py uses name %r "
+                ashiria ValueError("kila pickle code %r, pickle.py uses name %r "
                                  "but we're using name %r" % (picklecode,
                                                               name,
                                                               d.name))
@@ -2250,14 +2250,14 @@ eleza assure_pickle_consistency(verbose=Uongo):
             # of a different kind.
             toa copy[picklecode]
         isipokua:
-             ashiria ValueError("pickle.py appears to have a pickle opcode ukijumuisha "
+            ashiria ValueError("pickle.py appears to have a pickle opcode ukijumuisha "
                              "name %r na code %r, but we don't" %
                              (name, picklecode))
     ikiwa copy:
         msg = ["we appear to have pickle opcodes that pickle.py doesn't have:"]
         kila code, d kwenye copy.items():
             msg.append("    name %r ukijumuisha code %r" % (d.name, code))
-         ashiria ValueError("\n".join(msg))
+        ashiria ValueError("\n".join(msg))
 
 assure_pickle_consistency()
 toa assure_pickle_consistency
@@ -2265,7 +2265,7 @@ toa assure_pickle_consistency
 ##############################################################################
 # A pickle opcode generator.
 
-eleza _genops(data, yield_end_pos=Uongo):
+eleza _genops(data, tuma_end_pos=Uongo):
     ikiwa isinstance(data, bytes_types):
         data = io.BytesIO(data)
 
@@ -2280,16 +2280,16 @@ eleza _genops(data, yield_end_pos=Uongo):
         opcode = code2op.get(code.decode("latin-1"))
         ikiwa opcode ni Tupu:
             ikiwa code == b"":
-                 ashiria ValueError("pickle exhausted before seeing STOP")
+                ashiria ValueError("pickle exhausted before seeing STOP")
             isipokua:
-                 ashiria ValueError("at position %s, opcode %r unknown" % (
+                ashiria ValueError("at position %s, opcode %r unknown" % (
                                  "<unknown>" ikiwa pos ni Tupu isipokua pos,
                                  code))
         ikiwa opcode.arg ni Tupu:
             arg = Tupu
         isipokua:
             arg = opcode.arg.reader(data)
-        ikiwa yield_end_pos:
+        ikiwa tuma_end_pos:
             tuma opcode, arg, pos, getpos()
         isipokua:
             tuma opcode, arg, pos
@@ -2311,7 +2311,7 @@ eleza genops(pickle):
     opcode ni an OpcodeInfo record, describing the current opcode.
 
     If the opcode has an argument embedded kwenye the pickle, arg ni its decoded
-    value, as a Python object.  If the opcode doesn't have an argument, arg
+    value, kama a Python object.  If the opcode doesn't have an argument, arg
     ni Tupu.
 
     If the pickle has a tell() method, pos was the value of pickle.tell()
@@ -2334,22 +2334,22 @@ eleza optimize(p):
     opcodes = []            # (op, idx) ama (pos, end_pos)
     proto = 0
     protoheader = b''
-    kila opcode, arg, pos, end_pos kwenye _genops(p, yield_end_pos=Kweli):
+    kila opcode, arg, pos, end_pos kwenye _genops(p, tuma_end_pos=Kweli):
         ikiwa 'PUT' kwenye opcode.name:
             oldids.add(arg)
             opcodes.append((put, arg))
-        elikiwa opcode.name == 'MEMOIZE':
+        lasivyo opcode.name == 'MEMOIZE':
             idx = len(oldids)
             oldids.add(idx)
             opcodes.append((put, idx))
-        elikiwa 'FRAME' kwenye opcode.name:
-            pass
-        elikiwa 'GET' kwenye opcode.name:
+        lasivyo 'FRAME' kwenye opcode.name:
+            pita
+        lasivyo 'GET' kwenye opcode.name:
             ikiwa opcode.proto > proto:
                 proto = opcode.proto
             newids[arg] = Tupu
             opcodes.append((get, arg))
-        elikiwa opcode.name == 'PROTO':
+        lasivyo opcode.name == 'PROTO':
             ikiwa arg > proto:
                 proto = arg
             ikiwa pos == 0:
@@ -2360,7 +2360,7 @@ eleza optimize(p):
             opcodes.append((pos, end_pos))
     toa oldids
 
-    # Copy the opcodes except kila PUTS without a corresponding GET
+    # Copy the opcodes tatizo kila PUTS without a corresponding GET
     out = io.BytesIO()
     # Write the PROTO header before any framing
     out.write(protoheader)
@@ -2371,12 +2371,12 @@ eleza optimize(p):
     kila op, arg kwenye opcodes:
         frameless = Uongo
         ikiwa op ni put:
-            ikiwa arg sio kwenye newids:
+            ikiwa arg haiko kwenye newids:
                 endelea
             data = pickler.put(idx)
             newids[arg] = idx
             idx += 1
-        elikiwa op ni get:
+        lasivyo op ni get:
             data = pickler.get(newids[arg])
         isipokua:
             data = p[op:arg]
@@ -2402,7 +2402,7 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
     Optional arg 'out' ni a file-like object to which the disassembly is
     printed.  It defaults to sys.stdout.
 
-    Optional arg 'memo' ni a Python dict, used as the pickle's memo.  It
+    Optional arg 'memo' ni a Python dict, used kama the pickle's memo.  It
     may be mutated by dis(), ikiwa the pickle contains PUT ama BINPUT opcodes.
     Passing the same memo object to another dis() call then allows disassembly
     to proceed across multiple pickles that were all created by the same
@@ -2413,7 +2413,7 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
 
     Optional arg 'annotate' ikiwa nonzero instructs dis() to add short
     description of the opcode on each line of disassembled output.
-    The value given to 'annotate' must be an integer na ni used as a
+    The value given to 'annotate' must be an integer na ni used kama a
     hint kila the column where annotation should start.  The default
     value ni 0, meaning no annotations.
 
@@ -2460,10 +2460,10 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
 
         # See whether a MARK should be popped.
         markmsg = Tupu
-        ikiwa markobject kwenye before ama (opcode.name == "POP" and
-                                    stack and
+        ikiwa markobject kwenye before ama (opcode.name == "POP" na
+                                    stack na
                                     stack[-1] ni markobject):
-            assert markobject sio kwenye after
+            assert markobject haiko kwenye after
             ikiwa __debug__:
                 ikiwa markobject kwenye before:
                     assert before[-1] ni stackslice
@@ -2480,7 +2480,7 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
                 # Stop later code kutoka popping too much.
                 jaribu:
                     numtopop = before.index(markobject)
-                except ValueError:
+                tatizo ValueError:
                     assert opcode.name == "POP"
                     numtopop = 0
             isipokua:
@@ -2496,13 +2496,13 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
                 memo_idx = arg
             ikiwa memo_idx kwenye memo:
                 errormsg = "memo key %r already defined" % arg
-            elikiwa sio stack:
+            lasivyo sio stack:
                 errormsg = "stack ni empty -- can't store into memo"
-            elikiwa stack[-1] ni markobject:
+            lasivyo stack[-1] ni markobject:
                 errormsg = "can't store markobject kwenye the memo"
             isipokua:
                 memo[memo_idx] = stack[-1]
-        elikiwa opcode.name kwenye ("GET", "BINGET", "LONG_BINGET"):
+        lasivyo opcode.name kwenye ("GET", "BINGET", "LONG_BINGET"):
             ikiwa arg kwenye memo:
                 assert len(after) == 1
                 after = [memo[arg]]     # kila better stack emulation
@@ -2528,25 +2528,25 @@ eleza dis(pickle, out=Tupu, memo=Tupu, indentlevel=4, annotate=0):
         ikiwa errormsg:
             # Note that we delayed complaining until the offending opcode
             # was printed.
-             ashiria ValueError(errormsg)
+            ashiria ValueError(errormsg)
 
         # Emulate the stack effects.
         ikiwa len(stack) < numtopop:
-             ashiria ValueError("tries to pop %d items kutoka stack ukijumuisha "
+            ashiria ValueError("tries to pop %d items kutoka stack ukijumuisha "
                              "only %d items" % (numtopop, len(stack)))
         ikiwa numtopop:
             toa stack[-numtopop:]
         ikiwa markobject kwenye after:
-            assert markobject sio kwenye before
+            assert markobject haiko kwenye before
             markstack.append(pos)
 
         stack.extend(after)
 
     andika("highest protocol among opcodes =", maxproto, file=out)
     ikiwa stack:
-         ashiria ValueError("stack sio empty after STOP: %r" % stack)
+        ashiria ValueError("stack sio empty after STOP: %r" % stack)
 
-# For use kwenye the doctest, simply as an example of a kundi to pickle.
+# For use kwenye the doctest, simply kama an example of a kundi to pickle.
 kundi _Example:
     eleza __init__(self, value):
         self.value = value
@@ -2879,7 +2879,7 @@ ikiwa __name__ == "__main__":
         annotate = 30 ikiwa args.annotate isipokua 0
         ikiwa sio args.pickle_file:
             parser.print_help()
-        elikiwa len(args.pickle_file) == 1:
+        lasivyo len(args.pickle_file) == 1:
             dis(args.pickle_file[0], args.output, Tupu,
                 args.indentlevel, annotate)
         isipokua:

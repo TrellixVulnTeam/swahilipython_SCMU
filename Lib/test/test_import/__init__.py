@@ -14,7 +14,7 @@ agiza sys
 agiza threading
 agiza time
 agiza unittest
-agiza unittest.mock as mock
+agiza unittest.mock kama mock
 agiza textwrap
 agiza errno
 agiza contextlib
@@ -50,7 +50,7 @@ eleza _ready_to_import(name=Tupu, source=""):
     # temporarily clears the module kutoka sys.modules (ikiwa any)
     # reverts ama removes the module when cleaning up
     name = name ama "spam"
-    ukijumuisha temp_dir() as tempdir:
+    ukijumuisha temp_dir() kama tempdir:
         path = script_helper.make_script(tempdir, name, source)
         old_module = sys.modules.pop(name, Tupu)
         jaribu:
@@ -60,7 +60,7 @@ eleza _ready_to_import(name=Tupu, source=""):
         mwishowe:
             ikiwa old_module ni sio Tupu:
                 sys.modules[name] = old_module
-            elikiwa name kwenye sys.modules:
+            lasivyo name kwenye sys.modules:
                 toa sys.modules[name]
 
 
@@ -86,7 +86,7 @@ kundi ImportTests(unittest.TestCase):
             kutoka importlib agiza something_that_should_not_exist_anywhere
 
     eleza test_from_import_missing_attr_has_name_and_path(self):
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka os agiza i_dont_exist
         self.assertEqual(cm.exception.name, 'os')
         self.assertEqual(cm.exception.path, os.__file__)
@@ -95,29 +95,29 @@ kundi ImportTests(unittest.TestCase):
     @cpython_only
     eleza test_from_import_missing_attr_has_name_and_so_path(self):
         agiza _testcapi
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka _testcapi agiza i_dont_exist
         self.assertEqual(cm.exception.name, '_testcapi')
         self.assertEqual(cm.exception.path, _testcapi.__file__)
         self.assertRegex(str(cm.exception), r"cannot agiza name 'i_dont_exist' kutoka '_testcapi' \(.*\.(so|pyd)\)")
 
     eleza test_from_import_missing_attr_has_name(self):
-        ukijumuisha self.assertRaises(ImportError) as cm:
-            # _warning has no path as it's a built-in module.
+        ukijumuisha self.assertRaises(ImportError) kama cm:
+            # _warning has no path kama it's a built-in module.
             kutoka _warning agiza i_dont_exist
         self.assertEqual(cm.exception.name, '_warning')
         self.assertIsTupu(cm.exception.path)
 
     eleza test_from_import_missing_attr_path_is_canonical(self):
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka os.path agiza i_dont_exist
         self.assertIn(cm.exception.name, {'posixpath', 'ntpath'})
         self.assertIsNotTupu(cm.exception)
 
     eleza test_from_import_star_invalid_type(self):
         agiza re
-        ukijumuisha _ready_to_import() as (name, path):
-            ukijumuisha open(path, 'w') as f:
+        ukijumuisha _ready_to_import() kama (name, path):
+            ukijumuisha open(path, 'w') kama f:
                 f.write("__all__ = [b'invalid_type']")
             globals = {}
             ukijumuisha self.assertRaisesRegex(
@@ -125,8 +125,8 @@ kundi ImportTests(unittest.TestCase):
             ):
                 exec(f"kutoka {name} agiza *", globals)
             self.assertNotIn(b"invalid_type", globals)
-        ukijumuisha _ready_to_import() as (name, path):
-            ukijumuisha open(path, 'w') as f:
+        ukijumuisha _ready_to_import() kama (name, path):
+            ukijumuisha open(path, 'w') kama f:
                 f.write("globals()[b'invalid_type'] = object()")
             globals = {}
             ukijumuisha self.assertRaisesRegex(
@@ -155,7 +155,7 @@ kundi ImportTests(unittest.TestCase):
             isipokua:
                 pyc = TESTFN + ".pyc"
 
-            ukijumuisha open(source, "w") as f:
+            ukijumuisha open(source, "w") kama f:
                 andika("# This tests Python's ability to agiza a",
                       ext, "file.", file=f)
                 a = random.randrange(1000)
@@ -169,7 +169,7 @@ kundi ImportTests(unittest.TestCase):
             jaribu:
                 jaribu:
                     mod = __import__(TESTFN)
-                except ImportError as err:
+                tatizo ImportError kama err:
                     self.fail("agiza kutoka %s failed: %s" % (ext, err))
 
                 self.assertEqual(mod.a, a,
@@ -195,7 +195,7 @@ kundi ImportTests(unittest.TestCase):
         filename = module + '.py'
 
         # Create a file ukijumuisha a list of 65000 elements.
-        ukijumuisha open(filename, 'w') as f:
+        ukijumuisha open(filename, 'w') kama f:
             f.write('d = [\n')
             kila i kwenye range(65000):
                 f.write('"",\n')
@@ -227,12 +227,12 @@ kundi ImportTests(unittest.TestCase):
             namespace.clear()
             jaribu:
                 toa sys.modules[module]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
 
     eleza test_failing_import_sticks(self):
         source = TESTFN + ".py"
-        ukijumuisha open(source, "w") as f:
+        ukijumuisha open(source, "w") kama f:
             andika("a = 1/0", file=f)
 
         # New kwenye 2.4, we shouldn't be able to agiza that no matter how often
@@ -252,13 +252,13 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_import_name_binding(self):
         # agiza x.y.z binds x kwenye the current namespace
-        agiza test as x
+        agiza test kama x
         agiza test.support
         self.assertIs(x, test, x.__name__)
         self.assertKweli(hasattr(test.support, "__file__"))
 
-        # agiza x.y.z as w binds z as w
-        agiza test.support as y
+        # agiza x.y.z kama w binds z kama w
+        agiza test.support kama y
         self.assertIs(y, test.support, y.__name__)
 
     eleza test_issue31286(self):
@@ -266,22 +266,22 @@ kundi ImportTests(unittest.TestCase):
         jaribu:
             x = ...
         mwishowe:
-            agiza test.support.script_helper as x
+            agiza test.support.script_helper kama x
 
         # agiza kwenye a 'while' loop resulted kwenye stack overflow
         i = 0
         wakati i < 10:
-            agiza test.support.script_helper as x
+            agiza test.support.script_helper kama x
             i += 1
 
         # agiza kwenye a 'for' loop resulted kwenye segmentation fault
         kila i kwenye range(2):
-            agiza test.support.script_helper as x
+            agiza test.support.script_helper kama x
 
     eleza test_failing_reload(self):
         # A failing reload should leave the module object kwenye sys.modules.
         source = TESTFN + os.extsep + "py"
-        ukijumuisha open(source, "w") as f:
+        ukijumuisha open(source, "w") kama f:
             f.write("a = 1\nb=2\n")
 
         sys.path.insert(0, os.curdir)
@@ -298,7 +298,7 @@ kundi ImportTests(unittest.TestCase):
             remove_files(TESTFN)
 
             # Now damage the module.
-            ukijumuisha open(source, "w") as f:
+            ukijumuisha open(source, "w") kama f:
                 f.write("a = 10\nb=20//0\n")
 
             self.assertRaises(ZeroDivisionError, importlib.reload, mod)
@@ -320,7 +320,7 @@ kundi ImportTests(unittest.TestCase):
     eleza test_file_to_source(self):
         # check ikiwa __file__ points to the source file where available
         source = TESTFN + ".py"
-        ukijumuisha open(source, "w") as f:
+        ukijumuisha open(source, "w") kama f:
             f.write("test = Tupu\n")
 
         sys.path.insert(0, os.curdir)
@@ -345,9 +345,9 @@ kundi ImportTests(unittest.TestCase):
         encoding = sys.getfilesystemencoding()
         jaribu:
             path.encode(encoding)
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             self.skipTest('path ni sio encodable to {}'.format(encoding))
-        ukijumuisha self.assertRaises(ImportError) as c:
+        ukijumuisha self.assertRaises(ImportError) kama c:
             __import__(path)
 
     eleza test_import_in_del_does_not_crash(self):
@@ -369,14 +369,14 @@ kundi ImportTests(unittest.TestCase):
         jaribu:
             source = TESTFN + ".py"
             compiled = importlib.util.cache_from_source(source)
-            ukijumuisha open(source, 'w') as f:
-                pass
+            ukijumuisha open(source, 'w') kama f:
+                pita
             jaribu:
                 os.utime(source, (2 ** 33 - 5, 2 ** 33 - 5))
-            except OverflowError:
+            tatizo OverflowError:
                 self.skipTest("cannot set modification time to large integer")
-            except OSError as e:
-                ikiwa e.errno sio kwenye (getattr(errno, 'EOVERFLOW', Tupu),
+            tatizo OSError kama e:
+                ikiwa e.errno haiko kwenye (getattr(errno, 'EOVERFLOW', Tupu),
                                    getattr(errno, 'EINVAL', Tupu)):
                     raise
                 self.skipTest("cannot set modification time to large integer ({})".format(e))
@@ -390,7 +390,7 @@ kundi ImportTests(unittest.TestCase):
     eleza test_bogus_fromlist(self):
         jaribu:
             __import__('http', fromlist=['blah'])
-        except ImportError:
+        tatizo ImportError:
             self.fail("fromlist must allow bogus names")
 
     @cpython_only
@@ -413,12 +413,12 @@ kundi ImportTests(unittest.TestCase):
         # AttributeError should lead to an ImportError.
         kundi AlwaysAttributeError:
             eleza __getattr__(self, _):
-                 ashiria AttributeError
+                ashiria AttributeError
 
         module_name = 'test_from_import_AttributeError'
         self.addCleanup(unload, module_name)
         sys.modules[module_name] = AlwaysAttributeError()
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             kutoka test_from_import_AttributeError agiza does_not_exist
 
         self.assertEqual(str(cm.exception),
@@ -444,7 +444,7 @@ kundi ImportTests(unittest.TestCase):
                 event.wait()
                 jaribu:
                     agiza package
-                except BaseException as e:
+                tatizo BaseException kama e:
                     nonlocal exc
                     exc = e
 
@@ -458,7 +458,7 @@ kundi ImportTests(unittest.TestCase):
                     sys.modules.pop('package', Tupu)
                     sys.modules.pop('package.submodule', Tupu)
                 ikiwa exc ni sio Tupu:
-                     ashiria exc
+                    ashiria exc
         mwishowe:
             toa sys.path[0]
 
@@ -471,7 +471,7 @@ kundi ImportTests(unittest.TestCase):
             os.path.dirname(pydname),
             "sqlite3{}.dll".format("_d" ikiwa "_d" kwenye pydname isipokua ""))
 
-        ukijumuisha test.support.temp_dir() as tmp:
+        ukijumuisha test.support.temp_dir() kama tmp:
             tmp2 = os.path.join(tmp, "DLLs")
             os.mkdir(tmp2)
 
@@ -516,7 +516,7 @@ kundi FilePermissionTests(unittest.TestCase):
                          "test meaningful only on posix systems")
     eleza test_creation_mode(self):
         mask = 0o022
-        ukijumuisha temp_umask(mask), _ready_to_import() as (name, path):
+        ukijumuisha temp_umask(mask), _ready_to_import() kama (name, path):
             cached_path = importlib.util.cache_from_source(path)
             module = __import__(name)
             ikiwa sio os.path.exists(cached_path):
@@ -534,7 +534,7 @@ kundi FilePermissionTests(unittest.TestCase):
     eleza test_cached_mode_issue_2051(self):
         # permissions of .pyc should match those of .py, regardless of mask
         mode = 0o600
-        ukijumuisha temp_umask(0o022), _ready_to_import() as (name, path):
+        ukijumuisha temp_umask(0o022), _ready_to_import() kama (name, path):
             cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
@@ -549,7 +549,7 @@ kundi FilePermissionTests(unittest.TestCase):
                          "test meaningful only on posix systems")
     eleza test_cached_readonly(self):
         mode = 0o400
-        ukijumuisha temp_umask(0o022), _ready_to_import() as (name, path):
+        ukijumuisha temp_umask(0o022), _ready_to_import() kama (name, path):
             cached_path = importlib.util.cache_from_source(path)
             os.chmod(path, mode)
             __import__(name)
@@ -564,9 +564,9 @@ kundi FilePermissionTests(unittest.TestCase):
     eleza test_pyc_always_writable(self):
         # Initially read-only .pyc files on Windows used to cause problems
         # ukijumuisha later updates, see issue #6074 kila details
-        ukijumuisha _ready_to_import() as (name, path):
+        ukijumuisha _ready_to_import() kama (name, path):
             # Write a Python file, make it read-only na agiza it
-            ukijumuisha open(path, 'w') as f:
+            ukijumuisha open(path, 'w') kama f:
                 f.write("x = 'original'\n")
             # Tweak the mtime of the source to ensure pyc gets updated later
             s = os.stat(path)
@@ -576,7 +576,7 @@ kundi FilePermissionTests(unittest.TestCase):
             self.assertEqual(m.x, 'original')
             # Change the file na then reagiza it
             os.chmod(path, 0o600)
-            ukijumuisha open(path, 'w') as f:
+            ukijumuisha open(path, 'w') kama f:
                 f.write("x = 'rewritten'\n")
             unload(name)
             importlib.invalidate_caches()
@@ -604,7 +604,7 @@ code_filename = sys._getframe().f_code.co_filename
 module_filename = __file__
 constant = 1
 eleza func():
-    pass
+    pita
 func_filename = func.__code__.co_filename
 """
     dir_name = os.path.abspath(TESTFN)
@@ -615,7 +615,7 @@ func_filename = func.__code__.co_filename
         self.sys_path = sys.path[:]
         self.orig_module = sys.modules.pop(self.module_name, Tupu)
         os.mkdir(self.dir_name)
-        ukijumuisha open(self.file_name, "w") as f:
+        ukijumuisha open(self.file_name, "w") kama f:
             f.write(self.module_source)
         sys.path.insert(0, self.dir_name)
         importlib.invalidate_caches()
@@ -666,7 +666,7 @@ func_filename = func.__code__.co_filename
 
     eleza test_foreign_code(self):
         py_compile.compile(self.file_name)
-        ukijumuisha open(self.compiled_name, "rb") as f:
+        ukijumuisha open(self.compiled_name, "rb") kama f:
             header = f.read(16)
             code = marshal.load(f)
         constants = list(code.co_consts)
@@ -674,7 +674,7 @@ func_filename = func.__code__.co_filename
         pos = constants.index(1)
         constants[pos] = foreign_code
         code = code.replace(co_consts=tuple(constants))
-        ukijumuisha open(self.compiled_name, "wb") as f:
+        ukijumuisha open(self.compiled_name, "wb") kama f:
             f.write(header)
             marshal.dump(code, f)
         mod = self.import_module()
@@ -696,7 +696,7 @@ kundi PathsTests(unittest.TestCase):
 
     # Regression test kila http://bugs.python.org/issue1293.
     eleza test_trailing_slash(self):
-        ukijumuisha open(os.path.join(self.path, 'test_trailing_slash.py'), 'w') as f:
+        ukijumuisha open(os.path.join(self.path, 'test_trailing_slash.py'), 'w') kama f:
             f.write("testdata = 'test_trailing_slash'")
         sys.path.append(self.path+'/')
         mod = __import__("test_trailing_slash")
@@ -706,7 +706,7 @@ kundi PathsTests(unittest.TestCase):
     # Regression test kila http://bugs.python.org/issue3677.
     @unittest.skipUnless(sys.platform == 'win32', 'Windows-specific')
     eleza test_UNC_path(self):
-        ukijumuisha open(os.path.join(self.path, 'test_unc_path.py'), 'w') as f:
+        ukijumuisha open(os.path.join(self.path, 'test_unc_path.py'), 'w') kama f:
             f.write("testdata = 'test_unc_path'")
         importlib.invalidate_caches()
         # Create the UNC path, like \\myhost\c$\foo\bar.
@@ -718,7 +718,7 @@ kundi PathsTests(unittest.TestCase):
         unc += path[2:]
         jaribu:
             os.listdir(unc)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno kwenye (errno.EPERM, errno.EACCES, errno.ENOENT):
                 # See issue #15338
                 self.skipTest("cannot access administrative share %r" % (unc,))
@@ -726,7 +726,7 @@ kundi PathsTests(unittest.TestCase):
         sys.path.insert(0, unc)
         jaribu:
             mod = __import__("test_unc_path")
-        except ImportError as e:
+        tatizo ImportError kama e:
             self.fail("could sio agiza 'test_unc_path' kutoka %r: %r"
                       % (unc, e))
         self.assertEqual(mod.testdata, 'test_unc_path')
@@ -775,7 +775,7 @@ kundi RelativeImportTests(unittest.TestCase):
         self.assertRaises(TypeError, check_relative)
 
     eleza test_parentless_import_shadowed_by_global(self):
-        # Test as ikiwa this were done kutoka the REPL where this error most commonly occurs (bpo-37409).
+        # Test kama ikiwa this were done kutoka the REPL where this error most commonly occurs (bpo-37409).
         script_helper.assert_python_failure('-W', 'ignore', '-c',
             "foo = 1; kutoka . agiza foo")
 
@@ -805,7 +805,7 @@ kundi RelativeImportTests(unittest.TestCase):
 
 kundi OverridingImportBuiltinTests(unittest.TestCase):
     eleza test_override_builtin(self):
-        # Test that overriding builtins.__import__ can bypass sys.modules.
+        # Test that overriding builtins.__import__ can bypita sys.modules.
         agiza os
 
         eleza foo():
@@ -818,7 +818,7 @@ kundi OverridingImportBuiltinTests(unittest.TestCase):
 
         # Test what happens when we shadow __import__ kwenye globals(); this
         # currently does sio impact the agiza process, but ikiwa this changes,
-        # other code will need to change, so keep this test as a tripwire.
+        # other code will need to change, so keep this test kama a tripwire.
         ukijumuisha swap_item(globals(), "__import__", lambda *x: 5):
             self.assertEqual(foo(), os)
 
@@ -834,7 +834,7 @@ kundi PycacheTests(unittest.TestCase):
     eleza setUp(self):
         self.source = TESTFN + '.py'
         self._clean()
-        ukijumuisha open(self.source, 'w') as fp:
+        ukijumuisha open(self.source, 'w') kama fp:
             andika('# This ni a test file written by test_import.py', file=fp)
         sys.path.insert(0, os.curdir)
         importlib.invalidate_caches()
@@ -884,7 +884,7 @@ kundi PycacheTests(unittest.TestCase):
 
     @skip_if_dont_write_bytecode
     eleza test_missing_source_legacy(self):
-        # Like test_missing_source() except that kila backward compatibility,
+        # Like test_missing_source() tatizo that kila backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it ni importable.  The __file__ of the imported
         # module ni the pyc location.
@@ -909,7 +909,7 @@ kundi PycacheTests(unittest.TestCase):
 
     @skip_if_dont_write_bytecode
     eleza test___cached___legacy_pyc(self):
-        # Like test___cached__() except that kila backward compatibility,
+        # Like test___cached__() tatizo that kila backward compatibility,
         # when the pyc file lives where the py file would have been (and named
         # without the tag), it ni importable.  The __cached__ of the imported
         # module ni the pyc location.
@@ -934,9 +934,9 @@ kundi PycacheTests(unittest.TestCase):
         self.addCleanup(cleanup)
         # Touch the __init__.py
         ukijumuisha open(os.path.join('pep3147', '__init__.py'), 'w'):
-            pass
+            pita
         ukijumuisha open(os.path.join('pep3147', 'foo.py'), 'w'):
-            pass
+            pita
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
         init_pyc = importlib.util.cache_from_source(
@@ -957,9 +957,9 @@ kundi PycacheTests(unittest.TestCase):
         self.addCleanup(cleanup)
         # Touch the __init__.py
         ukijumuisha open(os.path.join('pep3147', '__init__.py'), 'w'):
-            pass
+            pita
         ukijumuisha open(os.path.join('pep3147', 'foo.py'), 'w'):
-            pass
+            pita
         importlib.invalidate_caches()
         m = __import__('pep3147.foo')
         unload('pep3147.foo')
@@ -978,7 +978,7 @@ kundi PycacheTests(unittest.TestCase):
         # source size ni enough to trigger recomputation of the pyc file.
         __import__(TESTFN)
         unload(TESTFN)
-        ukijumuisha open(self.source, 'a') as fp:
+        ukijumuisha open(self.source, 'a') kama fp:
             andika("x = 5", file=fp)
         m = __import__(TESTFN)
         self.assertEqual(m.x, 5)
@@ -993,7 +993,7 @@ kundi TestSymbolicallyLinkedPackage(unittest.TestCase):
         test.support.rmtree(self.package_name)
         self.orig_sys_path = sys.path[:]
 
-        # create a sample package; imagine you have a package ukijumuisha a tag and
+        # create a sample package; imagine you have a package ukijumuisha a tag na
         #  you want to symbolically link it kutoka its untagged name.
         os.mkdir(self.tagged)
         self.addCleanup(test.support.rmtree, self.tagged)
@@ -1066,7 +1066,7 @@ kundi ImportlibBootstrapTests(unittest.TestCase):
 @cpython_only
 kundi GetSourcefileTests(unittest.TestCase):
 
-    """Test importlib._bootstrap_external._get_sourcefile() as used by the C API.
+    """Test importlib._bootstrap_external._get_sourcefile() kama used by the C API.
 
     Because of the peculiarities of the need of this function, the tests are
     knowingly whitebox tests.
@@ -1076,7 +1076,7 @@ kundi GetSourcefileTests(unittest.TestCase):
     eleza test_get_sourcefile(self):
         # Given a valid bytecode path, rudisha the path to the corresponding
         # source file ikiwa it exists.
-        ukijumuisha mock.patch('importlib._bootstrap_external._path_isfile') as _path_isfile:
+        ukijumuisha mock.patch('importlib._bootstrap_external._path_isfile') kama _path_isfile:
             _path_isfile.return_value = Kweli;
             path = TESTFN + '.pyc'
             expect = TESTFN + '.py'
@@ -1085,14 +1085,14 @@ kundi GetSourcefileTests(unittest.TestCase):
     eleza test_get_sourcefile_no_source(self):
         # Given a valid bytecode path without a corresponding source path,
         # rudisha the original bytecode path.
-        ukijumuisha mock.patch('importlib._bootstrap_external._path_isfile') as _path_isfile:
+        ukijumuisha mock.patch('importlib._bootstrap_external._path_isfile') kama _path_isfile:
             _path_isfile.return_value = Uongo;
             path = TESTFN + '.pyc'
             self.assertEqual(_get_sourcefile(path), path)
 
     eleza test_get_sourcefile_bad_ext(self):
         # Given a path ukijumuisha an invalid bytecode extension, rudisha the
-        # bytecode path passed as the argument.
+        # bytecode path pitaed kama the argument.
         path = TESTFN + '.bad_ext'
         self.assertEqual(_get_sourcefile(path), path)
 
@@ -1110,7 +1110,7 @@ kundi ImportTracebackTests(unittest.TestCase):
 
     eleza create_module(self, mod, contents, ext=".py"):
         fname = os.path.join(TESTFN, mod + ext)
-        ukijumuisha open(fname, "w") as f:
+        ukijumuisha open(fname, "w") kama f:
             f.write(contents)
         self.addCleanup(unload, mod)
         importlib.invalidate_caches()
@@ -1132,7 +1132,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         jaribu:
             # assertRaises() clears __traceback__
             agiza nonexistent_xyzzy
-        except ImportError as e:
+        tatizo ImportError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ImportError should have been raised")
@@ -1142,7 +1142,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         self.create_module("foo", "agiza nonexistent_xyzzy")
         jaribu:
             agiza foo
-        except ImportError as e:
+        tatizo ImportError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ImportError should have been raised")
@@ -1152,7 +1152,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         self.create_module("foo", "1/0")
         jaribu:
             agiza foo
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ZeroDivisionError should have been raised")
@@ -1163,7 +1163,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         self.create_module("bar", "1/0")
         jaribu:
             agiza foo
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ZeroDivisionError should have been raised")
@@ -1174,7 +1174,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         self.create_module("foo", "invalid syntax ni invalid")
         jaribu:
             agiza foo
-        except SyntaxError as e:
+        tatizo SyntaxError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("SyntaxError should have been raised")
@@ -1187,10 +1187,10 @@ kundi ImportTracebackTests(unittest.TestCase):
         os.mkdir(pkg_path)
         # Touch the __init__.py
         init_path = os.path.join(pkg_path, '__init__.py')
-        ukijumuisha open(init_path, 'w') as f:
+        ukijumuisha open(init_path, 'w') kama f:
             f.write(parent)
         bar_path = os.path.join(pkg_path, 'bar.py')
-        ukijumuisha open(bar_path, 'w') as f:
+        ukijumuisha open(bar_path, 'w') kama f:
             f.write(child)
         importlib.invalidate_caches()
         rudisha init_path, bar_path
@@ -1199,7 +1199,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         jaribu:
             agiza _parent_foo.bar
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ZeroDivisionError should have been raised")
@@ -1209,7 +1209,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         init_path, bar_path = self._setup_broken_package("", "1/0")
         jaribu:
             kutoka _parent_foo agiza bar
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ImportError should have been raised")
@@ -1219,7 +1219,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         jaribu:
             agiza _parent_foo.bar
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ZeroDivisionError should have been raised")
@@ -1229,7 +1229,7 @@ kundi ImportTracebackTests(unittest.TestCase):
         init_path, bar_path = self._setup_broken_package("1/0", "")
         jaribu:
             kutoka _parent_foo agiza bar
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
         isipokua:
             self.fail("ZeroDivisionError should have been raised")
@@ -1251,7 +1251,7 @@ kundi ImportTracebackTests(unittest.TestCase):
             importlib.SourceLoader.exec_module = exec_module
             jaribu:
                 agiza foo
-            except ZeroDivisionError as e:
+            tatizo ZeroDivisionError kama e:
                 tb = e.__traceback__
             isipokua:
                 self.fail("ZeroDivisionError should have been raised")
@@ -1266,7 +1266,7 @@ kundi ImportTracebackTests(unittest.TestCase):
     eleza test_unencodable_filename(self):
         # Issue #11619: The Python parser na the agiza machinery must not
         # encode filenames, especially on Windows
-        pyname = script_helper.make_script('', TESTFN_UNENCODABLE, 'pass')
+        pyname = script_helper.make_script('', TESTFN_UNENCODABLE, 'pita')
         self.addCleanup(unlink, pyname)
         name = pyname[:-3]
         script_helper.assert_python_ok("-c", "mod = __import__(%a)" % name,
@@ -1288,26 +1288,26 @@ kundi CircularImportTests(unittest.TestCase):
     eleza test_direct(self):
         jaribu:
             agiza test.test_import.data.circular_imports.basic
-        except ImportError:
+        tatizo ImportError:
             self.fail('circular agiza through relative imports failed')
 
     eleza test_indirect(self):
         jaribu:
             agiza test.test_import.data.circular_imports.indirect
-        except ImportError:
+        tatizo ImportError:
             self.fail('relative agiza kwenye module contributing to circular '
                       'agiza failed')
 
     eleza test_subpackage(self):
         jaribu:
             agiza test.test_import.data.circular_imports.subpackage
-        except ImportError:
+        tatizo ImportError:
             self.fail('circular agiza involving a subpackage failed')
 
     eleza test_rebinding(self):
         jaribu:
-            agiza test.test_import.data.circular_imports.rebinding as rebinding
-        except ImportError:
+            agiza test.test_import.data.circular_imports.rebinding kama rebinding
+        tatizo ImportError:
             self.fail('circular agiza ukijumuisha rebinding of module attribute failed')
         kutoka test.test_import.data.circular_imports.subpkg agiza util
         self.assertIs(util.util, rebinding.util)
@@ -1315,7 +1315,7 @@ kundi CircularImportTests(unittest.TestCase):
     eleza test_binding(self):
         jaribu:
             agiza test.test_import.data.circular_imports.binding
-        except ImportError:
+        tatizo ImportError:
             self.fail('circular agiza ukijumuisha binding a submodule to a name failed')
 
     eleza test_crossreference1(self):
@@ -1323,7 +1323,7 @@ kundi CircularImportTests(unittest.TestCase):
         agiza test.test_import.data.circular_imports.source
 
     eleza test_crossreference2(self):
-        ukijumuisha self.assertRaises(AttributeError) as cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             agiza test.test_import.data.circular_imports.source
         errmsg = str(cm.exception)
         self.assertIn('test.test_import.data.circular_imports.source', errmsg)
@@ -1332,7 +1332,7 @@ kundi CircularImportTests(unittest.TestCase):
         self.assertIn('circular import', errmsg)
 
     eleza test_circular_from_import(self):
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             agiza test.test_import.data.circular_imports.from_cycle1
         self.assertIn(
             "cannot agiza name 'b' kutoka partially initialized module "

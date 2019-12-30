@@ -110,9 +110,9 @@ kundi ModuleTest(unittest.TestCase):
             eleza get_value(self, key, args, kwds):
                 ikiwa isinstance(key, str):
                     jaribu:
-                        # Check explicitly passed arguments first
+                        # Check explicitly pitaed arguments first
                         rudisha kwds[key]
-                    except KeyError:
+                    tatizo KeyError:
                         rudisha self.namespace[key]
                 isipokua:
                     string.Formatter.get_value(key, args, kwds)
@@ -168,7 +168,7 @@ kundi ModuleTest(unittest.TestCase):
                     unused_args.remove(arg)
 
                 ikiwa unused_args:
-                     ashiria ValueError("unused arguments")
+                    ashiria ValueError("unused arguments")
 
         fmt = CheckAllUsedFormatter()
         self.assertEqual(fmt.format("{0}", 10), "10")
@@ -183,7 +183,7 @@ kundi ModuleTest(unittest.TestCase):
         fmt = string.Formatter()
         args = ()
         kwargs = dict(i=100)
-        ukijumuisha self.assertRaises(ValueError) as err:
+        ukijumuisha self.assertRaises(ValueError) kama err:
             fmt._vformat("{i}", args, kwargs, set(), -1)
         self.assertIn("recursion", str(err.exception))
 
@@ -191,7 +191,7 @@ kundi ModuleTest(unittest.TestCase):
 # Template tests (formerly housed kwenye test_pep292.py)
 
 kundi Bag:
-    pass
+    pita
 
 kundi Mapping:
     eleza __getitem__(self, name):
@@ -199,8 +199,8 @@ kundi Mapping:
         kila part kwenye name.split('.'):
             jaribu:
                 obj = getattr(obj, part)
-            except AttributeError:
-                 ashiria KeyError(name)
+            tatizo AttributeError:
+                ashiria KeyError(name)
         rudisha obj
 
 
@@ -408,7 +408,7 @@ kundi TestTemplate(unittest.TestCase):
               )
             """
         s = MyTemplate('')
-        ukijumuisha self.assertRaises(ValueError) as err:
+        ukijumuisha self.assertRaises(ValueError) kama err:
             s.substitute({})
         self.assertIn('line 1, col 1', str(err.exception))
 

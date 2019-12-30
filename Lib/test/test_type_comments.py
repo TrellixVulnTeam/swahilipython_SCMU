@@ -6,10 +6,10 @@ agiza unittest
 funceleza = """\
 eleza foo():
     # type: () -> int
-    pass
+    pita
 
 eleza bar():  # type: () -> Tupu
-    pass
+    pita
 """
 
 asynceleza = """\
@@ -53,17 +53,17 @@ eleza foo():  # type: () -> int
 nonasciieleza = """\
 eleza foo():
     # type: () -> àçčéñt
-    pass
+    pita
 """
 
 forstmt = """\
 kila a kwenye []:  # type: int
-    pass
+    pita
 """
 
 withstmt = """\
-ukijumuisha context() as a:  # type: int
-    pass
+ukijumuisha context() kama a:  # type: int
+    pita
 """
 
 vardecl = """\
@@ -72,15 +72,15 @@ a = 0  # type: int
 
 ignores = """\
 eleza foo():
-    pass  # type: ignore
+    pita  # type: ignore
 
 eleza bar():
     x = 1  # type: ignore
 
 eleza baz():
-    pass  # type: ignore[excuse]
-    pass  # type: ignore=excuse
-    pass  # type: ignore [excuse]
+    pita  # type: ignore[excuse]
+    pita  # type: ignore=excuse
+    pita  # type: ignore [excuse]
     x = 1  # type: ignore whatever
 """
 
@@ -92,114 +92,114 @@ longargs = """\
 eleza fa(
     a = 1,  # type: A
 ):
-    pass
+    pita
 
 eleza fa(
     a = 1  # type: A
 ):
-    pass
+    pita
 
 eleza fa(
     a = 1,  # type: A
     /
 ):
-    pass
+    pita
 
 eleza fab(
     a,  # type: A
     b,  # type: B
 ):
-    pass
+    pita
 
 eleza fab(
     a,  # type: A
     /,
     b,  # type: B
 ):
-    pass
+    pita
 
 eleza fab(
     a,  # type: A
     b   # type: B
 ):
-    pass
+    pita
 
 eleza fv(
     *v,  # type: V
 ):
-    pass
+    pita
 
 eleza fv(
     *v  # type: V
 ):
-    pass
+    pita
 
 eleza fk(
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza fk(
     **k  # type: K
 ):
-    pass
+    pita
 
 eleza fvk(
     *v,  # type: V
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza fvk(
     *v,  # type: V
     **k  # type: K
 ):
-    pass
+    pita
 
 eleza fav(
     a,  # type: A
     *v,  # type: V
 ):
-    pass
+    pita
 
 eleza fav(
     a,  # type: A
     /,
     *v,  # type: V
 ):
-    pass
+    pita
 
 eleza fav(
     a,  # type: A
     *v  # type: V
 ):
-    pass
+    pita
 
 eleza fak(
     a,  # type: A
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza fak(
     a,  # type: A
     /,
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza fak(
     a,  # type: A
     **k  # type: K
 ):
-    pass
+    pita
 
 eleza favk(
     a,  # type: A
     *v,  # type: V
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza favk(
     a,  # type: A
@@ -207,14 +207,14 @@ eleza favk(
     *v,  # type: V
     **k,  # type: K
 ):
-    pass
+    pita
 
 eleza favk(
     a,  # type: A
     *v,  # type: V
     **k  # type: K
 ):
-    pass
+    pita
 """
 
 
@@ -233,8 +233,8 @@ kundi TypeCommentTests(unittest.TestCase):
             ikiwa minver <= version <= maxver:
                 jaribu:
                     tuma self.parse(source, feature_version)
-                except SyntaxError as err:
-                     ashiria SyntaxError(str(err) + f" feature_version={feature_version}")
+                tatizo SyntaxError kama err:
+                    ashiria SyntaxError(str(err) + f" feature_version={feature_version}")
             isipokua:
                 ukijumuisha self.assertRaisesRegex(SyntaxError, expected_regex,
                                             msg=f"feature_version={feature_version}"):
@@ -261,28 +261,28 @@ kundi TypeCommentTests(unittest.TestCase):
 
     eleza test_asyncvar(self):
         kila tree kwenye self.parse_all(asyncvar, maxver=6):
-            pass
+            pita
 
     eleza test_asynccomp(self):
         kila tree kwenye self.parse_all(asynccomp, minver=6):
-            pass
+            pita
 
     eleza test_matmul(self):
         kila tree kwenye self.parse_all(matmul, minver=5):
-            pass
+            pita
 
     eleza test_fstring(self):
         kila tree kwenye self.parse_all(fstring, minver=6):
-            pass
+            pita
 
     eleza test_underscorednumber(self):
         kila tree kwenye self.parse_all(underscorednumber, minver=6):
-            pass
+            pita
 
     eleza test_redundantdef(self):
         kila tree kwenye self.parse_all(redundantdef, maxver=0,
                                 expected_regex="^Cannot have two type comments on def"):
-            pass
+            pita
 
     eleza test_nonasciidef(self):
         kila tree kwenye self.parse_all(nonasciidef):
@@ -333,7 +333,7 @@ kundi TypeCommentTests(unittest.TestCase):
                     todo.remove(c)
                     ikiwa c == 'v':
                         arg = t.args.vararg
-                    elikiwa c == 'k':
+                    lasivyo c == 'k':
                         arg = t.args.kwarg
                     isipokua:
                         assert 0 <= ord(c) - ord('a') < len(t.args.posonlyargs + t.args.args)
@@ -355,7 +355,7 @@ kundi TypeCommentTests(unittest.TestCase):
         """Tests kila inappropriately-placed type comments.
 
         These should be silently ignored ukijumuisha type comments off,
-        but  ashiria SyntaxError ukijumuisha type comments on.
+        but ashiria SyntaxError ukijumuisha type comments on.
 
         This ni sio meant to be exhaustive.
         """
@@ -363,17 +363,17 @@ kundi TypeCommentTests(unittest.TestCase):
         eleza check_both_ways(source):
             ast.parse(source, type_comments=Uongo)
             kila tree kwenye self.parse_all(source, maxver=0):
-                pass
+                pita
 
-        check_both_ways("pass  # type: int\n")
+        check_both_ways("pita  # type: int\n")
         check_both_ways("foo()  # type: int\n")
         check_both_ways("x += 1  # type: int\n")
         check_both_ways("wakati Kweli:  # type: int\n  endelea\n")
         check_both_ways("wakati Kweli:\n  endelea  # type: int\n")
-        check_both_ways("jaribu:  # type: int\n  pass\nmwishowe:\n  pass\n")
-        check_both_ways("jaribu:\n  pass\nmwishowe:  # type: int\n  pass\n")
-        check_both_ways("pass  # type: ignorewhatever\n")
-        check_both_ways("pass  # type: ignoreé\n")
+        check_both_ways("jaribu:  # type: int\n  pita\nmwishowe:\n  pita\n")
+        check_both_ways("jaribu:\n  pita\nmwishowe:  # type: int\n  pita\n")
+        check_both_ways("pita  # type: ignorewhatever\n")
+        check_both_ways("pita  # type: ignoreé\n")
 
     eleza test_func_type_uliza(self):
 

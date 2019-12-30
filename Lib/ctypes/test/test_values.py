@@ -76,7 +76,7 @@ kundi PythonValuesTestCase(unittest.TestCase):
             ikiwa entry.name kwenye bootstrap_expected:
                 bootstrap_seen.append(entry.name)
                 self.assertKweli(entry.size,
-                    "{!r} was reported as having no size".format(entry.name))
+                    "{!r} was reported kama having no size".format(entry.name))
                 endelea
             items.append((entry.name.decode("ascii"), entry.size))
 

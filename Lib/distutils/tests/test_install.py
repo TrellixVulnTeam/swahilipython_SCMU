@@ -9,7 +9,7 @@ kutoka test.support agiza captured_stdout, run_unittest
 
 kutoka distutils agiza sysconfig
 kutoka distutils.command.install agiza install
-kutoka distutils.command agiza install as install_module
+kutoka distutils.command agiza install kama install_module
 kutoka distutils.command.build_ext agiza build_ext
 kutoka distutils.command.install agiza INSTALL_SCHEMES
 kutoka distutils.core agiza Distribution
@@ -17,7 +17,7 @@ kutoka distutils.errors agiza DistutilsOptionError
 kutoka distutils.extension agiza Extension
 
 kutoka distutils.tests agiza support
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 
 
 eleza _make_ext_name(modname):
@@ -152,7 +152,7 @@ kundi InstallTestCase(support.TempdirManager,
         dist = Distribution({'name': 'xx'})
         cmd = install(dist)
 
-        # must supply either prefix/exec-prefix/home or
+        # must supply either prefix/exec-prefix/home ama
         # install-base/install-platbase -- sio both
         cmd.prefix = 'prefix'
         cmd.install_base = 'base'
@@ -163,7 +163,7 @@ kundi InstallTestCase(support.TempdirManager,
         cmd.home = 'home'
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)
 
-        # can't combine user ukijumuisha prefix/exec_prefix/home or
+        # can't combine user ukijumuisha prefix/exec_prefix/home ama
         # install_(plat)base
         cmd.prefix = Tupu
         cmd.user = 'user'

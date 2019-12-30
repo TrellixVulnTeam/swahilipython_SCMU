@@ -11,10 +11,10 @@ kutoka test.support agiza (run_unittest, rmtree, change_cwd,
 ikiwa sio os.path.supports_unicode_filenames:
     jaribu:
         TESTFN_UNICODE.encode(TESTFN_ENCODING)
-    except (UnicodeError, TypeError):
+    tatizo (UnicodeError, TypeError):
         # Either the file system encoding ni Tupu, ama the file name
         # cannot be encoded kwenye the file system encoding.
-         ashiria unittest.SkipTest("No Unicode filesystem semantics on this platform.")
+        ashiria unittest.SkipTest("No Unicode filesystem semantics on this platform.")
 
 eleza remove_if_exists(filename):
     ikiwa os.path.exists(filename):
@@ -44,7 +44,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
         # basename should appear kwenye listdir.
         path, base = os.path.split(os.path.abspath(filename))
         file_list = os.listdir(path)
-        # Normalize the unicode strings, as round-tripping the name via the OS
+        # Normalize the unicode strings, kama round-tripping the name via the OS
         # may rudisha a different (but equivalent) value.
         base = unicodedata.normalize("NFD", base)
         file_list = [unicodedata.normalize("NFD", f) kila f kwenye file_list]
@@ -106,7 +106,7 @@ kundi TestUnicodeFiles(unittest.TestCase):
             self._do_single(filename)
         mwishowe:
             os.unlink(filename)
-        self.assertKweli(not os.path.exists(filename))
+        self.assertKweli(sio os.path.exists(filename))
         # na again ukijumuisha os.open.
         f = os.open(filename, os.O_CREAT)
         os.close(f)

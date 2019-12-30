@@ -14,7 +14,7 @@ agiza unittest
 clinic_path = os.path.join(os.path.dirname(__file__), '..', '..', 'Tools', 'clinic')
 clinic_path = os.path.normpath(clinic_path)
 ikiwa sio os.path.exists(clinic_path):
-     ashiria unittest.SkipTest(f'{clinic_path!r} path does sio exist')
+    ashiria unittest.SkipTest(f'{clinic_path!r} path does sio exist')
 sys.path.append(clinic_path)
 jaribu:
     agiza clinic
@@ -216,14 +216,14 @@ kundi ClinicLinearFormatTest(TestCase):
 
 kundi InertParser:
     eleza __init__(self, clinic):
-        pass
+        pita
 
     eleza parse(self, block):
-        pass
+        pita
 
 kundi CopyParser:
     eleza __init__(self, clinic):
-        pass
+        pita
 
     eleza parse(self, block):
         block.output = block.input
@@ -330,7 +330,7 @@ kundi ClinicParserTest(TestCase):
         self.assertEqual("MAXSIZE", p.converter.c_default)
 
         s = self.parse_function_should_fail("module os\nos.access\n    follow_symlinks: int = sys.maxsize")
-        self.assertEqual(s, "Error on line 0:\nWhen you specify a named constant ('sys.maxsize') as your default value,\nyou MUST specify a valid c_default.\n")
+        self.assertEqual(s, "Error on line 0:\nWhen you specify a named constant ('sys.maxsize') kama your default value,\nyou MUST specify a valid c_default.\n")
 
     eleza test_param_no_docstring(self):
         function = self.parse_function("""
@@ -361,7 +361,7 @@ after a parameter ukijumuisha a default!
     eleza test_function_docstring(self):
         function = self.parse_function("""
 module os
-os.stat as os_stat_fn
+os.stat kama os_stat_fn
 
    path: str
        Path to be examined
@@ -411,7 +411,7 @@ This/used to koma Clinic!
         self.assertEqual("stat($module, /, path)\n--\n\nThis/used to koma Clinic!", function.docstring)
 
     eleza test_c_name(self):
-        function = self.parse_function("module os\nos.stat as os_stat_fn")
+        function = self.parse_function("module os\nos.stat kama os_stat_fn")
         self.assertEqual("os_stat_fn", function.c_basename)
 
     eleza test_return_converter(self):
@@ -546,7 +546,7 @@ imaginary([[y1, y2,] x1, x2,] ch, [attr1, attr2, attr3, [attr4, attr5,
                 """.strip())
 
     eleza parse_function_should_fail(self, s):
-        ukijumuisha support.captured_stdout() as stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             ukijumuisha self.assertRaises(SystemExit):
                 self.parse_function(s)
         rudisha stdout.getvalue()
@@ -650,7 +650,7 @@ foo.Bar.__init__
 Docstring
 
 """, signatures_in_block=3, function_index=2)
-        # self ni sio kwenye the signature
+        # self ni haiko kwenye the signature
         self.assertEqual("Bar()\n--\n\nDocstring", function.docstring)
         # but it *is* a parameter
         self.assertEqual(1, len(function.parameters))
@@ -665,7 +665,7 @@ foo.bar => int
     eleza test_illegal_c_basename(self):
         self.parse_function_should_fail("""
 module foo
-foo.bar as 935
+foo.bar kama 935
     /
 """)
 
@@ -791,7 +791,7 @@ Not at column 0!
         self.assertEqual(repr(clinic.NULL), '<Null>')
 
         # test that fail fails
-        ukijumuisha support.captured_stdout() as stdout:
+        ukijumuisha support.captured_stdout() kama stdout:
             ukijumuisha self.assertRaises(SystemExit):
                 clinic.fail('The igloos are melting!', filename='clown.txt', line_number=69)
         self.assertEqual(stdout.getvalue(), 'Error kwenye file "clown.txt" on line 69:\nThe igloos are melting!\n')
@@ -802,14 +802,14 @@ kundi ClinicExternalTest(TestCase):
 
     eleza test_external(self):
         source = support.findfile('clinic.test')
-        ukijumuisha open(source, 'r', encoding='utf-8') as f:
+        ukijumuisha open(source, 'r', encoding='utf-8') kama f:
             original = f.read()
-        ukijumuisha support.temp_dir() as testdir:
+        ukijumuisha support.temp_dir() kama testdir:
             testfile = os.path.join(testdir, 'clinic.test.c')
-            ukijumuisha open(testfile, 'w', encoding='utf-8') as f:
+            ukijumuisha open(testfile, 'w', encoding='utf-8') kama f:
                 f.write(original)
             clinic.parse_file(testfile, force=Kweli)
-            ukijumuisha open(testfile, 'r', encoding='utf-8') as f:
+            ukijumuisha open(testfile, 'r', encoding='utf-8') kama f:
                 result = f.read()
             self.assertEqual(result, original)
 

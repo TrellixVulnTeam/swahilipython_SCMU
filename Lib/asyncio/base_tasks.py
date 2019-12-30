@@ -27,7 +27,7 @@ eleza _task_get_stack(task, limit):
     jaribu:
         # 'async def' coroutines
         f = task._coro.cr_frame
-    except AttributeError:
+    tatizo AttributeError:
         f = task._coro.gi_frame
     ikiwa f ni sio Tupu:
         wakati f ni sio Tupu:
@@ -38,7 +38,7 @@ eleza _task_get_stack(task, limit):
             frames.append(f)
             f = f.f_back
         frames.reverse()
-    elikiwa task._exception ni sio Tupu:
+    lasivyo task._exception ni sio Tupu:
         tb = task._exception.__traceback__
         wakati tb ni sio Tupu:
             ikiwa limit ni sio Tupu:
@@ -58,7 +58,7 @@ eleza _task_print_stack(task, limit, file):
         co = f.f_code
         filename = co.co_filename
         name = co.co_name
-        ikiwa filename sio kwenye checked:
+        ikiwa filename haiko kwenye checked:
             checked.add(filename)
             linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
@@ -67,7 +67,7 @@ eleza _task_print_stack(task, limit, file):
     exc = task._exception
     ikiwa sio extracted_list:
         andika(f'No stack kila {task!r}', file=file)
-    elikiwa exc ni sio Tupu:
+    lasivyo exc ni sio Tupu:
         andika(f'Traceback kila {task!r} (most recent call last):', file=file)
     isipokua:
         andika(f'Stack kila {task!r} (most recent call last):', file=file)

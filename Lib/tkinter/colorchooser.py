@@ -11,8 +11,8 @@
 #
 # options (all have default values):
 #
-# - initialcolor: color to mark as selected when dialog ni displayed
-#   (given as an RGB triplet ama a Tk color string)
+# - initialcolor: color to mark kama selected when dialog ni displayed
+#   (given kama an RGB triplet ama a Tk color string)
 #
 # - parent: which window to place the dialog on top of
 #
@@ -37,11 +37,11 @@ kundi Chooser(Dialog):
             ikiwa isinstance(color, tuple):
                 # assume an RGB triplet
                 self.options["initialcolor"] = "#%02x%02x%02x" % color
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
 
     eleza _fixresult(self, widget, result):
-        # result can be somethings: an empty tuple, an empty string or
+        # result can be somethings: an empty tuple, an empty string ama
         # a Tcl_Obj, so this somewhat weird check handles that
         ikiwa sio result ama sio str(result):
             rudisha Tupu, Tupu # canceled

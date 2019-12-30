@@ -39,7 +39,7 @@ kundi BitmapImageTest(AbstractTkTest, unittest.TestCase):
         self.assertNotIn('::img::test', self.root.image_names())
 
     eleza test_create_from_data(self):
-        ukijumuisha open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') kama f:
             data = f.read()
         image = tkinter.BitmapImage('::img::test', master=self.root,
                                     foreground='yellow', background='blue',
@@ -59,7 +59,7 @@ kundi BitmapImageTest(AbstractTkTest, unittest.TestCase):
     eleza test_configure_data(self):
         image = tkinter.BitmapImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '-data {} {} {} {}')
-        ukijumuisha open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') kama f:
             data = f.read()
         image.configure(data=data)
         self.assertEqualStrList(image['data'],
@@ -134,7 +134,7 @@ kundi PhotoImageTest(AbstractTkTest, unittest.TestCase):
 
     eleza check_create_from_data(self, ext):
         testfile = support.findfile('python.' + ext, subdir='imghdrdata')
-        ukijumuisha open(testfile, 'rb') as f:
+        ukijumuisha open(testfile, 'rb') kama f:
             data = f.read()
         image = tkinter.PhotoImage('::img::test', master=self.root,
                                    data=data)
@@ -178,7 +178,7 @@ kundi PhotoImageTest(AbstractTkTest, unittest.TestCase):
     eleza test_configure_data(self):
         image = tkinter.PhotoImage('::img::test', master=self.root)
         self.assertEqual(image['data'], '')
-        ukijumuisha open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') kama f:
             data = f.read()
         image.configure(data=data)
         self.assertEqual(image['data'], data ikiwa self.wantobjects

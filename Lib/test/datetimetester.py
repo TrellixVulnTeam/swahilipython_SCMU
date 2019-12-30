@@ -21,14 +21,14 @@ kutoka operator agiza lt, le, gt, ge, eq, ne, truediv, floordiv, mod
 kutoka test agiza support
 kutoka test.support agiza is_resource_enabled, ALWAYS_EQ, LARGEST, SMALLEST
 
-agiza datetime as datetime_module
+agiza datetime kama datetime_module
 kutoka datetime agiza MINYEAR, MAXYEAR
 kutoka datetime agiza timedelta
 kutoka datetime agiza tzinfo
 kutoka datetime agiza time
 kutoka datetime agiza timezone
 kutoka datetime agiza date, datetime
-agiza time as _time
+agiza time kama _time
 
 agiza _testcapi
 
@@ -420,7 +420,7 @@ kundi TestTimeZone(unittest.TestCase):
         self.assertNotEqual(timezone(timedelta(hours=1)), tzinfo())
 
 #############################################################################
-# Base kundi kila testing a particular aspect of timedelta, time, date and
+# Base kundi kila testing a particular aspect of timedelta, time, date na
 # datetime comparisons.
 
 kundi HarmlessMixedComparison:
@@ -625,7 +625,7 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
             td = timedelta(seconds=total_seconds)
             self.assertEqual(td.total_seconds(), total_seconds)
         # Issue8644: Test that td.total_seconds() has the same
-        # accuracy as td / timedelta(seconds=1).
+        # accuracy kama td / timedelta(seconds=1).
         kila ms kwenye [-1, -2, -123]:
             td = timedelta(microseconds=ms)
             self.assertEqual(td.total_seconds(), td / timedelta(seconds=1))
@@ -881,7 +881,7 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_subclass_date(self):
         kundi DateSubclass(date):
-            pass
+            pita
 
         d1 = DateSubclass(2018, 1, 5)
         td = timedelta(days=1)
@@ -900,7 +900,7 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_subclass_datetime(self):
         kundi DateTimeSubclass(datetime):
-            pass
+            pita
 
         d1 = DateTimeSubclass(2018, 1, 5, 12, 30)
         td = timedelta(days=1, minutes=30)
@@ -969,7 +969,7 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
         self.assertRaises(TypeError, divmod, t, 10)
 
     eleza test_issue31293(self):
-        # The interpreter shouldn't crash kwenye case a timedelta ni divided or
+        # The interpreter shouldn't crash kwenye case a timedelta ni divided ama
         # multiplied by a float ukijumuisha a bad as_integer_ratio() method.
         eleza get_bad_float(bad_ratio):
             kundi BadFloat(float):
@@ -1016,35 +1016,35 @@ kundi TestTimeDelta(HarmlessMixedComparison, unittest.TestCase):
                 # The following examples should sio crash.
                 jaribu:
                     timedelta(microseconds=BadInt(1))
-                except TypeError:
-                    pass
+                tatizo TypeError:
+                    pita
                 jaribu:
                     timedelta(hours=BadInt(1))
-                except TypeError:
-                    pass
+                tatizo TypeError:
+                    pita
                 jaribu:
                     timedelta(weeks=BadInt(1))
-                except (TypeError, ValueError):
-                    pass
+                tatizo (TypeError, ValueError):
+                    pita
                 jaribu:
                     timedelta(1) * BadInt(1)
-                except (TypeError, ValueError):
-                    pass
+                tatizo (TypeError, ValueError):
+                    pita
                 jaribu:
                     BadInt(1) * timedelta(1)
-                except TypeError:
-                    pass
+                tatizo TypeError:
+                    pita
                 jaribu:
                     timedelta(1) // BadInt(1)
-                except TypeError:
-                    pass
+                tatizo TypeError:
+                    pita
 
 
 #############################################################################
 # date tests
 
 kundi TestDateOnly(unittest.TestCase):
-    # Tests here won't pass ikiwa also run on datetime objects, so don't
+    # Tests here won't pita ikiwa also run on datetime objects, so don't
     # subkundi this to test datetimes too.
 
     eleza test_delta_non_days_ignored(self):
@@ -1080,7 +1080,7 @@ kundi SubclassDate(date):
     sub_var = 1
 
 kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
-    # Tests here should pass kila both dates na datetimes, except kila a
+    # Tests here should pita kila both dates na datetimes, tatizo kila a
     # few tests that TestDateTime overrides.
 
     thekundi = date
@@ -1331,8 +1331,8 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
             # In any case, wait a little wakati na try again.
             time.sleep(0.1)
 
-        # It worked ama it didn't.  If it didn't, assume it's reason #2, and
-        # let the test pass ikiwa they're within half a second of each other.
+        # It worked ama it didn't.  If it didn't, assume it's reason #2, na
+        # let the test pita ikiwa they're within half a second of each other.
         ikiwa today != todayagain:
             self.assertAlmostEqual(todayagain, today,
                                    delta=timedelta(seconds=0.5))
@@ -1436,14 +1436,14 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
         kila f kwenye ["%e", "%", "%#"]:
             jaribu:
                 t.strftime(f)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
         # bpo-34482: Check that surrogates don't cause a crash.
         jaribu:
             t.strftime('%y\ud800%m')
-        except UnicodeEncodeError:
-            pass
+        tatizo UnicodeEncodeError:
+            pita
 
         #check that this standard extension works
         t.strftime("%f")
@@ -1456,7 +1456,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
         t = self.theclass(2005, 3, 2)
         jaribu:
             _time.strftime('%')
-        except ValueError:
+        tatizo ValueError:
             self.skipTest('time module does sio support trailing %')
         self.assertEqual(t.strftime('%'), _time.strftime('%', t.timetuple()))
         self.assertEqual(
@@ -1616,7 +1616,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
         # Repeat those tests ukijumuisha a different class
 
         kundi SomeClass:
-            pass
+            pita
 
         their = SomeClass()
         self.assertEqual(our == their, Uongo)
@@ -1667,7 +1667,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_subclass_replace(self):
         kundi DateSubclass(self.theclass):
-            pass
+            pita
 
         dt = DateSubclass(2012, 1, 1)
         self.assertIs(type(dt.replace(year=2013)), DateSubclass)
@@ -1753,13 +1753,13 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_backdoor_resistance(self):
         # For fast unpickling, the constructor accepts a pickle byte string.
-        # This ni a low-overhead backdoor.  A user can (by intent or
-        # mistake) pass a string directly, which (ikiwa it's the right length)
-        # will get treated like a pickle, na bypass the normal sanity
+        # This ni a low-overhead backdoor.  A user can (by intent ama
+        # mistake) pita a string directly, which (ikiwa it's the right length)
+        # will get treated like a pickle, na bypita the normal sanity
         # checks kwenye the constructor.  This can create insane objects.
         # The constructor doesn't want to burn the time to validate all
         # fields, but does check the month field.  This stops, e.g.,
-        # datetime.datetime('1995-03-25') kutoka yielding an insane object.
+        # datetime.datetime('1995-03-25') kutoka tumaing an insane object.
         base = b'1995-03-25'
         ikiwa sio issubclass(self.theclass, datetime):
             base = base[:4]
@@ -1799,7 +1799,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_fromisoformat_subclass(self):
         kundi DateSubclass(self.theclass):
-            pass
+            pita
 
         dt = DateSubclass(2014, 12, 14)
 
@@ -1828,7 +1828,7 @@ kundi TestDate(HarmlessMixedComparison, unittest.TestCase):
                 self.theclass.fromisoformat(bad_str)
 
     eleza test_fromisoformat_fails_typeerror(self):
-        # Test that fromisoformat fails when passed the wrong type
+        # Test that fromisoformat fails when pitaed the wrong type
         agiza io
 
         bad_types = [b'2009-03-01', Tupu, io.StringIO('2009-03-01')]
@@ -2373,13 +2373,13 @@ kundi TestDateTime(TestDate):
         t = self.theclass(2012, 11, 4, 1, 30)
         self.assertEqual(self.theclass.fromtimestamp(t.timestamp()), t)
 
-        # Timestamp may  ashiria an overflow error on some platforms
+        # Timestamp may ashiria an overflow error on some platforms
         # XXX: Do we care to support the first na last year?
         kila t kwenye [self.theclass(2,1,1), self.theclass(9998,12,12)]:
             jaribu:
                 s = t.timestamp()
-            except OverflowError:
-                pass
+            tatizo OverflowError:
+                pita
             isipokua:
                 self.assertEqual(self.theclass.fromtimestamp(s), t)
 
@@ -2404,9 +2404,9 @@ kundi TestDateTime(TestDate):
             one = fts(1e-6)
             jaribu:
                 minus_one = fts(-1e-6)
-            except OSError:
+            tatizo OSError:
                 # localtime(-1) na gmtime(-1) ni sio supported on Windows
-                pass
+                pita
             isipokua:
                 self.assertEqual(minus_one.second, 59)
                 self.assertEqual(minus_one.microsecond, 999999)
@@ -2443,7 +2443,7 @@ kundi TestDateTime(TestDate):
             # date 0001-01-01 00:00:00+00:00: timestamp=-62135596800
             self.assertEqual(self.theclass.fromtimestamp(min_ts, tz=timezone.utc),
                              min_dt)
-        except (OverflowError, OSError) as exc:
+        tatizo (OverflowError, OSError) kama exc:
             # the date 0001-01-01 doesn't fit into 32-bit time_t,
             # ama platform doesn't support such very old date
             self.skipTest(str(exc))
@@ -2462,7 +2462,7 @@ kundi TestDateTime(TestDate):
 
         # too small
         ts = min_ts - delta
-        # converting a Python int to C time_t can  ashiria a OverflowError,
+        # converting a Python int to C time_t can ashiria a OverflowError,
         # especially on 32-bit platforms.
         ukijumuisha self.assertRaises((ValueError, OverflowError)):
             self.theclass.fromtimestamp(ts)
@@ -2646,8 +2646,8 @@ kundi TestDateTime(TestDate):
         # bpo-34482: Check that surrogates don't cause a crash.
         jaribu:
             t.strftime('%y\ud800%m %H\ud800%M')
-        except UnicodeEncodeError:
-            pass
+        tatizo UnicodeEncodeError:
+            pita
 
     eleza test_extract(self):
         dt = self.theclass(2002, 3, 4, 18, 45, 3, 1234)
@@ -3014,7 +3014,7 @@ kundi TestDateTime(TestDate):
 
     eleza test_fromisoformat_subclass(self):
         kundi DateTimeSubclass(self.theclass):
-            pass
+            pita
 
         dt = DateTimeSubclass(2014, 12, 14, 9, 30, 45, 457390,
                               tzinfo=timezone(timedelta(hours=10, minutes=45)))
@@ -3030,7 +3030,7 @@ kundi TestSubclassDateTime(TestDateTime):
     # Override tests sio designed kila subclass
     @unittest.skip('not appropriate kila subclasses')
     eleza test_roundtrip(self):
-        pass
+        pita
 
 kundi SubclassTime(time):
     sub_var = 1
@@ -3254,8 +3254,8 @@ kundi TestTime(HarmlessMixedComparison, unittest.TestCase):
         # bpo-34482: Check that surrogates don't cause a crash.
         jaribu:
             t.strftime('%H\ud800%M')
-        except UnicodeEncodeError:
-            pass
+        tatizo UnicodeEncodeError:
+            pita
 
     eleza test_format(self):
         t = self.theclass(1, 2, 3, 4)
@@ -3386,7 +3386,7 @@ kundi TestTime(HarmlessMixedComparison, unittest.TestCase):
 
     eleza test_subclass_replace(self):
         kundi TimeSubclass(self.theclass):
-            pass
+            pita
 
         ctime = TimeSubclass(12, 30)
         self.assertIs(type(ctime.replace(hour=10)), TimeSubclass)
@@ -3428,13 +3428,13 @@ kundi TestTime(HarmlessMixedComparison, unittest.TestCase):
             self.theclass(bytes([1] * len(base)), 'EST')
 
 # A mixin kila classes ukijumuisha a tzinfo= argument.  Subclasses must define
-# thekundi as a kundi attribute, na theclass(1, 1, 1, tzinfo=whatever)
+# thekundi kama a kundi attribute, na theclass(1, 1, 1, tzinfo=whatever)
 # must be legit (which ni true kila time na datetime).
 kundi TZInfoBase:
 
-    eleza test_argument_passing(self):
+    eleza test_argument_pitaing(self):
         cls = self.theclass
-        # A datetime passes itself on, a time passes Tupu.
+        # A datetime pitaes itself on, a time pitaes Tupu.
         kundi introspective(tzinfo):
             eleza tzname(self, dt):    rudisha dt na "real" ama "none"
             eleza utcoffset(self, dt):
@@ -3455,13 +3455,13 @@ kundi TZInfoBase:
         self.assertRaises(TypeError, cls, 1, 1, 1, tzinfo=12)
 
         kundi NiceTry(object):
-            eleza __init__(self): pass
-            eleza utcoffset(self, dt): pass
+            eleza __init__(self): pita
+            eleza utcoffset(self, dt): pita
         self.assertRaises(TypeError, cls, 1, 1, 1, tzinfo=NiceTry)
 
         kundi BetterTry(tzinfo):
-            eleza __init__(self): pass
-            eleza utcoffset(self, dt): pass
+            eleza __init__(self): pita
+            eleza utcoffset(self, dt): pita
         b = BetterTry()
         t = cls(1, 1, 1, tzinfo=b)
         self.assertIs(t.tzinfo, b)
@@ -3480,7 +3480,7 @@ kundi TZInfoBase:
                               (1440, Uongo)):
             ikiwa cls ni time:
                 t = cls(1, 2, 3, tzinfo=Edgy(offset))
-            elikiwa cls ni datetime:
+            lasivyo cls ni datetime:
                 t = cls(6, 6, 6, 1, 2, 3, tzinfo=Edgy(offset))
             isipokua:
                 assert 0, "impossible"
@@ -3569,7 +3569,7 @@ kundi TZInfoBase:
 
         # However, ikiwa they're different members, uctoffset ni sio ignored.
         # Note that a time can't actually have an operand-dependent offset,
-        # though (and time.utcoffset() passes Tupu to tzinfo.utcoffset()),
+        # though (and time.utcoffset() pitaes Tupu to tzinfo.utcoffset()),
         # so skip this test kila time.
         ikiwa cls ni sio time:
             d0 = base.replace(minute=3, tzinfo=OperandDependentOffset())
@@ -3580,9 +3580,9 @@ kundi TZInfoBase:
                     got = (x > y) - (x < y)
                     ikiwa (x ni d0 ama x ni d1) na (y ni d0 ama y ni d1):
                         expected = 0
-                    elikiwa x ni y ni d2:
+                    lasivyo x ni y ni d2:
                         expected = 0
-                    elikiwa x ni d2:
+                    lasivyo x ni d2:
                         expected = -1
                     isipokua:
                         assert y ni d2
@@ -3949,7 +3949,7 @@ kundi TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
                     self.theclass.fromisoformat(bad_str)
 
     eleza test_fromisoformat_fails_typeerror(self):
-        # Test the fromisoformat fails when passed the wrong type
+        # Test the fromisoformat fails when pitaed the wrong type
         agiza io
 
         bad_types = [b'12:30:45', Tupu, io.StringIO('12:30:45')]
@@ -3960,7 +3960,7 @@ kundi TestTimeTZ(TestTime, TZInfoBase, unittest.TestCase):
 
     eleza test_fromisoformat_subclass(self):
         kundi TimeSubclass(self.theclass):
-            pass
+            pita
 
         tsc = TimeSubclass(12, 14, 45, 203745, tzinfo=timezone.utc)
         tsc_rt = TimeSubclass.fromisoformat(tsc.isoformat())
@@ -4295,7 +4295,7 @@ kundi TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 now2 = utcnow.astimezone(weirdtz)
                 ikiwa abs(now - now2) < timedelta(seconds=30):
                     koma
-                # Else the code ni broken, ama more than 30 seconds passed between
+                # Else the code ni broken, ama more than 30 seconds pitaed between
                 # calls; assuming the latter, just try again.
             isipokua:
                 # Three strikes na we're out.
@@ -4431,7 +4431,7 @@ kundi TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
             # ni never kwenye effect kila a UTC time.
             self.assertEqual(0, t.tm_isdst)
 
-        # For naive datetime, utctimetuple == timetuple except kila isdst
+        # For naive datetime, utctimetuple == timetuple tatizo kila isdst
         d = cls(1, 2, 3, 10, 20, 30, 40)
         t = d.utctimetuple()
         self.assertEqual(t[:-1], d.timetuple()[:-1])
@@ -4625,9 +4625,9 @@ kundi TestDateTimeTZ(TestDateTime, TZInfoBase, unittest.TestCase):
                 got = x - y
                 ikiwa (x ni d0 ama x ni d1) na (y ni d0 ama y ni d1):
                     expected = timedelta(0)
-                elikiwa x ni y ni d2:
+                lasivyo x ni y ni d2:
                     expected = timedelta(0)
-                elikiwa x ni d2:
+                lasivyo x ni d2:
                     expected = timedelta(minutes=(11-59)-0)
                 isipokua:
                     assert y ni d2
@@ -4707,7 +4707,7 @@ DSTSTART = datetime(1, 4, 1, 2)
 # na ends at 2am (DST time; 1am standard time) on the last Sunday of Oct,
 # which ni the first Sunday on ama after Oct 25.  Because we view 1:MM as
 # being standard time on that day, there ni no spelling kwenye local time of
-# the last hour of DST (that's 1:MM DST, but 1:MM ni taken as standard time).
+# the last hour of DST (that's 1:MM DST, but 1:MM ni taken kama standard time).
 DSTEND = datetime(1, 10, 25, 1)
 
 kundi USTimeZone(tzinfo):
@@ -4797,7 +4797,7 @@ kundi TestTimezoneConversions(unittest.TestCase):
             self.assertEqual(there_and_back.astimezone(utc),
                              dt.astimezone(utc))
         isipokua:
-            # We're sio kwenye the redundant hour.
+            # We're haiko kwenye the redundant hour.
             self.assertEqual(dt, there_and_back)
 
         # Because we have a redundant spelling when DST begins, there is
@@ -4834,10 +4834,10 @@ kundi TestTimezoneConversions(unittest.TestCase):
 
     eleza convert_between_tz_and_utc(self, tz, utc):
         dston = self.dston.replace(tzinfo=tz)
-        # Because 1:MM on the day DST ends ni taken as being standard time,
+        # Because 1:MM on the day DST ends ni taken kama being standard time,
         # there ni no spelling kwenye tz kila the last hour of daylight time.
         # For purposes of the test, the last hour of DST ni 0:MM, which is
-        # taken as being daylight time (and 1:MM ni taken as being standard
+        # taken kama being daylight time (and 1:MM ni taken kama being standard
         # time).
         dstoff = self.dstoff.replace(tzinfo=tz)
         kila delta kwenye (timedelta(weeks=13),
@@ -4886,7 +4886,7 @@ kundi TestTimezoneConversions(unittest.TestCase):
         # 22:00-0900 ni 7:00 UTC == 2:00 EST == 3:00 DST.  Since it's "after
         # 2", we should get the 3 spelling.
         # If we plug 22:00 the day before into Eastern, it "looks like std
-        # time", so its offset ni returned as -5, na -5 - -9 = 4.  Adding 4
+        # time", so its offset ni returned kama -5, na -5 - -9 = 4.  Adding 4
         # to 22:00 lands on 2:00, which makes no sense kwenye local time (the
         # local clock jumps kutoka 1 to 3).  The point here ni to make sure we
         # get the 3 spelling.
@@ -5093,7 +5093,7 @@ kundi Oddballs(unittest.TestCase):
             datetime(10, 10, f10)
 
         kundi Float(float):
-            pass
+            pita
         s10 = Float(10.9)
         ukijumuisha self.assertRaisesRegex(TypeError, '^integer argument expected, '
                                                'got float$'):
@@ -5125,15 +5125,15 @@ kundi tzinfo2(tzinfo):
         "datetime kwenye UTC -> datetime kwenye local time."
 
         ikiwa sio isinstance(dt, datetime):
-             ashiria TypeError("fromutc() requires a datetime argument")
+            ashiria TypeError("fromutc() requires a datetime argument")
         ikiwa dt.tzinfo ni sio self:
-             ashiria ValueError("dt.tzinfo ni sio self")
+            ashiria ValueError("dt.tzinfo ni sio self")
         # Returned value satisfies
         #          dt + ldt.utcoffset() = ldt
         off0 = dt.replace(fold=0).utcoffset()
         off1 = dt.replace(fold=1).utcoffset()
         ikiwa off0 ni Tupu ama off1 ni Tupu ama dt.dst() ni Tupu:
-             ashiria ValueError
+            ashiria ValueError
         ikiwa off0 == off1:
             ldt = dt + off0
             off1 = ldt.utcoffset()
@@ -5149,7 +5149,7 @@ kundi tzinfo2(tzinfo):
             ikiwa ldt.utcoffset() == off:
                 rudisha ldt
 
-         ashiria ValueError("No suitable local time found")
+        ashiria ValueError("No suitable local time found")
 
 # Reimplementing simplified US timezones to respect the "fold" flag:
 
@@ -5194,10 +5194,10 @@ kundi USTimeZone2(tzinfo2):
         ikiwa start + HOUR <= dt < end:
             # DST ni kwenye effect.
             rudisha HOUR
-        elikiwa end <= dt < end + HOUR:
+        lasivyo end <= dt < end + HOUR:
             # Fold (an ambiguous hour): use dt.fold to disambiguate.
             rudisha ZERO ikiwa dt.fold isipokua HOUR
-        elikiwa start <= dt < start + HOUR:
+        lasivyo start <= dt < start + HOUR:
             # Gap (a non-existent hour): reverse the fold rule.
             rudisha HOUR ikiwa dt.fold isipokua ZERO
         isipokua:
@@ -5261,7 +5261,7 @@ kundi Europe_Vilnius_1941(tzinfo):
         assert dt.fold == 0
         assert dt.tzinfo ni self
         ikiwa dt.year != 1941:
-             ashiria NotImplementedError
+            ashiria NotImplementedError
         fold_start, fold_stop = self._utc_fold()
         ikiwa dt < fold_start:
             rudisha dt + 3 * HOUR
@@ -5581,7 +5581,7 @@ kundi ZoneInfo(tzinfo):
     @classmethod
     eleza fromfile(cls, fileobj):
         ikiwa fileobj.read(4).decode() != "TZif":
-             ashiria ValueError("not a zoneinfo file")
+            ashiria ValueError("not a zoneinfo file")
         fileobj.seek(32)
         counts = array('i')
         counts.fromfile(fileobj, 3)
@@ -5618,7 +5618,7 @@ kundi ZoneInfo(tzinfo):
     @classmethod
     eleza fromname(cls, name):
         path = os.path.join(cls.zoneroot, name)
-        ukijumuisha open(path, 'rb') as f:
+        ukijumuisha open(path, 'rb') kama f:
             rudisha cls.fromfile(f)
 
     EPOCHORDINAL = date(1970, 1, 1).toordinal()
@@ -5627,9 +5627,9 @@ kundi ZoneInfo(tzinfo):
         """datetime kwenye UTC -> datetime kwenye local time."""
 
         ikiwa sio isinstance(dt, datetime):
-             ashiria TypeError("fromutc() requires a datetime argument")
+            ashiria TypeError("fromutc() requires a datetime argument")
         ikiwa dt.tzinfo ni sio self:
-             ashiria ValueError("dt.tzinfo ni sio self")
+            ashiria ValueError("dt.tzinfo ni sio self")
 
         timestamp = ((dt.toordinal() - self.EPOCHORDINAL) * 86400
                      + dt.hour * 3600
@@ -5684,7 +5684,7 @@ kundi ZoneInfo(tzinfo):
         zone_tab = os.path.join(zonedir, 'zone.tab')
         jaribu:
             f = open(zone_tab)
-        except OSError:
+        tatizo OSError:
             return
         ukijumuisha f:
             kila line kwenye f:
@@ -5718,7 +5718,7 @@ kundi ZoneInfo(tzinfo):
                         min_gap = shift
                         min_gap_zone = zonename
                         min_gap_datetime = dt
-                elikiwa shift < ZERO:
+                lasivyo shift < ZERO:
                     fold_count += 1
                     shift = -shift
                     ikiwa (shift, dt) > (max_fold, max_fold_datetime):
@@ -5789,7 +5789,7 @@ kundi ZoneInfoTest(unittest.TestCase):
             self.skipTest("Skipping zoneinfo tests on Windows")
         jaribu:
             self.tz = ZoneInfo.fromname(self.zonename)
-        except FileNotFoundError as err:
+        tatizo FileNotFoundError kama err:
             self.skipTest("Skipping %s: %s" % (self.zonename, err))
 
     eleza assertEquivDatetimes(self, a, b):
@@ -5842,12 +5842,12 @@ kundi ZoneInfoTest(unittest.TestCase):
                 self.assertEqual(ldt.fold, 0)
 
     eleza test_system_transitions(self):
-        ikiwa ('Riyadh8' kwenye self.zonename or
+        ikiwa ('Riyadh8' kwenye self.zonename ama
             # From tzdata NEWS file:
             # The files solar87, solar88, na solar89 are no longer distributed.
             # They were a negative experiment - that is, a demonstration that
             # tz data can represent solar time only ukijumuisha some difficulty na error.
-            # Their presence kwenye the distribution caused confusion, as Riyadh
+            # Their presence kwenye the distribution caused confusion, kama Riyadh
             # civil time was generally sio solar time kwenye those years.
                 self.zonename.startswith('right/')):
             self.skipTest("Skipping %s" % self.zonename)
@@ -5910,7 +5910,7 @@ kundi CapiTest(unittest.TestCase):
             self.skipTest('Not relevant kwenye pure Python')
 
         # This *must* be called, na it must be called first, so until either
-        # restriction ni loosened, we'll call it as part of test setup
+        # restriction ni loosened, we'll call it kama part of test setup
         _testcapi.test_datetime_capi()
 
     eleza test_utc_capi(self):
@@ -5970,7 +5970,7 @@ kundi CapiTest(unittest.TestCase):
 
     eleza test_check_date(self):
         kundi DateSubclass(date):
-            pass
+            pita
 
         d = date(2011, 1, 1)
         ds = DateSubclass(2011, 1, 1)
@@ -5998,7 +5998,7 @@ kundi CapiTest(unittest.TestCase):
 
     eleza test_check_time(self):
         kundi TimeSubclass(time):
-            pass
+            pita
 
         t = time(12, 30)
         ts = TimeSubclass(12, 30)
@@ -6024,7 +6024,7 @@ kundi CapiTest(unittest.TestCase):
 
     eleza test_check_datetime(self):
         kundi DateTimeSubclass(datetime):
-            pass
+            pita
 
         dt = datetime(2011, 1, 1, 12, 30)
         dts = DateTimeSubclass(2011, 1, 1, 12, 30)
@@ -6050,7 +6050,7 @@ kundi CapiTest(unittest.TestCase):
 
     eleza test_check_delta(self):
         kundi TimeDeltaSubclass(timedelta):
-            pass
+            pita
 
         td = timedelta(1)
         tds = TimeDeltaSubclass(1)
@@ -6076,7 +6076,7 @@ kundi CapiTest(unittest.TestCase):
 
     eleza test_check_tzinfo(self):
         kundi TZInfoSubclass(tzinfo):
-            pass
+            pita
 
         tzi = tzinfo()
         tzis = TZInfoSubclass()

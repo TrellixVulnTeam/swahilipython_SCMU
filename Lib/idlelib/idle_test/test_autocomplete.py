@@ -7,8 +7,8 @@ kutoka tkinter agiza Tk, Text
 agiza os
 agiza __main__
 
-agiza idlelib.autocomplete as ac
-agiza idlelib.autocomplete_w as acw
+agiza idlelib.autocomplete kama ac
+agiza idlelib.autocomplete_w kama acw
 kutoka idlelib.idle_test.mock_idle agiza Func
 kutoka idlelib.idle_test.mock_tk agiza Event
 
@@ -220,7 +220,7 @@ kundi AutoCompleteTest(unittest.TestCase):
 
     eleza test_fetch_completions(self):
         # Test that fetch_completions returns 2 lists:
-        # For attribute completion, a large list containing all variables, and
+        # For attribute completion, a large list containing all variables, na
         # a small list containing non-private variables.
         # For file completion, a large list containing all files kwenye the path,
         # na a small list containing files that do sio start ukijumuisha '.'.
@@ -270,7 +270,7 @@ kundi AutoCompleteTest(unittest.TestCase):
             self.assertEqual(b, ['.hidden', 'monty', 'python'])
 
     eleza test_get_entity(self):
-        # Test that a name ni kwenye the namespace of sys.modules and
+        # Test that a name ni kwenye the namespace of sys.modules na
         # __main__.__dict__.
         acp = self.autocomplete
         Equal = self.assertEqual
@@ -287,7 +287,7 @@ kundi AutoCompleteTest(unittest.TestCase):
         ukijumuisha patch.dict('__main__.__dict__', {'d': di}):
             Equal(acp.get_entity('d'), di)
 
-        # Test name sio kwenye namespace.
+        # Test name haiko kwenye namespace.
         ukijumuisha patch.dict('__main__.__dict__', {}):
             ukijumuisha self.assertRaises(NameError):
                 acp.get_entity('not_exist')

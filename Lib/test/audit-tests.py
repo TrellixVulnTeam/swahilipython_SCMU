@@ -41,7 +41,7 @@ kundi TestHook:
             return
         self.seen.append((event, args))
         ikiwa event kwenye self.raise_on_events:
-             ashiria self.exc_type("saw event " + event)
+            ashiria self.exc_type("saw event " + event)
 
 
 kundi TestFinalizeHook:
@@ -61,47 +61,47 @@ kundi TestFinalizeHook:
         andika(event, id(self), file=sys.stdout, flush=Kweli)
 
         ikiwa event == "cpython._PySys_ClearAuditHooks":
-             ashiria RuntimeError("Should be ignored")
-        elikiwa event == "cpython.PyInterpreterState_Clear":
-             ashiria RuntimeError("Should be ignored")
+            ashiria RuntimeError("Should be ignored")
+        lasivyo event == "cpython.PyInterpreterState_Clear":
+            ashiria RuntimeError("Should be ignored")
 
 
-# Simple helpers, since we are sio kwenye unittest here
+# Simple helpers, since we are haiko kwenye unittest here
 eleza assertEqual(x, y):
     ikiwa x != y:
-         ashiria AssertionError(f"{x!r} should equal {y!r}")
+        ashiria AssertionError(f"{x!r} should equal {y!r}")
 
 
 eleza assertIn(el, series):
-    ikiwa el sio kwenye series:
-         ashiria AssertionError(f"{el!r} should be kwenye {series!r}")
+    ikiwa el haiko kwenye series:
+        ashiria AssertionError(f"{el!r} should be kwenye {series!r}")
 
 
 eleza assertNotIn(el, series):
     ikiwa el kwenye series:
-         ashiria AssertionError(f"{el!r} should sio be kwenye {series!r}")
+        ashiria AssertionError(f"{el!r} should sio be kwenye {series!r}")
 
 
 eleza assertSequenceEqual(x, y):
     ikiwa len(x) != len(y):
-         ashiria AssertionError(f"{x!r} should equal {y!r}")
+        ashiria AssertionError(f"{x!r} should equal {y!r}")
     ikiwa any(ix != iy kila ix, iy kwenye zip(x, y)):
-         ashiria AssertionError(f"{x!r} should equal {y!r}")
+        ashiria AssertionError(f"{x!r} should equal {y!r}")
 
 
 @contextlib.contextmanager
 eleza assertRaises(ex_type):
     jaribu:
-        yield
+        tuma
         assert Uongo, f"expected {ex_type}"
-    except BaseException as ex:
+    tatizo BaseException kama ex:
         ikiwa isinstance(ex, AssertionError):
             raise
         assert type(ex) ni ex_type, f"{ex} should be {ex_type}"
 
 
 eleza test_basic():
-    ukijumuisha TestHook() as hook:
+    ukijumuisha TestHook() kama hook:
         sys.audit("test_event", 1, 2, 3)
         assertEqual(hook.seen[0][0], "test_event")
         assertEqual(hook.seen[0][1], (1, 2, 3))
@@ -110,8 +110,8 @@ eleza test_basic():
 eleza test_block_add_hook():
     # Raising an exception should prevent a new hook kutoka being added,
     # but will sio propagate out.
-    ukijumuisha TestHook(raise_on_events="sys.addaudithook") as hook1:
-        ukijumuisha TestHook() as hook2:
+    ukijumuisha TestHook(raise_on_events="sys.addaudithook") kama hook1:
+        ukijumuisha TestHook() kama hook2:
             sys.audit("test_event")
             assertIn("test_event", hook1.seen_events)
             assertNotIn("test_event", hook2.seen_events)
@@ -122,10 +122,10 @@ eleza test_block_add_hook_baseexception():
     ukijumuisha assertRaises(BaseException):
         ukijumuisha TestHook(
             raise_on_events="sys.addaudithook", exc_type=BaseException
-        ) as hook1:
-            # Adding this next hook should  ashiria BaseException
-            ukijumuisha TestHook() as hook2:
-                pass
+        ) kama hook1:
+            # Adding this next hook should ashiria BaseException
+            ukijumuisha TestHook() kama hook2:
+                pita
 
 
 eleza test_finalize_hooks():
@@ -145,7 +145,7 @@ eleza test_pickle():
     # Before we add the hook, ensure our malicious pickle loads
     assertEqual("Pwned!", pickle.loads(payload_1))
 
-    ukijumuisha TestHook(raise_on_events="pickle.find_class") as hook:
+    ukijumuisha TestHook(raise_on_events="pickle.find_class") kama hook:
         ukijumuisha assertRaises(RuntimeError):
             # With the hook enabled, loading globals ni sio allowed
             pickle.loads(payload_1)
@@ -155,22 +155,22 @@ eleza test_pickle():
 
 eleza test_monkeypatch():
     kundi A:
-        pass
+        pita
 
     kundi B:
-        pass
+        pita
 
     kundi C(A):
-        pass
+        pita
 
     a = A()
 
-    ukijumuisha TestHook() as hook:
+    ukijumuisha TestHook() kama hook:
         # Catch name changes
         C.__name__ = "X"
         # Catch type changes
         C.__bases__ = (B,)
-        # Ensure bypassing __setattr__ ni still caught
+        # Ensure bypitaing __setattr__ ni still caught
         type.__dict__["__bases__"].__set__(C, (B,))
         # Catch attribute replacement
         C.__init__ = B.__init__
@@ -191,12 +191,12 @@ eleza test_open():
         agiza ssl
 
         load_dh_params = ssl.create_default_context().load_dh_params
-    except ImportError:
+    tatizo ImportError:
         load_dh_params = Tupu
 
     # Try a range of "open" functions.
     # All of them should fail
-    ukijumuisha TestHook(raise_on_events={"open"}) as hook:
+    ukijumuisha TestHook(raise_on_events={"open"}) kama hook:
         kila fn, *args kwenye [
             (open, sys.argv[2], "r"),
             (open, sys.executable, "rb"),
@@ -237,7 +237,7 @@ eleza test_cantrace():
 
     old = sys.settrace(trace)
     jaribu:
-        ukijumuisha TestHook() as hook:
+        ukijumuisha TestHook() kama hook:
             # No traced call
             eval("1")
 
@@ -263,7 +263,7 @@ eleza test_cantrace():
 
 eleza test_mmap():
     agiza mmap
-    ukijumuisha TestHook() as hook:
+    ukijumuisha TestHook() kama hook:
         mmap.mmap(-1, 8)
         assertEqual(hook.seen[0][1][:2], (-1, 8))
 

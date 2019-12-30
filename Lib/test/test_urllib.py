@@ -12,7 +12,7 @@ kutoka test agiza support
 agiza os
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 agiza sys
 agiza tempfile
@@ -23,7 +23,7 @@ agiza collections
 
 
 eleza hexescape(char):
-    """Escape char as RFC 2396 specifies"""
+    """Escape char kama RFC 2396 specifies"""
     hex_repr = hex(ord(char))[2:].upper()
     ikiwa len(hex_repr) == 1:
         hex_repr = "0%s" % hex_repr
@@ -38,7 +38,7 @@ eleza urlopen(url, data=Tupu, proxies=Tupu):
     global _urlopener
     ikiwa proxies ni sio Tupu:
         opener = urllib.request.FancyURLopener(proxies=proxies)
-    elikiwa sio _urlopener:
+    lasivyo sio _urlopener:
         opener = FancyURLopener()
         _urlopener = opener
     isipokua:
@@ -94,10 +94,10 @@ eleza fakehttp(fakedata, mock_close=Uongo):
         ikiwa mock_close:
             # bpo-36918: HTTPConnection destructor calls close() which calls
             # flush(). Problem: flush() calls self.fp.flush() which raises
-            # "ValueError: I/O operation on closed file" which ni logged as an
+            # "ValueError: I/O operation on closed file" which ni logged kama an
             # "Exception ignored in". Override close() to silence this error.
             eleza close(self):
-                pass
+                pita
     FakeHTTPConnection.fakedata = fakedata
 
     rudisha FakeHTTPConnection
@@ -116,15 +116,15 @@ kundi FakeHTTPMixin(object):
 kundi FakeFTPMixin(object):
     eleza fakeftp(self):
         kundi FakeFtpWrapper(object):
-            eleza __init__(self,  user, passwd, host, port, dirs, timeout=Tupu,
+            eleza __init__(self,  user, pitawd, host, port, dirs, timeout=Tupu,
                      persistent=Kweli):
-                pass
+                pita
 
             eleza retrfile(self, file, type):
                 rudisha io.BytesIO(), 0
 
             eleza close(self):
-                pass
+                pita
 
         self._ftpwrapper_kundi = urllib.request.ftpwrapper
         urllib.request.ftpwrapper = FakeFtpWrapper
@@ -136,7 +136,7 @@ kundi FakeFTPMixin(object):
 kundi urlopen_FileTests(unittest.TestCase):
     """Test urlopen() opening a temporary file.
 
-    Try to test as much functionality as possible so as to cut down on reliance
+    Try to test kama much functionality kama possible so kama to cut down on reliance
     on connecting to the Net kila testing.
 
     """
@@ -238,9 +238,9 @@ kundi ProxyTests(unittest.TestCase):
         self.assertEqual('localhost', proxies['no'])
         # List of no_proxies ukijumuisha space.
         self.env.set('NO_PROXY', 'localhost, anotherdomain.com, newdomain.com:1234')
-        self.assertKweli(urllib.request.proxy_bypass_environment('anotherdomain.com'))
-        self.assertKweli(urllib.request.proxy_bypass_environment('anotherdomain.com:8888'))
-        self.assertKweli(urllib.request.proxy_bypass_environment('newdomain.com:1234'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('anotherdomain.com'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('anotherdomain.com:8888'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('newdomain.com:1234'))
 
     eleza test_proxy_cgi_ignore(self):
         jaribu:
@@ -254,20 +254,20 @@ kundi ProxyTests(unittest.TestCase):
             self.env.unset('REQUEST_METHOD')
             self.env.unset('HTTP_PROXY')
 
-    eleza test_proxy_bypass_environment_host_match(self):
-        bypass = urllib.request.proxy_bypass_environment
+    eleza test_proxy_bypita_environment_host_match(self):
+        bypita = urllib.request.proxy_bypita_environment
         self.env.set('NO_PROXY',
                      'localhost, anotherdomain.com, newdomain.com:1234, .d.o.t')
-        self.assertKweli(bypass('localhost'))
-        self.assertKweli(bypass('LocalHost'))                 # MixedCase
-        self.assertKweli(bypass('LOCALHOST'))                 # UPPERCASE
-        self.assertKweli(bypass('newdomain.com:1234'))
-        self.assertKweli(bypass('foo.d.o.t'))                 # issue 29142
-        self.assertKweli(bypass('anotherdomain.com:8888'))
-        self.assertKweli(bypass('www.newdomain.com:1234'))
-        self.assertUongo(bypass('prelocalhost'))
-        self.assertUongo(bypass('newdomain.com'))            # no port
-        self.assertUongo(bypass('newdomain.com:1235'))       # wrong port
+        self.assertKweli(bypita('localhost'))
+        self.assertKweli(bypita('LocalHost'))                 # MixedCase
+        self.assertKweli(bypita('LOCALHOST'))                 # UPPERCASE
+        self.assertKweli(bypita('newdomain.com:1234'))
+        self.assertKweli(bypita('foo.d.o.t'))                 # issue 29142
+        self.assertKweli(bypita('anotherdomain.com:8888'))
+        self.assertKweli(bypita('www.newdomain.com:1234'))
+        self.assertUongo(bypita('prelocalhost'))
+        self.assertUongo(bypita('newdomain.com'))            # no port
+        self.assertUongo(bypita('newdomain.com:1235'))       # wrong port
 
 
 kundi ProxyTests_withOrderedEnv(unittest.TestCase):
@@ -285,20 +285,20 @@ kundi ProxyTests_withOrderedEnv(unittest.TestCase):
         # Test lowercase preference ukijumuisha removal
         os.environ['no_proxy'] = ''
         os.environ['No_Proxy'] = 'localhost'
-        self.assertUongo(urllib.request.proxy_bypass_environment('localhost'))
-        self.assertUongo(urllib.request.proxy_bypass_environment('arbitrary'))
+        self.assertUongo(urllib.request.proxy_bypita_environment('localhost'))
+        self.assertUongo(urllib.request.proxy_bypita_environment('arbitrary'))
         os.environ['http_proxy'] = ''
         os.environ['HTTP_PROXY'] = 'http://somewhere:3128'
         proxies = urllib.request.getproxies_environment()
         self.assertEqual({}, proxies)
-        # Test lowercase preference of proxy bypass na correct matching including ports
+        # Test lowercase preference of proxy bypita na correct matching including ports
         os.environ['no_proxy'] = 'localhost, noproxy.com, my.proxy:1234'
         os.environ['No_Proxy'] = 'xyz.com'
-        self.assertKweli(urllib.request.proxy_bypass_environment('localhost'))
-        self.assertKweli(urllib.request.proxy_bypass_environment('noproxy.com:5678'))
-        self.assertKweli(urllib.request.proxy_bypass_environment('my.proxy:1234'))
-        self.assertUongo(urllib.request.proxy_bypass_environment('my.proxy'))
-        self.assertUongo(urllib.request.proxy_bypass_environment('arbitrary'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('localhost'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('noproxy.com:5678'))
+        self.assertKweli(urllib.request.proxy_bypita_environment('my.proxy:1234'))
+        self.assertUongo(urllib.request.proxy_bypita_environment('my.proxy'))
+        self.assertUongo(urllib.request.proxy_bypita_environment('arbitrary'))
         # Test lowercase preference ukijumuisha replacement
         os.environ['http_proxy'] = 'http://somewhere:3128'
         os.environ['Http_Proxy'] = 'http://somewhereisipokua:3128'
@@ -403,7 +403,7 @@ kundi urlopen_HttpTests(unittest.TestCase, FakeHTTPMixin, FakeFTPMixin):
         self.check_read(b"1.1")
 
     eleza test_read_bogus(self):
-        # urlopen() should  ashiria OSError kila many error codes.
+        # urlopen() should ashiria OSError kila many error codes.
         self.fakehttp(b'''HTTP/1.1 401 Authentication Required
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -416,7 +416,7 @@ Content-Type: text/html; charset=iso-8859-1
             self.unfakehttp()
 
     eleza test_invalid_redirect(self):
-        # urlopen() should  ashiria OSError kila many error codes.
+        # urlopen() should ashiria OSError kila many error codes.
         self.fakehttp(b'''HTTP/1.1 302 Found
 Date: Wed, 02 Jan 2008 03:03:54 GMT
 Server: Apache/1.3.33 (Debian GNU/Linux) mod_ssl/2.8.22 OpenSSL/0.9.7e
@@ -456,7 +456,7 @@ Connection: close
 
     eleza test_missing_localfile(self):
         # Test kila #10836
-        ukijumuisha self.assertRaises(urllib.error.URLError) as e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen('file://localhost/a/file/which/doesnot/exists.py')
         self.assertKweli(e.exception.filename)
         self.assertKweli(e.exception.reason)
@@ -466,7 +466,7 @@ Connection: close
         tmp_fileurl = 'file://localhost/' + tmp_file.replace(os.path.sep, '/')
         jaribu:
             self.assertKweli(os.path.exists(tmp_file))
-            ukijumuisha urlopen(tmp_fileurl) as fobj:
+            ukijumuisha urlopen(tmp_fileurl) kama fobj:
                 self.assertKweli(fobj)
         mwishowe:
             os.close(fd)
@@ -477,13 +477,13 @@ Connection: close
 
     eleza test_ftp_nohost(self):
         test_ftp_url = 'ftp:///path'
-        ukijumuisha self.assertRaises(urllib.error.URLError) as e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen(test_ftp_url)
         self.assertUongo(e.exception.filename)
         self.assertKweli(e.exception.reason)
 
     eleza test_ftp_nonexisting(self):
-        ukijumuisha self.assertRaises(urllib.error.URLError) as e:
+        ukijumuisha self.assertRaises(urllib.error.URLError) kama e:
             urlopen('ftp://localhost/a/file/which/doesnot/exists.py')
         self.assertUongo(e.exception.filename)
         self.assertKweli(e.exception.reason)
@@ -492,30 +492,30 @@ Connection: close
     eleza test_ftp_cache_pruning(self):
         self.fakeftp()
         jaribu:
-            urllib.request.ftpcache['test'] = urllib.request.ftpwrapper('user', 'pass', 'localhost', 21, [])
+            urllib.request.ftpcache['test'] = urllib.request.ftpwrapper('user', 'pita', 'localhost', 21, [])
             urlopen('ftp://localhost')
         mwishowe:
             self.unfakeftp()
 
-    eleza test_userpass_inurl(self):
+    eleza test_userpita_inurl(self):
         self.fakehttp(b"HTTP/1.0 200 OK\r\n\r\nHello!")
         jaribu:
-            fp = urlopen("http://user:pass@python.org/")
+            fp = urlopen("http://user:pita@python.org/")
             self.assertEqual(fp.readline(), b"Hello!")
             self.assertEqual(fp.readline(), b"")
-            self.assertEqual(fp.geturl(), 'http://user:pass@python.org/')
+            self.assertEqual(fp.geturl(), 'http://user:pita@python.org/')
             self.assertEqual(fp.getcode(), 200)
         mwishowe:
             self.unfakehttp()
 
-    eleza test_userpass_inurl_w_spaces(self):
+    eleza test_userpita_inurl_w_spaces(self):
         self.fakehttp(b"HTTP/1.0 200 OK\r\n\r\nHello!")
         jaribu:
-            userpass = "a b:c d"
-            url = "http://{}@python.org/".format(userpass)
+            userpita = "a b:c d"
+            url = "http://{}@python.org/".format(userpita)
             fakehttp_wrapper = http.client.HTTPConnection
             authorization = ("Authorization: Basic %s\r\n" %
-                             b64encode(userpass.encode("ASCII")).decode("ASCII"))
+                             b64encode(userpita.encode("ASCII")).decode("ASCII"))
             fp = urlopen(url)
             # The authorization header must be kwenye place
             self.assertIn(authorization, fakehttp_wrapper.buf.decode("UTF-8"))
@@ -561,7 +561,7 @@ kundi urlopen_DataTests(unittest.TestCase):
             "data:text/plain;charset=ISO-8859-1;base64,dGVzdCBkYXRhIFVSTHMgOjs"
             "sJT0mIPYgxCA%3D")
         # base64 encoded data URL that contains ignorable spaces,
-        # such as "\n", " ", "%0A", na "%20".
+        # such kama "\n", " ", "%0A", na "%20".
         self.image_url = (
             "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAIAAAB7\n"
             "QOjdAAAAAXNSR0IArs4c6QAAAA9JREFUCNdj%0AYGBg%2BP//PwAGAQL%2BCm8 "
@@ -637,25 +637,25 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             FILE.close()
         mwishowe:
             jaribu: FILE.close()
-            tatizo: pass
+            tatizo: pita
 
     eleza tearDown(self):
         # Delete the temporary files.
         kila each kwenye self.tempFiles:
             jaribu: os.remove(each)
-            tatizo: pass
+            tatizo: pita
 
     eleza constructLocalFileUrl(self, filePath):
         filePath = os.path.abspath(filePath)
         jaribu:
             filePath.encode("utf-8")
-        except UnicodeEncodeError:
-             ashiria unittest.SkipTest("filePath ni sio encodable to utf8")
+        tatizo UnicodeEncodeError:
+            ashiria unittest.SkipTest("filePath ni sio encodable to utf8")
         rudisha "file://%s" % urllib.request.pathname2url(filePath)
 
     eleza createNewTempFile(self, data=b""):
         """Creates a new temporary file containing the specified data,
-        registers the file kila deletion during the test fixture tear down, and
+        registers the file kila deletion during the test fixture tear down, na
         returns the absolute path of the file."""
 
         newFd, newFilePath = tempfile.mkstemp()
@@ -666,14 +666,14 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             newFile.close()
         mwishowe:
             jaribu: newFile.close()
-            tatizo: pass
+            tatizo: pita
         rudisha newFilePath
 
     eleza registerFileForCleanUp(self, fileName):
         self.tempFiles.append(fileName)
 
     eleza test_basic(self):
-        # Make sure that a local file just gets its own location returned and
+        # Make sure that a local file just gets its own location returned na
         # a headers value ni returned.
         result = urllib.request.urlretrieve("file:%s" % support.TESTFN)
         self.assertEqual(result[0], support.TESTFN)
@@ -696,7 +696,7 @@ kundi urlretrieve_FileTests(unittest.TestCase):
             FILE.close()
         mwishowe:
             jaribu: FILE.close()
-            tatizo: pass
+            tatizo: pita
         self.assertEqual(self.text, text)
 
     eleza test_reporthook(self):
@@ -770,7 +770,7 @@ FF
 ''')
 
         eleza _reporthook(par1, par2, par3):
-            pass
+            pita
 
         ukijumuisha self.assertRaises(urllib.error.ContentTooShortError):
             jaribu:
@@ -800,7 +800,7 @@ kundi QuotingTests(unittest.TestCase):
     r"""Tests kila urllib.quote() na urllib.quote_plus()
 
     According to RFC 3986 (Uniform Resource Identifiers), to escape a
-    character you write it as '%' + <2 character US-ASCII hex value>.
+    character you write it kama '%' + <2 character US-ASCII hex value>.
     The Python code of ``'%' + hex(ord(<character>))[2:]`` escapes a
     character properly. Case does sio matter on the hex letters.
 
@@ -850,7 +850,7 @@ kundi QuotingTests(unittest.TestCase):
         self.assertEqual(quote_by_default, result,
                          "using quote_plus(): %r != %r" %
                          (quote_by_default, result))
-        # Safe expressed as bytes rather than str
+        # Safe expressed kama bytes rather than str
         result = urllib.parse.quote(quote_by_default, safe=b"<>")
         self.assertEqual(quote_by_default, result,
                          "using quote(): %r != %r" % (quote_by_default, result))
@@ -861,7 +861,7 @@ kundi QuotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" %
                          (expect, result))
-        # Same as above, but using a bytes rather than str
+        # Same kama above, but using a bytes rather than str
         result = urllib.parse.quote("a\xfcb", encoding="latin-1", safe=b"\xfc")
         expect = urllib.parse.quote("a\xfcb", encoding="latin-1", safe="")
         self.assertEqual(expect, result,
@@ -897,7 +897,7 @@ kundi QuotingTests(unittest.TestCase):
                          "using quote_plus(): %r != %r" % (expected, result))
 
     eleza test_quoting_space(self):
-        # Make sure quote() na quote_plus() handle spaces as specified in
+        # Make sure quote() na quote_plus() handle spaces kama specified in
         # their unique way
         result = urllib.parse.quote(' ')
         self.assertEqual(result, hexescape(' '),
@@ -934,7 +934,7 @@ kundi QuotingTests(unittest.TestCase):
         result = urllib.parse.quote(given)
         self.assertEqual(expect, result,
                          "using quote(): %r != %r" % (expect, result))
-        # Encoding argument should  ashiria type error on bytes input
+        # Encoding argument should ashiria type error on bytes input
         self.assertRaises(TypeError, urllib.parse.quote, given,
                             encoding="latin-1")
         # quote_from_bytes should work the same
@@ -1117,14 +1117,14 @@ kundi UnquotingTests(unittest.TestCase):
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
-        # Test ukijumuisha a bytes as input
+        # Test ukijumuisha a bytes kama input
         given = b'%A2%D8ab%FF'
         expect = b'\xa2\xd8ab\xff'
         result = urllib.parse.unquote_to_bytes(given)
         self.assertEqual(expect, result,
                          "using unquote_to_bytes(): %r != %r"
                          % (expect, result))
-        # Test ukijumuisha a bytes as input, ukijumuisha unescaped non-ASCII bytes
+        # Test ukijumuisha a bytes kama input, ukijumuisha unescaped non-ASCII bytes
         # (Technically an invalid URI; expect those bytes to be preserved)
         given = b'%A2\xd8ab%FF'
         expect = b'\xa2\xd8ab\xff'
@@ -1202,7 +1202,7 @@ kundi urlencode_Tests(unittest.TestCase):
             * 2nd, 2
             * 3rd, 3
 
-        Test cannot assume anything about order.  Docs make no guarantee and
+        Test cannot assume anything about order.  Docs make no guarantee na
         have possible dictionary input.
 
         """
@@ -1227,14 +1227,14 @@ kundi urlencode_Tests(unittest.TestCase):
                          (test_type, len(result), (5 * 3) + 2))
 
     eleza test_using_mapping(self):
-        # Test passing kwenye a mapping object as an argument.
+        # Test pitaing kwenye a mapping object kama an argument.
         self.help_inputtype({"1st":'1', "2nd":'2', "3rd":'3'},
-                            "using dict as input type")
+                            "using dict kama input type")
 
     eleza test_using_sequence(self):
-        # Test passing kwenye a sequence of two-item sequences as an argument.
+        # Test pitaing kwenye a sequence of two-item sequences kama an argument.
         self.help_inputtype([('1st', '1'), ('2nd', '2'), ('3rd', '3')],
-                            "using sequence of two-item tuples as input")
+                            "using sequence of two-item tuples kama input")
 
     eleza test_quoting(self):
         # Make sure keys na values are quoted using quote_plus()
@@ -1248,7 +1248,7 @@ kundi urlencode_Tests(unittest.TestCase):
         self.assertEqual(expect, result)
 
     eleza test_doseq(self):
-        # Test that passing Kweli kila 'doseq' parameter works correctly
+        # Test that pitaing Kweli kila 'doseq' parameter works correctly
         given = {'sequence':['1', '2', '3']}
         expect = "sequence=%s" % urllib.parse.quote_plus(str(['1', '2', '3']))
         result = urllib.parse.urlencode(given)
@@ -1348,7 +1348,7 @@ kundi urlencode_Tests(unittest.TestCase):
 
     eleza test_urlencode_encoding_safe_parameter(self):
 
-        # Send '$' (\x24) as safe character
+        # Send '$' (\x24) kama safe character
         # Default utf-8 encoding
 
         given = ((b'\xa0\x24', b'\xc1\x24'),)
@@ -1390,7 +1390,7 @@ kundi Pathname_Tests(unittest.TestCase):
     """Test pathname2url() na url2pathname()"""
 
     eleza test_basic(self):
-        # Make sure simple tests pass
+        # Make sure simple tests pita
         expected_path = os.path.join("parts", "of", "a", "path")
         expected_url = "parts/of/a/path"
         result = urllib.request.pathname2url(expected_path)
@@ -1403,7 +1403,7 @@ kundi Pathname_Tests(unittest.TestCase):
                          (result, expected_path))
 
     eleza test_quoting(self):
-        # Test automatic quoting na unquoting works kila pathnam2url() and
+        # Test automatic quoting na unquoting works kila pathnam2url() na
         # url2pathname() respectively
         given = os.path.join("needs", "quot=ing", "here")
         expect = "needs/%s/here" % urllib.parse.quote("quot=ing")
@@ -1474,7 +1474,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 
     @support.ignore_warnings(category=DeprecationWarning)
     eleza test_urlopener_retrieve_file(self):
-        ukijumuisha support.temp_dir() as tmpdir:
+        ukijumuisha support.temp_dir() kama tmpdir:
             fd, tmpfile = tempfile.mkstemp(dir=tmpdir)
             os.close(fd)
             fileurl = "file:" + urllib.request.pathname2url(tmpfile)
@@ -1507,7 +1507,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 # Just commented them out.
 # Can't really tell why keep failing kwenye windows na sparc.
 # Everywhere isipokua they work ok, but on those machines, sometimes
-# fail kwenye one of the tests, sometimes kwenye other. I have a linux, and
+# fail kwenye one of the tests, sometimes kwenye other. I have a linux, na
 # the tests go ok.
 # If anybody has one of the problematic environments, please help!
 # .   Facundo
@@ -1529,8 +1529,8 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #             time.sleep(.3)
 #         conn.send("2 No more lines\n")
 #         conn.close()
-#     except socket.timeout:
-#         pass
+#     tatizo socket.timeout:
+#         pita
 #     mwishowe:
 #         serv.close()
 #         evt.set()
@@ -1549,7 +1549,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #
 #     eleza testBasic(self):
 #         # connects
-#         ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [])
+#         ftp = urllib.ftpwrapper("myuser", "mypita", "localhost", 9093, [])
 #         ftp.close()
 #
 #     eleza testTimeoutTupu(self):
@@ -1558,7 +1558,7 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #         self.assertIsTupu(socket.getdefaulttimeout())
 #         socket.setdefaulttimeout(30)
 #         jaribu:
-#             ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [])
+#             ftp = urllib.ftpwrapper("myuser", "mypita", "localhost", 9093, [])
 #         mwishowe:
 #             socket.setdefaulttimeout(Tupu)
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
@@ -1570,14 +1570,14 @@ kundi URLopener_Tests(FakeHTTPMixin, unittest.TestCase):
 #         self.assertIsTupu(socket.getdefaulttimeout())
 #         socket.setdefaulttimeout(30)
 #         jaribu:
-#             ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [])
+#             ftp = urllib.ftpwrapper("myuser", "mypita", "localhost", 9093, [])
 #         mwishowe:
 #             socket.setdefaulttimeout(Tupu)
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
 #         ftp.close()
 #
 #     eleza testTimeoutValue(self):
-#         ftp = urllib.ftpwrapper("myuser", "mypass", "localhost", 9093, [],
+#         ftp = urllib.ftpwrapper("myuser", "mypita", "localhost", 9093, [],
 #                                 timeout=30)
 #         self.assertEqual(ftp.ftp.sock.gettimeout(), 30)
 #         ftp.close()

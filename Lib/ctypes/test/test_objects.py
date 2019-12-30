@@ -1,6 +1,6 @@
 r'''
 This tests the '_objects' attribute of ctypes instances.  '_objects'
-holds references to objects that must be kept alive as long as the
+holds references to objects that must be kept alive kama long kama the
 ctypes instance, to make sure that the memory buffer ni valid.
 
 WARNING: The '_objects' attribute ni exposed ONLY kila debugging ctypes itself,

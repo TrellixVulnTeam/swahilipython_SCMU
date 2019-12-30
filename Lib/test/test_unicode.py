@@ -28,7 +28,7 @@ eleza search_function(encoding):
         rudisha (42, 42) # no unicode
     ikiwa encoding=="test.unicode1":
         rudisha (encode1, decode1, Tupu, Tupu)
-    elikiwa encoding=="test.unicode2":
+    lasivyo encoding=="test.unicode2":
         rudisha (encode2, decode2, Tupu, Tupu)
     isipokua:
         rudisha Tupu
@@ -45,7 +45,7 @@ eleza duplicate_string(text):
     rudisha text.encode().decode()
 
 kundi StrSubclass(str):
-    pass
+    pita
 
 kundi UnicodeTest(string_tests.CommonTest,
         string_tests.MixinStrUnicodeUserStringTest,
@@ -616,7 +616,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.checkequalnofix(Kweli, '\u2000', 'isspace')
         self.checkequalnofix(Kweli, '\u200a', 'isspace')
         self.checkequalnofix(Uongo, '\u2014', 'isspace')
-        # There are no non-BMP whitespace chars as of Unicode 12.
+        # There are no non-BMP whitespace chars kama of Unicode 12.
         kila ch kwenye ['\U00010401', '\U00010427', '\U00010429', '\U0001044E',
                    '\U0001F40D', '\U0001F46F']:
             self.assertUongo(ch.isspace(), '{!a} ni sio space.'.format(ch))
@@ -884,7 +884,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         size = 2**32//12 + 1
         jaribu:
             s = "ü" * size
-        except MemoryError:
+        tatizo MemoryError:
             self.skipTest('no enough memory (%.0f MiB required)' % (size / 2**20))
         jaribu:
             self.assertRaises(OverflowError, s.upper)
@@ -1085,7 +1085,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('{0:10000}'.format(''), ' ' * 10000)
         self.assertEqual('{0:10000000}'.format(''), ' ' * 10000000)
 
-        # issue 12546: use \x00 as a fill character
+        # issue 12546: use \x00 kama a fill character
         self.assertEqual('{0:\x00<6s}'.format('foo'), 'foo\x00\x00\x00')
         self.assertEqual('{0:\x01<6s}'.format('foo'), 'foo\x01\x01\x01')
         self.assertEqual('{0:\x00^6s}'.format('foo'), '\x00foo\x00\x00')
@@ -1493,7 +1493,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_startswith_endswith_errors(self):
         kila meth kwenye ('foo'.startswith, 'foo'.endswith):
-            ukijumuisha self.assertRaises(TypeError) as cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 meth(['f'])
             exc = str(cm.exception)
             self.assertIn('str', exc)
@@ -1576,7 +1576,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
     eleza test_constructor_keyword_args(self):
         """Pass various keyword argument combinations to the constructor."""
-        # The object argument can be passed as a keyword.
+        # The object argument can be pitaed kama a keyword.
         self.assertEqual(str(object='foo'), 'foo')
         self.assertEqual(str(object=b'foo', encoding='utf-8'), 'foo')
         # The errors argument without encoding triggers "decode" mode.
@@ -1615,7 +1615,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         kila (x, y) kwenye utfTests:
             self.assertEqual(x.encode('utf-7'), y)
 
-        # Unpaired surrogates are passed through
+        # Unpaired surrogates are pitaed through
         self.assertEqual('\uD801'.encode('utf-7'), b'+2AE-')
         self.assertEqual('\uD801x'.encode('utf-7'), b'+2AE-x')
         self.assertEqual('\uDC01'.encode('utf-7'), b'+3AE-')
@@ -1650,8 +1650,8 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual('\u20ac'.encode('utf-8'), b'\xe2\x82\xac')
         self.assertEqual('\U00010002'.encode('utf-8'), b'\xf0\x90\x80\x82')
         self.assertEqual('\U00023456'.encode('utf-8'), b'\xf0\xa3\x91\x96')
-        self.assertEqual('\ud800'.encode('utf-8', 'surrogatepass'), b'\xed\xa0\x80')
-        self.assertEqual('\udc00'.encode('utf-8', 'surrogatepass'), b'\xed\xb0\x80')
+        self.assertEqual('\ud800'.encode('utf-8', 'surrogatepita'), b'\xed\xa0\x80')
+        self.assertEqual('\udc00'.encode('utf-8', 'surrogatepita'), b'\xed\xb0\x80')
         self.assertEqual(('\U00010002'*10).encode('utf-8'),
                          b'\xf0\x90\x80\x82'*10)
         self.assertEqual(
@@ -1841,7 +1841,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         'strict' ni used, returns res when 'replace' ni used, na that doesn't
         rudisha anything when 'ignore' ni used.
         """
-        ukijumuisha self.assertRaises(UnicodeDecodeError) as cm:
+        ukijumuisha self.assertRaises(UnicodeDecodeError) kama cm:
             seq.decode('utf-8')
         exc = cm.exception
 
@@ -1857,7 +1857,7 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_invalid_start_byte(self):
         """
         Test that an 'invalid start byte' error ni raised when the first byte
-        ni sio kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, or
+        ni haiko kwenye the ASCII range ama ni sio a valid start byte of a 2-, 3-, ama
         4-bytes sequence. The invalid start byte ni replaced ukijumuisha a single
         U+FFFD when errors='replace'.
         E.g. <80> ni a continuation byte na can appear only after a start byte.
@@ -2138,7 +2138,7 @@ kundi UnicodeTest(string_tests.CommonTest,
                 self.assertEqual(str(u.encode(encoding),encoding), u)
 
         # UTF-8 must be roundtrip safe kila all code points
-        # (except surrogates, which are forbidden).
+        # (tatizo surrogates, which are forbidden).
         u = ''.join(map(chr, list(range(0, 0xd800)) +
                              list(range(0xe000, 0x110000))))
         kila encoding kwenye ('utf-8',):
@@ -2209,7 +2209,7 @@ kundi UnicodeTest(string_tests.CommonTest,
     eleza test_printing(self):
         kundi BitBucket:
             eleza write(self, text):
-                pass
+                pita
 
         out = BitBucket()
         andika('abc', file=out)
@@ -2236,7 +2236,7 @@ kundi UnicodeTest(string_tests.CommonTest,
 
         jaribu:
             br'\U11111111'.decode("raw-unicode-escape")
-        except UnicodeDecodeError as e:
+        tatizo UnicodeDecodeError kama e:
             self.assertEqual(e.start, 0)
             self.assertEqual(e.end, 10)
         isipokua:
@@ -2284,7 +2284,7 @@ kundi UnicodeTest(string_tests.CommonTest,
         self.assertEqual(repr('\U00014000'), "'\\U00014000'")     # nonprintable
 
     # This test only affects 32-bit platforms because expandtabs can only take
-    # an int as the max value, sio a 64-bit C long.  If expandtabs ni changed
+    # an int kama the max value, sio a 64-bit C long.  If expandtabs ni changed
     # to take a 64-bit long, this test should apply to all platforms.
     @unittest.skipIf(sys.maxsize > (1 << 32) ama struct.calcsize('P') != 4,
                      'only applies to 32-bit platforms')
@@ -2311,7 +2311,7 @@ kundi UnicodeTest(string_tests.CommonTest,
             ikiwa code < 0x100:
                 char_size = 1  # sizeof(Py_UCS1)
                 struct_size = ascii_struct_size
-            elikiwa code < 0x10000:
+            lasivyo code < 0x10000:
                 char_size = 2  # sizeof(Py_UCS2)
                 struct_size = compact_struct_size
             isipokua:
@@ -2673,7 +2673,7 @@ kundi CAPITest(unittest.TestCase):
                      b'repr=%V', Tupu, b'abc\xff')
 
         # sio supported: copy the raw format string. these tests are just here
-        # to check kila crashes na should sio be considered as specifications
+        # to check kila crashes na should sio be considered kama specifications
         check_format('%s',
                      b'%1%s', b'abc')
         check_format('%1abc',
@@ -2852,7 +2852,7 @@ kundi CAPITest(unittest.TestCase):
 
     @support.cpython_only
     eleza test_transform_decimal(self):
-        kutoka _testcapi agiza unicode_transformdecimaltoascii as transform_decimal
+        kutoka _testcapi agiza unicode_transformdecimaltoascii kama transform_decimal
         self.assertEqual(transform_decimal('123'),
                          '123')
         self.assertEqual(transform_decimal('\u0663.\u0661\u0664'),

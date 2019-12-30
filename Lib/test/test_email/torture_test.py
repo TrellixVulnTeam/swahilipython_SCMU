@@ -1,9 +1,9 @@
 # Copyright (C) 2002-2004 Python Software Foundation
 #
-# A torture test of the email package.  This should sio be run as part of the
+# A torture test of the email package.  This should sio be run kama part of the
 # standard Python test suite since it requires several meg of email messages
 # collected kwenye the wild.  These source messages are sio checked into the
-# Python distro, but are available as part of the standalone email package at
+# Python distro, but are available kama part of the standalone email package at
 # http://sf.net/projects/mimelib
 
 agiza sys
@@ -15,7 +15,7 @@ kutoka test.test_email agiza TestEmailBase
 kutoka test.support agiza run_unittest
 
 agiza email
-kutoka email agiza __file__ as testfile
+kutoka email agiza __file__ kama testfile
 kutoka email.iterators agiza _structure
 
 eleza openfile(filename):
@@ -26,8 +26,8 @@ eleza openfile(filename):
 # Prevent this test kutoka running kwenye the Python distro
 jaribu:
     openfile('crispin-torture.txt')
-except OSError:
-     ashiria unittest.SkipTest
+tatizo OSError:
+    ashiria unittest.SkipTest
 
 
 

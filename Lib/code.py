@@ -16,8 +16,8 @@ kundi InteractiveInterpreter:
     """Base kundi kila InteractiveConsole.
 
     This kundi deals ukijumuisha parsing na interpreter state (the user's
-    namespace); it doesn't deal ukijumuisha input buffering ama prompting or
-    input file naming (the filename ni always passed kwenye explicitly).
+    namespace); it doesn't deal ukijumuisha input buffering ama prompting ama
+    input file naming (the filename ni always pitaed kwenye explicitly).
 
     """
 
@@ -38,7 +38,7 @@ kundi InteractiveInterpreter:
     eleza runsource(self, source, filename="<input>", symbol="single"):
         """Compile na run some source kwenye the interpreter.
 
-        Arguments are as kila compile_command().
+        Arguments are kama kila compile_command().
 
         One several things can happen:
 
@@ -51,7 +51,7 @@ kundi InteractiveInterpreter:
 
         3) The input ni complete; compile_command() returned a code
         object.  The code ni executed by calling self.runcode() (which
-        also handles run-time exceptions, except kila SystemExit).
+        also handles run-time exceptions, tatizo kila SystemExit).
 
         The rudisha value ni Kweli kwenye case 2, Uongo kwenye the other cases (unless
         an exception ni raised).  The rudisha value can be used to
@@ -61,7 +61,7 @@ kundi InteractiveInterpreter:
         """
         jaribu:
             code = self.compile(source, filename, symbol)
-        except (OverflowError, SyntaxError, ValueError):
+        tatizo (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename)
             rudisha Uongo
@@ -88,7 +88,7 @@ kundi InteractiveInterpreter:
         """
         jaribu:
             exec(code, self.locals)
-        except SystemExit:
+        tatizo SystemExit:
             raise
         tatizo:
             self.showtraceback()
@@ -113,9 +113,9 @@ kundi InteractiveInterpreter:
             # Work hard to stuff the correct filename kwenye the exception
             jaribu:
                 msg, (dummy_filename, lineno, offset, line) = value.args
-            except ValueError:
+            tatizo ValueError:
                 # Not the format we expect; leave it alone
-                pass
+                pita
             isipokua:
                 # Stuff kwenye the right filename
                 value = SyntaxError(msg, (filename, lineno, offset, line))
@@ -170,7 +170,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
     eleza __init__(self, locals=Tupu, filename="<console>"):
         """Constructor.
 
-        The optional locals argument will be passed to the
+        The optional locals argument will be pitaed to the
         InteractiveInterpreter base class.
 
         The optional filename argument should specify the (file)name
@@ -191,7 +191,7 @@ kundi InteractiveConsole(InteractiveInterpreter):
         The optional banner argument specifies the banner to print
         before the first interaction; by default it prints a banner
         similar to the one printed by the real Python interpreter,
-        followed by the current kundi name kwenye parentheses (so as not
+        followed by the current kundi name kwenye parentheses (so kama not
         to confuse this ukijumuisha the real interpreter -- since it's so
         close!).
 
@@ -203,18 +203,18 @@ kundi InteractiveConsole(InteractiveInterpreter):
         """
         jaribu:
             sys.ps1
-        except AttributeError:
+        tatizo AttributeError:
             sys.ps1 = ">>> "
         jaribu:
             sys.ps2
-        except AttributeError:
+        tatizo AttributeError:
             sys.ps2 = "... "
         cprt = 'Type "help", "copyright", "credits" ama "license" kila more information.'
         ikiwa banner ni Tupu:
             self.write("Python %s on %s\n%s\n(%s)\n" %
                        (sys.version, sys.platform, cprt,
                         self.__class__.__name__))
-        elikiwa banner:
+        lasivyo banner:
             self.write("%s\n" % str(banner))
         more = 0
         wakati 1:
@@ -225,18 +225,18 @@ kundi InteractiveConsole(InteractiveInterpreter):
                     prompt = sys.ps1
                 jaribu:
                     line = self.raw_uliza(prompt)
-                except EOFError:
+                tatizo EOFError:
                     self.write("\n")
                     koma
                 isipokua:
                     more = self.push(line)
-            except KeyboardInterrupt:
+            tatizo KeyboardInterrupt:
                 self.write("\nKeyboardInterrupt\n")
                 self.resetbuffer()
                 more = 0
         ikiwa exitmsg ni Tupu:
             self.write('now exiting %s...\n' % self.__class__.__name__)
-        elikiwa exitmsg != '':
+        lasivyo exitmsg != '':
             self.write('%s\n' % exitmsg)
 
     eleza push(self, line):
@@ -245,12 +245,12 @@ kundi InteractiveConsole(InteractiveInterpreter):
         The line should sio have a trailing newline; it may have
         internal newlines.  The line ni appended to a buffer na the
         interpreter's runsource() method ni called ukijumuisha the
-        concatenated contents of the buffer as source.  If this
+        concatenated contents of the buffer kama source.  If this
         indicates that the command was executed ama invalid, the buffer
         ni reset; otherwise, the command ni incomplete, na the buffer
-        ni left as it was after the line was appended.  The return
+        ni left kama it was after the line was appended.  The return
         value ni 1 ikiwa more input ni required, 0 ikiwa the line was dealt
-        ukijumuisha kwenye some way (this ni the same as runsource()).
+        ukijumuisha kwenye some way (this ni the same kama runsource()).
 
         """
         self.buffer.append(line)
@@ -284,10 +284,10 @@ eleza interact(banner=Tupu, readfunc=Tupu, local=Tupu, exitmsg=Tupu):
 
     Arguments (all optional, all default to Tupu):
 
-    banner -- passed to InteractiveConsole.interact()
+    banner -- pitaed to InteractiveConsole.interact()
     readfunc -- ikiwa sio Tupu, replaces InteractiveConsole.raw_uliza()
-    local -- passed to InteractiveInterpreter.__init__()
-    exitmsg -- passed to InteractiveConsole.interact()
+    local -- pitaed to InteractiveInterpreter.__init__()
+    exitmsg -- pitaed to InteractiveConsole.interact()
 
     """
     console = InteractiveConsole(local)
@@ -296,8 +296,8 @@ eleza interact(banner=Tupu, readfunc=Tupu, local=Tupu, exitmsg=Tupu):
     isipokua:
         jaribu:
             agiza readline
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
     console.interact(banner, exitmsg)
 
 

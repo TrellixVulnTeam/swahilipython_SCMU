@@ -1,7 +1,7 @@
 """ Python 'utf-8-sig' Codec
 This work similar to UTF-8 ukijumuisha the following changes:
 
-* On encoding/writing a UTF-8 encoded BOM will be prepended/written as the
+* On encoding/writing a UTF-8 encoded BOM will be prepended/written kama the
   first three bytes.
 
 * On decoding/reading ikiwa the first three bytes are a UTF-8 encoded BOM, these
@@ -74,7 +74,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     eleza getstate(self):
         state = codecs.BufferedIncrementalDecoder.getstate(self)
-        # state[1] must be 0 here, as it isn't passed along to the caller
+        # state[1] must be 0 here, kama it isn't pitaed along to the caller
         rudisha (state[0], self.first)
 
     eleza setstate(self, state):
@@ -87,8 +87,8 @@ kundi StreamWriter(codecs.StreamWriter):
         codecs.StreamWriter.reset(self)
         jaribu:
             toa self.encode
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza encode(self, input, errors='strict'):
         self.encode = codecs.utf_8_encode
@@ -99,8 +99,8 @@ kundi StreamReader(codecs.StreamReader):
         codecs.StreamReader.reset(self)
         jaribu:
             toa self.decode
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza decode(self, input, errors='strict'):
         ikiwa len(input) < 3:
@@ -108,7 +108,7 @@ kundi StreamReader(codecs.StreamReader):
                 # sio enough data to decide ikiwa this ni a BOM
                 # => try again on the next call
                 rudisha ("", 0)
-        elikiwa input[:3] == codecs.BOM_UTF8:
+        lasivyo input[:3] == codecs.BOM_UTF8:
             self.decode = codecs.utf_8_decode
             (output, consumed) = codecs.utf_8_decode(input[3:],errors)
             rudisha (output, consumed+3)

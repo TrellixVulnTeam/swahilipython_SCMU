@@ -24,7 +24,7 @@ kundi BaseFix(object):
     PATTERN = Tupu  # Most subclasses should override ukijumuisha a string literal
     pattern = Tupu  # Compiled pattern, set by compile_pattern()
     pattern_tree = Tupu # Tree representation of the pattern
-    options = Tupu  # Options object passed to initializer
+    options = Tupu  # Options object pitaed to initializer
     filename = Tupu # The filename (set by set_filename)
     numbers = itertools.count(1) # For new_name()
     used_names = set() # A set of all used NAMEs
@@ -48,7 +48,7 @@ kundi BaseFix(object):
         """Initializer.  Subkundi may override.
 
         Args:
-            options: a dict containing the options passed to RefactoringTool
+            options: a dict containing the options pitaed to RefactoringTool
             that could be used to customize the fixer through the command line.
             log: a list to append warnings na other messages to.
         """
@@ -77,7 +77,7 @@ kundi BaseFix(object):
     eleza match(self, node):
         """Returns match kila a given parse tree node.
 
-        Should rudisha a true ama false object (not necessarily a bool).
+        Should rudisha a true ama false object (sio necessarily a bool).
         It may rudisha a non-empty dict of matching sub-nodes as
         returned by a matching pattern.
 
@@ -100,10 +100,10 @@ kundi BaseFix(object):
 
         Subkundi *must* override.
         """
-         ashiria NotImplementedError()
+        ashiria NotImplementedError()
 
     eleza new_name(self, template="xxx_todo_changeme"):
-        """Return a string suitable kila use as an identifier
+        """Return a string suitable kila use kama an identifier
 
         The new name ni guaranteed sio to conflict ukijumuisha other identifiers.
         """
@@ -163,7 +163,7 @@ kundi BaseFix(object):
         tree - the root node of the tree to be processed.
         filename - the name of the file the tree came from.
         """
-        pass
+        pita
 
 
 kundi ConditionalFix(BaseFix):

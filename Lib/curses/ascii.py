@@ -90,7 +90,7 @@ eleza unctrl(c):
     bits = _ctoi(c)
     ikiwa bits == 0x7f:
         rep = "^?"
-    elikiwa isandika(bits & 0x7f):
+    lasivyo isandika(bits & 0x7f):
         rep = chr(bits & 0x7f)
     isipokua:
         rep = "^" + chr(((bits & 0x7f) | 0x20) + 0x20)

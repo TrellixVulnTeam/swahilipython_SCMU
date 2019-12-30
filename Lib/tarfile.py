@@ -36,7 +36,7 @@ __credits__ = "Gustavo Niemeyer, Niels Gust\u00e4bel, Richard Townsend."
 #---------
 # Imports
 #---------
-kutoka builtins agiza open as bltn_open
+kutoka builtins agiza open kama bltn_open
 agiza sys
 agiza os
 agiza io
@@ -49,11 +49,11 @@ agiza re
 
 jaribu:
     agiza pwd
-except ImportError:
+tatizo ImportError:
     pwd = Tupu
 jaribu:
     agiza grp
-except ImportError:
+tatizo ImportError:
     grp = Tupu
 
 # os.symlink on Windows prior to 6.0 raises NotImplementedError
@@ -62,8 +62,8 @@ jaribu:
     # OSError (winerror=1314) will be raised ikiwa the caller does sio hold the
     # SeCreateSymbolicLinkPrivilege privilege
     symlink_exception += (OSError,)
-except NameError:
-    pass
+tatizo NameError:
+    pita
 
 # kutoka tarfile agiza *
 __all__ = ["TarFile", "TarInfo", "is_tarfile", "TarError", "ReadError",
@@ -117,7 +117,7 @@ SUPPORTED_TYPES = (REGTYPE, AREGTYPE, LNKTYPE,
                    GNUTYPE_LONGNAME, GNUTYPE_LONGLINK,
                    GNUTYPE_SPARSE)
 
-# File types that will be treated as a regular file.
+# File types that will be treated kama a regular file.
 REGULAR_TYPES = (REGTYPE, AREGTYPE,
                  CONTTYPE, GNUTYPE_SPARSE)
 
@@ -133,7 +133,7 @@ PAX_FIELDS = ("path", "linkpath", "size", "mtime",
 PAX_NAME_FIELDS = {"path", "linkpath", "uname", "gname"}
 
 # Fields kwenye a pax header that are numbers, all other fields
-# are treated as strings.
+# are treated kama strings.
 PAX_NUMBER_FIELDS = {
     "atime": float,
     "ctime": float,
@@ -185,14 +185,14 @@ eleza nti(s):
         jaribu:
             s = nts(s, "ascii", "strict")
             n = int(s.strip() ama "0", 8)
-        except ValueError:
-             ashiria InvalidHeaderError("invalid header")
+        tatizo ValueError:
+            ashiria InvalidHeaderError("invalid header")
     rudisha n
 
 eleza itn(n, digits=8, format=DEFAULT_FORMAT):
     """Convert a python number to a number field.
     """
-    # POSIX 1003.1-1988 requires numbers to be encoded as a string of
+    # POSIX 1003.1-1988 requires numbers to be encoded kama a string of
     # octal digits followed by a null-byte, this allows values up to
     # (8**(digits-1))-1. GNU tar allows storing numbers greater than
     # that ikiwa necessary. A leading 0o200 ama 0o377 byte indicate this
@@ -203,7 +203,7 @@ eleza itn(n, digits=8, format=DEFAULT_FORMAT):
     n = int(n)
     ikiwa 0 <= n < 8 ** (digits - 1):
         s = bytes("%0*o" % (digits - 1, n), "ascii") + NUL
-    elikiwa format == GNU_FORMAT na -256 ** (digits - 1) <= n < 256 ** (digits - 1):
+    lasivyo format == GNU_FORMAT na -256 ** (digits - 1) <= n < 256 ** (digits - 1):
         ikiwa n >= 0:
             s = bytearray([0o200])
         isipokua:
@@ -214,17 +214,17 @@ eleza itn(n, digits=8, format=DEFAULT_FORMAT):
             s.insert(1, n & 0o377)
             n >>= 8
     isipokua:
-         ashiria ValueError("overflow kwenye number field")
+        ashiria ValueError("overflow kwenye number field")
 
     rudisha s
 
 eleza calc_chksums(buf):
     """Calculate the checksum kila a member's header by summing up all
-       characters except kila the chksum field which ni treated as if
+       characters tatizo kila the chksum field which ni treated kama if
        it was filled ukijumuisha spaces. According to the GNU tar sources,
        some tars (Sun na NeXT) calculate chksum ukijumuisha signed char,
        which will be different ikiwa there are chars kwenye the buffer with
-       the high bit set. So we calculate two checksums, unsigned and
+       the high bit set. So we calculate two checksums, unsigned na
        signed.
     """
     unsigned_chksum = 256 + sum(struct.unpack_from("148B8x356B", buf))
@@ -246,13 +246,13 @@ eleza copyfileobj(src, dst, length=Tupu, exception=OSError, bufsize=Tupu):
     kila b kwenye range(blocks):
         buf = src.read(bufsize)
         ikiwa len(buf) < bufsize:
-             ashiria exception("unexpected end of data")
+            ashiria exception("unexpected end of data")
         dst.write(buf)
 
     ikiwa remainder != 0:
         buf = src.read(remainder)
         ikiwa len(buf) < remainder:
-             ashiria exception("unexpected end of data")
+            ashiria exception("unexpected end of data")
         dst.write(buf)
     return
 
@@ -265,37 +265,37 @@ eleza _safe_andika(s):
 
 kundi TarError(Exception):
     """Base exception."""
-    pass
+    pita
 kundi ExtractError(TarError):
     """General exception kila extract errors."""
-    pass
+    pita
 kundi ReadError(TarError):
     """Exception kila unreadable tar archives."""
-    pass
+    pita
 kundi CompressionError(TarError):
     """Exception kila unavailable compression methods."""
-    pass
+    pita
 kundi StreamError(TarError):
     """Exception kila unsupported operations on stream-like TarFiles."""
-    pass
+    pita
 kundi HeaderError(TarError):
     """Base exception kila header errors."""
-    pass
+    pita
 kundi EmptyHeaderError(HeaderError):
     """Exception kila empty headers."""
-    pass
+    pita
 kundi TruncatedHeaderError(HeaderError):
     """Exception kila truncated headers."""
-    pass
+    pita
 kundi EOFHeaderError(HeaderError):
     """Exception kila end of file headers."""
-    pass
+    pita
 kundi InvalidHeaderError(HeaderError):
     """Exception kila invalid headers."""
-    pass
+    pita
 kundi SubsequentHeaderError(HeaderError):
     """Exception kila missing na invalid extended headers."""
-    pass
+    pita
 
 #---------------------------
 # internal stream interface
@@ -325,7 +325,7 @@ kundi _LowLevelFile:
         os.write(self.fd, s)
 
 kundi _Stream:
-    """Class that serves as an adapter between TarFile and
+    """Class that serves kama an adapter between TarFile na
        a stream-like object.  The stream-like object only
        needs to have a read() ama write() method na ni accessed
        blockwise.  Use of gzip ama bzip2 compression ni possible.
@@ -362,8 +362,8 @@ kundi _Stream:
             ikiwa comptype == "gz":
                 jaribu:
                     agiza zlib
-                except ImportError:
-                     ashiria CompressionError("zlib module ni sio available")
+                tatizo ImportError:
+                    ashiria CompressionError("zlib module ni sio available")
                 self.zlib = zlib
                 self.crc = zlib.crc32(b"")
                 ikiwa mode == "r":
@@ -372,11 +372,11 @@ kundi _Stream:
                 isipokua:
                     self._init_write_gz()
 
-            elikiwa comptype == "bz2":
+            lasivyo comptype == "bz2":
                 jaribu:
                     agiza bz2
-                except ImportError:
-                     ashiria CompressionError("bz2 module ni sio available")
+                tatizo ImportError:
+                    ashiria CompressionError("bz2 module ni sio available")
                 ikiwa mode == "r":
                     self.dbuf = b""
                     self.cmp = bz2.BZ2Decompressor()
@@ -384,11 +384,11 @@ kundi _Stream:
                 isipokua:
                     self.cmp = bz2.BZ2Compressor()
 
-            elikiwa comptype == "xz":
+            lasivyo comptype == "xz":
                 jaribu:
                     agiza lzma
-                except ImportError:
-                     ashiria CompressionError("lzma module ni sio available")
+                tatizo ImportError:
+                    ashiria CompressionError("lzma module ni sio available")
                 ikiwa mode == "r":
                     self.dbuf = b""
                     self.cmp = lzma.LZMADecompressor()
@@ -396,8 +396,8 @@ kundi _Stream:
                 isipokua:
                     self.cmp = lzma.LZMACompressor()
 
-            elikiwa comptype != "tar":
-                 ashiria CompressionError("unknown compression type %r" % comptype)
+            lasivyo comptype != "tar":
+                ashiria CompressionError("unknown compression type %r" % comptype)
 
         tatizo:
             ikiwa sio self._extfileobj:
@@ -472,9 +472,9 @@ kundi _Stream:
 
         # taken kutoka gzip.GzipFile ukijumuisha some alterations
         ikiwa self.__read(2) != b"\037\213":
-             ashiria ReadError("not a gzip file")
+            ashiria ReadError("not a gzip file")
         ikiwa self.__read(1) != b"\010":
-             ashiria CompressionError("unsupported compression method")
+            ashiria CompressionError("unsupported compression method")
 
         flag = ord(self.__read(1))
         self.__read(6)
@@ -510,7 +510,7 @@ kundi _Stream:
                 self.read(self.bufsize)
             self.read(remainder)
         isipokua:
-             ashiria StreamError("seeking backwards ni sio allowed")
+            ashiria StreamError("seeking backwards ni sio allowed")
         rudisha self.pos
 
     eleza read(self, size):
@@ -539,8 +539,8 @@ kundi _Stream:
                     koma
             jaribu:
                 buf = self.cmp.decompress(buf)
-            except self.exception:
-                 ashiria ReadError("invalid compressed data")
+            tatizo self.exception:
+                ashiria ReadError("invalid compressed data")
             t.append(buf)
             c += len(buf)
         t = b"".join(t)
@@ -580,9 +580,9 @@ kundi _StreamProxy(object):
     eleza getcomptype(self):
         ikiwa self.buf.startswith(b"\x1f\x8b\x08"):
             rudisha "gz"
-        elikiwa self.buf[0:3] == b"BZh" na self.buf[4:10] == b"1AY&SY":
+        lasivyo self.buf[0:3] == b"BZh" na self.buf[4:10] == b"1AY&SY":
             rudisha "bz2"
-        elikiwa self.buf.startswith((b"\x5d\x00\x00\x80", b"\xfd7zXZ")):
+        lasivyo self.buf.startswith((b"\x5d\x00\x00\x80", b"\xfd7zXZ")):
             rudisha "xz"
         isipokua:
             rudisha "tar"
@@ -596,7 +596,7 @@ kundi _StreamProxy(object):
 #------------------------
 kundi _FileInFile(object):
     """A thin wrapper around an existing file object that
-       provides a part of its data as an individual file
+       provides a part of its data kama an individual file
        object.
     """
 
@@ -626,7 +626,7 @@ kundi _FileInFile(object):
             self.map.append((Uongo, lastpos, self.size, Tupu))
 
     eleza flush(self):
-        pass
+        pita
 
     eleza readable(self):
         rudisha Kweli
@@ -647,15 +647,15 @@ kundi _FileInFile(object):
         """
         ikiwa whence == io.SEEK_SET:
             self.position = min(max(position, 0), self.size)
-        elikiwa whence == io.SEEK_CUR:
+        lasivyo whence == io.SEEK_CUR:
             ikiwa position < 0:
                 self.position = max(self.position + position, 0)
             isipokua:
                 self.position = min(self.position + position, self.size)
-        elikiwa whence == io.SEEK_END:
+        lasivyo whence == io.SEEK_END:
             self.position = max(min(self.size + position, self.size), 0)
         isipokua:
-             ashiria ValueError("Invalid argument")
+            ashiria ValueError("Invalid argument")
         rudisha self.position
 
     eleza read(self, size=Tupu):
@@ -681,7 +681,7 @@ kundi _FileInFile(object):
                 self.fileobj.seek(offset + (self.position - start))
                 b = self.fileobj.read(length)
                 ikiwa len(b) != length:
-                     ashiria ReadError("unexpected end of data")
+                    ashiria ReadError("unexpected end of data")
                 buf += b
             isipokua:
                 buf += NUL * length
@@ -790,7 +790,7 @@ kundi TarInfo(object):
         rudisha "<%s %r at %#x>" % (self.__class__.__name__,self.name,id(self))
 
     eleza get_info(self):
-        """Return the TarInfo's attributes as a dictionary.
+        """Return the TarInfo's attributes kama a dictionary.
         """
         info = {
             "name":     self.name,
@@ -814,26 +814,26 @@ kundi TarInfo(object):
         rudisha info
 
     eleza tobuf(self, format=DEFAULT_FORMAT, encoding=ENCODING, errors="surrogateescape"):
-        """Return a tar header as a string of 512 byte blocks.
+        """Return a tar header kama a string of 512 byte blocks.
         """
         info = self.get_info()
 
         ikiwa format == USTAR_FORMAT:
             rudisha self.create_ustar_header(info, encoding, errors)
-        elikiwa format == GNU_FORMAT:
+        lasivyo format == GNU_FORMAT:
             rudisha self.create_gnu_header(info, encoding, errors)
-        elikiwa format == PAX_FORMAT:
+        lasivyo format == PAX_FORMAT:
             rudisha self.create_pax_header(info, encoding)
         isipokua:
-             ashiria ValueError("invalid format")
+            ashiria ValueError("invalid format")
 
     eleza create_ustar_header(self, info, encoding, errors):
-        """Return the object as a ustar header block.
+        """Return the object kama a ustar header block.
         """
         info["magic"] = POSIX_MAGIC
 
         ikiwa len(info["linkname"].encode(encoding, errors)) > LENGTH_LINK:
-             ashiria ValueError("linkname ni too long")
+            ashiria ValueError("linkname ni too long")
 
         ikiwa len(info["name"].encode(encoding, errors)) > LENGTH_NAME:
             info["prefix"], info["name"] = self._posix_split_name(info["name"], encoding, errors)
@@ -841,7 +841,7 @@ kundi TarInfo(object):
         rudisha self._create_header(info, USTAR_FORMAT, encoding, errors)
 
     eleza create_gnu_header(self, info, encoding, errors):
-        """Return the object as a GNU header block sequence.
+        """Return the object kama a GNU header block sequence.
         """
         info["magic"] = GNU_MAGIC
 
@@ -855,7 +855,7 @@ kundi TarInfo(object):
         rudisha buf + self._create_header(info, GNU_FORMAT, encoding, errors)
 
     eleza create_pax_header(self, info, encoding):
-        """Return the object as a ustar header block. If it cannot be
+        """Return the object kama a ustar header block. If it cannot be
            represented this way, prepend a pax extended header sequence
            ukijumuisha supplement information.
         """
@@ -872,10 +872,10 @@ kundi TarInfo(object):
                 # The pax header has priority.
                 endelea
 
-            # Try to encode the string as ASCII.
+            # Try to encode the string kama ASCII.
             jaribu:
                 info[name].encode("ascii", "strict")
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 pax_headers[hname] = info[name]
                 endelea
 
@@ -883,7 +883,7 @@ kundi TarInfo(object):
                 pax_headers[hname] = info[name]
 
         # Test number fields kila values that exceed the field limit ama values
-        # that like to be stored as float.
+        # that like to be stored kama float.
         kila name, digits kwenye (("uid", 8), ("gid", 8), ("size", 12), ("mtime", 12)):
             ikiwa name kwenye pax_headers:
                 # The pax header has priority. Avoid overflow.
@@ -905,7 +905,7 @@ kundi TarInfo(object):
 
     @classmethod
     eleza create_pax_global_header(cls, pax_headers):
-        """Return the object as a pax global header block sequence.
+        """Return the object kama a pax global header block sequence.
         """
         rudisha cls._create_pax_generic_header(pax_headers, XGLTYPE, "utf-8")
 
@@ -921,7 +921,7 @@ kundi TarInfo(object):
                     len(name.encode(encoding, errors)) <= LENGTH_NAME:
                 koma
         isipokua:
-             ashiria ValueError("name ni too long")
+            ashiria ValueError("name ni too long")
 
         rudisha prefix, name
 
@@ -992,7 +992,7 @@ kundi TarInfo(object):
         kila keyword, value kwenye pax_headers.items():
             jaribu:
                 value.encode("utf-8", "strict")
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 binary = Kweli
                 koma
 
@@ -1036,15 +1036,15 @@ kundi TarInfo(object):
         """Construct a TarInfo object kutoka a 512 byte bytes object.
         """
         ikiwa len(buf) == 0:
-             ashiria EmptyHeaderError("empty header")
+            ashiria EmptyHeaderError("empty header")
         ikiwa len(buf) != BLOCKSIZE:
-             ashiria TruncatedHeaderError("truncated header")
+            ashiria TruncatedHeaderError("truncated header")
         ikiwa buf.count(NUL) == BLOCKSIZE:
-             ashiria EOFHeaderError("end of file header")
+            ashiria EOFHeaderError("end of file header")
 
         chksum = nti(buf[148:156])
-        ikiwa chksum sio kwenye calc_chksums(buf):
-             ashiria InvalidHeaderError("bad checksum")
+        ikiwa chksum haiko kwenye calc_chksums(buf):
+            ashiria InvalidHeaderError("bad checksum")
 
         obj = cls()
         obj.name = nts(buf[0:100], encoding, errors)
@@ -1062,7 +1062,7 @@ kundi TarInfo(object):
         obj.devminor = nti(buf[337:345])
         prefix = nts(buf[345:500], encoding, errors)
 
-        # Old V7 tar format represents a directory as a regular
+        # Old V7 tar format represents a directory kama a regular
         # file ukijumuisha a trailing slash.
         ikiwa obj.type == AREGTYPE na obj.name.endswith("/"):
             obj.type = DIRTYPE
@@ -1077,7 +1077,7 @@ kundi TarInfo(object):
                 jaribu:
                     offset = nti(buf[pos:pos + 12])
                     numbytes = nti(buf[pos + 12:pos + 24])
-                except ValueError:
+                tatizo ValueError:
                     koma
                 structs.append((offset, numbytes))
                 pos += 24
@@ -1090,7 +1090,7 @@ kundi TarInfo(object):
             obj.name = obj.name.rstrip("/")
 
         # Reconstruct a ustar longname.
-        ikiwa prefix na obj.type sio kwenye GNU_TYPES:
+        ikiwa prefix na obj.type haiko kwenye GNU_TYPES:
             obj.name = prefix + "/" + obj.name
         rudisha obj
 
@@ -1121,20 +1121,20 @@ kundi TarInfo(object):
         """
         ikiwa self.type kwenye (GNUTYPE_LONGNAME, GNUTYPE_LONGLINK):
             rudisha self._proc_gnulong(tarfile)
-        elikiwa self.type == GNUTYPE_SPARSE:
+        lasivyo self.type == GNUTYPE_SPARSE:
             rudisha self._proc_sparse(tarfile)
-        elikiwa self.type kwenye (XHDTYPE, XGLTYPE, SOLARIS_XHDTYPE):
+        lasivyo self.type kwenye (XHDTYPE, XGLTYPE, SOLARIS_XHDTYPE):
             rudisha self._proc_pax(tarfile)
         isipokua:
             rudisha self._proc_builtin(tarfile)
 
     eleza _proc_builtin(self, tarfile):
         """Process a builtin type ama an unknown type which
-           will be treated as a regular file.
+           will be treated kama a regular file.
         """
         self.offset_data = tarfile.fileobj.tell()
         offset = self.offset_data
-        ikiwa self.isreg() ama self.type sio kwenye SUPPORTED_TYPES:
+        ikiwa self.isreg() ama self.type haiko kwenye SUPPORTED_TYPES:
             # Skip the following data blocks.
             offset += self._block(self.size)
         tarfile.offset = offset
@@ -1154,15 +1154,15 @@ kundi TarInfo(object):
         # Fetch the next header na process it.
         jaribu:
             next = self.fromtarfile(tarfile)
-        except HeaderError:
-             ashiria SubsequentHeaderError("missing ama bad subsequent header")
+        tatizo HeaderError:
+            ashiria SubsequentHeaderError("missing ama bad subsequent header")
 
         # Patch the TarInfo object kutoka the next header with
         # the longname information.
         next.offset = self.offset
         ikiwa self.type == GNUTYPE_LONGNAME:
             next.name = nts(buf, tarfile.encoding, tarfile.errors)
-        elikiwa self.type == GNUTYPE_LONGLINK:
+        lasivyo self.type == GNUTYPE_LONGLINK:
             next.linkname = nts(buf, tarfile.encoding, tarfile.errors)
 
         rudisha next
@@ -1182,7 +1182,7 @@ kundi TarInfo(object):
                 jaribu:
                     offset = nti(buf[pos:pos + 12])
                     numbytes = nti(buf[pos + 12:pos + 24])
-                except ValueError:
+                tatizo ValueError:
                     koma
                 ikiwa offset na numbytes:
                     structs.append((offset, numbytes))
@@ -1196,7 +1196,7 @@ kundi TarInfo(object):
         rudisha self
 
     eleza _proc_pax(self, tarfile):
-        """Process an extended ama global header as described in
+        """Process an extended ama global header kama described in
            POSIX.1-2008.
         """
         # Read the header information.
@@ -1213,7 +1213,7 @@ kundi TarInfo(object):
         # Check ikiwa the pax header contains a hdrcharset field. This tells us
         # the encoding of the path, linkpath, uname na gname fields. Normally,
         # these fields are UTF-8 encoded but since POSIX.1-2008 tar
-        # implementations are allowed to store them as raw binary strings if
+        # implementations are allowed to store them kama raw binary strings if
         # the translation to UTF-8 fails.
         match = re.search(br"\d+ hdrcharset=([^\n]+)\n", buf)
         ikiwa match ni sio Tupu:
@@ -1230,7 +1230,7 @@ kundi TarInfo(object):
 
         # Parse pax header information. A record looks like that:
         # "%d %s=%s\n" % (length, keyword, value). length ni the size
-        # of the complete record including the length field itself and
+        # of the complete record including the length field itself na
         # the newline. keyword na value are both UTF-8 encoded strings.
         regex = re.compile(br"(\d+) ([^=]+)=")
         pos = 0
@@ -1243,10 +1243,10 @@ kundi TarInfo(object):
             length = int(length)
             value = buf[match.end(2) + 1:match.start(1) + length - 1]
 
-            # Normally, we could just use "utf-8" as the encoding na "strict"
-            # as the error handler, but we better sio take the risk. For
+            # Normally, we could just use "utf-8" kama the encoding na "strict"
+            # kama the error handler, but we better sio take the risk. For
             # example, GNU tar <= 1.23 ni known to store filenames it cannot
-            # translate to UTF-8 as raw strings (unfortunately without a
+            # translate to UTF-8 kama raw strings (unfortunately without a
             # hdrcharset=BINARY header).
             # We first try the strict standard encoding, na ikiwa that fails we
             # fall back on the user's encoding na error handler.
@@ -1265,19 +1265,19 @@ kundi TarInfo(object):
         # Fetch the next header.
         jaribu:
             next = self.fromtarfile(tarfile)
-        except HeaderError:
-             ashiria SubsequentHeaderError("missing ama bad subsequent header")
+        tatizo HeaderError:
+            ashiria SubsequentHeaderError("missing ama bad subsequent header")
 
         # Process GNU sparse information.
         ikiwa "GNU.sparse.map" kwenye pax_headers:
             # GNU extended sparse format version 0.1.
             self._proc_gnusparse_01(next, pax_headers)
 
-        elikiwa "GNU.sparse.size" kwenye pax_headers:
+        lasivyo "GNU.sparse.size" kwenye pax_headers:
             # GNU extended sparse format version 0.0.
             self._proc_gnusparse_00(next, pax_headers, buf)
 
-        elikiwa pax_headers.get("GNU.sparse.major") == "1" na pax_headers.get("GNU.sparse.minor") == "0":
+        lasivyo pax_headers.get("GNU.sparse.major") == "1" na pax_headers.get("GNU.sparse.minor") == "0":
             # GNU extended sparse format version 1.0.
             self._proc_gnusparse_10(next, pax_headers, tarfile)
 
@@ -1291,7 +1291,7 @@ kundi TarInfo(object):
                 # we need to recalculate the offset where the next
                 # header starts.
                 offset = next.offset_data
-                ikiwa next.isreg() ama next.type sio kwenye SUPPORTED_TYPES:
+                ikiwa next.isreg() ama next.type haiko kwenye SUPPORTED_TYPES:
                     offset += next._block(next.size)
                 tarfile.offset = offset
 
@@ -1323,7 +1323,7 @@ kundi TarInfo(object):
         fields, buf = buf.split(b"\n", 1)
         fields = int(fields)
         wakati len(sparse) < fields * 2:
-            ikiwa b"\n" sio kwenye buf:
+            ikiwa b"\n" haiko kwenye buf:
                 buf += tarfile.fileobj.read(BLOCKSIZE)
             number, buf = buf.split(b"\n", 1)
             sparse.append(int(number))
@@ -1337,15 +1337,15 @@ kundi TarInfo(object):
         kila keyword, value kwenye pax_headers.items():
             ikiwa keyword == "GNU.sparse.name":
                 setattr(self, "path", value)
-            elikiwa keyword == "GNU.sparse.size":
+            lasivyo keyword == "GNU.sparse.size":
                 setattr(self, "size", int(value))
-            elikiwa keyword == "GNU.sparse.realsize":
+            lasivyo keyword == "GNU.sparse.realsize":
                 setattr(self, "size", int(value))
-            elikiwa keyword kwenye PAX_FIELDS:
+            lasivyo keyword kwenye PAX_FIELDS:
                 ikiwa keyword kwenye PAX_NUMBER_FIELDS:
                     jaribu:
                         value = PAX_NUMBER_FIELDS[keyword](value)
-                    except ValueError:
+                    tatizo ValueError:
                         value = 0
                 ikiwa keyword == "path":
                     value = value.rstrip("/")
@@ -1358,7 +1358,7 @@ kundi TarInfo(object):
         """
         jaribu:
             rudisha value.decode(encoding, "strict")
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             rudisha value.decode(fallback_encoding, fallback_errors)
 
     eleza _block(self, count):
@@ -1419,12 +1419,12 @@ kundi TarFile(object):
     dereference = Uongo         # If true, add content of linked file to the
                                 # tar file, isipokua the link.
 
-    ignore_zeros = Uongo        # If true, skips empty ama invalid blocks and
+    ignore_zeros = Uongo        # If true, skips empty ama invalid blocks na
                                 # endeleas processing.
 
     errorlevel = 1              # If 0, fatal errors only appear kwenye debug
                                 # messages (ikiwa debug >= 0). If > 0, errors
-                                # are passed to the caller as exceptions.
+                                # are pitaed to the caller kama exceptions.
 
     format = DEFAULT_FORMAT     # The format to use when creating an archive.
 
@@ -1449,8 +1449,8 @@ kundi TarFile(object):
            `fileobj' ni sio closed, when TarFile ni closed.
         """
         modes = {"r": "rb", "a": "r+b", "w": "wb", "x": "xb"}
-        ikiwa mode sio kwenye modes:
-             ashiria ValueError("mode must be 'r', 'a', 'w' ama 'x'")
+        ikiwa mode haiko kwenye modes:
+            ashiria ValueError("mode must be 'r', 'a', 'w' ama 'x'")
         self.mode = mode
         self._mode = modes[mode]
 
@@ -1462,7 +1462,7 @@ kundi TarFile(object):
             fileobj = bltn_open(name, self._mode)
             self._extfileobj = Uongo
         isipokua:
-            ikiwa (name ni Tupu na hasattr(fileobj, "name") and
+            ikiwa (name ni Tupu na hasattr(fileobj, "name") na
                 isinstance(fileobj.name, (str, bytes))):
                 name = fileobj.name
             ikiwa hasattr(fileobj, "mode"):
@@ -1497,7 +1497,7 @@ kundi TarFile(object):
         # Init datastructures.
         self.copybufsize = copybufsize
         self.closed = Uongo
-        self.members = []       # list of members as TarInfo objects
+        self.members = []       # list of members kama TarInfo objects
         self._loaded = Uongo    # flag ikiwa all members have been read
         self.offset = self.fileobj.tell()
                                 # current position kwenye the archive file
@@ -1517,11 +1517,11 @@ kundi TarFile(object):
                     jaribu:
                         tarinfo = self.tarinfo.fromtarfile(self)
                         self.members.append(tarinfo)
-                    except EOFHeaderError:
+                    tatizo EOFHeaderError:
                         self.fileobj.seek(self.offset)
                         koma
-                    except HeaderError as e:
-                         ashiria ReadError(str(e))
+                    tatizo HeaderError kama e:
+                        ashiria ReadError(str(e))
 
             ikiwa self.mode kwenye ("a", "w", "x"):
                 self._loaded = Kweli
@@ -1537,7 +1537,7 @@ kundi TarFile(object):
             raise
 
     #--------------------------------------------------------------------------
-    # Below are the classmethods which act as alternate constructors to the
+    # Below are the classmethods which act kama alternate constructors to the
     # TarFile class. The open() method ni the only one that ni needed for
     # public use; it ni the "super"-constructor na ni able to select an
     # adequate "sub"-constructor kila a particular compression using the mapping
@@ -1566,11 +1566,11 @@ kundi TarFile(object):
 
            'x' ama 'x:'  create a tarfile exclusively without compression, raise
                         an exception ikiwa the file ni already created
-           'x:gz'       create a gzip compressed tarfile,  ashiria an exception
+           'x:gz'       create a gzip compressed tarfile, ashiria an exception
                         ikiwa the file ni already created
-           'x:bz2'      create a bzip2 compressed tarfile,  ashiria an exception
+           'x:bz2'      create a bzip2 compressed tarfile, ashiria an exception
                         ikiwa the file ni already created
-           'x:xz'       create an lzma compressed tarfile,  ashiria an exception
+           'x:xz'       create an lzma compressed tarfile, ashiria an exception
                         ikiwa the file ni already created
 
            'r|*'        open a stream of tar blocks ukijumuisha transparent compression
@@ -1585,7 +1585,7 @@ kundi TarFile(object):
         """
 
         ikiwa sio name na sio fileobj:
-             ashiria ValueError("nothing to open")
+            ashiria ValueError("nothing to open")
 
         ikiwa mode kwenye ("r", "r:*"):
             # Find out which *open() ni appropriate kila opening the file.
@@ -1597,13 +1597,13 @@ kundi TarFile(object):
                     saved_pos = fileobj.tell()
                 jaribu:
                     rudisha func(name, "r", fileobj, **kwargs)
-                except (ReadError, CompressionError):
+                tatizo (ReadError, CompressionError):
                     ikiwa fileobj ni sio Tupu:
                         fileobj.seek(saved_pos)
                     endelea
-             ashiria ReadError("file could sio be opened successfully")
+            ashiria ReadError("file could sio be opened successfully")
 
-        elikiwa ":" kwenye mode:
+        lasivyo ":" kwenye mode:
             filemode, comptype = mode.split(":", 1)
             filemode = filemode ama "r"
             comptype = comptype ama "tar"
@@ -1613,16 +1613,16 @@ kundi TarFile(object):
             ikiwa comptype kwenye cls.OPEN_METH:
                 func = getattr(cls, cls.OPEN_METH[comptype])
             isipokua:
-                 ashiria CompressionError("unknown compression type %r" % comptype)
+                ashiria CompressionError("unknown compression type %r" % comptype)
             rudisha func(name, filemode, fileobj, **kwargs)
 
-        elikiwa "|" kwenye mode:
+        lasivyo "|" kwenye mode:
             filemode, comptype = mode.split("|", 1)
             filemode = filemode ama "r"
             comptype = comptype ama "tar"
 
-            ikiwa filemode sio kwenye ("r", "w"):
-                 ashiria ValueError("mode must be 'r' ama 'w'")
+            ikiwa filemode haiko kwenye ("r", "w"):
+                ashiria ValueError("mode must be 'r' ama 'w'")
 
             stream = _Stream(name, filemode, comptype, fileobj, bufsize)
             jaribu:
@@ -1633,17 +1633,17 @@ kundi TarFile(object):
             t._extfileobj = Uongo
             rudisha t
 
-        elikiwa mode kwenye ("a", "w", "x"):
+        lasivyo mode kwenye ("a", "w", "x"):
             rudisha cls.taropen(name, mode, fileobj, **kwargs)
 
-         ashiria ValueError("undiscernible mode")
+        ashiria ValueError("undiscernible mode")
 
     @classmethod
     eleza taropen(cls, name, mode="r", fileobj=Tupu, **kwargs):
         """Open uncompressed tar archive name kila reading ama writing.
         """
-        ikiwa mode sio kwenye ("r", "a", "w", "x"):
-             ashiria ValueError("mode must be 'r', 'a', 'w' ama 'x'")
+        ikiwa mode haiko kwenye ("r", "a", "w", "x"):
+            ashiria ValueError("mode must be 'r', 'a', 'w' ama 'x'")
         rudisha cls(name, mode, fileobj, **kwargs)
 
     @classmethod
@@ -1651,28 +1651,28 @@ kundi TarFile(object):
         """Open gzip compressed tar archive name kila reading ama writing.
            Appending ni sio allowed.
         """
-        ikiwa mode sio kwenye ("r", "w", "x"):
-             ashiria ValueError("mode must be 'r', 'w' ama 'x'")
+        ikiwa mode haiko kwenye ("r", "w", "x"):
+            ashiria ValueError("mode must be 'r', 'w' ama 'x'")
 
         jaribu:
             agiza gzip
             gzip.GzipFile
-        except (ImportError, AttributeError):
-             ashiria CompressionError("gzip module ni sio available")
+        tatizo (ImportError, AttributeError):
+            ashiria CompressionError("gzip module ni sio available")
 
         jaribu:
             fileobj = gzip.GzipFile(name, mode + "b", compresslevel, fileobj)
-        except OSError:
+        tatizo OSError:
             ikiwa fileobj ni sio Tupu na mode == 'r':
-                 ashiria ReadError("not a gzip file")
+                ashiria ReadError("not a gzip file")
             raise
 
         jaribu:
             t = cls.taropen(name, mode, fileobj, **kwargs)
-        except OSError:
+        tatizo OSError:
             fileobj.close()
             ikiwa mode == 'r':
-                 ashiria ReadError("not a gzip file")
+                ashiria ReadError("not a gzip file")
             raise
         tatizo:
             fileobj.close()
@@ -1685,23 +1685,23 @@ kundi TarFile(object):
         """Open bzip2 compressed tar archive name kila reading ama writing.
            Appending ni sio allowed.
         """
-        ikiwa mode sio kwenye ("r", "w", "x"):
-             ashiria ValueError("mode must be 'r', 'w' ama 'x'")
+        ikiwa mode haiko kwenye ("r", "w", "x"):
+            ashiria ValueError("mode must be 'r', 'w' ama 'x'")
 
         jaribu:
             agiza bz2
-        except ImportError:
-             ashiria CompressionError("bz2 module ni sio available")
+        tatizo ImportError:
+            ashiria CompressionError("bz2 module ni sio available")
 
         fileobj = bz2.BZ2File(fileobj ama name, mode,
                               compresslevel=compresslevel)
 
         jaribu:
             t = cls.taropen(name, mode, fileobj, **kwargs)
-        except (OSError, EOFError):
+        tatizo (OSError, EOFError):
             fileobj.close()
             ikiwa mode == 'r':
-                 ashiria ReadError("not a bzip2 file")
+                ashiria ReadError("not a bzip2 file")
             raise
         tatizo:
             fileobj.close()
@@ -1714,22 +1714,22 @@ kundi TarFile(object):
         """Open lzma compressed tar archive name kila reading ama writing.
            Appending ni sio allowed.
         """
-        ikiwa mode sio kwenye ("r", "w", "x"):
-             ashiria ValueError("mode must be 'r', 'w' ama 'x'")
+        ikiwa mode haiko kwenye ("r", "w", "x"):
+            ashiria ValueError("mode must be 'r', 'w' ama 'x'")
 
         jaribu:
             agiza lzma
-        except ImportError:
-             ashiria CompressionError("lzma module ni sio available")
+        tatizo ImportError:
+            ashiria CompressionError("lzma module ni sio available")
 
         fileobj = lzma.LZMAFile(fileobj ama name, mode, preset=preset)
 
         jaribu:
             t = cls.taropen(name, mode, fileobj, **kwargs)
-        except (lzma.LZMAError, EOFError):
+        tatizo (lzma.LZMAError, EOFError):
             fileobj.close()
             ikiwa mode == 'r':
-                 ashiria ReadError("not an lzma file")
+                ashiria ReadError("not an lzma file")
             raise
         tatizo:
             fileobj.close()
@@ -1777,12 +1777,12 @@ kundi TarFile(object):
         """
         tarinfo = self._getmember(name)
         ikiwa tarinfo ni Tupu:
-             ashiria KeyError("filename %r sio found" % name)
+            ashiria KeyError("filename %r sio found" % name)
         rudisha tarinfo
 
     eleza getmembers(self):
-        """Return the members of the archive as a list of TarInfo objects. The
-           list has the same order as the members kwenye the archive.
+        """Return the members of the archive kama a list of TarInfo objects. The
+           list has the same order kama the members kwenye the archive.
         """
         self._check()
         ikiwa sio self._loaded:    # ikiwa we want to obtain a list of
@@ -1791,15 +1791,15 @@ kundi TarFile(object):
         rudisha self.members
 
     eleza getnames(self):
-        """Return the members of the archive as a list of their names. It has
-           the same order as the list returned by getmembers().
+        """Return the members of the archive kama a list of their names. It has
+           the same order kama the list returned by getmembers().
         """
         rudisha [tarinfo.name kila tarinfo kwenye self.getmembers()]
 
     eleza gettarinfo(self, name=Tupu, arcname=Tupu, fileobj=Tupu):
         """Create a TarInfo object kutoka the result of os.stat ama equivalent
-           on an existing file. The file ni either named by `name', or
-           specified as a file object `fileobj' ukijumuisha a file descriptor. If
+           on an existing file. The file ni either named by `name', ama
+           specified kama a file object `fileobj' ukijumuisha a file descriptor. If
            given, `arcname' specifies an alternative name kila the file kwenye the
            archive, otherwise, the name ni taken kutoka the 'name' attribute of
            'fileobj', ama the 'name' argument. The name should be a text
@@ -1851,16 +1851,16 @@ kundi TarFile(object):
                 type = REGTYPE
                 ikiwa inode[0]:
                     self.inodes[inode] = arcname
-        elikiwa stat.S_ISDIR(stmd):
+        lasivyo stat.S_ISDIR(stmd):
             type = DIRTYPE
-        elikiwa stat.S_ISFIFO(stmd):
+        lasivyo stat.S_ISFIFO(stmd):
             type = FIFOTYPE
-        elikiwa stat.S_ISLNK(stmd):
+        lasivyo stat.S_ISLNK(stmd):
             type = SYMTYPE
             linkname = os.readlink(name)
-        elikiwa stat.S_ISCHR(stmd):
+        lasivyo stat.S_ISCHR(stmd):
             type = CHRTYPE
-        elikiwa stat.S_ISBLK(stmd):
+        lasivyo stat.S_ISBLK(stmd):
             type = BLKTYPE
         isipokua:
             rudisha Tupu
@@ -1881,13 +1881,13 @@ kundi TarFile(object):
         ikiwa pwd:
             jaribu:
                 tarinfo.uname = pwd.getpwuid(tarinfo.uid)[0]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
         ikiwa grp:
             jaribu:
                 tarinfo.gname = grp.getgrgid(tarinfo.gid)[0]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
 
         ikiwa type kwenye (CHRTYPE, BLKTYPE):
             ikiwa hasattr(os, "major") na hasattr(os, "minor"):
@@ -1965,10 +1965,10 @@ kundi TarFile(object):
 
         # Append the tar header na data to the archive.
         ikiwa tarinfo.isreg():
-            ukijumuisha bltn_open(name, "rb") as f:
+            ukijumuisha bltn_open(name, "rb") kama f:
                 self.addfile(tarinfo, f)
 
-        elikiwa tarinfo.isdir():
+        lasivyo tarinfo.isdir():
             self.addfile(tarinfo)
             ikiwa recursive:
                 kila f kwenye sorted(os.listdir(name)):
@@ -2022,7 +2022,7 @@ kundi TarFile(object):
                 directories.append(tarinfo)
                 tarinfo = copy.copy(tarinfo)
                 tarinfo.mode = 0o700
-            # Do sio set_attrs directories, as we will do that further down
+            # Do sio set_attrs directories, kama we will do that further down
             self.extract(tarinfo, path, set_attrs=not tarinfo.isdir(),
                          numeric_owner=numeric_owner)
 
@@ -2037,7 +2037,7 @@ kundi TarFile(object):
                 self.chown(tarinfo, dirpath, numeric_owner=numeric_owner)
                 self.utime(tarinfo, dirpath)
                 self.chmod(tarinfo, dirpath)
-            except ExtractError as e:
+            tatizo ExtractError kama e:
                 ikiwa self.errorlevel > 1:
                     raise
                 isipokua:
@@ -2045,8 +2045,8 @@ kundi TarFile(object):
 
     eleza extract(self, member, path="", set_attrs=Kweli, *, numeric_owner=Uongo):
         """Extract a member kutoka the archive to the current working directory,
-           using its full name. Its file information ni extracted as accurately
-           as possible. `member' may be a filename ama a TarInfo object. You can
+           using its full name. Its file information ni extracted kama accurately
+           kama possible. `member' may be a filename ama a TarInfo object. You can
            specify a different directory using `path'. File attributes (owner,
            mtime, mode) are set unless `set_attrs' ni Uongo. If `numeric_owner`
            ni Kweli, only the numbers kila user/group names are used na not
@@ -2067,7 +2067,7 @@ kundi TarFile(object):
             self._extract_member(tarinfo, os.path.join(path, tarinfo.name),
                                  set_attrs=set_attrs,
                                  numeric_owner=numeric_owner)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa self.errorlevel > 0:
                 raise
             isipokua:
@@ -2075,14 +2075,14 @@ kundi TarFile(object):
                     self._dbg(1, "tarfile: %s" % e.strerror)
                 isipokua:
                     self._dbg(1, "tarfile: %s %r" % (e.strerror, e.filename))
-        except ExtractError as e:
+        tatizo ExtractError kama e:
             ikiwa self.errorlevel > 1:
                 raise
             isipokua:
                 self._dbg(1, "tarfile: %s" % e)
 
     eleza extractfile(self, member):
-        """Extract a member kutoka the archive as a file object. `member' may be
+        """Extract a member kutoka the archive kama a file object. `member' may be
            a filename ama a TarInfo object. If `member' ni a regular file ama a
            link, an io.BufferedReader object ni returned. Otherwise, Tupu is
            returned.
@@ -2094,16 +2094,16 @@ kundi TarFile(object):
         isipokua:
             tarinfo = member
 
-        ikiwa tarinfo.isreg() ama tarinfo.type sio kwenye SUPPORTED_TYPES:
-            # Members ukijumuisha unknown types are treated as regular files.
+        ikiwa tarinfo.isreg() ama tarinfo.type haiko kwenye SUPPORTED_TYPES:
+            # Members ukijumuisha unknown types are treated kama regular files.
             rudisha self.fileobject(self, tarinfo)
 
-        elikiwa tarinfo.islnk() ama tarinfo.issym():
+        lasivyo tarinfo.islnk() ama tarinfo.issym():
             ikiwa isinstance(self.fileobj, _Stream):
                 # A small but ugly workaround kila the case that someone tries
-                # to extract a (sym)link as a file-object kutoka a non-seekable
+                # to extract a (sym)link kama a file-object kutoka a non-seekable
                 # stream of tar blocks.
-                 ashiria StreamError("cannot extract (sym)link as file object")
+                ashiria StreamError("cannot extract (sym)link kama file object")
             isipokua:
                 # A (sym)link's file object ni its target's file object.
                 rudisha self.extractfile(self._find_link_target(tarinfo))
@@ -2137,15 +2137,15 @@ kundi TarFile(object):
 
         ikiwa tarinfo.isreg():
             self.makefile(tarinfo, targetpath)
-        elikiwa tarinfo.isdir():
+        lasivyo tarinfo.isdir():
             self.makedir(tarinfo, targetpath)
-        elikiwa tarinfo.isfifo():
+        lasivyo tarinfo.isfifo():
             self.makefifo(tarinfo, targetpath)
-        elikiwa tarinfo.ischr() ama tarinfo.isblk():
+        lasivyo tarinfo.ischr() ama tarinfo.isblk():
             self.makedev(tarinfo, targetpath)
-        elikiwa tarinfo.islnk() ama tarinfo.issym():
+        lasivyo tarinfo.islnk() ama tarinfo.issym():
             self.makelink(tarinfo, targetpath)
-        elikiwa tarinfo.type sio kwenye SUPPORTED_TYPES:
+        lasivyo tarinfo.type haiko kwenye SUPPORTED_TYPES:
             self.makeunknown(tarinfo, targetpath)
         isipokua:
             self.makefile(tarinfo, targetpath)
@@ -2168,8 +2168,8 @@ kundi TarFile(object):
             # Use a safe mode kila the directory, the real mode ni set
             # later kwenye _extract_member().
             os.mkdir(targetpath, 0o700)
-        except FileExistsError:
-            pass
+        tatizo FileExistsError:
+            pita
 
     eleza makefile(self, tarinfo, targetpath):
         """Make a file called targetpath.
@@ -2177,7 +2177,7 @@ kundi TarFile(object):
         source = self.fileobj
         source.seek(tarinfo.offset_data)
         bufsize = self.copybufsize
-        ukijumuisha bltn_open(targetpath, "wb") as target:
+        ukijumuisha bltn_open(targetpath, "wb") kama target:
             ikiwa tarinfo.sparse ni sio Tupu:
                 kila offset, size kwenye tarinfo.sparse:
                     target.seek(offset)
@@ -2193,7 +2193,7 @@ kundi TarFile(object):
         """
         self.makefile(tarinfo, targetpath)
         self._dbg(1, "tarfile: Unknown file type %r, " \
-                     "extracted as regular file." % tarinfo.type)
+                     "extracted kama regular file." % tarinfo.type)
 
     eleza makefifo(self, tarinfo, targetpath):
         """Make a fifo called targetpath.
@@ -2201,13 +2201,13 @@ kundi TarFile(object):
         ikiwa hasattr(os, "mkfifo"):
             os.mkfifo(targetpath)
         isipokua:
-             ashiria ExtractError("fifo sio supported by system")
+            ashiria ExtractError("fifo sio supported by system")
 
     eleza makedev(self, tarinfo, targetpath):
         """Make a character ama block device called targetpath.
         """
         ikiwa sio hasattr(os, "mknod") ama sio hasattr(os, "makedev"):
-             ashiria ExtractError("special devices sio supported by system")
+            ashiria ExtractError("special devices sio supported by system")
 
         mode = tarinfo.mode
         ikiwa tarinfo.isblk():
@@ -2234,12 +2234,12 @@ kundi TarFile(object):
                 isipokua:
                     self._extract_member(self._find_link_target(tarinfo),
                                          targetpath)
-        except symlink_exception:
+        tatizo symlink_exception:
             jaribu:
                 self._extract_member(self._find_link_target(tarinfo),
                                      targetpath)
-            except KeyError:
-                 ashiria ExtractError("unable to resolve link inside archive")
+            tatizo KeyError:
+                ashiria ExtractError("unable to resolve link inside archive")
 
     eleza chown(self, tarinfo, targetpath, numeric_owner):
         """Set owner of targetpath according to tarinfo. If numeric_owner
@@ -2255,28 +2255,28 @@ kundi TarFile(object):
                 jaribu:
                     ikiwa grp:
                         g = grp.getgrnam(tarinfo.gname)[2]
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
                 jaribu:
                     ikiwa pwd:
                         u = pwd.getpwnam(tarinfo.uname)[2]
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
             jaribu:
                 ikiwa tarinfo.issym() na hasattr(os, "lchown"):
                     os.lchown(targetpath, u, g)
                 isipokua:
                     os.chown(targetpath, u, g)
-            except OSError:
-                 ashiria ExtractError("could sio change owner")
+            tatizo OSError:
+                ashiria ExtractError("could sio change owner")
 
     eleza chmod(self, tarinfo, targetpath):
         """Set file permissions of targetpath according to tarinfo.
         """
         jaribu:
             os.chmod(targetpath, tarinfo.mode)
-        except OSError:
-             ashiria ExtractError("could sio change mode")
+        tatizo OSError:
+            ashiria ExtractError("could sio change mode")
 
     eleza utime(self, tarinfo, targetpath):
         """Set modification time of targetpath according to tarinfo.
@@ -2285,12 +2285,12 @@ kundi TarFile(object):
             return
         jaribu:
             os.utime(targetpath, (tarinfo.mtime, tarinfo.mtime))
-        except OSError:
-             ashiria ExtractError("could sio change modification time")
+        tatizo OSError:
+            ashiria ExtractError("could sio change modification time")
 
     #--------------------------------------------------------------------------
     eleza next(self):
-        """Return the next member of the archive as a TarInfo object, when
+        """Return the next member of the archive kama a TarInfo object, when
            TarFile ni opened kila reading. Return Tupu ikiwa there ni no more
            available.
         """
@@ -2304,33 +2304,33 @@ kundi TarFile(object):
         ikiwa self.offset != self.fileobj.tell():
             self.fileobj.seek(self.offset - 1)
             ikiwa sio self.fileobj.read(1):
-                 ashiria ReadError("unexpected end of data")
+                ashiria ReadError("unexpected end of data")
 
         # Read the next block.
         tarinfo = Tupu
         wakati Kweli:
             jaribu:
                 tarinfo = self.tarinfo.fromtarfile(self)
-            except EOFHeaderError as e:
+            tatizo EOFHeaderError kama e:
                 ikiwa self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
                     endelea
-            except InvalidHeaderError as e:
+            tatizo InvalidHeaderError kama e:
                 ikiwa self.ignore_zeros:
                     self._dbg(2, "0x%X: %s" % (self.offset, e))
                     self.offset += BLOCKSIZE
                     endelea
-                elikiwa self.offset == 0:
-                     ashiria ReadError(str(e))
-            except EmptyHeaderError:
+                lasivyo self.offset == 0:
+                    ashiria ReadError(str(e))
+            tatizo EmptyHeaderError:
                 ikiwa self.offset == 0:
-                     ashiria ReadError("empty file")
-            except TruncatedHeaderError as e:
+                    ashiria ReadError("empty file")
+            tatizo TruncatedHeaderError kama e:
                 ikiwa self.offset == 0:
-                     ashiria ReadError(str(e))
-            except SubsequentHeaderError as e:
-                 ashiria ReadError(str(e))
+                    ashiria ReadError(str(e))
+            tatizo SubsequentHeaderError kama e:
+                ashiria ReadError(str(e))
             koma
 
         ikiwa tarinfo ni sio Tupu:
@@ -2345,7 +2345,7 @@ kundi TarFile(object):
 
     eleza _getmember(self, name, tarinfo=Tupu, normalize=Uongo):
         """Find an archive member by name kutoka bottom to top.
-           If tarinfo ni given, it ni used as the starting point.
+           If tarinfo ni given, it ni used kama the starting point.
         """
         # Ensure that all members have been loaded.
         members = self.getmembers()
@@ -2381,9 +2381,9 @@ kundi TarFile(object):
            corresponds to TarFile's mode.
         """
         ikiwa self.closed:
-             ashiria OSError("%s ni closed" % self.__class__.__name__)
-        ikiwa mode ni sio Tupu na self.mode sio kwenye mode:
-             ashiria OSError("bad operation kila mode %r" % self.mode)
+            ashiria OSError("%s ni closed" % self.__class__.__name__)
+        ikiwa mode ni sio Tupu na self.mode haiko kwenye mode:
+            ashiria OSError("bad operation kila mode %r" % self.mode)
 
     eleza _find_link_target(self, tarinfo):
         """Find the target member of a symlink ama hardlink member kwenye the
@@ -2401,7 +2401,7 @@ kundi TarFile(object):
 
         member = self._getmember(linkname, tarinfo=limit, normalize=Kweli)
         ikiwa member ni Tupu:
-             ashiria KeyError("linkname %r sio found" % linkname)
+            ashiria KeyError("linkname %r sio found" % linkname)
         rudisha member
 
     eleza __iter__(self):
@@ -2412,7 +2412,7 @@ kundi TarFile(object):
             return
 
         # Yield items using TarFile's next() method.
-        # When all members have been read, set TarFile as _loaded.
+        # When all members have been read, set TarFile kama _loaded.
         index = 0
         # Fix kila SF #1100429: Under rare circumstances it can
         # happen that getmembers() ni called during iteration,
@@ -2425,7 +2425,7 @@ kundi TarFile(object):
         wakati Kweli:
             ikiwa index < len(self.members):
                 tarinfo = self.members[index]
-            elikiwa sio self._loaded:
+            lasivyo sio self._loaded:
                 tarinfo = self.next()
                 ikiwa sio tarinfo:
                     self._loaded = Kweli
@@ -2466,7 +2466,7 @@ eleza is_tarfile(name):
         t = open(name)
         t.close()
         rudisha Kweli
-    except TarError:
+    tatizo TarError:
         rudisha Uongo
 
 open = TarFile.open
@@ -2495,7 +2495,7 @@ eleza main():
     ikiwa args.test ni sio Tupu:
         src = args.test
         ikiwa is_tarfile(src):
-            ukijumuisha open(src, 'r') as tar:
+            ukijumuisha open(src, 'r') kama tar:
                 tar.getmembers()
                 andika(tar.getmembers(), file=sys.stderr)
             ikiwa args.verbose:
@@ -2503,25 +2503,25 @@ eleza main():
         isipokua:
             parser.exit(1, '{!r} ni sio a tar archive.\n'.format(src))
 
-    elikiwa args.list ni sio Tupu:
+    lasivyo args.list ni sio Tupu:
         src = args.list
         ikiwa is_tarfile(src):
-            ukijumuisha TarFile.open(src, 'r:*') as tf:
+            ukijumuisha TarFile.open(src, 'r:*') kama tf:
                 tf.list(verbose=args.verbose)
         isipokua:
             parser.exit(1, '{!r} ni sio a tar archive.\n'.format(src))
 
-    elikiwa args.extract ni sio Tupu:
+    lasivyo args.extract ni sio Tupu:
         ikiwa len(args.extract) == 1:
             src = args.extract[0]
             curdir = os.curdir
-        elikiwa len(args.extract) == 2:
+        lasivyo len(args.extract) == 2:
             src, curdir = args.extract
         isipokua:
             parser.exit(1, parser.format_help())
 
         ikiwa is_tarfile(src):
-            ukijumuisha TarFile.open(src, 'r:*') as tf:
+            ukijumuisha TarFile.open(src, 'r:*') kama tf:
                 tf.extractall(path=curdir)
             ikiwa args.verbose:
                 ikiwa curdir == '.':
@@ -2533,7 +2533,7 @@ eleza main():
         isipokua:
             parser.exit(1, '{!r} ni sio a tar archive.\n'.format(src))
 
-    elikiwa args.create ni sio Tupu:
+    lasivyo args.create ni sio Tupu:
         tar_name = args.create.pop(0)
         _, ext = os.path.splitext(tar_name)
         compressions = {
@@ -2552,7 +2552,7 @@ eleza main():
         tar_mode = 'w:' + compressions[ext] ikiwa ext kwenye compressions isipokua 'w'
         tar_files = args.create
 
-        ukijumuisha TarFile.open(tar_name, tar_mode) as tf:
+        ukijumuisha TarFile.open(tar_name, tar_mode) kama tf:
             kila file_name kwenye tar_files:
                 tf.add(file_name)
 

@@ -8,10 +8,10 @@ kutoka test.fork_wait agiza ForkWait
 kutoka test.support agiza reap_children
 
 ikiwa sio hasattr(os, 'fork'):
-     ashiria unittest.SkipTest("os.fork sio defined")
+    ashiria unittest.SkipTest("os.fork sio defined")
 
 ikiwa sio hasattr(os, 'wait3'):
-     ashiria unittest.SkipTest("os.wait3 sio defined")
+    ashiria unittest.SkipTest("os.wait3 sio defined")
 
 kundi Wait3Test(ForkWait):
     eleza wait_impl(self, cpid):

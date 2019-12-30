@@ -5,7 +5,7 @@ kutoka test.test_json agiza PyTest, CTest
 
 kundi TestUnicode:
     # test_encoding1 na test_encoding2 kutoka 2.x are irrelevant (only str
-    # ni supported as input, sio bytes).
+    # ni supported kama input, sio bytes).
 
     eleza test_encoding3(self):
         u = '\N{GREEK SMALL LETTER ALPHA}\N{GREEK CAPITAL LETTER OMEGA}'
@@ -72,7 +72,7 @@ kundi TestUnicode:
         self.assertEqual(self.loads('"\u2600"'.encode('utf-16-le')),
                          '\u2600')
         # Encoding detection kila small (<4) bytes objects
-        # ni implemented as a special case. RFC-7159 na ECMA-404
+        # ni implemented kama a special case. RFC-7159 na ECMA-404
         # allow single codepoint JSON documents which are only two
         # bytes kwenye utf-16 encodings w/o BOM.
         self.assertEqual(self.loads(b'5\x00'), 5)
@@ -94,5 +94,5 @@ kundi TestUnicode:
                          OrderedDict(p))
 
 
-kundi TestPyUnicode(TestUnicode, PyTest): pass
-kundi TestCUnicode(TestUnicode, CTest): pass
+kundi TestPyUnicode(TestUnicode, PyTest): pita
+kundi TestCUnicode(TestUnicode, CTest): pita

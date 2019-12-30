@@ -7,7 +7,7 @@ agiza unittest
 kutoka test agiza support
 
 agiza io
-agiza _pyio as pyio
+agiza _pyio kama pyio
 agiza pickle
 agiza sys
 
@@ -114,7 +114,7 @@ kundi MemoryTestMixin:
         memio = self.ioclass()
         eleza error_gen():
             tuma self.buftype('spam')
-             ashiria KeyboardInterrupt
+            ashiria KeyboardInterrupt
 
         self.assertRaises(KeyboardInterrupt, memio.writelines, error_gen())
 
@@ -370,7 +370,7 @@ kundi MemoryTestMixin:
         buf = self.buftype("1234567890")
         eleza test1():
             kundi MemIO(self.ioclass):
-                pass
+                pita
             m = MemIO(buf)
             rudisha m.getvalue()
         eleza test2():
@@ -684,7 +684,7 @@ kundi TextIOTestMixin:
     eleza test_newline_argument(self):
         self.assertRaises(TypeError, self.ioclass, newline=b"\n")
         self.assertRaises(ValueError, self.ioclass, newline="error")
-        # These should sio  ashiria an error
+        # These should sio ashiria an error
         kila newline kwenye (Tupu, "", "\n", "\r", "\r\n"):
             self.ioclass(newline=newline)
 
@@ -717,7 +717,7 @@ kundi PyStringIOPickleTest(TextIOTestMixin, unittest.TestCase):
         eleza __new__(cls, *args, **kwargs):
             rudisha pickle.loads(pickle.dumps(pyio.StringIO(*args, **kwargs)))
         eleza __init__(self, *args, **kwargs):
-            pass
+            pita
 
 
 kundi CBytesIOTest(PyBytesIOTest):
@@ -862,7 +862,7 @@ kundi CStringIOPickleTest(PyStringIOPickleTest):
         eleza __new__(cls, *args, **kwargs):
             rudisha pickle.loads(pickle.dumps(io.StringIO(*args, **kwargs)))
         eleza __init__(self, *args, **kwargs):
-            pass
+            pita
 
 
 ikiwa __name__ == '__main__':

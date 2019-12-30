@@ -3,7 +3,7 @@ agiza os
 
 kutoka .context agiza reduction, set_spawning_popen
 ikiwa sio reduction.HAVE_SEND_HANDLE:
-     ashiria ImportError('No support kila sending fds between processes')
+    ashiria ImportError('No support kila sending fds between processes')
 kutoka . agiza forkserver
 kutoka . agiza popen_fork
 kutoka . agiza spawn
@@ -49,12 +49,12 @@ kundi Popen(popen_fork.Popen):
             set_spawning_popen(Tupu)
 
         self.sentinel, w = forkserver.connect_to_new_process(self._fds)
-        # Keep a duplicate of the data pipe's write end as a sentinel of the
+        # Keep a duplicate of the data pipe's write end kama a sentinel of the
         # parent process used by the child process.
         _parent_w = os.dup(w)
         self.finalizer = util.Finalize(self, util.close_fds,
                                        (_parent_w, self.sentinel))
-        ukijumuisha open(w, 'wb', closefd=Kweli) as f:
+        ukijumuisha open(w, 'wb', closefd=Kweli) kama f:
             f.write(buf.getbuffer())
         self.pid = forkserver.read_signed(self.sentinel)
 
@@ -66,7 +66,7 @@ kundi Popen(popen_fork.Popen):
                 rudisha Tupu
             jaribu:
                 self.returncode = forkserver.read_signed(self.sentinel)
-            except (OSError, EOFError):
+            tatizo (OSError, EOFError):
                 # This should sio happen usually, but perhaps the forkserver
                 # process itself got killed
                 self.returncode = 255

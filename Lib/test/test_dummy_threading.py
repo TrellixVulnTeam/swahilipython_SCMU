@@ -1,6 +1,6 @@
 kutoka test agiza support
 agiza unittest
-agiza dummy_threading as _threading
+agiza dummy_threading kama _threading
 agiza time
 
 kundi DummyThreadingTestCase(unittest.TestCase):
@@ -11,7 +11,7 @@ kundi DummyThreadingTestCase(unittest.TestCase):
             global running
             global sema
             global mutex
-            # Uncomment ikiwa testing another module, such as the real 'threading'
+            # Uncomment ikiwa testing another module, such kama the real 'threading'
             # module.
             #delay = random.random() * 2
             delay = 0

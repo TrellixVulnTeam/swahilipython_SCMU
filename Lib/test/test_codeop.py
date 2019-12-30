@@ -33,7 +33,7 @@ kundi CodeopTests(unittest.TestCase):
                     exec(compile(str,"<input>","single"), r)
                 mwishowe:
                     sys.stdout = saved_stdout
-            elikiwa symbol == 'eval':
+            lasivyo symbol == 'eval':
                 ctx = {'a': 2}
                 d = { 'value': eval(code,ctx) }
                 r = { 'value': eval(str,ctx) }
@@ -51,10 +51,10 @@ kundi CodeopTests(unittest.TestCase):
         jaribu:
             compile_command(str,symbol=symbol)
             self.fail("No exception raised kila invalid code")
-        except SyntaxError:
+        tatizo SyntaxError:
             self.assertKweli(is_syntax)
-        except OverflowError:
-            self.assertKweli(not is_syntax)
+        tatizo OverflowError:
+            self.assertKweli(sio is_syntax)
 
     eleza test_valid(self):
         av = self.assertValid
@@ -62,10 +62,10 @@ kundi CodeopTests(unittest.TestCase):
         # special case
         ikiwa sio is_jython:
             self.assertEqual(compile_command(""),
-                             compile("pass", "<input>", 'single',
+                             compile("pita", "<input>", 'single',
                                      PyCF_DONT_IMPLY_DEDENT))
             self.assertEqual(compile_command("\n"),
-                             compile("pass", "<input>", 'single',
+                             compile("pita", "<input>", 'single',
                                      PyCF_DONT_IMPLY_DEDENT))
         isipokua:
             av("")
@@ -77,21 +77,21 @@ kundi CodeopTests(unittest.TestCase):
         av("a = 1\n\n")
         av("\n\na = 1\n\n")
 
-        av("eleza x():\n  pass\n")
-        av("ikiwa 1:\n pass\n")
+        av("eleza x():\n  pita\n")
+        av("ikiwa 1:\n pita\n")
 
-        av("\n\nikiwa 1: pass\n")
-        av("\n\nikiwa 1: pass\n\n")
+        av("\n\nikiwa 1: pita\n")
+        av("\n\nikiwa 1: pita\n\n")
 
-        av("eleza x():\n\n pass\n")
-        av("eleza x():\n  pass\n  \n")
-        av("eleza x():\n  pass\n \n")
+        av("eleza x():\n\n pita\n")
+        av("eleza x():\n  pita\n  \n")
+        av("eleza x():\n  pita\n \n")
 
-        av("pass\n")
+        av("pita\n")
         av("3**3\n")
 
-        av("ikiwa 9==3:\n   pass\nisipokua:\n   pass\n")
-        av("ikiwa 1:\n pass\n ikiwa 1:\n  pass\n isipokua:\n  pass\n")
+        av("ikiwa 9==3:\n   pita\nisipokua:\n   pita\n")
+        av("ikiwa 1:\n pita\n ikiwa 1:\n  pita\n isipokua:\n  pita\n")
 
         av("#a\n#b\na = 3\n")
         av("#a\n\n   \na=3\n")
@@ -111,16 +111,16 @@ kundi CodeopTests(unittest.TestCase):
         av("\n\na = 1\n\n")
         av("\n\nikiwa 1: a=1\n\n")
 
-        av("ikiwa 1:\n pass\n ikiwa 1:\n  pass\n isipokua:\n  pass\n")
+        av("ikiwa 1:\n pita\n ikiwa 1:\n  pita\n isipokua:\n  pita\n")
         av("#a\n\n   \na=3\n\n")
 
         av("\n\na**3","eval")
         av("\n \na**3","eval")
         av("#a\n#b\na**3","eval")
 
-        av("eleza f():\n jaribu: pass\n mwishowe: [x kila x kwenye (1,2)]\n")
-        av("eleza f():\n pass\n#foo\n")
-        av("@a.b.c\neleza f():\n pass\n")
+        av("eleza f():\n jaribu: pita\n mwishowe: [x kila x kwenye (1,2)]\n")
+        av("eleza f():\n pita\n#foo\n")
+        av("@a.b.c\neleza f():\n pita\n")
 
     eleza test_incomplete(self):
         ai = self.assertIncomplete
@@ -133,23 +133,23 @@ kundi CodeopTests(unittest.TestCase):
         ai("a = {")
         ai("b + {")
 
-        ai("ikiwa 9==3:\n   pass\nisipokua:")
-        ai("ikiwa 9==3:\n   pass\nisipokua:\n")
-        ai("ikiwa 9==3:\n   pass\nisipokua:\n   pass")
+        ai("ikiwa 9==3:\n   pita\nisipokua:")
+        ai("ikiwa 9==3:\n   pita\nisipokua:\n")
+        ai("ikiwa 9==3:\n   pita\nisipokua:\n   pita")
         ai("ikiwa 1:")
         ai("ikiwa 1:\n")
-        ai("ikiwa 1:\n pass\n ikiwa 1:\n  pass\n isipokua:")
-        ai("ikiwa 1:\n pass\n ikiwa 1:\n  pass\n isipokua:\n")
-        ai("ikiwa 1:\n pass\n ikiwa 1:\n  pass\n isipokua:\n  pass")
+        ai("ikiwa 1:\n pita\n ikiwa 1:\n  pita\n isipokua:")
+        ai("ikiwa 1:\n pita\n ikiwa 1:\n  pita\n isipokua:\n")
+        ai("ikiwa 1:\n pita\n ikiwa 1:\n  pita\n isipokua:\n  pita")
 
         ai("eleza x():")
         ai("eleza x():\n")
         ai("eleza x():\n\n")
 
-        ai("eleza x():\n  pass")
-        ai("eleza x():\n  pass\n ")
-        ai("eleza x():\n  pass\n  ")
-        ai("\n\neleza x():\n  pass")
+        ai("eleza x():\n  pita")
+        ai("eleza x():\n  pita\n ")
+        ai("eleza x():\n  pita\n  ")
+        ai("\n\neleza x():\n  pita")
 
         ai("a = 9+ \\")
         ai("a = 'a\\")
@@ -219,22 +219,22 @@ kundi CodeopTests(unittest.TestCase):
         ai("(a,b")
         ai("(a,b,")
 
-        ai("ikiwa a:\n pass\nelikiwa b:")
-        ai("ikiwa a:\n pass\nelikiwa b:\n pass\nisipokua:")
+        ai("ikiwa a:\n pita\nlasivyo b:")
+        ai("ikiwa a:\n pita\nlasivyo b:\n pita\nisipokua:")
 
         ai("wakati a:")
-        ai("wakati a:\n pass\nisipokua:")
+        ai("wakati a:\n pita\nisipokua:")
 
         ai("kila a kwenye b:")
-        ai("kila a kwenye b:\n pass\nisipokua:")
+        ai("kila a kwenye b:\n pita\nisipokua:")
 
         ai("jaribu:")
-        ai("jaribu:\n pass\ntatizo:")
-        ai("jaribu:\n pass\nmwishowe:")
-        ai("jaribu:\n pass\ntatizo:\n pass\nmwishowe:")
+        ai("jaribu:\n pita\ntatizo:")
+        ai("jaribu:\n pita\nmwishowe:")
+        ai("jaribu:\n pita\ntatizo:\n pita\nmwishowe:")
 
         ai("ukijumuisha a:")
-        ai("ukijumuisha a as b:")
+        ai("ukijumuisha a kama b:")
 
         ai("kundi a:")
         ai("kundi a(")
@@ -261,9 +261,9 @@ kundi CodeopTests(unittest.TestCase):
         ai("a = ")
         ai("a = 9 +")
 
-        ai("eleza x():\n\npass\n")
+        ai("eleza x():\n\npita\n")
 
-        ai("\n\n ikiwa 1: pass\n\npass")
+        ai("\n\n ikiwa 1: pita\n\npita")
 
         ai("a = 9+ \\\n")
         ai("a = 'a\\ ")
@@ -279,7 +279,7 @@ kundi CodeopTests(unittest.TestCase):
         ai("a b","eval")
 
         ai("rudisha 2.3")
-        ai("ikiwa (a == 1 na b = 2): pass")
+        ai("ikiwa (a == 1 na b = 2): pita")
 
         ai("toa 1")
         ai("toa (1,)")

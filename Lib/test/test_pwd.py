@@ -14,8 +14,8 @@ kundi PwdTest(unittest.TestCase):
             self.assertEqual(len(e), 7)
             self.assertEqual(e[0], e.pw_name)
             self.assertIsInstance(e.pw_name, str)
-            self.assertEqual(e[1], e.pw_passwd)
-            self.assertIsInstance(e.pw_passwd, str)
+            self.assertEqual(e[1], e.pw_pitawd)
+            self.assertIsInstance(e.pw_pitawd, str)
             self.assertEqual(e[2], e.pw_uid)
             self.assertIsInstance(e.pw_uid, int)
             self.assertEqual(e[3], e.pw_gid)
@@ -38,8 +38,8 @@ kundi PwdTest(unittest.TestCase):
         entriesbyname = {}
         entriesbyuid = {}
 
-        ikiwa len(entries) > 1000:  # Huge passwd file (NIS?) -- skip this test
-            self.skipTest('passwd file ni huge; extended test skipped')
+        ikiwa len(entries) > 1000:  # Huge pitawd file (NIS?) -- skip this test
+            self.skipTest('pitawd file ni huge; extended test skipped')
 
         kila e kwenye entries:
             entriesbyname.setdefault(e.pw_name, []).append(e)
@@ -76,7 +76,7 @@ kundi PwdTest(unittest.TestCase):
                 ikiwa chars[i] == 'z':
                     chars[i] = 'A'
                     koma
-                elikiwa chars[i] == 'Z':
+                lasivyo chars[i] == 'Z':
                     endelea
                 isipokua:
                     chars[i] = chr(ord(chars[i]) + 1)
@@ -85,7 +85,7 @@ kundi PwdTest(unittest.TestCase):
                 namei = namei + 1
                 jaribu:
                     fakename = allnames[namei]
-                except IndexError:
+                tatizo IndexError:
                     # should never happen... ikiwa so, just forget it
                     koma
             fakename = ''.join(chars)
@@ -93,7 +93,7 @@ kundi PwdTest(unittest.TestCase):
         self.assertRaises(KeyError, pwd.getpwnam, fakename)
 
         # In some cases, byuids isn't a complete list of all users kwenye the
-        # system, so ikiwa we try to pick a value sio kwenye byuids (via a perturbing
+        # system, so ikiwa we try to pick a value haiko kwenye byuids (via a perturbing
         # loop, say), pwd.getpwuid() might still be able to find data kila that
         # uid. Using sys.maxint may provoke the same problems, but hopefully
         # it will be a more repeatable failure.

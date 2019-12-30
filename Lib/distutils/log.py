@@ -17,8 +17,8 @@ kundi Log:
         self.threshold = threshold
 
     eleza _log(self, level, msg, args):
-        ikiwa level sio kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
-             ashiria ValueError('%s wrong log level' % str(level))
+        ikiwa level haiko kwenye (DEBUG, INFO, WARN, ERROR, FATAL):
+            ashiria ValueError('%s wrong log level' % str(level))
 
         ikiwa level >= self.threshold:
             ikiwa args:
@@ -29,7 +29,7 @@ kundi Log:
                 stream = sys.stdout
             jaribu:
                 stream.write('%s\n' % msg)
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 # emulate backslashreplace error handler
                 encoding = stream.encoding
                 msg = msg.encode(encoding, "backslashreplace").decode(encoding)
@@ -71,7 +71,7 @@ eleza set_threshold(level):
 eleza set_verbosity(v):
     ikiwa v <= 0:
         set_threshold(WARN)
-    elikiwa v == 1:
+    lasivyo v == 1:
         set_threshold(INFO)
-    elikiwa v >= 2:
+    lasivyo v >= 2:
         set_threshold(DEBUG)

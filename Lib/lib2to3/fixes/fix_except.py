@@ -1,22 +1,22 @@
-"""Fixer kila except statements ukijumuisha named exceptions.
+"""Fixer kila tatizo statements ukijumuisha named exceptions.
 
 The following cases will be converted:
 
-- "except E, T:" where T ni a name:
+- "tatizo E, T:" where T ni a name:
 
-    except E as T:
+    tatizo E kama T:
 
-- "except E, T:" where T ni sio a name, tuple ama list:
+- "tatizo E, T:" where T ni sio a name, tuple ama list:
 
-        except E as t:
+        tatizo E kama t:
             T = t
 
     This ni done because the target of an "except" clause must be a
     name.
 
-- "except E, T:" where T ni a tuple ama list literal:
+- "tatizo E, T:" where T ni a tuple ama list literal:
 
-        except E as t:
+        tatizo E kama t:
             T = t.args
 """
 # Author: Collin Winter
@@ -56,15 +56,15 @@ kundi FixExcept(fixer_base.BaseFix):
                 comma.replace(Name("as", prefix=" "))
 
                 ikiwa N.type != token.NAME:
-                    # Generate a new N kila the except clause
+                    # Generate a new N kila the tatizo clause
                     new_N = Name(self.new_name(), prefix=" ")
                     target = N.clone()
                     target.prefix = ""
                     N.replace(new_N)
                     new_N = new_N.clone()
 
-                    # Insert "old_N = new_N" as the first statement in
-                    #  the except body. This loop skips leading whitespace
+                    # Insert "old_N = new_N" kama the first statement in
+                    #  the tatizo body. This loop skips leading whitespace
                     #  na indents
                     #TODO(cwinter) suite-cleanup
                     suite_stmts = e_suite.children
@@ -83,7 +83,7 @@ kundi FixExcept(fixer_base.BaseFix):
                     kila child kwenye reversed(suite_stmts[:i]):
                         e_suite.insert_child(0, child)
                     e_suite.insert_child(i, assign)
-                elikiwa N.prefix == "":
+                lasivyo N.prefix == "":
                     # No space after a comma ni legal; no space after "as",
                     # sio so much.
                     N.prefix = " "

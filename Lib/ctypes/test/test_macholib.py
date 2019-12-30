@@ -16,9 +16,9 @@ agiza unittest
 #      kila dylib kwenye possible:
 #          jaribu:
 #              rudisha os.path.realpath(dyld_find(dylib))
-#          except ValueError:
-#              pass
-#       ashiria ValueError, "%s sio found" % (name,)
+#          tatizo ValueError:
+#              pita
+#      ashiria ValueError, "%s sio found" % (name,)
 #
 # It'll have output like this:
 #
@@ -38,9 +38,9 @@ eleza find_lib(name):
     kila dylib kwenye possible:
         jaribu:
             rudisha os.path.realpath(dyld_find(dylib))
-        except ValueError:
-            pass
-     ashiria ValueError("%s sio found" % (name,))
+        tatizo ValueError:
+            pita
+    ashiria ValueError("%s sio found" % (name,))
 
 kundi MachOTest(unittest.TestCase):
     @unittest.skipUnless(sys.platform == "darwin", 'OSX-specific test')
@@ -50,7 +50,7 @@ kundi MachOTest(unittest.TestCase):
                              '/usr/lib/libSystem.B.dylib')
 
         result = find_lib('z')
-        # Issue #21093: dyld default search path includes $HOME/lib and
+        # Issue #21093: dyld default search path includes $HOME/lib na
         # /usr/local/lib before /usr/lib, which caused test failures if
         # a local copy of libz exists kwenye one of them. Now ignore the head
         # of the path.

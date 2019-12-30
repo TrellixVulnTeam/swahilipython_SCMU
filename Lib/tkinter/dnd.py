@@ -3,7 +3,7 @@
 This ni very preliminary.  I currently only support dnd *within* one
 application, between different windows (or within the same window).
 
-I am trying to make this as generic as possible -- sio dependent on
+I am trying to make this kama generic kama possible -- sio dependent on
 the use of a particular widget ama icon type, etc.  I also hope that
 this will work ukijumuisha Pmw.
 
@@ -25,20 +25,20 @@ The object ni *not* necessarily a widget -- it can be any
 application-specific object that ni meaningful to potential
 drag-and-drop targets.
 
-Potential drag-and-drop targets are discovered as follows.  Whenever
+Potential drag-and-drop targets are discovered kama follows.  Whenever
 the mouse moves, na at the start na end of a drag-and-drop move, the
 Tk widget directly under the mouse ni inspected.  This ni the target
-widget (not to be confused ukijumuisha the target object, yet to be
+widget (sio to be confused ukijumuisha the target object, yet to be
 determined).  If there ni no target widget, there ni no dnd target
 object.  If there ni a target widget, na it has an attribute
 dnd_accept, this should be a function (or any callable object).  The
-function ni called as dnd_accept(source, event), where 'source' ni the
-object being dragged (the object passed to dnd_start() above), and
+function ni called kama dnd_accept(source, event), where 'source' ni the
+object being dragged (the object pitaed to dnd_start() above), na
 'event' ni the most recent event object (generally a <Motion> event;
 it can also be <ButtonPress> ama <ButtonRelease>).  If the dnd_accept()
 function returns something other than Tupu, this ni the new dnd target
 object.  If dnd_accept() returns Tupu, ama ikiwa the target widget has no
-dnd_accept attribute, the target widget's parent ni considered as the
+dnd_accept attribute, the target widget's parent ni considered kama the
 target widget, na the search kila a target object ni repeated from
 there.  If necessary, the search ni repeated all the way up to the
 root widget.  If none of the target widgets can produce a target
@@ -68,13 +68,13 @@ target object's method dnd_enter(source, event) ni called.
 
 Once this ni done, the new target object replaces the old one, na the
 Tk mainloop proceeds.  The rudisha value of the methods mentioned above
-is ignored; ikiwa they  ashiria an exception, the normal exception handling
+is ignored; ikiwa they ashiria an exception, the normal exception handling
 mechanisms take over.
 
 The drag-and-drop processes can end kwenye two ways: a final target object
 is selected, ama no final target object ni selected.  When a final
 target object ni selected, it will always have been notified of the
-potential drop by a call to its dnd_enter() method, as described
+potential drop by a call to its dnd_enter() method, kama described
 above, na possibly one ama more calls to its dnd_motion() method; its
 dnd_leave() method has sio been called since the last call to
 dnd_enter().  The target ni notified of the drop by a call to its
@@ -126,7 +126,7 @@ kundi DndHandler:
         jaribu:
             root.__dnd
             rudisha # Don't start recursive dnd
-        except AttributeError:
+        tatizo AttributeError:
             root.__dnd = self
             self.root = root
         self.source = source
@@ -145,8 +145,8 @@ kundi DndHandler:
         ikiwa root:
             jaribu:
                 toa root.__dnd
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
 
     eleza on_motion(self, event):
         x, y = event.x_root, event.y_root
@@ -156,8 +156,8 @@ kundi DndHandler:
         wakati target_widget:
             jaribu:
                 attr = target_widget.dnd_accept
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
             isipokua:
                 new_target = attr(source, event)
                 ikiwa new_target:
@@ -262,7 +262,7 @@ kundi Icon:
         rudisha x - self.x_off, y - self.y_off
 
     eleza dnd_end(self, target, event):
-        pass
+        pita
 
 
 kundi Tester:

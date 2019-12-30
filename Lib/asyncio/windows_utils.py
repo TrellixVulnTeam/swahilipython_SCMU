@@ -3,7 +3,7 @@
 agiza sys
 
 ikiwa sys.platform != 'win32':  # pragma: no cover
-     ashiria ImportError('win32 only')
+    ashiria ImportError('win32 only')
 
 agiza _winapi
 agiza itertools
@@ -99,7 +99,7 @@ kundi PipeHandle:
 
     eleza fileno(self):
         ikiwa self._handle ni Tupu:
-             ashiria ValueError("I/O operation on closed pipe")
+            ashiria ValueError("I/O operation on closed pipe")
         rudisha self._handle
 
     eleza close(self, *, CloseHandle=_winapi.CloseHandle):
@@ -145,7 +145,7 @@ kundi Popen(subprocess.Popen):
         ikiwa stderr == PIPE:
             stderr_rh, stderr_wh = pipe(overlapped=(Kweli, Uongo))
             stderr_wfd = msvcrt.open_osfhandle(stderr_wh, 0)
-        elikiwa stderr == STDOUT:
+        lasivyo stderr == STDOUT:
             stderr_wfd = stdout_wfd
         isipokua:
             stderr_wfd = stderr

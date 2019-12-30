@@ -6,8 +6,8 @@ agiza unittest
 kutoka test.support agiza requires
 kutoka tkinter agiza Text, Tk, Toplevel
 kutoka tkinter.ttk agiza Frame
-kutoka idlelib agiza searchengine as se
-kutoka idlelib agiza searchbase as sdb
+kutoka idlelib agiza searchengine kama se
+kutoka idlelib agiza searchbase kama sdb
 kutoka idlelib.idle_test.mock_idle agiza Func
 ## kutoka idlelib.idle_test.mock_tk agiza Var
 

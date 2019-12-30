@@ -16,7 +16,7 @@ kutoka test.support.script_helper agiza (
     assert_python_ok)
 
 ikiwa support.PGO:
-     ashiria unittest.SkipTest("test ni sio helpful kila PGO")
+    ashiria unittest.SkipTest("test ni sio helpful kila PGO")
 
 # Look up which start methods are available to test
 agiza multiprocessing
@@ -41,13 +41,13 @@ kutoka multiprocessing agiza Pool, set_start_method
 
 # We use this __main__ defined function kwenye the map call below kwenye order to
 # check that multiprocessing kwenye correctly running the unguarded
-# code kwenye child processes na then making it available as __main__
+# code kwenye child processes na then making it available kama __main__
 eleza f(x):
     rudisha x*x
 
 # Check explicit relative imports
 ikiwa "check_sibling" kwenye __file__:
-    # We're inside a package na sio kwenye a __main__.py file
+    # We're inside a package na haiko kwenye a __main__.py file
     # so make sure explicit relative imports work correctly
     kutoka . agiza sibling
 
@@ -55,7 +55,7 @@ ikiwa __name__ == '__main__':
     start_method = sys.argv[1]
     set_start_method(start_method)
     results = []
-    ukijumuisha Pool(5) as pool:
+    ukijumuisha Pool(5) kama pool:
         pool.map_async(f, [1, 2, 3], callback=results.extend)
         start_time = time.monotonic()
         wakati sio results:
@@ -63,7 +63,7 @@ ikiwa __name__ == '__main__':
             # up to 1 min to report the results
             dt = time.monotonic() - start_time
             ikiwa dt > 60.0:
-                 ashiria RuntimeError("Timed out waiting kila results (%.1f sec)" % dt)
+                ashiria RuntimeError("Timed out waiting kila results (%.1f sec)" % dt)
 
     results.sort()
     andika(start_method, "->", results)
@@ -76,10 +76,10 @@ test_source_main_skipped_in_children = """\
 # multiprocessing should always skip running them kwenye child processes
 
 # This means we can't use __main__ defined functions kwenye child processes,
-# so we just use "int" as a passthrough operation below
+# so we just use "int" kama a pitathrough operation below
 
 ikiwa __name__ != "__main__":
-     ashiria RuntimeError("Should only be called as __main__!")
+    ashiria RuntimeError("Should only be called kama __main__!")
 
 agiza sys
 agiza time
@@ -88,7 +88,7 @@ kutoka multiprocessing agiza Pool, set_start_method
 start_method = sys.argv[1]
 set_start_method(start_method)
 results = []
-ukijumuisha Pool(5) as pool:
+ukijumuisha Pool(5) kama pool:
     pool.map_async(int, [1, 4, 9], callback=results.extend)
     start_time = time.monotonic()
     wakati sio results:
@@ -96,7 +96,7 @@ ukijumuisha Pool(5) as pool:
         # up to 1 min to report the results
         dt = time.monotonic() - start_time
         ikiwa dt > 60.0:
-             ashiria RuntimeError("Timed out waiting kila results (%.1f sec)" % dt)
+            ashiria RuntimeError("Timed out waiting kila results (%.1f sec)" % dt)
 
 results.sort()
 andika(start_method, "->", results)
@@ -123,7 +123,7 @@ eleza _make_test_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     importlib.invalidate_caches()
     rudisha to_return
 
-# There's no easy way to pass the script directory kwenye to get
+# There's no easy way to pita the script directory kwenye to get
 # -m to work (avoiding that ni the whole point of making
 # directories na zipfiles executable!)
 # So we fake it kila testing purposes ukijumuisha a custom launch script
@@ -147,7 +147,7 @@ kundi MultiProcessingCmdLineMixin():
     maxDiff = Tupu # Show full tracebacks on subprocess failure
 
     eleza setUp(self):
-        ikiwa self.start_method sio kwenye AVAILABLE_START_METHODS:
+        ikiwa self.start_method haiko kwenye AVAILABLE_START_METHODS:
             self.skipTest("%r start method sio available" % self.start_method)
 
     eleza _check_output(self, script_name, exit_code, out, err):
@@ -167,12 +167,12 @@ kundi MultiProcessingCmdLineMixin():
         self._check_output(script_name, rc, out, err)
 
     eleza test_basic_script(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, 'script')
             self._check_script(script_name)
 
     eleza test_basic_script_no_suffix(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, 'script',
                                             omit_suffix=Kweli)
             self._check_script(script_name)
@@ -183,7 +183,7 @@ kundi MultiProcessingCmdLineMixin():
         # a workaround kila that case
         # See https://github.com/ipython/ipython/issues/4698
         source = test_source_main_skipped_in_children
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, 'ipython',
                                             source=source)
             self._check_script(script_name)
@@ -193,7 +193,7 @@ kundi MultiProcessingCmdLineMixin():
             self._check_script(script_no_suffix)
 
     eleza test_script_compiled(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, 'script')
             py_compile.compile(script_name, doraise=Kweli)
             os.remove(script_name)
@@ -202,14 +202,14 @@ kundi MultiProcessingCmdLineMixin():
 
     eleza test_directory(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
             self._check_script(script_dir)
 
     eleza test_directory_compiled(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
             py_compile.compile(script_name, doraise=Kweli)
@@ -219,7 +219,7 @@ kundi MultiProcessingCmdLineMixin():
 
     eleza test_zipfile(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
             zip_name, run_name = make_zip_script(script_dir, 'test_zip', script_name)
@@ -227,7 +227,7 @@ kundi MultiProcessingCmdLineMixin():
 
     eleza test_zipfile_compiled(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             script_name = _make_test_script(script_dir, '__main__',
                                             source=source)
             compiled_name = py_compile.compile(script_name, doraise=Kweli)
@@ -235,7 +235,7 @@ kundi MultiProcessingCmdLineMixin():
             self._check_script(zip_name)
 
     eleza test_module_in_package(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
             script_name = _make_test_script(pkg_dir, 'check_sibling')
@@ -244,20 +244,20 @@ kundi MultiProcessingCmdLineMixin():
             self._check_script(launch_name)
 
     eleza test_module_in_package_in_zipfile(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script')
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg.script', zip_name)
             self._check_script(launch_name)
 
     eleza test_module_in_subpackage_in_zipfile(self):
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             zip_name, run_name = _make_test_zip_pkg(script_dir, 'test_zip', 'test_pkg', 'script', depth=2)
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg.test_pkg.script', zip_name)
             self._check_script(launch_name)
 
     eleza test_package(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
             script_name = _make_test_script(pkg_dir, '__main__',
@@ -267,7 +267,7 @@ kundi MultiProcessingCmdLineMixin():
 
     eleza test_package_compiled(self):
         source = self.main_in_children_source
-        ukijumuisha support.temp_dir() as script_dir:
+        ukijumuisha support.temp_dir() kama script_dir:
             pkg_dir = os.path.join(script_dir, 'test_pkg')
             make_pkg(pkg_dir)
             script_name = _make_test_script(pkg_dir, '__main__',
@@ -278,7 +278,7 @@ kundi MultiProcessingCmdLineMixin():
             launch_name = _make_launch_script(script_dir, 'launch', 'test_pkg')
             self._check_script(launch_name)
 
-# Test all supported start methods (setupClass skips as appropriate)
+# Test all supported start methods (setupClass skips kama appropriate)
 
 kundi SpawnCmdLineTest(MultiProcessingCmdLineMixin, unittest.TestCase):
     start_method = 'spawn'

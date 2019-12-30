@@ -85,7 +85,7 @@ kundi InstallLibTestCase(support.TempdirManager,
         cmd.distribution.packages = ['spam']
         cmd.distribution.script_name = 'setup.py'
 
-        # get_inputs should rudisha 2 elements: spam/__init__.py and
+        # get_inputs should rudisha 2 elements: spam/__init__.py na
         # foo.import-tag-abiflags.so / foo.pyd
         inputs = cmd.get_inputs()
         self.assertEqual(len(inputs), 2, inputs)

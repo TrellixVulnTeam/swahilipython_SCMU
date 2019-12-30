@@ -32,7 +32,7 @@ kundi TestBreak(unittest.TestCase):
         jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             self.fail("KeyboardInterrupt sio handled")
 
         self.assertKweli(unittest.signals._interrupt_handler.called)
@@ -64,7 +64,7 @@ kundi TestBreak(unittest.TestCase):
 
         jaribu:
             test(result)
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             self.fail("KeyboardInterrupt sio handled")
         self.assertKweli(result.komaCaught)
 
@@ -88,8 +88,8 @@ kundi TestBreak(unittest.TestCase):
 
         jaribu:
             test(result)
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
         isipokua:
             self.fail("Second KeyboardInterrupt sio raised")
         self.assertKweli(result.komaCaught)
@@ -114,7 +114,7 @@ kundi TestBreak(unittest.TestCase):
 
         jaribu:
             test(result)
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             self.fail("KeyboardInterrupt sio handled")
 
         self.assertKweli(result.shouldStop)
@@ -140,10 +140,10 @@ kundi TestBreak(unittest.TestCase):
         jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
         isipokua:
-            self.fail("replaced but delegated handler doesn't  ashiria interrupt")
+            self.fail("replaced but delegated handler doesn't ashiria interrupt")
 
     eleza testRunner(self):
         # Creating a TextTestRunner ukijumuisha the appropriate argument should
@@ -173,14 +173,14 @@ kundi TestBreak(unittest.TestCase):
         unittest.installHandler()
         self.assertKweli(unittest.removeResult(result))
 
-        # Should this  ashiria an error instead?
+        # Should this ashiria an error instead?
         self.assertUongo(unittest.removeResult(unittest.TestResult()))
 
         jaribu:
             pid = os.getpid()
             os.kill(pid, signal.SIGINT)
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
 
         self.assertUongo(result.shouldStop)
 

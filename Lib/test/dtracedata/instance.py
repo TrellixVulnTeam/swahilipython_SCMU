@@ -1,9 +1,9 @@
 agiza gc
 
 kundi old_style_class():
-    pass
+    pita
 kundi new_style_class(object):
-    pass
+    pita
 
 a = old_style_class()
 toa a

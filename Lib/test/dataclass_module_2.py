@@ -2,7 +2,7 @@
 USING_STRINGS = Uongo
 
 # dataclass_module_2.py na dataclass_module_2_str.py are identical
-# except only the latter uses string annotations.
+# tatizo only the latter uses string annotations.
 
 kutoka dataclasses agiza dataclass, InitVar
 kutoka typing agiza ClassVar
@@ -20,7 +20,7 @@ kundi CV:
     cv1: ClassVar = 30
     cv2: T_CV2
     cv3: T_CV3
-    not_cv4: T_CV4  # When using string annotations, this field ni sio recognized as a ClassVar.
+    not_cv4: T_CV4  # When using string annotations, this field ni sio recognized kama a ClassVar.
 
 @dataclass
 kundi IV:
@@ -29,4 +29,4 @@ kundi IV:
     iv1: InitVar
     iv2: T_IV2
     iv3: T_IV3
-    not_iv4: T_IV4  # When using string annotations, this field ni sio recognized as an InitVar.
+    not_iv4: T_IV4  # When using string annotations, this field ni sio recognized kama an InitVar.

@@ -22,7 +22,7 @@ kundi BaseTransport:
 
     eleza is_closing(self):
         """Return Kweli ikiwa the transport ni closing ama closed."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza close(self):
         """Close the transport.
@@ -30,17 +30,17 @@ kundi BaseTransport:
         Buffered data will be flushed asynchronously.  No more data
         will be received.  After all buffered data ni flushed, the
         protocol's connection_lost() method will (eventually) called
-        ukijumuisha Tupu as its argument.
+        ukijumuisha Tupu kama its argument.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_protocol(self, protocol):
         """Set a new protocol."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_protocol(self):
         """Return the current protocol."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi ReadTransport(BaseTransport):
@@ -50,23 +50,23 @@ kundi ReadTransport(BaseTransport):
 
     eleza is_reading(self):
         """Return Kweli ikiwa the transport ni receiving."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza pause_reading(self):
         """Pause the receiving end.
 
-        No data will be passed to the protocol's data_received()
+        No data will be pitaed to the protocol's data_received()
         method until resume_reading() ni called.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza resume_reading(self):
         """Resume the receiving end.
 
-        Data received will once again be passed to the protocol's
+        Data received will once again be pitaed to the protocol's
         data_received() method.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi WriteTransport(BaseTransport):
@@ -89,15 +89,15 @@ kundi WriteTransport(BaseTransport):
         well, na causes pause_writing() to be called whenever the
         buffer becomes non-empty.  Setting low to zero causes
         resume_writing() to be called only once the buffer ni empty.
-        Use of zero kila either limit ni generally sub-optimal as it
+        Use of zero kila either limit ni generally sub-optimal kama it
         reduces opportunities kila doing I/O na computation
         concurrently.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_write_buffer_size(self):
         """Return the current size of the write buffer."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza write(self, data):
         """Write some data bytes to the transport.
@@ -105,12 +105,12 @@ kundi WriteTransport(BaseTransport):
         This does sio block; it buffers the data na arranges kila it
         to be sent out asynchronously.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza writelines(self, list_of_data):
         """Write a list (or any iterable) of data bytes to the transport.
 
-        The default implementation concatenates the arguments and
+        The default implementation concatenates the arguments na
         calls write() on the result.
         """
         data = b''.join(list_of_data)
@@ -123,20 +123,20 @@ kundi WriteTransport(BaseTransport):
 
         Data may still be received.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza can_write_eof(self):
         """Return Kweli ikiwa this transport supports write_eof(), Uongo ikiwa not."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza abort(self):
         """Close the transport immediately.
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called ukijumuisha Tupu as its argument.
+        called ukijumuisha Tupu kama its argument.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi Transport(ReadTransport, WriteTransport):
@@ -148,16 +148,16 @@ kundi Transport(ReadTransport, WriteTransport):
     practices.
 
     The user never instantiates a transport directly; they call a
-    utility function, passing it a protocol factory na other
+    utility function, pitaing it a protocol factory na other
     information necessary to create the transport na protocol.  (E.g.
     EventLoop.create_connection() ama EventLoop.create_server().)
 
     The utility function will asynchronously create a transport na a
     protocol na hook them up by calling the protocol's
-    connection_made() method, passing it the transport.
+    connection_made() method, pitaing it the transport.
 
     The implementation here raises NotImplemented kila every method
-    except writelines(), which calls write() kwenye a loop.
+    tatizo writelines(), which calls write() kwenye a loop.
     """
 
     __slots__ = ()
@@ -176,16 +176,16 @@ kundi DatagramTransport(BaseTransport):
         addr ni target socket address.
         If addr ni Tupu use target address pointed on transport creation.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza abort(self):
         """Close the transport immediately.
 
         Buffered data will be lost.  No more data will be received.
         The protocol's connection_lost() method will (eventually) be
-        called ukijumuisha Tupu as its argument.
+        called ukijumuisha Tupu kama its argument.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi SubprocessTransport(BaseTransport):
@@ -194,7 +194,7 @@ kundi SubprocessTransport(BaseTransport):
 
     eleza get_pid(self):
         """Get subprocess id."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_returncode(self):
         """Get subprocess returncode.
@@ -202,11 +202,11 @@ kundi SubprocessTransport(BaseTransport):
         See also
         http://docs.python.org/3/library/subprocess#subprocess.Popen.returncode
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_pipe_transport(self, fd):
         """Get transport kila pipe ukijumuisha number fd."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza send_signal(self, signal):
         """Send signal to subprocess.
@@ -214,7 +214,7 @@ kundi SubprocessTransport(BaseTransport):
         See also:
         docs.python.org/3/library/subprocess#subprocess.Popen.send_signal
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza terminate(self):
         """Stop the subprocess.
@@ -228,7 +228,7 @@ kundi SubprocessTransport(BaseTransport):
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.terminate
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza kill(self):
         """Kill the subprocess.
@@ -239,7 +239,7 @@ kundi SubprocessTransport(BaseTransport):
         See also:
         http://docs.python.org/3/library/subprocess#subprocess.Popen.kill
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi _FlowControlMixin(Transport):
@@ -254,8 +254,8 @@ kundi _FlowControlMixin(Transport):
     The subkundi constructor must call super().__init__(extra).  This
     will call set_write_buffer_limits().
 
-    The user may call set_write_buffer_limits() and
-    get_write_buffer_size(), na their protocol's pause_writing() and
+    The user may call set_write_buffer_limits() na
+    get_write_buffer_size(), na their protocol's pause_writing() na
     resume_writing() may be called.
     """
 
@@ -276,9 +276,9 @@ kundi _FlowControlMixin(Transport):
             self._protocol_paused = Kweli
             jaribu:
                 self._protocol.pause_writing()
-            except (SystemExit, KeyboardInterrupt):
+            tatizo (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.pause_writing() failed',
                     'exception': exc,
@@ -287,14 +287,14 @@ kundi _FlowControlMixin(Transport):
                 })
 
     eleza _maybe_resume_protocol(self):
-        ikiwa (self._protocol_paused and
+        ikiwa (self._protocol_paused na
                 self.get_write_buffer_size() <= self._low_water):
             self._protocol_paused = Uongo
             jaribu:
                 self._protocol.resume_writing()
-            except (SystemExit, KeyboardInterrupt):
+            tatizo (SystemExit, KeyboardInterrupt):
                 raise
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 self._loop.call_exception_handler({
                     'message': 'protocol.resume_writing() failed',
                     'exception': exc,
@@ -315,7 +315,7 @@ kundi _FlowControlMixin(Transport):
             low = high // 4
 
         ikiwa sio high >= low >= 0:
-             ashiria ValueError(
+            ashiria ValueError(
                 f'high ({high!r}) must be >= low ({low!r}) must be >= 0')
 
         self._high_water = high
@@ -326,4 +326,4 @@ kundi _FlowControlMixin(Transport):
         self._maybe_pause_protocol()
 
     eleza get_write_buffer_size(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError

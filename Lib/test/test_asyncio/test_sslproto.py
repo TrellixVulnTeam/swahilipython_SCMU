@@ -8,15 +8,15 @@ agiza weakref
 kutoka unittest agiza mock
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 agiza asyncio
 kutoka asyncio agiza log
 kutoka asyncio agiza protocols
 kutoka asyncio agiza sslproto
-kutoka test.test_asyncio agiza utils as test_utils
-kutoka test.test_asyncio agiza functional as func_tests
+kutoka test.test_asyncio agiza utils kama test_utils
+kutoka test.test_asyncio agiza functional kama func_tests
 
 
 eleza tearDownModule():
@@ -85,7 +85,7 @@ kundi SslProtoHandshakeTests(test_utils.TestCase):
         # does sio agiza base_events.
         waiter = self.loop.create_future()
         ssl_proto = self.ssl_protocol(waiter=waiter)
-        # Temporarily turn off error logging so as sio to spoil test output.
+        # Temporarily turn off error logging so kama sio to spoil test output.
         log_level = log.logger.getEffectiveLevel()
         log.logger.setLevel(logging.FATAL)
         jaribu:
@@ -165,7 +165,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
     TIMEOUT = 60
 
     eleza new_loop(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza test_buf_feed_data(self):
 
@@ -270,7 +270,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             new_tr.close()
 
-        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) kama srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
@@ -331,7 +331,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
             tr.close()
 
-        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) kama srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
@@ -426,7 +426,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             # doesn't call connection_made() on application protocols.
             self.assertEqual(client_con_made_calls, 1)
 
-        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) kama srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr),
                                  timeout=self.TIMEOUT))
@@ -447,8 +447,8 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 self.loop.call_soon_threadsafe(
                     server_waits_on_handshake.set_result, Tupu)
                 data = sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
-                pass
+            tatizo ConnectionAbortedError:
+                pita
             mwishowe:
                 sock.close()
 
@@ -487,7 +487,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                     self.loop.start_tls(tr, proto, client_context),
                     0.5)
 
-        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) as srv:
+        ukijumuisha self.tcp_server(serve, timeout=self.TIMEOUT) kama srv:
             self.loop.run_until_complete(
                 asyncio.wait_for(client(srv.addr), timeout=10))
 
@@ -501,7 +501,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 ama sys.platform.startswith('win')
                 ama sys.platform.startswith('darwin')):
             # bpo-35031: Some FreeBSD na Windows buildbots fail to run this test
-            # as the eof was sio being received by the server ikiwa the payload
+            # kama the eof was sio being received by the server ikiwa the payload
             # size ni sio big enough. This behaviour only appears ikiwa the
             # client ni using TLS1.3.  Also seen on macOS.
             client_context.options |= ssl.OP_NO_TLSv1_3
@@ -609,7 +609,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
             nonlocal server_side_aborted
             jaribu:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
+            tatizo ConnectionAbortedError:
                 server_side_aborted = Kweli
             mwishowe:
                 sock.close()
@@ -626,14 +626,14 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         ukijumuisha self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) kama srv:
 
             ukijumuisha self.assertRaises(asyncio.TimeoutError):
                 self.loop.run_until_complete(client(srv.addr))
 
         self.assertKweli(server_side_aborted)
 
-        # Python issue #23197: cancelling a handshake must sio  ashiria an
+        # Python issue #23197: cancelling a handshake must sio ashiria an
         # exception ama log an error, even ikiwa the handshake failed
         self.assertEqual(messages, [])
 
@@ -651,8 +651,8 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
         eleza server(sock):
             jaribu:
                 sock.recv_all(1024 * 1024)
-            except ConnectionAbortedError:
-                pass
+            tatizo ConnectionAbortedError:
+                pita
             mwishowe:
                 sock.close()
 
@@ -667,7 +667,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         ukijumuisha self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) kama srv:
 
             ukijumuisha self.assertRaisesRegex(
                     ConnectionAbortedError,
@@ -689,10 +689,10 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 sock.start_tls(
                     sslctx,
                     server_side=Kweli)
-            except ssl.SSLError:
-                pass
-            except OSError:
-                pass
+            tatizo ssl.SSLError:
+                pita
+            tatizo OSError:
+                pita
             mwishowe:
                 sock.close()
 
@@ -707,7 +707,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         ukijumuisha self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) kama srv:
 
             ukijumuisha self.assertRaises(ssl.SSLCertVerificationError):
                 self.loop.run_until_complete(client(srv.addr))
@@ -727,8 +727,8 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
                 sock.sendall(b'A\n')
                 sock.recv_all(1)
                 orig_sock.send(b'please corrupt the SSL connection')
-            except ssl.SSLError:
-                pass
+            tatizo ssl.SSLError:
+                pita
             mwishowe:
                 orig_sock.close()
                 sock.close()
@@ -751,7 +751,7 @@ kundi BaseStartTLS(func_tests.FunctionalTestCaseMixin):
 
         ukijumuisha self.tcp_server(server,
                              max_clients=1,
-                             backlog=1) as srv:
+                             backlog=1) kama srv:
 
             res = self.loop.run_until_complete(client(srv.addr))
 

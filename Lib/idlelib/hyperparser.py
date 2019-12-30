@@ -16,7 +16,7 @@ _ASCII_ID_FIRST_CHARS = frozenset(string.ascii_letters + "_")
 
 # lookup table kila whether 7-bit ASCII chars are valid kwenye a Python identifier
 _IS_ASCII_ID_CHAR = [(chr(x) kwenye _ASCII_ID_CHARS) kila x kwenye range(128)]
-# lookup table kila whether 7-bit ASCII chars are valid as the first
+# lookup table kila whether 7-bit ASCII chars are valid kama the first
 # char kwenye a Python identifier
 _IS_ASCII_ID_FIRST_CHAR = \
     [(chr(x) kwenye _ASCII_ID_FIRST_CHARS) kila x kwenye range(128)]
@@ -42,7 +42,7 @@ kundi HyperParser:
                 stopatindex = "%d.end" % lno
                 # We add the newline because PyParse requires a newline
                 # at end. We add a space so that index won't be at end
-                # of line, so that its status will be the same as the
+                # of line, so that its status will be the same kama the
                 # char before it, ikiwa should.
                 parser.set_code(text.get(startatindex, stopatindex)+' \n')
                 bod = parser.find_good_parse_start(
@@ -59,7 +59,7 @@ kundi HyperParser:
             stopatindex = "%d.end" % lno
             # We add the newline because PyParse requires it. We add a
             # space so that index won't be at end of line, so that its
-            # status will be the same as the char before it, ikiwa should.
+            # status will be the same kama the char before it, ikiwa should.
             parser.set_code(text.get(startatindex, stopatindex)+' \n')
             parser.set_lo(0)
 
@@ -86,16 +86,16 @@ kundi HyperParser:
         indexinrawtext = (len(self.rawtext) -
                           len(self.text.get(index, self.stopatindex)))
         ikiwa indexinrawtext < 0:
-             ashiria ValueError("Index %s precedes the analyzed statement"
+            ashiria ValueError("Index %s precedes the analyzed statement"
                              % index)
         self.indexinrawtext = indexinrawtext
         # find the rightmost bracket to which index belongs
         self.indexbracket = 0
-        wakati (self.indexbracket < len(self.bracketing)-1 and
+        wakati (self.indexbracket < len(self.bracketing)-1 na
                self.bracketing[self.indexbracket+1][0] < self.indexinrawtext):
             self.indexbracket += 1
-        ikiwa (self.indexbracket < len(self.bracketing)-1 and
-            self.bracketing[self.indexbracket+1][0] == self.indexinrawtext and
+        ikiwa (self.indexbracket < len(self.bracketing)-1 na
+            self.bracketing[self.indexbracket+1][0] == self.indexinrawtext na
            sio self.isopener[self.indexbracket+1]):
             self.indexbracket += 1
 
@@ -103,15 +103,15 @@ kundi HyperParser:
         """Is the index given to the HyperParser kwenye a string?"""
         # The bracket to which we belong should be an opener.
         # If it's an opener, it has to have a character.
-        rudisha (self.isopener[self.indexbracket] and
+        rudisha (self.isopener[self.indexbracket] na
                 self.rawtext[self.bracketing[self.indexbracket][0]]
                 kwenye ('"', "'"))
 
     eleza is_in_code(self):
         """Is the index given to the HyperParser kwenye normal code?"""
-        rudisha (not self.isopener[self.indexbracket] or
+        rudisha (sio self.isopener[self.indexbracket] ama
                 self.rawtext[self.bracketing[self.indexbracket][0]]
-                sio kwenye ('#', '"', "'"))
+                haiko kwenye ('#', '"', "'"))
 
     eleza get_surrounding_brackets(self, openers='([{', mustclose=Uongo):
         """Return bracket indexes ama Tupu.
@@ -127,21 +127,21 @@ kundi HyperParser:
 
         bracketinglevel = self.bracketing[self.indexbracket][1]
         before = self.indexbracket
-        wakati (not self.isopener[before] or
-              self.rawtext[self.bracketing[before][0]] sio kwenye openers or
+        wakati (sio self.isopener[before] ama
+              self.rawtext[self.bracketing[before][0]] haiko kwenye openers ama
               self.bracketing[before][1] > bracketinglevel):
             before -= 1
             ikiwa before < 0:
                 rudisha Tupu
             bracketinglevel = min(bracketinglevel, self.bracketing[before][1])
         after = self.indexbracket + 1
-        wakati (after < len(self.bracketing) and
+        wakati (after < len(self.bracketing) na
               self.bracketing[after][1] >= bracketinglevel):
             after += 1
 
         beforeindex = self.text.index("%s-%dc" %
             (self.stopatindex, len(self.rawtext)-self.bracketing[before][0]))
-        ikiwa (after >= len(self.bracketing) or
+        ikiwa (after >= len(self.bracketing) ama
            self.bracketing[after][0] > len(self.rawtext)):
             ikiwa mustclose:
                 rudisha Tupu
@@ -171,12 +171,12 @@ kundi HyperParser:
         # Start at the end (pos) na work backwards.
         i = pos
 
-        # Go backwards as long as the characters are valid ASCII
+        # Go backwards kama long kama the characters are valid ASCII
         # identifier characters. This ni an optimization, since it
         # ni faster kwenye the common case where most of the characters
         # are ASCII.
         wakati i > limit na (
-                ord(str[i - 1]) < 128 and
+                ord(str[i - 1]) < 128 na
                 is_ascii_id_char[ord(str[i - 1])]
         ):
             i -= 1
@@ -199,18 +199,18 @@ kundi HyperParser:
             # character kila an identifier.
             ikiwa sio str[i:pos].isidentifier():
                 rudisha 0
-        elikiwa i < pos:
+        lasivyo i < pos:
             # All characters kwenye str[i:pos] are valid ASCII identifier
             # characters, so it ni enough to check that the first is
-            # valid as the first character of an identifier.
+            # valid kama the first character of an identifier.
             ikiwa sio _IS_ASCII_ID_FIRST_CHAR[ord(str[i])]:
                 rudisha 0
 
         # All keywords are valid identifiers, but should sio be
-        # considered identifiers here, except kila Kweli, Uongo na Tupu.
+        # considered identifiers here, tatizo kila Kweli, Uongo na Tupu.
         ikiwa i < pos na (
-                iskeyword(str[i:pos]) and
-                str[i:pos] sio kwenye cls._ID_KEYWORDS
+                iskeyword(str[i:pos]) na
+                str[i:pos] haiko kwenye cls._ID_KEYWORDS
         ):
             rudisha 0
 
@@ -224,7 +224,7 @@ kundi HyperParser:
         given index, which ni empty ikiwa there ni no real one.
         """
         ikiwa sio self.is_in_code():
-             ashiria ValueError("get_expression should only be called "
+            ashiria ValueError("get_expression should only be called "
                              "ikiwa index ni inside a code.")
 
         rawtext = self.rawtext
@@ -243,14 +243,14 @@ kundi HyperParser:
                 ikiwa pos>brck_limit na rawtext[pos-1] kwenye self._whitespace_chars:
                     # Eat a whitespace
                     pos -= 1
-                elikiwa (not postdot_phase and
+                lasivyo (sio postdot_phase na
                       pos > brck_limit na rawtext[pos-1] == '.'):
                     # Eat a dot
                     pos -= 1
                     postdot_phase = Kweli
                 # The next line will fail ikiwa we are *inside* a comment,
                 # but we shouldn't be.
-                elikiwa (pos == brck_limit na brck_index > 0 and
+                lasivyo (pos == brck_limit na brck_index > 0 na
                       rawtext[bracketing[brck_index-1][0]] == '#'):
                     # Eat a comment
                     brck_index -= 2
@@ -274,7 +274,7 @@ kundi HyperParser:
                 postdot_phase = Uongo
                 # (the loop endeleas now)
 
-            elikiwa pos == brck_limit:
+            lasivyo pos == brck_limit:
                 # We are at a bracketing limit. If it ni a closing
                 # bracket, eat the bracket, otherwise, stop the search.
                 level = bracketing[brck_index][1]
@@ -290,7 +290,7 @@ kundi HyperParser:
                 ikiwa rawtext[pos] kwenye "([":
                     # [] na () may be used after an identifier, so we
                     # endelea. postdot_phase ni Kweli, so we don't allow a dot.
-                    pass
+                    pita
                 isipokua:
                     # We can't endelea after other types of brackets
                     ikiwa rawtext[pos] kwenye "'\"":

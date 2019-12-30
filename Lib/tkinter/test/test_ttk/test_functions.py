@@ -42,7 +42,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
             ikiwa result:
                 self.fail("result still got elements: %s" % result)
 
-        # passing an empty dict should rudisha an empty object (tuple here)
+        # pitaing an empty dict should rudisha an empty object (tuple here)
         self.assertUongo(ttk._format_optdict({}))
 
         # check list formatting
@@ -50,7 +50,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
             ttk._format_optdict({'fg': 'blue', 'padding': [1, 2, 3, 4]}),
             {'-fg': 'blue', '-padding': '1 2 3 4'})
 
-        # check tuple formatting (same as list)
+        # check tuple formatting (same kama list)
         check_against(
             ttk._format_optdict({'test': (1, 2, '', 0)}),
             {'-test': '1 2 {} 0'})
@@ -79,7 +79,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
         # opts should remain unchanged
         self.assertEqual(opts, orig_opts)
 
-        # passing values ukijumuisha spaces inside a tuple/list
+        # pitaing values ukijumuisha spaces inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('one two', 'three')}),
@@ -89,19 +89,19 @@ kundi InternalFunctionsTest(unittest.TestCase):
                 {'option': ('one\ttwo', 'three')}),
             {'-option': '{one\ttwo} three'})
 
-        # passing empty strings inside a tuple/list
+        # pitaing empty strings inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('', 'one')}),
             {'-option': '{} one'})
 
-        # passing values ukijumuisha braces inside a tuple/list
+        # pitaing values ukijumuisha braces inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('one} {two', 'three')}),
             {'-option': r'one\}\ \{two three'})
 
-        # passing quoted strings inside a tuple/list
+        # pitaing quoted strings inside a tuple/list
         check_against(
             ttk._format_optdict(
                 {'option': ('"one"', 'two')}),
@@ -141,12 +141,12 @@ kundi InternalFunctionsTest(unittest.TestCase):
         valid = {'opt': [('', '', 'hi')]}
         self.assertEqual(ttk._format_mapdict(valid), ('-opt', '{ } hi'))
 
-        # when passing multiple states, they all must be strings
+        # when pitaing multiple states, they all must be strings
         invalid = {'opt': [(1, 2, 'valid val')]}
         self.assertRaises(TypeError, ttk._format_mapdict, invalid)
         invalid = {'opt': [([1], '2', 'valid val')]}
         self.assertRaises(TypeError, ttk._format_mapdict, invalid)
-        # but when passing a single state, it can be anything
+        # but when pitaing a single state, it can be anything
         valid = {'opt': [[1, 'value']]}
         self.assertEqual(ttk._format_mapdict(valid), ('-opt', '1 value'))
         # special attention to single states which evaluate to Uongo
@@ -172,7 +172,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
         # IndexError since it tries to access the index 0 of an empty tuple
         self.assertRaises(IndexError, ttk._format_elemcreate, 'image')
 
-        # don't format returned values as a tcl script
+        # don't format returned values kama a tcl script
         # minimum acceptable kila image type
         self.assertEqual(ttk._format_elemcreate('image', Uongo, 'test'),
             ("test ", ()))
@@ -185,18 +185,18 @@ kundi InternalFunctionsTest(unittest.TestCase):
         # state spec na options
         self.assertEqual(ttk._format_elemcreate('image', Uongo, 'test',
             ('a', 'b'), a='x'), ("test a b", ("-a", "x")))
-        # format returned values as a tcl script
+        # format returned values kama a tcl script
         # state spec ukijumuisha multiple states na an option ukijumuisha a multivalue
         self.assertEqual(ttk._format_elemcreate('image', Kweli, 'test',
             ('a', 'b', 'c', 'd'), x=[2, 3]), ("{test {a b c} d}", "-x {2 3}"))
 
         ## Testing type = vsapi
         # vsapi type expects at least a kundi name na a part_id, so this
-        # should  ashiria a ValueError since it tries to get two elements from
+        # should ashiria a ValueError since it tries to get two elements from
         # an empty tuple
         self.assertRaises(ValueError, ttk._format_elemcreate, 'vsapi')
 
-        # don't format returned values as a tcl script
+        # don't format returned values kama a tcl script
         # minimum acceptable kila vsapi
         self.assertEqual(ttk._format_elemcreate('vsapi', Uongo, 'a', 'b'),
             ("a b ", ()))
@@ -206,7 +206,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
         # state spec na option
         self.assertEqual(ttk._format_elemcreate('vsapi', Uongo, 'a', 'b',
             ('a', 'b'), opt='x'), ("a b a b", ("-opt", "x")))
-        # format returned values as a tcl script
+        # format returned values kama a tcl script
         # state spec ukijumuisha a multivalue na an option
         self.assertEqual(ttk._format_elemcreate('vsapi', Kweli, 'a', 'b',
             ('a', 'b', [1, 2]), opt='x'), ("{a b {a b} {1 2}}", "-opt x"))
@@ -251,7 +251,7 @@ kundi InternalFunctionsTest(unittest.TestCase):
         self.assertEqual(ttk._format_layoutlist([])[0], '')
 
         # _format_layoutlist always expects the second item (in every item)
-        # to act like a dict (except when the value evaluates to Uongo).
+        # to act like a dict (tatizo when the value evaluates to Uongo).
         self.assertRaises(AttributeError,
             ttk._format_layoutlist, [('a', 'b')])
 

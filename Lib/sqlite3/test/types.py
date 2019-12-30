@@ -17,16 +17,16 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza datetime
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 jaribu:
     agiza zlib
-except ImportError:
+tatizo ImportError:
     zlib = Tupu
 
 
@@ -106,7 +106,7 @@ kundi DeclTypesTests(unittest.TestCase):
         eleza __init__(self, exc):
             self.exc = exc
         eleza __conform__(self, protocol):
-             ashiria self.exc
+            ashiria self.exc
 
     eleza setUp(self):
         self.con = sqlite.connect(":memory:", detect_types=sqlite.PARSE_DECLTYPES)
@@ -136,7 +136,7 @@ kundi DeclTypesTests(unittest.TestCase):
     eleza CheckString(self):
         # default
         self.cur.execute("insert into test(s) values (?)", ("foo",))
-        self.cur.execute('select s as "s [WRONG]" kutoka test')
+        self.cur.execute('select s kama "s [WRONG]" kutoka test')
         row = self.cur.fetchone()
         self.assertEqual(row[0], "foo")
 
@@ -205,13 +205,13 @@ kundi DeclTypesTests(unittest.TestCase):
             self.cur.execute("insert into test(bad) values (:val)", {"val": val})
 
     eleza CheckUnsupportedSeq(self):
-        kundi Bar: pass
+        kundi Bar: pita
         val = Bar()
         ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (?)", (val,))
 
     eleza CheckUnsupportedDict(self):
-        kundi Bar: pass
+        kundi Bar: pita
         val = Bar()
         ukijumuisha self.assertRaises(sqlite.InterfaceError):
             self.cur.execute("insert into test(f) values (:val)", {"val": val})
@@ -275,7 +275,7 @@ kundi ColNamesTests(unittest.TestCase):
 
     eleza CheckColName(self):
         self.cur.execute("insert into test(x) values (?)", ("xxx",))
-        self.cur.execute('select x as "x [bar]" kutoka test')
+        self.cur.execute('select x kama "x [bar]" kutoka test')
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "<xxx>")
 
@@ -284,7 +284,7 @@ kundi ColNamesTests(unittest.TestCase):
         self.assertEqual(self.cur.description[0][0], "x")
 
     eleza CheckCaseInConverterName(self):
-        self.cur.execute("select 'other' as \"x [b1b1]\"")
+        self.cur.execute("select 'other' kama \"x [b1b1]\"")
         val = self.cur.fetchone()[0]
         self.assertEqual(val, "MARKER")
 
@@ -314,23 +314,23 @@ kundi CommonTableExpressionTests(unittest.TestCase):
         self.con.close()
 
     eleza CheckCursorDescriptionCTESimple(self):
-        self.cur.execute("ukijumuisha one as (select 1) select * kutoka one")
+        self.cur.execute("ukijumuisha one kama (select 1) select * kutoka one")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "1")
 
     eleza CheckCursorDescriptionCTESMultipleColumns(self):
         self.cur.execute("insert into test values(1)")
         self.cur.execute("insert into test values(2)")
-        self.cur.execute("ukijumuisha testCTE as (select * kutoka test) select * kutoka testCTE")
+        self.cur.execute("ukijumuisha testCTE kama (select * kutoka test) select * kutoka testCTE")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
     eleza CheckCursorDescriptionCTE(self):
         self.cur.execute("insert into test values (1)")
-        self.cur.execute("ukijumuisha bar as (select * kutoka test) select * kutoka test where x = 1")
+        self.cur.execute("ukijumuisha bar kama (select * kutoka test) select * kutoka test where x = 1")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
-        self.cur.execute("ukijumuisha bar as (select * kutoka test) select * kutoka test where x = 2")
+        self.cur.execute("ukijumuisha bar kama (select * kutoka test) select * kutoka test where x = 2")
         self.assertIsNotTupu(self.cur.description)
         self.assertEqual(self.cur.description[0][0], "x")
 
@@ -345,7 +345,7 @@ kundi ObjectAdaptationTests(unittest.TestCase):
         jaribu:
             toa sqlite.adapters[int]
         tatizo:
-            pass
+            pita
         sqlite.register_adapter(int, ObjectAdaptationTests.cast)
         self.cur = self.con.cursor()
 
@@ -374,7 +374,7 @@ kundi BinaryConverterTests(unittest.TestCase):
 
     eleza CheckBinaryInputForConverter(self):
         testdata = b"abcdefg" * 10
-        result = self.con.execute('select ? as "x [bin]"', (memoryview(zlib.compress(testdata)),)).fetchone()[0]
+        result = self.con.execute('select ? kama "x [bin]"', (memoryview(zlib.compress(testdata)),)).fetchone()[0]
         self.assertEqual(testdata, result)
 
 kundi DateTimeTests(unittest.TestCase):

@@ -51,10 +51,10 @@ kundi build_scripts(Command):
 
 
     eleza copy_scripts(self):
-        r"""Copy each script listed kwenye 'self.scripts'; ikiwa it's marked as a
+        r"""Copy each script listed kwenye 'self.scripts'; ikiwa it's marked kama a
         Python script kwenye the Unix way (first line matches 'first_line_re',
         ie. starts ukijumuisha "\#!" na contains "python"), then adjust the first
-        line to refer to the current Python interpreter as we copy.
+        line to refer to the current Python interpreter kama we copy.
         """
         self.mkpath(self.build_dir)
         outfiles = []
@@ -74,7 +74,7 @@ kundi build_scripts(Command):
             # script.
             jaribu:
                 f = open(script, "rb")
-            except OSError:
+            tatizo OSError:
                 ikiwa sio self.dry_run:
                     raise
                 f = Tupu
@@ -112,8 +112,8 @@ kundi build_scripts(Command):
                     # UTF-8.
                     jaribu:
                         shebang.decode('utf-8')
-                    except UnicodeDecodeError:
-                         ashiria ValueError(
+                    tatizo UnicodeDecodeError:
+                        ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
                             "kutoka utf-8".format(shebang))
                     # If the script ni encoded to a custom encoding (use a
@@ -121,12 +121,12 @@ kundi build_scripts(Command):
                     # the script encoding too.
                     jaribu:
                         shebang.decode(encoding)
-                    except UnicodeDecodeError:
-                         ashiria ValueError(
+                    tatizo UnicodeDecodeError:
+                        ashiria ValueError(
                             "The shebang ({!r}) ni sio decodable "
                             "kutoka the script encoding ({})"
                             .format(shebang, encoding))
-                    ukijumuisha open(outfile, "wb") as outf:
+                    ukijumuisha open(outfile, "wb") kama outf:
                         outf.write(shebang)
                         outf.writelines(f.readlines())
                 ikiwa f:

@@ -6,7 +6,7 @@ agiza collections
 agiza io
 
 kutoka opcode agiza *
-kutoka opcode agiza __all__ as _opcodes_all
+kutoka opcode agiza __all__ kama _opcodes_all
 
 __all__ = ["code_info", "dis", "disassemble", "distb", "disco",
            "findlinestarts", "findlabels", "show_code",
@@ -28,15 +28,15 @@ MAKE_FUNCTION_FLAGS = ('defaults', 'kwdefaults', 'annotations', 'closure')
 
 
 eleza _try_compile(source, name):
-    """Attempts to compile the given source, first as an expression and
-       then as a statement ikiwa the first approach fails.
+    """Attempts to compile the given source, first kama an expression na
+       then kama a statement ikiwa the first approach fails.
 
        Utility function to accept strings kwenye functions that otherwise
        expect code objects
     """
     jaribu:
         c = compile(source, name, 'eval')
-    except SyntaxError:
+    tatizo SyntaxError:
         c = compile(source, name, 'exec')
     rudisha c
 
@@ -56,13 +56,13 @@ eleza dis(x=Tupu, *, file=Tupu, depth=Tupu):
     ikiwa hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects from...
-    ikiwa hasattr(x, '__code__'):  # ...a function, or
+    ikiwa hasattr(x, '__code__'):  # ...a function, ama
         x = x.__code__
-    elikiwa hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, ama
         x = x.gi_code
-    elikiwa hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, ama
         x = x.ag_code
-    elikiwa hasattr(x, 'cr_code'):  #...a coroutine.
+    lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
     # Perform the disassembly.
     ikiwa hasattr(x, '__dict__'):  # Class ama module
@@ -72,17 +72,17 @@ eleza dis(x=Tupu, *, file=Tupu, depth=Tupu):
                 andika("Disassembly of %s:" % name, file=file)
                 jaribu:
                     dis(x1, file=file, depth=depth)
-                except TypeError as msg:
+                tatizo TypeError kama msg:
                     andika("Sorry:", msg, file=file)
                 andika(file=file)
-    elikiwa hasattr(x, 'co_code'): # Code object
+    lasivyo hasattr(x, 'co_code'): # Code object
         _disassemble_recursive(x, file=file, depth=depth)
-    elikiwa isinstance(x, (bytes, bytearray)): # Raw bytecode
+    lasivyo isinstance(x, (bytes, bytearray)): # Raw bytecode
         _disassemble_bytes(x, file=file)
-    elikiwa isinstance(x, str):    # Source code
+    lasivyo isinstance(x, str):    # Source code
         _disassemble_str(x, file=file, depth=depth)
     isipokua:
-         ashiria TypeError("don't know how to disassemble %s objects" %
+        ashiria TypeError("don't know how to disassemble %s objects" %
                         type(x).__name__)
 
 eleza distb(tb=Tupu, *, file=Tupu):
@@ -90,8 +90,8 @@ eleza distb(tb=Tupu, *, file=Tupu):
     ikiwa tb ni Tupu:
         jaribu:
             tb = sys.last_traceback
-        except AttributeError:
-             ashiria RuntimeError("no last traceback to disassemble") kutoka Tupu
+        tatizo AttributeError:
+            ashiria RuntimeError("no last traceback to disassemble") kutoka Tupu
         wakati tb.tb_next: tb = tb.tb_next
     disassemble(tb.tb_frame.f_code, tb.tb_lasti, file=file)
 
@@ -131,13 +131,13 @@ eleza _get_code_object(x):
     ikiwa hasattr(x, '__func__'):
         x = x.__func__
     # Extract compiled code objects from...
-    ikiwa hasattr(x, '__code__'):  # ...a function, or
+    ikiwa hasattr(x, '__code__'):  # ...a function, ama
         x = x.__code__
-    elikiwa hasattr(x, 'gi_code'):  #...a generator object, or
+    lasivyo hasattr(x, 'gi_code'):  #...a generator object, ama
         x = x.gi_code
-    elikiwa hasattr(x, 'ag_code'):  #...an asynchronous generator object, or
+    lasivyo hasattr(x, 'ag_code'):  #...an asynchronous generator object, ama
         x = x.ag_code
-    elikiwa hasattr(x, 'cr_code'):  #...a coroutine.
+    lasivyo hasattr(x, 'cr_code'):  #...a coroutine.
         x = x.cr_code
     # Handle source code.
     ikiwa isinstance(x, str):
@@ -145,7 +145,7 @@ eleza _get_code_object(x):
     # By now, ikiwa we don't have a code object, we can't disassemble x.
     ikiwa hasattr(x, 'co_code'):
         rudisha x
-     ashiria TypeError("don't know how to disassemble %s objects" %
+    ashiria TypeError("don't know how to disassemble %s objects" %
                     type(x).__name__)
 
 eleza code_info(x):
@@ -197,7 +197,7 @@ _Instruction = collections.namedtuple("_Instruction",
 _Instruction.opname.__doc__ = "Human readable name kila operation"
 _Instruction.opcode.__doc__ = "Numeric code kila operation"
 _Instruction.arg.__doc__ = "Numeric argument to operation (ikiwa any), otherwise Tupu"
-_Instruction.argval.__doc__ = "Resolved arg value (ikiwa known), otherwise same as arg"
+_Instruction.argval.__doc__ = "Resolved arg value (ikiwa known), otherwise same kama arg"
 _Instruction.argrepr.__doc__ = "Human readable description of operation argument"
 _Instruction.offset.__doc__ = "Start index of operation within bytecode sequence"
 _Instruction.starts_line.__doc__ = "Line started by this opcode (ikiwa any), otherwise Tupu"
@@ -213,7 +213,7 @@ kundi Instruction(_Instruction):
          opname - human readable name kila operation
          opcode - numeric code kila operation
          arg - numeric argument to operation (ikiwa any), otherwise Tupu
-         argval - resolved arg value (ikiwa known), otherwise same as arg
+         argval - resolved arg value (ikiwa known), otherwise same kama arg
          argrepr - human readable description of operation argument
          offset - start index of operation within bytecode sequence
          starts_line - line started by this opcode (ikiwa any), otherwise Tupu
@@ -224,7 +224,7 @@ kundi Instruction(_Instruction):
         """Format instruction details kila inclusion kwenye disassembly output
 
         *lineno_width* sets the width of the line number field (0 omits it)
-        *mark_as_current* inserts a '-->' marker arrow as part of the line
+        *mark_as_current* inserts a '-->' marker arrow kama part of the line
         *offset_width* sets the width of the instruction offset field
         """
         fields = []
@@ -295,7 +295,7 @@ eleza _get_const_info(const_index, const_list):
 eleza _get_name_info(name_index, name_list):
     """Helper to get optional details about named references
 
-       Returns the dereferenced name as both value na repr ikiwa the name
+       Returns the dereferenced name kama both value na repr ikiwa the name
        list ni defined.
        Otherwise returns the name index na its repr().
     """
@@ -336,26 +336,26 @@ eleza _get_instructions_bytes(code, varnames=Tupu, names=Tupu, constants=Tupu,
             argval = arg
             ikiwa op kwenye hasconst:
                 argval, argrepr = _get_const_info(arg, constants)
-            elikiwa op kwenye hasname:
+            lasivyo op kwenye hasname:
                 argval, argrepr = _get_name_info(arg, names)
-            elikiwa op kwenye hasjrel:
+            lasivyo op kwenye hasjrel:
                 argval = offset + 2 + arg
                 argrepr = "to " + repr(argval)
-            elikiwa op kwenye haslocal:
+            lasivyo op kwenye haslocal:
                 argval, argrepr = _get_name_info(arg, varnames)
-            elikiwa op kwenye hascompare:
+            lasivyo op kwenye hascompare:
                 argval = cmp_op[arg]
                 argrepr = argval
-            elikiwa op kwenye hasfree:
+            lasivyo op kwenye hasfree:
                 argval, argrepr = _get_name_info(arg, cells)
-            elikiwa op == FORMAT_VALUE:
+            lasivyo op == FORMAT_VALUE:
                 argval, argrepr = FORMAT_VALUE_CONVERTERS[arg & 0x3]
                 argval = (argval, bool(arg & 0x4))
                 ikiwa argval[1]:
                     ikiwa argrepr:
                         argrepr += ', '
                     argrepr += 'ukijumuisha format'
-            elikiwa op == MAKE_FUNCTION:
+            lasivyo op == MAKE_FUNCTION:
                 argrepr = ', '.join(s kila i, s kwenye enumerate(MAKE_FUNCTION_FLAGS)
                                     ikiwa arg & (1<<i))
         tuma Instruction(opname[op], op,
@@ -401,8 +401,8 @@ eleza _disassemble_bytes(code, lasti=-1, varnames=Tupu, names=Tupu,
     kila instr kwenye _get_instructions_bytes(code, varnames, names,
                                          constants, cells, linestarts,
                                          line_offset=line_offset):
-        new_source_line = (show_lineno and
-                           instr.starts_line ni sio Tupu and
+        new_source_line = (show_lineno na
+                           instr.starts_line ni sio Tupu na
                            instr.offset > 0)
         ikiwa new_source_line:
             andika(file=file)
@@ -438,18 +438,18 @@ eleza findlabels(code):
         ikiwa arg ni sio Tupu:
             ikiwa op kwenye hasjrel:
                 label = offset + 2 + arg
-            elikiwa op kwenye hasjabs:
+            lasivyo op kwenye hasjabs:
                 label = arg
             isipokua:
                 endelea
-            ikiwa label sio kwenye labels:
+            ikiwa label haiko kwenye labels:
                 labels.append(label)
     rudisha labels
 
 eleza findlinestarts(code):
     """Find the offsets kwenye a byte code which are start of lines kwenye the source.
 
-    Generate pairs (offset, lineno) as described kwenye Python/compile.c.
+    Generate pairs (offset, lineno) kama described kwenye Python/compile.c.
 
     """
     byte_increments = code.co_lnotab[0::2]
@@ -482,7 +482,7 @@ kundi Bytecode:
     Instantiate this ukijumuisha a function, method, other compiled object, string of
     code, ama a code object (as returned by compile()).
 
-    Iterating over this yields the bytecode operations as Instruction instances.
+    Iterating over this tumas the bytecode operations kama Instruction instances.
     """
     eleza __init__(self, x, *, first_line=Tupu, current_offset=Tupu):
         self.codeobj = co = _get_code_object(x)
@@ -526,7 +526,7 @@ kundi Bytecode:
             offset = self.current_offset
         isipokua:
             offset = -1
-        ukijumuisha io.StringIO() as output:
+        ukijumuisha io.StringIO() kama output:
             _disassemble_bytes(co.co_code, varnames=co.co_varnames,
                                names=co.co_names, constants=co.co_consts,
                                cells=self._cell_names,
@@ -544,7 +544,7 @@ eleza _test():
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', type=argparse.FileType(), nargs='?', default='-')
     args = parser.parse_args()
-    ukijumuisha args.infile as infile:
+    ukijumuisha args.infile kama infile:
         source = infile.read()
     code = compile(source, args.infile.name, "exec")
     dis(code)

@@ -18,7 +18,7 @@ kutoka test.test_importlib agiza util
 eleza sys_modules_context():
     """
     Make sure sys.modules ni the same object na has the same content
-    when exiting the context as when entering.
+    when exiting the context kama when entering.
 
     Similar to importlib.test.util.uncache, but doesn't require explicit
     names.
@@ -26,7 +26,7 @@ eleza sys_modules_context():
     sys_modules_saved = sys.modules
     sys_modules_copy = sys.modules.copy()
     jaribu:
-        yield
+        tuma
     mwishowe:
         sys.modules = sys_modules_saved
         sys.modules.clear()
@@ -41,14 +41,14 @@ eleza namespace_tree_context(**kwargs):
 
     >>> ukijumuisha namespace_tree_context(path=['/tmp/xxyy/portion1',
     ...         '/tmp/xxyy/portion2']):
-    ...     pass
+    ...     pita
     """
     # use default meta_path na path_hooks unless specified otherwise
     kwargs.setdefault('meta_path', sys.meta_path)
     kwargs.setdefault('path_hooks', sys.path_hooks)
     import_context = util.import_state(**kwargs)
     ukijumuisha import_context, sys_modules_context():
-        yield
+        tuma
 
 kundi NamespacePackageTest(unittest.TestCase):
     """
@@ -65,7 +65,7 @@ kundi NamespacePackageTest(unittest.TestCase):
         self.ctx.__enter__()
 
     eleza tearDown(self):
-        # TODO: will we ever want to pass exc_info to __exit__?
+        # TODO: will we ever want to pita exc_info to __exit__?
         self.ctx.__exit__(Tupu, Tupu, Tupu)
 
 

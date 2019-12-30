@@ -13,7 +13,7 @@ http://homepage.univie.ac.at/erich.neuwirth/
 """
 kutoka turtle agiza Turtle, colormode, tracer, mainloop
 kutoka random agiza randrange
-kutoka time agiza perf_counter as clock
+kutoka time agiza perf_counter kama clock
 
 eleza symRandom(n):
     rudisha randrange(-n,n+1)

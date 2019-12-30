@@ -5,9 +5,9 @@ agiza gc
 
 eleza leak():
     kundi T(type):
-        pass
+        pita
     kundi U(type, metaclass=T):
-        pass
+        pita
     U.__class__ = U
     toa U
     gc.collect(); gc.collect(); gc.collect()

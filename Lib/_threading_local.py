@@ -49,7 +49,7 @@ don't affect data seen kwenye this thread:
 Of course, values you get kutoka a local object, including a __dict__
 attribute, are kila whatever thread was current at the time the
 attribute was read.  For that reason, you generally don't want to save
-these values across threads, as they apply only to the thread they
+these values across threads, kama they apply only to the thread they
 came from.
 
 You can create custom local objects by subclassing the local class:
@@ -61,7 +61,7 @@ You can create custom local objects by subclassing the local class:
   ...     eleza squared(self):
   ...         rudisha self.number ** 2
 
-This can be useful to support default values, methods and
+This can be useful to support default values, methods na
 initialization.  Note that ikiwa you define an __init__ method, it will be
 called each time the local object ni used kwenye a separate thread.  This
 is necessary to initialize each thread's dictionary.
@@ -176,7 +176,7 @@ kundi _localimpl:
             # When the thread ni deleted, remove the local dict.
             # Note that this ni suboptimal ikiwa the thread object gets
             # caught kwenye a reference loop. We would like to be called
-            # as soon as the OS-level thread ends instead.
+            # kama soon kama the OS-level thread ends instead.
             local = wrlocal()
             ikiwa local ni sio Tupu:
                 dct = local.dicts.pop(idt)
@@ -192,13 +192,13 @@ eleza _patch(self):
     impl = object.__getattribute__(self, '_local__impl')
     jaribu:
         dct = impl.get_dict()
-    except KeyError:
+    tatizo KeyError:
         dct = impl.create_dict()
         args, kw = impl.localargs
         self.__init__(*args, **kw)
     ukijumuisha impl.locallock:
         object.__setattr__(self, '__dict__', dct)
-        yield
+        tuma
 
 
 kundi local:
@@ -206,7 +206,7 @@ kundi local:
 
     eleza __new__(cls, /, *args, **kw):
         ikiwa (args ama kw) na (cls.__init__ ni object.__init__):
-             ashiria TypeError("Initialization arguments are sio supported")
+            ashiria TypeError("Initialization arguments are sio supported")
         self = object.__new__(cls)
         impl = _localimpl()
         impl.localargs = (args, kw)
@@ -224,7 +224,7 @@ kundi local:
 
     eleza __setattr__(self, name, value):
         ikiwa name == '__dict__':
-             ashiria AttributeError(
+            ashiria AttributeError(
                 "%r object attribute '__dict__' ni read-only"
                 % self.__class__.__name__)
         ukijumuisha _patch(self):
@@ -232,7 +232,7 @@ kundi local:
 
     eleza __delattr__(self, name):
         ikiwa name == '__dict__':
-             ashiria AttributeError(
+            ashiria AttributeError(
                 "%r object attribute '__dict__' ni read-only"
                 % self.__class__.__name__)
         ukijumuisha _patch(self):

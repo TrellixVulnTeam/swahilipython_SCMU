@@ -16,7 +16,7 @@ agiza unittest
 # fairly recent addition to OSS.
 jaribu:
     kutoka ossaudiodev agiza AFMT_S16_NE
-except ImportError:
+tatizo ImportError:
     ikiwa sys.byteorder == "little":
         AFMT_S16_NE = ossaudiodev.AFMT_S16_LE
     isipokua:
@@ -24,7 +24,7 @@ except ImportError:
 
 
 eleza read_sound_file(path):
-    ukijumuisha open(path, 'rb') as fp:
+    ukijumuisha open(path, 'rb') kama fp:
         au = sunau.open(fp)
         rate = au.getframerate()
         nchannels = au.getnchannels()
@@ -33,7 +33,7 @@ eleza read_sound_file(path):
         data = fp.read()
 
     ikiwa encoding != sunau.AUDIO_FILE_ENCODING_MULAW_8:
-         ashiria RuntimeError("Expect .au file ukijumuisha 8-bit mu-law samples")
+        ashiria RuntimeError("Expect .au file ukijumuisha 8-bit mu-law samples")
 
     # Convert the data to 16-bit signed.
     data = audioop.ulaw2lin(data, 2)
@@ -44,10 +44,10 @@ kundi OSSAudioDevTests(unittest.TestCase):
     eleza play_sound_file(self, data, rate, ssize, nchannels):
         jaribu:
             dsp = ossaudiodev.open('w')
-        except OSError as msg:
+        tatizo OSError kama msg:
             ikiwa msg.args[0] kwenye (errno.EACCES, errno.ENOENT,
                                errno.ENODEV, errno.EBUSY):
-                 ashiria unittest.SkipTest(msg)
+                ashiria unittest.SkipTest(msg)
             raise
 
         # at least check that these methods can be invoked
@@ -66,8 +66,8 @@ kundi OSSAudioDevTests(unittest.TestCase):
         kila attr kwenye ('closed', 'name', 'mode'):
             jaribu:
                 setattr(dsp, attr, 42)
-            except (TypeError, AttributeError):
-                pass
+            tatizo (TypeError, AttributeError):
+                pita
             isipokua:
                 self.fail("dsp.%s sio read-only" % attr)
 
@@ -100,12 +100,12 @@ kundi OSSAudioDevTests(unittest.TestCase):
 
         kila config kwenye [config1, config2]:
             (fmt, channels, rate) = config
-            ikiwa (dsp.setfmt(fmt) == fmt and
-                dsp.channels(channels) == channels and
+            ikiwa (dsp.setfmt(fmt) == fmt na
+                dsp.channels(channels) == channels na
                 dsp.speed(rate) == rate):
                 koma
         isipokua:
-             ashiria RuntimeError("unable to set audio sampling parameters: "
+            ashiria RuntimeError("unable to set audio sampling parameters: "
                                "you must have really weird audio hardware")
 
         # setparameters() should be able to set this configuration in
@@ -120,7 +120,7 @@ kundi OSSAudioDevTests(unittest.TestCase):
 
     eleza set_bad_parameters(self, dsp):
         # Now try some configurations that are presumably bogus: eg. 300
-        # channels currently exceeds even Hollywood's ambitions, and
+        # channels currently exceeds even Hollywood's ambitions, na
         # negative sampling rate ni utter nonsense.  setparameters() should
         # accept these kwenye non-strict mode, returning something other than
         # was requested, but should barf kwenye strict mode.
@@ -138,8 +138,8 @@ kundi OSSAudioDevTests(unittest.TestCase):
 
             jaribu:
                 result = dsp.setparameters(fmt, channels, rate, Kweli)
-            except ossaudiodev.OSSAudioError as err:
-                pass
+            tatizo ossaudiodev.OSSAudioError kama err:
+                pita
             isipokua:
                 self.fail("expected OSSAudioError")
 
@@ -162,12 +162,12 @@ kundi OSSAudioDevTests(unittest.TestCase):
     eleza test_mixer_methods(self):
         # Issue #8139: ossaudiodev didn't initialize its types properly,
         # therefore some methods were unavailable.
-        ukijumuisha ossaudiodev.openmixer() as mixer:
+        ukijumuisha ossaudiodev.openmixer() kama mixer:
             self.assertGreaterEqual(mixer.fileno(), 0)
 
     eleza test_with(self):
-        ukijumuisha ossaudiodev.open('w') as dsp:
-            pass
+        ukijumuisha ossaudiodev.open('w') kama dsp:
+            pita
         self.assertKweli(dsp.closed)
 
     eleza test_on_closed(self):
@@ -190,10 +190,10 @@ kundi OSSAudioDevTests(unittest.TestCase):
 eleza test_main():
     jaribu:
         dsp = ossaudiodev.open('w')
-    except (ossaudiodev.error, OSError) as msg:
+    tatizo (ossaudiodev.error, OSError) kama msg:
         ikiwa msg.args[0] kwenye (errno.EACCES, errno.ENOENT,
                            errno.ENODEV, errno.EBUSY):
-             ashiria unittest.SkipTest(msg)
+            ashiria unittest.SkipTest(msg)
         raise
     dsp.close()
     support.run_unittest(__name__)

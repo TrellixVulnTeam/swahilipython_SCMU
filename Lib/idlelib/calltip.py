@@ -1,7 +1,7 @@
 """Pop up a reminder of how to call a function.
 
 Call Tips are floating windows which display function, class, na method
-parameter na docstring information when you type an opening parenthesis, and
+parameter na docstring information when you type an opening parenthesis, na
 which disappear when you type a closing parenthesis.
 """
 agiza __main__
@@ -89,7 +89,7 @@ kundi Calltip:
         """
         jaribu:
             rpcclt = self.editwin.flist.pyshell.interp.rpcclt
-        except AttributeError:
+        tatizo AttributeError:
             rpcclt = Tupu
         ikiwa rpcclt:
             rudisha rpcclt.remotecall("exec", "get_the_calltip",
@@ -106,8 +106,8 @@ eleza get_entity(expression):
         namespace = {**sys.modules, **__main__.__dict__}
         jaribu:
             rudisha eval(expression, namespace)  # Only protect user code.
-        except BaseException:
-            # An uncaught exception closes idle, na eval can  ashiria any
+        tatizo BaseException:
+            # An uncaught exception closes idle, na eval can ashiria any
             # exception, especially ikiwa user classes are involved.
             rudisha Tupu
 
@@ -118,7 +118,7 @@ _INDENT = ' '*4  # kila wrapped signatures
 _first_param = re.compile(r'(?<=\()\w*\,?\s*')
 _default_callable_argspec = "See source ama doc"
 _invalid_method = "invalid method signature"
-_argument_positional = "  # '/' marks preceding args as positional-only."
+_argument_positional = "  # '/' marks preceding args kama positional-only."
 
 eleza get_argspec(ob):
     '''Return a string describing the signature of a callable object, ama ''.
@@ -132,14 +132,14 @@ eleza get_argspec(ob):
     argspec = default = ""
     jaribu:
         ob_call = ob.__call__
-    except BaseException:
+    tatizo BaseException:
         rudisha default
 
     fob = ob_call ikiwa isinstance(ob_call, types.MethodType) isipokua ob
 
     jaribu:
         argspec = str(inspect.signature(fob))
-    except ValueError as err:
+    tatizo ValueError kama err:
         msg = str(err)
         ikiwa msg.startswith(_invalid_method):
             rudisha _invalid_method

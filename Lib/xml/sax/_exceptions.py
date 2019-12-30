@@ -8,10 +8,10 @@ toa sys
 
 kundi SAXException(Exception):
     """Encapsulate an XML error ama warning. This kundi can contain
-    basic error ama warning information kutoka either the XML parser or
+    basic error ama warning information kutoka either the XML parser ama
     the application: you can subkundi it to provide additional
     functionality, ama to add localization. Note that although you will
-    receive a SAXException as the argument to the handlers kwenye the
+    receive a SAXException kama the argument to the handlers kwenye the
     ErrorHandler interface, you are sio actually required to raise
     the exception; instead, you can simply read the information in
     it."""
@@ -38,7 +38,7 @@ kundi SAXException(Exception):
     eleza __getitem__(self, ix):
         """Avoids weird error messages ikiwa someone does exception[ix] by
         mistake, since Exception has __getitem__ defined."""
-         ashiria AttributeError("__getitem__")
+        ashiria AttributeError("__getitem__")
 
 
 # ===== SAXPARSEEXCEPTION =====
@@ -48,9 +48,9 @@ kundi SAXParseException(SAXException):
 
     This exception will include information kila locating the error in
     the original XML document. Note that although the application will
-    receive a SAXParseException as the argument to the handlers kwenye the
+    receive a SAXParseException kama the argument to the handlers kwenye the
     ErrorHandler interface, the application ni sio actually required
-    to  ashiria the exception; instead, it can simply read the
+    to ashiria the exception; instead, it can simply read the
     information kwenye it na take a different action.
 
     Since this exception ni a subkundi of SAXException, it inherits
@@ -105,7 +105,7 @@ kundi SAXParseException(SAXException):
 kundi SAXNotRecognizedException(SAXException):
     """Exception kundi kila an unrecognized identifier.
 
-    An XMLReader will  ashiria this exception when it ni confronted ukijumuisha an
+    An XMLReader will ashiria this exception when it ni confronted ukijumuisha an
     unrecognized feature ama property. SAX applications na extensions may
     use this kundi kila similar purposes."""
 
@@ -115,7 +115,7 @@ kundi SAXNotRecognizedException(SAXException):
 kundi SAXNotSupportedException(SAXException):
     """Exception kundi kila an unsupported operation.
 
-    An XMLReader will  ashiria this exception when a service it cannot
+    An XMLReader will ashiria this exception when a service it cannot
     perform ni requested (specifically setting a state ama value). SAX
     applications na extensions may use this kundi kila similar
     purposes."""
@@ -125,7 +125,7 @@ kundi SAXNotSupportedException(SAXException):
 kundi SAXReaderNotAvailable(SAXNotSupportedException):
     """Exception kundi kila a missing driver.
 
-    An XMLReader module (driver) should  ashiria this exception when it
+    An XMLReader module (driver) should ashiria this exception when it
     ni first imported, e.g. when a support module cannot be imported.
     It also may be raised during parsing, e.g. ikiwa executing an external
     program ni sio permitted."""

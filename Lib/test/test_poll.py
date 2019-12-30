@@ -11,8 +11,8 @@ kutoka test.support agiza TESTFN, run_unittest, reap_threads, cpython_only
 
 jaribu:
     select.poll
-except AttributeError:
-     ashiria unittest.SkipTest("select.poll sio defined")
+tatizo AttributeError:
+    ashiria unittest.SkipTest("select.poll sio defined")
 
 
 eleza find_ready_matching(ready, flag):
@@ -54,14 +54,14 @@ kundi PollTests(unittest.TestCase):
             ready = p.poll()
             ready_writers = find_ready_matching(ready, select.POLLOUT)
             ikiwa sio ready_writers:
-                 ashiria RuntimeError("no pipes ready kila writing")
+                ashiria RuntimeError("no pipes ready kila writing")
             wr = random.choice(ready_writers)
             os.write(wr, MSG)
 
             ready = p.poll()
             ready_readers = find_ready_matching(ready, select.POLLIN)
             ikiwa sio ready_readers:
-                 ashiria RuntimeError("no pipes ready kila reading")
+                ashiria RuntimeError("no pipes ready kila reading")
             rd = random.choice(ready_readers)
             buf = os.read(rd, MSG_LEN)
             self.assertEqual(len(buf), MSG_LEN)
@@ -83,7 +83,7 @@ kundi PollTests(unittest.TestCase):
         r = p.poll()
         self.assertEqual(r[0], (FD, select.POLLNVAL))
 
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             fd = f.fileno()
             p = select.poll()
             p.register(f)
@@ -105,7 +105,7 @@ kundi PollTests(unittest.TestCase):
         # Test error cases
         pollster = select.poll()
         kundi Nope:
-            pass
+            pita
 
         kundi Almost:
             eleza fileno(self):
@@ -137,7 +137,7 @@ kundi PollTests(unittest.TestCase):
                     self.fail('error: pipe seems to be closed, but still returns data')
                 endelea
 
-            elikiwa flags & select.POLLIN:
+            lasivyo flags & select.POLLIN:
                 line = p.readline()
                 ikiwa sio line:
                     koma

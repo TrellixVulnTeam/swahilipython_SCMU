@@ -23,7 +23,7 @@ kundi BadSpecFinderLoader:
     @staticmethod
     eleza exec_module(module):
         ikiwa module.__name__ == SUBMOD_NAME:
-             ashiria ImportError('I cannot be loaded!')
+            ashiria ImportError('I cannot be loaded!')
 
 
 kundi BadLoaderFinder:
@@ -35,20 +35,20 @@ kundi BadLoaderFinder:
     @classmethod
     eleza load_module(cls, fullname):
         ikiwa fullname == SUBMOD_NAME:
-             ashiria ImportError('I cannot be loaded!')
+            ashiria ImportError('I cannot be loaded!')
 
 
 kundi APITest:
 
     """Test API-specific details kila __import__ (e.g. raising the right
-    exception when passing kwenye an int kila the module name)."""
+    exception when pitaing kwenye an int kila the module name)."""
 
     eleza test_raises_ModuleNotFoundError(self):
         ukijumuisha self.assertRaises(ModuleNotFoundError):
             util.import_importlib('some module that does sio exist')
 
     eleza test_name_requires_rparition(self):
-        # Raise TypeError ikiwa a non-string ni passed kwenye kila the module name.
+        # Raise TypeError ikiwa a non-string ni pitaed kwenye kila the module name.
         ukijumuisha self.assertRaises(TypeError):
             self.__import__(42)
 
@@ -91,7 +91,7 @@ kundi APITest:
             ukijumuisha util.uncache(PKG_NAME, SUBMOD_NAME):
                 sys.modules[PKG_NAME] = mod
                 sys.modules[SUBMOD_NAME] = Tupu
-                ukijumuisha self.assertRaises(ModuleNotFoundError) as cm:
+                ukijumuisha self.assertRaises(ModuleNotFoundError) kama cm:
                     self.__import__(PKG_NAME,
                                     fromlist=[SUBMOD_NAME.rpartition('.')[-1]])
                 self.assertEqual(cm.exception.name, SUBMOD_NAME)

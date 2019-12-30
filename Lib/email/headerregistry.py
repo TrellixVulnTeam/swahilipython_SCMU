@@ -11,7 +11,7 @@ kutoka types agiza MappingProxyType
 
 kutoka email agiza utils
 kutoka email agiza errors
-kutoka email agiza _header_value_parser as parser
+kutoka email agiza _header_value_parser kama parser
 
 kundi Address:
 
@@ -37,15 +37,15 @@ kundi Address:
         # na domain.
         ikiwa addr_spec ni sio Tupu:
             ikiwa username ama domain:
-                 ashiria TypeError("addrspec specified when username and/or "
+                ashiria TypeError("addrspec specified when username and/or "
                                 "domain also specified")
             a_s, rest = parser.get_addr_spec(addr_spec)
             ikiwa rest:
-                 ashiria ValueError("Invalid addr_spec; only '{}' "
+                ashiria ValueError("Invalid addr_spec; only '{}' "
                                  "could be parsed kutoka '{}'".format(
                                     a_s, addr_spec))
             ikiwa a_s.all_defects:
-                 ashiria a_s.all_defects[0]
+                ashiria a_s.all_defects[0]
             username = a_s.local_part
             domain = a_s.domain
         self._display_name = display_name
@@ -99,8 +99,8 @@ kundi Address:
     eleza __eq__(self, other):
         ikiwa type(other) != type(self):
             rudisha Uongo
-        rudisha (self.display_name == other.display_name and
-                self.username == other.username and
+        rudisha (self.display_name == other.display_name na
+                self.username == other.username na
                 self.domain == other.domain)
 
 
@@ -113,11 +113,11 @@ kundi Group:
         list of addresses (see Address) terminated by a semi-colon.  The Group
         ni created by specifying a display_name na a possibly empty list of
         Address objects.  A Group can also be used to represent a single
-        address that ni sio kwenye a group, which ni convenient when manipulating
+        address that ni haiko kwenye a group, which ni convenient when manipulating
         lists that are a combination of Groups na individual Addresses.  In
         this case the display_name should be set to Tupu.  In particular, the
         string representation of a Group whose display_name ni Tupu ni the same
-        as the Address object, ikiwa there ni one na only one Address object in
+        kama the Address object, ikiwa there ni one na only one Address object in
         the addresses list.
 
         """
@@ -152,7 +152,7 @@ kundi Group:
     eleza __eq__(self, other):
         ikiwa type(other) != type(self):
             rudisha Uongo
-        rudisha (self.display_name == other.display_name and
+        rudisha (self.display_name == other.display_name na
                 self.addresses == other.addresses)
 
 
@@ -165,7 +165,7 @@ kundi BaseHeader(str):
     Implements generic behavior na provides tools kila subclasses.
 
     A subkundi must define a classmethod named 'parse' that takes an unfolded
-    value string na a dictionary as its arguments.  The dictionary will
+    value string na a dictionary kama its arguments.  The dictionary will
     contain one key, 'defects', initialized to an empty list.  After the call
     the dictionary must contain two additional keys: parse_tree, set to the
     parse tree obtained kutoka parsing the header, na 'decoded', set to the
@@ -174,16 +174,16 @@ kundi BaseHeader(str):
     representations are so represented.)
 
     The defects key ni intended to collect parsing defects, which the message
-    parser will subsequently dispose of as appropriate.  The parser should not,
-    insofar as practical,  ashiria any errors.  Defects should be added to the
+    parser will subsequently dispose of kama appropriate.  The parser should not,
+    insofar kama practical, ashiria any errors.  Defects should be added to the
     list instead.  The standard header parsers register defects kila RFC
     compliance issues, kila obsolete RFC syntax, na kila unrecoverable parsing
     errors.
 
     The parse method may add additional keys to the dictionary.  In this case
-    the subkundi must define an 'init' method, which will be passed the
-    dictionary as its keyword arguments.  The method should use (usually by
-    setting them as the value of similarly named attributes) na remove all the
+    the subkundi must define an 'init' method, which will be pitaed the
+    dictionary kama its keyword arguments.  The method should use (usually by
+    setting them kama the value of similarly named attributes) na remove all the
     extra keys added by its parse method, na then use super to call its parent
     kundi ukijumuisha the remaining arguments na keywords.
 
@@ -233,7 +233,7 @@ kundi BaseHeader(str):
         """Fold header according to policy.
 
         The parsed representation of the header ni folded according to
-        RFC5322 rules, as modified by the policy.  If the parse tree
+        RFC5322 rules, kama modified by the policy.  If the parse tree
         contains surrogateescaped bytes, the bytes are CTE encoded using
         the charset 'unknown-8bit".
 
@@ -284,7 +284,7 @@ kundi DateHeader:
 
     Provides an additional attribute, datetime, which ni either an aware
     datetime using a timezone, ama a naive datetime ikiwa the timezone
-    kwenye the input string ni -0000.  Also accepts a datetime as input.
+    kwenye the input string ni -0000.  Also accepts a datetime kama input.
     The 'value' attribute ni the normalized form of the timestamp,
     which means it ni the output of format_datetime on the datetime.
     """
@@ -357,7 +357,7 @@ kundi AddressHeader:
         kwds['groups'] = groups
         kwds['defects'] = defects
         kwds['decoded'] = ', '.join([str(item) kila item kwenye groups])
-        ikiwa 'parse_tree' sio kwenye kwds:
+        ikiwa 'parse_tree' haiko kwenye kwds:
             kwds['parse_tree'] = cls.value_parser(kwds['decoded'])
 
     eleza init(self, *args, **kw):
@@ -387,7 +387,7 @@ kundi SingleAddressHeader(AddressHeader):
     @property
     eleza address(self):
         ikiwa len(self.addresses)!=1:
-             ashiria ValueError(("value of single address header {} ni sio "
+            ashiria ValueError(("value of single address header {} ni sio "
                 "a single address").format(self.name))
         rudisha self.addresses[0]
 
@@ -436,7 +436,7 @@ kundi MIMEVersionHeader:
 
 kundi ParameterizedMIMEHeader:
 
-    # Mixin that handles the params dict.  Must be subclassed and
+    # Mixin that handles the params dict.  Must be subclassed na
     # a property value_parser kila the specific header provided.
 
     max_count = 1
@@ -580,7 +580,7 @@ kundi HeaderRegisjaribu:
             self.registry.update(_default_header_map)
 
     eleza map_to_type(self, name, cls):
-        """Register cls as the specialized kundi kila handling "name" headers.
+        """Register cls kama the specialized kundi kila handling "name" headers.
 
         """
         self.registry[name.lower()] = cls
@@ -595,7 +595,7 @@ kundi HeaderRegisjaribu:
         Creates a header instance by creating a specialized kundi kila parsing
         na representing the specified header by combining the factory
         base_kundi ukijumuisha a specialized kundi kutoka the registry ama the
-        default_class, na passing the name na value to the constructed
+        default_class, na pitaing the name na value to the constructed
         class's constructor.
 
         """

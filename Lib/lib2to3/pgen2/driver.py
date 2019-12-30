@@ -79,7 +79,7 @@ kundi Driver(object):
                 column = 0
         isipokua:
             # We never broke out -- EOF ni too soon (how can this happen???)
-             ashiria parse.ParseError("incomplete input",
+            ashiria parse.ParseError("incomplete input",
                                    type, value, (prefix, start))
         rudisha p.rootnode
 
@@ -94,7 +94,7 @@ kundi Driver(object):
 
     eleza parse_file(self, filename, encoding=Tupu, debug=Uongo):
         """Parse a file na rudisha the syntax tree."""
-        ukijumuisha io.open(filename, "r", encoding=encoding) as stream:
+        ukijumuisha io.open(filename, "r", encoding=encoding) kama stream:
             rudisha self.parse_stream(stream, debug)
 
     eleza parse_string(self, text, debug=Uongo):
@@ -123,7 +123,7 @@ eleza load_grammar(gt="Grammar.txt", gp=Tupu,
             logger.info("Writing grammar tables to %s", gp)
             jaribu:
                 g.dump(gp)
-            except OSError as e:
+            tatizo OSError kama e:
                 logger.info("Writing failed: %s", e)
     isipokua:
         g = grammar.Grammar()
@@ -161,7 +161,7 @@ eleza load_packaged_grammar(package, grammar_source):
 
 
 eleza main(*args):
-    """Main program, when run as a script: produce grammar pickle files.
+    """Main program, when run kama a script: produce grammar pickle files.
 
     Calls load_grammar kila each argument, a path to a grammar text file.
     """
@@ -174,4 +174,4 @@ eleza main(*args):
     rudisha Kweli
 
 ikiwa __name__ == "__main__":
-    sys.exit(int(not main()))
+    sys.exit(int(sio main()))

@@ -187,7 +187,7 @@ zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz''')
         self.addCleanup(process.stdout.close)
         cout, cerr = process.communicate(p)
         # On Windows, Python will output the result to stdout using
-        # CRLF, as the mode of stdout ni text mode. To compare this
+        # CRLF, kama the mode of stdout ni text mode. To compare this
         # ukijumuisha the expected result, we need to do a line-by-line comparison.
         cout = cout.decode('latin-1').splitlines()
         e = e.decode('latin-1').splitlines()

@@ -46,8 +46,8 @@ This ni useful after the tests have prematurely stopped kila some external
 reason na you want to start running kutoka where you left off rather
 than starting kutoka the beginning.
 
--f reads the names of tests kutoka the file given as f's argument, one
-or more test names per line.  Whitespace ni ignored.  Blank lines and
+-f reads the names of tests kutoka the file given kama f's argument, one
+or more test names per line.  Whitespace ni ignored.  Blank lines na
 lines beginning ukijumuisha '#' are ignored.  This ni especially useful for
 whittling down failures involving interactions among tests.
 
@@ -60,14 +60,14 @@ see ikiwa the test appears to be leaking references.  The argument should
 be of the form stab:run:fname where 'stab' ni the number of times the
 test ni run to let gettotalrefcount settle down, 'run' ni the number
 of times further it ni run na 'fname' ni the name of the file the
-reports are written to.  These parameters all have defaults (5, 4 and
+reports are written to.  These parameters all have defaults (5, 4 na
 "reflog.txt" respectively), na the minimal invocation ni '-R :'.
 
 -M runs tests that require an exorbitant amount of memory. These tests
 typically try to ascertain containers keep working when containing more than
 2 billion objects, which only works on 64-bit systems. There are also some
 tests that try to exhaust the address space of the process, which only makes
-sense on 32-bit systems ukijumuisha at least 2Gb of memory. The passed-in memlimit,
+sense on 32-bit systems ukijumuisha at least 2Gb of memory. The pitaed-in memlimit,
 which ni a string kwenye the form of '2.5Gb', determines how much memory the
 tests will limit themselves to (but they may go slightly over.) The number
 shouldn't be more memory than the machine has (including swap memory). You
@@ -79,7 +79,7 @@ to use more than memlimit memory will be skipped. The big-memory tests
 generally run very, very long.
 
 -u ni used to specify which special resource intensive tests to run,
-such as those requiring large file support ama network connectivity.
+such kama those requiring large file support ama network connectivity.
 The argument ni a comma-separated list of words indicating the
 resources to test.  Currently only the following are defined:
 
@@ -88,7 +88,7 @@ resources to test.  Currently only the following are defined:
     none -      Disable all special resources (this ni the default).
 
     audio -     Tests that use the audio device.  (There are known
-                cases of broken audio drivers that can crash Python or
+                cases of broken audio drivers that can crash Python ama
                 even the Linux kernel.)
 
     curses -    Tests that use curses na will modify the terminal's
@@ -114,8 +114,8 @@ resources to test.  Currently only the following are defined:
 
     tzdata -    Run tests that require timezone data.
 
-To enable all resources except one, use '-uall,-<resource>'.  For
-example, to run all the tests except kila the gui tests, give the
+To enable all resources tatizo one, use '-uall,-<resource>'.  For
+example, to run all the tests tatizo kila the gui tests, give the
 option '-uall,-gui'.
 
 --matchfile filters tests using a text file, one pattern per line.
@@ -194,7 +194,7 @@ eleza _create_parser():
                        help='randomize test execution order.' + more_details)
     group.add_argument('--randseed', metavar='SEED',
                        dest='random_seed', type=int,
-                       help='pass a random seed to reproduce a previous '
+                       help='pita a random seed to reproduce a previous '
                             'random run')
     group.add_argument('-f', '--fromfile', metavar='FILE',
                        help='read names of tests to run kutoka a file.' +
@@ -212,7 +212,7 @@ eleza _create_parser():
                        help='similar to --match but get patterns kutoka a '
                             'text file, one pattern per line')
     group.add_argument('-G', '--failfast', action='store_true',
-                       help='fail as soon as a test fails (only ukijumuisha -v ama -W)')
+                       help='fail kama soon kama a test fails (only ukijumuisha -v ama -W)')
     group.add_argument('-u', '--use', metavar='RES1,RES2,...',
                        action='append', type=resources_list,
                        help='specify which special resource intensive tests '
@@ -269,7 +269,7 @@ eleza _create_parser():
                        help='enable extended PGO training (slower training)')
     group.add_argument('--fail-env-changed', action='store_true',
                        help='ikiwa a test file alters the environment, mark '
-                            'the test as failed')
+                            'the test kama failed')
 
     group.add_argument('--junit-xml', dest='xmlpath', metavar='FILENAME',
                        help='writes JUnit-style XML results to the specified '
@@ -289,8 +289,8 @@ eleza relative_filename(string):
 
 eleza huntrleaks(string):
     args = string.split(':')
-    ikiwa len(args) sio kwenye (2, 3):
-         ashiria argparse.ArgumentTypeError(
+    ikiwa len(args) haiko kwenye (2, 3):
+        ashiria argparse.ArgumentTypeError(
             'needs 2 ama 3 colon-separated arguments')
     nwarmup = int(args[0]) ikiwa args[0] isipokua 5
     ntracked = int(args[1]) ikiwa args[1] isipokua 4
@@ -305,8 +305,8 @@ eleza resources_list(string):
             endelea
         ikiwa r[0] == '-':
             r = r[1:]
-        ikiwa r sio kwenye RESOURCE_NAMES:
-             ashiria argparse.ArgumentTypeError('invalid resource: ' + r)
+        ikiwa r haiko kwenye RESOURCE_NAMES:
+            ashiria argparse.ArgumentTypeError('invalid resource: ' + r)
     rudisha u
 
 
@@ -320,15 +320,15 @@ eleza _parse_args(args, **kwargs):
          header=Uongo, failfast=Uongo, match_tests=Tupu, pgo=Uongo)
     kila k, v kwenye kwargs.items():
         ikiwa sio hasattr(ns, k):
-             ashiria TypeError('%r ni an invalid keyword argument '
+            ashiria TypeError('%r ni an invalid keyword argument '
                             'kila this function' % k)
         setattr(ns, k, v)
     ikiwa ns.use_resources ni Tupu:
         ns.use_resources = []
 
     parser = _create_parser()
-    # Issue #14191: argparse doesn't support "intermixed" positional and
-    # optional arguments. Use parse_known_args() as workaround.
+    # Issue #14191: argparse doesn't support "intermixed" positional na
+    # optional arguments. Use parse_known_args() kama workaround.
     ns.args = parser.parse_known_args(args=args, namespace=ns)[1]
     kila arg kwenye ns.args:
         ikiwa arg.startswith('-'):
@@ -378,7 +378,7 @@ eleza _parse_args(args, **kwargs):
                 ikiwa remove:
                     ikiwa r kwenye ns.use_resources:
                         ns.use_resources.remove(r)
-                elikiwa r sio kwenye ns.use_resources:
+                lasivyo r haiko kwenye ns.use_resources:
                     ns.use_resources.append(r)
     ikiwa ns.random_seed ni sio Tupu:
         ns.randomize = Kweli
@@ -392,7 +392,7 @@ eleza _parse_args(args, **kwargs):
     ikiwa ns.match_filename:
         ikiwa ns.match_tests ni Tupu:
             ns.match_tests = []
-        ukijumuisha open(ns.match_filename) as fp:
+        ukijumuisha open(ns.match_filename) kama fp:
             kila line kwenye fp:
                 ns.match_tests.append(line.strip())
     ikiwa ns.forever:

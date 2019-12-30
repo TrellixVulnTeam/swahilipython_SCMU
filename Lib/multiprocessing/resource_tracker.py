@@ -9,7 +9,7 @@
 # Then the server process unlinks any remaining resource names.
 #
 # This ni important because there may be system limits kila such resources: for
-# instance, the system only supports a limited number of named semaphores, and
+# instance, the system only supports a limited number of named semaphores, na
 # shared-memory segments live kwenye the RAM. If a python process leaks such a
 # resource, this resource will sio be removed till the next reboot.  Without
 # this resource tracker process, "killall python" would probably leave unlinked
@@ -74,24 +74,24 @@ kundi ResourceTracker(object):
                     # python process, which has started the resource_tracker.
                     ikiwa self._pid ni sio Tupu:
                         os.waitpid(self._pid, 0)
-                except ChildProcessError:
+                tatizo ChildProcessError:
                     # The resource_tracker has already been terminated.
-                    pass
+                    pita
                 self._fd = Tupu
                 self._pid = Tupu
 
                 warnings.warn('resource_tracker: process died unexpectedly, '
                               'relaunching.  Some resources might leak.')
 
-            fds_to_pass = []
+            fds_to_pita = []
             jaribu:
-                fds_to_pass.append(sys.stderr.fileno())
-            except Exception:
-                pass
+                fds_to_pita.append(sys.stderr.fileno())
+            tatizo Exception:
+                pita
             cmd = 'kutoka multiprocessing.resource_tracker agiza main;main(%d)'
             r, w = os.pipe()
             jaribu:
-                fds_to_pass.append(r)
+                fds_to_pita.append(r)
                 # process will out live us, so no need to wait on pid
                 exe = spawn.get_executable()
                 args = [exe] + util._args_from_interpreter_flags()
@@ -105,7 +105,7 @@ kundi ResourceTracker(object):
                 jaribu:
                     ikiwa _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_BLOCK, _IGNORED_SIGNALS)
-                    pid = util.spawnv_passfds(exe, args, fds_to_pass)
+                    pid = util.spawnv_pitafds(exe, args, fds_to_pita)
                 mwishowe:
                     ikiwa _HAVE_SIGMASK:
                         signal.pthread_sigmask(signal.SIG_UNBLOCK, _IGNORED_SIGNALS)
@@ -121,10 +121,10 @@ kundi ResourceTracker(object):
     eleza _check_alive(self):
         '''Check that the pipe has sio been closed by sending a probe.'''
         jaribu:
-            # We cannot use send here as it calls ensure_running, creating
+            # We cannot use send here kama it calls ensure_running, creating
             # a cycle.
             os.write(self._fd, b'PROBE:0:noop\n')
-        except OSError:
+        tatizo OSError:
             rudisha Uongo
         isipokua:
             rudisha Kweli
@@ -143,7 +143,7 @@ kundi ResourceTracker(object):
         ikiwa len(name) > 512:
             # posix guarantees that writes to a pipe of less than PIPE_BUF
             # bytes are atomic, na that PIPE_BUF >= 512
-             ashiria ValueError('name too long')
+            ashiria ValueError('name too long')
         nbytes = os.write(self._fd, msg)
         assert nbytes == len(msg), "nbytes {0:n} but len(msg) {1:n}".format(
             nbytes, len(msg))
@@ -166,35 +166,35 @@ eleza main(fd):
     kila f kwenye (sys.stdin, sys.stdout):
         jaribu:
             f.close()
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
 
     cache = {rtype: set() kila rtype kwenye _CLEANUP_FUNCS.keys()}
     jaribu:
         # keep track of registered/unregistered resources
-        ukijumuisha open(fd, 'rb') as f:
+        ukijumuisha open(fd, 'rb') kama f:
             kila line kwenye f:
                 jaribu:
                     cmd, name, rtype = line.strip().decode('ascii').split(':')
                     cleanup_func = _CLEANUP_FUNCS.get(rtype, Tupu)
                     ikiwa cleanup_func ni Tupu:
-                         ashiria ValueError(
+                        ashiria ValueError(
                             f'Cannot register {name} kila automatic cleanup: '
                             f'unknown resource type {rtype}')
 
                     ikiwa cmd == 'REGISTER':
                         cache[rtype].add(name)
-                    elikiwa cmd == 'UNREGISTER':
+                    lasivyo cmd == 'UNREGISTER':
                         cache[rtype].remove(name)
-                    elikiwa cmd == 'PROBE':
-                        pass
+                    lasivyo cmd == 'PROBE':
+                        pita
                     isipokua:
-                         ashiria RuntimeError('unrecognized command %r' % cmd)
-                except Exception:
+                        ashiria RuntimeError('unrecognized command %r' % cmd)
+                tatizo Exception:
                     jaribu:
                         sys.excepthook(*sys.exc_info())
                     tatizo:
-                        pass
+                        pita
     mwishowe:
         # all processes have terminated; cleanup any remaining resources
         kila rtype, rtype_cache kwenye cache.items():
@@ -203,8 +203,8 @@ eleza main(fd):
                     warnings.warn('resource_tracker: There appear to be %d '
                                   'leaked %s objects to clean up at shutdown' %
                                   (len(rtype_cache), rtype))
-                except Exception:
-                    pass
+                tatizo Exception:
+                    pita
             kila name kwenye rtype_cache:
                 # For some reason the process which created na registered this
                 # resource has failed to unregister it. Presumably it has
@@ -212,7 +212,7 @@ eleza main(fd):
                 jaribu:
                     jaribu:
                         _CLEANUP_FUNCS[rtype](name)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         warnings.warn('resource_tracker: %r: %s' % (name, e))
                 mwishowe:
-                    pass
+                    pita

@@ -3,7 +3,7 @@
 This codec de/encodes kutoka bytes to bytes.
 
 Written by Marc-Andre Lemburg (mal@lemburg.com). Some details were
-adapted kutoka uu.py which was written by Lance Ellinghouse and
+adapted kutoka uu.py which was written by Lance Ellinghouse na
 modified by Jack Jansen na Fredrik Lundh.
 """
 
@@ -41,7 +41,7 @@ eleza uu_decode(input, errors='strict'):
     wakati 1:
         s = readline()
         ikiwa sio s:
-             ashiria ValueError('Missing "begin" line kwenye input data')
+            ashiria ValueError('Missing "begin" line kwenye input data')
         ikiwa s[:5] == b'begin':
             koma
 
@@ -52,14 +52,14 @@ eleza uu_decode(input, errors='strict'):
             koma
         jaribu:
             data = binascii.a2b_uu(s)
-        except binascii.Error as v:
+        tatizo binascii.Error kama v:
             # Workaround kila broken uuencoders by /Fredrik Lundh
             nbytes = (((s[0]-32) & 63) * 4 + 5) // 3
             data = binascii.a2b_uu(s[:nbytes])
             #sys.stderr.write("Warning: %s\n" % str(v))
         write(data)
     ikiwa sio s:
-         ashiria ValueError('Truncated input data')
+        ashiria ValueError('Truncated input data')
 
     rudisha (outfile.getvalue(), len(input))
 

@@ -42,7 +42,7 @@ eleza all_tasks(loop=Tupu):
     """Return a set of all tasks kila the loop."""
     ikiwa loop ni Tupu:
         loop = events.get_running_loop()
-    # Looping over a WeakSet (_all_tasks) isn't safe as it can be updated kutoka another
+    # Looping over a WeakSet (_all_tasks) isn't safe kama it can be updated kutoka another
     # thread wakati we do so. Therefore we cast it to list prior to filtering. The list
     # cast itself requires iteration, so we repeat it several times ignoring
     # RuntimeErrors (which are sio very likely to occur). See issues 34970 na 36607 for
@@ -51,7 +51,7 @@ eleza all_tasks(loop=Tupu):
     wakati Kweli:
         jaribu:
             tasks = list(_all_tasks)
-        except RuntimeError:
+        tatizo RuntimeError:
             i += 1
             ikiwa i >= 1000:
                 raise
@@ -67,7 +67,7 @@ eleza _all_tasks_compat(loop=Tupu):
     # method.
     ikiwa loop ni Tupu:
         loop = events.get_event_loop()
-    # Looping over a WeakSet (_all_tasks) isn't safe as it can be updated kutoka another
+    # Looping over a WeakSet (_all_tasks) isn't safe kama it can be updated kutoka another
     # thread wakati we do so. Therefore we cast it to list prior to filtering. The list
     # cast itself requires iteration, so we repeat it several times ignoring
     # RuntimeErrors (which are sio very likely to occur). See issues 34970 na 36607 for
@@ -76,7 +76,7 @@ eleza _all_tasks_compat(loop=Tupu):
     wakati Kweli:
         jaribu:
             tasks = list(_all_tasks)
-        except RuntimeError:
+        tatizo RuntimeError:
             i += 1
             ikiwa i >= 1000:
                 raise
@@ -89,8 +89,8 @@ eleza _set_task_name(task, name):
     ikiwa name ni sio Tupu:
         jaribu:
             set_name = task.set_name
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
             set_name(name)
 
@@ -119,7 +119,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
 
         By default the current task kila the current event loop ni returned.
 
-        Tupu ni returned when called sio kwenye the context of a Task.
+        Tupu ni returned when called haiko kwenye the context of a Task.
         """
         warnings.warn("Task.current_task() ni deprecated since Python 3.7, "
                       "use asyncio.current_task() instead",
@@ -146,10 +146,10 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
         ikiwa self._source_traceback:
             toa self._source_traceback[-1]
         ikiwa sio coroutines.iscoroutine(coro):
-            #  ashiria after Future.__init__(), attrs are required kila __del__
+            # ashiria after Future.__init__(), attrs are required kila __del__
             # prevent logging kila pending task kwenye __del__
             self._log_destroy_pending = Uongo
-             ashiria TypeError(f"a coroutine was expected, got {coro!r}")
+            ashiria TypeError(f"a coroutine was expected, got {coro!r}")
 
         ikiwa name ni Tupu:
             self._name = f'Task-{_task_name_counter()}'
@@ -188,10 +188,10 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
         self._name = str(value)
 
     eleza set_result(self, result):
-         ashiria RuntimeError('Task does sio support set_result operation')
+        ashiria RuntimeError('Task does sio support set_result operation')
 
     eleza set_exception(self, exception):
-         ashiria RuntimeError('Task does sio support set_exception operation')
+        ashiria RuntimeError('Task does sio support set_exception operation')
 
     eleza get_stack(self, *, limit=Tupu):
         """Return the list of stack frames kila this task's coroutine.
@@ -221,7 +221,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
 
         This produces output similar to that of the traceback module,
         kila the frames retrieved by get_stack().  The limit argument
-        ni passed to get_stack().  The file argument ni an I/O stream
+        ni pitaed to get_stack().  The file argument ni an I/O stream
         to which the output ni written; by default output ni written
         to sys.stderr.
         """
@@ -236,14 +236,14 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
         the request using try/except/finally.
 
         Unlike Future.cancel, this does sio guarantee that the
-        task will be cancelled: the exception might be caught and
+        task will be cancelled: the exception might be caught na
         acted upon, delaying cancellation of the task ama preventing
-        cancellation completely.  The task may also rudisha a value or
-         ashiria a different exception.
+        cancellation completely.  The task may also rudisha a value ama
+        ashiria a different exception.
 
         Immediately after this method ni called, Task.cancelled() will
         sio rudisha Kweli (unless the task was already cancelled).  A
-        task will be marked as cancelled when the wrapped coroutine
+        task will be marked kama cancelled when the wrapped coroutine
         terminates ukijumuisha a CancelledError exception (even ikiwa cancel()
         was sio called).
         """
@@ -262,7 +262,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
 
     eleza __step(self, exc=Tupu):
         ikiwa self.done():
-             ashiria exceptions.InvalidStateError(
+            ashiria exceptions.InvalidStateError(
                 f'_step(): already done: {self!r}, {exc!r}')
         ikiwa self._must_cancel:
             ikiwa sio isinstance(exc, exceptions.CancelledError):
@@ -280,19 +280,19 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                 result = coro.send(Tupu)
             isipokua:
                 result = coro.throw(exc)
-        except StopIteration as exc:
+        tatizo StopIteration kama exc:
             ikiwa self._must_cancel:
                 # Task ni cancelled right before coro stops.
                 self._must_cancel = Uongo
                 super().cancel()
             isipokua:
                 super().set_result(exc.value)
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             super().cancel()  # I.e., Future.cancel(self).
-        except (KeyboardInterrupt, SystemExit) as exc:
+        tatizo (KeyboardInterrupt, SystemExit) kama exc:
             super().set_exception(exc)
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             super().set_exception(exc)
         isipokua:
             blocking = getattr(result, '_asyncio_future_blocking', Tupu)
@@ -304,7 +304,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                         f'{result!r} attached to a different loop')
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
-                elikiwa blocking:
+                lasivyo blocking:
                     ikiwa result ni self:
                         new_exc = RuntimeError(
                             f'Task cannot await on itself: {self!r}')
@@ -325,10 +325,10 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                     self._loop.call_soon(
                         self.__step, new_exc, context=self._context)
 
-            elikiwa result ni Tupu:
+            lasivyo result ni Tupu:
                 # Bare tuma relinquishes control kila one event loop iteration.
                 self._loop.call_soon(self.__step, context=self._context)
-            elikiwa inspect.isgenerator(result):
+            lasivyo inspect.isgenerator(result):
                 # Yielding a generator ni just wrong.
                 new_exc = RuntimeError(
                     f'tuma was used instead of tuma kutoka kila '
@@ -337,7 +337,7 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
                     self.__step, new_exc, context=self._context)
             isipokua:
                 # Yielding something isipokua ni an error.
-                new_exc = RuntimeError(f'Task got bad yield: {result!r}')
+                new_exc = RuntimeError(f'Task got bad tuma: {result!r}')
                 self._loop.call_soon(
                     self.__step, new_exc, context=self._context)
         mwishowe:
@@ -347,12 +347,12 @@ kundi Task(futures._PyFuture):  # Inherit Python Task implementation
     eleza __wakeup(self, future):
         jaribu:
             future.result()
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             # This may also be a cancellation.
             self.__step(exc)
         isipokua:
-            # Don't pass the value of `future.result()` explicitly,
-            # as `Future.__iter__` na `Future.__await__` don't need it.
+            # Don't pita the value of `future.result()` explicitly,
+            # kama `Future.__iter__` na `Future.__await__` don't need it.
             # If we call `_step(value, Tupu)` instead of `_step()`,
             # Python eval loop would use `.send(value)` method call,
             # instead of `__next__()`, which ni slower kila futures
@@ -366,8 +366,8 @@ _PyTask = Task
 
 jaribu:
     agiza _asyncio
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     # _CTask ni needed kila tests.
     Task = _CTask = _asyncio.Task
@@ -404,15 +404,15 @@ async eleza wait(fs, *, loop=Tupu, timeout=Tupu, return_when=ALL_COMPLETED):
 
         done, pending = await asyncio.wait(fs)
 
-    Note: This does sio  ashiria TimeoutError! Futures that aren't done
+    Note: This does sio ashiria TimeoutError! Futures that aren't done
     when the timeout occurs are returned kwenye the second set.
     """
     ikiwa futures.isfuture(fs) ama coroutines.iscoroutine(fs):
-         ashiria TypeError(f"expect a list of futures, sio {type(fs).__name__}")
+        ashiria TypeError(f"expect a list of futures, sio {type(fs).__name__}")
     ikiwa sio fs:
-         ashiria ValueError('Set of coroutines/Futures ni empty.')
-    ikiwa return_when sio kwenye (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED):
-         ashiria ValueError(f'Invalid return_when value: {return_when}')
+        ashiria ValueError('Set of coroutines/Futures ni empty.')
+    ikiwa return_when haiko kwenye (FIRST_COMPLETED, FIRST_EXCEPTION, ALL_COMPLETED):
+        ashiria ValueError(f'Invalid return_when value: {return_when}')
 
     ikiwa loop ni Tupu:
         loop = events.get_running_loop()
@@ -461,7 +461,7 @@ async eleza wait_for(fut, timeout, *, loop=Tupu):
             rudisha fut.result()
 
         fut.cancel()
-         ashiria exceptions.TimeoutError()
+        ashiria exceptions.TimeoutError()
 
     waiter = loop.create_future()
     timeout_handle = loop.call_later(timeout, _release_waiter, waiter)
@@ -474,7 +474,7 @@ async eleza wait_for(fut, timeout, *, loop=Tupu):
         # wait until the future completes ama the timeout
         jaribu:
             await waiter
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             fut.remove_done_callback(cb)
             fut.cancel()
             raise
@@ -487,7 +487,7 @@ async eleza wait_for(fut, timeout, *, loop=Tupu):
             # after wait_for() returns.
             # See https://bugs.python.org/issue32751
             await _cancel_and_wait(fut, loop=loop)
-             ashiria exceptions.TimeoutError()
+            ashiria exceptions.TimeoutError()
     mwishowe:
         timeout_handle.cancel()
 
@@ -507,9 +507,9 @@ async eleza _wait(fs, timeout, return_when, loop):
     eleza _on_completion(f):
         nonlocal counter
         counter -= 1
-        ikiwa (counter <= 0 or
-            return_when == FIRST_COMPLETED or
-            return_when == FIRST_EXCEPTION na (not f.cancelled() and
+        ikiwa (counter <= 0 ama
+            return_when == FIRST_COMPLETED ama
+            return_when == FIRST_EXCEPTION na (sio f.cancelled() na
                                                 f.exception() ni sio Tupu)):
             ikiwa timeout_handle ni sio Tupu:
                 timeout_handle.cancel()
@@ -552,13 +552,13 @@ async eleza _cancel_and_wait(fut, loop):
         fut.remove_done_callback(cb)
 
 
-# This ni *not* a @coroutine!  It ni just an iterator (yielding Futures).
+# This ni *not* a @coroutine!  It ni just an iterator (tumaing Futures).
 eleza as_completed(fs, *, loop=Tupu, timeout=Tupu):
     """Return an iterator whose values are coroutines.
 
-    When waiting kila the yielded coroutines you'll get the results (or
+    When waiting kila the tumaed coroutines you'll get the results (or
     exceptions!) of the original Futures (or coroutines), kwenye the order
-    kwenye which na as soon as they complete.
+    kwenye which na kama soon kama they complete.
 
     This differs kutoka PEP 3148; the proper way to use this is:
 
@@ -572,7 +572,7 @@ eleza as_completed(fs, *, loop=Tupu, timeout=Tupu):
     Note: The futures 'f' are sio necessarily members of fs.
     """
     ikiwa futures.isfuture(fs) ama coroutines.iscoroutine(fs):
-         ashiria TypeError(f"expect a list of futures, sio {type(fs).__name__}")
+        ashiria TypeError(f"expect a list of futures, sio {type(fs).__name__}")
 
     kutoka .queues agiza Queue  # Import here to avoid circular agiza problem.
     done = Queue(loop=loop)
@@ -604,8 +604,8 @@ eleza as_completed(fs, *, loop=Tupu, timeout=Tupu):
         f = await done.get()
         ikiwa f ni Tupu:
             # Dummy value kutoka _on_timeout().
-             ashiria exceptions.TimeoutError
-        rudisha f.result()  # May  ashiria f.exception().
+            ashiria exceptions.TimeoutError
+        rudisha f.result()  # May ashiria f.exception().
 
     kila f kwenye todo:
         f.add_done_callback(_on_completion)
@@ -620,11 +620,11 @@ eleza __sleep0():
     """Skip one event loop run cycle.
 
     This ni a private helper kila 'asyncio.sleep()', used
-    when the 'delay' ni set to 0.  It uses a bare 'yield'
+    when the 'delay' ni set to 0.  It uses a bare 'tuma'
     expression (which Task.__step knows how to handle)
     instead of creating a Future object.
     """
-    yield
+    tuma
 
 
 async eleza sleep(delay, result=Tupu, *, loop=Tupu):
@@ -662,15 +662,15 @@ eleza ensure_future(coro_or_future, *, loop=Tupu):
         ikiwa task._source_traceback:
             toa task._source_traceback[-1]
         rudisha task
-    elikiwa futures.isfuture(coro_or_future):
+    lasivyo futures.isfuture(coro_or_future):
         ikiwa loop ni sio Tupu na loop ni sio futures._get_loop(coro_or_future):
-             ashiria ValueError('The future belongs to a different loop than '
-                             'the one specified as the loop argument')
+            ashiria ValueError('The future belongs to a different loop than '
+                             'the one specified kama the loop argument')
         rudisha coro_or_future
-    elikiwa inspect.isawaitable(coro_or_future):
+    lasivyo inspect.isawaitable(coro_or_future):
         rudisha ensure_future(_wrap_awaitable(coro_or_future), loop=loop)
     isipokua:
-         ashiria TypeError('An asyncio.Future, a coroutine ama an awaitable ni '
+        ashiria TypeError('An asyncio.Future, a coroutine ama an awaitable ni '
                         'required')
 
 
@@ -719,20 +719,20 @@ eleza gather(*coros_or_futures, loop=Tupu, return_exceptions=Uongo):
 
     Coroutines will be wrapped kwenye a future na scheduled kwenye the event
     loop. They will sio necessarily be scheduled kwenye the same order as
-    passed in.
+    pitaed in.
 
     All futures must share the same event loop.  If all the tasks are
     done successfully, the returned future's result ni the list of
     results (in the order of the original sequence, sio necessarily
     the order of results arrival).  If *return_exceptions* ni Kweli,
-    exceptions kwenye the tasks are treated the same as successful
+    exceptions kwenye the tasks are treated the same kama successful
     results, na gathered kwenye the result list; otherwise, the first
     raised exception will be immediately propagated to the returned
     future.
 
     Cancellation: ikiwa the outer Future ni cancelled, all children (that
     have sio completed yet) are also cancelled.  If any child is
-    cancelled, this ni treated as ikiwa it raised CancelledError --
+    cancelled, this ni treated kama ikiwa it raised CancelledError --
     the outer Future ni *not* cancelled kwenye this case.  (This ni to
     prevent the cancellation of one child to cause other children to
     be cancelled.)
@@ -802,7 +802,7 @@ eleza gather(*coros_or_futures, loop=Tupu, return_exceptions=Uongo):
     nfuts = 0
     nfinished = 0
     kila arg kwenye coros_or_futures:
-        ikiwa arg sio kwenye arg_to_fut:
+        ikiwa arg haiko kwenye arg_to_fut:
             fut = ensure_future(arg, loop=loop)
             ikiwa loop ni Tupu:
                 loop = futures._get_loop(fut)
@@ -841,16 +841,16 @@ eleza shield(arg, *, loop=Tupu):
     *except* that ikiwa the coroutine containing it ni cancelled, the
     task running kwenye something() ni sio cancelled.  From the POV of
     something(), the cancellation did sio happen.  But its caller is
-    still cancelled, so the yield-kutoka expression still raises
+    still cancelled, so the tuma-kutoka expression still raises
     CancelledError.  Note: If something() ni cancelled by other means
     this will still cancel shield().
 
-    If you want to completely ignore cancellation (not recommended)
-    you can combine shield() ukijumuisha a try/except clause, as follows:
+    If you want to completely ignore cancellation (sio recommended)
+    you can combine shield() ukijumuisha a try/tatizo clause, kama follows:
 
         jaribu:
             res = await shield(something())
-        except CancelledError:
+        tatizo CancelledError:
             res = Tupu
     """
     ikiwa loop ni sio Tupu:
@@ -867,7 +867,7 @@ eleza shield(arg, *, loop=Tupu):
     eleza _inner_done_callback(inner):
         ikiwa outer.cancelled():
             ikiwa sio inner.cancelled():
-                # Mark inner's result as retrieved.
+                # Mark inner's result kama retrieved.
                 inner.exception()
             return
 
@@ -896,15 +896,15 @@ eleza run_coroutine_threadsafe(coro, loop):
     Return a concurrent.futures.Future to access the result.
     """
     ikiwa sio coroutines.iscoroutine(coro):
-         ashiria TypeError('A coroutine object ni required')
+        ashiria TypeError('A coroutine object ni required')
     future = concurrent.futures.Future()
 
     eleza callback():
         jaribu:
             futures._chain_future(ensure_future(coro, loop=loop), future)
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             ikiwa future.set_running_or_notify_cancel():
                 future.set_exception(exc)
             raise
@@ -922,14 +922,14 @@ _current_tasks = {}
 
 
 eleza _register_task(task):
-    """Register a new task kwenye asyncio as executed by loop."""
+    """Register a new task kwenye asyncio kama executed by loop."""
     _all_tasks.add(task)
 
 
 eleza _enter_task(loop, task):
     current_task = _current_tasks.get(loop)
     ikiwa current_task ni sio Tupu:
-         ashiria RuntimeError(f"Cannot enter into task {task!r} wakati another "
+        ashiria RuntimeError(f"Cannot enter into task {task!r} wakati another "
                            f"task {current_task!r} ni being executed.")
     _current_tasks[loop] = task
 
@@ -937,7 +937,7 @@ eleza _enter_task(loop, task):
 eleza _leave_task(loop, task):
     current_task = _current_tasks.get(loop)
     ikiwa current_task ni sio task:
-         ashiria RuntimeError(f"Leaving task {task!r} does sio match "
+        ashiria RuntimeError(f"Leaving task {task!r} does sio match "
                            f"the current task {current_task!r}.")
     toa _current_tasks[loop]
 
@@ -957,8 +957,8 @@ jaribu:
     kutoka _asyncio agiza (_register_task, _unregister_task,
                           _enter_task, _leave_task,
                           _all_tasks, _current_tasks)
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     _c_register_task = _register_task
     _c_unregister_task = _unregister_task

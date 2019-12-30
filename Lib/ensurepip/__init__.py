@@ -71,7 +71,7 @@ eleza _bootstrap(*, root=Tupu, upgrade=Uongo, user=Uongo,
     Note that calling this function will alter both sys.path na os.environ.
     """
     ikiwa altinstall na default_pip:
-         ashiria ValueError("Cannot use altinstall na default_pip together")
+        ashiria ValueError("Cannot use altinstall na default_pip together")
 
     sys.audit("ensurepip.bootstrap", root)
 
@@ -86,11 +86,11 @@ eleza _bootstrap(*, root=Tupu, upgrade=Uongo, user=Uongo,
     ikiwa altinstall:
         # omit pip, pipX na easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "altinstall"
-    elikiwa sio default_pip:
+    lasivyo sio default_pip:
         # omit pip na easy_install
         os.environ["ENSUREPIP_OPTIONS"] = "install"
 
-    ukijumuisha tempfile.TemporaryDirectory() as tmpdir:
+    ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
         # Put our bundled wheels into a temporary directory na construct the
         # additional paths that need added to sys.path
         additional_paths = []
@@ -100,12 +100,12 @@ eleza _bootstrap(*, root=Tupu, upgrade=Uongo, user=Uongo,
                 "ensurepip",
                 "_bundled/{}".format(wheel_name),
             )
-            ukijumuisha open(os.path.join(tmpdir, wheel_name), "wb") as fp:
+            ukijumuisha open(os.path.join(tmpdir, wheel_name), "wb") kama fp:
                 fp.write(whl)
 
             additional_paths.append(os.path.join(tmpdir, wheel_name))
 
-        # Construct the arguments to be passed to the pip command
+        # Construct the arguments to be pitaed to the pip command
         args = ["install", "--no-index", "--find-links", tmpdir]
         ikiwa root:
             args += ["--root", root]
@@ -126,7 +126,7 @@ eleza _uninstall_helper(*, verbosity=0):
     # Nothing to do ikiwa pip was never installed, ama has been removed
     jaribu:
         agiza pip
-    except ImportError:
+    tatizo ImportError:
         return
 
     # If the pip version doesn't match the bundled one, leave it alone
@@ -138,7 +138,7 @@ eleza _uninstall_helper(*, verbosity=0):
 
     _disable_pip_configuration_settings()
 
-    # Construct the arguments to be passed to the pip command
+    # Construct the arguments to be pitaed to the pip command
     args = ["uninstall", "-y", "--disable-pip-version-check"]
     ikiwa verbosity:
         args += ["-" + "v" * verbosity]

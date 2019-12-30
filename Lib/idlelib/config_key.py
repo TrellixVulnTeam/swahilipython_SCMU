@@ -285,17 +285,17 @@ kundi GetKeysDialog(Toplevel):
         ikiwa sio keys.endswith('>'):
             self.showerror(title, parent=self,
                            message='Missing the final Key')
-        elikiwa (not modifiers
-              na final_key sio kwenye FUNCTION_KEYS + MOVE_KEYS):
+        lasivyo (sio modifiers
+              na final_key haiko kwenye FUNCTION_KEYS + MOVE_KEYS):
             self.showerror(title=title, parent=self,
                            message='No modifier key(s) specified.')
-        elikiwa (modifiers == ['Shift']) \
+        lasivyo (modifiers == ['Shift']) \
                  na (final_key sio in
                       FUNCTION_KEYS + MOVE_KEYS + ('Tab', 'Space')):
             msg = 'The shift modifier by itself may sio be used with'\
                   ' this key symbol.'
             self.showerror(title=title, parent=self, message=msg)
-        elikiwa keys kwenye key_sequences:
+        lasivyo keys kwenye key_sequences:
             msg = 'This key combination ni already kwenye use.'
             self.showerror(title=title, parent=self, message=msg)
         isipokua:
@@ -306,7 +306,7 @@ kundi GetKeysDialog(Toplevel):
         "Return Kweli ikiwa Tcl accepts the new keys isipokua show message."
         jaribu:
             binding = self.bind(keys, lambda: Tupu)
-        except TclError as err:
+        tatizo TclError kama err:
             self.showerror(
                     title=self.keyerror_title, parent=self,
                     message=(f'The entered key sequence ni sio accepted.\n\n'

@@ -48,7 +48,7 @@ kundi LabeledScaleTest(AbstractTkTest, unittest.TestCase):
 
 
     eleza test_initialization_no_master(self):
-        # no master passing
+        # no master pitaing
         ukijumuisha swap_attr(tkinter, '_default_root', Tupu), \
              swap_attr(tkinter, '_support_default_root', Kweli):
             jaribu:
@@ -61,17 +61,17 @@ kundi LabeledScaleTest(AbstractTkTest, unittest.TestCase):
                 destroy_default_root()
 
     eleza test_initialization(self):
-        # master passing
+        # master pitaing
         master = tkinter.Frame(self.root)
         x = ttk.LabeledScale(master)
         self.assertEqual(x.master, master)
         x.destroy()
 
-        # variable initialization/passing
-        passed_expected = (('0', 0), (0, 0), (10, 10),
+        # variable initialization/pitaing
+        pitaed_expected = (('0', 0), (0, 0), (10, 10),
             (-1, -1), (sys.maxsize + 1, sys.maxsize + 1),
             (2.5, 2), ('2.5', 2))
-        kila pair kwenye passed_expected:
+        kila pair kwenye pitaed_expected:
             x = ttk.LabeledScale(self.root, from_=pair[0])
             self.assertEqual(x.value, pair[1])
             x.destroy()

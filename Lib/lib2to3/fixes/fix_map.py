@@ -9,21 +9,21 @@ As a special case, map(Tupu, X) ni changed into list(X).  (This is
 necessary because the semantics are changed kwenye this case -- the new
 map(Tupu, X) ni equivalent to [(x,) kila x kwenye X].)
 
-We avoid the transformation (except kila the special case mentioned
+We avoid the transformation (tatizo kila the special case mentioned
 above) ikiwa the map() call ni directly contained kwenye iter(<>), list(<>),
 tuple(<>), sorted(<>), ...join(<>), ama kila V kwenye <>:.
 
 NOTE: This ni still sio correct ikiwa the original code was depending on
 map(F, X, Y, ...) to go on until the longest argument ni exhausted,
 substituting Tupu kila missing values -- like zip(), it now stops as
-soon as the shortest argument ni exhausted.
+soon kama the shortest argument ni exhausted.
 """
 
 # Local imports
 kutoka ..pgen2 agiza token
 kutoka .. agiza fixer_base
 kutoka ..fixer_util agiza Name, ArgList, Call, ListComp, in_special_context
-kutoka ..pygram agiza python_symbols as syms
+kutoka ..pygram agiza python_symbols kama syms
 kutoka ..pytree agiza Node
 
 
@@ -75,7 +75,7 @@ kundi FixMap(fixer_base.ConditionalFix):
             new = node.clone()
             new.prefix = ""
             new = Call(Name("list"), [new])
-        elikiwa "map_lambda" kwenye results:
+        lasivyo "map_lambda" kwenye results:
             new = ListComp(results["xp"].clone(),
                            results["fp"].clone(),
                            results["it"].clone())

@@ -1,5 +1,5 @@
 agiza unittest
-kutoka email agiza _encoded_words as _ew
+kutoka email agiza _encoded_words kama _ew
 kutoka email agiza errors
 kutoka test.test_email agiza TestEmailBase
 

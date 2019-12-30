@@ -16,7 +16,7 @@ sha3_224, sha3_256, sha3_384, sha3_512, shake_128, na shake_256.
 
 More algorithms may be available on your platform but the above are guaranteed
 to exist.  See the algorithms_guaranteed na algorithms_available attributes
-to find out what algorithm names can be passed to new().
+to find out what algorithm names can be pitaed to new().
 
 NOTE: If you want the adler32 ama crc32 hash functions they are available in
 the zlib module.
@@ -28,9 +28,9 @@ Hash objects have these methods:
  - update(data): Update the hash object ukijumuisha the bytes kwenye data. Repeated calls
                  are equivalent to a single call ukijumuisha the concatenation of all
                  the arguments.
- - digest():     Return the digest of the bytes passed to the update() method
-                 so far as a bytes object.
- - hexdigest():  Like digest() except the digest ni returned as a string
+ - digest():     Return the digest of the bytes pitaed to the update() method
+                 so far kama a bytes object.
+ - hexdigest():  Like digest() tatizo the digest ni returned kama a string
                  of double length, containing only hexadecimal digits.
  - copy():       Return a copy (clone) of the hash object. This can be used to
                  efficiently compute the digests of datas that share a common
@@ -85,39 +85,39 @@ eleza __get_builtin_constructor(name):
         ikiwa name kwenye {'SHA1', 'sha1'}:
             agiza _sha1
             cache['SHA1'] = cache['sha1'] = _sha1.sha1
-        elikiwa name kwenye {'MD5', 'md5'}:
+        lasivyo name kwenye {'MD5', 'md5'}:
             agiza _md5
             cache['MD5'] = cache['md5'] = _md5.md5
-        elikiwa name kwenye {'SHA256', 'sha256', 'SHA224', 'sha224'}:
+        lasivyo name kwenye {'SHA256', 'sha256', 'SHA224', 'sha224'}:
             agiza _sha256
             cache['SHA224'] = cache['sha224'] = _sha256.sha224
             cache['SHA256'] = cache['sha256'] = _sha256.sha256
-        elikiwa name kwenye {'SHA512', 'sha512', 'SHA384', 'sha384'}:
+        lasivyo name kwenye {'SHA512', 'sha512', 'SHA384', 'sha384'}:
             agiza _sha512
             cache['SHA384'] = cache['sha384'] = _sha512.sha384
             cache['SHA512'] = cache['sha512'] = _sha512.sha512
-        elikiwa name kwenye {'blake2b', 'blake2s'}:
+        lasivyo name kwenye {'blake2b', 'blake2s'}:
             agiza _blake2
             cache['blake2b'] = _blake2.blake2b
             cache['blake2s'] = _blake2.blake2s
-        elikiwa name kwenye {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
+        lasivyo name kwenye {'sha3_224', 'sha3_256', 'sha3_384', 'sha3_512'}:
             agiza _sha3
             cache['sha3_224'] = _sha3.sha3_224
             cache['sha3_256'] = _sha3.sha3_256
             cache['sha3_384'] = _sha3.sha3_384
             cache['sha3_512'] = _sha3.sha3_512
-        elikiwa name kwenye {'shake_128', 'shake_256'}:
+        lasivyo name kwenye {'shake_128', 'shake_256'}:
             agiza _sha3
             cache['shake_128'] = _sha3.shake_128
             cache['shake_256'] = _sha3.shake_256
-    except ImportError:
-        pass  # no extension module, this hash ni unsupported.
+    tatizo ImportError:
+        pita  # no extension module, this hash ni unsupported.
 
     constructor = cache.get(name)
     ikiwa constructor ni sio Tupu:
         rudisha constructor
 
-     ashiria ValueError('unsupported hash type ' + name)
+    ashiria ValueError('unsupported hash type ' + name)
 
 
 eleza __get_openssl_constructor(name):
@@ -126,12 +126,12 @@ eleza __get_openssl_constructor(name):
         rudisha __get_builtin_constructor(name)
     jaribu:
         f = getattr(_hashlib, 'openssl_' + name)
-        # Allow the C module to  ashiria ValueError.  The function will be
+        # Allow the C module to ashiria ValueError.  The function will be
         # defined but the hash sio actually available thanks to OpenSSL.
         f()
         # Use the C function directly (very fast)
         rudisha f
-    except (AttributeError, ValueError):
+    tatizo (AttributeError, ValueError):
         rudisha __get_builtin_constructor(name)
 
 
@@ -155,7 +155,7 @@ eleza __hash_new(name, data=b'', **kwargs):
         rudisha __get_builtin_constructor(name)(data, **kwargs)
     jaribu:
         rudisha _hashlib.new(name, data)
-    except ValueError:
+    tatizo ValueError:
         # If the _hashlib module (OpenSSL) doesn't support the named
         # hash, try using our builtin implementations.
         # This allows kila SHA224/256 na SHA384/512 support even though
@@ -169,29 +169,29 @@ jaribu:
     __get_hash = __get_openssl_constructor
     algorithms_available = algorithms_available.union(
             _hashlib.openssl_md_meth_names)
-except ImportError:
+tatizo ImportError:
     new = __py_new
     __get_hash = __get_builtin_constructor
 
 jaribu:
     # OpenSSL's PKCS5_PBKDF2_HMAC requires OpenSSL 1.0+ ukijumuisha HMAC na SHA
     kutoka _hashlib agiza pbkdf2_hmac
-except ImportError:
+tatizo ImportError:
     _trans_5C = bytes((x ^ 0x5C) kila x kwenye range(256))
     _trans_36 = bytes((x ^ 0x36) kila x kwenye range(256))
 
-    eleza pbkdf2_hmac(hash_name, password, salt, iterations, dklen=Tupu):
+    eleza pbkdf2_hmac(hash_name, pitaword, salt, iterations, dklen=Tupu):
         """Password based key derivation function 2 (PKCS #5 v2.0)
 
-        This Python implementations based on the hmac module about as fast
-        as OpenSSL's PKCS5_PBKDF2_HMAC kila short passwords na much faster
-        kila long passwords.
+        This Python implementations based on the hmac module about kama fast
+        kama OpenSSL's PKCS5_PBKDF2_HMAC kila short pitawords na much faster
+        kila long pitawords.
         """
         ikiwa sio isinstance(hash_name, str):
-             ashiria TypeError(hash_name)
+            ashiria TypeError(hash_name)
 
-        ikiwa sio isinstance(password, (bytes, bytearray)):
-            password = bytes(memoryview(password))
+        ikiwa sio isinstance(pitaword, (bytes, bytearray)):
+            pitaword = bytes(memoryview(pitaword))
         ikiwa sio isinstance(salt, (bytes, bytearray)):
             salt = bytes(memoryview(salt))
 
@@ -199,14 +199,14 @@ except ImportError:
         inner = new(hash_name)
         outer = new(hash_name)
         blocksize = getattr(inner, 'block_size', 64)
-        ikiwa len(password) > blocksize:
-            password = new(hash_name, password).digest()
-        password = password + b'\x00' * (blocksize - len(password))
-        inner.update(password.translate(_trans_36))
-        outer.update(password.translate(_trans_5C))
+        ikiwa len(pitaword) > blocksize:
+            pitaword = new(hash_name, pitaword).digest()
+        pitaword = pitaword + b'\x00' * (blocksize - len(pitaword))
+        inner.update(pitaword.translate(_trans_36))
+        outer.update(pitaword.translate(_trans_5C))
 
         eleza prf(msg, inner=inner, outer=outer):
-            # PBKDF2_HMAC uses the password as key. We can re-use the same
+            # PBKDF2_HMAC uses the pitaword kama key. We can re-use the same
             # digest objects na just update copies to skip initialization.
             icpy = inner.copy()
             ocpy = outer.copy()
@@ -215,18 +215,18 @@ except ImportError:
             rudisha ocpy.digest()
 
         ikiwa iterations < 1:
-             ashiria ValueError(iterations)
+            ashiria ValueError(iterations)
         ikiwa dklen ni Tupu:
             dklen = outer.digest_size
         ikiwa dklen < 1:
-             ashiria ValueError(dklen)
+            ashiria ValueError(dklen)
 
         dkey = b''
         loop = 1
         from_bytes = int.from_bytes
         wakati len(dkey) < dklen:
             prev = prf(salt + loop.to_bytes(4, 'big'))
-            # endianness doesn't matter here as long to / kutoka use the same
+            # endianness doesn't matter here kama long to / kutoka use the same
             rkey = int.from_bytes(prev, 'big')
             kila i kwenye range(iterations - 1):
                 prev = prf(prev)
@@ -240,8 +240,8 @@ except ImportError:
 jaribu:
     # OpenSSL's scrypt requires OpenSSL 1.1+
     kutoka _hashlib agiza scrypt
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 kila __func_name kwenye __always_supported:
@@ -249,7 +249,7 @@ kila __func_name kwenye __always_supported:
     # version sio supporting that algorithm.
     jaribu:
         globals()[__func_name] = __get_hash(__func_name)
-    except ValueError:
+    tatizo ValueError:
         agiza logging
         logging.exception('code kila hash %s was sio found.', __func_name)
 

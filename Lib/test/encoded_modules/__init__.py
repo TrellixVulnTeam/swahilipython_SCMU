@@ -12,12 +12,12 @@
 # ni the test string.  The same string ni assigned to the variable
 # named 'test' inside the submodule.  If the decoding of modules works
 # correctly, kutoka module_xyz agiza test should result kwenye the same
-# string as listed below kwenye the 'xyz' entry.
+# string kama listed below kwenye the 'xyz' entry.
 
 # module, encoding, test string
 test_strings = (
     ('iso_8859_1', 'iso-8859-1', "Les hommes ont oublié cette vérité, "
      "dit le renard. Mais tu ne dois pas l'oublier. Tu deviens "
-     "responsable pour toujours de ce que tu as apprivoisé."),
+     "responsable pour toujours de ce que tu kama apprivoisé."),
     ('koi8_r', 'koi8-r', "Познание бесконечности требует бесконечного времени.")
 )

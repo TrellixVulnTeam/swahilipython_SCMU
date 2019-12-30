@@ -51,7 +51,7 @@ kundi TestVariable(TestBase):
         v2 = Variable(self.root, name="name")
         toa v1
         self.assertUongo(self.info_exists("name"))
-        # shouldn't  ashiria exception
+        # shouldn't ashiria exception
         toa v2
         self.assertUongo(self.info_exists("name"))
 

@@ -1,7 +1,7 @@
 """This test checks kila correct fork() behavior.
 """
 
-agiza _imp as imp
+agiza _imp kama imp
 agiza os
 agiza signal
 agiza sys
@@ -62,14 +62,14 @@ kundi ForkTest(ForkWait):
             isipokua:
                 t.join()
                 # Exitcode 1 means the child got a partial module (bad.) No
-                # exitcode (but a hang, which manifests as 'got pid 0')
+                # exitcode (but a hang, which manifests kama 'got pid 0')
                 # means the child deadlocked (also bad.)
                 self.wait_impl(pid)
         mwishowe:
             jaribu:
                 os.kill(pid, signal.SIGKILL)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
 
     eleza test_nested_import_lock_fork(self):
@@ -88,7 +88,7 @@ kundi ForkTest(ForkWait):
                 mwishowe:
                     kila i kwenye range(release):
                         imp.release_lock()
-            except RuntimeError:
+            tatizo RuntimeError:
                 ikiwa in_child:
                     ikiwa verbose > 1:
                         andika("RuntimeError kwenye child")

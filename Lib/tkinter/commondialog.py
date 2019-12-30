@@ -22,7 +22,7 @@ kundi Dialog:
             self.master = options['parent']
 
     eleza _fixoptions(self):
-        pass # hook
+        pita # hook
 
     eleza _fixresult(self, widget, result):
         rudisha result # hook
@@ -36,7 +36,7 @@ kundi Dialog:
         self._fixoptions()
 
         # we need a dummy widget to properly process the options
-        # (at least as long as we use Tkinter 1.63)
+        # (at least kama long kama we use Tkinter 1.63)
         w = Frame(self.master)
 
         jaribu:
@@ -51,6 +51,6 @@ kundi Dialog:
                 # get rid of the widget
                 w.destroy()
             tatizo:
-                pass
+                pita
 
         rudisha s

@@ -13,7 +13,7 @@ kundi TestLLTrace(unittest.TestCase):
         # bpo-34113. The crash happened at the command line console of
         # debug Python builds ukijumuisha __ltrace__ enabled (only possible kwenye console),
         # when the interal Python stack was negatively adjusted
-        ukijumuisha open(support.TESTFN, 'w') as fd:
+        ukijumuisha open(support.TESTFN, 'w') kama fd:
             self.addCleanup(os.unlink, support.TESTFN)
             fd.write(textwrap.dedent("""\
             agiza code

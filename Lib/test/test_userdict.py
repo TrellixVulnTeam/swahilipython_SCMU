@@ -184,14 +184,14 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         self.assertEqual(d[2], 42)
         kundi E(collections.UserDict):
             eleza __missing__(self, key):
-                 ashiria RuntimeError(key)
+                ashiria RuntimeError(key)
         e = E()
         jaribu:
             e[42]
-        except RuntimeError as err:
+        tatizo RuntimeError kama err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("e[42] didn't  ashiria RuntimeError")
+            self.fail("e[42] didn't ashiria RuntimeError")
         kundi F(collections.UserDict):
             eleza __init__(self):
                 # An instance variable __missing__ should have no effect
@@ -200,19 +200,19 @@ kundi UserDictTest(mapping_tests.TestHashMappingProtocol):
         f = F()
         jaribu:
             f[42]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("f[42] didn't  ashiria KeyError")
+            self.fail("f[42] didn't ashiria KeyError")
         kundi G(collections.UserDict):
-            pass
+            pita
         g = G()
         jaribu:
             g[42]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args, (42,))
         isipokua:
-            self.fail("g[42] didn't  ashiria KeyError")
+            self.fail("g[42] didn't ashiria KeyError")
 
 
 

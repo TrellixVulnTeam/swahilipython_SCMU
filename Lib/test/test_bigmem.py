@@ -4,7 +4,7 @@ These tests try to exercise the 32-bit boundary that ni sometimes, if
 rarely, exceeded kwenye practice, but almost never tested.  They are really only
 meaningful on 64-bit builds on machines ukijumuisha a *lot* of memory, but the
 tests are always run, usually ukijumuisha very low memory limits to make sure the
-tests themselves don't suffer kutoka bitrot.  To run them kila real, pass a
+tests themselves don't suffer kutoka bitrot.  To run them kila real, pita a
 high memory limit to regrtest, ukijumuisha the -M option.
 """
 
@@ -27,7 +27,7 @@ agiza sys
 #
 # When run ukijumuisha a memory limit set, both decorators skip tests that need
 # more memory than available to be meaningful.  The precisionbigmemtest will
-# always pass minsize as size, even ikiwa there ni much more memory available.
+# always pita minsize kama size, even ikiwa there ni much more memory available.
 # The bigmemtest decorator will scale size upward to fill available memory.
 #
 # Bigmem testing houserules:
@@ -53,12 +53,12 @@ agiza sys
 #    ukijumuisha a much smaller number too, kwenye the normal test run (5Kb currently.)
 #    This ni so the tests themselves get frequent testing.
 #    Consequently, always make all large allocations based on the
-#    passed-in 'size', na don't rely on the size being very large. Also,
+#    pitaed-in 'size', na don't rely on the size being very large. Also,
 #    memuse-per-size should remain sane (less than a few thousand); ikiwa your
 #    test uses more, adjust 'size' upward, instead.
 
 # BEWARE: it seems that one failing test can tuma other subsequent tests to
-# fail as well. I do sio know whether it ni due to memory fragmentation
+# fail kama well. I do sio know whether it ni due to memory fragmentation
 # issues, ama other specifics of the platform malloc() routine.
 
 ascii_char_size = 1
@@ -473,7 +473,7 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size)
         self.assertEqual(s.count(_('0')), size - len(SUBSTR))
 
-    # This test ni meaningful even ukijumuisha size < 2G, as long as the
+    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
     # doubled string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_concat(self, size):
@@ -484,7 +484,7 @@ kundi BaseStrTest:
         self.assertEqual(len(s), size * 2)
         self.assertEqual(s.count(_('.')), size * 2)
 
-    # This test ni meaningful even ukijumuisha size < 2G, as long as the
+    # This test ni meaningful even ukijumuisha size < 2G, kama long kama the
     # repeated string ni > 2G (but it tests more ikiwa both are > 2G :)
     @bigmemtest(size=_1G + 2, memuse=3)
     eleza test_repeat(self, size):
@@ -596,7 +596,7 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
             meth = getattr(type(self), name)
             jaribu:
                 memuse = meth.memuse
-            except AttributeError:
+            tatizo AttributeError:
                 endelea
             meth.memuse = ascii_char_size * memuse
             self._adjusted[name] = memuse
@@ -628,22 +628,22 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
     eleza test_encode_raw_unicode_escape(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'raw_unicode_escape')
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 5 + 70, memuse=ascii_char_size + 8 + 1)
     eleza test_encode_utf7(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'utf7')
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_4G // 4 + 5, memuse=ascii_char_size + ucs4_char_size + 4)
     eleza test_encode_utf32(self, size):
         jaribu:
             rudisha self.basic_encode_test(size, 'utf32', expectedsize=4 * size + 4)
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
 
     @bigmemtest(size=_2G - 1, memuse=ascii_char_size + 1)
     eleza test_encode_ascii(self, size):
@@ -681,7 +681,7 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         self.assertEqual(s[-1], "'")
         self.assertEqual(s.count('-'), size)
         toa s
-        # repr() will create a string four times as large as this 'binary
+        # repr() will create a string four times kama large kama this 'binary
         # string', but we don't want to allocate much more than twice
         # size kwenye total.  (We do extra testing kwenye test_repr_large())
         size = size // 5 * 2
@@ -737,7 +737,7 @@ kundi StrTest(unittest.TestCase, BaseStrTest):
         mwishowe:
             r = s = Tupu
 
-    # The original test_translate ni overridden here, so as to get the
+    # The original test_translate ni overridden here, so kama to get the
     # correct size estimate: str.translate() uses an intermediate Py_UCS4
     # representation.
 
@@ -819,7 +819,7 @@ kundi TupleTest(unittest.TestCase):
 
     # As a side-effect of testing long tuples, these tests happen to test
     # having more than 2<<31 references to any given object. Hence the
-    # use of different types of objects as contents kwenye different tests.
+    # use of different types of objects kama contents kwenye different tests.
 
     @bigmemtest(size=_2G + 2, memuse=pointer_size * 2)
     eleza test_compare(self, size):
@@ -909,8 +909,8 @@ kundi TupleTest(unittest.TestCase):
     eleza test_from_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
         isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)
@@ -920,8 +920,8 @@ kundi TupleTest(unittest.TestCase):
     eleza test_from_almost_2G_generator(self, size):
         jaribu:
             t = tuple(iter([42]*size))
-        except MemoryError:
-            pass # acceptable on 32-bit
+        tatizo MemoryError:
+            pita # acceptable on 32-bit
         isipokua:
             self.assertEqual(len(t), size)
             self.assertEqual(t[:10], (42,) * 10)

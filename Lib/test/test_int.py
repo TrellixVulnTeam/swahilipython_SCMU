@@ -27,7 +27,7 @@ L = [
 ]
 
 kundi IntSubclass(int):
-    pass
+    pita
 
 kundi IntTestCases(unittest.TestCase):
 
@@ -55,8 +55,8 @@ kundi IntTestCases(unittest.TestCase):
                         vv = -v
                     jaribu:
                         self.assertEqual(int(ss), vv)
-                    except ValueError:
-                        pass
+                    tatizo ValueError:
+                        pita
 
         s = repr(-1-sys.maxsize)
         x = int(s)
@@ -226,7 +226,7 @@ kundi IntTestCases(unittest.TestCase):
             self.assertRaises(ValueError, int, lit, 0)
         # Additional test cases ukijumuisha bases != 0, only kila the constructor:
         self.assertEqual(int("1_00", 3), 9)
-        self.assertEqual(int("0_100"), 100)  # sio valid as a literal!
+        self.assertEqual(int("0_100"), 100)  # sio valid kama a literal!
         self.assertEqual(int(b"1_00"), 100)  # byte underscore
         self.assertRaises(ValueError, int, "_100")
         self.assertRaises(ValueError, int, "+_100")
@@ -298,9 +298,9 @@ kundi IntTestCases(unittest.TestCase):
     eleza test_non_numeric_input_types(self):
         # Test possible non-numeric types kila the argument x, including
         # subclasses of the explicitly documented accepted types.
-        kundi CustomStr(str): pass
-        kundi CustomBytes(bytes): pass
-        kundi CustomByteArray(bytearray): pass
+        kundi CustomStr(str): pita
+        kundi CustomBytes(bytes): pita
+        kundi CustomByteArray(bytearray): pita
 
         factories = [
             bytes,
@@ -312,8 +312,8 @@ kundi IntTestCases(unittest.TestCase):
         ]
         jaribu:
             kutoka array agiza array
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         isipokua:
             factories.append(lambda b: array('B', b))
 
@@ -343,11 +343,11 @@ kundi IntTestCases(unittest.TestCase):
     eleza test_intconversion(self):
         # Test __int__()
         kundi ClassicMissingMethods:
-            pass
+            pita
         self.assertRaises(TypeError, int, ClassicMissingMethods())
 
         kundi MissingMethods(object):
-            pass
+            pita
         self.assertRaises(TypeError, int, MissingMethods())
 
         kundi Foo0:
@@ -357,7 +357,7 @@ kundi IntTestCases(unittest.TestCase):
         self.assertEqual(int(Foo0()), 42)
 
         kundi Classic:
-            pass
+            pita
         kila base kwenye (object, Classic):
             kundi IntOverridesTrunc(base):
                 eleza __int__(self):
@@ -406,12 +406,12 @@ kundi IntTestCases(unittest.TestCase):
                         rudisha NonIntegral()
                 jaribu:
                     int(TruncReturnsNonIntegral())
-                except TypeError as e:
+                tatizo TypeError kama e:
                     self.assertEqual(str(e),
                                       "__trunc__ returned non-Integral"
                                       " (type NonIntegral)")
                 isipokua:
-                    self.fail("Failed to  ashiria TypeError ukijumuisha %s" %
+                    self.fail("Failed to ashiria TypeError ukijumuisha %s" %
                               ((base, trunc_result_base),))
 
                 # Regression test kila bugs.python.org/issue16060.
@@ -533,7 +533,7 @@ kundi IntTestCases(unittest.TestCase):
     eleza test_error_message(self):
         eleza check(s, base=Tupu):
             ukijumuisha self.assertRaises(ValueError,
-                                   msg="int(%r, %r)" % (s, base)) as cm:
+                                   msg="int(%r, %r)" % (s, base)) kama cm:
                 ikiwa base ni Tupu:
                     int(s)
                 isipokua:

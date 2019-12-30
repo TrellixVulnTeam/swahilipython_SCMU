@@ -100,7 +100,7 @@ kundi DeletePointerTestCase(unittest.TestCase):
             _fields_ = [("p", POINTER(c_char_p))]
         x = X()
         i = c_char_p("abc def")
-        kutoka sys agiza getrefcount as grc
+        kutoka sys agiza getrefcount kama grc
         andika("2?", grc(i))
         x.p = pointer(i)
         andika("3?", grc(i))
@@ -137,7 +137,7 @@ kundi PointerToStructure(unittest.TestCase):
 
         r.a = pointer(p1)
         r.b = pointer(p1)
-##        kutoka pprint agiza pprint as pp
+##        kutoka pprint agiza pprint kama pp
 ##        pp(p1._objects)
 ##        pp(r._objects)
 

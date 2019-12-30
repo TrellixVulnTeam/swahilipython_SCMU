@@ -12,7 +12,7 @@ kutoka test agiza support
 eleza to_tuple(t):
     ikiwa t ni Tupu ama isinstance(t, (str, int, complex)):
         rudisha t
-    elikiwa isinstance(t, list):
+    lasivyo isinstance(t, list):
         rudisha [to_tuple(e) kila e kwenye t]
     result = [t.__class__.__name__]
     ikiwa hasattr(t, 'lineno') na hasattr(t, 'col_offset'):
@@ -32,25 +32,25 @@ exec_tests = [
     # Module docstring
     "'module docstring'",
     # FunctionDef
-    "eleza f(): pass",
+    "eleza f(): pita",
     # FunctionDef ukijumuisha docstring
     "eleza f(): 'function docstring'",
     # FunctionDef ukijumuisha arg
-    "eleza f(a): pass",
+    "eleza f(a): pita",
     # FunctionDef ukijumuisha arg na default value
-    "eleza f(a=0): pass",
+    "eleza f(a=0): pita",
     # FunctionDef ukijumuisha varargs
-    "eleza f(*args): pass",
+    "eleza f(*args): pita",
     # FunctionDef ukijumuisha kwargs
-    "eleza f(**kwargs): pass",
+    "eleza f(**kwargs): pita",
     # FunctionDef ukijumuisha all kind of args na docstring
     "eleza f(a, b=1, c=Tupu, d=[], e={}, *args, f=42, **kwargs): 'doc kila f()'",
     # ClassDef
-    "kundi C:pass",
+    "kundi C:pita",
     # ClassDef ukijumuisha docstring
     "kundi C: 'docstring kila kundi C'",
     # ClassDef, new style class
-    "kundi C(object): pass",
+    "kundi C(object): pita",
     # Return
     "eleza f():rudisha 1",
     # Delete
@@ -63,20 +63,20 @@ exec_tests = [
     # AugAssign
     "v += 1",
     # For
-    "kila v kwenye v:pass",
+    "kila v kwenye v:pita",
     # While
-    "wakati v:pass",
+    "wakati v:pita",
     # If
-    "ikiwa v:pass",
+    "ikiwa v:pita",
     # With
-    "ukijumuisha x as y: pass",
-    "ukijumuisha x as y, z as q: pass",
+    "ukijumuisha x kama y: pita",
+    "ukijumuisha x kama y, z kama q: pita",
     # Raise
-    " ashiria Exception('string')",
+    "ashiria Exception('string')",
     # TryExcept
-    "jaribu:\n  pass\nexcept Exception:\n  pass",
+    "jaribu:\n  pita\ntatizo Exception:\n  pita",
     # TryFinally
-    "jaribu:\n  pass\nmwishowe:\n  pass",
+    "jaribu:\n  pita\nmwishowe:\n  pita",
     # Assert
     "assert v",
     # Import
@@ -88,15 +88,15 @@ exec_tests = [
     # Expr
     "1",
     # Pass,
-    "pass",
+    "pita",
     # Break
     "kila v kwenye v:koma",
     # Continue
     "kila v kwenye v:endelea",
     # kila statements ukijumuisha naked tuples (see http://bugs.python.org/issue6704)
-    "kila a,b kwenye c: pass",
-    "kila (a,b) kwenye c: pass",
-    "kila [a,b] kwenye c: pass",
+    "kila a,b kwenye c: pita",
+    "kila (a,b) kwenye c: pita",
+    "kila [a,b] kwenye c: pita",
     # Multiline generator expression (test kila .lineno & .col_offset)
     """(
     (
@@ -122,34 +122,34 @@ exec_tests = [
     # AsyncFor
     "async eleza f():\n async kila e kwenye i: 1\n isipokua: 2",
     # AsyncWith
-    "async eleza f():\n async ukijumuisha a as b: 1",
+    "async eleza f():\n async ukijumuisha a kama b: 1",
     # PEP 448: Additional Unpacking Generalizations
     "{**{1:2}, 2:3}",
     "{*{1, 2}, 3}",
     # Asynchronous comprehensions
     "async eleza f():\n [i async kila b kwenye c]",
     # Decorated FunctionDef
-    "@deco1\n@deco2()\neleza f(): pass",
+    "@deco1\n@deco2()\neleza f(): pita",
     # Decorated AsyncFunctionDef
-    "@deco1\n@deco2()\nasync eleza f(): pass",
+    "@deco1\n@deco2()\nasync eleza f(): pita",
     # Decorated ClassDef
-    "@deco1\n@deco2()\nkundi C: pass",
+    "@deco1\n@deco2()\nkundi C: pita",
     # Decorator ukijumuisha generator argument
-    "@deco(a kila a kwenye b)\neleza f(): pass",
+    "@deco(a kila a kwenye b)\neleza f(): pita",
     # Simple assignment expression
     "(a := 1)",
     # Positional-only arguments
-    "eleza f(a, /,): pass",
-    "eleza f(a, /, c, d, e): pass",
-    "eleza f(a, /, c, *, d, e): pass",
-    "eleza f(a, /, c, *, d, e, **kwargs): pass",
+    "eleza f(a, /,): pita",
+    "eleza f(a, /, c, d, e): pita",
+    "eleza f(a, /, c, *, d, e): pita",
+    "eleza f(a, /, c, *, d, e, **kwargs): pita",
     # Positional-only arguments ukijumuisha defaults
-    "eleza f(a=1, /,): pass",
-    "eleza f(a=1, /, b=2, c=4): pass",
-    "eleza f(a=1, /, b=2, *, c=4): pass",
-    "eleza f(a=1, /, b=2, *, c): pass",
-    "eleza f(a=1, /, b=2, *, c=4, **kwargs): pass",
-    "eleza f(a=1, /, b=2, *, c, **kwargs): pass",
+    "eleza f(a=1, /,): pita",
+    "eleza f(a=1, /, b=2, c=4): pita",
+    "eleza f(a=1, /, b=2, *, c=4): pita",
+    "eleza f(a=1, /, b=2, *, c): pita",
+    "eleza f(a=1, /, b=2, *, c=4, **kwargs): pita",
+    "eleza f(a=1, /, b=2, *, c, **kwargs): pita",
 
 ]
 
@@ -252,7 +252,7 @@ kundi AST_Tests(unittest.TestCase):
                     first_pos = (value[0].lineno, value[0].col_offset)
                 kila child kwenye value:
                     self._assertKweliorder(child, first_pos)
-            elikiwa value ni sio Tupu:
+            lasivyo value ni sio Tupu:
                 self._assertKweliorder(value, parent_pos)
 
     eleza test_AST_objects(self):
@@ -271,7 +271,7 @@ kundi AST_Tests(unittest.TestCase):
 
     eleza test_AST_garbage_collection(self):
         kundi X:
-            pass
+            pita
         a = ast.AST()
         a.x = X()
         a.x.a = a
@@ -452,7 +452,7 @@ kundi AST_Tests(unittest.TestCase):
         self.assertUongo(isinstance(ast.Constant(), ast.NameConstant))
         self.assertUongo(isinstance(ast.Constant(), ast.Ellipsis))
 
-        kundi S(str): pass
+        kundi S(str): pita
         self.assertKweli(isinstance(ast.Constant(S('42')), ast.Str))
         self.assertUongo(isinstance(ast.Constant(S('42')), ast.Num))
 
@@ -462,7 +462,7 @@ kundi AST_Tests(unittest.TestCase):
                 super().__init__(*args, **kwargs)
                 self.z = 'spam'
         kundi N2(ast.Num):
-            pass
+            pita
 
         n = N(42)
         self.assertEqual(n.n, 42)
@@ -536,8 +536,8 @@ kundi AST_Tests(unittest.TestCase):
         jaribu:
             agiza cPickle
             mods.append(cPickle)
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         protocols = [0, 1, 2]
         kila mod kwenye mods:
             kila protocol kwenye protocols:
@@ -548,23 +548,23 @@ kundi AST_Tests(unittest.TestCase):
     eleza test_invalid_sum(self):
         pos = dict(lineno=2, col_offset=3)
         m = ast.Module([ast.Expr(ast.expr(**pos), **pos)], [])
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("but got <_ast.expr", str(cm.exception))
 
     eleza test_invalid_identitifer(self):
         m = ast.Module([ast.Expr(ast.Name(42, ast.Load()))], [])
         ast.fix_missing_locations(m)
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             compile(m, "<test>", "exec")
         self.assertIn("identifier must be of type str", str(cm.exception))
 
-    eleza test_empty_yield_from(self):
+    eleza test_empty_tuma_from(self):
         # Issue 16546: tuma kutoka value ni sio optional.
-        empty_yield_kutoka = ast.parse("eleza f():\n tuma kutoka g()")
-        empty_yield_from.body[0].body[0].value.value = Tupu
-        ukijumuisha self.assertRaises(ValueError) as cm:
-            compile(empty_yield_from, "<test>", "exec")
+        empty_tuma_kutoka = ast.parse("eleza f():\n tuma kutoka g()")
+        empty_tuma_from.body[0].body[0].value.value = Tupu
+        ukijumuisha self.assertRaises(ValueError) kama cm:
+            compile(empty_tuma_from, "<test>", "exec")
         self.assertIn("field value ni required", str(cm.exception))
 
     @support.cpython_only
@@ -619,8 +619,8 @@ kundi ASTHelpers_Test(unittest.TestCase):
     eleza test_parse_in_error(self):
         jaribu:
             1/0
-        except Exception:
-            ukijumuisha self.assertRaises(SyntaxError) as e:
+        tatizo Exception:
+            ukijumuisha self.assertRaises(SyntaxError) kama e:
                 ast.literal_eval(r"'\U'")
             self.assertIsNotTupu(e.exception.__context__)
 
@@ -760,22 +760,22 @@ kundi ASTHelpers_Test(unittest.TestCase):
         self.assertIsTupu(ast.get_docstring(ast.parse('')))
         node = ast.parse('x = "not docstring"')
         self.assertIsTupu(ast.get_docstring(node))
-        node = ast.parse('eleza foo():\n  pass')
+        node = ast.parse('eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node))
 
-        node = ast.parse('kundi foo:\n  pass')
+        node = ast.parse('kundi foo:\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('kundi foo:\n  x = "not docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
-        node = ast.parse('kundi foo:\n  eleza bar(self): pass')
+        node = ast.parse('kundi foo:\n  eleza bar(self): pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
 
-        node = ast.parse('eleza foo():\n  pass')
+        node = ast.parse('eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('eleza foo():\n  x = "not docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
 
-        node = ast.parse('async eleza foo():\n  pass')
+        node = ast.parse('async eleza foo():\n  pita')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
         node = ast.parse('async eleza foo():\n  x = "not docstring"')
         self.assertIsTupu(ast.get_docstring(node.body[0]))
@@ -845,7 +845,7 @@ kundi ASTHelpers_Test(unittest.TestCase):
                                level=Tupu,
                                lineno=Tupu, col_offset=Tupu)]
         mod = ast.Module(body, [])
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             compile(mod, 'test', 'exec')
         self.assertIn("invalid integer value: Tupu", str(cm.exception))
 
@@ -869,7 +869,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         ikiwa msg ni Tupu:
             compile(mod, "<test>", mode)
         isipokua:
-            ukijumuisha self.assertRaises(exc) as cm:
+            ukijumuisha self.assertRaises(exc) kama cm:
                 compile(mod, "<test>", mode)
             self.assertIn(msg, str(cm.exception))
 
@@ -911,7 +911,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         check(arguments(defaults=[ast.Num(3)]),
                        "more positional defaults than args")
         check(arguments(kw_defaults=[ast.Num(4)]),
-                       "length of kwonlyargs ni sio the same as kw_defaults")
+                       "length of kwonlyargs ni sio the same kama kw_defaults")
         args = [ast.arg("x", ast.Name("x", ast.Load()))]
         check(arguments(args=args, defaults=[ast.Name("x", ast.Store())]),
                        "must have Load context")
@@ -1035,9 +1035,9 @@ kundi ASTValidatorTests(unittest.TestCase):
         t = ast.Try([ast.Expr(ast.Name("x", ast.Store()))], [], [], [p])
         self.stmt(t, "must have Load context")
         t = ast.Try([p], [], [], [])
-        self.stmt(t, "Try has neither except handlers nor finalbody")
+        self.stmt(t, "Try has neither tatizo handlers nor finalbody")
         t = ast.Try([p], [], [p], [p])
-        self.stmt(t, "Try has orelse but no except handlers")
+        self.stmt(t, "Try has orelse but no tatizo handlers")
         t = ast.Try([p], [ast.ExceptHandler(Tupu, "x", [])], [], [])
         self.stmt(t, "empty body on ExceptHandler")
         e = [ast.ExceptHandler(ast.Name("x", ast.Store()), "y", [p])]
@@ -1103,7 +1103,7 @@ kundi ASTValidatorTests(unittest.TestCase):
 
     eleza test_dict(self):
         d = ast.Dict([], [ast.Name("x", ast.Load())])
-        self.expr(d, "same number of keys as values")
+        self.expr(d, "same number of keys kama values")
         d = ast.Dict([ast.Name("x", ast.Load())], [Tupu])
         self.expr(d, "Tupu disallowed")
 
@@ -1160,7 +1160,7 @@ kundi ASTValidatorTests(unittest.TestCase):
             rudisha ast.DictComp(k, v, comps)
         self._check_comprehension(factory)
 
-    eleza test_yield(self):
+    eleza test_tuma(self):
         self.expr(ast.Yield(ast.Name("x", ast.Store())), "must have Load")
         self.expr(ast.YieldFrom(ast.Name("x", ast.Store())), "must have Load")
 
@@ -1189,11 +1189,11 @@ kundi ASTValidatorTests(unittest.TestCase):
 
     eleza test_num(self):
         kundi subint(int):
-            pass
+            pita
         kundi subfloat(float):
-            pass
+            pita
         kundi subcomplex(complex):
-            pass
+            pita
         kila obj kwenye "0", "hello":
             self.expr(ast.Num(obj))
         kila obj kwenye subint(), subfloat(), subcomplex():
@@ -1248,7 +1248,7 @@ kundi ASTValidatorTests(unittest.TestCase):
         kila module kwenye tests:
             ukijumuisha self.subTest(module):
                 fn = os.path.join(stdlib, module)
-                ukijumuisha open(fn, "r", encoding="utf-8") as fp:
+                ukijumuisha open(fn, "r", encoding="utf-8") kama fp:
                     source = fp.read()
                 mod = ast.parse(source, fn)
                 compile(mod, fn, "exec")
@@ -1272,7 +1272,7 @@ kundi ConstantTests(unittest.TestCase):
         rudisha ns['x']
 
     eleza test_validation(self):
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             self.compile_constant([1, 2, 3])
         self.assertEqual(str(cm.exception),
                          "got an invalid type kwenye Constant: list")
@@ -1306,7 +1306,7 @@ kundi ConstantTests(unittest.TestCase):
         ast.copy_location(new_target, target)
         tree.body[0].targets[0] = new_target
 
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             compile(tree, "string", "exec")
         self.assertEqual(str(cm.exception),
                          "expression which can't be assigned "
@@ -1452,7 +1452,7 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_content(s, cdef.body[0], 'x: int = 0')
 
     eleza test_class_kw(self):
-        s = 'kundi S(metaclass=abc.ABCMeta): pass'
+        s = 'kundi S(metaclass=abc.ABCMeta): pita'
         celeza = ast.parse(s).body[0]
         self._check_content(s, cdef.keywords[0].value, 'abc.ABCMeta')
 
@@ -1480,11 +1480,11 @@ kundi EndPositionTests(unittest.TestCase):
         # that empty lines are sio part of the suite.
         s = dedent('''
             wakati Kweli:
-                pass
+                pita
 
             ikiwa one():
                 x = Tupu
-            elikiwa other():
+            lasivyo other():
                 y = Tupu
             isipokua:
                 z = Tupu
@@ -1493,30 +1493,30 @@ kundi EndPositionTests(unittest.TestCase):
                 assert Kweli
 
             jaribu:
-                 ashiria RuntimeError
-            except TypeError as e:
-                pass
+                ashiria RuntimeError
+            tatizo TypeError kama e:
+                pita
 
-            pass
+            pita
         ''').strip()
         mod = ast.parse(s)
         while_loop = mod.body[0]
         if_stmt = mod.body[1]
         for_loop = mod.body[2]
         try_stmt = mod.body[3]
-        pass_stmt = mod.body[4]
+        pita_stmt = mod.body[4]
 
         self._check_end_pos(while_loop, 2, 8)
         self._check_end_pos(if_stmt, 9, 12)
         self._check_end_pos(for_loop, 12, 15)
         self._check_end_pos(try_stmt, 17, 8)
-        self._check_end_pos(pass_stmt, 19, 4)
+        self._check_end_pos(pita_stmt, 19, 4)
 
         self._check_content(s, while_loop.test, 'Kweli')
         self._check_content(s, if_stmt.body[0], 'x = Tupu')
         self._check_content(s, if_stmt.orelse[0].test, 'other()')
         self._check_content(s, for_loop.target, 'x, y')
-        self._check_content(s, try_stmt.body[0], ' ashiria RuntimeError')
+        self._check_content(s, try_stmt.body[0], 'ashiria RuntimeError')
         self._check_content(s, try_stmt.handlers[0].type, 'TypeError')
 
     eleza test_fstring(self):
@@ -1544,7 +1544,7 @@ kundi EndPositionTests(unittest.TestCase):
     eleza test_import_from_multi_line(self):
         s = dedent('''
             kutoka x.y.z agiza (
-                a, b, c as c
+                a, b, c kama c
             )
         ''').strip()
         imp = ast.parse(s).body[0]
@@ -1581,9 +1581,9 @@ kundi EndPositionTests(unittest.TestCase):
 
     eleza test_boolop(self):
         s = dedent('''
-            ikiwa (one_condition and
+            ikiwa (one_condition na
                     (other_condition ama yet_another_one)):
-                pass
+                pita
         ''').strip()
         bop = ast.parse(s).body[0].test
         self._check_end_pos(bop, 2, 44)
@@ -1634,7 +1634,7 @@ kundi EndPositionTests(unittest.TestCase):
         self._check_content(s, cmp.elt.generators[0].ifs[0], 'cond.x')
         self._check_content(s, cmp.elt.generators[0].target, 'x, y')
 
-    eleza test_yield_await(self):
+    eleza test_tuma_await(self):
         s = dedent('''
             async eleza f():
                 tuma x
@@ -1683,10 +1683,10 @@ kundi EndPositionTests(unittest.TestCase):
         s = dedent('''
             kundi C:
               \t\f  eleza fun(self) -> Tupu:
-              \t\f      pass
+              \t\f      pita
         ''').strip()
         s_method = '  \t\f  eleza fun(self) -> Tupu:\n' \
-                   '  \t\f      pass'
+                   '  \t\f      pita'
 
         celeza = ast.parse(s).body[0]
         self.assertEqual(ast.get_source_segment(s, cdef.body[0], padded=Kweli), s_method)
@@ -1717,7 +1717,7 @@ kundi NodeVisitorTests(unittest.TestCase):
             '''))
         visitor = Visitor()
         log = []
-        ukijumuisha warnings.catch_warnings(record=Kweli) as wlog:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama wlog:
             warnings.filterwarnings('always', '', PendingDeprecationWarning)
             visitor.visit(mod)
         self.assertEqual(log, [
@@ -1754,7 +1754,7 @@ eleza main():
                 andika("%r," % (to_tuple(tree),))
             andika("]")
         andika("main()")
-         ashiria SystemExit
+        ashiria SystemExit
     unittest.main()
 
 #### EVERYTHING BELOW IS GENERATED BY python Lib/test/test_ast.py -g  #####

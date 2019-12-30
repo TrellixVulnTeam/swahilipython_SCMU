@@ -31,16 +31,16 @@ float_types = [c_double, c_float]
 jaribu:
     c_ulonglong
     c_longlong
-except NameError:
-    pass
+tatizo NameError:
+    pita
 isipokua:
     unsigned_types.append(c_ulonglong)
     signed_types.append(c_longlong)
 
 jaribu:
     c_bool
-except NameError:
-    pass
+tatizo NameError:
+    pita
 isipokua:
     bool_types.append(c_bool)
 
@@ -59,7 +59,7 @@ kundi NumberTestCase(unittest.TestCase):
 
     eleza test_unsigned_values(self):
         # the value given to the constructor ni available
-        # as the 'value' attribute
+        # kama the 'value' attribute
         kila t, (l, h) kwenye zip(unsigned_types, unsigned_ranges):
             self.assertEqual(t(l).value, l)
             self.assertEqual(t(h).value, h)
@@ -85,7 +85,7 @@ kundi NumberTestCase(unittest.TestCase):
     @unittest.skip('test disabled')
     eleza test_valid_ranges(self):
         # invalid values of the correct type
-        #  ashiria ValueError (not OverflowError)
+        # ashiria ValueError (sio OverflowError)
         kila t, (l, h) kwenye zip(unsigned_types, unsigned_ranges):
             self.assertRaises(ValueError, t, l-1)
             self.assertRaises(ValueError, t, h+1)
@@ -142,7 +142,7 @@ kundi NumberTestCase(unittest.TestCase):
         kila t kwenye signed_types + unsigned_types + float_types + bool_types:
             jaribu:
                 size = struct.calcsize(t._type_)
-            except struct.error:
+            tatizo struct.error:
                 endelea
             # sizeof of the type...
             self.assertEqual(sizeof(t), size)
@@ -168,7 +168,7 @@ kundi NumberTestCase(unittest.TestCase):
             # (no 'q' ama 'Q')
             jaribu:
                 array(t._type_)
-            except ValueError:
+            tatizo ValueError:
                 endelea
             a = array(t._type_, [100])
 
@@ -247,7 +247,7 @@ kundi c_int_S(_SimpleCData):
 eleza run_test(rep, msg, func, arg=Tupu):
 ##    items = [Tupu] * rep
     items = range(rep)
-    kutoka time agiza perf_counter as clock
+    kutoka time agiza perf_counter kama clock
     ikiwa arg ni sio Tupu:
         start = clock()
         kila i kwenye items:

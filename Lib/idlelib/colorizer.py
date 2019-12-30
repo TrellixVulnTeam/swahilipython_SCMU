@@ -16,7 +16,7 @@ eleza make_pat():
     kw = r"\b" + any("KEYWORD", keyword.kwlist) + r"\b"
     builtinlist = [str(name) kila name kwenye dir(builtins)
                                         ikiwa sio name.startswith('_') na \
-                                        name sio kwenye keyword.kwlist]
+                                        name haiko kwenye keyword.kwlist]
     builtin = r"([^.'\"\\#]\b|^)" + any("BUILTIN", builtinlist) + r"\b"
     comment = any("COMMENT", [r"#[^\n]*"])
     stringprefix = r"(?i:r|u|f|fr|rf|b|br|rb)?"
@@ -304,7 +304,7 @@ eleza _color_delegator(parent):  # htest #
     top.geometry("700x250+%d+%d" % (x + 20, y + 175))
     source = (
         "ikiwa Kweli: int ('1') # keyword, builtin, string, comment\n"
-        "elikiwa Uongo: andika(0)\n"
+        "lasivyo Uongo: andika(0)\n"
         "isipokua: float(Tupu)\n"
         "ikiwa iF + If + IF: 'keyword matching must respect case'\n"
         "if'': x or''  # valid string-keyword no-space combinations\n"

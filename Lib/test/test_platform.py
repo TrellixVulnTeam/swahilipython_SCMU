@@ -19,7 +19,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.skip_unless_symlink
     eleza test_architecture_via_symlink(self): # issue3762
-        ukijumuisha support.PythonSymlink() as py:
+        ukijumuisha support.PythonSymlink() kama py:
             cmd = "-c", "agiza platform; andika(platform.architecture())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -167,7 +167,7 @@ kundi PlatformTest(unittest.TestCase):
         # using it, per
         # http://blogs.msdn.com/david.wang/archive/2006/03/26/HOWTO-Detect-Process-Bitness.aspx
         jaribu:
-            ukijumuisha support.EnvironmentVarGuard() as environ:
+            ukijumuisha support.EnvironmentVarGuard() kama environ:
                 ikiwa 'PROCESSOR_ARCHITEW6432' kwenye environ:
                     toa environ['PROCESSOR_ARCHITEW6432']
                 environ['PROCESSOR_ARCHITECTURE'] = 'foo'
@@ -206,7 +206,7 @@ kundi PlatformTest(unittest.TestCase):
             result_list = res[0].split('.')
             expect_list = real_ver.split('.')
             len_diff = len(result_list) - len(expect_list)
-            # On Snow Leopard, sw_vers reports 10.6.0 as 10.6
+            # On Snow Leopard, sw_vers reports 10.6.0 kama 10.6
             ikiwa len_diff > 0:
                 expect_list.extend(['0'] * len_diff)
             self.assertEqual(result_list, expect_list)
@@ -241,12 +241,12 @@ kundi PlatformTest(unittest.TestCase):
             self.assertEqual(sts, 0)
 
     eleza test_libc_ver(self):
-        # check that libc_ver(executable) doesn't  ashiria an exception
+        # check that libc_ver(executable) doesn't ashiria an exception
         ikiwa os.path.isdir(sys.executable) na \
            os.path.exists(sys.executable+'.exe'):
             # Cygwin horror
             executable = sys.executable + '.exe'
-        elikiwa sys.platform == "win32" na sio os.path.exists(sys.executable):
+        lasivyo sys.platform == "win32" na sio os.path.exists(sys.executable):
             # App symlink appears to sio exist, but we want the
             # real executable here anyway
             agiza _winapi
@@ -270,7 +270,7 @@ kundi PlatformTest(unittest.TestCase):
                 (b'libc_pthread.so.1.2.5', ('libc', '1.2.5_pthread')),
                 (b'', ('', '')),
             ):
-                ukijumuisha open(filename, 'wb') as fp:
+                ukijumuisha open(filename, 'wb') kama fp:
                     fp.write(b'[xxx%sxxx]' % data)
                     fp.flush()
 
@@ -279,9 +279,9 @@ kundi PlatformTest(unittest.TestCase):
                                  expected)
 
         # binary containing multiple versions: get the most recent,
-        # make sure that 1.9 ni seen as older than 1.23.4
+        # make sure that 1.9 ni seen kama older than 1.23.4
         chunksize = 16384
-        ukijumuisha open(filename, 'wb') as f:
+        ukijumuisha open(filename, 'wb') kama f:
             # test match at chunk boundary
             f.write(b'x'*(chunksize - 10))
             f.write(b'GLIBC_1.23.4\0GLIBC_1.9\0GLIBC_1.21\0')
@@ -290,7 +290,7 @@ kundi PlatformTest(unittest.TestCase):
 
     @support.cpython_only
     eleza test__comparable_version(self):
-        kutoka platform agiza _comparable_version as V
+        kutoka platform agiza _comparable_version kama V
         self.assertEqual(V('1.2.3'), V('1.2.3'))
         self.assertLess(V('1.2.3'), V('1.2.10'))
         self.assertEqual(V('1.2.3.4'), V('1_2-3+4'))

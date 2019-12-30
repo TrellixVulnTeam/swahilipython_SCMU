@@ -13,13 +13,13 @@ kundi PointersTestCase(unittest.TestCase):
     eleza test_pointer_crash(self):
 
         kundi A(POINTER(c_ulong)):
-            pass
+            pita
 
         POINTER(c_ulong)(c_ulong(22))
         # Pointer can't set contents: has no _type_
         self.assertRaises(TypeError, A, c_ulong(33))
 
-    eleza test_pass_pointers(self):
+    eleza test_pita_pointers(self):
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_p_p
         ikiwa sizeof(c_longlong) == sizeof(c_void_p):
@@ -79,7 +79,7 @@ kundi PointersTestCase(unittest.TestCase):
 
         dll = CDLL(_ctypes_test.__file__)
         # This function expects a function pointer,
-        # na calls this ukijumuisha an integer pointer as parameter.
+        # na calls this ukijumuisha an integer pointer kama parameter.
         # The int pointer points to a table containing the numbers 1..10
         doit = dll._testfunc_callback_with_pointer
 
@@ -99,7 +99,7 @@ kundi PointersTestCase(unittest.TestCase):
             p = pointer(i)
 ##            print type(p.contents), ct
             self.assertIs(type(p.contents), ct)
-            # p.contents ni the same as p[0]
+            # p.contents ni the same kama p[0]
 ##            print p.contents
 ##            self.assertEqual(p.contents, 42)
 ##            self.assertEqual(p[0], 42)
@@ -142,7 +142,7 @@ kundi PointersTestCase(unittest.TestCase):
         self.assertEqual(p.contents.value, 42)
 
     eleza test_charpp(self):
-        """Test that a character pointer-to-pointer ni correctly passed"""
+        """Test that a character pointer-to-pointer ni correctly pitaed"""
         dll = CDLL(_ctypes_test.__file__)
         func = dll._testfunc_c_p_p
         func.restype = c_char_p
@@ -172,7 +172,7 @@ kundi PointersTestCase(unittest.TestCase):
                                  c_void_p(-1).value)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,
                                  c_void_p(-1).value)
-        elikiwa sizeof(c_void_p) == 8:
+        lasivyo sizeof(c_void_p) == 8:
             self.assertEqual(c_void_p(0xFFFFFFFF).value,
                                  0xFFFFFFFF)
             self.assertEqual(c_void_p(0xFFFFFFFFFFFFFFFF).value,

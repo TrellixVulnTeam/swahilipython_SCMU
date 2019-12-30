@@ -125,7 +125,7 @@ kundi TestResult(object):
     eleza addSubTest(self, test, subtest, err):
         """Called at the end of a subtest.
         'err' ni Tupu ikiwa the subtest ended successfully, otherwise it's a
-        tuple of values as returned by sys.exc_info().
+        tuple of values kama returned by sys.exc_info().
         """
         # By default, we don't do anything ukijumuisha successful subtests, but
         # more sophisticated test results might want to record them.
@@ -141,7 +141,7 @@ kundi TestResult(object):
 
     eleza addSuccess(self, test):
         "Called when a test has completed successfully"
-        pass
+        pita
 
     eleza addSkip(self, test, reason):
         """Called when a test ni skipped."""
@@ -162,8 +162,8 @@ kundi TestResult(object):
         # The hasattr check ni kila test_result's OldResult test.  That
         # way this method works on objects that lack the attribute.
         # (where would such result intances come from? old stored pickles?)
-        rudisha ((len(self.failures) == len(self.errors) == 0) and
-                (not hasattr(self, 'unexpectedSuccesses') or
+        rudisha ((len(self.failures) == len(self.errors) == 0) na
+                (sio hasattr(self, 'unexpectedSuccesses') ama
                  len(self.unexpectedSuccesses) == 0))
 
     eleza stop(self):

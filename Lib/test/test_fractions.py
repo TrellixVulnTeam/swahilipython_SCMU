@@ -19,13 +19,13 @@ kundi DummyFloat(object):
 
     eleza __init__(self, value):
         ikiwa sio isinstance(value, float):
-             ashiria TypeError("DummyFloat can only be initialized kutoka float")
+            ashiria TypeError("DummyFloat can only be initialized kutoka float")
         self.value = value
 
     eleza _richcmp(self, other, op):
         ikiwa isinstance(other, numbers.Rational):
             rudisha op(F.from_float(self.value), other)
-        elikiwa isinstance(other, DummyFloat):
+        lasivyo isinstance(other, DummyFloat):
             rudisha op(self.value, other.value)
         isipokua:
             rudisha NotImplemented
@@ -56,7 +56,7 @@ kundi DummyRational(object):
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, fractions.Fraction):
-            rudisha (self.num == other._numerator and
+            rudisha (self.num == other._numerator na
                     self.den == other._denominator)
         isipokua:
             rudisha NotImplemented
@@ -127,7 +127,7 @@ kundi FractionTest(unittest.TestCase):
         """Asserts that callable(*args, **kwargs) raises exc_type(message)."""
         jaribu:
             callable(*args, **kwargs)
-        except exc_type as e:
+        tatizo exc_type kama e:
             self.assertEqual(message, str(e))
         isipokua:
             self.fail("%s sio raised" % exc_type.__name__)
@@ -218,7 +218,7 @@ kundi FractionTest(unittest.TestCase):
             ValueError, "Invalid literal kila Fraction: '+ 3/2'",
             F, "+ 3/2")
         self.assertRaisesMessage(
-            # Avoid treating '.' as a regex special character.
+            # Avoid treating '.' kama a regex special character.
             ValueError, "Invalid literal kila Fraction: '3a2'",
             F, "3a2")
         self.assertRaisesMessage(
@@ -586,7 +586,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertUongo(F(144, -89) <= float('nan'))
 
     eleza testBigFloatComparisons(self):
-        # Because 10**23 can't be represented exactly as a float:
+        # Because 10**23 can't be represented exactly kama a float:
         self.assertUongo(F(10**23) == float(10**23))
         # The first test demonstrates why these are important.
         self.assertUongo(1e23 < float(F(math.trunc(1e23) + 1)))
@@ -643,7 +643,7 @@ kundi FractionTest(unittest.TestCase):
         self.assertEqual(hash(10**50), hash(F(10**50)))
         self.assertNotEqual(hash(float(10**23)), hash(F(10**23)))
         self.assertEqual(hinf, hash(F(1, hmod)))
-        # Check that __hash__ produces the same value as hash(), for
+        # Check that __hash__ produces the same value kama hash(), for
         # consistency ukijumuisha int na Decimal.  (See issue #10356.)
         self.assertEqual(hash(F(-1)), F(-1).__hash__())
 

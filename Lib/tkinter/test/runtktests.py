@@ -3,7 +3,7 @@ Use this module to get na run all tk tests.
 
 tkinter tests should live kwenye a package inside the directory where this file
 lives, like test_tkinter.
-Extensions also should live kwenye packages following the same rule as above.
+Extensions also should live kwenye packages following the same rule kama above.
 """
 
 agiza os
@@ -34,7 +34,7 @@ eleza get_tests_modules(basepath=this_dir_path, gui=Kweli, packages=Tupu):
 
         ikiwa is_package(dirpath) na filenames:
             pkg_name = dirpath[len(basepath) + len(os.sep):].replace('/', '.')
-            ikiwa packages na pkg_name sio kwenye packages:
+            ikiwa packages na pkg_name haiko kwenye packages:
                 endelea
 
             filenames = filter(
@@ -46,7 +46,7 @@ eleza get_tests_modules(basepath=this_dir_path, gui=Kweli, packages=Tupu):
                     tuma importlib.import_module(
                         ".%s.%s" % (pkg_name, name[:-len(py_ext)]),
                         "tkinter.test")
-                except test.support.ResourceDenied:
+                tatizo test.support.ResourceDenied:
                     ikiwa gui:
                         raise
 

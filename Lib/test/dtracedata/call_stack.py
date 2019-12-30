@@ -7,7 +7,7 @@ eleza function_2():
 
 # CALL_FUNCTION_VAR
 eleza function_3(dummy, dummy2):
-    pass
+    pita
 
 # CALL_FUNCTION_KW
 eleza function_4(**dummy):

@@ -1,6 +1,6 @@
 # Ridiculously simple test of the os.startfile function kila Windows.
 #
-# empty.vbs ni an empty file (except kila a comment), which does
+# empty.vbs ni an empty file (tatizo kila a comment), which does
 # nothing when run ukijumuisha cscript ama wscript.
 #
 # A possible improvement would be to have empty.vbs do something that

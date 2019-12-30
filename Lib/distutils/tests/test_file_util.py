@@ -64,7 +64,7 @@ kundi FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         # see issue 22182
         ukijumuisha patch("os.rename", side_effect=OSError("wrong", 1)), \
              self.assertRaises(DistutilsFileError):
-            ukijumuisha open(self.source, 'w') as fobj:
+            ukijumuisha open(self.source, 'w') kama fobj:
                 fobj.write('spam eggs')
             move_file(self.source, self.target, verbose=0)
 
@@ -73,18 +73,18 @@ kundi FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         ukijumuisha patch("os.rename", side_effect=OSError(errno.EXDEV, "wrong")), \
              patch("os.unlink", side_effect=OSError("wrong", 1)), \
              self.assertRaises(DistutilsFileError):
-            ukijumuisha open(self.source, 'w') as fobj:
+            ukijumuisha open(self.source, 'w') kama fobj:
                 fobj.write('spam eggs')
             move_file(self.source, self.target, verbose=0)
 
     eleza test_copy_file_hard_link(self):
-        ukijumuisha open(self.source, 'w') as f:
+        ukijumuisha open(self.source, 'w') kama f:
             f.write('some content')
         # Check first that copy_file() will sio fall back on copying the file
         # instead of creating the hard link.
         jaribu:
             os.link(self.source, self.target)
-        except OSError as e:
+        tatizo OSError kama e:
             self.skipTest('os.link: %s' % e)
         isipokua:
             unlink(self.target)
@@ -94,14 +94,14 @@ kundi FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         st3 = os.stat(self.target)
         self.assertKweli(os.path.samestat(st, st2), (st, st2))
         self.assertKweli(os.path.samestat(st2, st3), (st2, st3))
-        ukijumuisha open(self.source, 'r') as f:
+        ukijumuisha open(self.source, 'r') kama f:
             self.assertEqual(f.read(), 'some content')
 
     eleza test_copy_file_hard_link_failure(self):
         # If hard linking fails, copy_file() falls back on copying file
         # (some special filesystems don't support hard linking even under
         #  Unix, see issue #8876).
-        ukijumuisha open(self.source, 'w') as f:
+        ukijumuisha open(self.source, 'w') kama f:
             f.write('some content')
         st = os.stat(self.source)
         ukijumuisha patch("os.link", side_effect=OSError(0, "linking unsupported")):
@@ -111,7 +111,7 @@ kundi FileUtilTestCase(support.TempdirManager, unittest.TestCase):
         self.assertKweli(os.path.samestat(st, st2), (st, st2))
         self.assertUongo(os.path.samestat(st2, st3), (st2, st3))
         kila fn kwenye (self.source, self.target):
-            ukijumuisha open(fn, 'r') as f:
+            ukijumuisha open(fn, 'r') kama f:
                 self.assertEqual(f.read(), 'some content')
 
 

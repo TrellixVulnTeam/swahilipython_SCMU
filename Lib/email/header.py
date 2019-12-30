@@ -17,7 +17,7 @@ agiza email.quoprimime
 agiza email.base64mime
 
 kutoka email.errors agiza HeaderParseError
-kutoka email agiza charset as _charset
+kutoka email agiza charset kama _charset
 Charset = _charset.Charset
 
 NL = '\n'
@@ -115,21 +115,21 @@ eleza decode_header(header):
         ikiwa encoding ni Tupu:
             # This ni an unencoded word.
             decoded_words.append((encoded_string, charset))
-        elikiwa encoding == 'q':
+        lasivyo encoding == 'q':
             word = email.quoprimime.header_decode(encoded_string)
             decoded_words.append((word, charset))
-        elikiwa encoding == 'b':
+        lasivyo encoding == 'b':
             paderr = len(encoded_string) % 4   # Postel's law: add missing padding
             ikiwa paderr:
                 encoded_string += '==='[:4 - paderr]
             jaribu:
                 word = email.base64mime.decode(encoded_string)
-            except binascii.Error:
-                 ashiria HeaderParseError('Base64 decoding error')
+            tatizo binascii.Error:
+                ashiria HeaderParseError('Base64 decoding error')
             isipokua:
                 decoded_words.append((word, charset))
         isipokua:
-             ashiria AssertionError('Unexpected encoding: ' + encoding)
+            ashiria AssertionError('Unexpected encoding: ' + encoding)
     # Now convert all words to bytes na collapse consecutive runs of
     # similarly encoded words.
     collapsed = []
@@ -140,11 +140,11 @@ eleza decode_header(header):
         ikiwa last_word ni Tupu:
             last_word = word
             last_charset = charset
-        elikiwa charset != last_charset:
+        lasivyo charset != last_charset:
             collapsed.append((last_word, last_charset))
             last_word = word
             last_charset = charset
-        elikiwa last_charset ni Tupu:
+        lasivyo last_charset ni Tupu:
             last_word += BSPACE + word
         isipokua:
             last_word += word
@@ -155,20 +155,20 @@ eleza decode_header(header):
 
 eleza make_header(decoded_seq, maxlinelen=Tupu, header_name=Tupu,
                 continuation_ws=' '):
-    """Create a Header kutoka a sequence of pairs as returned by decode_header()
+    """Create a Header kutoka a sequence of pairs kama returned by decode_header()
 
     decode_header() takes a header value string na returns a sequence of
     pairs of the format (decoded_string, charset) where charset ni the string
     name of the character set.
 
     This function takes one of those sequence of pairs na returns a Header
-    instance.  Optional maxlinelen, header_name, na continuation_ws are as in
+    instance.  Optional maxlinelen, header_name, na continuation_ws are kama in
     the Header constructor.
     """
     h = Header(maxlinelen=maxlinelen, header_name=header_name,
                continuation_ws=continuation_ws)
     kila s, charset kwenye decoded_seq:
-        # Tupu means us-ascii but we can simply pass it on to h.append()
+        # Tupu means us-ascii but we can simply pita it on to h.append()
         ikiwa charset ni sio Tupu na sio isinstance(charset, Charset):
             charset = Charset(charset)
         h.append(s, charset)
@@ -187,28 +187,28 @@ kundi Header:
         method calls.  s may be a byte string ama a Unicode string, but see the
         .append() documentation kila semantics.
 
-        Optional charset serves two purposes: it has the same meaning as the
+        Optional charset serves two purposes: it has the same meaning kama the
         charset argument to the .append() method.  It also sets the default
         character set kila all subsequent .append() calls that omit the charset
         argument.  If charset ni sio provided kwenye the constructor, the us-ascii
-        charset ni used both as s's initial charset na as the default for
+        charset ni used both kama s's initial charset na kama the default for
         subsequent .append() calls.
 
         The maximum line length can be specified explicitly via maxlinelen. For
         splitting the first line to a shorter value (to account kila the field
-        header which isn't included kwenye s, e.g. `Subject') pass kwenye the name of
-        the field kwenye header_name.  The default maxlinelen ni 78 as recommended
+        header which isn't included kwenye s, e.g. `Subject') pita kwenye the name of
+        the field kwenye header_name.  The default maxlinelen ni 78 kama recommended
         by RFC 2822.
 
         continuation_ws must be RFC 2822 compliant folding whitespace (usually
         either a space ama a hard tab) which will be prepended to continuation
         lines.
 
-        errors ni passed through to the .append() call.
+        errors ni pitaed through to the .append() call.
         """
         ikiwa charset ni Tupu:
             charset = USASCII
-        elikiwa sio isinstance(charset, Charset):
+        lasivyo sio isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
         self._continuation_ws = continuation_ws
@@ -243,11 +243,11 @@ kundi Header:
                 string = original_bytes.decode('ascii', 'replace')
             ikiwa uchunks:
                 hasspace = string na self._nonctext(string[0])
-                ikiwa lastcs sio kwenye (Tupu, 'us-ascii'):
+                ikiwa lastcs haiko kwenye (Tupu, 'us-ascii'):
                     ikiwa nextcs kwenye (Tupu, 'us-ascii') na sio hasspace:
                         uchunks.append(SPACE)
                         nextcs = Tupu
-                elikiwa nextcs sio kwenye (Tupu, 'us-ascii') na sio lastspace:
+                lasivyo nextcs haiko kwenye (Tupu, 'us-ascii') na sio lastspace:
                     uchunks.append(SPACE)
             lastspace = string na self._nonctext(string[-1])
             lastcs = nextcs
@@ -280,12 +280,12 @@ kundi Header:
         output codec of the charset.  If the string cannot be encoded to the
         output codec, a UnicodeError will be raised.
 
-        Optional `errors' ni passed as the errors argument to the decode
+        Optional `errors' ni pitaed kama the errors argument to the decode
         call ikiwa s ni a byte string.
         """
         ikiwa charset ni Tupu:
             charset = self._charset
-        elikiwa sio isinstance(charset, Charset):
+        lasivyo sio isinstance(charset, Charset):
             charset = Charset(charset)
         ikiwa sio isinstance(s, str):
             input_charset = charset.input_codec ama 'us-ascii'
@@ -299,7 +299,7 @@ kundi Header:
         ikiwa output_charset != _charset.UNKNOWN8BIT:
             jaribu:
                 s.encode(output_charset, errors)
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 ikiwa output_charset!='us-ascii':
                     raise
                 charset = UTF8
@@ -315,7 +315,7 @@ kundi Header:
 
         There are many issues involved kwenye converting a given string kila use in
         an email header.  Only certain character sets are readable kwenye most
-        email clients, na as header strings can only contain a subset of
+        email clients, na kama header strings can only contain a subset of
         7-bit ASCII, care must be taken to properly convert na encode (with
         Base64 ama quoted-printable) header strings.  In addition, there ni a
         75-character length limit on any given encoded header field, so
@@ -335,7 +335,7 @@ kundi Header:
         during line splitting, ukijumuisha the characters preferred kwenye the order in
         which they appear kwenye the string.  Space na tab may be included kwenye the
         string to indicate whether preference should be given to one over the
-        other as a split point when other split chars do sio appear kwenye the line
+        other kama a split point when other split chars do sio appear kwenye the line
         being split.  Splitchars does sio affect RFC 2047 encoded lines.
 
         Optional linesep ni a string to be used to separate the lines of
@@ -358,10 +358,10 @@ kundi Header:
         kila string, charset kwenye self._chunks:
             ikiwa hasspace ni sio Tupu:
                 hasspace = string na self._nonctext(string[0])
-                ikiwa lastcs sio kwenye (Tupu, 'us-ascii'):
-                    ikiwa sio hasspace ama charset sio kwenye (Tupu, 'us-ascii'):
+                ikiwa lastcs haiko kwenye (Tupu, 'us-ascii'):
+                    ikiwa sio hasspace ama charset haiko kwenye (Tupu, 'us-ascii'):
                         formatter.add_transition()
-                elikiwa charset sio kwenye (Tupu, 'us-ascii') na sio lastspace:
+                lasivyo charset haiko kwenye (Tupu, 'us-ascii') na sio lastspace:
                     formatter.add_transition()
             lastspace = string na self._nonctext(string[-1])
             lastcs = charset
@@ -386,7 +386,7 @@ kundi Header:
             formatter.add_transition()
         value = formatter._str(linesep)
         ikiwa _embedded_header.search(value):
-             ashiria HeaderParseError("header value appears to contain "
+            ashiria HeaderParseError("header value appears to contain "
                 "an embedded header: {!r}".format(value))
         rudisha value
 
@@ -461,14 +461,14 @@ kundi _ValueFormatter:
         # nothing more fit on the current line so start a new line.
         jaribu:
             first_line = encoded_lines.pop(0)
-        except IndexError:
+        tatizo IndexError:
             # There are no encoded lines, so we're done.
             return
         ikiwa first_line ni sio Tupu:
             self._append_chunk(fws, first_line)
         jaribu:
             last_line = encoded_lines.pop()
-        except IndexError:
+        tatizo IndexError:
             # There was only one line.
             return
         self.newline()
@@ -487,7 +487,7 @@ kundi _ValueFormatter:
         # The RFC 2822 header folding algorithm ni simple kwenye principle but
         # complex kwenye practice.  Lines may be folded any place where "folding
         # white space" appears by inserting a linesep character kwenye front of the
-        # FWS.  The complication ni that sio all spaces ama tabs qualify as FWS,
+        # FWS.  The complication ni that sio all spaces ama tabs qualify kama FWS,
         # na we are also supposed to prefer to koma at "higher level
         # syntactic komas".  We can't do either of these without intimate
         # knowledge of the structure of structured headers, which we don't have
@@ -572,7 +572,7 @@ kundi _Accumulator(list):
         self._initial_size = 0
 
     eleza is_onlyws(self):
-        rudisha self._initial_size==0 na (not self ama str(self).isspace())
+        rudisha self._initial_size==0 na (sio self ama str(self).isspace())
 
     eleza part_count(self):
         rudisha super().__len__()

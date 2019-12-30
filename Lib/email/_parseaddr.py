@@ -57,17 +57,17 @@ eleza parsedate_tz(data):
 eleza _parsedate_tz(data):
     """Convert date to extended time tuple.
 
-    The last (additional) element ni the time zone offset kwenye seconds, except if
-    the timezone was specified as -0000.  In that case the last element is
+    The last (additional) element ni the time zone offset kwenye seconds, tatizo if
+    the timezone was specified kama -0000.  In that case the last element is
     Tupu.  This indicates a UTC timestamp that explicitly declaims knowledge of
-    the source timezone, as opposed to a +0000 timestamp that indicates the
+    the source timezone, kama opposed to a +0000 timestamp that indicates the
     source timezone really was UTC.
 
     """
     ikiwa sio data:
         return
     data = data.split()
-    # The FWS after the comma after the day-of-week ni optional, so search and
+    # The FWS after the comma after the day-of-week ni optional, so search na
     # adjust kila this.
     ikiwa data[0].endswith(',') ama data[0].lower() kwenye _daynames:
         # There's a dayname here. Skip it
@@ -94,9 +94,9 @@ eleza _parsedate_tz(data):
     data = data[:5]
     [dd, mm, yy, tm, tz] = data
     mm = mm.lower()
-    ikiwa mm sio kwenye _monthnames:
+    ikiwa mm haiko kwenye _monthnames:
         dd, mm = mm, dd.lower()
-        ikiwa mm sio kwenye _monthnames:
+        ikiwa mm haiko kwenye _monthnames:
             rudisha Tupu
     mm = _monthnames.index(mm) + 1
     ikiwa mm > 12:
@@ -116,15 +116,15 @@ eleza _parsedate_tz(data):
     ikiwa len(tm) == 2:
         [thh, tmm] = tm
         tss = '0'
-    elikiwa len(tm) == 3:
+    lasivyo len(tm) == 3:
         [thh, tmm, tss] = tm
-    elikiwa len(tm) == 1 na '.' kwenye tm[0]:
+    lasivyo len(tm) == 1 na '.' kwenye tm[0]:
         # Some non-compliant MUAs use '.' to separate time elements.
         tm = tm[0].split('.')
         ikiwa len(tm) == 2:
             [thh, tmm] = tm
             tss = 0
-        elikiwa len(tm) == 3:
+        lasivyo len(tm) == 3:
             [thh, tmm, tss] = tm
     isipokua:
         rudisha Tupu
@@ -134,7 +134,7 @@ eleza _parsedate_tz(data):
         thh = int(thh)
         tmm = int(tmm)
         tss = int(tss)
-    except ValueError:
+    tatizo ValueError:
         rudisha Tupu
     # Check kila a yy specified kwenye two-digit format, then convert it to the
     # appropriate four-digit format, according to the POSIX standard. RFC 822
@@ -155,8 +155,8 @@ eleza _parsedate_tz(data):
     isipokua:
         jaribu:
             tzoffset = int(tz)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         ikiwa tzoffset==0 na tz.startswith('-'):
             tzoffset = Tupu
     # Convert a timezone offset into seconds ; -0500 -> -18000
@@ -181,7 +181,7 @@ eleza parsedate(data):
 
 
 eleza mktime_tz(data):
-    """Turn a 10-tuple as returned by parsedate_tz() into a POSIX timestamp."""
+    """Turn a 10-tuple kama returned by parsedate_tz() into a POSIX timestamp."""
     ikiwa data[9] ni Tupu:
         # No zone info, so localtime ni better assumption than GMT
         rudisha time.mktime(data[:8] + (-1,))
@@ -222,7 +222,7 @@ kundi AddrlistClass:
         self.CR = '\r\n'
         self.FWS = self.LWS + self.CR
         self.atomends = self.specials + self.LWS + self.CR
-        # Note that RFC 2822 now specifies `.' as obs-phrase, meaning that it
+        # Note that RFC 2822 now specifies `.' kama obs-phrase, meaning that it
         # ni obsolete syntax.  RFC 2822 requires that we recognize obsolete
         # syntax, so allow dots kwenye phrases.
         self.phraseends = self.atomends.replace('.', '')
@@ -234,10 +234,10 @@ kundi AddrlistClass:
         wslist = []
         wakati self.pos < len(self.field):
             ikiwa self.field[self.pos] kwenye self.LWS + '\n\r':
-                ikiwa self.field[self.pos] sio kwenye '\n\r':
+                ikiwa self.field[self.pos] haiko kwenye '\n\r':
                     wslist.append(self.field[self.pos])
                 self.pos += 1
-            elikiwa self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
             isipokua:
                 koma
@@ -274,7 +274,7 @@ kundi AddrlistClass:
             ikiwa plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
 
-        elikiwa self.field[self.pos] kwenye '.@':
+        lasivyo self.field[self.pos] kwenye '.@':
             # email address ni just an addrspec
             # this isn't very efficient since we start over
             self.pos = oldpos
@@ -282,7 +282,7 @@ kundi AddrlistClass:
             addrspec = self.getaddrspec()
             returnlist = [(SPACE.join(self.commentlist), addrspec)]
 
-        elikiwa self.field[self.pos] == ':':
+        lasivyo self.field[self.pos] == ':':
             # address ni a group
             returnlist = []
 
@@ -295,7 +295,7 @@ kundi AddrlistClass:
                     koma
                 returnlist = returnlist + self.getaddress()
 
-        elikiwa self.field[self.pos] == '<':
+        lasivyo self.field[self.pos] == '<':
             # Address ni a phrase then a route addr
             routeaddr = self.getrouteaddr()
 
@@ -308,7 +308,7 @@ kundi AddrlistClass:
         isipokua:
             ikiwa plist:
                 returnlist = [(SPACE.join(self.commentlist), plist[0])]
-            elikiwa self.field[self.pos] kwenye self.specials:
+            lasivyo self.field[self.pos] kwenye self.specials:
                 self.pos += 1
 
         self.gotonext()
@@ -332,13 +332,13 @@ kundi AddrlistClass:
             ikiwa expectroute:
                 self.getdomain()
                 expectroute = Uongo
-            elikiwa self.field[self.pos] == '>':
+            lasivyo self.field[self.pos] == '>':
                 self.pos += 1
                 koma
-            elikiwa self.field[self.pos] == '@':
+            lasivyo self.field[self.pos] == '@':
                 self.pos += 1
                 expectroute = Kweli
-            elikiwa self.field[self.pos] == ':':
+            lasivyo self.field[self.pos] == ':':
                 self.pos += 1
             isipokua:
                 adlist = self.getaddrspec()
@@ -361,9 +361,9 @@ kundi AddrlistClass:
                 aslist.append('.')
                 self.pos += 1
                 preserve_ws = Uongo
-            elikiwa self.field[self.pos] == '"':
+            lasivyo self.field[self.pos] == '"':
                 aslist.append('"%s"' % quote(self.getquote()))
-            elikiwa self.field[self.pos] kwenye self.atomends:
+            lasivyo self.field[self.pos] kwenye self.atomends:
                 ikiwa aslist na sio aslist[-1].strip():
                     aslist.pop()
                 koma
@@ -392,18 +392,18 @@ kundi AddrlistClass:
         wakati self.pos < len(self.field):
             ikiwa self.field[self.pos] kwenye self.LWS:
                 self.pos += 1
-            elikiwa self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            elikiwa self.field[self.pos] == '[':
+            lasivyo self.field[self.pos] == '[':
                 sdlist.append(self.getdomainliteral())
-            elikiwa self.field[self.pos] == '.':
+            lasivyo self.field[self.pos] == '.':
                 self.pos += 1
                 sdlist.append('.')
-            elikiwa self.field[self.pos] == '@':
+            lasivyo self.field[self.pos] == '@':
                 # bpo-34155: Don't parse domains ukijumuisha two `@` like
                 # `a@malicious.org@important.com`.
                 rudisha EMPTYSTRING
-            elikiwa self.field[self.pos] kwenye self.atomends:
+            lasivyo self.field[self.pos] kwenye self.atomends:
                 koma
             isipokua:
                 sdlist.append(self.getatom())
@@ -432,13 +432,13 @@ kundi AddrlistClass:
             ikiwa quote:
                 slist.append(self.field[self.pos])
                 quote = Uongo
-            elikiwa self.field[self.pos] kwenye endchars:
+            lasivyo self.field[self.pos] kwenye endchars:
                 self.pos += 1
                 koma
-            elikiwa allowcomments na self.field[self.pos] == '(':
+            lasivyo allowcomments na self.field[self.pos] == '(':
                 slist.append(self.getcomment())
                 endelea        # have already advanced pos kutoka getcomment
-            elikiwa self.field[self.pos] == '\\':
+            lasivyo self.field[self.pos] == '\\':
                 quote = Kweli
             isipokua:
                 slist.append(self.field[self.pos])
@@ -490,11 +490,11 @@ kundi AddrlistClass:
         wakati self.pos < len(self.field):
             ikiwa self.field[self.pos] kwenye self.FWS:
                 self.pos += 1
-            elikiwa self.field[self.pos] == '"':
+            lasivyo self.field[self.pos] == '"':
                 plist.append(self.getquote())
-            elikiwa self.field[self.pos] == '(':
+            lasivyo self.field[self.pos] == '(':
                 self.commentlist.append(self.getcomment())
-            elikiwa self.field[self.pos] kwenye self.phraseends:
+            lasivyo self.field[self.pos] kwenye self.phraseends:
                 koma
             isipokua:
                 plist.append(self.getatom(self.phraseends))

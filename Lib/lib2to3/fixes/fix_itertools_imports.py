@@ -21,8 +21,8 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             ikiwa child.type == token.NAME:
                 member = child.value
                 name_node = child
-            elikiwa child.type == token.STAR:
-                # Just leave the agiza as is.
+            lasivyo child.type == token.STAR:
+                # Just leave the agiza kama is.
                 return
             isipokua:
                 assert child.type == syms.import_as_name
@@ -31,7 +31,7 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             ikiwa member_name kwenye ('imap', 'izip', 'ifilter'):
                 child.value = Tupu
                 child.remove()
-            elikiwa member_name kwenye ('ifilterfalse', 'izip_longest'):
+            lasivyo member_name kwenye ('ifilterfalse', 'izip_longest'):
                 node.changed()
                 name_node.value = ('filterfalse' ikiwa member_name[1] == 'f'
                                    isipokua 'zip_longest')
@@ -49,7 +49,7 @@ kundi FixItertoolsImports(fixer_base.BaseFix):
             children.pop().remove()
 
         # If there are no imports left, just get rid of the entire statement
-        ikiwa (not (imports.children ama getattr(imports, 'value', Tupu)) or
+        ikiwa (sio (imports.children ama getattr(imports, 'value', Tupu)) ama
             imports.parent ni Tupu):
             p = node.prefix
             node = BlankLine()

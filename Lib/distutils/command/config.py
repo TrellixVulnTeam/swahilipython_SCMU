@@ -1,7 +1,7 @@
 """distutils.command.config
 
 Implements the Distutils 'config' command, a (mostly) empty command class
-that exists mainly to be sub-classed by specific module distributions and
+that exists mainly to be sub-classed by specific module distributions na
 applications.  The idea ni that wakati every "config" command ni different,
 at least they're all named the same, na users always see "config" kwenye the
 list of standard commands.  Also, this ni a good place to put common
@@ -66,21 +66,21 @@ kundi config(Command):
     eleza finalize_options(self):
         ikiwa self.include_dirs ni Tupu:
             self.include_dirs = self.distribution.include_dirs ama []
-        elikiwa isinstance(self.include_dirs, str):
+        lasivyo isinstance(self.include_dirs, str):
             self.include_dirs = self.include_dirs.split(os.pathsep)
 
         ikiwa self.libraries ni Tupu:
             self.libraries = []
-        elikiwa isinstance(self.libraries, str):
+        lasivyo isinstance(self.libraries, str):
             self.libraries = [self.libraries]
 
         ikiwa self.library_dirs ni Tupu:
             self.library_dirs = []
-        elikiwa isinstance(self.library_dirs, str):
+        lasivyo isinstance(self.library_dirs, str):
             self.library_dirs = self.library_dirs.split(os.pathsep)
 
     eleza run(self):
-        pass
+        pita
 
     # Utility methods kila actual "config" commands.  The interfaces are
     # loosely based on Autoconf macros of similar names.  Sub-classes
@@ -106,7 +106,7 @@ kundi config(Command):
 
     eleza _gen_temp_sourcefile(self, body, headers, lang):
         filename = "_configtest" + LANG_EXT[lang]
-        ukijumuisha open(filename, "w") as file:
+        ukijumuisha open(filename, "w") kama file:
             ikiwa headers:
                 kila header kwenye headers:
                     file.write("#include <%s>\n" % header)
@@ -155,8 +155,8 @@ kundi config(Command):
         kila filename kwenye filenames:
             jaribu:
                 os.remove(filename)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
 
     # XXX these ignore the dry-run flag: what to do, what to do? even if
@@ -181,7 +181,7 @@ kundi config(Command):
         ok = Kweli
         jaribu:
             self._preprocess(body, headers, include_dirs, lang)
-        except CompileError:
+        tatizo CompileError:
             ok = Uongo
 
         self._clean()
@@ -202,7 +202,7 @@ kundi config(Command):
         ikiwa isinstance(pattern, str):
             pattern = re.compile(pattern)
 
-        ukijumuisha open(out) as file:
+        ukijumuisha open(out) kama file:
             match = Uongo
             wakati Kweli:
                 line = file.readline()
@@ -224,7 +224,7 @@ kundi config(Command):
         jaribu:
             self._compile(body, headers, include_dirs, lang)
             ok = Kweli
-        except CompileError:
+        tatizo CompileError:
             ok = Uongo
 
         log.info(ok na "success!" ama "failure.")
@@ -233,7 +233,7 @@ kundi config(Command):
 
     eleza try_link(self, body, headers=Tupu, include_dirs=Tupu, libraries=Tupu,
                  library_dirs=Tupu, lang="c"):
-        """Try to compile na link a source file, built kutoka 'body' and
+        """Try to compile na link a source file, built kutoka 'body' na
         'headers', to executable form.  Return true on success, false
         otherwise.
         """
@@ -243,7 +243,7 @@ kundi config(Command):
             self._link(body, headers, include_dirs,
                        libraries, library_dirs, lang)
             ok = Kweli
-        except (CompileError, LinkError):
+        tatizo (CompileError, LinkError):
             ok = Uongo
 
         log.info(ok na "success!" ama "failure.")
@@ -263,7 +263,7 @@ kundi config(Command):
                                        libraries, library_dirs, lang)
             self.spawn([exe])
             ok = Kweli
-        except (CompileError, LinkError, DistutilsExecError):
+        tatizo (CompileError, LinkError, DistutilsExecError):
             ok = Uongo
 
         log.info(ok na "success!" ama "failure.")

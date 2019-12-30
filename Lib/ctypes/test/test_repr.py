@@ -6,11 +6,11 @@ kila base kwenye [c_byte, c_short, c_int, c_long, c_longlong,
         c_ubyte, c_ushort, c_uint, c_ulong, c_ulonglong,
         c_float, c_double, c_longdouble, c_bool]:
     kundi X(base):
-        pass
+        pita
     subclasses.append(X)
 
 kundi X(c_char):
-    pass
+    pita
 
 # This test checks ikiwa the __repr__ ni correct kila subclasses of simple types
 

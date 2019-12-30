@@ -4,7 +4,7 @@ Edit modules have their own test files
 '''
 kutoka test.support agiza requires
 requires('gui')
-agiza tkinter as tk
+agiza tkinter kama tk
 kutoka tkinter agiza ttk
 agiza unittest
 kutoka idlelib agiza pyshell

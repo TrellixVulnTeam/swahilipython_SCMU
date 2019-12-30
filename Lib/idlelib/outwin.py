@@ -1,4 +1,4 @@
-"""Editor window that can serve as an output file.
+"""Editor window that can serve kama an output file.
 """
 
 agiza re
@@ -46,18 +46,18 @@ eleza file_line_helper(line):
                 f = open(filename, "r")
                 f.close()
                 koma
-            except OSError:
+            tatizo OSError:
                 endelea
     isipokua:
         rudisha Tupu
     jaribu:
         rudisha filename, int(lineno)
-    except TypeError:
+    tatizo TypeError:
         rudisha Tupu
 
 
 kundi OutputWindow(EditorWindow):
-    """An editor window that can serve as an output file.
+    """An editor window that can serve kama an output file.
 
     Also the future base kundi kila the Python shell window.
     This kundi has no input facilities.
@@ -93,14 +93,14 @@ kundi OutputWindow(EditorWindow):
         "Customize EditorWindow to sio display save file messagebox."
         rudisha 'yes' ikiwa self.get_saved() isipokua 'no'
 
-    # Act as output file
+    # Act kama output file
     eleza write(self, s, tags=(), mark="insert"):
         """Write text to text widget.
 
         The text ni inserted at the given index ukijumuisha the provided
         tags.  The text widget ni then scrolled to make it visible
         na updated to display it, giving the effect of seeing each
-        line as it ni added.
+        line kama it ni added.
 
         Args:
             s: Text to insert into text widget.
@@ -123,8 +123,8 @@ kundi OutputWindow(EditorWindow):
             self.write(line)
 
     eleza flush(self):
-        "No flushing needed as write() directly writes to widget."
-        pass
+        "No flushing needed kama write() directly writes to widget."
+        pita
 
     eleza showerror(self, *args, **kwargs):
         messagebox.showerror(*args, **kwargs)

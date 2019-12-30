@@ -16,7 +16,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
                             unittest.TestCase):
 
     eleza test_no_compiler(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
         # makes sure query_vcvarsall raises
         # a DistutilsPlatformError ikiwa the compiler
         # ni sio found
@@ -33,7 +33,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
             _msvccompiler._find_vcvarsall = old_find_vcvarsall
 
     eleza test_compiler_options(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
         # suppress path to vcruntime kutoka _find_vcvarsall to
         # check that /MT ni added to compile options
         old_find_vcvarsall = _msvccompiler._find_vcvarsall
@@ -50,9 +50,9 @@ kundi msvccompilerTestCase(support.TempdirManager,
             _msvccompiler._find_vcvarsall = old_find_vcvarsall
 
     eleza test_vcruntime_copy(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
         # force path to a known file - it doesn't matter
-        # what we copy as long as its name ni sio in
+        # what we copy kama long kama its name ni sio in
         # _msvccompiler._BUNDLED_DLLS
         old_find_vcvarsall = _msvccompiler._find_vcvarsall
         eleza _find_vcvarsall(plat_spec):
@@ -70,7 +70,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
             _msvccompiler._find_vcvarsall = old_find_vcvarsall
 
     eleza test_vcruntime_skip_copy(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
 
         tempdir = self.mkdtemp()
         compiler = _msvccompiler.MSVCCompiler()
@@ -84,7 +84,7 @@ kundi msvccompilerTestCase(support.TempdirManager,
             tempdir, os.path.basename(dll))), dll ama "<Tupu>")
 
     eleza test_get_vc_env_unicode(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
 
         test_var = 'ṰḖṤṪ┅ṼẨṜ'
         test_value = '₃⁴₅'
@@ -102,28 +102,28 @@ kundi msvccompilerTestCase(support.TempdirManager,
                 os.environ['DISTUTILS_USE_SDK'] = old_distutils_use_sdk
 
     eleza test_get_vc2017(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
 
-        # This function cannot be mocked, so pass it ikiwa we find VS 2017
+        # This function cannot be mocked, so pita it ikiwa we find VS 2017
         # na mark it skipped ikiwa we do not.
         version, path = _msvccompiler._find_vc2017()
         ikiwa version:
             self.assertGreaterEqual(version, 15)
             self.assertKweli(os.path.isdir(path))
         isipokua:
-             ashiria unittest.SkipTest("VS 2017 ni sio installed")
+            ashiria unittest.SkipTest("VS 2017 ni sio installed")
 
     eleza test_get_vc2015(self):
-        agiza distutils._msvccompiler as _msvccompiler
+        agiza distutils._msvccompiler kama _msvccompiler
 
-        # This function cannot be mocked, so pass it ikiwa we find VS 2015
+        # This function cannot be mocked, so pita it ikiwa we find VS 2015
         # na mark it skipped ikiwa we do not.
         version, path = _msvccompiler._find_vc2015()
         ikiwa version:
             self.assertGreaterEqual(version, 14)
             self.assertKweli(os.path.isdir(path))
         isipokua:
-             ashiria unittest.SkipTest("VS 2015 ni sio installed")
+            ashiria unittest.SkipTest("VS 2015 ni sio installed")
 
 eleza test_suite():
     rudisha unittest.makeSuite(msvccompilerTestCase)

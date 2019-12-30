@@ -1,14 +1,14 @@
 """Drop-in replacement kila the thread module.
 
-Meant to be used as a brain-dead substitute so that threaded code does
+Meant to be used kama a brain-dead substitute so that threaded code does
 not need to be rewritten kila when the thread module ni sio present.
 
 Suggested usage is::
 
     jaribu:
         agiza _thread
-    except ImportError:
-        agiza _dummy_thread as _thread
+    tatizo ImportError:
+        agiza _dummy_thread kama _thread
 
 """
 # Exports only things specified by thread documentation;
@@ -40,15 +40,15 @@ eleza start_new_thread(function, args, kwargs={}):
 
     """
     ikiwa type(args) != type(tuple()):
-         ashiria TypeError("2nd arg must be a tuple")
+        ashiria TypeError("2nd arg must be a tuple")
     ikiwa type(kwargs) != type(dict()):
-         ashiria TypeError("3rd arg must be a dict")
+        ashiria TypeError("3rd arg must be a dict")
     global _main
     _main = Uongo
     jaribu:
         function(*args, **kwargs)
-    except SystemExit:
-        pass
+    tatizo SystemExit:
+        pita
     tatizo:
         agiza traceback
         traceback.print_exc()
@@ -56,11 +56,11 @@ eleza start_new_thread(function, args, kwargs={}):
     global _interrupt
     ikiwa _interrupt:
         _interrupt = Uongo
-         ashiria KeyboardInterrupt
+        ashiria KeyboardInterrupt
 
 eleza exit():
     """Dummy implementation of _thread.exit()."""
-     ashiria SystemExit
+    ashiria SystemExit
 
 eleza get_ident():
     """Dummy implementation of _thread.get_ident().
@@ -78,7 +78,7 @@ eleza allocate_lock():
 eleza stack_size(size=Tupu):
     """Dummy implementation of _thread.stack_size()."""
     ikiwa size ni sio Tupu:
-         ashiria error("setting thread stack size sio supported")
+        ashiria error("setting thread stack size sio supported")
     rudisha 0
 
 eleza _set_sentinel():
@@ -133,7 +133,7 @@ kundi LockType(object):
         # XXX Perhaps shouldn't actually bother to test?  Could lead
         #     to problems kila complex, threaded code.
         ikiwa sio self.locked_status:
-             ashiria error
+            ashiria error
         self.locked_status = Uongo
         rudisha Kweli
 
@@ -153,7 +153,7 @@ kundi RLock(LockType):
     """Dummy implementation of threading._RLock.
 
     Re-entrant lock can be aquired multiple times na needs to be released
-    just as many times. This dummy implemention does sio check wheter the
+    just kama many times. This dummy implemention does sio check wheter the
     current thread actually owns the lock, but does accounting on the call
     counts.
     """
@@ -173,7 +173,7 @@ kundi RLock(LockType):
         """Release needs to be called once kila every call to acquire().
         """
         ikiwa self._levels == 0:
-             ashiria error
+            ashiria error
         ikiwa self._levels == 1:
             super().release()
         self._levels -= 1
@@ -187,7 +187,7 @@ eleza interrupt_main():
     """Set _interrupt flag to Kweli to have start_new_thread raise
     KeyboardInterrupt upon exiting."""
     ikiwa _main:
-         ashiria KeyboardInterrupt
+        ashiria KeyboardInterrupt
     isipokua:
         global _interrupt
         _interrupt = Kweli

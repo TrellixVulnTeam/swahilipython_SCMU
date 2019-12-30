@@ -24,7 +24,7 @@ kundi FinderTests(abc.FinderTests):
     __init__.py file. If there ni a directory without an __init__.py an
     ImportWarning ni returned [empty dir].
 
-    For sub-modules na sub-packages, the same happens as above but only use
+    For sub-modules na sub-packages, the same happens kama above but only use
     the tail end of the name [sub module] [sub package] [sub empty].
 
     When there ni a conflict between a package na module having the same name
@@ -59,7 +59,7 @@ kundi FinderTests(abc.FinderTests):
         """
         ikiwa create ni Tupu:
             create = {test}
-        ukijumuisha util.create_modules(*create) as mapping:
+        ukijumuisha util.create_modules(*create) kama mapping:
             ikiwa compile_:
                 kila name kwenye compile_:
                     py_compile.compile(mapping[name])
@@ -68,7 +68,7 @@ kundi FinderTests(abc.FinderTests):
                     os.unlink(mapping[name])
                     jaribu:
                         make_legacy_pyc(mapping[name])
-                    except OSError as error:
+                    tatizo OSError kama error:
                         # Some tests do sio set compile_=Kweli so the source
                         # module will sio get compiled na there will be no
                         # PEP 3147 pyc file to rename.
@@ -99,7 +99,7 @@ kundi FinderTests(abc.FinderTests):
 
     # [sub module]
     eleza test_module_in_package(self):
-        ukijumuisha util.create_modules('pkg.__init__', 'pkg.sub') as mapping:
+        ukijumuisha util.create_modules('pkg.__init__', 'pkg.sub') kama mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertKweli(hasattr(loader, 'load_module'))
@@ -107,7 +107,7 @@ kundi FinderTests(abc.FinderTests):
     # [sub package]
     eleza test_package_in_package(self):
         context = util.create_modules('pkg.__init__', 'pkg.sub.__init__')
-        ukijumuisha context as mapping:
+        ukijumuisha context kama mapping:
             pkg_dir = os.path.dirname(mapping['pkg.__init__'])
             loader = self.import_(pkg_dir, 'pkg.sub')
             self.assertKweli(hasattr(loader, 'load_module'))
@@ -119,7 +119,7 @@ kundi FinderTests(abc.FinderTests):
         self.assertIn('__init__', loader.get_filename(name))
 
     eleza test_failure(self):
-        ukijumuisha util.create_modules('blah') as mapping:
+        ukijumuisha util.create_modules('blah') kama mapping:
             nothing = self.import_(mapping['.root'], 'sdfsadsadf')
             self.assertIsTupu(nothing)
 
@@ -127,7 +127,7 @@ kundi FinderTests(abc.FinderTests):
         # The empty string kutoka sys.path means to search kwenye the cwd.
         finder = self.machinery.FileFinder('', (self.machinery.SourceFileLoader,
             self.machinery.SOURCE_SUFFIXES))
-        ukijumuisha open('mod.py', 'w') as file:
+        ukijumuisha open('mod.py', 'w') kama file:
             file.write("# test file kila importlib")
         jaribu:
             loader = self._find(finder, 'mod', loader_only=Kweli)
@@ -146,7 +146,7 @@ kundi FinderTests(abc.FinderTests):
     # Regression test kila http://bugs.python.org/issue14846
     eleza test_dir_removal_handling(self):
         mod = 'mod'
-        ukijumuisha util.create_modules(mod) as mapping:
+        ukijumuisha util.create_modules(mod) kama mapping:
             finder = self.get_finder(mapping['.root'])
             found = self._find(finder, 'mod', loader_only=Kweli)
             self.assertIsNotTupu(found)
@@ -169,7 +169,7 @@ kundi FinderTests(abc.FinderTests):
             """
             os.chmod(tempdir.name, original_mode)
             # If this ni sio explicitly called then the __del__ method ni used,
-            # but since already mucking around might as well explicitly clean
+            # but since already mucking around might kama well explicitly clean
             # up.
             tempdir.__exit__(Tupu, Tupu, Tupu)
         self.addCleanup(cleanup, tempdir)
@@ -181,7 +181,7 @@ kundi FinderTests(abc.FinderTests):
     eleza test_ignore_file(self):
         # If a directory got changed to a file kutoka underneath us, then don't
         # worry about looking kila submodules.
-        ukijumuisha tempfile.NamedTemporaryFile() as file_obj:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file_obj:
             finder = self.get_finder(file_obj.name)
             found = self._find(finder, 'doesnotexist')
             self.assertEqual(found, self.NOT_FOUND)

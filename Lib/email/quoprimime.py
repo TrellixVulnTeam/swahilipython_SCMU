@@ -18,7 +18,7 @@ ukijumuisha quoted-printable encoding.
 
 RFC 2045 defines a method kila including character set information kwenye an
 `encoded-word' kwenye a header.  This method ni commonly used kila 8-bit real names
-in To:/From:/Cc: etc. fields, as well as Subject: lines.
+in To:/From:/Cc: etc. fields, kama well kama Subject: lines.
 
 This module does sio do the line wrapping ama end-of-line character
 conversion necessary kila proper internationalized headers; it only
@@ -109,7 +109,7 @@ eleza _max_append(L, s, maxlen, extra=''):
         s = chr(s)
     ikiwa sio L:
         L.append(s.lstrip())
-    elikiwa len(L[-1]) + len(s) <= maxlen:
+    lasivyo len(L[-1]) + len(s) <= maxlen:
         L[-1] += extra + s
     isipokua:
         L.append(s.lstrip())
@@ -135,7 +135,7 @@ eleza header_encode(header_bytes, charset='iso-8859-1'):
     charset names the character set to use kwenye the RFC 2046 header.  It
     defaults to iso-8859-1.
     """
-    # Return empty headers as an empty string.
+    # Return empty headers kama an empty string.
     ikiwa sio header_bytes:
         rudisha ''
     # Iterate over every byte, encoding ikiwa necessary.
@@ -169,7 +169,7 @@ eleza body_encode(body, maxlinelen=76, eol=NL):
     """
 
     ikiwa maxlinelen < 4:
-         ashiria ValueError("maxlinelen must be at least 4")
+        ashiria ValueError("maxlinelen must be at least 4")
     ikiwa sio body:
         rudisha body
 
@@ -193,7 +193,7 @@ eleza body_encode(body, maxlinelen=76, eol=NL):
             ikiwa line[stop - 2] == '=':
                 append(line[start:stop - 1])
                 start = stop - 2
-            elikiwa line[stop - 1] == '=':
+            lasivyo line[stop - 1] == '=':
                 append(line[start:stop])
                 start = stop - 1
             isipokua:
@@ -207,7 +207,7 @@ eleza body_encode(body, maxlinelen=76, eol=NL):
                 # It's a whitespace character at end-of-line, na we have room
                 # kila the three-character quoted encoding.
                 q = quote(line[-1])
-            elikiwa room == 2:
+            lasivyo room == 2:
                 # There's room kila the whitespace character na a soft koma.
                 q = line[-1] + soft_koma
             isipokua:
@@ -227,7 +227,7 @@ eleza body_encode(body, maxlinelen=76, eol=NL):
 
 
 # BAW: I'm sio sure ikiwa the intent was kila the signature of this function to be
-# the same as base64MIME.decode() ama not...
+# the same kama base64MIME.decode() ama not...
 eleza decode(encoded, eol=NL):
     """Decode a quoted-printable string.
 
@@ -255,14 +255,14 @@ eleza decode(encoded, eol=NL):
                 i += 1
             # Otherwise, c == "=".  Are we at the end of the line?  If so, add
             # a soft line koma.
-            elikiwa i+1 == n:
+            lasivyo i+1 == n:
                 i += 1
                 endelea
             # Decode ikiwa kwenye form =AB
-            elikiwa i+2 < n na line[i+1] kwenye hexdigits na line[i+2] kwenye hexdigits:
+            lasivyo i+2 < n na line[i+1] kwenye hexdigits na line[i+2] kwenye hexdigits:
                 decoded += unquote(line[i:i+3])
                 i += 3
-            # Otherwise, sio kwenye form =AB, pass literally
+            # Otherwise, haiko kwenye form =AB, pita literally
             isipokua:
                 decoded += c
                 i += 1
@@ -270,7 +270,7 @@ eleza decode(encoded, eol=NL):
             ikiwa i == n:
                 decoded += eol
     # Special case ikiwa original string did sio end ukijumuisha eol
-    ikiwa encoded[-1] sio kwenye '\r\n' na decoded.endswith(eol):
+    ikiwa encoded[-1] haiko kwenye '\r\n' na decoded.endswith(eol):
         decoded = decoded[:-1]
     rudisha decoded
 

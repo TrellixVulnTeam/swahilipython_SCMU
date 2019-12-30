@@ -175,7 +175,7 @@ Disallow: /.
 Crawl-delay: pears
     """
     good = ['/foo.html']
-    # bug report says "/" should be denied, but that ni sio kwenye the RFC
+    # bug report says "/" should be denied, but that ni haiko kwenye the RFC
     bad = []
 
 
@@ -303,7 +303,7 @@ kundi RobotHandler(BaseHTTPRequestHandler):
         self.send_error(403, "Forbidden access")
 
     eleza log_message(self, format, *args):
-        pass
+        pita
 
 
 kundi PasswordProtectedSiteTestCase(unittest.TestCase):

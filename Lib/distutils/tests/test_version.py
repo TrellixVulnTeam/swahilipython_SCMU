@@ -35,12 +35,12 @@ kundi VersionTestCase(unittest.TestCase):
         kila v1, v2, wanted kwenye versions:
             jaribu:
                 res = StrictVersion(v1)._cmp(StrictVersion(v2))
-            except ValueError:
+            tatizo ValueError:
                 ikiwa wanted ni ValueError:
                     endelea
                 isipokua:
-                     ashiria AssertionError(("cmp(%s, %s) "
-                                          "shouldn't  ashiria ValueError")
+                    ashiria AssertionError(("cmp(%s, %s) "
+                                          "shouldn't ashiria ValueError")
                                             % (v1, v2))
             self.assertEqual(res, wanted,
                              'cmp(%s, %s) should be %s, got %s' %

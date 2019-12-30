@@ -22,7 +22,7 @@ kundi TestAbstractContextManager(unittest.TestCase):
 
     eleza test_exit_is_abstract(self):
         kundi MissingExit(AbstractContextManager):
-            pass
+            pita
 
         ukijumuisha self.assertRaises(TypeError):
             MissingExit()
@@ -62,7 +62,7 @@ kundi ContextManagerTestCase(unittest.TestCase):
             state.append(1)
             tuma 42
             state.append(999)
-        ukijumuisha woohoo() as x:
+        ukijumuisha woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
@@ -78,29 +78,29 @@ kundi ContextManagerTestCase(unittest.TestCase):
             mwishowe:
                 state.append(999)
         ukijumuisha self.assertRaises(ZeroDivisionError):
-            ukijumuisha woohoo() as x:
+            ukijumuisha woohoo() kama x:
                 self.assertEqual(state, [1])
                 self.assertEqual(x, 42)
                 state.append(x)
-                 ashiria ZeroDivisionError()
+                ashiria ZeroDivisionError()
         self.assertEqual(state, [1, 42, 999])
 
     eleza test_contextmanager_no_reraise(self):
         @contextmanager
         eleza whee():
-            yield
+            tuma
         ctx = whee()
         ctx.__enter__()
         # Calling __exit__ should sio result kwenye an exception
         self.assertUongo(ctx.__exit__(TypeError, TypeError("foo"), Tupu))
 
-    eleza test_contextmanager_trap_yield_after_throw(self):
+    eleza test_contextmanager_trap_tuma_after_throw(self):
         @contextmanager
         eleza whoo():
             jaribu:
-                yield
+                tuma
             tatizo:
-                yield
+                tuma
         ctx = whoo()
         ctx.__enter__()
         self.assertRaises(
@@ -114,27 +114,27 @@ kundi ContextManagerTestCase(unittest.TestCase):
             state.append(1)
             jaribu:
                 tuma 42
-            except ZeroDivisionError as e:
+            tatizo ZeroDivisionError kama e:
                 state.append(e.args[0])
                 self.assertEqual(state, [1, 42, 999])
-        ukijumuisha woohoo() as x:
+        ukijumuisha woohoo() kama x:
             self.assertEqual(state, [1])
             self.assertEqual(x, 42)
             state.append(x)
-             ashiria ZeroDivisionError(999)
+            ashiria ZeroDivisionError(999)
         self.assertEqual(state, [1, 42, 999])
 
     eleza test_contextmanager_except_stopiter(self):
         stop_exc = StopIteration('spam')
         @contextmanager
         eleza woohoo():
-            yield
+            tuma
         jaribu:
             ukijumuisha self.assertWarnsRegex(DeprecationWarning,
                                        "StopIteration"):
                 ukijumuisha woohoo():
-                     ashiria stop_exc
-        except Exception as ex:
+                    ashiria stop_exc
+        tatizo Exception kama ex:
             self.assertIs(ex, stop_exc)
         isipokua:
             self.fail('StopIteration was suppressed')
@@ -145,7 +145,7 @@ kutoka __future__ agiza generator_stop
 kutoka contextlib agiza contextmanager
 @contextmanager
 eleza woohoo():
-    yield
+    tuma
 """
         locals = {}
         exec(code, locals, locals)
@@ -154,8 +154,8 @@ eleza woohoo():
         stop_exc = StopIteration('spam')
         jaribu:
             ukijumuisha woohoo():
-                 ashiria stop_exc
-        except Exception as ex:
+                ashiria stop_exc
+        tatizo Exception kama ex:
             self.assertIs(ex, stop_exc)
         isipokua:
             self.fail('StopIteration was suppressed')
@@ -164,21 +164,21 @@ eleza woohoo():
         @contextmanager
         eleza test_issue29692():
             jaribu:
-                yield
-            except Exception as exc:
-                 ashiria RuntimeError('issue29692:Chained') kutoka exc
+                tuma
+            tatizo Exception kama exc:
+                ashiria RuntimeError('issue29692:Chained') kutoka exc
         jaribu:
             ukijumuisha test_issue29692():
-                 ashiria ZeroDivisionError
-        except Exception as ex:
+                ashiria ZeroDivisionError
+        tatizo Exception kama ex:
             self.assertIs(type(ex), RuntimeError)
             self.assertEqual(ex.args[0], 'issue29692:Chained')
             self.assertIsInstance(ex.__cause__, ZeroDivisionError)
 
         jaribu:
             ukijumuisha test_issue29692():
-                 ashiria StopIteration('issue29692:Unchained')
-        except Exception as ex:
+                ashiria StopIteration('issue29692:Unchained')
+        tatizo Exception kama ex:
             self.assertIs(type(ex), StopIteration)
             self.assertEqual(ex.args[0], 'issue29692:Unchained')
             self.assertIsTupu(ex.__cause__)
@@ -216,12 +216,12 @@ eleza woohoo():
         @contextmanager
         eleza woohoo(self, func, args, kwds):
             tuma (self, func, args, kwds)
-        ukijumuisha woohoo(self=11, func=22, args=33, kwds=44) as target:
+        ukijumuisha woohoo(self=11, func=22, args=33, kwds=44) kama target:
             self.assertEqual(target, (11, 22, 33, 44))
 
     eleza test_nokeepref(self):
         kundi A:
-            pass
+            pita
 
         @contextmanager
         eleza woohoo(a, b):
@@ -229,15 +229,15 @@ eleza woohoo():
             b = weakref.ref(b)
             self.assertIsTupu(a())
             self.assertIsTupu(b())
-            yield
+            tuma
 
         ukijumuisha woohoo(A(), b=A()):
-            pass
+            pita
 
     eleza test_param_errors(self):
         @contextmanager
         eleza woohoo(a, *, b):
-            yield
+            tuma
 
         ukijumuisha self.assertRaises(TypeError):
             woohoo()
@@ -253,7 +253,7 @@ eleza woohoo():
             nonlocal depth
             before = depth
             depth += 1
-            yield
+            tuma
             depth -= 1
             self.assertEqual(depth, before)
 
@@ -282,7 +282,7 @@ kundi ClosingTestCase(unittest.TestCase):
                 state.append(1)
         x = C()
         self.assertEqual(state, [])
-        ukijumuisha closing(x) as y:
+        ukijumuisha closing(x) kama y:
             self.assertEqual(x, y)
         self.assertEqual(state, [1])
 
@@ -294,7 +294,7 @@ kundi ClosingTestCase(unittest.TestCase):
         x = C()
         self.assertEqual(state, [])
         ukijumuisha self.assertRaises(ZeroDivisionError):
-            ukijumuisha closing(x) as y:
+            ukijumuisha closing(x) kama y:
                 self.assertEqual(x, y)
                 1 / 0
         self.assertEqual(state, [1])
@@ -303,9 +303,9 @@ kundi ClosingTestCase(unittest.TestCase):
 kundi NullcontextTestCase(unittest.TestCase):
     eleza test_nullcontext(self):
         kundi C:
-            pass
+            pita
         c = C()
-        ukijumuisha nullcontext(c) as c_in:
+        ukijumuisha nullcontext(c) kama c_in:
             self.assertIs(c_in, c)
 
 
@@ -315,13 +315,13 @@ kundi FileContextTestCase(unittest.TestCase):
         tfn = tempfile.mktemp()
         jaribu:
             f = Tupu
-            ukijumuisha open(tfn, "w") as f:
+            ukijumuisha open(tfn, "w") kama f:
                 self.assertUongo(f.closed)
                 f.write("Booh\n")
             self.assertKweli(f.closed)
             f = Tupu
             ukijumuisha self.assertRaises(ZeroDivisionError):
-                ukijumuisha open(tfn, "r") as f:
+                ukijumuisha open(tfn, "r") kama f:
                     self.assertUongo(f.closed)
                     self.assertEqual(f.read(), "Booh\n")
                     1 / 0
@@ -403,7 +403,7 @@ kundi TestContextDecorator(unittest.TestCase):
 
     eleza test_contextdecorator(self):
         context = mycontext()
-        ukijumuisha context as result:
+        ukijumuisha context kama result:
             self.assertIs(result, context)
             self.assertKweli(context.started)
 
@@ -415,14 +415,14 @@ kundi TestContextDecorator(unittest.TestCase):
 
         ukijumuisha self.assertRaisesRegex(NameError, 'foo'):
             ukijumuisha context:
-                 ashiria NameError('foo')
+                ashiria NameError('foo')
         self.assertIsNotTupu(context.exc)
         self.assertIs(context.exc[0], NameError)
 
         context = mycontext()
         context.catch = Kweli
         ukijumuisha context:
-             ashiria NameError('foo')
+            ashiria NameError('foo')
         self.assertIsNotTupu(context.exc)
         self.assertIs(context.exc[0], NameError)
 
@@ -445,7 +445,7 @@ kundi TestContextDecorator(unittest.TestCase):
         eleza test():
             self.assertIsTupu(context.exc)
             self.assertKweli(context.started)
-             ashiria NameError('foo')
+            ashiria NameError('foo')
 
         ukijumuisha self.assertRaisesRegex(NameError, 'foo'):
             test()
@@ -464,7 +464,7 @@ kundi TestContextDecorator(unittest.TestCase):
                 self.b = b
                 self.c = c
 
-        # these tests are kila argument passing when used as a decorator
+        # these tests are kila argument pitaing when used kama a decorator
         test = Test()
         test.method(1, 2)
         self.assertEqual(test.a, 1)
@@ -486,25 +486,25 @@ kundi TestContextDecorator(unittest.TestCase):
     eleza test_typo_enter(self):
         kundi mycontext(ContextDecorator):
             eleza __unter__(self):
-                pass
+                pita
             eleza __exit__(self, *exc):
-                pass
+                pita
 
         ukijumuisha self.assertRaises(AttributeError):
             ukijumuisha mycontext():
-                pass
+                pita
 
 
     eleza test_typo_exit(self):
         kundi mycontext(ContextDecorator):
             eleza __enter__(self):
-                pass
+                pita
             eleza __uxit__(self, *exc):
-                pass
+                pita
 
         ukijumuisha self.assertRaises(AttributeError):
             ukijumuisha mycontext():
-                pass
+                pita
 
 
     eleza test_contextdecorator_as_mixin(self):
@@ -520,7 +520,7 @@ kundi TestContextDecorator(unittest.TestCase):
                 self.exc = exc
 
         kundi mycontext(somecontext, ContextDecorator):
-            pass
+            pita
 
         context = mycontext()
         @context
@@ -535,7 +535,7 @@ kundi TestContextDecorator(unittest.TestCase):
         @contextmanager
         eleza woohoo(y):
             state.append(y)
-            yield
+            tuma
             state.append(999)
 
         state = []
@@ -564,7 +564,7 @@ kundi TestBaseExitStack:
 
     eleza test_no_resources(self):
         ukijumuisha self.exit_stack():
-            pass
+            pita
 
     eleza test_callback(self):
         expected = [
@@ -580,13 +580,13 @@ kundi TestBaseExitStack:
         eleza _exit(*args, **kwds):
             """Test metadata propagation"""
             result.append((args, kwds))
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             kila args, kwds kwenye reversed(expected):
                 ikiwa args na kwds:
                     f = stack.callback(_exit, *args, **kwds)
-                elikiwa args:
+                lasivyo args:
                     f = stack.callback(_exit, *args)
-                elikiwa kwds:
+                lasivyo kwds:
                     f = stack.callback(_exit, **kwds)
                 isipokua:
                     f = stack.callback(_exit)
@@ -598,7 +598,7 @@ kundi TestBaseExitStack:
         self.assertEqual(result, expected)
 
         result = []
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             ukijumuisha self.assertRaises(TypeError):
                 stack.callback(arg=1)
             ukijumuisha self.assertRaises(TypeError):
@@ -624,7 +624,7 @@ kundi TestBaseExitStack:
                 self.fail("Should sio be called!")
             eleza __exit__(self, *exc_details):
                 self.check_exc(*exc_details)
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             stack.push(_expect_ok)
             self.assertIs(stack._exit_callbacks[-1][1], _expect_ok)
             cm = ExitCM(_expect_ok)
@@ -650,7 +650,7 @@ kundi TestBaseExitStack:
 
         result = []
         cm = TestCM()
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             @stack.callback  # Registered first => cleaned up last
             eleza _exit():
                 result.append(4)
@@ -662,7 +662,7 @@ kundi TestBaseExitStack:
 
     eleza test_close(self):
         result = []
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             @stack.callback
             eleza _exit():
                 result.append(1)
@@ -673,7 +673,7 @@ kundi TestBaseExitStack:
 
     eleza test_pop_all(self):
         result = []
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             @stack.callback
             eleza _exit():
                 result.append(3)
@@ -686,12 +686,12 @@ kundi TestBaseExitStack:
 
     eleza test_exit_raise(self):
         ukijumuisha self.assertRaises(ZeroDivisionError):
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.push(lambda *exc: Uongo)
                 1/0
 
     eleza test_exit_suppress(self):
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             stack.push(lambda *exc: Kweli)
             1/0
 
@@ -704,7 +704,7 @@ kundi TestBaseExitStack:
             eleza __enter__(self):
                 rudisha self
             eleza __exit__(self, *exc_details):
-                 ashiria self.exc
+                ashiria self.exc
 
         kundi RaiseExcWithContext:
             eleza __init__(self, outer, inner):
@@ -714,9 +714,9 @@ kundi TestBaseExitStack:
                 rudisha self
             eleza __exit__(self, *exc_details):
                 jaribu:
-                     ashiria self.inner
+                    ashiria self.inner
                 tatizo:
-                     ashiria self.outer
+                    ashiria self.outer
 
         kundi SuppressExc:
             eleza __enter__(self):
@@ -731,7 +731,7 @@ kundi TestBaseExitStack:
                     ukijumuisha SuppressExc():
                         ukijumuisha RaiseExc(ValueError):
                             1 / 0
-        except IndexError as exc:
+        tatizo IndexError kama exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -746,7 +746,7 @@ kundi TestBaseExitStack:
     eleza test_exit_exception_chaining(self):
         # Ensure exception chaining matches the reference behaviour
         eleza raise_exc(exc):
-             ashiria exc
+            ashiria exc
 
         saved_details = Tupu
         eleza suppress_exc(*exc_details):
@@ -755,14 +755,14 @@ kundi TestBaseExitStack:
             rudisha Kweli
 
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.callback(raise_exc, IndexError)
                 stack.callback(raise_exc, KeyError)
                 stack.callback(raise_exc, AttributeError)
                 stack.push(suppress_exc)
                 stack.callback(raise_exc, ValueError)
                 1 / 0
-        except IndexError as exc:
+        tatizo IndexError kama exc:
             self.assertIsInstance(exc.__context__, KeyError)
             self.assertIsInstance(exc.__context__.__context__, AttributeError)
             # Inner exceptions were suppressed
@@ -777,26 +777,26 @@ kundi TestBaseExitStack:
     eleza test_exit_exception_non_suppressing(self):
         # http://bugs.python.org/issue19092
         eleza raise_exc(exc):
-             ashiria exc
+            ashiria exc
 
         eleza suppress_exc(*exc_details):
             rudisha Kweli
 
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.callback(lambda: Tupu)
                 stack.callback(raise_exc, IndexError)
-        except Exception as exc:
+        tatizo Exception kama exc:
             self.assertIsInstance(exc, IndexError)
         isipokua:
             self.fail("Expected IndexError, but no exception was raised")
 
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.callback(raise_exc, KeyError)
                 stack.push(suppress_exc)
                 stack.callback(raise_exc, IndexError)
-        except Exception as exc:
+        tatizo Exception kama exc:
             self.assertIsInstance(exc, KeyError)
         isipokua:
             self.fail("Expected KeyError, but no exception was raised")
@@ -806,9 +806,9 @@ kundi TestBaseExitStack:
         @contextmanager
         eleza gets_the_context_right(exc):
             jaribu:
-                yield
+                tuma
             mwishowe:
-                 ashiria exc
+                ashiria exc
 
         exc1 = Exception(1)
         exc2 = Exception(2)
@@ -819,12 +819,12 @@ kundi TestBaseExitStack:
         # fix, ExitStack would try to fix it *again* na get into an
         # infinite self-referential loop
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.enter_context(gets_the_context_right(exc4))
                 stack.enter_context(gets_the_context_right(exc3))
                 stack.enter_context(gets_the_context_right(exc2))
-                 ashiria exc1
-        except Exception as exc:
+                ashiria exc1
+        tatizo Exception kama exc:
             self.assertIs(exc, exc4)
             self.assertIs(exc.__context__, exc3)
             self.assertIs(exc.__context__.__context__, exc2)
@@ -837,20 +837,20 @@ kundi TestBaseExitStack:
         # fix kila issue 20317 that still contained debugging code.
         eleza raise_nested(inner_exc, outer_exc):
             jaribu:
-                 ashiria inner_exc
+                ashiria inner_exc
             mwishowe:
-                 ashiria outer_exc
+                ashiria outer_exc
         exc1 = Exception(1)
         exc2 = Exception(2)
         exc3 = Exception(3)
         exc4 = Exception(4)
         exc5 = Exception(5)
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.callback(raise_nested, exc4, exc5)
                 stack.callback(raise_nested, exc2, exc3)
-                 ashiria exc1
-        except Exception as exc:
+                ashiria exc1
+        tatizo Exception kama exc:
             self.assertIs(exc, exc5)
             self.assertIs(exc.__context__, exc4)
             self.assertIs(exc.__context__.__context__, exc3)
@@ -864,26 +864,26 @@ kundi TestBaseExitStack:
         eleza suppress_exc(*exc_details):
             rudisha Kweli
         jaribu:
-            ukijumuisha self.exit_stack() as stack:
+            ukijumuisha self.exit_stack() kama stack:
                 stack.push(suppress_exc)
                 1/0
-        except IndexError as exc:
+        tatizo IndexError kama exc:
             self.fail("Expected no exception, got IndexError")
 
     eleza test_exit_exception_chaining_suppress(self):
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             stack.push(lambda *exc: Kweli)
             stack.push(lambda *exc: 1/0)
             stack.push(lambda *exc: {}[1])
 
     eleza test_excessive_nesting(self):
         # The original implementation would die ukijumuisha RecursionError here
-        ukijumuisha self.exit_stack() as stack:
+        ukijumuisha self.exit_stack() kama stack:
             kila i kwenye range(10000):
                 stack.callback(int)
 
-    eleza test_instance_bypass(self):
-        kundi Example(object): pass
+    eleza test_instance_bypita(self):
+        kundi Example(object): pita
         cm = Example()
         cm.__exit__ = object()
         stack = self.exit_stack()
@@ -893,30 +893,30 @@ kundi TestBaseExitStack:
 
     eleza test_dont_reraise_RuntimeError(self):
         # https://bugs.python.org/issue27122
-        kundi UniqueException(Exception): pass
-        kundi UniqueRuntimeError(RuntimeError): pass
+        kundi UniqueException(Exception): pita
+        kundi UniqueRuntimeError(RuntimeError): pita
 
         @contextmanager
         eleza second():
             jaribu:
                 tuma 1
-            except Exception as exc:
-                 ashiria UniqueException("new exception") kutoka exc
+            tatizo Exception kama exc:
+                ashiria UniqueException("new exception") kutoka exc
 
         @contextmanager
         eleza first():
             jaribu:
                 tuma 1
-            except Exception as exc:
-                 ashiria exc
+            tatizo Exception kama exc:
+                ashiria exc
 
         # The UniqueRuntimeError should be caught by second()'s exception
         # handler which chain raised a new UniqueException.
-        ukijumuisha self.assertRaises(UniqueException) as err_ctx:
-            ukijumuisha self.exit_stack() as es_ctx:
+        ukijumuisha self.assertRaises(UniqueException) kama err_ctx:
+            ukijumuisha self.exit_stack() kama es_ctx:
                 es_ctx.enter_context(second())
                 es_ctx.enter_context(first())
-                 ashiria UniqueRuntimeError("please no infinite loop.")
+                ashiria UniqueRuntimeError("please no infinite loop.")
 
         exc = err_ctx.exception
         self.assertIsInstance(exc, UniqueException)
@@ -959,7 +959,7 @@ kundi TestRedirectStream:
 
     eleza test_enter_result_is_target(self):
         f = io.StringIO()
-        ukijumuisha self.redirect_stream(f) as enter_result:
+        ukijumuisha self.redirect_stream(f) kama enter_result:
             self.assertIs(enter_result, f)
 
     eleza test_cm_is_reusable(self):
@@ -1009,7 +1009,7 @@ kundi TestSuppress(unittest.TestCase):
         self.assertEqual(obj.__doc__, cm_docstring)
 
     eleza test_no_result_from_enter(self):
-        ukijumuisha suppress(ValueError) as enter_result:
+        ukijumuisha suppress(ValueError) kama enter_result:
             self.assertIsTupu(enter_result)
 
     eleza test_no_exception(self):
@@ -1043,7 +1043,7 @@ kundi TestSuppress(unittest.TestCase):
     eleza test_cm_is_reentrant(self):
         ignore_exceptions = suppress(Exception)
         ukijumuisha ignore_exceptions:
-            pass
+            pita
         ukijumuisha ignore_exceptions:
             len(5)
         ukijumuisha ignore_exceptions:

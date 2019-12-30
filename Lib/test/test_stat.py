@@ -78,11 +78,11 @@ kundi TestFilemode:
     eleza setUp(self):
         jaribu:
             os.remove(TESTFN)
-        except OSError:
+        tatizo OSError:
             jaribu:
                 os.rmdir(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
     tearDown = setUp
 
     eleza get_mode(self, fname=TESTFN, lstat=Kweli):
@@ -103,7 +103,7 @@ kundi TestFilemode:
             func = getattr(self.statmod, funcname, Tupu)
             ikiwa func ni Tupu:
                 ikiwa funcname == testname:
-                     ashiria ValueError(funcname)
+                    ashiria ValueError(funcname)
                 endelea
             ikiwa funcname == testname:
                 self.assertKweli(func(mode))
@@ -112,7 +112,7 @@ kundi TestFilemode:
 
     eleza test_mode(self):
         ukijumuisha open(TESTFN, 'w'):
-            pass
+            pita
         ikiwa os.name == 'posix':
             os.chmod(TESTFN, 0o700)
             st_mode, modestr = self.get_mode()
@@ -162,8 +162,8 @@ kundi TestFilemode:
     eleza test_link(self):
         jaribu:
             os.symlink(os.getcwd(), TESTFN)
-        except (OSError, NotImplementedError) as err:
-             ashiria unittest.SkipTest(str(err))
+        tatizo (OSError, NotImplementedError) kama err:
+            ashiria unittest.SkipTest(str(err))
         isipokua:
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 'l')
@@ -173,7 +173,7 @@ kundi TestFilemode:
     eleza test_fifo(self):
         jaribu:
             os.mkfifo(TESTFN, 0o700)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.mkfifo(): %s' % e)
         st_mode, modestr = self.get_mode()
         self.assertEqual(modestr, 'prwx------')
@@ -195,7 +195,7 @@ kundi TestFilemode:
 
     @skip_unless_bind_unix_socket
     eleza test_socket(self):
-        ukijumuisha socket.socket(socket.AF_UNIX) as s:
+        ukijumuisha socket.socket(socket.AF_UNIX) kama s:
             s.bind(TESTFN)
             st_mode, modestr = self.get_mode()
             self.assertEqual(modestr[0], 's')

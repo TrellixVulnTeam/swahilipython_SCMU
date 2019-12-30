@@ -15,9 +15,9 @@ kundi ABCMeta(type):
     """Metakundi kila defining Abstract Base Classes (ABCs).
 
     Use this metakundi to create an ABC.  An ABC can be subclassed
-    directly, na then acts as a mix-in class.  You can also register
+    directly, na then acts kama a mix-in class.  You can also register
     unrelated concrete classes (even built-in classes) na unrelated
-    ABCs as 'virtual subclasses' -- these na their descendants will
+    ABCs kama 'virtual subclasses' -- these na their descendants will
     be considered subclasses of the registering ABC by the built-in
     issubclass() function, but the registering ABC won't show up in
     their MRO (Method Resolution Order) nor will method
@@ -26,7 +26,7 @@ kundi ABCMeta(type):
     """
 
     # A global counter that ni incremented each time a kundi is
-    # registered as a virtual subkundi of anything.  It forces the
+    # registered kama a virtual subkundi of anything.  It forces the
     # negative cache to be cleared before its next use.
     # Note: this counter ni private. Use `abc.get_cache_token()` for
     #       external code.
@@ -54,17 +54,17 @@ kundi ABCMeta(type):
     eleza register(cls, subclass):
         """Register a virtual subkundi of an ABC.
 
-        Returns the subclass, to allow usage as a kundi decorator.
+        Returns the subclass, to allow usage kama a kundi decorator.
         """
         ikiwa sio isinstance(subclass, type):
-             ashiria TypeError("Can only register classes")
+            ashiria TypeError("Can only register classes")
         ikiwa issubclass(subclass, cls):
             rudisha subkundi  # Already a subclass
         # Subtle: test kila cycles *after* testing kila "already a subclass";
-        # this means we allow X.register(X) na interpret it as a no-op.
+        # this means we allow X.register(X) na interpret it kama a no-op.
         ikiwa issubclass(cls, subclass):
             # This would create a cycle, which ni bad kila the algorithm below
-             ashiria RuntimeError("Refusing to create an inheritance cycle")
+            ashiria RuntimeError("Refusing to create an inheritance cycle")
         cls._abc_registry.add(subclass)
         ABCMeta._abc_invalidation_counter += 1  # Invalidate negative cache
         rudisha subclass
@@ -98,7 +98,7 @@ kundi ABCMeta(type):
         subtype = type(instance)
         ikiwa subtype ni subclass:
             ikiwa (cls._abc_negative_cache_version ==
-                ABCMeta._abc_invalidation_counter and
+                ABCMeta._abc_invalidation_counter na
                 subkundi kwenye cls._abc_negative_cache):
                 rudisha Uongo
             # Fall back to the subkundi check.
@@ -108,7 +108,7 @@ kundi ABCMeta(type):
     eleza __subclasscheck__(cls, subclass):
         """Override kila issubclass(subclass, cls)."""
         ikiwa sio isinstance(subclass, type):
-             ashiria TypeError('issubclass() arg 1 must be a class')
+            ashiria TypeError('issubclass() arg 1 must be a class')
         # Check cache
         ikiwa subkundi kwenye cls._abc_cache:
             rudisha Kweli
@@ -117,7 +117,7 @@ kundi ABCMeta(type):
             # Invalidate the negative cache
             cls._abc_negative_cache = WeakSet()
             cls._abc_negative_cache_version = ABCMeta._abc_invalidation_counter
-        elikiwa subkundi kwenye cls._abc_negative_cache:
+        lasivyo subkundi kwenye cls._abc_negative_cache:
             rudisha Uongo
         # Check the subkundi hook
         ok = cls.__subclasshook__(subclass)

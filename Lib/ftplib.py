@@ -6,7 +6,7 @@ Example:
 
 >>> kutoka ftplib agiza FTP
 >>> ftp = FTP('ftp.python.org') # connect to host, default port
->>> ftp.login() # default, i.e.: user anonymous, passwd anonymous@
+>>> ftp.login() # default, i.e.: user anonymous, pitawd anonymous@
 '230 Guest login ok, access restrictions apply.'
 >>> ftp.retrlines('LIST') # list directory contents
 total 9
@@ -49,16 +49,16 @@ MSG_OOB = 0x1                           # Process data out of band
 
 # The standard FTP server control port
 FTP_PORT = 21
-# The sizehint parameter passed to readline() calls
+# The sizehint parameter pitaed to readline() calls
 MAXLINE = 8192
 
 
 # Exception raised when an error ama invalid response ni received
-kundi Error(Exception): pass
-kundi error_reply(Error): pass          # unexpected [123]xx reply
-kundi error_temp(Error): pass           # 4xx errors
-kundi error_perm(Error): pass           # 5xx errors
-kundi error_proto(Error): pass          # response does sio begin ukijumuisha [1-5]
+kundi Error(Exception): pita
+kundi error_reply(Error): pita          # unexpected [123]xx reply
+kundi error_temp(Error): pita           # 4xx errors
+kundi error_perm(Error): pita           # 5xx errors
+kundi error_proto(Error): pita          # response does sio begin ukijumuisha [1-5]
 
 
 # All exceptions (hopefully) that may be raised here na that aren't
@@ -76,12 +76,12 @@ kundi FTP:
     '''An FTP client class.
 
     To create a connection, call the kundi using these arguments:
-            host, user, passwd, acct, timeout
+            host, user, pitawd, acct, timeout
 
     The first four arguments are all strings, na have default value ''.
-    timeout must be numeric na defaults to Tupu ikiwa sio passed,
+    timeout must be numeric na defaults to Tupu ikiwa sio pitaed,
     meaning that no timeout will be set on any ftp socket(s)
-    If a timeout ni passed, then this ni now the default timeout kila all ftp
+    If a timeout ni pitaed, then this ni now the default timeout kila all ftp
     socket operations kila this instance.
 
     Then use self.connect() ukijumuisha optional host na port argument.
@@ -89,7 +89,7 @@ kundi FTP:
     To download a file, use ftp.retrlines('RETR ' + filename),
     ama ftp.retrbinary() ukijumuisha slightly different arguments.
     To upload a file, use ftp.storlines() ama ftp.storbinary(),
-    which have an open file as argument (see their definitions
+    which have an open file kama argument (see their definitions
     below kila details).
     The download/upload functions first issue appropriate TYPE
     na PORT ama PASV commands.
@@ -102,21 +102,21 @@ kundi FTP:
     sock = Tupu
     file = Tupu
     welcome = Tupu
-    passiveserver = 1
+    pitaiveserver = 1
     encoding = "latin-1"
 
     # Initialization method (called by kundi instantiation).
     # Initialize host to localhost, port to standard ftp port
     # Optional arguments are host (kila connect()),
-    # na user, passwd, acct (kila login())
-    eleza __init__(self, host='', user='', passwd='', acct='',
+    # na user, pitawd, acct (kila login())
+    eleza __init__(self, host='', user='', pitawd='', acct='',
                  timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=Tupu):
         self.source_address = source_address
         self.timeout = timeout
         ikiwa host:
             self.connect(host)
             ikiwa user:
-                self.login(user, passwd, acct)
+                self.login(user, pitawd, acct)
 
     eleza __enter__(self):
         rudisha self
@@ -126,8 +126,8 @@ kundi FTP:
         ikiwa self.sock ni sio Tupu:
             jaribu:
                 self.quit()
-            except (OSError, EOFError):
-                pass
+            tatizo (OSError, EOFError):
+                pita
             mwishowe:
                 ikiwa self.sock ni sio Tupu:
                     self.close()
@@ -138,7 +138,7 @@ kundi FTP:
          - port: port to connect to (integer, default previous port)
          - timeout: the timeout to set against the ftp socket(s)
          - source_address: a 2-tuple (host, port) kila the socket to bind
-           to as its source address before connecting.
+           to kama its source address before connecting.
         '''
         ikiwa host != '':
             self.host = host
@@ -173,14 +173,14 @@ kundi FTP:
     debug = set_debuglevel
 
     eleza set_pasv(self, val):
-        '''Use passive ama active mode kila data transfers.
+        '''Use pitaive ama active mode kila data transfers.
         With a false argument, use the normal PORT mode,
         With a true argument, use the PASV command.'''
-        self.passiveserver = val
+        self.pitaiveserver = val
 
     # Internal: "sanitize" a string kila printing
     eleza sanitize(self, s):
-        ikiwa s[:5] kwenye {'pass ', 'PASS '}:
+        ikiwa s[:5] kwenye {'pita ', 'PASS '}:
             i = len(s.rstrip('\r\n'))
             s = s[:5] + '*'*(i-5) + s[i:]
         rudisha repr(s)
@@ -188,7 +188,7 @@ kundi FTP:
     # Internal: send one line to the server, appending CRLF
     eleza putline(self, line):
         ikiwa '\r' kwenye line ama '\n' kwenye line:
-             ashiria ValueError('an illegal newline character should sio be contained')
+            ashiria ValueError('an illegal newline character should sio be contained')
         sys.audit("ftplib.sendcmd", self, line)
         line = line + CRLF
         ikiwa self.debugging > 1:
@@ -205,14 +205,14 @@ kundi FTP:
     eleza getline(self):
         line = self.file.readline(self.maxline + 1)
         ikiwa len(line) > self.maxline:
-             ashiria Error("got more than %d bytes" % self.maxline)
+            ashiria Error("got more than %d bytes" % self.maxline)
         ikiwa self.debugging > 1:
             andika('*get*', self.sanitize(line))
         ikiwa sio line:
-             ashiria EOFError
+            ashiria EOFError
         ikiwa line[-2:] == CRLF:
             line = line[:-2]
-        elikiwa line[-1:] kwenye CRLF:
+        lasivyo line[-1:] kwenye CRLF:
             line = line[:-1]
         rudisha line
 
@@ -243,30 +243,30 @@ kundi FTP:
         ikiwa c kwenye {'1', '2', '3'}:
             rudisha resp
         ikiwa c == '4':
-             ashiria error_temp(resp)
+            ashiria error_temp(resp)
         ikiwa c == '5':
-             ashiria error_perm(resp)
-         ashiria error_proto(resp)
+            ashiria error_perm(resp)
+        ashiria error_proto(resp)
 
     eleza voidresp(self):
         """Expect a response beginning ukijumuisha '2'."""
         resp = self.getresp()
         ikiwa resp[:1] != '2':
-             ashiria error_reply(resp)
+            ashiria error_reply(resp)
         rudisha resp
 
     eleza abort(self):
         '''Abort a file transfer.  Uses out-of-band data.
         This does sio follow the procedure kutoka the RFC to send Telnet
         IP na Synch; that doesn't seem to work ukijumuisha the servers I've
-        tried.  Instead, just send the ABOR command as OOB data.'''
+        tried.  Instead, just send the ABOR command kama OOB data.'''
         line = b'ABOR' + B_CRLF
         ikiwa self.debugging > 1:
             andika('*put urgent*', self.sanitize(line))
         self.sock.sendall(line, MSG_OOB)
         resp = self.getmultiline()
-        ikiwa resp[:3] sio kwenye {'426', '225', '226'}:
-             ashiria error_proto(resp)
+        ikiwa resp[:3] haiko kwenye {'426', '225', '226'}:
+            ashiria error_proto(resp)
         rudisha resp
 
     eleza sendcmd(self, cmd):
@@ -297,7 +297,7 @@ kundi FTP:
         ikiwa self.af == socket.AF_INET6:
             af = 2
         ikiwa af == 0:
-             ashiria error_proto('unsupported address family')
+            ashiria error_proto('unsupported address family')
         fields = ['', repr(af), host, repr(port), '']
         cmd = 'EPRT ' + '|'.join(fields)
         rudisha self.voidcmd(cmd)
@@ -327,18 +327,18 @@ kundi FTP:
 
         If the transfer ni active, send a port command na the
         transfer command, na accept the connection.  If the server is
-        passive, send a pasv command, connect to it, na start the
+        pitaive, send a pasv command, connect to it, na start the
         transfer command.  Either way, rudisha the socket kila the
         connection na the expected size of the transfer.  The
         expected size may be Tupu ikiwa it could sio be determined.
 
-        Optional `rest' argument can be a string that ni sent as the
+        Optional `rest' argument can be a string that ni sent kama the
         argument to a REST command.  This ni essentially a server
         marker used to tell the server to skip over any data up to the
         given marker.
         """
         size = Tupu
-        ikiwa self.passiveserver:
+        ikiwa self.pitaiveserver:
             host, port = self.makepasv()
             conn = socket.create_connection((host, port), self.timeout,
                                             source_address=self.source_address)
@@ -355,12 +355,12 @@ kundi FTP:
                 ikiwa resp[0] == '2':
                     resp = self.getresp()
                 ikiwa resp[0] != '1':
-                     ashiria error_reply(resp)
+                    ashiria error_reply(resp)
             tatizo:
                 conn.close()
                 raise
         isipokua:
-            ukijumuisha self.makeport() as sock:
+            ukijumuisha self.makeport() kama sock:
                 ikiwa rest ni sio Tupu:
                     self.sendcmd("REST %s" % rest)
                 resp = self.sendcmd(cmd)
@@ -368,7 +368,7 @@ kundi FTP:
                 ikiwa resp[0] == '2':
                     resp = self.getresp()
                 ikiwa resp[0] != '1':
-                     ashiria error_reply(resp)
+                    ashiria error_reply(resp)
                 conn, sockaddr = sock.accept()
                 ikiwa self.timeout ni sio _GLOBAL_DEFAULT_TIMEOUT:
                     conn.settimeout(self.timeout)
@@ -381,30 +381,30 @@ kundi FTP:
         """Like ntransfercmd() but returns only the socket."""
         rudisha self.ntransfercmd(cmd, rest)[0]
 
-    eleza login(self, user = '', passwd = '', acct = ''):
+    eleza login(self, user = '', pitawd = '', acct = ''):
         '''Login, default anonymous.'''
         ikiwa sio user:
             user = 'anonymous'
-        ikiwa sio passwd:
-            passwd = ''
+        ikiwa sio pitawd:
+            pitawd = ''
         ikiwa sio acct:
             acct = ''
-        ikiwa user == 'anonymous' na passwd kwenye {'', '-'}:
-            # If there ni no anonymous ftp password specified
+        ikiwa user == 'anonymous' na pitawd kwenye {'', '-'}:
+            # If there ni no anonymous ftp pitaword specified
             # then we'll just use anonymous@
             # We don't send any other thing because:
             # - We want to remain anonymous
             # - We want to stop SPAM
             # - We don't want to let ftp sites to discriminate by the user,
             #   host ama country.
-            passwd = passwd + 'anonymous@'
+            pitawd = pitawd + 'anonymous@'
         resp = self.sendcmd('USER ' + user)
         ikiwa resp[0] == '3':
-            resp = self.sendcmd('PASS ' + passwd)
+            resp = self.sendcmd('PASS ' + pitawd)
         ikiwa resp[0] == '3':
             resp = self.sendcmd('ACCT ' + acct)
         ikiwa resp[0] != '2':
-             ashiria error_reply(resp)
+            ashiria error_reply(resp)
         rudisha resp
 
     eleza retrbinary(self, cmd, callback, blocksize=8192, rest=Tupu):
@@ -422,7 +422,7 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        ukijumuisha self.transfercmd(cmd, rest) as conn:
+        ukijumuisha self.transfercmd(cmd, rest) kama conn:
             wakati 1:
                 data = conn.recv(blocksize)
                 ikiwa sio data:
@@ -448,19 +448,19 @@ kundi FTP:
         ikiwa callback ni Tupu:
             callback = print_line
         resp = self.sendcmd('TYPE A')
-        ukijumuisha self.transfercmd(cmd) as conn, \
-                 conn.makefile('r', encoding=self.encoding) as fp:
+        ukijumuisha self.transfercmd(cmd) kama conn, \
+                 conn.makefile('r', encoding=self.encoding) kama fp:
             wakati 1:
                 line = fp.readline(self.maxline + 1)
                 ikiwa len(line) > self.maxline:
-                     ashiria Error("got more than %d bytes" % self.maxline)
+                    ashiria Error("got more than %d bytes" % self.maxline)
                 ikiwa self.debugging > 2:
                     andika('*retr*', repr(line))
                 ikiwa sio line:
                     koma
                 ikiwa line[-2:] == CRLF:
                     line = line[:-2]
-                elikiwa line[-1:] == '\n':
+                lasivyo line[-1:] == '\n':
                     line = line[:-1]
                 callback(line)
             # shutdown ssl layer
@@ -484,7 +484,7 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE I')
-        ukijumuisha self.transfercmd(cmd, rest) as conn:
+        ukijumuisha self.transfercmd(cmd, rest) kama conn:
             wakati 1:
                 buf = fp.read(blocksize)
                 ikiwa sio buf:
@@ -510,11 +510,11 @@ kundi FTP:
           The response code.
         """
         self.voidcmd('TYPE A')
-        ukijumuisha self.transfercmd(cmd) as conn:
+        ukijumuisha self.transfercmd(cmd) kama conn:
             wakati 1:
                 buf = fp.readline(self.maxline + 1)
                 ikiwa len(buf) > self.maxline:
-                     ashiria Error("got more than %d bytes" % self.maxline)
+                    ashiria Error("got more than %d bytes" % self.maxline)
                 ikiwa sio buf:
                     koma
                 ikiwa buf[-2:] != B_CRLF:
@@ -528,9 +528,9 @@ kundi FTP:
                 conn.unwrap()
         rudisha self.voidresp()
 
-    eleza acct(self, password):
+    eleza acct(self, pitaword):
         '''Send new account name.'''
-        cmd = 'ACCT ' + password
+        cmd = 'ACCT ' + pitaword
         rudisha self.voidcmd(cmd)
 
     eleza nlst(self, *args):
@@ -563,7 +563,7 @@ kundi FTP:
         ni assumed. "facts" ni a list of strings representing the type
         of information desired (e.g. ["type", "size", "perm"]).
 
-        Return a generator object yielding a tuple of two elements
+        Return a generator object tumaing a tuple of two elements
         kila every file found kwenye path.
         First element ni the file name, the second one ni a dictionary
         including a variable number of "facts" depending on the server
@@ -589,7 +589,7 @@ kundi FTP:
         '''Rename a file.'''
         resp = self.sendcmd('RNFR ' + fromname)
         ikiwa resp[0] != '3':
-             ashiria error_reply(resp)
+            ashiria error_reply(resp)
         rudisha self.voidcmd('RNTO ' + toname)
 
     eleza delete(self, filename):
@@ -598,17 +598,17 @@ kundi FTP:
         ikiwa resp[:3] kwenye {'250', '200'}:
             rudisha resp
         isipokua:
-             ashiria error_reply(resp)
+            ashiria error_reply(resp)
 
     eleza cwd(self, dirname):
         '''Change to a directory.'''
         ikiwa dirname == '..':
             jaribu:
                 rudisha self.voidcmd('CDUP')
-            except error_perm as msg:
+            tatizo error_perm kama msg:
                 ikiwa msg.args[0][:3] != '500':
                     raise
-        elikiwa dirname == '':
+        lasivyo dirname == '':
             dirname = '.'  # does nothing, but could rudisha error
         cmd = 'CWD ' + dirname
         rudisha self.voidcmd(cmd)
@@ -624,7 +624,7 @@ kundi FTP:
     eleza mkd(self, dirname):
         '''Make a directory, rudisha its full pathname.'''
         resp = self.voidcmd('MKD ' + dirname)
-        # fix around non-compliant implementations such as IIS shipped
+        # fix around non-compliant implementations such kama IIS shipped
         # ukijumuisha Windows server 2003
         ikiwa sio resp.startswith('257'):
             rudisha ''
@@ -637,7 +637,7 @@ kundi FTP:
     eleza pwd(self):
         '''Return current working directory.'''
         resp = self.voidcmd('PWD')
-        # fix around non-compliant implementations such as IIS shipped
+        # fix around non-compliant implementations such kama IIS shipped
         # ukijumuisha Windows server 2003
         ikiwa sio resp.startswith('257'):
             rudisha ''
@@ -664,16 +664,16 @@ kundi FTP:
 
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     _SSLSocket = Tupu
 isipokua:
     _SSLSocket = ssl.SSLSocket
 
     kundi FTP_TLS(FTP):
-        '''A FTP subkundi which adds TLS support to FTP as described
+        '''A FTP subkundi which adds TLS support to FTP kama described
         kwenye RFC-4217.
 
-        Connect as usual to port 21 implicitly securing the FTP control
+        Connect kama usual to port 21 implicitly securing the FTP control
         connection before authenticating.
 
         Securing the data connection requires user to explicitly ask
@@ -704,14 +704,14 @@ isipokua:
         '''
         ssl_version = ssl.PROTOCOL_TLS_CLIENT
 
-        eleza __init__(self, host='', user='', passwd='', acct='', keyfile=Tupu,
+        eleza __init__(self, host='', user='', pitawd='', acct='', keyfile=Tupu,
                      certfile=Tupu, context=Tupu,
                      timeout=_GLOBAL_DEFAULT_TIMEOUT, source_address=Tupu):
             ikiwa context ni sio Tupu na keyfile ni sio Tupu:
-                 ashiria ValueError("context na keyfile arguments are mutually "
+                ashiria ValueError("context na keyfile arguments are mutually "
                                  "exclusive")
             ikiwa context ni sio Tupu na certfile ni sio Tupu:
-                 ashiria ValueError("context na certfile arguments are mutually "
+                ashiria ValueError("context na certfile arguments are mutually "
                                  "exclusive")
             ikiwa keyfile ni sio Tupu ama certfile ni sio Tupu:
                 agiza warnings
@@ -725,17 +725,17 @@ isipokua:
                                                      keyfile=keyfile)
             self.context = context
             self._prot_p = Uongo
-            FTP.__init__(self, host, user, passwd, acct, timeout, source_address)
+            FTP.__init__(self, host, user, pitawd, acct, timeout, source_address)
 
-        eleza login(self, user='', passwd='', acct='', secure=Kweli):
+        eleza login(self, user='', pitawd='', acct='', secure=Kweli):
             ikiwa secure na sio isinstance(self.sock, ssl.SSLSocket):
                 self.auth()
-            rudisha FTP.login(self, user, passwd, acct)
+            rudisha FTP.login(self, user, pitawd, acct)
 
         eleza auth(self):
             '''Set up secure control connection by using TLS/SSL.'''
             ikiwa isinstance(self.sock, ssl.SSLSocket):
-                 ashiria ValueError("Already using TLS")
+                ashiria ValueError("Already using TLS")
             ikiwa self.ssl_version >= ssl.PROTOCOL_TLS:
                 resp = self.voidcmd('AUTH TLS')
             isipokua:
@@ -748,7 +748,7 @@ isipokua:
         eleza ccc(self):
             '''Switch back to a clear-text control connection.'''
             ikiwa sio isinstance(self.sock, ssl.SSLSocket):
-                 ashiria ValueError("not using TLS")
+                ashiria ValueError("not using TLS")
             resp = self.voidcmd('CCC')
             self.sock = self.sock.unwrap()
             rudisha resp
@@ -785,12 +785,12 @@ isipokua:
             rudisha conn, size
 
         eleza abort(self):
-            # overridden as we can't pass MSG_OOB flag to sendall()
+            # overridden kama we can't pita MSG_OOB flag to sendall()
             line = b'ABOR' + B_CRLF
             self.sock.sendall(line)
             resp = self.getmultiline()
-            ikiwa resp[:3] sio kwenye {'426', '225', '226'}:
-                 ashiria error_proto(resp)
+            ikiwa resp[:3] haiko kwenye {'426', '225', '226'}:
+                ashiria error_proto(resp)
             rudisha resp
 
     __all__.append('FTP_TLS')
@@ -805,7 +805,7 @@ eleza parse150(resp):
     be present kwenye the 150 message.
     '''
     ikiwa resp[:3] != '150':
-         ashiria error_reply(resp)
+        ashiria error_reply(resp)
     global _150_re
     ikiwa _150_re ni Tupu:
         agiza re
@@ -825,14 +825,14 @@ eleza parse227(resp):
     Return ('host.addr.as.numbers', port#) tuple.'''
 
     ikiwa resp[:3] != '227':
-         ashiria error_reply(resp)
+        ashiria error_reply(resp)
     global _227_re
     ikiwa _227_re ni Tupu:
         agiza re
         _227_re = re.compile(r'(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)', re.ASCII)
     m = _227_re.search(resp)
     ikiwa sio m:
-         ashiria error_proto(resp)
+        ashiria error_proto(resp)
     numbers = m.groups()
     host = '.'.join(numbers[:4])
     port = (int(numbers[4]) << 8) + int(numbers[5])
@@ -845,17 +845,17 @@ eleza parse229(resp, peer):
     Return ('host.addr.as.numbers', port#) tuple.'''
 
     ikiwa resp[:3] != '229':
-         ashiria error_reply(resp)
+        ashiria error_reply(resp)
     left = resp.find('(')
-    ikiwa left < 0:  ashiria error_proto(resp)
+    ikiwa left < 0: ashiria error_proto(resp)
     right = resp.find(')', left + 1)
     ikiwa right < 0:
-         ashiria error_proto(resp) # should contain '(|||port|)'
+        ashiria error_proto(resp) # should contain '(|||port|)'
     ikiwa resp[left + 1] != resp[right - 1]:
-         ashiria error_proto(resp)
+        ashiria error_proto(resp)
     parts = resp[left + 1:right].split(resp[left+1])
     ikiwa len(parts) != 5:
-         ashiria error_proto(resp)
+        ashiria error_proto(resp)
     host = peer[0]
     port = int(parts[3])
     rudisha host, port
@@ -867,7 +867,7 @@ eleza parse257(resp):
     Returns the directoryname kwenye the 257 reply.'''
 
     ikiwa resp[:3] != '257':
-         ashiria error_reply(resp)
+        ashiria error_reply(resp)
     ikiwa resp[3:5] != ' "':
         rudisha '' # Not compliant to RFC 959, but UNIX ftpd does this
     dirname = ''
@@ -902,11 +902,11 @@ eleza ftpcp(source, sourcename, target, targetname = '', type = 'I'):
     # transfer request.
     # So: STOR before RETR, because here the target ni a "user".
     treply = target.sendcmd('STOR ' + targetname)
-    ikiwa treply[:3] sio kwenye {'125', '150'}:
-         ashiria error_proto  # RFC 959
+    ikiwa treply[:3] haiko kwenye {'125', '150'}:
+        ashiria error_proto  # RFC 959
     sreply = source.sendcmd('RETR ' + sourcename)
-    ikiwa sreply[:3] sio kwenye {'125', '150'}:
-         ashiria error_proto  # RFC 959
+    ikiwa sreply[:3] haiko kwenye {'125', '150'}:
+        ashiria error_proto  # RFC 959
     source.voidresp()
     target.voidresp()
 
@@ -917,7 +917,7 @@ eleza test():
 
     -d dir
     -l list
-    -p password
+    -p pitaword
     '''
 
     ikiwa len(sys.argv) < 2:
@@ -938,30 +938,30 @@ eleza test():
     host = sys.argv[1]
     ftp = FTP(host)
     ftp.set_debuglevel(debugging)
-    userid = passwd = acct = ''
+    userid = pitawd = acct = ''
     jaribu:
         netrcobj = netrc.netrc(rcfile)
-    except OSError:
+    tatizo OSError:
         ikiwa rcfile ni sio Tupu:
             sys.stderr.write("Could sio open account file"
                              " -- using anonymous login.")
     isipokua:
         jaribu:
-            userid, acct, passwd = netrcobj.authenticators(host)
-        except KeyError:
+            userid, acct, pitawd = netrcobj.authenticators(host)
+        tatizo KeyError:
             # no account kila host
             sys.stderr.write(
                     "No account -- using anonymous login.")
-    ftp.login(userid, passwd, acct)
+    ftp.login(userid, pitawd, acct)
     kila file kwenye sys.argv[2:]:
         ikiwa file[:2] == '-l':
             ftp.dir(file[2:])
-        elikiwa file[:2] == '-d':
+        lasivyo file[:2] == '-d':
             cmd = 'CWD'
             ikiwa file[2:]: cmd = cmd + ' ' + file[2:]
             resp = ftp.sendcmd(cmd)
-        elikiwa file == '-p':
-            ftp.set_pasv(not ftp.passiveserver)
+        lasivyo file == '-p':
+            ftp.set_pasv(sio ftp.pitaiveserver)
         isipokua:
             ftp.retrbinary('RETR ' + file, \
                            sys.stdout.write, 1024)

@@ -209,7 +209,7 @@ kundi TestClassGetitem(unittest.TestCase):
             eleza __class_getitem__(cls, item):
                 cls.called_ukijumuisha = item
         kundi B(A):
-            pass
+            pita
         self.assertIs(B.called_with, Tupu)
         B[int]
         self.assertIs(B.called_with, int)
@@ -249,7 +249,7 @@ kundi TestClassGetitem(unittest.TestCase):
         self.assertEqual(Meta[int], 'Meta[int]')
 
     eleza test_class_getitem_with_metaclass(self):
-        kundi Meta(type): pass
+        kundi Meta(type): pita
         kundi C(metaclass=Meta):
             eleza __class_getitem__(cls, item):
                 rudisha f'{cls.__name__}[{item.__name__}]'
@@ -276,7 +276,7 @@ kundi CAPITest(unittest.TestCase):
         self.assertIs(type(IntGeneric), GenericAlias)
         self.assertEqual(IntGeneric.__mro_entries__(()), (int,))
         kundi C(IntGeneric):
-            pass
+            pita
         self.assertEqual(C.__bases__, (int,))
         self.assertEqual(C.__orig_bases__, (IntGeneric,))
         self.assertEqual(C.__mro__, (C, int, object))

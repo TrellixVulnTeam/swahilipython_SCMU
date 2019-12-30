@@ -16,7 +16,7 @@ kutoka idlelib.idle_test.mock_idle agiza Func
 # Tests should sio depend on fortuitous user configurations.
 # They must sio affect actual user .cfg files.
 # Replace user parsers ukijumuisha empty parsers that cannot be saved
-# due to getting '' as the filename when created.
+# due to getting '' kama the filename when created.
 
 idleConf = config.idleConf
 usercfg = idleConf.userCfg
@@ -160,7 +160,7 @@ kundi IdleUserConfParserTest(unittest.TestCase):
         self.assertCountEqual(parser.sections(), ['Foo'])
 
     eleza test_save(self):
-        ukijumuisha tempfile.TemporaryDirectory() as tdir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tdir:
             path = os.path.join(tdir, 'test.cfg')
             parser = self.new_parser(path)
             parser.AddSection('Foo')
@@ -191,7 +191,7 @@ kundi IdleConfTest(unittest.TestCase):
             idle_dir = os.path.abspath(sys.path[0])
         kila ctype kwenye conf.config_types:
             config_path = os.path.join(idle_dir, '../config-%s.def' % ctype)
-            ukijumuisha open(config_path, 'r') as f:
+            ukijumuisha open(config_path, 'r') kama f:
                 cls.config_string[ctype] = f.read()
 
         cls.orig_warn = config._warn
@@ -235,13 +235,13 @@ kundi IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      '/home/foo/cpython/.idlerc')
 
-        # Check user dir sio exists na created failed should  ashiria SystemExit
+        # Check user dir sio exists na created failed should ashiria SystemExit
         ukijumuisha mock.patch('os.path.join', return_value='/path/not/exists'):
             ukijumuisha self.assertRaises(SystemExit):
                 ukijumuisha self.assertRaises(FileNotFoundError):
                     conf.GetUserCfgDir()
 
-    @unittest.skipIf(not sys.platform.startswith('win'), 'this ni test kila Windows system')
+    @unittest.skipIf(sio sys.platform.startswith('win'), 'this ni test kila Windows system')
     eleza test_get_user_cfg_dir_windows(self):
         # Test to get user config directory under Windows.
         conf = self.new_config(_utest=Kweli)
@@ -258,7 +258,7 @@ kundi IdleConfTest(unittest.TestCase):
                     self.assertEqual(conf.GetUserCfgDir(),
                                      'C:\\foo\\cpython\\.idlerc')
 
-        # Check user dir sio exists na created failed should  ashiria SystemExit
+        # Check user dir sio exists na created failed should ashiria SystemExit
         ukijumuisha mock.patch('os.path.join', return_value='/path/not/exists'):
             ukijumuisha self.assertRaises(SystemExit):
                 ukijumuisha self.assertRaises(FileNotFoundError):
@@ -315,7 +315,7 @@ kundi IdleConfTest(unittest.TestCase):
     eleza test_save_user_cfg_files(self):
         conf = self.mock_config()
 
-        ukijumuisha mock.patch('idlelib.config.IdleUserConfParser.Save') as m:
+        ukijumuisha mock.patch('idlelib.config.IdleUserConfParser.Save') kama m:
             conf.SaveUserCfgFiles()
             self.assertEqual(m.call_count, len(conf.userCfg))
 
@@ -325,7 +325,7 @@ kundi IdleConfTest(unittest.TestCase):
         eq = self.assertEqual
         eq(conf.GetOption('main', 'EditorWindow', 'width'), '80')
         eq(conf.GetOption('main', 'EditorWindow', 'width', type='int'), 80)
-        ukijumuisha mock.patch('idlelib.config._warn') as _warn:
+        ukijumuisha mock.patch('idlelib.config._warn') kama _warn:
             eq(conf.GetOption('main', 'EditorWindow', 'font', type='int'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists'), Tupu)
             eq(conf.GetOption('main', 'EditorWindow', 'NotExists', default='NE'), 'NE')
@@ -788,14 +788,14 @@ kundi WarningTest(unittest.TestCase):
     eleza test_warn(self):
         Equal = self.assertEqual
         config._warned = set()
-        ukijumuisha captured_stderr() as stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(config._warned, {('warning','key')})
         Equal(stderr.getvalue(), 'warning'+'\n')
-        ukijumuisha captured_stderr() as stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warning', 'key')
         Equal(stderr.getvalue(), '')
-        ukijumuisha captured_stderr() as stderr:
+        ukijumuisha captured_stderr() kama stderr:
             config._warn('warn2', 'yek')
         Equal(config._warned, {('warning','key'), ('warn2','yek')})
         Equal(stderr.getvalue(), 'warn2'+'\n')

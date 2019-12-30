@@ -7,7 +7,7 @@
 # against each other.
 #
 # Most ndarray tests also check that memoryview(ndarray) behaves in
-# the same way as the original. Thus, a substantial part of the
+# the same way kama the original. Thus, a substantial part of the
 # memoryview tests ni now kwenye this module.
 #
 
@@ -23,24 +23,24 @@ kutoka fractions agiza Fraction
 
 jaribu:
     kutoka _testbuffer agiza *
-except ImportError:
+tatizo ImportError:
     ndarray = Tupu
 
 jaribu:
     agiza struct
-except ImportError:
+tatizo ImportError:
     struct = Tupu
 
 jaribu:
     agiza ctypes
-except ImportError:
+tatizo ImportError:
     ctypes = Tupu
 
 jaribu:
-    ukijumuisha support.EnvironmentVarGuard() as os.environ, \
+    ukijumuisha support.EnvironmentVarGuard() kama os.environ, \
          warnings.catch_warnings():
-        kutoka numpy agiza ndarray as numpy_array
-except ImportError:
+        kutoka numpy agiza ndarray kama numpy_array
+tatizo ImportError:
     numpy_array = Tupu
 
 
@@ -70,8 +70,8 @@ ikiwa struct:
         struct.pack('Q', 2**64-1)
         NATIVE['q'] = 0
         NATIVE['Q'] = 0
-    except struct.error:
-        pass
+    tatizo struct.error:
+        pita
 
 # Standard format chars na their ranges.
 STANDARD = {
@@ -88,19 +88,19 @@ eleza native_type_range(fmt):
     """Return range of a native type."""
     ikiwa fmt == 'c':
         lh = (0, 256)
-    elikiwa fmt == '?':
+    lasivyo fmt == '?':
         lh = (0, 2)
-    elikiwa fmt == 'f':
+    lasivyo fmt == 'f':
         lh = (-(1<<63), 1<<63)
-    elikiwa fmt == 'd':
+    lasivyo fmt == 'd':
         lh = (-(1<<1023), 1<<1023)
     isipokua:
         kila exp kwenye (128, 127, 64, 63, 32, 31, 16, 15, 8, 7):
             jaribu:
                 struct.pack(fmt, (1<<exp)-1)
                 koma
-            except struct.error:
-                pass
+            tatizo struct.error:
+                pita
         lh = (-(1<<exp), 1<<exp) ikiwa exp & 1 isipokua (0, 1<<exp)
     rudisha lh
 
@@ -227,7 +227,7 @@ eleza is_byte_format(fmt):
 eleza is_memoryview_format(fmt):
     """format suitable kila memoryview"""
     x = len(fmt)
-    rudisha ((x == 1 ama (x == 2 na fmt[0] == '@')) and
+    rudisha ((x == 1 ama (x == 2 na fmt[0] == '@')) na
             fmt[x-1] kwenye MEMORYVIEW)
 
 NON_BYTE_FORMAT = [c kila c kwenye fmtdict['@'] ikiwa sio is_byte_format(c)]
@@ -238,7 +238,7 @@ NON_BYTE_FORMAT = [c kila c kwenye fmtdict['@'] ikiwa sio is_byte_format(c)]
 # ======================================================================
 
 eleza atomp(lst):
-    """Tuple items (representing structs) are regarded as atoms."""
+    """Tuple items (representing structs) are regarded kama atoms."""
     rudisha sio isinstance(lst, list)
 
 eleza listp(lst):
@@ -254,7 +254,7 @@ eleza prod(lst):
     rudisha x
 
 eleza strides_from_shape(ndim, shape, itemsize, layout):
-    """Calculate strides of a contiguous array. Layout ni 'C' or
+    """Calculate strides of a contiguous array. Layout ni 'C' ama
        'F' (Fortran)."""
     ikiwa ndim == 0:
         rudisha ()
@@ -297,12 +297,12 @@ eleza _fa(items, s):
 
 eleza carray(items, shape):
     ikiwa listp(items) na sio 0 kwenye shape na prod(shape) != len(items):
-         ashiria ValueError("prod(shape) != len(items)")
+        ashiria ValueError("prod(shape) != len(items)")
     rudisha _ca(items, shape)
 
 eleza farray(items, shape):
     ikiwa listp(items) na sio 0 kwenye shape na prod(shape) != len(items):
-         ashiria ValueError("prod(shape) != len(items)")
+        ashiria ValueError("prod(shape) != len(items)")
     rudisha _fa(items, shape)
 
 eleza indices(shape):
@@ -318,7 +318,7 @@ eleza getindex(ndim, ind, strides):
     rudisha ret
 
 eleza transpose(src, shape):
-    """Transpose flat item list that ni regarded as a multi-dimensional
+    """Transpose flat item list that ni regarded kama a multi-dimensional
        matrix defined by shape: dest...[k][j][i] = src[i][j][k]...  """
     ikiwa sio shape:
         rudisha src
@@ -397,7 +397,7 @@ eleza cmp_structure(llst, rlst, lslices, rslices):
 eleza multislice_assign(llst, rlst, lslices, rslices):
     """Return llst after assigning: llst[lslices] = rlst[rslices]"""
     ikiwa cmp_structure(llst, rlst, lslices, rslices) < 0:
-         ashiria ValueError("lvalue na rvalue have different structures")
+        ashiria ValueError("lvalue na rvalue have different structures")
     rudisha m_assign(llst, rlst, lslices, rslices)
 
 
@@ -498,7 +498,7 @@ eleza rand_structure(itemsize, valid, maxdim=5, maxshape=16, shape=()):
         n = randrange(100)
         ikiwa n >= 95 na valid:
             minshape = 0
-        elikiwa n >= 90:
+        lasivyo n >= 90:
             minshape = 1
         shape = [0] * ndim
 
@@ -550,7 +550,7 @@ eleza randslice_from_slicelen(slicelen, listlen):
     s = slice(start, stop, step)
     _, _, _, control = slice_indices(s, listlen)
     ikiwa control != slicelen:
-         ashiria RuntimeError
+        ashiria RuntimeError
     rudisha s
 
 eleza randslice_from_shape(ndim, shape):
@@ -574,7 +574,7 @@ eleza rand_aligned_slices(maxdim=5, maxshape=16):
     n = randrange(100)
     ikiwa n >= 95:
         minshape = 0
-    elikiwa n >= 90:
+    lasivyo n >= 90:
         minshape = 1
     all_random = Kweli ikiwa randrange(100) >= 80 isipokua Uongo
     lshape = [0]*ndim; rshape = [0]*ndim
@@ -635,18 +635,18 @@ eleza numpy_array_from_structure(items, fmt, t):
 # ======================================================================
 
 eleza cast_items(exporter, fmt, itemsize, shape=Tupu):
-    """Interpret the raw memory of 'exporter' as a list of items with
+    """Interpret the raw memory of 'exporter' kama a list of items with
        size 'itemsize'. If shape=Tupu, the new structure ni assumed to
        be 1-D ukijumuisha n * itemsize = bytelen. If shape ni given, the usual
        constraint kila contiguous arrays prod(shape) * itemsize = bytelen
        applies. On success, rudisha (items, shape). If the constraints
        cannot be met, rudisha (Tupu, Tupu). If a chunk of bytes ni interpreted
-       as NaN as a result of float conversion, rudisha ('nan', Tupu)."""
+       kama NaN kama a result of float conversion, rudisha ('nan', Tupu)."""
     bytelen = exporter.nbytes
     ikiwa shape:
         ikiwa prod(shape) * itemsize != bytelen:
             rudisha Tupu, shape
-    elikiwa shape == []:
+    lasivyo shape == []:
         ikiwa exporter.ndim == 0 ama itemsize != bytelen:
             rudisha Tupu, shape
     isipokua:
@@ -725,7 +725,7 @@ eleza ndarray_andika(nd):
     """Print ndarray kila debugging."""
     jaribu:
         x = nd.tolist()
-    except (TypeError, NotImplementedError):
+    tatizo (TypeError, NotImplementedError):
         x = nd.tobytes()
     ikiwa isinstance(nd, ndarray):
         offset = nd.offset
@@ -831,7 +831,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                     isipokua:
                         x = struct.pack(fmt, item2)
                     b.extend(x)
-                except BufferError:
+                tatizo BufferError:
                     buf_err = Kweli # re-exporter does sio provide full buffer
                     koma
                 self.assertEqual(item1, item2)
@@ -935,7 +935,7 @@ kundi TestBufferProtocol(unittest.TestCase):
         ikiwa is_memoryview_format(fmt):
             jaribu:
                 m = memoryview(result)
-            except BufferError: # re-exporter does sio provide full information
+            tatizo BufferError: # re-exporter does sio provide full information
                 return
             ex = result.obj ikiwa isinstance(result, memoryview) isipokua result
 
@@ -959,7 +959,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                 self.assertEqual(m, result)
 
             check_memoryview(m)
-            ukijumuisha m.toreadonly() as mm:
+            ukijumuisha m.toreadonly() kama mm:
                 check_memoryview(mm, expected_readonly=Kweli)
             m.tobytes()  # Releasing mm didn't release m
 
@@ -970,17 +970,17 @@ kundi TestBufferProtocol(unittest.TestCase):
             rudisha ((req&flag) == flag)
 
         ikiwa (# writable request to read-only exporter
-            (ex.readonly na match(req, PyBUF_WRITABLE)) or
+            (ex.readonly na match(req, PyBUF_WRITABLE)) ama
             # cannot match explicit contiguity request
-            (match(req, PyBUF_C_CONTIGUOUS) na sio ex.c_contiguous) or
-            (match(req, PyBUF_F_CONTIGUOUS) na sio ex.f_contiguous) or
-            (match(req, PyBUF_ANY_CONTIGUOUS) na sio ex.contiguous) or
+            (match(req, PyBUF_C_CONTIGUOUS) na sio ex.c_contiguous) ama
+            (match(req, PyBUF_F_CONTIGUOUS) na sio ex.f_contiguous) ama
+            (match(req, PyBUF_ANY_CONTIGUOUS) na sio ex.contiguous) ama
             # buffer needs suboffsets
-            (not match(req, PyBUF_INDIRECT) na ex.suboffsets) or
+            (sio match(req, PyBUF_INDIRECT) na ex.suboffsets) ama
             # buffer without strides must be C-contiguous
-            (not match(req, PyBUF_STRIDES) na sio ex.c_contiguous) or
+            (sio match(req, PyBUF_STRIDES) na sio ex.c_contiguous) ama
             # PyBUF_SIMPLE|PyBUF_FORMAT na PyBUF_WRITABLE|PyBUF_FORMAT
-            (not match(req, PyBUF_ND) na match(req, PyBUF_FORMAT))):
+            (sio match(req, PyBUF_ND) na match(req, PyBUF_FORMAT))):
 
             self.assertRaises(BufferError, ndarray, ex, getbuf=req)
             return
@@ -1049,7 +1049,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             0, ND_WRITABLE, ND_FORTRAN, ND_FORTRAN|ND_WRITABLE,
             ND_PIL, ND_PIL|ND_WRITABLE
         )
-        # flags that can actually be used as flags
+        # flags that can actually be used kama flags
         real_flags = (0, PyBUF_WRITABLE, PyBUF_FORMAT,
                       PyBUF_WRITABLE|PyBUF_FORMAT)
 
@@ -1731,13 +1731,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                     listerr = Tupu
                     jaribu:
                         sliced = multislice(lst, slices)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         listerr = e.__class__
 
                     nderr = Tupu
                     jaribu:
                         ndsliced = nd[slices]
-                    except Exception as e:
+                    tatizo Exception kama e:
                         nderr = e.__class__
 
                     ikiwa nderr ama listerr:
@@ -1766,13 +1766,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                 listerr = Tupu
                 jaribu:
                     sliced = multislice(lst, slices)
-                except Exception as e:
+                tatizo Exception kama e:
                     listerr = e.__class__
 
                 nderr = Tupu
                 jaribu:
                     ndsliced = nd[slices]
-                except Exception as e:
+                tatizo Exception kama e:
                     nderr = e.__class__
 
                 ikiwa nderr ama listerr:
@@ -1799,13 +1799,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                             rval = lst[rslice]
                             lst[lslice] = lst[rslice]
                             diff_structure = len(lval) != len(rval)
-                        except Exception as e:
+                        tatizo Exception kama e:
                             lsterr = e.__class__
 
                         nderr = Tupu
                         jaribu:
                             nd[lslice] = nd[rslice]
-                        except Exception as e:
+                        tatizo Exception kama e:
                             nderr = e.__class__
 
                         ikiwa diff_structure: # ndarray cannot change shape
@@ -1820,7 +1820,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                         mverr = Tupu
                         jaribu:
                             mv[lslice] = mv[rslice]
-                        except Exception as e:
+                        tatizo Exception kama e:
                             mverr = e.__class__
 
                         ikiwa diff_structure: # memoryview cannot change shape
@@ -1853,13 +1853,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                     listerr = Tupu
                     jaribu:
                         result = multislice_assign(lst, lst, lslices, rslices)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         listerr = e.__class__
 
                     nderr = Tupu
                     jaribu:
                         nd[lslices] = nd[rslices]
-                    except Exception as e:
+                    tatizo Exception kama e:
                         nderr = e.__class__
 
                     ikiwa nderr ama listerr:
@@ -1922,7 +1922,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                 nderr = Uongo
                 jaribu:
                     x = ndarray_from_structure(items, fmt, t)
-                except Exception as e:
+                tatizo Exception kama e:
                     nderr = e.__class__
                 self.assertKweli(nderr)
 
@@ -1930,7 +1930,7 @@ kundi TestBufferProtocol(unittest.TestCase):
                     numpy_err = Uongo
                     jaribu:
                         y = numpy_array_from_structure(items, fmt, t)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         numpy_err = e.__class__
 
                     ikiwa 0: # http://projects.scipy.org/numpy/ticket/1910
@@ -2186,7 +2186,7 @@ kundi TestBufferProtocol(unittest.TestCase):
             kila request kwenye requests:
                 jaribu:
                     b = py_buffer_to_contiguous(nd, order, request)
-                except BufferError:
+                tatizo BufferError:
                     endelea
                 self.assertEqual(b, ndbytes)
 
@@ -2272,12 +2272,12 @@ kundi TestBufferProtocol(unittest.TestCase):
             kila request kwenye requests:
                 jaribu:
                     b = py_buffer_to_contiguous(nd, 'C', request)
-                except BufferError:
+                tatizo BufferError:
                     endelea
 
                 self.assertEqual(b, expected)
 
-                # Check that output can be used as the basis kila constructing
+                # Check that output can be used kama the basis kila constructing
                 # a C array that ni logically identical to the input array.
                 y = ndarray([v kila v kwenye b], shape=[3, 4], flags=ND_WRITABLE)
                 self.assertEqual(memoryview(y), memoryview(nd))
@@ -2296,11 +2296,11 @@ kundi TestBufferProtocol(unittest.TestCase):
                             PyBUF_STRIDES, PyBUF_ND]:
                 jaribu:
                     b = py_buffer_to_contiguous(nd, 'F', request)
-                except BufferError:
+                tatizo BufferError:
                     endelea
                 self.assertEqual(b, expected)
 
-                # Check that output can be used as the basis kila constructing
+                # Check that output can be used kama the basis kila constructing
                 # a Fortran array that ni logically identical to the input array.
                 y = ndarray([v kila v kwenye b], shape=[3, 4], flags=ND_FORTRAN|ND_WRITABLE)
                 self.assertEqual(memoryview(y), memoryview(nd))
@@ -2318,12 +2318,12 @@ kundi TestBufferProtocol(unittest.TestCase):
                             PyBUF_STRIDES, PyBUF_ND]:
                 jaribu:
                     b = py_buffer_to_contiguous(nd, 'A', request)
-                except BufferError:
+                tatizo BufferError:
                     endelea
 
                 self.assertEqual(b, expected)
 
-                # Check that output can be used as the basis kila constructing
+                # Check that output can be used kama the basis kila constructing
                 # an array ukijumuisha order=f that ni logically identical to the input
                 # array.
                 y = ndarray([v kila v kwenye b], shape=[3, 4], flags=f|ND_WRITABLE)
@@ -2473,7 +2473,7 @@ kundi TestBufferProtocol(unittest.TestCase):
 
     eleza test_memoryview_cast_zero_shape(self):
         # Casts are undefined ikiwa buffer ni multidimensional na shape
-        # contains zeros. These arrays are regarded as C-contiguous by
+        # contains zeros. These arrays are regarded kama C-contiguous by
         # Numpy na PyBuffer_GetContiguous(), so they are sio caught by
         # the test kila C-contiguity kwenye memory_cast().
         items = [1,2,3]
@@ -2545,13 +2545,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                 struct_err = Tupu
                 jaribu:
                     struct.pack_into(fmt, nd, itemsize, v)
-                except struct.error:
+                tatizo struct.error:
                     struct_err = struct.error
 
                 mv_err = Tupu
                 jaribu:
                     m[1] = v
-                except (TypeError, ValueError) as e:
+                tatizo (TypeError, ValueError) kama e:
                     mv_err = e.__class__
 
                 ikiwa struct_err ama mv_err:
@@ -2562,7 +2562,7 @@ kundi TestBufferProtocol(unittest.TestCase):
 
     eleza test_memoryview_cast_zero_strides(self):
         # Casts are undefined ikiwa strides contains zeros. These arrays are
-        # (sometimes!) regarded as C-contiguous by Numpy, but sio by
+        # (sometimes!) regarded kama C-contiguous by Numpy, but sio by
         # PyBuffer_GetContiguous().
         ex = ndarray([1,2,3], shape=[3], strides=[0])
         self.assertUongo(ex.c_contiguous)
@@ -2879,8 +2879,8 @@ kundi TestBufferProtocol(unittest.TestCase):
 
     @contextlib.contextmanager
     eleza assert_out_of_bounds_error(self, dim):
-        ukijumuisha self.assertRaises(IndexError) as cm:
-            yield
+        ukijumuisha self.assertRaises(IndexError) kama cm:
+            tuma
         self.assertEqual(str(cm.exception),
                          "index out of bounds on dimension %d" % (dim,))
 
@@ -3145,18 +3145,18 @@ kundi TestBufferProtocol(unittest.TestCase):
                             ar = a[rslice]
                             a[lslice] = a[rslice]
                             have_resize = len(al) != len(ar)
-                        except Exception as e:
+                        tatizo Exception kama e:
                             array_err = e.__class__
 
                         m_err = Tupu
                         jaribu:
                             m[lslice] = m[rslice]
-                        except Exception as e:
+                        tatizo Exception kama e:
                             m_err = e.__class__
 
                         ikiwa have_resize: # memoryview cannot change shape
                             self.assertIs(m_err, ValueError)
-                        elikiwa m_err ama array_err:
+                        lasivyo m_err ama array_err:
                             self.assertIs(m_err, array_err)
                         isipokua:
                             self.assertEqual(m, a)
@@ -4223,11 +4223,11 @@ kundi TestBufferProtocol(unittest.TestCase):
         # release() kwenye the context manager's __exit__() method should still
         # work.
         eleza catch22(b):
-            ukijumuisha memoryview(b) as m2:
-                pass
+            ukijumuisha memoryview(b) kama m2:
+                pita
 
         x = bytearray(b'123')
-        ukijumuisha memoryview(x) as m1:
+        ukijumuisha memoryview(x) kama m1:
             catch22(m1)
             self.assertEqual(m1[0], ord(b'1'))
 
@@ -4235,20 +4235,20 @@ kundi TestBufferProtocol(unittest.TestCase):
         y = ndarray(x, getbuf=PyBUF_FULL_RO, flags=ND_REDIRECT)
         z = ndarray(y, getbuf=PyBUF_FULL_RO, flags=ND_REDIRECT)
         self.assertIs(z.obj, x)
-        ukijumuisha memoryview(z) as m:
+        ukijumuisha memoryview(z) kama m:
             catch22(m)
             self.assertEqual(m[0:1].tolist(), [[[0, 1, 2], [3, 4, 5]]])
 
         # Test garbage collection.
         kila flags kwenye (0, ND_REDIRECT):
             x = bytearray(b'123')
-            ukijumuisha memoryview(x) as m1:
+            ukijumuisha memoryview(x) kama m1:
                 toa x
                 y = ndarray(m1, getbuf=PyBUF_FULL_RO, flags=flags)
-                ukijumuisha memoryview(y) as m2:
+                ukijumuisha memoryview(y) kama m2:
                     toa y
                     z = ndarray(m2, getbuf=PyBUF_FULL_RO, flags=flags)
-                    ukijumuisha memoryview(z) as m3:
+                    ukijumuisha memoryview(z) kama m3:
                         toa z
                         catch22(m3)
                         catch22(m2)
@@ -4261,13 +4261,13 @@ kundi TestBufferProtocol(unittest.TestCase):
                 toa m1
 
             x = bytearray(b'123')
-            ukijumuisha memoryview(x) as m1:
+            ukijumuisha memoryview(x) kama m1:
                 toa x
                 y = ndarray(m1, getbuf=PyBUF_FULL_RO, flags=flags)
-                ukijumuisha memoryview(y) as m2:
+                ukijumuisha memoryview(y) kama m2:
                     toa y
                     z = ndarray(m2, getbuf=PyBUF_FULL_RO, flags=flags)
-                    ukijumuisha memoryview(z) as m3:
+                    ukijumuisha memoryview(z) kama m3:
                         toa z
                         catch22(m1)
                         catch22(m2)
@@ -4280,7 +4280,7 @@ kundi TestBufferProtocol(unittest.TestCase):
         # memoryview.release() fails ikiwa the view has exported buffers.
         x = bytearray(b'123')
         ukijumuisha self.assertRaises(BufferError):
-            ukijumuisha memoryview(x) as m:
+            ukijumuisha memoryview(x) kama m:
                 ex = ndarray(m)
                 m[0] == ord(b'1')
 

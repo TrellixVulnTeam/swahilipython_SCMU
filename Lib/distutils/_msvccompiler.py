@@ -34,7 +34,7 @@ eleza _find_vc2015():
             r"Software\Microsoft\VisualStudio\SxS\VC7",
             access=winreg.KEY_READ | winreg.KEY_WOW64_32KEY
         )
-    except OSError:
+    tatizo OSError:
         log.debug("Visual C++ ni sio registered")
         rudisha Tupu, Tupu
 
@@ -44,12 +44,12 @@ eleza _find_vc2015():
         kila i kwenye count():
             jaribu:
                 v, vc_dir, vt = winreg.EnumValue(key, i)
-            except OSError:
+            tatizo OSError:
                 koma
             ikiwa v na vt == winreg.REG_SZ na os.path.isdir(vc_dir):
                 jaribu:
                     version = int(float(v))
-                except (ValueError, TypeError):
+                tatizo (ValueError, TypeError):
                     endelea
                 ikiwa version >= 14 na version > best_version:
                     best_version, best_dir = version, vc_dir
@@ -80,7 +80,7 @@ eleza _find_vc2017():
             "-property", "installationPath",
             "-products", "*",
         ], encoding="mbcs", errors="strict").strip()
-    except (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
+    tatizo (subprocess.CalledProcessError, OSError, UnicodeDecodeError):
         rudisha Tupu, Tupu
 
     path = os.path.join(path, "VC", "Auxiliary", "Build")
@@ -111,7 +111,7 @@ eleza _find_vcvarsall(plat_spec):
         jaribu:
             agiza glob
             vcruntime = glob.glob(vcredist, recursive=Kweli)[-1]
-        except (ImportError, OSError, LookupError):
+        tatizo (ImportError, OSError, LookupError):
             vcruntime = Tupu
 
     ikiwa sio best_dir:
@@ -144,16 +144,16 @@ eleza _get_vc_env(plat_spec):
 
     vcvarsall, vcruntime = _find_vcvarsall(plat_spec)
     ikiwa sio vcvarsall:
-         ashiria DistutilsPlatformError("Unable to find vcvarsall.bat")
+        ashiria DistutilsPlatformError("Unable to find vcvarsall.bat")
 
     jaribu:
         out = subprocess.check_output(
             'cmd /u /c "{}" {} && set'.format(vcvarsall, plat_spec),
             stderr=subprocess.STDOUT,
         ).decode('utf-16le', errors='replace')
-    except subprocess.CalledProcessError as exc:
+    tatizo subprocess.CalledProcessError kama exc:
         log.error(exc.output)
-         ashiria DistutilsPlatformError("Error executing {}"
+        ashiria DistutilsPlatformError("Error executing {}"
                 .format(exc.cmd))
 
     env = {
@@ -196,19 +196,19 @@ PLAT_TO_VCVARS = {
 
 # A set containing the DLLs that are guaranteed to be available for
 # all micro versions of this Python version. Known extension
-# dependencies that are sio kwenye this set will be copied to the output
+# dependencies that are haiko kwenye this set will be copied to the output
 # path.
 _BUNDLED_DLLS = frozenset(['vcruntime140.dll'])
 
 kundi MSVCCompiler(CCompiler) :
     """Concrete kundi that implements an interface to Microsoft Visual C++,
-       as defined by the CCompiler abstract class."""
+       kama defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary kila this sort of single-compiler class.
+    # kama it really isn't necessary kila this sort of single-compiler class.
     # Would be nice to have a consistent interface ukijumuisha UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
@@ -243,8 +243,8 @@ kundi MSVCCompiler(CCompiler) :
         ikiwa plat_name ni Tupu:
             plat_name = get_platform()
         # sanity check kila platforms to prevent obscure errors later.
-        ikiwa plat_name sio kwenye PLAT_TO_VCVARS:
-             ashiria DistutilsPlatformError("--plat-name must be one of {}"
+        ikiwa plat_name haiko kwenye PLAT_TO_VCVARS:
+            ashiria DistutilsPlatformError("--plat-name must be one of {}"
                                          .format(tuple(PLAT_TO_VCVARS)))
 
         # Get the vcvarsall.bat spec kila the requested platform.
@@ -252,7 +252,7 @@ kundi MSVCCompiler(CCompiler) :
 
         vc_env = _get_vc_env(plat_spec)
         ikiwa sio vc_env:
-             ashiria DistutilsPlatformError("Unable to find a compatible "
+            ashiria DistutilsPlatformError("Unable to find a compatible "
                 "Visual Studio installation.")
 
         self._paths = vc_env.get('path', '')
@@ -343,11 +343,11 @@ kundi MSVCCompiler(CCompiler) :
                 # the length of the result na trim base until we fit within
                 # 260 characters.
                 rudisha os.path.join(output_dir, base + ext_map[ext])
-            except LookupError:
-                # Better to  ashiria an exception instead of silently continuing
+            tatizo LookupError:
+                # Better to ashiria an exception instead of silently continuing
                 # na later complain about sources na targets having
                 # different lengths
-                 ashiria CompileError("Don't know how to compile {}".format(p))
+                ashiria CompileError("Don't know how to compile {}".format(p))
 
         rudisha list(map(make_out_path, source_filenames))
 
@@ -375,29 +375,29 @@ kundi MSVCCompiler(CCompiler) :
         kila obj kwenye objects:
             jaribu:
                 src, ext = build[obj]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             ikiwa debug:
-                # pass the full pathname to MSVC kwenye debug mode,
+                # pita the full pathname to MSVC kwenye debug mode,
                 # this allows the debugger to find the source file
                 # without asking the user to browse kila it
                 src = os.path.abspath(src)
 
             ikiwa ext kwenye self._c_extensions:
                 input_opt = "/Tc" + src
-            elikiwa ext kwenye self._cpp_extensions:
+            lasivyo ext kwenye self._cpp_extensions:
                 input_opt = "/Tp" + src
                 add_cpp_opts = Kweli
-            elikiwa ext kwenye self._rc_extensions:
+            lasivyo ext kwenye self._rc_extensions:
                 # compile .RC to .RES file
                 input_opt = src
                 output_opt = "/fo" + obj
                 jaribu:
                     self.spawn([self.rc] + pp_opts + [output_opt, input_opt])
-                except DistutilsExecError as msg:
-                     ashiria CompileError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria CompileError(msg)
                 endelea
-            elikiwa ext kwenye self._mc_extensions:
+            lasivyo ext kwenye self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
                 #   * '-h dir' specifies the directory kila the
                 #     generated include file
@@ -406,7 +406,7 @@ kundi MSVCCompiler(CCompiler) :
                 #     it includes
                 #
                 # For now (since there are no options to change this),
-                # we use the source-directory kila the include file and
+                # we use the source-directory kila the include file na
                 # the build directory kila the RC file na message
                 # resources. This works at least kila win32all.
                 h_dir = os.path.dirname(src)
@@ -419,12 +419,12 @@ kundi MSVCCompiler(CCompiler) :
                     # then compile .RC to .RES file
                     self.spawn([self.rc, "/fo" + obj, rc_file])
 
-                except DistutilsExecError as msg:
-                     ashiria CompileError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria CompileError(msg)
                 endelea
             isipokua:
                 # how to handle this file?
-                 ashiria CompileError("Don't know how to compile {} to {}"
+                ashiria CompileError("Don't know how to compile {} to {}"
                                    .format(src, obj))
 
             args = [self.cc] + compile_opts + pp_opts
@@ -436,8 +436,8 @@ kundi MSVCCompiler(CCompiler) :
 
             jaribu:
                 self.spawn(args)
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
 
         rudisha objects
 
@@ -458,12 +458,12 @@ kundi MSVCCompiler(CCompiler) :
         ikiwa self._need_link(objects, output_filename):
             lib_args = objects + ['/OUT:' + output_filename]
             ikiwa debug:
-                pass # XXX what goes here?
+                pita # XXX what goes here?
             jaribu:
                 log.debug('Executing "%s" %s', self.lib, ' '.join(lib_args))
                 self.spawn([self.lib] + lib_args)
-            except DistutilsExecError as msg:
-                 ashiria LibError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -533,8 +533,8 @@ kundi MSVCCompiler(CCompiler) :
                 log.debug('Executing "%s" %s', self.linker, ' '.join(ld_args))
                 self.spawn([self.linker] + ld_args)
                 self._copy_vcruntime(output_dir)
-            except DistutilsExecError as msg:
-                 ashiria LinkError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LinkError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -566,7 +566,7 @@ kundi MSVCCompiler(CCompiler) :
         rudisha "/LIBPATH:" + dir
 
     eleza runtime_library_dir_option(self, dir):
-         ashiria DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to set runtime library search path kila MSVC")
 
     eleza library_option(self, lib):

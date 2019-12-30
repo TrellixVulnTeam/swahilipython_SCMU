@@ -55,10 +55,10 @@ kundi Popen(popen_fork.Popen):
             cmd = spawn.get_command_line(tracker_fd=tracker_fd,
                                          pipe_handle=child_r)
             self._fds.extend([child_r, child_w])
-            self.pid = util.spawnv_passfds(spawn.get_executable(),
+            self.pid = util.spawnv_pitafds(spawn.get_executable(),
                                            cmd, self._fds)
             self.sentinel = parent_r
-            ukijumuisha open(parent_w, 'wb', closefd=Uongo) as f:
+            ukijumuisha open(parent_w, 'wb', closefd=Uongo) kama f:
                 f.write(fp.getbuffer())
         mwishowe:
             fds_to_close = []

@@ -9,10 +9,10 @@ support.requires("network")
 
 eleza check_ssl_verifiy(host, port):
     context = ssl.create_default_context()
-    ukijumuisha socket.create_connection((host, port)) as sock:
+    ukijumuisha socket.create_connection((host, port)) kama sock:
         jaribu:
             sock = context.wrap_socket(sock, server_hostname=host)
-        except Exception:
+        tatizo Exception:
             rudisha Uongo
         isipokua:
             sock.close()
@@ -32,7 +32,7 @@ kundi SmtpTest(unittest.TestCase):
             server = smtplib.SMTP(self.testServer, self.remotePort)
             jaribu:
                 server.starttls(context=context)
-            except smtplib.SMTPException as e:
+            tatizo smtplib.SMTPException kama e:
                 ikiwa e.args[0] == 'STARTTLS extension sio supported by server.':
                     unittest.skip(e.args[0])
                 isipokua:

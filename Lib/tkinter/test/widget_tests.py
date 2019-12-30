@@ -31,7 +31,7 @@ kundi AbstractWidgetTest(AbstractTkTest):
     eleza scaling(self):
         jaribu:
             rudisha self._scaling
-        except AttributeError:
+        tatizo AttributeError:
             self._scaling = float(self.root.call('tk', 'scaling'))
             rudisha self._scaling
 
@@ -74,7 +74,7 @@ kundi AbstractWidgetTest(AbstractTkTest):
         orig = widget[name]
         ikiwa errmsg ni sio Tupu:
             errmsg = errmsg.format(value)
-        ukijumuisha self.assertRaises(tkinter.TclError) as cm:
+        ukijumuisha self.assertRaises(tkinter.TclError) kama cm:
             widget[name] = value
         ikiwa errmsg ni sio Tupu:
             self.assertEqual(str(cm.exception), errmsg)
@@ -82,7 +82,7 @@ kundi AbstractWidgetTest(AbstractTkTest):
             self.assertEqual(widget[name], orig)
         isipokua:
             widget[name] = orig
-        ukijumuisha self.assertRaises(tkinter.TclError) as cm:
+        ukijumuisha self.assertRaises(tkinter.TclError) kama cm:
             widget.configure({name: value})
         ikiwa errmsg ni sio Tupu:
             self.assertEqual(str(cm.exception), errmsg)
@@ -139,7 +139,7 @@ kundi AbstractWidgetTest(AbstractTkTest):
 
     eleza checkCommandParam(self, widget, name):
         eleza command(*args):
-            pass
+            pita
         widget[name] = command
         self.assertKweli(widget[name])
         self.checkParams(widget, name, '')
@@ -226,8 +226,8 @@ kundi AbstractWidgetTest(AbstractTkTest):
             keys = set(keys)
             expected = set(self.OPTIONS)
             kila k kwenye sorted(keys - expected):
-                ikiwa sio (k kwenye aliases and
-                        aliases[k] kwenye keys and
+                ikiwa sio (k kwenye aliases na
+                        aliases[k] kwenye keys na
                         aliases[k] kwenye expected):
                     andika('%s.OPTIONS doesn\'t contain "%s"' %
                           (self.__class__.__name__, k))
@@ -280,7 +280,7 @@ kundi StandardOptionsTests:
         self.checkParam(widget, 'bitmap', '@' + filename)
         # Cocoa Tk widgets don't detect invalid -bitmap values
         # See https://core.tcl.tk/tk/info/31cd33dbf0
-        ikiwa sio ('aqua' kwenye self.root.tk.call('tk', 'windowingsystem') and
+        ikiwa sio ('aqua' kwenye self.root.tk.call('tk', 'windowingsystem') na
                 'AppKit' kwenye self.root.winfo_server()):
             self.checkInvalidParam(widget, 'bitmap', 'spam',
                     errmsg='bitmap "spam" sio defined')
@@ -535,7 +535,7 @@ eleza add_standard_options(*source_classes):
                     eleza test(self, option=option):
                         widget = self.create()
                         widget[option]
-                         ashiria AssertionError('Option "%s" ni sio tested kwenye %s' %
+                        ashiria AssertionError('Option "%s" ni sio tested kwenye %s' %
                                              (option, cls.__name__))
                     test.__name__ = methodname
                     setattr(cls, methodname, test)

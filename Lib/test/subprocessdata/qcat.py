@@ -1,4 +1,4 @@
-"""When ran as a script, simulates cat ukijumuisha no arguments."""
+"""When ran kama a script, simulates cat ukijumuisha no arguments."""
 
 agiza sys
 

@@ -6,7 +6,7 @@ kutoka inspect agiza isabstract
 kutoka test agiza support
 jaribu:
     kutoka _abc agiza _get_dump
-except ImportError:
+tatizo ImportError:
     agiza weakref
 
     eleza _get_dump(cls):
@@ -28,7 +28,7 @@ eleza dash_R(ns, test_name, test_func):
     agiza collections.abc
 
     ikiwa sio hasattr(sys, 'gettotalrefcount'):
-         ashiria Exception("Tracking reference leaks requires a debug build "
+        ashiria Exception("Tracking reference leaks requires a debug build "
                         "of Python")
 
     # Avoid false positives due to various caches
@@ -41,7 +41,7 @@ eleza dash_R(ns, test_name, test_func):
     pic = sys.path_importer_cache.copy()
     jaribu:
         agiza zipimport
-    except ImportError:
+    tatizo ImportError:
         zdc = Tupu # Run unmodified on platforms without zipagiza support
     isipokua:
         zdc = zipimport._zip_directory_cache.copy()
@@ -138,7 +138,7 @@ eleza dash_R(ns, test_name, test_func):
             msg = '%s leaked %s %s, sum=%s' % (
                 test_name, deltas, item_name, sum(deltas))
             andika(msg, file=sys.stderr, flush=Kweli)
-            ukijumuisha open(fname, "a") as refrep:
+            ukijumuisha open(fname, "a") kama refrep:
                 andika(msg, file=refrep)
                 refrep.flush()
             failed = Kweli
@@ -157,8 +157,8 @@ eleza dash_R_cleanup(fs, ps, pic, zdc, abcs):
     sys.path_importer_cache.update(pic)
     jaribu:
         agiza zipimport
-    except ImportError:
-        pass # Run unmodified on platforms without zipagiza support
+    tatizo ImportError:
+        pita # Run unmodified on platforms without zipagiza support
     isipokua:
         zipimport._zip_directory_cache.clear()
         zipimport._zip_directory_cache.update(zdc)
@@ -185,7 +185,7 @@ eleza clear_caches():
         ikiwa hasattr(mod, '__warningregistry__'):
             toa mod.__warningregistry__
 
-    # Flush standard output, so that buffered data ni sent to the OS and
+    # Flush standard output, so that buffered data ni sent to the OS na
     # associated Python objects are reclaimed.
     kila stream kwenye (sys.stdout, sys.stderr, sys.__stdout__, sys.__stderr__):
         ikiwa stream ni sio Tupu:
@@ -195,79 +195,79 @@ eleza clear_caches():
     # Don't worry about resetting the cache ikiwa the module ni sio loaded
     jaribu:
         distutils_dir_util = sys.modules['distutils.dir_util']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         distutils_dir_util._path_created.clear()
     re.purge()
 
     jaribu:
         _strptime = sys.modules['_strptime']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         _strptime._regex_cache.clear()
 
     jaribu:
         urllib_parse = sys.modules['urllib.parse']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         urllib_parse.clear_cache()
 
     jaribu:
         urllib_request = sys.modules['urllib.request']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         urllib_request.urlcleanup()
 
     jaribu:
         linecache = sys.modules['linecache']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         linecache.clearcache()
 
     jaribu:
         mimetypes = sys.modules['mimetypes']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         mimetypes._default_mime_types()
 
     jaribu:
         filecmp = sys.modules['filecmp']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         filecmp._cache.clear()
 
     jaribu:
         struct = sys.modules['struct']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         struct._clearcache()
 
     jaribu:
         doctest = sys.modules['doctest']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         doctest.master = Tupu
 
     jaribu:
         ctypes = sys.modules['ctypes']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         ctypes._reset_cache()
 
     jaribu:
         typing = sys.modules['typing']
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     isipokua:
         kila f kwenye typing._cleanups:
             f()

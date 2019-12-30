@@ -17,13 +17,13 @@ kutoka unittest agiza mock
 kutoka test agiza support
 
 ikiwa sys.platform == 'win32':
-     ashiria unittest.SkipTest('UNIX only')
+    ashiria unittest.SkipTest('UNIX only')
 
 
 agiza asyncio
 kutoka asyncio agiza log
 kutoka asyncio agiza unix_events
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 MOCK_ANY = mock.ANY
@@ -84,7 +84,7 @@ kundi SelectorEventLoopSignalTests(test_utils.TestCase):
         m_signal.NSIG = signal.NSIG
 
         async eleza simple_coroutine():
-            pass
+            pita
 
         # callback must sio be a coroutine function
         coro_func = simple_coroutine
@@ -114,7 +114,7 @@ kundi SelectorEventLoopSignalTests(test_utils.TestCase):
 
         eleza set_wakeup_fd(fd):
             ikiwa fd == -1:
-                 ashiria ValueError()
+                ashiria ValueError()
         m_signal.set_wakeup_fd = set_wakeup_fd
 
         kundi Err(OSError):
@@ -275,7 +275,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     @support.skip_unless_bind_unix_socket
     eleza test_create_unix_server_existing_path_sock(self):
-        ukijumuisha test_utils.unix_socket_path() as path:
+        ukijumuisha test_utils.unix_socket_path() kama path:
             sock = socket.socket(socket.AF_UNIX)
             sock.bind(path)
             sock.listen(1)
@@ -288,7 +288,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
 
     @support.skip_unless_bind_unix_socket
     eleza test_create_unix_server_pathlib(self):
-        ukijumuisha test_utils.unix_socket_path() as path:
+        ukijumuisha test_utils.unix_socket_path() kama path:
             path = pathlib.Path(path)
             srv_coro = self.loop.create_unix_server(lambda: Tupu, path)
             srv = self.loop.run_until_complete(srv_coro)
@@ -296,7 +296,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             self.loop.run_until_complete(srv.wait_closed())
 
     eleza test_create_unix_connection_pathlib(self):
-        ukijumuisha test_utils.unix_socket_path() as path:
+        ukijumuisha test_utils.unix_socket_path() kama path:
             path = pathlib.Path(path)
             coro = self.loop.create_unix_connection(lambda: Tupu, path)
             ukijumuisha self.assertRaises(FileNotFoundError):
@@ -305,7 +305,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
                 self.loop.run_until_complete(coro)
 
     eleza test_create_unix_server_existing_path_nonsock(self):
-        ukijumuisha tempfile.NamedTemporaryFile() as file:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file:
             coro = self.loop.create_unix_server(lambda: Tupu, file.name)
             ukijumuisha self.assertRaisesRegex(OSError,
                                         'Address.*is already kwenye use'):
@@ -348,7 +348,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
     eleza test_create_unix_server_path_stream_bittype(self):
         sock = socket.socket(
             socket.AF_UNIX, socket.SOCK_STREAM | socket.SOCK_NONBLOCK)
-        ukijumuisha tempfile.NamedTemporaryFile() as file:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file:
             fn = file.name
         jaribu:
             ukijumuisha sock:
@@ -421,7 +421,7 @@ kundi SelectorEventLoopUnixSocketTests(test_utils.TestCase):
             lambda: Tupu, os.devnull, ssl=Kweli)
 
         ukijumuisha self.assertRaisesRegex(
-            ValueError, 'you have to pass server_hostname when using ssl'):
+            ValueError, 'you have to pita server_hostname when using ssl'):
 
             self.loop.run_until_complete(coro)
 
@@ -466,7 +466,7 @@ kundi SelectorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
     @classmethod
     eleza setUpClass(cls):
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -1144,7 +1144,7 @@ kundi ChildWatcherTestsMixin:
         self.zombies = {}
 
         ukijumuisha mock.patch.object(
-                self.loop, "add_signal_handler") as self.m_add_signal_handler:
+                self.loop, "add_signal_handler") kama self.m_add_signal_handler:
             self.watcher = self.create_watcher()
             self.watcher.attach_loop(self.loop)
 
@@ -1156,12 +1156,12 @@ kundi ChildWatcherTestsMixin:
                 rudisha self.zombies.popitem()
             isipokua:
                 rudisha pid, self.zombies.pop(pid)
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         ikiwa self.running:
             rudisha 0, 0
         isipokua:
-             ashiria ChildProcessError()
+            ashiria ChildProcessError()
 
     eleza add_zombie(self, pid, returncode):
         self.zombies[pid] = returncode + 32768
@@ -1190,11 +1190,11 @@ kundi ChildWatcherTestsMixin:
                 rudisha mock.patch(target, wraps=wrapper,
                                   new_callable=mock.Mock)
 
-            ukijumuisha patch('os.WTERMSIG', self.WTERMSIG) as m_WTERMSIG, \
-                 patch('os.WEXITSTATUS', self.WEXITSTATUS) as m_WEXITSTATUS, \
-                 patch('os.WIFSIGNALED', self.WIFSIGNALED) as m_WIFSIGNALED, \
-                 patch('os.WIFEXITED', self.WIFEXITED) as m_WIFEXITED, \
-                 patch('os.waitpid', self.waitpid) as m_waitpid:
+            ukijumuisha patch('os.WTERMSIG', self.WTERMSIG) kama m_WTERMSIG, \
+                 patch('os.WEXITSTATUS', self.WEXITSTATUS) kama m_WEXITSTATUS, \
+                 patch('os.WIFSIGNALED', self.WIFSIGNALED) kama m_WIFSIGNALED, \
+                 patch('os.WIFEXITED', self.WIFEXITED) kama m_WIFEXITED, \
+                 patch('os.waitpid', self.waitpid) kama m_waitpid:
                 func(self, WaitPidMocks(m_waitpid,
                                         m_WIFEXITED, m_WIFSIGNALED,
                                         m_WEXITSTATUS, m_WTERMSIG,
@@ -1621,11 +1621,11 @@ kundi ChildWatcherTestsMixin:
             self.running = Kweli
             self.watcher.add_child_handler(57, callback)
 
-        #  ashiria an exception
+        # ashiria an exception
         m.waitpid.side_effect = ValueError
 
         ukijumuisha mock.patch.object(log.logger,
-                               'error') as m_error:
+                               'error') kama m_error:
 
             self.assertEqual(self.watcher._sig_chld(), Tupu)
             self.assertKweli(m_error.called)
@@ -1700,8 +1700,8 @@ kundi ChildWatcherTestsMixin:
         self.loop = self.new_test_loop()
         patch = mock.patch.object
 
-        ukijumuisha patch(old_loop, "remove_signal_handler") as m_old_remove, \
-             patch(self.loop, "add_signal_handler") as m_new_add:
+        ukijumuisha patch(old_loop, "remove_signal_handler") kama m_old_remove, \
+             patch(self.loop, "add_signal_handler") kama m_new_add:
 
             self.watcher.attach_loop(self.loop)
 
@@ -1735,7 +1735,7 @@ kundi ChildWatcherTestsMixin:
         self.loop = Tupu
 
         ukijumuisha mock.patch.object(
-                old_loop, "remove_signal_handler") as m_remove_signal_handler:
+                old_loop, "remove_signal_handler") kama m_remove_signal_handler:
 
             ukijumuisha self.assertWarnsRegex(
                     RuntimeWarning, 'A loop ni being detached'):
@@ -1757,7 +1757,7 @@ kundi ChildWatcherTestsMixin:
         self.loop = self.new_test_loop()
 
         ukijumuisha mock.patch.object(
-                self.loop, "add_signal_handler") as m_add_signal_handler:
+                self.loop, "add_signal_handler") kama m_add_signal_handler:
 
             self.watcher.attach_loop(self.loop)
 
@@ -1801,7 +1801,7 @@ kundi ChildWatcherTestsMixin:
 
             ukijumuisha mock.patch.object(
                     self.loop,
-                    "remove_signal_handler") as m_remove_signal_handler:
+                    "remove_signal_handler") kama m_remove_signal_handler:
 
                 self.watcher.close()
 

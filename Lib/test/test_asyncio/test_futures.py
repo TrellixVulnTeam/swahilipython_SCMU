@@ -10,7 +10,7 @@ kutoka unittest agiza mock
 
 agiza asyncio
 kutoka asyncio agiza futures
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 
 
@@ -23,11 +23,11 @@ eleza _fakefunc(f):
 
 
 eleza first_cb():
-    pass
+    pita
 
 
 eleza last_cb():
-    pass
+    pita
 
 
 kundi DuckFuture:
@@ -56,7 +56,7 @@ kundi DuckFuture:
     eleza result(self):
         assert sio self.cancelled()
         ikiwa self.__exception ni sio Tupu:
-             ashiria self.__exception
+            ashiria self.__exception
         rudisha self.__result
 
     eleza exception(self):
@@ -182,20 +182,20 @@ kundi BaseFutureTests:
         fut = self.cls.__new__(self.cls, loop=self.loop)
         jaribu:
             repr(fut)
-        except (RuntimeError, AttributeError):
-            pass
+        tatizo (RuntimeError, AttributeError):
+            pita
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
         jaribu:
             fut.__await__()
-        except RuntimeError:
-            pass
+        tatizo RuntimeError:
+            pita
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
         jaribu:
             iter(fut)
-        except RuntimeError:
-            pass
+        tatizo RuntimeError:
+            pita
 
         fut = self.cls.__new__(self.cls, loop=self.loop)
         self.assertUongo(fut.cancelled())
@@ -248,7 +248,7 @@ kundi BaseFutureTests:
         f.set_exception(RuntimeError)
         self.assertIsInstance(f.exception(), RuntimeError)
 
-    eleza test_yield_from_twice(self):
+    eleza test_tuma_from_twice(self):
         f = self._new_future(loop=self.loop)
 
         eleza fixture():
@@ -452,7 +452,7 @@ kundi BaseFutureTests:
         self.assertIs(f1, f2)
 
     eleza test_wrap_future_use_global_loop(self):
-        ukijumuisha mock.patch('asyncio.futures.events') as events:
+        ukijumuisha mock.patch('asyncio.futures.events') kama events:
             events.get_event_loop = lambda: self.loop
             eleza run(arg):
                 rudisha (arg, threading.get_ident())
@@ -497,8 +497,8 @@ kundi BaseFutureTests:
 
         eleza memory_error():
             jaribu:
-                 ashiria MemoryError()
-            except BaseException as exc:
+                ashiria MemoryError()
+            tatizo BaseException kama exc:
                 rudisha exc
         exc = memory_error()
 
@@ -537,7 +537,7 @@ kundi BaseFutureTests:
         result = Tupu
         jaribu:
             fi.send(Tupu)
-        except StopIteration as ex:
+        tatizo StopIteration kama ex:
             result = ex.args[0]
         isipokua:
             self.fail('StopIteration was expected')
@@ -567,7 +567,7 @@ kundi BaseFutureTests:
 kundi CFutureTests(BaseFutureTests, test_utils.TestCase):
     jaribu:
         cls = futures._CFuture
-    except AttributeError:
+    tatizo AttributeError:
         cls = Tupu
 
     eleza test_future_del_segfault(self):
@@ -583,10 +583,10 @@ kundi CFutureTests(BaseFutureTests, test_utils.TestCase):
 kundi CSubFutureTests(BaseFutureTests, test_utils.TestCase):
     jaribu:
         kundi CSubFuture(futures._CFuture):
-            pass
+            pita
 
         cls = CSubFuture
-    except AttributeError:
+    tatizo AttributeError:
         cls = Tupu
 
 
@@ -610,7 +610,7 @@ kundi BaseFutureDoneCallbackTests():
         rudisha bag_appender
 
     eleza _new_future(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza test_callbacks_remove_first_callback(self):
         bag = []
@@ -811,7 +811,7 @@ kundi CSubFutureDoneCallbackTests(BaseFutureDoneCallbackTests,
 
     eleza _new_future(self):
         kundi CSubFuture(futures._CFuture):
-            pass
+            pita
         rudisha CSubFuture(loop=self.loop)
 
 

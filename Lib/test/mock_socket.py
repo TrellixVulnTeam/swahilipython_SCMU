@@ -2,7 +2,7 @@
 """
 
 # imported kila _GLOBAL_DEFAULT_TIMEOUT
-agiza socket as socket_module
+agiza socket kama socket_module
 
 # Mock socket module
 _defaulttimeout = Tupu
@@ -29,7 +29,7 @@ kundi MockFile:
             result = result[:limit]
         rudisha result
     eleza close(self):
-        pass
+        pita
 
 
 kundi MockSocket:
@@ -66,13 +66,13 @@ kundi MockSocket:
         rudisha self.timeout
 
     eleza setsockopt(self, level, optname, value):
-        pass
+        pita
 
     eleza getsockopt(self, level, optname, buflen=Tupu):
         rudisha 0
 
     eleza bind(self, address):
-        pass
+        pita
 
     eleza accept(self):
         self.conn = MockSocket()
@@ -82,10 +82,10 @@ kundi MockSocket:
         rudisha ('0.0.0.0', 0)
 
     eleza setblocking(self, flag):
-        pass
+        pita
 
     eleza listen(self, backlog):
-        pass
+        pita
 
     eleza makefile(self, mode='r', bufsize=-1):
         handle = MockFile(self.lines)
@@ -105,7 +105,7 @@ kundi MockSocket:
         rudisha ('peer-address', 'peer-port')
 
     eleza close(self):
-        pass
+        pita
 
 
 eleza socket(family=Tupu, type=Tupu, proto=Tupu):
@@ -115,8 +115,8 @@ eleza create_connection(address, timeout=socket_module._GLOBAL_DEFAULT_TIMEOUT,
                       source_address=Tupu):
     jaribu:
         int_port = int(address[1])
-    except ValueError:
-         ashiria error
+    tatizo ValueError:
+        ashiria error
     ms = MockSocket()
     ikiwa timeout ni socket_module._GLOBAL_DEFAULT_TIMEOUT:
         timeout = getdefaulttimeout()
@@ -138,7 +138,7 @@ eleza getfqdn():
 
 
 eleza gethostname():
-    pass
+    pita
 
 
 eleza gethostbyname(name):

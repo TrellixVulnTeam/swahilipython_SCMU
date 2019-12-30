@@ -5,17 +5,17 @@
 ****************************************************************
 
 This will append site-specific paths to the module search path.  On
-Unix (including Mac OSX), it starts ukijumuisha sys.prefix and
+Unix (including Mac OSX), it starts ukijumuisha sys.prefix na
 sys.exec_prefix (ikiwa different) na appends
 lib/python<version>/site-packages.
-On other platforms (such as Windows), it tries each of the
-prefixes directly, as well as ukijumuisha lib/site-packages appended.  The
-resulting directories, ikiwa they exist, are appended to sys.path, and
+On other platforms (such kama Windows), it tries each of the
+prefixes directly, kama well kama ukijumuisha lib/site-packages appended.  The
+resulting directories, ikiwa they exist, are appended to sys.path, na
 also inspected kila path configuration files.
 
 If a file named "pyvenv.cfg" exists one directory above sys.executable,
-sys.prefix na sys.exec_prefix are set to that directory and
-it ni also checked kila site-packages (sys.base_prefix and
+sys.prefix na sys.exec_prefix are set to that directory na
+it ni also checked kila site-packages (sys.base_prefix na
 sys.base_exec_prefix will always be the "real" prefixes of the Python
 installation). If "pyvenv.cfg" (a bootstrap configuration file) contains
 the key "include-system-site-packages" set to anything other than "false"
@@ -92,8 +92,8 @@ eleza makepath(*paths):
     dir = os.path.join(*paths)
     jaribu:
         dir = os.path.abspath(dir)
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     rudisha dir, os.path.normcase(dir)
 
 
@@ -105,12 +105,12 @@ eleza abs_paths():
             endelea   # don't mess ukijumuisha a PEP 302-supplied __file__
         jaribu:
             m.__file__ = os.path.abspath(m.__file__)
-        except (AttributeError, OSError, TypeError):
-            pass
+        tatizo (AttributeError, OSError, TypeError):
+            pita
         jaribu:
             m.__cached__ = os.path.abspath(m.__cached__)
-        except (AttributeError, OSError, TypeError):
-            pass
+        tatizo (AttributeError, OSError, TypeError):
+            pita
 
 
 eleza removeduppaths():
@@ -125,7 +125,7 @@ eleza removeduppaths():
         # ikiwa they only differ kwenye case); turn relative paths into absolute
         # paths.
         dir, dircase = makepath(dir)
-        ikiwa dircase sio kwenye known_paths:
+        ikiwa dircase haiko kwenye known_paths:
             L.append(dir)
             known_paths.add(dircase)
     sys.path[:] = L
@@ -140,7 +140,7 @@ eleza _init_pathinfo():
             ikiwa os.path.exists(item):
                 _, itemcase = makepath(item)
                 d.add(itemcase)
-        except TypeError:
+        tatizo TypeError:
             endelea
     rudisha d
 
@@ -158,7 +158,7 @@ eleza addpackage(sitedir, name, known_paths):
     fullname = os.path.join(sitedir, name)
     jaribu:
         f = io.TextIOWrapper(io.open_code(fullname))
-    except OSError:
+    tatizo OSError:
         return
     ukijumuisha f:
         kila n, line kwenye enumerate(f):
@@ -173,7 +173,7 @@ eleza addpackage(sitedir, name, known_paths):
                 ikiwa sio dircase kwenye known_paths na os.path.exists(dir):
                     sys.path.append(dir)
                     known_paths.add(dircase)
-            except Exception:
+            tatizo Exception:
                 andika("Error processing line {:d} of {}:\n".format(n+1, fullname),
                       file=sys.stderr)
                 agiza traceback
@@ -201,7 +201,7 @@ eleza addsitedir(sitedir, known_paths=Tupu):
         known_paths.add(sitedircase)
     jaribu:
         names = os.listdir(sitedir)
-    except OSError:
+    tatizo OSError:
         return
     names = [name kila name kwenye names ikiwa name.endswith(".pth")]
     kila name kwenye sorted(names):
@@ -399,7 +399,7 @@ eleza enablerlcompleter():
     registering a sys.__interactivehook__.
 
     If the readline module can be imported, the hook will set the Tab key
-    as completion key na register ~/.python_history as history file.
+    kama completion key na register ~/.python_history kama history file.
     This can be overridden kwenye the sitecustomize ama usercustomize module,
     ama kwenye a PYTHONSTARTUP file.
     """
@@ -408,7 +408,7 @@ eleza enablerlcompleter():
         jaribu:
             agiza readline
             agiza rlcompleter
-        except ImportError:
+        tatizo ImportError:
             return
 
         # Reading the initialization (config) file may sio be enough to set a
@@ -421,12 +421,12 @@ eleza enablerlcompleter():
 
         jaribu:
             readline.read_init_file()
-        except OSError:
+        tatizo OSError:
             # An OSError here could have many causes, but the most likely one
             # ni that there's no .inputrc file (or .editrc file kwenye the case of
             # Mac OS X + libedit) kwenye the expected location.  In that case, we
             # want to ignore the exception.
-            pass
+            pita
 
         ikiwa readline.get_current_history_length() == 0:
             # If no history was loaded, default to .python_history.
@@ -438,16 +438,16 @@ eleza enablerlcompleter():
                                    '.python_history')
             jaribu:
                 readline.read_history_file(history)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
             eleza write_history():
                 jaribu:
                     readline.write_history_file(history)
-                except (FileNotFoundError, PermissionError):
+                tatizo (FileNotFoundError, PermissionError):
                     # home directory does sio exist ama ni sio writable
                     # https://bugs.python.org/issue19891
-                    pass
+                    pita
 
             atexit.register(write_history)
 
@@ -476,9 +476,9 @@ eleza venv(known_paths):
     ikiwa candidate_confs:
         virtual_conf = candidate_confs[0]
         system_site = "true"
-        # Issue 25185: Use UTF-8, as that's what the venv module uses when
+        # Issue 25185: Use UTF-8, kama that's what the venv module uses when
         # writing the file.
-        ukijumuisha open(virtual_conf, encoding='utf-8') as f:
+        ukijumuisha open(virtual_conf, encoding='utf-8') kama f:
             kila line kwenye f:
                 ikiwa '=' kwenye line:
                     key, _, value = line.partition('=')
@@ -486,7 +486,7 @@ eleza venv(known_paths):
                     value = value.strip()
                     ikiwa key == 'include-system-site-packages':
                         system_site = value.lower()
-                    elikiwa key == 'home':
+                    lasivyo key == 'home':
                         sys._home = value
 
         sys.prefix = sys.exec_prefix = site_prefix
@@ -510,12 +510,12 @@ eleza execsitecustomize():
     jaribu:
         jaribu:
             agiza sitecustomize
-        except ImportError as exc:
+        tatizo ImportError kama exc:
             ikiwa exc.name == 'sitecustomize':
-                pass
+                pita
             isipokua:
                 raise
-    except Exception as err:
+    tatizo Exception kama err:
         ikiwa sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         isipokua:
@@ -530,12 +530,12 @@ eleza execusercustomize():
     jaribu:
         jaribu:
             agiza usercustomize
-        except ImportError as exc:
+        tatizo ImportError kama exc:
             ikiwa exc.name == 'usercustomize':
-                pass
+                pita
             isipokua:
                 raise
-    except Exception as err:
+    tatizo Exception kama err:
         ikiwa sys.flags.verbose:
             sys.excepthook(*sys.exc_info())
         isipokua:
@@ -574,7 +574,7 @@ eleza main():
     ikiwa ENABLE_USER_SITE:
         execusercustomize()
 
-# Prevent extending of sys.path when python was started ukijumuisha -S and
+# Prevent extending of sys.path when python was started ukijumuisha -S na
 # site ni imported later.
 ikiwa sio sys.flags.no_site:
     main()
@@ -619,9 +619,9 @@ eleza _script():
         andika(os.pathsep.join(buffer))
         ikiwa ENABLE_USER_SITE:
             sys.exit(0)
-        elikiwa ENABLE_USER_SITE ni Uongo:
+        lasivyo ENABLE_USER_SITE ni Uongo:
             sys.exit(1)
-        elikiwa ENABLE_USER_SITE ni Tupu:
+        lasivyo ENABLE_USER_SITE ni Tupu:
             sys.exit(2)
         isipokua:
             sys.exit(3)

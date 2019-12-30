@@ -15,17 +15,17 @@ agiza weakref
 
 jaribu:
     kutoka _testcapi agiza with_tp_del
-except ImportError:
+tatizo ImportError:
     eleza with_tp_del(cls):
         kundi C(object):
             eleza __new__(cls, *args, **kwargs):
-                 ashiria TypeError('requires _testcapi.with_tp_del')
+                ashiria TypeError('requires _testcapi.with_tp_del')
         rudisha C
 
 ### Support code
 ###############################################################################
 
-# Bug 1055820 has several tests of longstanding bugs involving weakrefs and
+# Bug 1055820 has several tests of longstanding bugs involving weakrefs na
 # cyclic gc.
 
 # An instance of C1055820 has a self-loop, so becomes cyclic trash when
@@ -63,7 +63,7 @@ kundi Uncollectable(object):
         isipokua:
             self.partner = partner
     eleza __tp_del__(self):
-        pass
+        pita
 
 ikiwa sysconfig.get_config_vars().get('PY_CFLAGS', ''):
     BUILD_WITH_NDEBUG = ('-DNDEBUG' kwenye sysconfig.get_config_vars()['PY_CFLAGS'])
@@ -71,7 +71,7 @@ isipokua:
     # Usually, sys.gettotalrefcount() ni only present ikiwa Python has been
     # compiled kwenye debug mode. If it's missing, expect that Python has
     # been released kwenye release mode: ukijumuisha NDEBUG defined.
-    BUILD_WITH_NDEBUG = (not hasattr(sys, 'gettotalrefcount'))
+    BUILD_WITH_NDEBUG = (sio hasattr(sys, 'gettotalrefcount'))
 
 ### Tests
 ###############################################################################
@@ -103,7 +103,7 @@ kundi GCTests(unittest.TestCase):
 
     eleza test_class(self):
         kundi A:
-            pass
+            pita
         A.a = A
         gc.collect()
         toa A
@@ -111,14 +111,14 @@ kundi GCTests(unittest.TestCase):
 
     eleza test_newstyleclass(self):
         kundi A(object):
-            pass
+            pita
         gc.collect()
         toa A
         self.assertNotEqual(gc.collect(), 0)
 
     eleza test_instance(self):
         kundi A:
-            pass
+            pita
         a = A()
         a.a = a
         gc.collect()
@@ -128,16 +128,16 @@ kundi GCTests(unittest.TestCase):
     @requires_type_collecting
     eleza test_newinstance(self):
         kundi A(object):
-            pass
+            pita
         a = A()
         a.a = a
         gc.collect()
         toa a
         self.assertNotEqual(gc.collect(), 0)
         kundi B(list):
-            pass
+            pita
         kundi C(B, A):
-            pass
+            pita
         a = C()
         a.a = a
         gc.collect()
@@ -166,9 +166,9 @@ kundi GCTests(unittest.TestCase):
         # kwenye gc.garbage.
         @with_tp_del
         kundi A:
-            eleza __tp_del__(self): pass
+            eleza __tp_del__(self): pita
         kundi B:
-            pass
+            pita
         a = A()
         a.a = a
         id_a = id(a)
@@ -192,9 +192,9 @@ kundi GCTests(unittest.TestCase):
         # kwenye gc.garbage.
         @with_tp_del
         kundi A(object):
-            eleza __tp_del__(self): pass
+            eleza __tp_del__(self): pita
         kundi B(object):
-            pass
+            pita
         a = A()
         a.a = a
         id_a = id(a)
@@ -216,7 +216,7 @@ kundi GCTests(unittest.TestCase):
         # Tricky: f -> d -> f, code should call d.clear() after the exec to
         # koma the cycle.
         d = {}
-        exec("eleza f(): pass\n", d)
+        exec("eleza f(): pita\n", d)
         gc.collect()
         toa d
         self.assertEqual(gc.collect(), 2)
@@ -341,7 +341,7 @@ kundi GCTests(unittest.TestCase):
 
         # Note:  In 2.3 the possibility kila compiling without cyclic gc was
         # removed, na that kwenye turn allows the trashcan mechanism to work
-        # via much simpler means (e.g., it never abuses the type pointer or
+        # via much simpler means (e.g., it never abuses the type pointer ama
         # refcount fields anymore).  Since it's much less likely to cause a
         # problem now, the various constants kwenye this expensive (we force a lot
         # of full collections) test are cut back kutoka the 2.2 version.
@@ -367,7 +367,7 @@ kundi GCTests(unittest.TestCase):
         eleza sleeper_gen():
             """A generator that releases the GIL when closed ama dealloc'ed."""
             jaribu:
-                yield
+                tuma
             mwishowe:
                 time.sleep(0.000001)
 
@@ -421,7 +421,7 @@ kundi GCTests(unittest.TestCase):
         kundi Boom:
             eleza __getattr__(self, someattribute):
                 toa self.attr
-                 ashiria AttributeError
+                ashiria AttributeError
 
         a = Boom()
         b = Boom()
@@ -432,10 +432,10 @@ kundi GCTests(unittest.TestCase):
         garbagelen = len(gc.garbage)
         toa a, b
         # a<->b are kwenye a trash cycle now.  Collection will invoke
-        # Boom.__getattr__ (to see whether a na b have __del__ methods), and
-        # __getattr__ deletes the internal "attr" attributes as a side effect.
+        # Boom.__getattr__ (to see whether a na b have __del__ methods), na
+        # __getattr__ deletes the internal "attr" attributes kama a side effect.
         # That causes the trash cycle to get reclaimed via refcounts falling to
-        # 0, thus mutating the trash graph as a side effect of merely asking
+        # 0, thus mutating the trash graph kama a side effect of merely asking
         # whether __del__ exists.  This used to (before 2.3b1) crash Python.
         # Now __getattr__ isn't called.
         self.assertEqual(gc.collect(), 4)
@@ -450,7 +450,7 @@ kundi GCTests(unittest.TestCase):
                 self.x += 1
                 ikiwa self.x > 1:
                     toa self.attr
-                 ashiria AttributeError
+                ashiria AttributeError
 
         a = Boom2()
         b = Boom2()
@@ -460,7 +460,7 @@ kundi GCTests(unittest.TestCase):
         gc.collect()
         garbagelen = len(gc.garbage)
         toa a, b
-        # Much like test_boom(), except that __getattr__ doesn't koma the
+        # Much like test_boom(), tatizo that __getattr__ doesn't koma the
         # cycle until the second time gc checks kila __del__.  As of 2.3b1,
         # there isn't a second time, so this simply cleans up the trash cycle.
         # We expect a, b, a.__dict__ na b.__dict__ (4 objects) to get
@@ -469,13 +469,13 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(len(gc.garbage), garbagelen)
 
     eleza test_boom_new(self):
-        # boom__new na boom2_new are exactly like boom na boom2, except use
+        # boom__new na boom2_new are exactly like boom na boom2, tatizo use
         # new-style classes.
 
         kundi Boom_New(object):
             eleza __getattr__(self, someattribute):
                 toa self.attr
-                 ashiria AttributeError
+                ashiria AttributeError
 
         a = Boom_New()
         b = Boom_New()
@@ -497,7 +497,7 @@ kundi GCTests(unittest.TestCase):
                 self.x += 1
                 ikiwa self.x > 1:
                     toa self.attr
-                 ashiria AttributeError
+                ashiria AttributeError
 
         a = Boom2_New()
         b = Boom2_New()
@@ -534,7 +534,7 @@ kundi GCTests(unittest.TestCase):
         self.assertEqual(gc.get_referents(1, 'a', 4j), [])
 
     eleza test_is_tracked(self):
-        # Atomic built-in types are sio tracked, user-defined objects and
+        # Atomic built-in types are sio tracked, user-defined objects na
         # mutable containers are.
         # NOTE: types ukijumuisha special optimizations (e.g. tuple) have tests
         # kwenye their own test files instead.
@@ -553,10 +553,10 @@ kundi GCTests(unittest.TestCase):
         self.assertUongo(gc.is_tracked(object()))
 
         kundi UserClass:
-            pass
+            pita
 
         kundi UserInt(int):
-            pass
+            pita
 
         # Base kundi ni object; no extra fields.
         kundi UserClassSlots:
@@ -617,7 +617,7 @@ kundi GCTests(unittest.TestCase):
         gc.collect()
 
         kundi A:
-            pass
+            pita
 
         kundi B:
             eleza __init__(self, x):
@@ -649,7 +649,7 @@ kundi GCTests(unittest.TestCase):
                 eleza __repr__(self):
                     rudisha "<X %%r>" %% self.name
                 eleza __tp_del__(self):
-                    pass
+                    pita
 
             x = X('first')
             x.x = x
@@ -677,7 +677,7 @@ kundi GCTests(unittest.TestCase):
         self.assertIn(b"ResourceWarning: gc: 2 uncollectable objects at "
                       b"shutdown", stderr)
         self.assertKweli(
-            (b"[<X 'first'>, <X 'second'>]" kwenye stderr) or
+            (b"[<X 'first'>, <X 'second'>]" kwenye stderr) ama
             (b"[<X 'second'>, <X 'first'>]" kwenye stderr), stderr)
         # With DEBUG_SAVEALL, no additional message should get printed
         # (because gc.garbage also contains normally reclaimable cyclic
@@ -701,8 +701,8 @@ kundi GCTests(unittest.TestCase):
 
     @requires_type_collecting
     eleza test_gc_ordinary_module_at_shutdown(self):
-        # Same as above, but ukijumuisha a non-__main__ module.
-        ukijumuisha temp_dir() as script_dir:
+        # Same kama above, but ukijumuisha a non-__main__ module.
+        ukijumuisha temp_dir() kama script_dir:
             module = """ikiwa 1:
                 kundi C:
                     eleza __del__(self):
@@ -727,9 +727,9 @@ kundi GCTests(unittest.TestCase):
                     andika('__del__ called')
             a = ClassWithDel()
             a.link = a
-             ashiria SystemExit(0)"""
+            ashiria SystemExit(0)"""
         self.addCleanup(unlink, TESTFN)
-        ukijumuisha open(TESTFN, 'w') as script:
+        ukijumuisha open(TESTFN, 'w') kama script:
             script.write(code)
         rc, out, err = assert_python_ok(TESTFN)
         self.assertEqual(out.strip(), b'__del__ called')

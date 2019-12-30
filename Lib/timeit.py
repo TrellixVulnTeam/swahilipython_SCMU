@@ -14,16 +14,16 @@ Command line usage:
 Options:
   -n/--number N: how many times to execute 'statement' (default: see below)
   -r/--repeat N: how many times to repeat the timer (default 5)
-  -s/--setup S: statement to be executed once initially (default 'pass').
+  -s/--setup S: statement to be executed once initially (default 'pita').
                 Execution time of this setup statement ni NOT timed.
   -p/--process: use time.process_time() (default ni time.perf_counter())
   -v/--verbose: print raw timing results; repeat kila more digits precision
   -u/--unit: set the output time unit (nsec, usec, msec, ama sec)
   -h/--help: print this usage message na exit
   --: separate options kutoka statement, use when statement starts ukijumuisha -
-  statement: statement to be timed (default 'pass')
+  statement: statement to be timed (default 'pita')
 
-A multi-line statement may be given by specifying each line as a
+A multi-line statement may be given by specifying each line kama a
 separate argument; indented lines are possible by enclosing an
 argument kwenye quotes na using leading spaces.  Multiple -s options are
 treated similarly.
@@ -32,7 +32,7 @@ If -n ni sio given, a suitable number of loops ni calculated by trying
 successive powers of 10 until the total time ni at least 0.2 seconds.
 
 Note: there ni a certain baseline overhead associated ukijumuisha executing a
-pass statement.  It differs between versions.  The code here doesn't try
+pita statement.  It differs between versions.  The code here doesn't try
 to hide it, but you should be aware of it.  The baseline overhead can be
 measured by invoking the program without arguments.
 
@@ -84,7 +84,7 @@ kundi Timer:
 
     The constructor takes a statement to be timed, an additional
     statement used kila setup, na a timer function.  Both statements
-    default to 'pass'; the timer function ni platform-dependent (see
+    default to 'pita'; the timer function ni platform-dependent (see
     module doc string).  If 'globals' ni specified, the code will be
     executed within that namespace (as opposed to inside timeit's
     namespace).
@@ -93,11 +93,11 @@ kundi Timer:
     timeit() method.  The repeat() method ni a convenience to call
     timeit() multiple times na rudisha a list of results.
 
-    The statements may contain newlines, as long as they don't contain
+    The statements may contain newlines, kama long kama they don't contain
     multi-line string literals.
     """
 
-    eleza __init__(self, stmt="pass", setup="pass", timer=default_timer,
+    eleza __init__(self, stmt="pita", setup="pita", timer=default_timer,
                  globals=Tupu):
         """Constructor.  See kundi doc string."""
         self.timer = timer
@@ -109,23 +109,23 @@ kundi Timer:
             compile(setup, dummy_src_name, "exec")
             stmtprefix = setup + '\n'
             setup = reindent(setup, 4)
-        elikiwa callable(setup):
+        lasivyo callable(setup):
             local_ns['_setup'] = setup
             init += ', _setup=_setup'
             stmtprefix = ''
             setup = '_setup()'
         isipokua:
-             ashiria ValueError("setup ni neither a string nor callable")
+            ashiria ValueError("setup ni neither a string nor callable")
         ikiwa isinstance(stmt, str):
             # Check that the code can be compiled outside a function
             compile(stmtprefix + stmt, dummy_src_name, "exec")
             stmt = reindent(stmt, 8)
-        elikiwa callable(stmt):
+        lasivyo callable(stmt):
             local_ns['_stmt'] = stmt
             init += ', _stmt=_stmt'
             stmt = '_stmt()'
         isipokua:
-             ashiria ValueError("stmt ni neither a string nor callable")
+            ashiria ValueError("stmt ni neither a string nor callable")
         src = template.format(stmt=stmt, setup=setup, init=init)
         self.src = src  # Save kila traceback display
         code = compile(src, dummy_src_name, "exec")
@@ -162,12 +162,12 @@ kundi Timer:
     eleza timeit(self, number=default_number):
         """Time 'number' executions of the main statement.
 
-        To be precise, this executes the setup statement once, and
+        To be precise, this executes the setup statement once, na
         then returns the time it takes to execute the main statement
-        a number of times, as a float measured kwenye seconds.  The
+        a number of times, kama a float measured kwenye seconds.  The
         argument ni the number of times through the loop, defaulting
-        to one million.  The main statement, the setup statement and
-        the timer function to be used are passed to the constructor.
+        to one million.  The main statement, the setup statement na
+        the timer function to be used are pitaed to the constructor.
         """
         it = itertools.repeat(Tupu, number)
         gcold = gc.isenabled()
@@ -226,23 +226,23 @@ kundi Timer:
                     rudisha (number, time_taken)
             i *= 10
 
-eleza timeit(stmt="pass", setup="pass", timer=default_timer,
+eleza timeit(stmt="pita", setup="pita", timer=default_timer,
            number=default_number, globals=Tupu):
     """Convenience function to create Timer object na call timeit method."""
     rudisha Timer(stmt, setup, timer, globals).timeit(number)
 
-eleza repeat(stmt="pass", setup="pass", timer=default_timer,
+eleza repeat(stmt="pita", setup="pita", timer=default_timer,
            repeat=default_repeat, number=default_number, globals=Tupu):
     """Convenience function to create Timer object na call repeat method."""
     rudisha Timer(stmt, setup, timer, globals).repeat(repeat, number)
 
 eleza main(args=Tupu, *, _wrap_timer=Tupu):
-    """Main program, used when run as a script.
+    """Main program, used when run kama a script.
 
     The optional 'args' argument specifies the command line to be parsed,
     defaulting to sys.argv[1:].
 
-    The rudisha value ni an exit code to be passed to sys.exit(); it
+    The rudisha value ni an exit code to be pitaed to sys.exit(); it
     may be Tupu to indicate success.
 
     When an exception happens during timing, a traceback ni printed to
@@ -261,13 +261,13 @@ eleza main(args=Tupu, *, _wrap_timer=Tupu):
                                    ["number=", "setup=", "repeat=",
                                     "time", "clock", "process",
                                     "verbose", "unit=", "help"])
-    except getopt.error as err:
+    tatizo getopt.error kama err:
         andika(err)
         andika("use -h/--help kila command line help")
         rudisha 2
 
     timer = default_timer
-    stmt = "\n".join(args) ama "pass"
+    stmt = "\n".join(args) ama "pita"
     number = 0 # auto-determine
     setup = []
     repeat = default_repeat
@@ -300,7 +300,7 @@ eleza main(args=Tupu, *, _wrap_timer=Tupu):
         ikiwa o kwenye ("-h", "--help"):
             andika(__doc__, end=' ')
             rudisha 0
-    setup = "\n".join(setup) ama "pass"
+    setup = "\n".join(setup) ama "pita"
 
     # Include the current directory, so that local imports work (sys.path
     # contains the directory of this script, rather than the current

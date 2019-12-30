@@ -5,7 +5,7 @@
 #
 
 agiza _codecs_jp, codecs
-agiza _multibytecodec as mbc
+agiza _multibytecodec kama mbc
 
 codec = _codecs_jp.getcodec('cp932')
 

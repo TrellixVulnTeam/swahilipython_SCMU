@@ -4,7 +4,7 @@ agiza unittest
 kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 
-agiza idlelib.autocomplete_w as acw
+agiza idlelib.autocomplete_w kama acw
 
 
 kundi AutoCompleteWindowTest(unittest.TestCase):

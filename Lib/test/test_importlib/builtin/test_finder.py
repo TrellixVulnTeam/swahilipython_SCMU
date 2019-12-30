@@ -33,7 +33,7 @@ kundi FindSpecTests(abc.FinderTests):
 
     eleza test_failure(self):
         name = 'importlib'
-        assert name sio kwenye sys.builtin_module_names
+        assert name haiko kwenye sys.builtin_module_names
         spec = self.machinery.BuiltinImporter.find_spec(name)
         self.assertIsTupu(spec)
 
@@ -69,7 +69,7 @@ kundi FinderTests(abc.FinderTests):
     test_module_in_package = Tupu
 
     eleza test_failure(self):
-        assert 'importlib' sio kwenye sys.builtin_module_names
+        assert 'importlib' haiko kwenye sys.builtin_module_names
         loader = self.machinery.BuiltinImporter.find_module('importlib')
         self.assertIsTupu(loader)
 

@@ -1,6 +1,6 @@
 """Shared support kila scanning document type declarations kwenye HTML na XHTML.
 
-This module ni used as a foundation kila the html.parser module.  It has no
+This module ni used kama a foundation kila the html.parser module.  It has no
 documented public API na should sio be used directly.
 
 """
@@ -26,11 +26,11 @@ kundi ParserBase:
 
     eleza __init__(self):
         ikiwa self.__class__ ni ParserBase:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 "_markupbase.ParserBase must be subclassed")
 
     eleza error(self, message):
-         ashiria NotImplementedError(
+        ashiria NotImplementedError(
             "subclasses of ParserBase must override error()")
 
     eleza reset(self):
@@ -85,12 +85,12 @@ kundi ParserBase:
         # A simple, practical version could look like: ((name|stringlit) S*) + '>'
         n = len(rawdata)
         ikiwa rawdata[j:j+2] == '--': #comment
-            # Locate --.*-- as the body of the comment
+            # Locate --.*-- kama the body of the comment
             rudisha self.parse_comment(i)
-        elikiwa rawdata[j] == '[': #marked section
-            # Locate [statusWord [...arbitrary SGML...]] as the body of the marked section
+        lasivyo rawdata[j] == '[': #marked section
+            # Locate [statusWord [...arbitrary SGML...]] kama the body of the marked section
             # Where statusWord ni one of TEMP, CDATA, IGNORE, INCLUDE, RCDATA
-            # Note that this ni extended by Microsoft Office "Save as Web" function
+            # Note that this ni extended by Microsoft Office "Save kama Web" function
             # to include [if...] na [endif].
             rudisha self.parse_marked_section(i)
         isipokua: #all other declaration elements
@@ -118,15 +118,15 @@ kundi ParserBase:
                 ikiwa sio m:
                     rudisha -1 # incomplete
                 j = m.end()
-            elikiwa c kwenye "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            lasivyo c kwenye "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 name, j = self._scan_name(j, i)
-            elikiwa c kwenye self._decl_otherchars:
+            lasivyo c kwenye self._decl_otherchars:
                 j = j + 1
-            elikiwa c == "[":
+            lasivyo c == "[":
                 # this could be handled kwenye a separate doctype parser
                 ikiwa decltype == "doctype":
                     j = self._parse_doctype_subset(j + 1, i)
-                elikiwa decltype kwenye {"attlist", "linktype", "link", "element"}:
+                lasivyo decltype kwenye {"attlist", "linktype", "link", "element"}:
                     # must tolerate []'d groups kwenye a content motoa kwenye an element declaration
                     # also kwenye data attribute specifications of attlist declaration
                     # also link type declaration subsets kwenye linktype declarations
@@ -152,7 +152,7 @@ kundi ParserBase:
         ikiwa sectName kwenye {"temp", "cdata", "ignore", "include", "rcdata"}:
             # look kila standard ]]> ending
             match= _markedsectionclose.search(rawdata, i+3)
-        elikiwa sectName kwenye {"if", "else", "endif"}:
+        lasivyo sectName kwenye {"if", "else", "endif"}:
             # look kila MS Office ]> ending
             match= _msmarkedsectionclose.search(rawdata, i+3)
         isipokua:
@@ -207,7 +207,7 @@ kundi ParserBase:
                 name, j = self._scan_name(j + 2, declstartpos)
                 ikiwa j == -1:
                     rudisha -1
-                ikiwa name sio kwenye {"attlist", "element", "entity", "notation"}:
+                ikiwa name haiko kwenye {"attlist", "element", "entity", "notation"}:
                     self.updatepos(declstartpos, j + 2)
                     self.error(
                         "unknown declaration %r kwenye internal subset" % name)
@@ -216,7 +216,7 @@ kundi ParserBase:
                 j = meth(j, declstartpos)
                 ikiwa j < 0:
                     rudisha j
-            elikiwa c == "%":
+            lasivyo c == "%":
                 # parameter entity reference
                 ikiwa (j + 1) == n:
                     # end of buffer; incomplete
@@ -226,7 +226,7 @@ kundi ParserBase:
                     rudisha j
                 ikiwa rawdata[j] == ";":
                     j = j + 1
-            elikiwa c == "]":
+            lasivyo c == "]":
                 j = j + 1
                 wakati j < n na rawdata[j].isspace():
                     j = j + 1
@@ -237,7 +237,7 @@ kundi ParserBase:
                     self.error("unexpected char after internal subset")
                 isipokua:
                     rudisha -1
-            elikiwa c.isspace():
+            lasivyo c.isspace():
                 j = j + 1
             isipokua:
                 self.updatepos(declstartpos, j)
@@ -364,14 +364,14 @@ kundi ParserBase:
                     j = m.end()
                 isipokua:
                     rudisha -1    # incomplete
-            elikiwa c == ">":
+            lasivyo c == ">":
                 rudisha j + 1
             isipokua:
                 name, j = self._scan_name(j, declstartpos)
                 ikiwa j < 0:
                     rudisha j
 
-    # Internal -- scan a name token na the new position na the token, or
+    # Internal -- scan a name token na the new position na the token, ama
     # rudisha -1 ikiwa we've reached the end of the buffer.
     eleza _scan_name(self, i, declstartpos):
         rawdata = self.rawdata
@@ -392,4 +392,4 @@ kundi ParserBase:
 
     # To be overridden -- handlers kila unknown objects
     eleza unknown_decl(self, data):
-        pass
+        pita

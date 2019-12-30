@@ -21,7 +21,7 @@ that mimic the closest existing terms are used.  Thus, it really helps to have
 a copy of RFC 5322 handy when studying this code.
 
 Input to the parser ni a string that has already been unfolded according to
-RFC 5322 rules.  According to the RFC this unfolding ni the very first step, and
+RFC 5322 rules.  According to the RFC this unfolding ni the very first step, na
 this parser leaves the unfolding step to a higher level message parser, which
 will have already detected the line komas that need unfolding while
 determining the beginning na end of each header.
@@ -35,10 +35,10 @@ practical higher level combinations of true terminals.
 All TokenList na Terminal objects have a 'value' attribute, which produces the
 semantically meaningful value of that part of the parse subtree.  The value of
 all whitespace tokens (no matter how many sub-tokens they may contain) ni a
-single space, as per the RFC rules.  This includes 'CFWS', which ni herein
+single space, kama per the RFC rules.  This includes 'CFWS', which ni herein
 included kwenye the general kundi of whitespace tokens.  There ni one exception to
 the rule that whitespace tokens are collapsed into single spaces kwenye values: in
-the value of a 'bare-quoted-string' (a quoted-string ukijumuisha no leading or
+the value of a 'bare-quoted-string' (a quoted-string ukijumuisha no leading ama
 trailing whitespace), any whitespace that appeared between the quotation marks
 is preserved kwenye the returned value.  Note that kwenye all Terminal strings quoted
 pairs are turned into their unquoted values.
@@ -61,7 +61,7 @@ Each object kwenye a parse tree ni called a 'token', na each has a 'token_type'
 attribute that gives the name kutoka the RFC 5322 grammar that it represents.
 Not all RFC 5322 nodes are produced, na there ni one non-RFC 5322 node that
 may be produced: 'ptext'.  A 'ptext' ni a string of printable ascii characters.
-It ni returned kwenye place of lists of (ctext/quoted-pair) and
+It ni returned kwenye place of lists of (ctext/quoted-pair) na
 (qtext/quoted-pair).
 
 XXX: provide complete list of token types.
@@ -72,7 +72,7 @@ agiza sys
 agiza urllib   # For urllib.parse.unquote
 kutoka string agiza hexdigits
 kutoka operator agiza itemgetter
-kutoka email agiza _encoded_words as _ew
+kutoka email agiza _encoded_words kama _ew
 kutoka email agiza errors
 kutoka email agiza utils
 
@@ -318,7 +318,7 @@ kundi Address(TokenList):
     eleza mailboxes(self):
         ikiwa self[0].token_type == 'mailbox':
             rudisha [self[0]]
-        elikiwa self[0].token_type == 'invalid-mailbox':
+        lasivyo self[0].token_type == 'invalid-mailbox':
             rudisha []
         rudisha self[0].mailboxes
 
@@ -326,7 +326,7 @@ kundi Address(TokenList):
     eleza all_mailboxes(self):
         ikiwa self[0].token_type == 'mailbox':
             rudisha [self[0]]
-        elikiwa self[0].token_type == 'invalid-mailbox':
+        lasivyo self[0].token_type == 'invalid-mailbox':
             rudisha [self[0]]
         rudisha self[0].all_mailboxes
 
@@ -616,11 +616,11 @@ kundi LocalPart(TokenList):
         kila tok kwenye self[0] + [DOT]:
             ikiwa tok.token_type == 'cfws':
                 endelea
-            ikiwa (last_is_tl na tok.token_type == 'dot' and
+            ikiwa (last_is_tl na tok.token_type == 'dot' na
                     last[-1].token_type == 'cfws'):
                 res[-1] = TokenList(last[:-1])
             is_tl = isinstance(tok, TokenList)
-            ikiwa (is_tl na last.token_type == 'dot' and
+            ikiwa (is_tl na last.token_type == 'dot' na
                     tok[0].token_type == 'cfws'):
                 res.append(TokenList(tok[1:]))
             isipokua:
@@ -737,7 +737,7 @@ kundi MimeParameters(TokenList):
             ikiwa token[0].token_type != 'attribute':
                 endelea
             name = token[0].value.strip()
-            ikiwa name sio kwenye params:
+            ikiwa name haiko kwenye params:
                 params[name] = []
             params[name].append((token.section_number, token))
         kila name, parts kwenye params.items():
@@ -773,7 +773,7 @@ kundi MimeParameters(TokenList):
                 ikiwa param.extended:
                     jaribu:
                         value = urllib.parse.unquote_to_bytes(value)
-                    except UnicodeEncodeError:
+                    tatizo UnicodeEncodeError:
                         # source had surrogate escaped bytes.  What we do now
                         # ni a bit of an open question.  I'm sio sure this is
                         # the best choice, but it ni what the old algorithm did
@@ -781,7 +781,7 @@ kundi MimeParameters(TokenList):
                     isipokua:
                         jaribu:
                             value = value.decode(charset, 'surrogateescape')
-                        except LookupError:
+                        tatizo LookupError:
                             # XXX: there should really be a custom defect for
                             # unknown character set to make it easy to find,
                             # because otherwise unknown charset ni a silent
@@ -939,7 +939,7 @@ kundi _InvalidEwError(errors.HeaderParseError):
     """Invalid encoded word found wakati parsing headers."""
 
 
-# XXX these need to become classes na used as instances so
+# XXX these need to become classes na used kama instances so
 # that a program can't change them kwenye a parse tree na screw
 # up other parse trees.  Maybe should have  tests kila that, too.
 DOT = ValueTerminal('.', 'dot')
@@ -952,7 +952,7 @@ RouteComponentMarker = ValueTerminal('@', 'route-component-marker')
 
 # Parse strings according to RFC822/2047/2822/5322 rules.
 #
-# This ni a stateless parser.  Each get_XXX function accepts a string and
+# This ni a stateless parser.  Each get_XXX function accepts a string na
 # returns either a Terminal ama a TokenList representing the RFC object named
 # by the method na a string containing the remaining unparsed characters
 # kutoka the input.  Thus a parser method consumes the next syntactic construct
@@ -991,9 +991,9 @@ eleza _validate_xtext(xtext):
 eleza _get_ptext_to_endchars(value, endchars):
     """Scan printables/quoted-pairs until endchars na rudisha unquoted ptext.
 
-    This function turns a run of qcontent, ccontent-without-comments, or
+    This function turns a run of qcontent, ccontent-without-comments, ama
     dtext-with-quoted-printables into a single string by unquoting any
-    quoted printables.  It returns the string, the remaining value, and
+    quoted printables.  It returns the string, the remaining value, na
     a flag that ni Kweli iff there were any quoted printables decoded.
 
     """
@@ -1011,7 +1011,7 @@ eleza _get_ptext_to_endchars(value, endchars):
                 endelea
         ikiwa escape:
             escape = Uongo
-        elikiwa fragment[pos] kwenye endchars:
+        lasivyo fragment[pos] kwenye endchars:
             koma
         vchars.append(fragment[pos])
     isipokua:
@@ -1036,16 +1036,16 @@ eleza get_encoded_word(value):
     """
     ew = EncodedWord()
     ikiwa sio value.startswith('=?'):
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     tok, *remainder = value[2:].split('?=', 1)
     ikiwa tok == value[2:]:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected encoded word but found {}".format(value))
     remstr = ''.join(remainder)
-    ikiwa (len(remstr) > 1 and
-        remstr[0] kwenye hexdigits and
-        remstr[1] kwenye hexdigits and
+    ikiwa (len(remstr) > 1 na
+        remstr[0] kwenye hexdigits na
+        remstr[1] kwenye hexdigits na
         tok.count('?') < 2):
         # The ? after the CTE was followed by an encoded word escape (=XX).
         rest, *remainder = remstr.split('?=', 1)
@@ -1057,8 +1057,8 @@ eleza get_encoded_word(value):
     value = ''.join(remainder)
     jaribu:
         text, charset, lang, defects = _ew.decode('=?' + tok + '?=')
-    except (ValueError, KeyError):
-         ashiria _InvalidEwError(
+    tatizo (ValueError, KeyError):
+        ashiria _InvalidEwError(
             "encoded word format invalid: '{}'".format(ew.cte))
     ew.charset = charset
     ew.lang = lang
@@ -1074,7 +1074,7 @@ eleza get_encoded_word(value):
         ew.append(vtext)
         text = ''.join(remainder)
     # Encoded words should be followed by a WS
-    ikiwa value na value[0] sio kwenye WSP:
+    ikiwa value na value[0] haiko kwenye WSP:
         ew.defects.append(errors.InvalidHeaderDefect(
             "missing trailing whitespace after encoded-word"))
     rudisha ew, value
@@ -1084,7 +1084,7 @@ eleza get_unstructured(value):
        obs-unstruct = *((*LF *CR *(obs-utext) *LF *CR)) / FWS)
        obs-utext = %d0 / obs-NO-WS-CTL / LF / CR
 
-       obs-NO-WS-CTL ni control characters except WSP/CR/LF.
+       obs-NO-WS-CTL ni control characters tatizo WSP/CR/LF.
 
     So, basically, we have printable runs, plus control characters ama nulls in
     the obsolete syntax, separated by whitespace.  Since RFC 2047 uses the
@@ -1098,7 +1098,7 @@ eleza get_unstructured(value):
     parsed TokenList.
 
     """
-    # XXX: but what about bare CR na LF?  They might signal the start or
+    # XXX: but what about bare CR na LF?  They might signal the start ama
     # end of an encoded word.  YAGNI kila now, since our current parsers
     # will never send us strings ukijumuisha bare CR ama LF.
 
@@ -1112,12 +1112,12 @@ eleza get_unstructured(value):
         ikiwa value.startswith('=?'):
             jaribu:
                 token, value = get_encoded_word(value)
-            except _InvalidEwError:
+            tatizo _InvalidEwError:
                 valid_ew = Uongo
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 # XXX: Need to figure out how to register defects when
                 # appropriate here.
-                pass
+                pita
             isipokua:
                 have_ws = Kweli
                 ikiwa len(unstructured) > 0:
@@ -1147,10 +1147,10 @@ eleza get_unstructured(value):
     rudisha unstructured
 
 eleza get_qp_ctext(value):
-    r"""ctext = <printable ascii except \ ( )>
+    r"""ctext = <printable ascii tatizo \ ( )>
 
     This ni sio the RFC ctext, since we are handling nested comments kwenye comment
-    na unquoting quoted-pairs here.  We allow anything except the '()'
+    na unquoting quoted-pairs here.  We allow anything tatizo the '()'
     characters, but ikiwa we find any ASCII other than the RFC defined printable
     ASCII, a NonPrintableDefect ni added to the token's defects list.  Since
     quoted pairs are converted to their unquoted values, what ni returned is
@@ -1166,7 +1166,7 @@ eleza get_qp_ctext(value):
 eleza get_qcontent(value):
     """qcontent = qtext / quoted-pair
 
-    We allow anything except the DQUOTE character, but ikiwa we find any ASCII
+    We allow anything tatizo the DQUOTE character, but ikiwa we find any ASCII
     other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Any quoted pairs are converted to their
     unquoted values, so what ni returned ni a 'ptext' token.  In this case it
@@ -1186,7 +1186,7 @@ eleza get_atext(value):
     """
     m = _non_atom_end_matcher(value)
     ikiwa sio m:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected atext but found '{}'".format(value))
     atext = m.group()
     value = value[len(atext):]
@@ -1202,7 +1202,7 @@ eleza get_bare_quoted_string(value):
     preserved na quoted pairs decoded.
     """
     ikiwa value[0] != '"':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '\"' but found '{}'".format(value))
     bare_quoted_string = BareQuotedString()
     value = value[1:]
@@ -1212,12 +1212,12 @@ eleza get_bare_quoted_string(value):
     wakati value na value[0] != '"':
         ikiwa value[0] kwenye WSP:
             token, value = get_fws(value)
-        elikiwa value[:2] == '=?':
+        lasivyo value[:2] == '=?':
             jaribu:
                 token, value = get_encoded_word(value)
                 bare_quoted_string.defects.append(errors.InvalidHeaderDefect(
                     "encoded word inside quoted string"))
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 token, value = get_qcontent(value)
         isipokua:
             token, value = get_qcontent(value)
@@ -1235,14 +1235,14 @@ eleza get_comment(value):
     We handle nested comments here, na quoted-pair kwenye our qp-ctext routine.
     """
     ikiwa value na value[0] != '(':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '(' but found '{}'".format(value))
     comment = Comment()
     value = value[1:]
     wakati value na value[0] != ")":
         ikiwa value[0] kwenye WSP:
             token, value = get_fws(value)
-        elikiwa value[0] == '(':
+        lasivyo value[0] == '(':
             token, value = get_comment(value)
         isipokua:
             token, value = get_qp_ctext(value)
@@ -1294,12 +1294,12 @@ eleza get_atom(value):
         token, value = get_cfws(value)
         atom.append(token)
     ikiwa value na value[0] kwenye ATOM_ENDS:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected atom but found '{}'".format(value))
     ikiwa value.startswith('=?'):
         jaribu:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_atext(value)
@@ -1317,16 +1317,16 @@ eleza get_dot_atom_text(value):
     """
     dot_atom_text = DotAtomText()
     ikiwa sio value ama value[0] kwenye ATOM_ENDS:
-         ashiria errors.HeaderParseError("expected atom at a start of "
+        ashiria errors.HeaderParseError("expected atom at a start of "
             "dot-atom-text but found '{}'".format(value))
-    wakati value na value[0] sio kwenye ATOM_ENDS:
+    wakati value na value[0] haiko kwenye ATOM_ENDS:
         token, value = get_atext(value)
         dot_atom_text.append(token)
         ikiwa value na value[0] == '.':
             dot_atom_text.append(DOT)
             value = value[1:]
     ikiwa dot_atom_text[-1] ni DOT:
-         ashiria errors.HeaderParseError("expected atom at end of dot-atom-text "
+        ashiria errors.HeaderParseError("expected atom at end of dot-atom-text "
             "but found '{}'".format('.'+value))
     rudisha dot_atom_text, value
 
@@ -1343,7 +1343,7 @@ eleza get_dot_atom(value):
     ikiwa value.startswith('=?'):
         jaribu:
             token, value = get_encoded_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             # XXX: need to figure out how to register defects when
             # appropriate here.
             token, value = get_dot_atom_text(value)
@@ -1365,7 +1365,7 @@ eleza get_word(value):
     If neither an atom ama a quoted-string ni found before the next special, a
     HeaderParseError ni raised.
 
-    The token returned ni either an Atom ama a QuotedString, as appropriate.
+    The token returned ni either an Atom ama a QuotedString, kama appropriate.
     This means the 'word' level of the formal grammar ni sio represented kwenye the
     parse tree; this ni because having that extra layer when manipulating the
     parse tree ni more confusing than it ni helpful.
@@ -1376,12 +1376,12 @@ eleza get_word(value):
     isipokua:
         leader = Tupu
     ikiwa sio value:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "Expected 'atom' ama 'quoted-string' but found nothing.")
     ikiwa value[0]=='"':
         token, value = get_quoted_string(value)
-    elikiwa value[0] kwenye SPECIALS:
-         ashiria errors.HeaderParseError("Expected 'atom' ama 'quoted-string' "
+    lasivyo value[0] kwenye SPECIALS:
+        ashiria errors.HeaderParseError("Expected 'atom' ama 'quoted-string' "
                                       "but found '{}'".format(value))
     isipokua:
         token, value = get_atom(value)
@@ -1394,10 +1394,10 @@ eleza get_phrase(value):
         obs-phrase = word *(word / "." / CFWS)
 
     This means a phrase can be a sequence of words, periods, na CFWS kwenye any
-    order as long as it starts ukijumuisha at least one word.  If anything other than
+    order kama long kama it starts ukijumuisha at least one word.  If anything other than
     words ni detected, an ObsoleteHeaderDefect ni added to the token's defect
     list.  We also accept a phrase that starts ukijumuisha CFWS followed by a dot;
-    this ni registered as an InvalidHeaderDefect, since it ni sio supported by
+    this ni registered kama an InvalidHeaderDefect, since it ni sio supported by
     even the obsolete grammar.
 
     """
@@ -1405,10 +1405,10 @@ eleza get_phrase(value):
     jaribu:
         token, value = get_word(value)
         phrase.append(token)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         phrase.defects.append(errors.InvalidHeaderDefect(
             "phrase does sio start ukijumuisha word"))
-    wakati value na value[0] sio kwenye PHRASE_ENDS:
+    wakati value na value[0] haiko kwenye PHRASE_ENDS:
         ikiwa value[0]=='.':
             phrase.append(DOT)
             phrase.defects.append(errors.ObsoleteHeaderDefect(
@@ -1417,7 +1417,7 @@ eleza get_phrase(value):
         isipokua:
             jaribu:
                 token, value = get_word(value)
-            except errors.HeaderParseError:
+            tatizo errors.HeaderParseError:
                 ikiwa value[0] kwenye CFWS_LEADER:
                     token, value = get_cfws(value)
                     phrase.defects.append(errors.ObsoleteHeaderDefect(
@@ -1436,21 +1436,21 @@ eleza get_local_part(value):
     ikiwa value[0] kwenye CFWS_LEADER:
         leader, value = get_cfws(value)
     ikiwa sio value:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected local-part but found '{}'".format(value))
     jaribu:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
             token, value = get_word(value)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             ikiwa value[0] != '\\' na value[0] kwenye PHRASE_ENDS:
                 raise
             token = TokenList()
     ikiwa leader ni sio Tupu:
         token[:0] = [leader]
     local_part.append(token)
-    ikiwa value na (value[0]=='\\' ama value[0] sio kwenye PHRASE_ENDS):
+    ikiwa value na (value[0]=='\\' ama value[0] haiko kwenye PHRASE_ENDS):
         obs_local_part, value = get_obs_local_part(str(local_part) + value)
         ikiwa obs_local_part.token_type == 'invalid-obs-local-part':
             local_part.defects.append(errors.InvalidHeaderDefect(
@@ -1461,7 +1461,7 @@ eleza get_local_part(value):
         local_part[0] = obs_local_part
     jaribu:
         local_part.value.encode('ascii')
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         local_part.defects.append(errors.NonASCIILocalPartDefect(
                 "local-part contains non-ASCII characters)"))
     rudisha local_part, value
@@ -1471,7 +1471,7 @@ eleza get_obs_local_part(value):
     """
     obs_local_part = ObsLocalPart()
     last_non_ws_was_dot = Uongo
-    wakati value na (value[0]=='\\' ama value[0] sio kwenye PHRASE_ENDS):
+    wakati value na (value[0]=='\\' ama value[0] haiko kwenye PHRASE_ENDS):
         ikiwa value[0] == '.':
             ikiwa last_non_ws_was_dot:
                 obs_local_part.defects.append(errors.InvalidHeaderDefect(
@@ -1480,7 +1480,7 @@ eleza get_obs_local_part(value):
             last_non_ws_was_dot = Kweli
             value = value[1:]
             endelea
-        elikiwa value[0]=='\\':
+        lasivyo value[0]=='\\':
             obs_local_part.append(ValueTerminal(value[0],
                                                 'misplaced-special'))
             value = value[1:]
@@ -1494,18 +1494,18 @@ eleza get_obs_local_part(value):
         jaribu:
             token, value = get_word(value)
             last_non_ws_was_dot = Uongo
-        except errors.HeaderParseError:
-            ikiwa value[0] sio kwenye CFWS_LEADER:
+        tatizo errors.HeaderParseError:
+            ikiwa value[0] haiko kwenye CFWS_LEADER:
                 raise
             token, value = get_cfws(value)
         obs_local_part.append(token)
-    ikiwa (obs_local_part[0].token_type == 'dot' or
-            obs_local_part[0].token_type=='cfws' and
+    ikiwa (obs_local_part[0].token_type == 'dot' ama
+            obs_local_part[0].token_type=='cfws' na
             obs_local_part[1].token_type=='dot'):
         obs_local_part.defects.append(errors.InvalidHeaderDefect(
             "Invalid leading '.' kwenye local part"))
-    ikiwa (obs_local_part[-1].token_type == 'dot' or
-            obs_local_part[-1].token_type=='cfws' and
+    ikiwa (obs_local_part[-1].token_type == 'dot' ama
+            obs_local_part[-1].token_type=='cfws' na
             obs_local_part[-2].token_type=='dot'):
         obs_local_part.defects.append(errors.InvalidHeaderDefect(
             "Invalid trailing '.' kwenye local part"))
@@ -1514,10 +1514,10 @@ eleza get_obs_local_part(value):
     rudisha obs_local_part, value
 
 eleza get_dtext(value):
-    r""" dtext = <printable ascii except \ [ ]> / obs-dtext
+    r""" dtext = <printable ascii tatizo \ [ ]> / obs-dtext
         obs-dtext = obs-NO-WS-CTL / quoted-pair
 
-    We allow anything except the excluded characters, but ikiwa we find any
+    We allow anything tatizo the excluded characters, but ikiwa we find any
     ASCII other than the RFC defined printable ASCII, a NonPrintableDefect is
     added to the token's defects list.  Quoted pairs are converted to their
     unquoted values, so what ni returned ni a ptext token, kwenye this case a
@@ -1550,9 +1550,9 @@ eleza get_domain_literal(value):
         token, value = get_cfws(value)
         domain_literal.append(token)
     ikiwa sio value:
-         ashiria errors.HeaderParseError("expected domain-literal")
+        ashiria errors.HeaderParseError("expected domain-literal")
     ikiwa value[0] != '[':
-         ashiria errors.HeaderParseError("expected '[' at start of domain-literal "
+        ashiria errors.HeaderParseError("expected '[' at start of domain-literal "
                 "but found '{}'".format(value))
     value = value[1:]
     ikiwa _check_for_early_dl_end(value, domain_literal):
@@ -1571,7 +1571,7 @@ eleza get_domain_literal(value):
     ikiwa _check_for_early_dl_end(value, domain_literal):
         rudisha domain_literal, value
     ikiwa value[0] != ']':
-         ashiria errors.HeaderParseError("expected ']' at end of domain-literal "
+        ashiria errors.HeaderParseError("expected ']' at end of domain-literal "
                 "but found '{}'".format(value))
     domain_literal.append(ValueTerminal(']', 'domain-literal-end'))
     value = value[1:]
@@ -1590,7 +1590,7 @@ eleza get_domain(value):
     ikiwa value[0] kwenye CFWS_LEADER:
         leader, value = get_cfws(value)
     ikiwa sio value:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected domain but found '{}'".format(value))
     ikiwa value[0] == '[':
         token, value = get_domain_literal(value)
@@ -1600,10 +1600,10 @@ eleza get_domain(value):
         rudisha domain, value
     jaribu:
         token, value = get_dot_atom(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         token, value = get_atom(value)
     ikiwa value na value[0] == '@':
-         ashiria errors.HeaderParseError('Invalid Domain')
+        ashiria errors.HeaderParseError('Invalid Domain')
     ikiwa leader ni sio Tupu:
         token[:0] = [leader]
     domain.append(token)
@@ -1646,11 +1646,11 @@ eleza get_obs_route(value):
         ikiwa value[0] kwenye CFWS_LEADER:
             token, value = get_cfws(value)
             obs_route.append(token)
-        elikiwa value[0] == ',':
+        lasivyo value[0] == ',':
             obs_route.append(ListSeparator)
             value = value[1:]
     ikiwa sio value ama value[0] != '@':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected obs-route domain but found '{}'".format(value))
     obs_route.append(RouteComponentMarker)
     token, value = get_domain(value[1:])
@@ -1668,9 +1668,9 @@ eleza get_obs_route(value):
             token, value = get_domain(value[1:])
             obs_route.append(token)
     ikiwa sio value:
-         ashiria errors.HeaderParseError("end of header wakati parsing obs-route")
+        ashiria errors.HeaderParseError("end of header wakati parsing obs-route")
     ikiwa value[0] != ':':
-         ashiria errors.HeaderParseError( "expected ':' marking end of "
+        ashiria errors.HeaderParseError( "expected ':' marking end of "
             "obs-route but found '{}'".format(value))
     obs_route.append(ValueTerminal(':', 'end-of-obs-route-marker'))
     rudisha obs_route, value[1:]
@@ -1685,7 +1685,7 @@ eleza get_angle_addr(value):
         token, value = get_cfws(value)
         angle_addr.append(token)
     ikiwa sio value ama value[0] != '<':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected angle-addr but found '{}'".format(value))
     angle_addr.append(ValueTerminal('<', 'angle-addr-start'))
     value = value[1:]
@@ -1699,13 +1699,13 @@ eleza get_angle_addr(value):
         rudisha angle_addr, value
     jaribu:
         token, value = get_addr_spec(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
             token, value = get_obs_route(value)
             angle_addr.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete route specification kwenye angle-addr"))
-        except errors.HeaderParseError:
-             ashiria errors.HeaderParseError(
+        tatizo errors.HeaderParseError:
+            ashiria errors.HeaderParseError(
                 "expected addr-spec ama obs-route but found '{}'".format(value))
         angle_addr.append(token)
         token, value = get_addr_spec(value)
@@ -1746,15 +1746,15 @@ eleza get_name_addr(value):
     ikiwa value[0] kwenye CFWS_LEADER:
         leader, value = get_cfws(value)
         ikiwa sio value:
-             ashiria errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(leader))
     ikiwa value[0] != '<':
         ikiwa value[0] kwenye PHRASE_ENDS:
-             ashiria errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(value))
         token, value = get_display_name(value)
         ikiwa sio value:
-             ashiria errors.HeaderParseError(
+            ashiria errors.HeaderParseError(
                 "expected name-addr but found '{}'".format(token))
         ikiwa leader ni sio Tupu:
             token[0][:0] = [leader]
@@ -1775,11 +1775,11 @@ eleza get_mailbox(value):
     mailbox = Mailbox()
     jaribu:
         token, value = get_name_addr(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
             token, value = get_addr_spec(value)
-        except errors.HeaderParseError:
-             ashiria errors.HeaderParseError(
+        tatizo errors.HeaderParseError:
+            ashiria errors.HeaderParseError(
                 "expected mailbox but found '{}'".format(value))
     ikiwa any(isinstance(x, errors.InvalidHeaderDefect)
                        kila x kwenye token.all_defects):
@@ -1795,7 +1795,7 @@ eleza get_invalid_mailbox(value, endchars):
 
     """
     invalid_mailbox = InvalidMailbox()
-    wakati value na value[0] sio kwenye endchars:
+    wakati value na value[0] haiko kwenye endchars:
         ikiwa value[0] kwenye PHRASE_ENDS:
             invalid_mailbox.append(ValueTerminal(value[0],
                                                  'misplaced-special'))
@@ -1822,7 +1822,7 @@ eleza get_mailbox_list(value):
         jaribu:
             token, value = get_mailbox(value)
             mailbox_list.append(token)
-        except errors.HeaderParseError:
+        tatizo errors.HeaderParseError:
             leader = Tupu
             ikiwa value[0] kwenye CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -1837,7 +1837,7 @@ eleza get_mailbox_list(value):
                     mailbox_list.append(token)
                     mailbox_list.defects.append(errors.InvalidHeaderDefect(
                         "invalid mailbox kwenye mailbox-list"))
-            elikiwa value[0] == ',':
+            lasivyo value[0] == ',':
                 mailbox_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element kwenye mailbox-list"))
             isipokua:
@@ -1847,8 +1847,8 @@ eleza get_mailbox_list(value):
                 mailbox_list.append(token)
                 mailbox_list.defects.append(errors.InvalidHeaderDefect(
                     "invalid mailbox kwenye mailbox-list"))
-        ikiwa value na value[0] sio kwenye ',;':
-            # Crap after mailbox; treat it as an invalid mailbox.
+        ikiwa value na value[0] haiko kwenye ',;':
+            # Crap after mailbox; treat it kama an invalid mailbox.
             # The mailbox info will still be available.
             mailbox = mailbox_list[-1]
             mailbox.token_type = 'invalid-mailbox'
@@ -1906,7 +1906,7 @@ eleza get_group(value):
     group = Group()
     token, value = get_display_name(value)
     ikiwa sio value ama value[0] != ':':
-         ashiria errors.HeaderParseError("expected ':' at end of group "
+        ashiria errors.HeaderParseError("expected ':' at end of group "
             "display name but found '{}'".format(value))
     group.append(token)
     group.append(ValueTerminal(':', 'group-display-name-terminator'))
@@ -1919,8 +1919,8 @@ eleza get_group(value):
     ikiwa sio value:
         group.defects.append(errors.InvalidHeaderDefect(
             "end of header kwenye group"))
-    elikiwa value[0] != ';':
-         ashiria errors.HeaderParseError(
+    lasivyo value[0] != ';':
+        ashiria errors.HeaderParseError(
             "expected ';' at end of group but found {}".format(value))
     group.append(ValueTerminal(';', 'group-terminator'))
     value = value[1:]
@@ -1932,9 +1932,9 @@ eleza get_group(value):
 eleza get_address(value):
     """ address = mailbox / group
 
-    Note that counter-intuitively, an address can be either a single address or
+    Note that counter-intuitively, an address can be either a single address ama
     a list of addresses (a group).  This ni why the returned Address object has
-    a 'mailboxes' attribute which treats a single address as a list of length
+    a 'mailboxes' attribute which treats a single address kama a list of length
     one.  When you need to differentiate between to two cases, extract the single
     element, which ni either a mailbox ama a group token.
 
@@ -1949,11 +1949,11 @@ eleza get_address(value):
     address = Address()
     jaribu:
         token, value = get_group(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
             token, value = get_mailbox(value)
-        except errors.HeaderParseError:
-             ashiria errors.HeaderParseError(
+        tatizo errors.HeaderParseError:
+            ashiria errors.HeaderParseError(
                 "expected address but found '{}'".format(value))
     address.append(token)
     rudisha address, value
@@ -1973,7 +1973,7 @@ eleza get_address_list(value):
         jaribu:
             token, value = get_address(value)
             address_list.append(token)
-        except errors.HeaderParseError as err:
+        tatizo errors.HeaderParseError kama err:
             leader = Tupu
             ikiwa value[0] kwenye CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -1988,7 +1988,7 @@ eleza get_address_list(value):
                     address_list.append(Address([token]))
                     address_list.defects.append(errors.InvalidHeaderDefect(
                         "invalid address kwenye address-list"))
-            elikiwa value[0] == ',':
+            lasivyo value[0] == ',':
                 address_list.defects.append(errors.ObsoleteHeaderDefect(
                     "empty element kwenye address-list"))
             isipokua:
@@ -1999,7 +1999,7 @@ eleza get_address_list(value):
                 address_list.defects.append(errors.InvalidHeaderDefect(
                     "invalid address kwenye address-list"))
         ikiwa value na value[0] != ',':
-            # Crap after address; treat it as an invalid mailbox.
+            # Crap after address; treat it kama an invalid mailbox.
             # The mailbox info will still be available.
             mailbox = address_list[-1][0]
             mailbox.token_type = 'invalid-mailbox'
@@ -2018,10 +2018,10 @@ eleza get_no_fold_literal(value):
     """
     no_fold_literal = NoFoldLiteral()
     ikiwa sio value:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected no-fold-literal but found '{}'".format(value))
     ikiwa value[0] != '[':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected '[' at the start of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal('[', 'no-fold-literal-start'))
@@ -2029,7 +2029,7 @@ eleza get_no_fold_literal(value):
     token, value = get_dtext(value)
     no_fold_literal.append(token)
     ikiwa sio value ama value[0] != ']':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected ']' at the end of no-fold-literal "
             "but found '{}'".format(value))
     no_fold_literal.append(ValueTerminal(']', 'no-fold-literal-end'))
@@ -2046,21 +2046,21 @@ eleza get_msg_id(value):
         token, value = get_cfws(value)
         msg_id.append(token)
     ikiwa sio value ama value[0] != '<':
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected msg-id but found '{}'".format(value))
     msg_id.append(ValueTerminal('<', 'msg-id-start'))
     value = value[1:]
     # Parse id-left.
     jaribu:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
-            # obs-id-left ni same as local-part of add-spec.
+            # obs-id-left ni same kama local-part of add-spec.
             token, value = get_obs_local_part(value)
             msg_id.defects.append(errors.ObsoleteHeaderDefect(
                 "obsolete id-left kwenye msg-id"))
-        except errors.HeaderParseError:
-             ashiria errors.HeaderParseError(
+        tatizo errors.HeaderParseError:
+            ashiria errors.HeaderParseError(
                 "expected dot-atom-text ama obs-id-left"
                 " but found '{}'".format(value))
     msg_id.append(token)
@@ -2079,16 +2079,16 @@ eleza get_msg_id(value):
     # Parse id-right.
     jaribu:
         token, value = get_dot_atom_text(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         jaribu:
             token, value = get_no_fold_literal(value)
-        except errors.HeaderParseError as e:
+        tatizo errors.HeaderParseError kama e:
             jaribu:
                 token, value = get_domain(value)
                 msg_id.defects.append(errors.ObsoleteHeaderDefect(
                     "obsolete id-right kwenye msg-id"))
-            except errors.HeaderParseError:
-                 ashiria errors.HeaderParseError(
+            tatizo errors.HeaderParseError:
+                ashiria errors.HeaderParseError(
                     "expected dot-atom-text, no-fold-literal ama obs-id-right"
                     " but found '{}'".format(value))
     msg_id.append(token)
@@ -2110,7 +2110,7 @@ eleza parse_message_id(value):
     message_id = MessageID()
     jaribu:
         token, value = get_msg_id(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         message_id.defects.append(errors.InvalidHeaderDefect(
             "Expected msg-id but found {!r}".format(value)))
     message_id.append(token)
@@ -2120,7 +2120,7 @@ eleza parse_message_id(value):
 # XXX: As I begin to add additional header parsers, I'm realizing we probably
 # have two level of parser routines: the get_XXX methods that get a token in
 # the grammar, na parse_XXX methods that parse an entire field value.  So
-# get_address_list above should really be a parse_ method, as probably should
+# get_address_list above should really be a parse_ method, kama probably should
 # be get_unstructured.
 #
 
@@ -2142,7 +2142,7 @@ eleza parse_mime_version(value):
             mime_version.defects.append(errors.HeaderMissingRequiredValue(
                 "Expected MIME version number but found only CFWS"))
     digits = ''
-    wakati value na value[0] != '.' na value[0] sio kwenye CFWS_LEADER:
+    wakati value na value[0] != '.' na value[0] haiko kwenye CFWS_LEADER:
         digits += value[0]
         value = value[1:]
     ikiwa sio digits.isdigit():
@@ -2173,7 +2173,7 @@ eleza parse_mime_version(value):
                 "Incomplete MIME version; found only major number"))
         rudisha mime_version
     digits = ''
-    wakati value na value[0] sio kwenye CFWS_LEADER:
+    wakati value na value[0] haiko kwenye CFWS_LEADER:
         digits += value[0]
         value = value[1:]
     ikiwa sio digits.isdigit():
@@ -2221,7 +2221,7 @@ eleza get_ttext(value):
     """
     m = _non_token_end_matcher(value)
     ikiwa sio m:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected ttext but found '{}'".format(value))
     ttext = m.group()
     value = value[len(ttext):]
@@ -2232,7 +2232,7 @@ eleza get_ttext(value):
 eleza get_token(value):
     """token = [CFWS] 1*ttext [CFWS]
 
-    The RFC equivalent of ttext ni any US-ASCII chars except space, ctls, or
+    The RFC equivalent of ttext ni any US-ASCII chars tatizo space, ctls, ama
     tspecials.  We also exclude tabs even though the RFC doesn't.
 
     The RFC implies the CFWS but ni sio explicit about it kwenye the BNF.
@@ -2243,7 +2243,7 @@ eleza get_token(value):
         token, value = get_cfws(value)
         mtoken.append(token)
     ikiwa value na value[0] kwenye TOKEN_ENDS:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_ttext(value)
     mtoken.append(token)
@@ -2263,7 +2263,7 @@ eleza get_attrtext(value):
     """
     m = _non_attribute_end_matcher(value)
     ikiwa sio m:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2274,10 +2274,10 @@ eleza get_attrtext(value):
 eleza get_attribute(value):
     """ [CFWS] 1*attrtext [CFWS]
 
-    This version of the BNF makes the CFWS explicit, na as usual we use a
+    This version of the BNF makes the CFWS explicit, na kama usual we use a
     value terminal kila the actual run of characters.  The RFC equivalent of
     attrtext ni the token characters, ukijumuisha the subtraction of '*', "'", na '%'.
-    We include tab kwenye the excluded set just as we do kila token.
+    We include tab kwenye the excluded set just kama we do kila token.
 
     """
     attribute = Attribute()
@@ -2285,7 +2285,7 @@ eleza get_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     ikiwa value na value[0] kwenye ATTRIBUTE_ENDS:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_attrtext(value)
     attribute.append(token)
@@ -2298,13 +2298,13 @@ eleza get_extended_attrtext(value):
     """attrtext = 1*(any non-ATTRIBUTE_ENDS character plus '%')
 
     This ni a special parsing routine so that we get a value that
-    includes % escapes as a single string (which we decode as a single
+    includes % escapes kama a single string (which we decode kama a single
     string later).
 
     """
     m = _non_extended_attribute_end_matcher(value)
     ikiwa sio m:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected extended attrtext but found {!r}".format(value))
     attrtext = m.group()
     value = value[len(attrtext):]
@@ -2315,8 +2315,8 @@ eleza get_extended_attrtext(value):
 eleza get_extended_attribute(value):
     """ [CFWS] 1*extended_attrtext [CFWS]
 
-    This ni like the non-extended version except we allow % characters, so that
-    we can pick up an encoded value as a single string.
+    This ni like the non-extended version tatizo we allow % characters, so that
+    we can pick up an encoded value kama a single string.
 
     """
     # XXX: should we have an ExtendedAttribute TokenList?
@@ -2325,7 +2325,7 @@ eleza get_extended_attribute(value):
         token, value = get_cfws(value)
         attribute.append(token)
     ikiwa value na value[0] kwenye EXTENDED_ATTRIBUTE_ENDS:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "expected token but found '{}'".format(value))
     token, value = get_extended_attrtext(value)
     attribute.append(token)
@@ -2345,12 +2345,12 @@ eleza get_section(value):
     """
     section = Section()
     ikiwa sio value ama value[0] != '*':
-         ashiria errors.HeaderParseError("Expected section but found {}".format(
+        ashiria errors.HeaderParseError("Expected section but found {}".format(
                                         value))
     section.append(ValueTerminal('*', 'section-marker'))
     value = value[1:]
     ikiwa sio value ama sio value[0].isdigit():
-         ashiria errors.HeaderParseError("Expected section number but "
+        ashiria errors.HeaderParseError("Expected section number but "
                                       "found {}".format(value))
     digits = ''
     wakati value na value[0].isdigit():
@@ -2370,12 +2370,12 @@ eleza get_value(value):
     """
     v = Value()
     ikiwa sio value:
-         ashiria errors.HeaderParseError("Expected value but found end of string")
+        ashiria errors.HeaderParseError("Expected value but found end of string")
     leader = Tupu
     ikiwa value[0] kwenye CFWS_LEADER:
         leader, value = get_cfws(value)
     ikiwa sio value:
-         ashiria errors.HeaderParseError("Expected value but found "
+        ashiria errors.HeaderParseError("Expected value but found "
                                       "only {}".format(leader))
     ikiwa value[0] == '"':
         token, value = get_quoted_string(value)
@@ -2409,16 +2409,16 @@ eleza get_parameter(value):
             token, value = get_section(value)
             param.sectioned = Kweli
             param.append(token)
-        except errors.HeaderParseError:
-            pass
+        tatizo errors.HeaderParseError:
+            pita
         ikiwa sio value:
-             ashiria errors.HeaderParseError("Incomplete parameter")
+            ashiria errors.HeaderParseError("Incomplete parameter")
         ikiwa value[0] == '*':
             param.append(ValueTerminal('*', 'extended-parameter-marker'))
             value = value[1:]
             param.extended = Kweli
     ikiwa value[0] != '=':
-         ashiria errors.HeaderParseError("Parameter sio followed by '='")
+        ashiria errors.HeaderParseError("Parameter sio followed by '='")
     param.append(ValueTerminal('=', 'parameter-separator'))
     value = value[1:]
     leader = Tupu
@@ -2430,7 +2430,7 @@ eleza get_parameter(value):
     ikiwa param.extended na value na value[0] == '"':
         # Now kila some serious hackery to handle the common invalid case of
         # double quotes around an extended value.  We also accept (ukijumuisha defect)
-        # a value marked as encoded that isn't really.
+        # a value marked kama encoded that isn't really.
         qstring, remainder = get_quoted_string(value)
         inner_value = qstring.stripped_value
         semi_valid = Uongo
@@ -2445,7 +2445,7 @@ eleza get_parameter(value):
             jaribu:
                 token, rest = get_extended_attrtext(inner_value)
             tatizo:
-                pass
+                pita
             isipokua:
                 ikiwa sio rest:
                     semi_valid = Kweli
@@ -2462,7 +2462,7 @@ eleza get_parameter(value):
         isipokua:
             remainder = Tupu
             param.defects.append(errors.InvalidHeaderDefect(
-                "Parameter marked as extended but appears to have a "
+                "Parameter marked kama extended but appears to have a "
                 "quoted string value that ni non-encoded"))
     ikiwa value na value[0] == "'":
         token = Tupu
@@ -2477,7 +2477,7 @@ eleza get_parameter(value):
             rudisha param, value
         param.defects.append(errors.InvalidHeaderDefect(
             "Apparent initial-extended-value but attribute "
-            "was sio marked as extended ama was sio initial section"))
+            "was sio marked kama extended ama was sio initial section"))
     ikiwa sio value:
         # Assume the charset/lang ni missing na the token ni the value.
         param.defects.append(errors.InvalidHeaderDefect(
@@ -2494,7 +2494,7 @@ eleza get_parameter(value):
             appendto.append(t)
             param.charset = t.value
         ikiwa value[0] != "'":
-             ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+            ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                           "delimiter, but found {!r}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
@@ -2503,17 +2503,17 @@ eleza get_parameter(value):
             appendto.append(token)
             param.lang = token.value
             ikiwa sio value ama value[0] != "'":
-                 ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
+                ashiria errors.HeaderParseError("Expected RFC2231 char/lang encoding "
                                   "delimiter, but found {}".format(value))
         appendto.append(ValueTerminal("'", 'RFC2231-delimiter'))
         value = value[1:]
     ikiwa remainder ni sio Tupu:
-        # Treat the rest of value as bare quoted string content.
+        # Treat the rest of value kama bare quoted string content.
         v = Value()
         wakati value:
             ikiwa value[0] kwenye WSP:
                 token, value = get_fws(value)
-            elikiwa value[0] == '"':
+            lasivyo value[0] == '"':
                 token = ValueTerminal('"', 'DQUOTE')
                 value = value[1:]
             isipokua:
@@ -2534,7 +2534,7 @@ eleza parse_mime_parameters(value):
     That BNF ni meant to indicate this routine should only be called after
     finding na handling the leading ';'.  There ni no corresponding rule in
     the formal RFC grammar, but it ni more convenient kila us kila the set of
-    parameters to be treated as its own TokenList.
+    parameters to be treated kama its own TokenList.
 
     This ni 'parse' routine because it consumes the remaining value, but it
     would never be called to parse a full header.  Instead it ni called to
@@ -2546,7 +2546,7 @@ eleza parse_mime_parameters(value):
         jaribu:
             token, value = get_parameter(value)
             mime_parameters.append(token)
-        except errors.HeaderParseError as err:
+        tatizo errors.HeaderParseError kama err:
             leader = Tupu
             ikiwa value[0] kwenye CFWS_LEADER:
                 leader, value = get_cfws(value)
@@ -2611,7 +2611,7 @@ eleza parse_content_type_header(value):
         rudisha ctype
     jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content maintype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
@@ -2630,7 +2630,7 @@ eleza parse_content_type_header(value):
     value = value[1:]
     jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         ctype.defects.append(errors.InvalidHeaderDefect(
             "Expected content subtype but found {!r}".format(value)))
         _find_mime_parameters(ctype, value)
@@ -2644,7 +2644,7 @@ eleza parse_content_type_header(value):
             "Only parameters are valid after content type, but "
             "found {!r}".format(value)))
         # The RFC requires that a syntactically invalid content-type be treated
-        # as text/plain.  Perhaps we should postel this, but we should probably
+        # kama text/plain.  Perhaps we should postel this, but we should probably
         # only do that ikiwa we were checking the subtype value against IANA.
         toa ctype.maintype, ctype.subtype
         _find_mime_parameters(ctype, value)
@@ -2664,7 +2664,7 @@ eleza parse_content_disposition_header(value):
         rudisha disp_header
     jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         disp_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content disposition but found {!r}".format(value)))
         _find_mime_parameters(disp_header, value)
@@ -2695,7 +2695,7 @@ eleza parse_content_transfer_encoding_header(value):
         rudisha cte_header
     jaribu:
         token, value = get_token(value)
-    except errors.HeaderParseError:
+    tatizo errors.HeaderParseError:
         cte_header.defects.append(errors.InvalidHeaderDefect(
             "Expected content transfer encoding but found {!r}".format(value)))
     isipokua:
@@ -2722,7 +2722,7 @@ eleza parse_content_transfer_encoding_header(value):
 # following code does its best to obey the rules na handle the corner
 # cases, but you can be sure there are few bugs:)
 #
-# This folder generally canonicalizes as it goes, preferring the stringified
+# This folder generally canonicalizes kama it goes, preferring the stringified
 # version of each token.  The tokens contain information that supports the
 # folder, including which tokens can be encoded kwenye which ways.
 #
@@ -2762,7 +2762,7 @@ eleza _refold_parse_tree(parse_tree, *, policy):
         jaribu:
             tstr.encode(encoding)
             charset = encoding
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             ikiwa any(isinstance(x, errors.UndecodableBytesDefect)
                    kila x kwenye part.all_defects):
                 charset = 'unknown-8bit'
@@ -2781,7 +2781,7 @@ eleza _refold_parse_tree(parse_tree, *, policy):
                 last_ew = Tupu
                 ikiwa part.syntactic_koma:
                     encoded_part = part.fold(policy=policy)[:-len(policy.linesep)]
-                    ikiwa policy.linesep sio kwenye encoded_part:
+                    ikiwa policy.linesep haiko kwenye encoded_part:
                         # It fits on a single line
                         ikiwa len(encoded_part) > maxlen - len(lines[-1]):
                             # But sio on this one, so start a new one.
@@ -2798,7 +2798,7 @@ eleza _refold_parse_tree(parse_tree, *, policy):
                 # It's sio a Terminal, do each piece individually.
                 parts = list(part) + parts
             isipokua:
-                # It's a terminal, wrap it as an encoded word, possibly
+                # It's a terminal, wrap it kama an encoded word, possibly
                 # combining it ukijumuisha previously encoded words ikiwa allowed.
                 last_ew = _fold_as_ew(tstr, lines, maxlen, last_ew,
                                       part.ew_combine_allowed, charset)
@@ -2810,7 +2810,7 @@ eleza _refold_parse_tree(parse_tree, *, policy):
         # This part ni too long to fit.  The RFC wants us to koma at
         # "major syntactic komas", so unless we don't consider this
         # to be one, check ikiwa it will fit on the next line by itself.
-        ikiwa (part.syntactic_koma and
+        ikiwa (part.syntactic_koma na
                 len(tstr) + 1 <= maxlen):
             newline = _steal_trailing_WSP_if_exists(lines)
             ikiwa newline ama part.startswith_fws():
@@ -2841,13 +2841,13 @@ eleza _refold_parse_tree(parse_tree, *, policy):
     rudisha policy.linesep.join(lines) + policy.linesep
 
 eleza _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset):
-    """Fold string to_encode into lines as encoded word, combining ikiwa allowed.
+    """Fold string to_encode into lines kama encoded word, combining ikiwa allowed.
     Return the new value kila last_ew, ama Tupu ikiwa ew_combine_allowed ni Uongo.
 
     If there ni already an encoded word kwenye the last line of lines (indicated by
     a non-Tupu value kila last_ew) na ew_combine_allowed ni true, decode the
     existing ew, combine it ukijumuisha to_encode, na re-encode.  Otherwise, encode
-    to_encode.  In either case, split to_encode as necessary so that the
+    to_encode.  In either case, split to_encode kama necessary so that the
     encoded segments fit within maxlen.
 
     """
@@ -2877,7 +2877,7 @@ eleza _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset
     chrome_len = len(encode_as) + 7
 
     ikiwa (chrome_len + 1) >= maxlen:
-         ashiria errors.HeaderParseError(
+        ashiria errors.HeaderParseError(
             "max_line_length ni too small to fit an encoded word")
 
     wakati to_encode:
@@ -2906,7 +2906,7 @@ eleza _fold_as_ew(to_encode, lines, maxlen, last_ew, ew_combine_allowed, charset
     rudisha new_last_ew ikiwa ew_combine_allowed isipokua Tupu
 
 eleza _fold_mime_parameters(part, lines, maxlen, encoding):
-    """Fold TokenList 'part' into the 'lines' list as mime parameters.
+    """Fold TokenList 'part' into the 'lines' list kama mime parameters.
 
     Using the decoded list of parameters na values, format them according to
     the RFC rules, including using RFC2231 encoding ikiwa the value cannot be
@@ -2933,7 +2933,7 @@ eleza _fold_mime_parameters(part, lines, maxlen, encoding):
         jaribu:
             value.encode(encoding)
             encoding_required = Uongo
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             encoding_required = Kweli
             ikiwa utils._has_surrogates(value):
                 charset = 'unknown-8bit'
@@ -2949,10 +2949,10 @@ eleza _fold_mime_parameters(part, lines, maxlen, encoding):
         ikiwa len(lines[-1]) + len(tstr) + 1 < maxlen:
             lines[-1] = lines[-1] + ' ' + tstr
             endelea
-        elikiwa len(tstr) + 2 <= maxlen:
+        lasivyo len(tstr) + 2 <= maxlen:
             lines.append(' ' + tstr)
             endelea
-        # We need multiple sections.  We are allowed to mix encoded and
+        # We need multiple sections.  We are allowed to mix encoded na
         # non-encoded sections, but we aren't going to.  We'll encode them all.
         section = 0
         extra_chrome = charset + "''"

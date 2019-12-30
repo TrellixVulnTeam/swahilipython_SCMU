@@ -3,7 +3,7 @@
 # Notes kila authors of new mailbox subclasses:
 #
 # Remember to fsync() changes to disk before closing a modified file
-# ama returning kutoka a flush() method.  See functions _sync_flush() and
+# ama returning kutoka a flush() method.  See functions _sync_flush() na
 # _sync_close().
 
 agiza os
@@ -20,7 +20,7 @@ agiza io
 agiza contextlib
 jaribu:
     agiza fcntl
-except ImportError:
+tatizo ImportError:
     fcntl = Tupu
 
 __all__ = ['Mailbox', 'Maildir', 'mbox', 'MH', 'Babyl', 'MMDF',
@@ -40,11 +40,11 @@ kundi Mailbox:
 
     eleza add(self, message):
         """Add message na rudisha assigned key."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza remove(self, key):
-        """Remove the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        """Remove the keyed message; ashiria KeyError ikiwa it doesn't exist."""
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza __delitem__(self, key):
         self.remove(key)
@@ -53,50 +53,50 @@ kundi Mailbox:
         """If the keyed message exists, remove it."""
         jaribu:
             self.remove(key)
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
 
     eleza __setitem__(self, key, message):
-        """Replace the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        """Replace the keyed message; ashiria KeyError ikiwa it doesn't exist."""
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza get(self, key, default=Tupu):
         """Return the keyed message, ama default ikiwa it doesn't exist."""
         jaribu:
             rudisha self.__getitem__(key)
-        except KeyError:
+        tatizo KeyError:
             rudisha default
 
     eleza __getitem__(self, key):
-        """Return the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Return the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         ikiwa sio self._factory:
             rudisha self.get_message(key)
         isipokua:
-            ukijumuisha contextlib.closing(self.get_file(key)) as file:
+            ukijumuisha contextlib.closing(self.get_file(key)) kama file:
                 rudisha self._factory(file)
 
     eleza get_message(self, key):
-        """Return a Message representation ama  ashiria a KeyError."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        """Return a Message representation ama ashiria a KeyError."""
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza get_string(self, key):
-        """Return a string representation ama  ashiria a KeyError.
+        """Return a string representation ama ashiria a KeyError.
 
         Uses email.message.Message to create a 7bit clean string
         representation of the message."""
         rudisha email.message_from_bytes(self.get_bytes(key)).as_string()
 
     eleza get_bytes(self, key):
-        """Return a byte string representation ama  ashiria a KeyError."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        """Return a byte string representation ama ashiria a KeyError."""
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza get_file(self, key):
-        """Return a file-like representation ama  ashiria a KeyError."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        """Return a file-like representation ama ashiria a KeyError."""
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza iterkeys(self):
         """Return an iterator over keys."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza keys(self):
         """Return a list of keys."""
@@ -107,7 +107,7 @@ kundi Mailbox:
         kila key kwenye self.iterkeys():
             jaribu:
                 value = self[key]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             tuma value
 
@@ -123,7 +123,7 @@ kundi Mailbox:
         kila key kwenye self.iterkeys():
             jaribu:
                 value = self[key]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             tuma (key, value)
 
@@ -133,11 +133,11 @@ kundi Mailbox:
 
     eleza __contains__(self, key):
         """Return Kweli ikiwa the keyed message exists, Uongo otherwise."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza __len__(self):
         """Return a count of messages kwenye the mailbox."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza clear(self):
         """Delete all messages."""
@@ -148,7 +148,7 @@ kundi Mailbox:
         """Delete the keyed message na rudisha it, ama default."""
         jaribu:
             result = self[key]
-        except KeyError:
+        tatizo KeyError:
             rudisha default
         self.discard(key)
         rudisha result
@@ -158,13 +158,13 @@ kundi Mailbox:
         kila key kwenye self.iterkeys():
             rudisha (key, self.pop(key))     # This ni only run once.
         isipokua:
-             ashiria KeyError('No messages kwenye mailbox')
+            ashiria KeyError('No messages kwenye mailbox')
 
     eleza update(self, arg=Tupu):
         """Change the messages that correspond to certain keys."""
         ikiwa hasattr(arg, 'iteritems'):
             source = arg.iteritems()
-        elikiwa hasattr(arg, 'items'):
+        lasivyo hasattr(arg, 'items'):
             source = arg.items()
         isipokua:
             source = arg
@@ -172,26 +172,26 @@ kundi Mailbox:
         kila key, message kwenye source:
             jaribu:
                 self[key] = message
-            except KeyError:
+            tatizo KeyError:
                 bad_key = Kweli
         ikiwa bad_key:
-             ashiria KeyError('No message ukijumuisha key(s)')
+            ashiria KeyError('No message ukijumuisha key(s)')
 
     eleza flush(self):
         """Write any pending changes to the disk."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza lock(self):
         """Lock the mailbox."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza unlock(self):
         """Unlock the mailbox ikiwa it ni locked."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza close(self):
         """Flush na close the mailbox."""
-         ashiria NotImplementedError('Method must be implemented by subclass')
+        ashiria NotImplementedError('Method must be implemented by subclass')
 
     eleza _string_to_bytes(self, message):
         # If a message ni sio 7bit clean, we refuse to handle it since it
@@ -199,8 +199,8 @@ kundi Mailbox:
         # lies mojibake.
         jaribu:
             rudisha message.encode('ascii')
-        except UnicodeError:
-             ashiria ValueError("String input must be ASCII-only; "
+        tatizo UnicodeError:
+            ashiria ValueError("String input must be ASCII-only; "
                 "use bytes ama a Message instead")
 
     # Whether each message must end kwenye a newline
@@ -220,7 +220,7 @@ kundi Mailbox:
             ikiwa self._append_newline na sio data.endswith(linesep):
                 # Make sure the message ends ukijumuisha a newline
                 target.write(linesep)
-        elikiwa isinstance(message, (str, bytes, io.StringIO)):
+        lasivyo isinstance(message, (str, bytes, io.StringIO)):
             ikiwa isinstance(message, io.StringIO):
                 warnings.warn("Use of StringIO input ni deprecated, "
                     "use BytesIO instead", DeprecationWarning, 3)
@@ -234,7 +234,7 @@ kundi Mailbox:
             ikiwa self._append_newline na sio message.endswith(linesep):
                 # Make sure the message ends ukijumuisha a newline
                 target.write(linesep)
-        elikiwa hasattr(message, 'read'):
+        lasivyo hasattr(message, 'read'):
             ikiwa hasattr(message, 'buffer'):
                 warnings.warn("Use of text mode files ni deprecated, "
                     "use a binary mode file instead", DeprecationWarning, 3)
@@ -245,7 +245,7 @@ kundi Mailbox:
                 # Universal newline support.
                 ikiwa line.endswith(b'\r\n'):
                     line = line[:-2] + b'\n'
-                elikiwa line.endswith(b'\r'):
+                lasivyo line.endswith(b'\r'):
                     line = line[:-1] + b'\n'
                 ikiwa sio line:
                     koma
@@ -258,7 +258,7 @@ kundi Mailbox:
                 # Make sure the message ends ukijumuisha a newline
                 target.write(linesep)
         isipokua:
-             ashiria TypeError('Invalid message type: %s' % type(message))
+            ashiria TypeError('Invalid message type: %s' % type(message))
 
 
 kundi Maildir(Mailbox):
@@ -280,7 +280,7 @@ kundi Maildir(Mailbox):
                 kila path kwenye self._paths.values():
                     os.mkdir(path, 0o700)
             isipokua:
-                 ashiria NoSuchMailboxError(self._path)
+                ashiria NoSuchMailboxError(self._path)
         self._toc = {}
         self._toc_mtimes = {'cur': 0, 'new': 0}
         self._last_read = 0         # Records last time we read cur/new
@@ -291,7 +291,7 @@ kundi Maildir(Mailbox):
         tmp_file = self._create_tmp()
         jaribu:
             self._dump_message(message, tmp_file)
-        except BaseException:
+        tatizo BaseException:
             tmp_file.close()
             os.remove(tmp_file.name)
             raise
@@ -315,21 +315,21 @@ kundi Maildir(Mailbox):
         jaribu:
             jaribu:
                 os.link(tmp_file.name, dest)
-            except (AttributeError, PermissionError):
+            tatizo (AttributeError, PermissionError):
                 os.rename(tmp_file.name, dest)
             isipokua:
                 os.remove(tmp_file.name)
-        except OSError as e:
+        tatizo OSError kama e:
             os.remove(tmp_file.name)
             ikiwa e.errno == errno.EEXIST:
-                 ashiria ExternalClashError('Name clash ukijumuisha existing message: %s'
+                ashiria ExternalClashError('Name clash ukijumuisha existing message: %s'
                                          % dest)
             isipokua:
                 raise
         rudisha uniq
 
     eleza remove(self, key):
-        """Remove the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Remove the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         os.remove(os.path.join(self._path, self._lookup(key)))
 
     eleza discard(self, key):
@@ -337,11 +337,11 @@ kundi Maildir(Mailbox):
         # This overrides an inapplicable implementation kwenye the superclass.
         jaribu:
             self.remove(key)
-        except (KeyError, FileNotFoundError):
-            pass
+        tatizo (KeyError, FileNotFoundError):
+            pita
 
     eleza __setitem__(self, key, message):
-        """Replace the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Replace the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         old_subpath = self._lookup(key)
         temp_key = self.add(message)
         temp_subpath = self._lookup(temp_key)
@@ -368,9 +368,9 @@ kundi Maildir(Mailbox):
         os.rename(tmp_path, new_path)
 
     eleza get_message(self, key):
-        """Return a Message representation ama  ashiria a KeyError."""
+        """Return a Message representation ama ashiria a KeyError."""
         subpath = self._lookup(key)
-        ukijumuisha open(os.path.join(self._path, subpath), 'rb') as f:
+        ukijumuisha open(os.path.join(self._path, subpath), 'rb') kama f:
             ikiwa self._factory:
                 msg = self._factory(f)
             isipokua:
@@ -383,12 +383,12 @@ kundi Maildir(Mailbox):
         rudisha msg
 
     eleza get_bytes(self, key):
-        """Return a bytes representation ama  ashiria a KeyError."""
-        ukijumuisha open(os.path.join(self._path, self._lookup(key)), 'rb') as f:
+        """Return a bytes representation ama ashiria a KeyError."""
+        ukijumuisha open(os.path.join(self._path, self._lookup(key)), 'rb') kama f:
             rudisha f.read().replace(linesep, b'\n')
 
     eleza get_file(self, key):
-        """Return a file-like representation ama  ashiria a KeyError."""
+        """Return a file-like representation ama ashiria a KeyError."""
         f = open(os.path.join(self._path, self._lookup(key)), 'rb')
         rudisha _ProxyFile(f)
 
@@ -398,7 +398,7 @@ kundi Maildir(Mailbox):
         kila key kwenye self._toc:
             jaribu:
                 self._lookup(key)
-            except KeyError:
+            tatizo KeyError:
                 endelea
             tuma key
 
@@ -416,7 +416,7 @@ kundi Maildir(Mailbox):
         """Write any pending changes to disk."""
         # Maildir changes are always written immediately, so there's nothing
         # to do.
-        pass
+        pita
 
     eleza lock(self):
         """Lock the mailbox."""
@@ -461,11 +461,11 @@ kundi Maildir(Mailbox):
         kila entry kwenye os.listdir(os.path.join(path, 'new')) + \
                      os.listdir(os.path.join(path, 'cur')):
             ikiwa len(entry) < 1 ama entry[0] != '.':
-                 ashiria NotEmptyError('Folder contains message(s): %s' % folder)
+                ashiria NotEmptyError('Folder contains message(s): %s' % folder)
         kila entry kwenye os.listdir(path):
             ikiwa entry != 'new' na entry != 'cur' na entry != 'tmp' na \
                os.path.isdir(os.path.join(path, entry)):
-                 ashiria NotEmptyError("Folder contains subdirectory '%s': %s" %
+                ashiria NotEmptyError("Folder contains subdirectory '%s': %s" %
                                     (folder, entry))
         kila root, dirs, files kwenye os.walk(path, topdown=Uongo):
             kila entry kwenye files:
@@ -497,15 +497,15 @@ kundi Maildir(Mailbox):
         path = os.path.join(self._path, 'tmp', uniq)
         jaribu:
             os.stat(path)
-        except FileNotFoundError:
+        tatizo FileNotFoundError:
             Maildir._count += 1
             jaribu:
                 rudisha _create_carefully(path)
-            except FileExistsError:
-                pass
+            tatizo FileExistsError:
+                pita
 
         # Fall through to here ikiwa stat succeeded ama open raised EEXIST.
-         ashiria ExternalClashError('Name clash prevented file creation: %s' %
+        ashiria ExternalClashError('Name clash prevented file creation: %s' %
                                  path)
 
     eleza _refresh(self):
@@ -516,8 +516,8 @@ kundi Maildir(Mailbox):
         # most common worst case (FAT) na a 1 sec resolution typically.  This
         # results kwenye a few unnecessary re-reads when _refresh() ni called
         # multiple times kwenye that interval, but once the clock ticks over, we
-        # will only re-read as needed.  Because the filesystem might be being
-        # served by an independent system ukijumuisha its own clock, we record and
+        # will only re-read kama needed.  Because the filesystem might be being
+        # served by an independent system ukijumuisha its own clock, we record na
         # compare ukijumuisha the mtimes kutoka the filesystem.  Because the other
         # system's clock might be skewing relative to our clock, we add an
         # extra delta to our wait.  The default ni one tenth second, but ni an
@@ -545,17 +545,17 @@ kundi Maildir(Mailbox):
         self._last_read = time.time()
 
     eleza _lookup(self, key):
-        """Use TOC to rudisha subpath kila given key, ama  ashiria a KeyError."""
+        """Use TOC to rudisha subpath kila given key, ama ashiria a KeyError."""
         jaribu:
             ikiwa os.path.exists(os.path.join(self._path, self._toc[key])):
                 rudisha self._toc[key]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         self._refresh()
         jaribu:
             rudisha self._toc[key]
-        except KeyError:
-             ashiria KeyError('No message ukijumuisha key: %s' % key) kutoka Tupu
+        tatizo KeyError:
+            ashiria KeyError('No message ukijumuisha key: %s' % key) kutoka Tupu
 
     # This method ni kila backward compatibility only.
     eleza next(self):
@@ -565,9 +565,9 @@ kundi Maildir(Mailbox):
         wakati Kweli:
             jaribu:
                 rudisha self[next(self._onetime_keys)]
-            except StopIteration:
+            tatizo StopIteration:
                 rudisha Tupu
-            except KeyError:
+            tatizo KeyError:
                 endelea
 
 
@@ -579,13 +579,13 @@ kundi _singlefileMailbox(Mailbox):
         Mailbox.__init__(self, path, factory, create)
         jaribu:
             f = open(self._path, 'rb+')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
                 ikiwa create:
                     f = open(self._path, 'wb+')
                 isipokua:
-                     ashiria NoSuchMailboxError(self._path)
-            elikiwa e.errno kwenye (errno.EACCES, errno.EROFS):
+                    ashiria NoSuchMailboxError(self._path)
+            lasivyo e.errno kwenye (errno.EACCES, errno.EROFS):
                 f = open(self._path, 'rb')
             isipokua:
                 raise
@@ -608,13 +608,13 @@ kundi _singlefileMailbox(Mailbox):
         rudisha self._next_key - 1
 
     eleza remove(self, key):
-        """Remove the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Remove the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         self._lookup(key)
         toa self._toc[key]
         self._pending = Kweli
 
     eleza __setitem__(self, key, message):
-        """Replace the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Replace the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         self._lookup(key)
         self._toc[key] = self._append_message(message)
         self._pending = Kweli
@@ -666,7 +666,7 @@ kundi _singlefileMailbox(Mailbox):
         self._file.seek(0, 2)
         cur_len = self._file.tell()
         ikiwa cur_len != self._file_length:
-             ashiria ExternalClashError('Size of mailbox file changed '
+            ashiria ExternalClashError('Size of mailbox file changed '
                                      '(expected %i, found %i)' %
                                      (self._file_length, cur_len))
 
@@ -695,12 +695,12 @@ kundi _singlefileMailbox(Mailbox):
         _sync_close(new_file)
         # self._file ni about to get replaced, so no need to sync.
         self._file.close()
-        # Make sure the new file's mode ni the same as the old file's
+        # Make sure the new file's mode ni the same kama the old file's
         mode = os.stat(self._path).st_mode
         os.chmod(new_file.name, mode)
         jaribu:
             os.rename(new_file.name, self._path)
-        except FileExistsError:
+        tatizo FileExistsError:
             os.remove(self._path)
             os.rename(new_file.name, self._path)
         self._file = open(self._path, 'rb+')
@@ -734,14 +734,14 @@ kundi _singlefileMailbox(Mailbox):
                 self._file.close()  # Sync has been done by self.flush() above.
 
     eleza _lookup(self, key=Tupu):
-        """Return (start, stop) ama  ashiria KeyError."""
+        """Return (start, stop) ama ashiria KeyError."""
         ikiwa self._toc ni Tupu:
             self._generate_toc()
         ikiwa key ni sio Tupu:
             jaribu:
                 rudisha self._toc[key]
-            except KeyError:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key) kutoka Tupu
+            tatizo KeyError:
+                ashiria KeyError('No message ukijumuisha key: %s' % key) kutoka Tupu
 
     eleza _append_message(self, message):
         """Append message to mailbox na rudisha (start, stop) offsets."""
@@ -757,7 +757,7 @@ kundi _singlefileMailbox(Mailbox):
             self._pre_message_hook(self._file)
             offsets = self._install_message(message)
             self._post_message_hook(self._file)
-        except BaseException:
+        tatizo BaseException:
             self._file.truncate(before)
             raise
         self._file.flush()
@@ -772,7 +772,7 @@ kundi _mboxMMDF(_singlefileMailbox):
     _mangle_from_ = Kweli
 
     eleza get_message(self, key):
-        """Return a Message representation ama  ashiria a KeyError."""
+        """Return a Message representation ama ashiria a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         from_line = self._file.readline().replace(linesep, b'')
@@ -782,12 +782,12 @@ kundi _mboxMMDF(_singlefileMailbox):
         rudisha msg
 
     eleza get_string(self, key, from_=Uongo):
-        """Return a string representation ama  ashiria a KeyError."""
+        """Return a string representation ama ashiria a KeyError."""
         rudisha email.message_from_bytes(
             self.get_bytes(key, from_)).as_string(unixfrom=from_)
 
     eleza get_bytes(self, key, from_=Uongo):
-        """Return a string representation ama  ashiria a KeyError."""
+        """Return a string representation ama ashiria a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         ikiwa sio from_:
@@ -796,7 +796,7 @@ kundi _mboxMMDF(_singlefileMailbox):
         rudisha string.replace(linesep, b'\n')
 
     eleza get_file(self, key, from_=Uongo):
-        """Return a file-like representation ama  ashiria a KeyError."""
+        """Return a file-like representation ama ashiria a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         ikiwa sio from_:
@@ -816,10 +816,10 @@ kundi _mboxMMDF(_singlefileMailbox):
             isipokua:
                 from_line = message
                 message = b''
-        elikiwa isinstance(message, _mboxMMDFMessage):
+        lasivyo isinstance(message, _mboxMMDFMessage):
             author = message.get_from().encode('ascii')
             from_line = b'From ' + author
-        elikiwa isinstance(message, email.message.Message):
+        lasivyo isinstance(message, email.message.Message):
             from_line = message.get_unixfrom()  # May be Tupu.
             ikiwa from_line ni sio Tupu:
                 from_line = from_line.encode('ascii')
@@ -837,7 +837,7 @@ kundi mbox(_mboxMMDF):
 
     _mangle_from_ = Kweli
 
-    # All messages must end kwenye a newline character, and
+    # All messages must end kwenye a newline character, na
     # _post_message_hooks outputs an empty line between messages.
     _append_newline = Kweli
 
@@ -869,13 +869,13 @@ kundi mbox(_mboxMMDF):
                         stops.append(line_pos)
                 starts.append(line_pos)
                 last_was_empty = Uongo
-            elikiwa sio line:
+            lasivyo sio line:
                 ikiwa last_was_empty:
                     stops.append(line_pos - len(linesep))
                 isipokua:
                     stops.append(line_pos)
                 koma
-            elikiwa line == linesep:
+            lasivyo line == linesep:
                 last_was_empty = Kweli
             isipokua:
                 last_was_empty = Uongo
@@ -918,10 +918,10 @@ kundi MMDF(_mboxMMDF):
                     ikiwa line == b'\001\001\001\001' + linesep:
                         stops.append(line_pos - len(linesep))
                         koma
-                    elikiwa sio line:
+                    lasivyo sio line:
                         stops.append(line_pos)
                         koma
-            elikiwa sio line:
+            lasivyo sio line:
                 koma
         self._toc = dict(enumerate(zip(starts, stops)))
         self._next_key = len(self._toc)
@@ -941,7 +941,7 @@ kundi MH(Mailbox):
                 os.close(os.open(os.path.join(self._path, '.mh_sequences'),
                                  os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600))
             isipokua:
-                 ashiria NoSuchMailboxError(self._path)
+                ashiria NoSuchMailboxError(self._path)
         self._locked = Uongo
 
     eleza add(self, message):
@@ -960,7 +960,7 @@ kundi MH(Mailbox):
             jaribu:
                 jaribu:
                     self._dump_message(message, f)
-                except BaseException:
+                tatizo BaseException:
                     # Unlock na close so it can be deleted on Windows
                     ikiwa self._locked:
                         _unlock_file(f)
@@ -979,13 +979,13 @@ kundi MH(Mailbox):
         rudisha new_key
 
     eleza remove(self, key):
-        """Remove the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Remove the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         path = os.path.join(self._path, str(key))
         jaribu:
             f = open(path, 'rb+')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key)
+                ashiria KeyError('No message ukijumuisha key: %s' % key)
             isipokua:
                 raise
         isipokua:
@@ -993,13 +993,13 @@ kundi MH(Mailbox):
             os.remove(path)
 
     eleza __setitem__(self, key, message):
-        """Replace the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Replace the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         path = os.path.join(self._path, str(key))
         jaribu:
             f = open(path, 'rb+')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key)
+                ashiria KeyError('No message ukijumuisha key: %s' % key)
             isipokua:
                 raise
         jaribu:
@@ -1017,15 +1017,15 @@ kundi MH(Mailbox):
             _sync_close(f)
 
     eleza get_message(self, key):
-        """Return a Message representation ama  ashiria a KeyError."""
+        """Return a Message representation ama ashiria a KeyError."""
         jaribu:
             ikiwa self._locked:
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             isipokua:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key)
+                ashiria KeyError('No message ukijumuisha key: %s' % key)
             isipokua:
                 raise
         ukijumuisha f:
@@ -1042,15 +1042,15 @@ kundi MH(Mailbox):
         rudisha msg
 
     eleza get_bytes(self, key):
-        """Return a bytes representation ama  ashiria a KeyError."""
+        """Return a bytes representation ama ashiria a KeyError."""
         jaribu:
             ikiwa self._locked:
                 f = open(os.path.join(self._path, str(key)), 'rb+')
             isipokua:
                 f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key)
+                ashiria KeyError('No message ukijumuisha key: %s' % key)
             isipokua:
                 raise
         ukijumuisha f:
@@ -1063,12 +1063,12 @@ kundi MH(Mailbox):
                     _unlock_file(f)
 
     eleza get_file(self, key):
-        """Return a file-like representation ama  ashiria a KeyError."""
+        """Return a file-like representation ama ashiria a KeyError."""
         jaribu:
             f = open(os.path.join(self._path, str(key)), 'rb')
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.ENOENT:
-                 ashiria KeyError('No message ukijumuisha key: %s' % key)
+                ashiria KeyError('No message ukijumuisha key: %s' % key)
             isipokua:
                 raise
         rudisha _ProxyFile(f)
@@ -1134,16 +1134,16 @@ kundi MH(Mailbox):
         entries = os.listdir(path)
         ikiwa entries == ['.mh_sequences']:
             os.remove(os.path.join(path, '.mh_sequences'))
-        elikiwa entries == []:
-            pass
+        lasivyo entries == []:
+            pita
         isipokua:
-             ashiria NotEmptyError('Folder sio empty: %s' % self._path)
+            ashiria NotEmptyError('Folder sio empty: %s' % self._path)
         os.rmdir(path)
 
     eleza get_sequences(self):
         """Return a name-to-key-list dictionary to define each sequence."""
         results = {}
-        ukijumuisha open(os.path.join(self._path, '.mh_sequences'), 'r', encoding='ASCII') as f:
+        ukijumuisha open(os.path.join(self._path, '.mh_sequences'), 'r', encoding='ASCII') kama f:
             all_keys = set(self.keys())
             kila line kwenye f:
                 jaribu:
@@ -1159,8 +1159,8 @@ kundi MH(Mailbox):
                                          ikiwa key kwenye all_keys]
                     ikiwa len(results[name]) == 0:
                         toa results[name]
-                except ValueError:
-                     ashiria FormatError('Invalid sequence specification: %s' %
+                tatizo ValueError:
+                    ashiria FormatError('Invalid sequence specification: %s' %
                                       line.rstrip())
         rudisha results
 
@@ -1180,7 +1180,7 @@ kundi MH(Mailbox):
                         ikiwa sio completing:
                             completing = Kweli
                             f.write('-')
-                    elikiwa completing:
+                    lasivyo completing:
                         completing = Uongo
                         f.write('%s %s' % (prev, key))
                     isipokua:
@@ -1204,7 +1204,7 @@ kundi MH(Mailbox):
                 jaribu:
                     os.link(os.path.join(self._path, str(key)),
                             os.path.join(self._path, str(prev + 1)))
-                except (AttributeError, PermissionError):
+                tatizo (AttributeError, PermissionError):
                     os.rename(os.path.join(self._path, str(key)),
                               os.path.join(self._path, str(prev + 1)))
                 isipokua:
@@ -1226,10 +1226,10 @@ kundi MH(Mailbox):
         kila name, key_list kwenye all_sequences.items():
             ikiwa name kwenye pending_sequences:
                 key_list.append(key)
-            elikiwa key kwenye key_list:
+            lasivyo key kwenye key_list:
                 toa key_list[key_list.index(key)]
         kila sequence kwenye pending_sequences:
-            ikiwa sequence sio kwenye all_sequences:
+            ikiwa sequence haiko kwenye all_sequences:
                 all_sequences[sequence] = [key]
         self.set_sequences(all_sequences)
 
@@ -1253,19 +1253,19 @@ kundi Babyl(_singlefileMailbox):
         rudisha key
 
     eleza remove(self, key):
-        """Remove the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Remove the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         _singlefileMailbox.remove(self, key)
         ikiwa key kwenye self._labels:
             toa self._labels[key]
 
     eleza __setitem__(self, key, message):
-        """Replace the keyed message;  ashiria KeyError ikiwa it doesn't exist."""
+        """Replace the keyed message; ashiria KeyError ikiwa it doesn't exist."""
         _singlefileMailbox.__setitem__(self, key, message)
         ikiwa isinstance(message, BabylMessage):
             self._labels[key] = message.get_labels()
 
     eleza get_message(self, key):
-        """Return a Message representation ama  ashiria a KeyError."""
+        """Return a Message representation ama ashiria a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
@@ -1293,7 +1293,7 @@ kundi Babyl(_singlefileMailbox):
         rudisha msg
 
     eleza get_bytes(self, key):
-        """Return a string representation ama  ashiria a KeyError."""
+        """Return a string representation ama ashiria a KeyError."""
         start, stop = self._lookup(key)
         self._file.seek(start)
         self._file.readline()   # Skip b'1,' line specifying labels.
@@ -1315,7 +1315,7 @@ kundi Babyl(_singlefileMailbox):
         rudisha headers + data
 
     eleza get_file(self, key):
-        """Return a file-like representation ama  ashiria a KeyError."""
+        """Return a file-like representation ama ashiria a KeyError."""
         rudisha io.BytesIO(self.get_bytes(key).replace(b'\n', linesep))
 
     eleza get_labels(self):
@@ -1345,10 +1345,10 @@ kundi Babyl(_singlefileMailbox):
                                         kwenye self._file.readline()[1:].split(b',')
                                         ikiwa label.strip()]
                 label_lists.append(labels)
-            elikiwa line == b'\037' ama line == b'\037' + linesep:
+            lasivyo line == b'\037' ama line == b'\037' + linesep:
                 ikiwa len(stops) < len(starts):
                     stops.append(line_pos - len(linesep))
-            elikiwa sio line:
+            lasivyo sio line:
                 stops.append(line_pos - len(linesep))
                 koma
         self._toc = dict(enumerate(zip(starts, stops)))
@@ -1427,7 +1427,7 @@ kundi Babyl(_singlefileMailbox):
                 ikiwa sio buffer:
                     koma
                 self._file.write(buffer.replace(b'\n', linesep))
-        elikiwa isinstance(message, (bytes, str, io.StringIO)):
+        lasivyo isinstance(message, (bytes, str, io.StringIO)):
             ikiwa isinstance(message, io.StringIO):
                 warnings.warn("Use of StringIO input ni deprecated, "
                     "use BytesIO instead", DeprecationWarning, 3)
@@ -1443,24 +1443,24 @@ kundi Babyl(_singlefileMailbox):
             isipokua:
                 self._file.write(b'*** EOOH ***' + linesep + linesep)
                 self._file.write(message.replace(b'\n', linesep))
-        elikiwa hasattr(message, 'readline'):
+        lasivyo hasattr(message, 'readline'):
             ikiwa hasattr(message, 'buffer'):
                 warnings.warn("Use of text mode files ni deprecated, "
                     "use a binary mode file instead", DeprecationWarning, 3)
                 message = message.buffer
             original_pos = message.tell()
-            first_pass = Kweli
+            first_pita = Kweli
             wakati Kweli:
                 line = message.readline()
                 # Universal newline support.
                 ikiwa line.endswith(b'\r\n'):
                     line = line[:-2] + b'\n'
-                elikiwa line.endswith(b'\r'):
+                lasivyo line.endswith(b'\r'):
                     line = line[:-1] + b'\n'
                 self._file.write(line.replace(b'\n', linesep))
                 ikiwa line == b'\n' ama sio line:
-                    ikiwa first_pass:
-                        first_pass = Uongo
+                    ikiwa first_pita:
+                        first_pita = Uongo
                         self._file.write(b'*** EOOH ***' + linesep)
                         message.seek(original_pos)
                     isipokua:
@@ -1472,13 +1472,13 @@ kundi Babyl(_singlefileMailbox):
                 # Universal newline support.
                 ikiwa line.endswith(b'\r\n'):
                     line = line[:-2] + linesep
-                elikiwa line.endswith(b'\r'):
+                lasivyo line.endswith(b'\r'):
                     line = line[:-1] + linesep
-                elikiwa line.endswith(b'\n'):
+                lasivyo line.endswith(b'\n'):
                     line = line[:-1] + linesep
                 self._file.write(line)
         isipokua:
-             ashiria TypeError('Invalid message type: %s' % type(message))
+            ashiria TypeError('Invalid message type: %s' % type(message))
         stop = self._file.tell()
         rudisha (start, stop)
 
@@ -1492,32 +1492,32 @@ kundi Message(email.message.Message):
             self._become_message(copy.deepcopy(message))
             ikiwa isinstance(message, Message):
                 message._explain_to(self)
-        elikiwa isinstance(message, bytes):
+        lasivyo isinstance(message, bytes):
             self._become_message(email.message_from_bytes(message))
-        elikiwa isinstance(message, str):
+        lasivyo isinstance(message, str):
             self._become_message(email.message_from_string(message))
-        elikiwa isinstance(message, io.TextIOWrapper):
+        lasivyo isinstance(message, io.TextIOWrapper):
             self._become_message(email.message_from_file(message))
-        elikiwa hasattr(message, "read"):
+        lasivyo hasattr(message, "read"):
             self._become_message(email.message_from_binary_file(message))
-        elikiwa message ni Tupu:
+        lasivyo message ni Tupu:
             email.message.Message.__init__(self)
         isipokua:
-             ashiria TypeError('Invalid message type: %s' % type(message))
+            ashiria TypeError('Invalid message type: %s' % type(message))
 
     eleza _become_message(self, message):
         """Assume the non-format-specific state of message."""
         type_specific = getattr(message, '_type_specific_attributes', [])
         kila name kwenye message.__dict__:
-            ikiwa name sio kwenye type_specific:
+            ikiwa name haiko kwenye type_specific:
                 self.__dict__[name] = message.__dict__[name]
 
     eleza _explain_to(self, message):
-        """Copy format-specific state to message insofar as possible."""
+        """Copy format-specific state to message insofar kama possible."""
         ikiwa isinstance(message, Message):
             rudisha  # There's nothing format-specific to explain.
         isipokua:
-             ashiria TypeError('Cannot convert to specified type')
+            ashiria TypeError('Cannot convert to specified type')
 
 
 kundi MaildirMessage(Message):
@@ -1541,10 +1541,10 @@ kundi MaildirMessage(Message):
         ikiwa subdir == 'new' ama subdir == 'cur':
             self._subdir = subdir
         isipokua:
-             ashiria ValueError("subdir must be 'new' ama 'cur': %s" % subdir)
+            ashiria ValueError("subdir must be 'new' ama 'cur': %s" % subdir)
 
     eleza get_flags(self):
-        """Return as a string the flags that are set."""
+        """Return kama a string the flags that are set."""
         ikiwa self._info.startswith('2,'):
             rudisha self._info[2:]
         isipokua:
@@ -1571,11 +1571,11 @@ kundi MaildirMessage(Message):
         """Set delivery date of message, kwenye seconds since the epoch."""
         jaribu:
             self._date = float(date)
-        except ValueError:
-             ashiria TypeError("can't convert to float: %s" % date) kutoka Tupu
+        tatizo ValueError:
+            ashiria TypeError("can't convert to float: %s" % date) kutoka Tupu
 
     eleza get_info(self):
-        """Get the message's "info" as a string."""
+        """Get the message's "info" kama a string."""
         rudisha self._info
 
     eleza set_info(self, info):
@@ -1583,15 +1583,15 @@ kundi MaildirMessage(Message):
         ikiwa isinstance(info, str):
             self._info = info
         isipokua:
-             ashiria TypeError('info must be a string: %s' % type(info))
+            ashiria TypeError('info must be a string: %s' % type(info))
 
     eleza _explain_to(self, message):
-        """Copy Maildir-specific state to message insofar as possible."""
+        """Copy Maildir-specific state to message insofar kama possible."""
         ikiwa isinstance(message, MaildirMessage):
             message.set_flags(self.get_flags())
             message.set_subdir(self.get_subdir())
             message.set_date(self.get_date())
-        elikiwa isinstance(message, _mboxMMDFMessage):
+        lasivyo isinstance(message, _mboxMMDFMessage):
             flags = set(self.get_flags())
             ikiwa 'S' kwenye flags:
                 message.add_flag('R')
@@ -1604,17 +1604,17 @@ kundi MaildirMessage(Message):
             ikiwa 'R' kwenye flags:
                 message.add_flag('A')
             message.set_from('MAILER-DAEMON', time.gmtime(self.get_date()))
-        elikiwa isinstance(message, MHMessage):
+        lasivyo isinstance(message, MHMessage):
             flags = set(self.get_flags())
-            ikiwa 'S' sio kwenye flags:
+            ikiwa 'S' haiko kwenye flags:
                 message.add_sequence('unseen')
             ikiwa 'R' kwenye flags:
                 message.add_sequence('replied')
             ikiwa 'F' kwenye flags:
                 message.add_sequence('flagged')
-        elikiwa isinstance(message, BabylMessage):
+        lasivyo isinstance(message, BabylMessage):
             flags = set(self.get_flags())
-            ikiwa 'S' sio kwenye flags:
+            ikiwa 'S' haiko kwenye flags:
                 message.add_label('unseen')
             ikiwa 'T' kwenye flags:
                 message.add_label('deleted')
@@ -1622,10 +1622,10 @@ kundi MaildirMessage(Message):
                 message.add_label('answered')
             ikiwa 'P' kwenye flags:
                 message.add_label('forwarded')
-        elikiwa isinstance(message, Message):
-            pass
+        lasivyo isinstance(message, Message):
+            pita
         isipokua:
-             ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1656,7 +1656,7 @@ kundi _mboxMMDFMessage(Message):
         self._kutoka = from_
 
     eleza get_flags(self):
-        """Return as a string the flags that are set."""
+        """Return kama a string the flags that are set."""
         rudisha self.get('Status', '') + self.get('X-Status', '')
 
     eleza set_flags(self, flags):
@@ -1674,11 +1674,11 @@ kundi _mboxMMDFMessage(Message):
         xstatus_flags += ''.join(sorted(flags))
         jaribu:
             self.replace_header('Status', status_flags)
-        except KeyError:
+        tatizo KeyError:
             self.add_header('Status', status_flags)
         jaribu:
             self.replace_header('X-Status', xstatus_flags)
-        except KeyError:
+        tatizo KeyError:
             self.add_header('X-Status', xstatus_flags)
 
     eleza add_flag(self, flag):
@@ -1691,7 +1691,7 @@ kundi _mboxMMDFMessage(Message):
             self.set_flags(''.join(set(self.get_flags()) - set(flag)))
 
     eleza _explain_to(self, message):
-        """Copy mbox- ama MMDF-specific state to message insofar as possible."""
+        """Copy mbox- ama MMDF-specific state to message insofar kama possible."""
         ikiwa isinstance(message, MaildirMessage):
             flags = set(self.get_flags())
             ikiwa 'O' kwenye flags:
@@ -1710,14 +1710,14 @@ kundi _mboxMMDFMessage(Message):
             jaribu:
                 message.set_date(calendar.timegm(time.strptime(maybe_date,
                                                       '%a %b %d %H:%M:%S %Y')))
-            except (ValueError, OverflowError):
-                pass
-        elikiwa isinstance(message, _mboxMMDFMessage):
+            tatizo (ValueError, OverflowError):
+                pita
+        lasivyo isinstance(message, _mboxMMDFMessage):
             message.set_flags(self.get_flags())
             message.set_from(self.get_from())
-        elikiwa isinstance(message, MHMessage):
+        lasivyo isinstance(message, MHMessage):
             flags = set(self.get_flags())
-            ikiwa 'R' sio kwenye flags:
+            ikiwa 'R' haiko kwenye flags:
                 message.add_sequence('unseen')
             ikiwa 'A' kwenye flags:
                 message.add_sequence('replied')
@@ -1725,9 +1725,9 @@ kundi _mboxMMDFMessage(Message):
                 message.add_sequence('flagged')
             toa message['status']
             toa message['x-status']
-        elikiwa isinstance(message, BabylMessage):
+        lasivyo isinstance(message, BabylMessage):
             flags = set(self.get_flags())
-            ikiwa 'R' sio kwenye flags:
+            ikiwa 'R' haiko kwenye flags:
                 message.add_label('unseen')
             ikiwa 'D' kwenye flags:
                 message.add_label('deleted')
@@ -1735,10 +1735,10 @@ kundi _mboxMMDFMessage(Message):
                 message.add_label('answered')
             toa message['status']
             toa message['x-status']
-        elikiwa isinstance(message, Message):
-            pass
+        lasivyo isinstance(message, Message):
+            pita
         isipokua:
-             ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1770,17 +1770,17 @@ kundi MHMessage(Message):
             ikiwa sio sequence kwenye self._sequences:
                 self._sequences.append(sequence)
         isipokua:
-             ashiria TypeError('sequence type must be str: %s' % type(sequence))
+            ashiria TypeError('sequence type must be str: %s' % type(sequence))
 
     eleza remove_sequence(self, sequence):
         """Remove sequence kutoka the list of sequences including the message."""
         jaribu:
             self._sequences.remove(sequence)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
     eleza _explain_to(self, message):
-        """Copy MH-specific state to message insofar as possible."""
+        """Copy MH-specific state to message insofar kama possible."""
         ikiwa isinstance(message, MaildirMessage):
             sequences = set(self.get_sequences())
             ikiwa 'unseen' kwenye sequences:
@@ -1792,9 +1792,9 @@ kundi MHMessage(Message):
                 message.add_flag('F')
             ikiwa 'replied' kwenye sequences:
                 message.add_flag('R')
-        elikiwa isinstance(message, _mboxMMDFMessage):
+        lasivyo isinstance(message, _mboxMMDFMessage):
             sequences = set(self.get_sequences())
-            ikiwa 'unseen' sio kwenye sequences:
+            ikiwa 'unseen' haiko kwenye sequences:
                 message.add_flag('RO')
             isipokua:
                 message.add_flag('O')
@@ -1802,19 +1802,19 @@ kundi MHMessage(Message):
                 message.add_flag('F')
             ikiwa 'replied' kwenye sequences:
                 message.add_flag('A')
-        elikiwa isinstance(message, MHMessage):
+        lasivyo isinstance(message, MHMessage):
             kila sequence kwenye self.get_sequences():
                 message.add_sequence(sequence)
-        elikiwa isinstance(message, BabylMessage):
+        lasivyo isinstance(message, BabylMessage):
             sequences = set(self.get_sequences())
             ikiwa 'unseen' kwenye sequences:
                 message.add_label('unseen')
             ikiwa 'replied' kwenye sequences:
                 message.add_label('answered')
-        elikiwa isinstance(message, Message):
-            pass
+        lasivyo isinstance(message, Message):
+            pita
         isipokua:
-             ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -1840,17 +1840,17 @@ kundi BabylMessage(Message):
     eleza add_label(self, label):
         """Add label to list of labels on the message."""
         ikiwa isinstance(label, str):
-            ikiwa label sio kwenye self._labels:
+            ikiwa label haiko kwenye self._labels:
                 self._labels.append(label)
         isipokua:
-             ashiria TypeError('label must be a string: %s' % type(label))
+            ashiria TypeError('label must be a string: %s' % type(label))
 
     eleza remove_label(self, label):
         """Remove label kutoka the list of labels on the message."""
         jaribu:
             self._labels.remove(label)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
     eleza get_visible(self):
         """Return a Message representation of visible headers."""
@@ -1868,11 +1868,11 @@ kundi BabylMessage(Message):
             isipokua:
                 toa self._visible[header]
         kila header kwenye ('Date', 'From', 'Reply-To', 'To', 'CC', 'Subject'):
-            ikiwa header kwenye self na header sio kwenye self._visible:
+            ikiwa header kwenye self na header haiko kwenye self._visible:
                 self._visible[header] = self[header]
 
     eleza _explain_to(self, message):
-        """Copy Babyl-specific state to message insofar as possible."""
+        """Copy Babyl-specific state to message insofar kama possible."""
         ikiwa isinstance(message, MaildirMessage):
             labels = set(self.get_labels())
             ikiwa 'unseen' kwenye labels:
@@ -1886,9 +1886,9 @@ kundi BabylMessage(Message):
                 message.add_flag('R')
             ikiwa 'deleted' kwenye labels:
                 message.add_flag('T')
-        elikiwa isinstance(message, _mboxMMDFMessage):
+        lasivyo isinstance(message, _mboxMMDFMessage):
             labels = set(self.get_labels())
-            ikiwa 'unseen' sio kwenye labels:
+            ikiwa 'unseen' haiko kwenye labels:
                 message.add_flag('RO')
             isipokua:
                 message.add_flag('O')
@@ -1896,20 +1896,20 @@ kundi BabylMessage(Message):
                 message.add_flag('D')
             ikiwa 'answered' kwenye labels:
                 message.add_flag('A')
-        elikiwa isinstance(message, MHMessage):
+        lasivyo isinstance(message, MHMessage):
             labels = set(self.get_labels())
             ikiwa 'unseen' kwenye labels:
                 message.add_sequence('unseen')
             ikiwa 'answered' kwenye labels:
                 message.add_sequence('replied')
-        elikiwa isinstance(message, BabylMessage):
+        lasivyo isinstance(message, BabylMessage):
             message.set_visible(self.get_visible())
             kila label kwenye self.get_labels():
                 message.add_label(label)
-        elikiwa isinstance(message, Message):
-            pass
+        lasivyo isinstance(message, Message):
+            pita
         isipokua:
-             ashiria TypeError('Cannot convert to specified type: %s' %
+            ashiria TypeError('Cannot convert to specified type: %s' %
                             type(message))
 
 
@@ -2034,7 +2034,7 @@ kundi _PartialFile(_ProxyFile):
         ikiwa whence == 0:
             self._pos = self._start
             whence = 1
-        elikiwa whence == 2:
+        lasivyo whence == 2:
             self._pos = self._stop
             whence = 1
         _ProxyFile.seek(self, offset, whence)
@@ -2062,9 +2062,9 @@ eleza _lock_file(f, dotlock=Kweli):
         ikiwa fcntl:
             jaribu:
                 fcntl.lockf(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno kwenye (errno.EAGAIN, errno.EACCES, errno.EROFS):
-                     ashiria ExternalClashError('lockf: lock unavailable: %s' %
+                    ashiria ExternalClashError('lockf: lock unavailable: %s' %
                                              f.name)
                 isipokua:
                     raise
@@ -2072,7 +2072,7 @@ eleza _lock_file(f, dotlock=Kweli):
             jaribu:
                 pre_lock = _create_temporary(f.name + '.lock')
                 pre_lock.close()
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno kwenye (errno.EACCES, errno.EROFS):
                     rudisha  # Without write access, just skip dotlocking.
                 isipokua:
@@ -2081,14 +2081,14 @@ eleza _lock_file(f, dotlock=Kweli):
                 jaribu:
                     os.link(pre_lock.name, f.name + '.lock')
                     dotlock_done = Kweli
-                except (AttributeError, PermissionError):
+                tatizo (AttributeError, PermissionError):
                     os.rename(pre_lock.name, f.name + '.lock')
                     dotlock_done = Kweli
                 isipokua:
                     os.unlink(pre_lock.name)
-            except FileExistsError:
+            tatizo FileExistsError:
                 os.remove(pre_lock.name)
-                 ashiria ExternalClashError('dot lock unavailable: %s' %
+                ashiria ExternalClashError('dot lock unavailable: %s' %
                                          f.name)
     tatizo:
         ikiwa fcntl:

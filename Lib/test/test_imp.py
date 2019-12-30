@@ -18,7 +18,7 @@ eleza requires_load_dynamic(meth):
     """Decorator to skip a test ikiwa sio running under CPython ama lacking
     imp.load_dynamic()."""
     meth = support.cpython_only(meth)
-    rudisha unittest.skipIf(not hasattr(imp, 'load_dynamic'),
+    rudisha unittest.skipIf(sio hasattr(imp, 'load_dynamic'),
                            'imp.load_dynamic() required')(meth)
 
 
@@ -50,10 +50,10 @@ kundi LockTests(unittest.TestCase):
         ikiwa sio lock_held_at_start:
             jaribu:
                 imp.release_lock()
-            except RuntimeError:
-                pass
+            tatizo RuntimeError:
+                pita
             isipokua:
-                self.fail("release_lock() without lock should  ashiria "
+                self.fail("release_lock() without lock should ashiria "
                             "RuntimeError")
 
 kundi ImportTests(unittest.TestCase):
@@ -70,7 +70,7 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_find_module_encoding(self):
         kila mod, encoding, _ kwenye self.test_strings:
-            ukijumuisha imp.find_module('module_' + mod, self.test_path)[0] as fd:
+            ukijumuisha imp.find_module('module_' + mod, self.test_path)[0] kama fd:
                 self.assertEqual(fd.encoding, encoding)
 
         path = [os.path.dirname(__file__)]
@@ -100,7 +100,7 @@ kundi ImportTests(unittest.TestCase):
         temp_mod_name = 'test_imp_helper'
         sys.path.insert(0, '.')
         jaribu:
-            ukijumuisha open(temp_mod_name + '.py', 'w') as file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
                 file.write("# coding: cp1252\nu = 'test.test_imp'\n")
             file, filename, info = imp.find_module(temp_mod_name)
             file.close()
@@ -145,17 +145,17 @@ kundi ImportTests(unittest.TestCase):
             special_char = known_locales.get(fs_encoding)
 
         ikiwa sio special_char:
-            self.skipTest("can't run this test ukijumuisha %s as filesystem encoding"
+            self.skipTest("can't run this test ukijumuisha %s kama filesystem encoding"
                           % fs_encoding)
         decoded_char = special_char.decode(fs_encoding)
         temp_mod_name = 'test_imp_helper_' + decoded_char
         test_package_name = 'test_imp_helper_package_' + decoded_char
         init_file_name = os.path.join(test_package_name, '__init__.py')
         jaribu:
-            # ikiwa the curdir ni sio kwenye sys.path the test fails when run with
+            # ikiwa the curdir ni haiko kwenye sys.path the test fails when run with
             # ./python ./Lib/test/regrtest.py test_imp
             sys.path.insert(0, os.curdir)
-            ukijumuisha open(temp_mod_name + '.py', 'w') as file:
+            ukijumuisha open(temp_mod_name + '.py', 'w') kama file:
                 file.write('a = 1\n')
             file, filename, info = imp.find_module(temp_mod_name)
             ukijumuisha file:
@@ -183,7 +183,7 @@ kundi ImportTests(unittest.TestCase):
 
             ikiwa sio os.path.exists(test_package_name):
                 os.mkdir(test_package_name)
-            ukijumuisha open(init_file_name, 'w') as file:
+            ukijumuisha open(init_file_name, 'w') kama file:
                 file.write('b = 2\n')
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore')
@@ -255,7 +255,7 @@ kundi ImportTests(unittest.TestCase):
         # attributes on agiza failures of extensions on Windows.
         path = 'bogus file path'
         name = 'extension'
-        ukijumuisha self.assertRaises(ImportError) as err:
+        ukijumuisha self.assertRaises(ImportError) kama err:
             imp.load_dynamic(name, path)
         self.assertIn(path, err.exception.path)
         self.assertEqual(name, err.exception.name)
@@ -278,8 +278,8 @@ kundi ImportTests(unittest.TestCase):
         name = 'test.imp_dummy'
         jaribu:
             toa sys.modules[name]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         jaribu:
             module = importlib.import_module(name)
             spec = importlib.util.find_spec('_testmultiphase')
@@ -293,8 +293,8 @@ kundi ImportTests(unittest.TestCase):
         mwishowe:
             jaribu:
                 toa sys.modules[name]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
 
     @unittest.skipIf(sys.dont_write_bytecode,
         "test meaningful only when writing bytecode")
@@ -334,7 +334,7 @@ kundi ImportTests(unittest.TestCase):
 
     eleza test_issue_35321(self):
         # Both _frozen_importlib na _frozen_importlib_external
-        # should have a spec origin of "frozen" and
+        # should have a spec origin of "frozen" na
         # no need to clean up imports kwenye this case.
 
         agiza _frozen_importlib_external
@@ -365,7 +365,7 @@ kundi ImportTests(unittest.TestCase):
     eleza test_find_and_load_checked_pyc(self):
         # issue 34056
         ukijumuisha support.temp_cwd():
-            ukijumuisha open('mymod.py', 'wb') as fp:
+            ukijumuisha open('mymod.py', 'wb') kama fp:
                 fp.write(b'x = 42\n')
             py_compile.compile(
                 'mymod.py',

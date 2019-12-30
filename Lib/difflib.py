@@ -30,8 +30,8 @@ __all__ = ['get_close_matches', 'ndiff', 'restore', 'SequenceMatcher',
            'Differ','IS_CHARACTER_JUNK', 'IS_LINE_JUNK', 'context_diff',
            'unified_diff', 'diff_bytes', 'HtmlDiff', 'Match']
 
-kutoka heapq agiza nlargest as _nlargest
-kutoka collections agiza namedtuple as _namedtuple
+kutoka heapq agiza nlargest kama _nlargest
+kutoka collections agiza namedtuple kama _namedtuple
 
 Match = _namedtuple('Match', 'a b size')
 
@@ -44,7 +44,7 @@ kundi SequenceMatcher:
 
     """
     SequenceMatcher ni a flexible kundi kila comparing pairs of sequences of
-    any type, so long as the sequence elements are hashable.  The basic
+    any type, so long kama the sequence elements are hashable.  The basic
     algorithm predates, na ni a little fancier than, an algorithm
     published kwenye the late 1980's by Ratcliff na Obershelp under the
     hyperbolic name "gestalt pattern matching".  The basic idea ni to find
@@ -153,10 +153,10 @@ kundi SequenceMatcher:
 
         Optional arg isjunk ni Tupu (the default), ama a one-argument
         function that takes a sequence element na returns true iff the
-        element ni junk.  Tupu ni equivalent to passing "lambda x: 0", i.e.
-        no elements are considered to be junk.  For example, pass
+        element ni junk.  Tupu ni equivalent to pitaing "lambda x: 0", i.e.
+        no elements are considered to be junk.  For example, pita
             lambda x: x kwenye " \\t"
-        ikiwa you're comparing lines as sequences of characters, na don't
+        ikiwa you're comparing lines kama sequences of characters, na don't
         want to synch up on blanks ama hard tabs.
 
         Optional arg a ni the first of two sequences to be compared.  By
@@ -168,7 +168,7 @@ kundi SequenceMatcher:
         also .set_seqs() na .set_seq2().
 
         Optional arg autojunk should be set to Uongo to disable the
-        "automatic junk heuristic" that treats popular elements as junk
+        "automatic junk heuristic" that treats popular elements kama junk
         (see module documentation kila more information).
         """
 
@@ -176,7 +176,7 @@ kundi SequenceMatcher:
         # a
         #      first sequence
         # b
-        #      second sequence; differences are computed as "what do
+        #      second sequence; differences are computed kama "what do
         #      we need to do to 'a' to change it into 'b'?"
         # b2j
         #      kila x kwenye b, b2j[x] ni a list of the indices (into b)
@@ -197,7 +197,7 @@ kundi SequenceMatcher:
         #          'insert'    b[j1:j2] should be inserted
         #          'equal'     a[i1:i2] == b[j1:j2]
         # isjunk
-        #      a user-supplied function taking a sequence element and
+        #      a user-supplied function taking a sequence element na
         #      returning true iff the element ni "junk" -- this has
         #      subtle but helpful effects on the algorithm, which I'll
         #      get around to writing up someday <0.9 wink>.
@@ -205,7 +205,7 @@ kundi SequenceMatcher:
         # bjunk
         #      the items kwenye b kila which isjunk ni Kweli.
         # bpopular
-        #      nonjunk items kwenye b treated as junk by the heuristic (ikiwa used).
+        #      nonjunk items kwenye b treated kama junk by the heuristic (ikiwa used).
 
         self.isjunk = isjunk
         self.a = self.b = Tupu
@@ -285,9 +285,9 @@ kundi SequenceMatcher:
     # map at all, which stops the central find_longest_match method
     # kutoka starting any matching block at a junk element ...
     # b2j also does sio contain entries kila "popular" elements, meaning
-    # elements that account kila more than 1 + 1% of the total elements, and
+    # elements that account kila more than 1 + 1% of the total elements, na
     # when the sequence ni reasonably large (>= 200 elements); this can
-    # be viewed as an adaptive notion of semi-junk, na yields an enormous
+    # be viewed kama an adaptive notion of semi-junk, na tumas an enormous
     # speedup when, e.g., comparing program files ukijumuisha hundreds of
     # instances of "rudisha NULL;" ...
     # note that this ni only called when b changes; so kila cross-product
@@ -295,7 +295,7 @@ kundi SequenceMatcher:
     # repeatedly
 
     eleza __chain_b(self):
-        # Because isjunk ni a user-defined (not C) function, na we test
+        # Because isjunk ni a user-defined (sio C) function, na we test
         # kila junk a LOT, it's important to minimize the number of calls.
         # Before the tricks described here, __chain_b was by far the most
         # time-consuming routine kwenye the whole module!  If anyone sees
@@ -330,7 +330,7 @@ kundi SequenceMatcher:
             kila elt, idxs kwenye b2j.items():
                 ikiwa len(idxs) > ntest:
                     popular.add(elt)
-            kila elt kwenye popular: # ditto; as fast kila 1% deletion
+            kila elt kwenye popular: # ditto; kama fast kila 1% deletion
                 toa b2j[elt]
 
     eleza find_longest_match(self, alo, ahi, blo, bhi):
@@ -355,13 +355,13 @@ kundi SequenceMatcher:
         Match(a=0, b=4, size=5)
 
         If isjunk ni defined, first the longest matching block is
-        determined as above, but ukijumuisha the additional restriction that no
+        determined kama above, but ukijumuisha the additional restriction that no
         junk element appears kwenye the block.  Then that block ni extended as
-        far as possible by matching (only) junk elements on both sides.  So
-        the resulting block never matches on junk except as identical junk
+        far kama possible by matching (only) junk elements on both sides.  So
+        the resulting block never matches on junk tatizo kama identical junk
         happens to be adjacent to an "interesting" match.
 
-        Here's the same example as before, but considering blanks to be
+        Here's the same example kama before, but considering blanks to be
         junk.  That prevents " abcd" kutoka matching the " abcd" at the tail
         end of the second sequence directly.  Instead only the "abcd" can
         match, na matches the leftmost "abcd" kwenye the second sequence:
@@ -386,7 +386,7 @@ kundi SequenceMatcher:
         # strip, so ends up claiming that ab ni changed to acab by
         # inserting "ca" kwenye the middle.  That's minimal but unintuitive:
         # "it's obvious" that someone inserted "ac" at the front.
-        # Windiff ends up at the same place as diff, but by pairing up
+        # Windiff ends up at the same place kama diff, but by pairing up
         # the unique 'b's na then matching the first two 'a's.
 
         a, b, b2j, isbjunk = self.a, self.b, self.b2j, self.bjunk.__contains__
@@ -426,7 +426,7 @@ kundi SequenceMatcher:
             bestsize += 1
 
         # Now that we have a wholly interesting match (albeit possibly
-        # empty!), we may as well suck up the matching junk on each
+        # empty!), we may kama well suck up the matching junk on each
         # side of it too.  Can't think of a good reason sio to, na it
         # saves post-processing the (possibly considerable) expense of
         # figuring out what to do ukijumuisha it.  In the case of an empty
@@ -449,8 +449,8 @@ kundi SequenceMatcher:
         Each triple ni of the form (i, j, n), na means that
         a[i:i+n] == b[j:j+n].  The triples are monotonically increasing in
         i na kwenye j.  New kwenye Python 2.5, it's also guaranteed that if
-        (i, j, n) na (i', j', n') are adjacent triples kwenye the list, and
-        the second ni sio the last triple kwenye the list, then i+n != i' or
+        (i, j, n) na (i', j', n') are adjacent triples kwenye the list, na
+        the second ni sio the last triple kwenye the list, then i+n != i' ama
         j+n != j'.  IOW, adjacent triples never describe adjacent equal
         blocks.
 
@@ -466,7 +466,7 @@ kundi SequenceMatcher:
             rudisha self.matching_blocks
         la, lb = len(self.a), len(self.b)
 
-        # This ni most naturally expressed as a recursive algorithm, but
+        # This ni most naturally expressed kama a recursive algorithm, but
         # at least one user bumped into extreme use cases that exceeded
         # the recursion limit on their box.  So, now we maintain a list
         # ('queue`) of blocks we still need to look at, na append partial
@@ -478,7 +478,7 @@ kundi SequenceMatcher:
             alo, ahi, blo, bhi = queue.pop()
             i, j, k = x = self.find_longest_match(alo, ahi, blo, bhi)
             # a[alo:i] vs b[blo:j] unknown
-            # a[i:i+k] same as b[j:j+k]
+            # a[i:i+k] same kama b[j:j+k]
             # a[i+k:ahi] vs b[j+k:bhi] unknown
             ikiwa k:   # ikiwa k ni 0, there was no matching block
                 matching_blocks.append(x)
@@ -556,9 +556,9 @@ kundi SequenceMatcher:
             tag = ''
             ikiwa i < ai na j < bj:
                 tag = 'replace'
-            elikiwa i < ai:
+            lasivyo i < ai:
                 tag = 'delete'
-            elikiwa j < bj:
+            lasivyo j < bj:
                 tag = 'insert'
             ikiwa tag:
                 answer.append( (tag, i, ai, j, bj) )
@@ -573,7 +573,7 @@ kundi SequenceMatcher:
         """ Isolate change clusters by eliminating ranges ukijumuisha no changes.
 
         Return a generator of groups ukijumuisha up to n lines of context.
-        Each group ni kwenye the same format as returned by get_opcodes().
+        Each group ni kwenye the same format kama returned by get_opcodes().
 
         >>> kutoka pprint agiza pprint
         >>> a = list(map(str, range(1,40)))
@@ -622,7 +622,7 @@ kundi SequenceMatcher:
     eleza ratio(self):
         """Return a measure of the sequences' similarity (float kwenye [0,1]).
 
-        Where T ni the total number of elements kwenye both sequences, and
+        Where T ni the total number of elements kwenye both sequences, na
         M ni the number of matches, this ni 2.0*M / T.
         Note that this ni 1 ikiwa the sequences are identical, na 0 if
         they have nothing kwenye common.
@@ -647,11 +647,11 @@ kundi SequenceMatcher:
     eleza quick_ratio(self):
         """Return an upper bound on ratio() relatively quickly.
 
-        This isn't defined beyond that it ni an upper bound on .ratio(), and
+        This isn't defined beyond that it ni an upper bound on .ratio(), na
         ni faster to compute.
         """
 
-        # viewing a na b as multisets, set matches to the cardinality
+        # viewing a na b kama multisets, set matches to the cardinality
         # of their intersection; this counts the number of matches
         # without regard to order, so ni clearly an upper bound
         ikiwa self.fullbcount ni Tupu:
@@ -676,7 +676,7 @@ kundi SequenceMatcher:
     eleza real_quick_ratio(self):
         """Return an upper bound on ratio() very quickly.
 
-        This isn't defined beyond that it ni an upper bound on .ratio(), and
+        This isn't defined beyond that it ni an upper bound on .ratio(), na
         ni faster to compute than either .ratio() ama .quick_ratio().
         """
 
@@ -705,7 +705,7 @@ eleza get_close_matches(word, possibilities, n=3, cutoff=0.6):
 
     >>> get_close_matches("appel", ["ape", "apple", "peach", "puppy"])
     ['apple', 'ape']
-    >>> agiza keyword as _keyword
+    >>> agiza keyword kama _keyword
     >>> get_close_matches("wheel", _keyword.kwlist)
     ['while']
     >>> get_close_matches("Apple", _keyword.kwlist)
@@ -715,9 +715,9 @@ eleza get_close_matches(word, possibilities, n=3, cutoff=0.6):
     """
 
     ikiwa sio n >  0:
-         ashiria ValueError("n must be > 0: %r" % (n,))
+        ashiria ValueError("n must be > 0: %r" % (n,))
     ikiwa sio 0.0 <= cutoff <= 1.0:
-         ashiria ValueError("cutoff must be kwenye [0.0, 1.0]: %r" % (cutoff,))
+        ashiria ValueError("cutoff must be kwenye [0.0, 1.0]: %r" % (cutoff,))
     result = []
     s = SequenceMatcher()
     s.set_seq2(word)
@@ -745,7 +745,7 @@ eleza _keep_original_ws(s, tag_s):
 
 kundi Differ:
     r"""
-    Differ ni a kundi kila comparing sequences of lines of text, and
+    Differ ni a kundi kila comparing sequences of lines of text, na
     producing human-readable differences ama deltas.  Differ uses
     SequenceMatcher both to compare sequences of lines, na to compare
     sequences of characters within similar (near-matching) lines.
@@ -792,7 +792,7 @@ kundi Differ:
 
     >>> d = Differ()
 
-    Note that when instantiating a Differ object we may pass functions to
+    Note that when instantiating a Differ object we may pita functions to
     filter out line na character 'junk'.  See Differ.__init__ kila details.
 
     Finally, we compare the two:
@@ -801,7 +801,7 @@ kundi Differ:
 
     'result' ni a list of strings, so let's pretty-print it:
 
-    >>> kutoka pprint agiza pprint as _pprint
+    >>> kutoka pprint agiza pprint kama _pprint
     >>> _pandika(result)
     ['    1. Beautiful ni better than ugly.\n',
      '-   2. Explicit ni better than implicit.\n',
@@ -846,7 +846,7 @@ kundi Differ:
         - `linejunk`: A function that should accept a single string argument,
           na rudisha true iff the string ni junk. The module-level function
           `IS_LINE_JUNK` may be used to filter out lines without visible
-          characters, except kila at most one splat ('#').  It ni recommended
+          characters, tatizo kila at most one splat ('#').  It ni recommended
           to leave linejunk Tupu; the underlying SequenceMatcher kundi has
           an adaptive notion of "noise" lines that's better than any static
           definition the author has ever been able to craft.
@@ -890,14 +890,14 @@ kundi Differ:
         kila tag, alo, ahi, blo, bhi kwenye cruncher.get_opcodes():
             ikiwa tag == 'replace':
                 g = self._fancy_replace(a, alo, ahi, b, blo, bhi)
-            elikiwa tag == 'delete':
+            lasivyo tag == 'delete':
                 g = self._dump('-', a, alo, ahi)
-            elikiwa tag == 'insert':
+            lasivyo tag == 'insert':
                 g = self._dump('+', b, blo, bhi)
-            elikiwa tag == 'equal':
+            lasivyo tag == 'equal':
                 g = self._dump(' ', a, alo, ahi)
             isipokua:
-                 ashiria ValueError('unknown tag %r' % (tag,))
+                ashiria ValueError('unknown tag %r' % (tag,))
 
             tuma kutoka g
 
@@ -923,7 +923,7 @@ kundi Differ:
     eleza _fancy_replace(self, a, alo, ahi, b, blo, bhi):
         r"""
         When replacing one block of lines ukijumuisha another, search the blocks
-        kila *similar* lines; the best-matching pair (ikiwa any) ni used as a
+        kila *similar* lines; the best-matching pair (ikiwa any) ni used kama a
         synch point, na intraline difference marking ni done on the
         similar pair. Lots of work, but often worth it.
 
@@ -971,7 +971,7 @@ kundi Differ:
         ikiwa best_ratio < cutoff:
             # no non-identical "pretty close" pair
             ikiwa eqi ni Tupu:
-                # no identical pair either -- treat it as a straight replace
+                # no identical pair either -- treat it kama a straight replace
                 tuma kutoka self._plain_replace(a, alo, ahi, b, blo, bhi)
                 return
             # no close pair, but an identical pair -- synch up on that
@@ -997,15 +997,15 @@ kundi Differ:
                 ikiwa tag == 'replace':
                     atags += '^' * la
                     btags += '^' * lb
-                elikiwa tag == 'delete':
+                lasivyo tag == 'delete':
                     atags += '-' * la
-                elikiwa tag == 'insert':
+                lasivyo tag == 'insert':
                     btags += '+' * lb
-                elikiwa tag == 'equal':
+                lasivyo tag == 'equal':
                     atags += ' ' * la
                     btags += ' ' * lb
                 isipokua:
-                     ashiria ValueError('unknown tag %r' % (tag,))
+                    ashiria ValueError('unknown tag %r' % (tag,))
             tuma kutoka self._qformat(aelt, belt, atags, btags)
         isipokua:
             # the synch pair ni identical
@@ -1021,7 +1021,7 @@ kundi Differ:
                 g = self._fancy_replace(a, alo, ahi, b, blo, bhi)
             isipokua:
                 g = self._dump('-', a, alo, ahi)
-        elikiwa blo < bhi:
+        lasivyo blo < bhi:
             g = self._dump('+', b, blo, bhi)
 
         tuma kutoka g
@@ -1062,7 +1062,7 @@ kundi Differ:
 # that "e volatil" was inserted between the 't' na the 'e' kwenye "private".
 # While an accurate view, to people that's absurd.  The current version
 # looks kila matching blocks that are entirely junk-free, then extends the
-# longest one of those as far as possible but only ukijumuisha matching junk.
+# longest one of those kama far kama possible but only ukijumuisha matching junk.
 # So now "currentThread" ni matched, then extended to suck up the
 # preceding blank; then "private" ni matched, na extended to suck up the
 # following blank; then "Thread" ni matched; na finally ndiff reports
@@ -1125,7 +1125,7 @@ eleza _format_range_unified(start, stop):
 eleza unified_diff(a, b, fromfile='', tofile='', fromfiledate='',
                  tofiledate='', n=3, lineterm='\n'):
     r"""
-    Compare two sequences of lines; generate the delta as a unified diff.
+    Compare two sequences of lines; generate the delta kama a unified diff.
 
     Unified diffs are a compact way of showing line changes na a few
     lines of context.  The number of context lines ni set by 'n' which
@@ -1210,7 +1210,7 @@ eleza _format_range_context(start, stop):
 eleza context_diff(a, b, fromfile='', tofile='',
                  fromfiledate='', tofiledate='', n=3, lineterm='\n'):
     r"""
-    Compare two sequences of lines; generate the delta as a context diff.
+    Compare two sequences of lines; generate the delta kama a context diff.
 
     Context diffs are a compact way of showing line changes na a few
     lines of context.  The number of context lines ni set by 'n' which
@@ -1225,7 +1225,7 @@ eleza context_diff(a, b, fromfile='', tofile='',
     For inputs that do sio have trailing newlines, set the lineterm
     argument to "" so that the output will be uniformly newline free.
 
-    The context diff format normally has a header kila filenames and
+    The context diff format normally has a header kila filenames na
     modification times.  Any ama all of these may be specified using
     strings kila 'fromfile', 'tofile', 'fromfiledate', na 'tofiledate'.
     The modification times are normally expressed kwenye the ISO 8601 format.
@@ -1285,39 +1285,39 @@ eleza context_diff(a, b, fromfile='', tofile='',
 
 eleza _check_types(a, b, *args):
     # Checking types ni weird, but the alternative ni garbled output when
-    # someone passes mixed bytes na str to {unified,context}_diff(). E.g.
-    # without this check, passing filenames as bytes results kwenye output like
+    # someone pitaes mixed bytes na str to {unified,context}_diff(). E.g.
+    # without this check, pitaing filenames kama bytes results kwenye output like
     #   --- b'oldfile.txt'
     #   +++ b'newfile.txt'
     # because of how str.format() incorporates bytes objects.
     ikiwa a na sio isinstance(a[0], str):
-         ashiria TypeError('lines to compare must be str, sio %s (%r)' %
+        ashiria TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(a[0]).__name__, a[0]))
     ikiwa b na sio isinstance(b[0], str):
-         ashiria TypeError('lines to compare must be str, sio %s (%r)' %
+        ashiria TypeError('lines to compare must be str, sio %s (%r)' %
                         (type(b[0]).__name__, b[0]))
     kila arg kwenye args:
         ikiwa sio isinstance(arg, str):
-             ashiria TypeError('all arguments must be str, not: %r' % (arg,))
+            ashiria TypeError('all arguments must be str, not: %r' % (arg,))
 
 eleza diff_bytes(dfunc, a, b, fromfile=b'', tofile=b'',
                fromfiledate=b'', tofiledate=b'', n=3, lineterm=b'\n'):
     r"""
-    Compare `a` na `b`, two sequences of lines represented as bytes rather
+    Compare `a` na `b`, two sequences of lines represented kama bytes rather
     than str. This ni a wrapper kila `dfunc`, which ni typically either
     unified_diff() ama context_diff(). Inputs are losslessly converted to
     strings so that `dfunc` only has to worry about strings, na encoded
     back to bytes on return. This ni necessary to compare files with
-    unknown ama inconsistent encoding. All other inputs (except `n`) must be
+    unknown ama inconsistent encoding. All other inputs (tatizo `n`) must be
     bytes rather than str.
     """
     eleza decode(s):
         jaribu:
             rudisha s.decode('ascii', 'surrogateescape')
-        except AttributeError as err:
+        tatizo AttributeError kama err:
             msg = ('all arguments must be bytes, sio %s (%r)' %
                    (type(s).__name__, s))
-             ashiria TypeError(msg) kutoka err
+            ashiria TypeError(msg) kutoka err
     a = list(map(decode, a))
     b = list(map(decode, b))
     fromfile = decode(fromfile)
@@ -1337,7 +1337,7 @@ eleza ndiff(a, b, linejunk=Tupu, charjunk=IS_CHARACTER_JUNK):
     Optional keyword parameters `linejunk` na `charjunk` are kila filter
     functions, ama can be Tupu:
 
-    - linejunk: A function that should accept a single string argument and
+    - linejunk: A function that should accept a single string argument na
       rudisha true iff the string ni junk.  The default ni Tupu, na is
       recommended; the underlying SequenceMatcher kundi has an adaptive
       notion of "noise" lines.
@@ -1369,15 +1369,15 @@ eleza ndiff(a, b, linejunk=Tupu, charjunk=IS_CHARACTER_JUNK):
 
 eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
            charjunk=IS_CHARACTER_JUNK):
-    r"""Returns generator yielding marked up from/to side by side differences.
+    r"""Returns generator tumaing marked up from/to side by side differences.
 
     Arguments:
     fromlines -- list of text lines to compared to tolines
     tolines -- list of text lines to be compared to fromlines
     context -- number of context lines to display on each side of difference,
                ikiwa Tupu, all from/to text lines will be generated.
-    linejunk -- passed on to ndiff (see ndiff documentation)
-    charjunk -- passed on to ndiff (see ndiff documentation)
+    linejunk -- pitaed on to ndiff (see ndiff documentation)
+    charjunk -- pitaed on to ndiff (see ndiff documentation)
 
     This function returns an iterator which returns a tuple:
     (kutoka line tuple, to line tuple, boolean flag)
@@ -1398,8 +1398,8 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
     usage).
 
     Note, this function utilizes the ndiff function to generate the side by
-    side difference markup.  Optional ndiff arguments may be passed to this
-    function na they kwenye turn will be passed to ndiff.
+    side difference markup.  Optional ndiff arguments may be pitaed to this
+    function na they kwenye turn will be pitaed to ndiff.
     """
     agiza re
 
@@ -1424,7 +1424,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                       Tupu rudisha first line kwenye list ukijumuisha no markup
         side -- indice into the num_lines list (0=from,1=to)
         num_lines -- from/to current line number.  This ni NOT intended to be a
-                     passed parameter.  It ni present as a keyword argument to
+                     pitaed parameter.  It ni present kama a keyword argument to
                      maintain memory of the current line numbers between calls
                      of this function.
 
@@ -1461,7 +1461,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
             # insert marks that won't be noticed by an xml/html escaper.
             text = '\0' + format_key + text + '\1'
         # Return line of text, first allow user's line formatter to do its
-        # thing (such as adding the line number) then replace the special
+        # thing (such kama adding the line number) then replace the special
         # marks ukijumuisha what the user's change markup.
         rudisha (num_lines[side],text)
 
@@ -1469,10 +1469,10 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
         """Yields from/to lines of text ukijumuisha a change indication.
 
         This function ni an iterator.  It itself pulls lines kutoka a
-        differencing iterator, processes them na yields them.  When it can
-        it yields both a "from" na a "to" line, otherwise it will tuma one
-        ama the other.  In addition to yielding the lines of from/to text, a
-        boolean flag ni yielded to indicate ikiwa the text line(s) have
+        differencing iterator, processes them na tumas them.  When it can
+        it tumas both a "from" na a "to" line, otherwise it will tuma one
+        ama the other.  In addition to tumaing the lines of from/to text, a
+        boolean flag ni tumaed to indicate ikiwa the text line(s) have
         differences kwenye them.
 
         Note, this function ni purposefully sio defined at the module scope so
@@ -1491,52 +1491,52 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
             ikiwa s.startswith('X'):
                 # When no more lines, pump out any remaining blank lines so the
                 # corresponding add/delete lines get a matching blank line so
-                # all line pairs get yielded at the next level.
+                # all line pairs get tumaed at the next level.
                 num_blanks_to_tuma = num_blanks_pending
-            elikiwa s.startswith('-?+?'):
+            lasivyo s.startswith('-?+?'):
                 # simple intraline change
                 tuma _make_line(lines,'?',0), _make_line(lines,'?',1), Kweli
                 endelea
-            elikiwa s.startswith('--++'):
+            lasivyo s.startswith('--++'):
                 # kwenye delete block, add block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the delete line
                 num_blanks_pending -= 1
                 tuma _make_line(lines,'-',0), Tupu, Kweli
                 endelea
-            elikiwa s.startswith(('--?+', '--+', '- ')):
+            lasivyo s.startswith(('--?+', '--+', '- ')):
                 # kwenye delete block na see an intraline change ama unchanged line
                 # coming: tuma the delete line na then blanks
                 from_line,to_line = _make_line(lines,'-',0), Tupu
-                num_blanks_to_yield,num_blanks_pending = num_blanks_pending-1,0
-            elikiwa s.startswith('-+?'):
+                num_blanks_to_tuma,num_blanks_pending = num_blanks_pending-1,0
+            lasivyo s.startswith('-+?'):
                 # intraline change
                 tuma _make_line(lines,Tupu,0), _make_line(lines,'?',1), Kweli
                 endelea
-            elikiwa s.startswith('-?+'):
+            lasivyo s.startswith('-?+'):
                 # intraline change
                 tuma _make_line(lines,'?',0), _make_line(lines,Tupu,1), Kweli
                 endelea
-            elikiwa s.startswith('-'):
+            lasivyo s.startswith('-'):
                 # delete FROM line
                 num_blanks_pending -= 1
                 tuma _make_line(lines,'-',0), Tupu, Kweli
                 endelea
-            elikiwa s.startswith('+--'):
+            lasivyo s.startswith('+--'):
                 # kwenye add block, delete block coming: we do NOT want to get
                 # caught up on blank lines yet, just process the add line
                 num_blanks_pending += 1
                 tuma Tupu, _make_line(lines,'+',1), Kweli
                 endelea
-            elikiwa s.startswith(('+ ', '+-')):
+            lasivyo s.startswith(('+ ', '+-')):
                 # will be leaving an add block: tuma blanks then add line
                 from_line, to_line = Tupu, _make_line(lines,'+',1)
-                num_blanks_to_yield,num_blanks_pending = num_blanks_pending+1,0
-            elikiwa s.startswith('+'):
+                num_blanks_to_tuma,num_blanks_pending = num_blanks_pending+1,0
+            lasivyo s.startswith('+'):
                 # inside an add block, tuma the add line
                 num_blanks_pending += 1
                 tuma Tupu, _make_line(lines,'+',1), Kweli
                 endelea
-            elikiwa s.startswith(' '):
+            lasivyo s.startswith(' '):
                 # unchanged text, tuma it to both sides
                 tuma _make_line(lines[:],Tupu,0),_make_line(lines,Tupu,1),Uongo
                 endelea
@@ -1558,9 +1558,9 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
 
         This function ni an iterator.  It itself pulls lines kutoka the line
         iterator.  Its difference kutoka that iterator ni that this function
-        always yields a pair of from/to text lines (ukijumuisha the change
+        always tumas a pair of from/to text lines (ukijumuisha the change
         indication).  If necessary it will collect single from/to lines
-        until it has a matching pair from/to pair to yield.
+        until it has a matching pair from/to pair to tuma.
 
         Note, this function ni purposefully sio defined at the module scope so
         that data it needs kutoka its parent function (within whose context it
@@ -1573,7 +1573,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
             wakati (len(fromlines)==0 ama len(tolines)==0):
                 jaribu:
                     from_line, to_line, found_diff = next(line_iterator)
-                except StopIteration:
+                tatizo StopIteration:
                     return
                 ikiwa from_line ni sio Tupu:
                     fromlines.append((from_line,found_diff))
@@ -1584,13 +1584,13 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
             to_line, to_diff = tolines.pop(0)
             tuma (from_line,to_line,fromDiff ama to_diff)
 
-    # Handle case where user does sio want context differencing, just yield
+    # Handle case where user does sio want context differencing, just tuma
     # them up without doing anything isipokua ukijumuisha them.
     line_pair_iterator = _line_pair_iterator()
     ikiwa context ni Tupu:
         tuma kutoka line_pair_iterator
     # Handle case where user wants context differencing.  We must do some
-    # storage of lines until we know kila sure that they are to be yielded.
+    # storage of lines until we know kila sure that they are to be tumaed.
     isipokua:
         context += 1
         lines_to_write = 0
@@ -1603,12 +1603,12 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
             while(found_diff ni Uongo):
                 jaribu:
                     from_line, to_line, found_diff = next(line_pair_iterator)
-                except StopIteration:
+                tatizo StopIteration:
                     return
                 i = index % context
                 contextLines[i] = (from_line, to_line, found_diff)
                 index += 1
-            # Yield lines that we have collected so far, but first yield
+            # Yield lines that we have collected so far, but first tuma
             # the user's separator.
             ikiwa index > context:
                 tuma Tupu, Tupu, Tupu
@@ -1632,7 +1632,7 @@ eleza _mdiff(fromlines, tolines, context=Tupu, linejunk=Tupu,
                     isipokua:
                         lines_to_write -= 1
                     tuma from_line, to_line, found_diff
-            except StopIteration:
+            tatizo StopIteration:
                 # Catch exception kutoka next() na rudisha normally
                 return
 
@@ -1723,7 +1723,7 @@ kundi HtmlDiff(object):
         tabsize -- tab stop spacing, defaults to 8.
         wrapcolumn -- column number where lines are broken na wrapped,
             defaults to Tupu where lines are sio wrapped.
-        linejunk,charjunk -- keyword arguments passed into ndiff() (used by
+        linejunk,charjunk -- keyword arguments pitaed into ndiff() (used by
             HtmlDiff() to generate the side by side HTML differences).  See
             ndiff() documentation kila argument default values na descriptions.
         """
@@ -1813,7 +1813,7 @@ kundi HtmlDiff(object):
                 i += 1
                 mark = text[i]
                 i += 1
-            elikiwa text[i] == '\1':
+            lasivyo text[i] == '\1':
                 i += 1
                 mark = ''
             isipokua:
@@ -1842,7 +1842,7 @@ kundi HtmlDiff(object):
 
         # pull from/to data na flags kutoka mdiff iterator
         kila fromdata,todata,flag kwenye diffs:
-            # check kila context separators na pass them through
+            # check kila context separators na pita them through
             ikiwa flag ni Tupu:
                 tuma fromdata,todata,flag
                 endelea
@@ -1879,7 +1879,7 @@ kundi HtmlDiff(object):
                 # store HTML markup of the lines into the lists
                 fromlist.append(self._format_line(0,flag,*fromdata))
                 tolist.append(self._format_line(1,flag,*todata))
-            except TypeError:
+            tatizo TypeError:
                 # exceptions occur kila lines where context separators go
                 fromlist.append(Tupu)
                 tolist.append(Tupu)
@@ -1897,7 +1897,7 @@ kundi HtmlDiff(object):
         jaribu:
             linenum = '%d' % linenum
             id = ' id="%s%s"' % (self._prefix[side],linenum)
-        except TypeError:
+        tatizo TypeError:
             # handle blank lines where linenum ni '>' ama ''
             id = ''
         # replace those things that would get confused ukijumuisha HTML symbols
@@ -2017,7 +2017,7 @@ kundi HtmlDiff(object):
               '<td class="diff_next">%s</td>%s</tr>\n'
         kila i kwenye range(len(flaglist)):
             ikiwa flaglist[i] ni Tupu:
-                # mdiff yields Tupu on separator lines skip the bogus ones
+                # mdiff tumas Tupu on separator lines skip the bogus ones
                 # generated kila the first line
                 ikiwa i > 0:
                     s.append('        </tbody>        \n        <tbody>\n')
@@ -2070,8 +2070,8 @@ eleza restore(delta, which):
     """
     jaribu:
         tag = {1: "- ", 2: "+ "}[int(which)]
-    except KeyError:
-         ashiria ValueError('unknown delta choice (must be 1 ama 2): %r'
+    tatizo KeyError:
+        ashiria ValueError('unknown delta choice (must be 1 ama 2): %r'
                            % which) kutoka Tupu
     prefixes = ("  ", tag)
     kila line kwenye delta:

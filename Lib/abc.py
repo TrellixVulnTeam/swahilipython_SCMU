@@ -64,7 +64,7 @@ jaribu:
     kutoka _abc agiza (get_cache_token, _abc_init, _abc_register,
                       _abc_instancecheck, _abc_subclasscheck, _get_dump,
                       _reset_registry, _reset_caches)
-except ImportError:
+tatizo ImportError:
     kutoka _py_abc agiza ABCMeta, get_cache_token
     ABCMeta.__module__ = 'abc'
 isipokua:
@@ -72,9 +72,9 @@ isipokua:
         """Metakundi kila defining Abstract Base Classes (ABCs).
 
         Use this metakundi to create an ABC.  An ABC can be subclassed
-        directly, na then acts as a mix-in class.  You can also register
+        directly, na then acts kama a mix-in class.  You can also register
         unrelated concrete classes (even built-in classes) na unrelated
-        ABCs as 'virtual subclasses' -- these na their descendants will
+        ABCs kama 'virtual subclasses' -- these na their descendants will
         be considered subclasses of the registering ABC by the built-in
         issubclass() function, but the registering ABC won't show up in
         their MRO (Method Resolution Order) nor will method
@@ -89,7 +89,7 @@ isipokua:
         eleza register(cls, subclass):
             """Register a virtual subkundi of an ABC.
 
-            Returns the subclass, to allow usage as a kundi decorator.
+            Returns the subclass, to allow usage kama a kundi decorator.
             """
             rudisha _abc_register(cls, subclass)
 

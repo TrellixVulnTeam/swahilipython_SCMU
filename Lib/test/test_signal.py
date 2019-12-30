@@ -12,7 +12,7 @@ kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok, spawn_python
 jaribu:
     agiza _testcapi
-except ImportError:
+tatizo ImportError:
     _testcapi = Tupu
 
 
@@ -23,11 +23,11 @@ kundi GenericTests(unittest.TestCase):
             sig = getattr(signal, name)
             ikiwa name kwenye {'SIG_DFL', 'SIG_IGN'}:
                 self.assertIsInstance(sig, signal.Handlers)
-            elikiwa name kwenye {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
+            lasivyo name kwenye {'SIG_BLOCK', 'SIG_UNBLOCK', 'SIG_SETMASK'}:
                 self.assertIsInstance(sig, signal.Sigmasks)
-            elikiwa name.startswith('SIG') na sio name.startswith('SIG_'):
+            lasivyo name.startswith('SIG') na sio name.startswith('SIG_'):
                 self.assertIsInstance(sig, signal.Signals)
-            elikiwa name.startswith('CTRL_'):
+            lasivyo name.startswith('CTRL_'):
                 self.assertIsInstance(sig, signal.Signals)
                 self.assertEqual(sys.platform, "win32")
 
@@ -35,7 +35,7 @@ kundi GenericTests(unittest.TestCase):
 @unittest.skipIf(sys.platform == "win32", "Not valid on Windows")
 kundi PosixTests(unittest.TestCase):
     eleza trivial_signal_handler(self, *args):
-        pass
+        pita
 
     eleza test_out_of_range_signal_number_raises_error(self):
         self.assertRaises(ValueError, signal.getsignal, 4242)
@@ -131,11 +131,11 @@ kundi WindowsSignalTests(unittest.TestCase):
     eleza test_keyboard_interrupt_exit_code(self):
         """KeyboardInterrupt triggers an exit using STATUS_CONTROL_C_EXIT."""
         # We don't test via os.kill(os.getpid(), signal.CTRL_C_EVENT) here
-        # as that requires setting up a console control handler kwenye a child
+        # kama that requires setting up a console control handler kwenye a child
         # kwenye its own process group.  Doable, but quite complicated.  (see
         # @eryksun on https://github.com/python/cpython/pull/11862)
         process = subprocess.run(
-                [sys.executable, "-c", " ashiria KeyboardInterrupt"],
+                [sys.executable, "-c", "ashiria KeyboardInterrupt"],
                 stderr=subprocess.PIPE)
         self.assertIn(b"KeyboardInterrupt", process.stderr)
         STATUS_CONTROL_C_EXIT = 0xC000013A
@@ -208,7 +208,7 @@ kundi WakeupFDTests(unittest.TestCase):
 
         # fd must be non-blocking
         os.set_blocking(wfd, Kweli)
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             signal.set_wakeup_fd(wfd)
         self.assertEqual(str(cm.exception),
                          "the fd %s must be kwenye non-blocking mode" % wfd)
@@ -233,7 +233,7 @@ kundi WakeupSignalTests(unittest.TestCase):
         signals = {!r}
 
         eleza handler(signum, frame):
-            pass
+            pita
 
         eleza check_signum(signals):
             data = os.read(read, len(signals)+1)
@@ -242,7 +242,7 @@ kundi WakeupSignalTests(unittest.TestCase):
                 raised = set(raised)
                 signals = set(signals)
             ikiwa raised != signals:
-                 ashiria Exception("%r != %r" % (raised, signals))
+                ashiria Exception("%r != %r" % (raised, signals))
 
         {}
 
@@ -263,7 +263,7 @@ kundi WakeupSignalTests(unittest.TestCase):
     @unittest.skipIf(_testcapi ni Tupu, 'need _testcapi')
     eleza test_wakeup_write_error(self):
         # Issue #16105: write() errors kwenye the C signal handler should not
-        # pass silently.
+        # pita silently.
         # Use a subprocess to have only one thread.
         code = """ikiwa 1:
         agiza _testcapi
@@ -283,18 +283,18 @@ kundi WakeupSignalTests(unittest.TestCase):
         # Set wakeup_fd a read-only file descriptor to trigger the error
         signal.set_wakeup_fd(r)
         jaribu:
-            ukijumuisha captured_stderr() as err:
+            ukijumuisha captured_stderr() kama err:
                 signal.raise_signal(signal.SIGALRM)
-        except ZeroDivisionError:
+        tatizo ZeroDivisionError:
             # An ignored exception should have been printed out on stderr
             err = err.getvalue()
             ikiwa ('Exception ignored when trying to write to the signal wakeup fd'
-                sio kwenye err):
-                 ashiria AssertionError(err)
-            ikiwa ('OSError: [Errno %d]' % errno.EBADF) sio kwenye err:
-                 ashiria AssertionError(err)
+                haiko kwenye err):
+                ashiria AssertionError(err)
+            ikiwa ('OSError: [Errno %d]' % errno.EBADF) haiko kwenye err:
+                ashiria AssertionError(err)
         isipokua:
-             ashiria AssertionError("ZeroDivisionError sio raised")
+            ashiria AssertionError("ZeroDivisionError sio raised")
 
         os.close(r)
         os.close(w)
@@ -302,8 +302,8 @@ kundi WakeupSignalTests(unittest.TestCase):
         r, w = os.pipe()
         jaribu:
             os.write(r, b'x')
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         isipokua:
             self.skipTest("OS doesn't report write() error on the read end of a pipe")
         mwishowe:
@@ -321,10 +321,10 @@ kundi WakeupSignalTests(unittest.TestCase):
             TIMEOUT_HALF = 5
 
             kundi InterruptSelect(Exception):
-                pass
+                pita
 
             eleza handler(signum, frame):
-                 ashiria InterruptSelect
+                ashiria InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
             signal.alarm(1)
@@ -333,17 +333,17 @@ kundi WakeupSignalTests(unittest.TestCase):
             # before select ni called
             jaribu:
                 select.select([], [], [], TIMEOUT_FULL)
-            except InterruptSelect:
-                pass
+            tatizo InterruptSelect:
+                pita
             isipokua:
-                 ashiria Exception("select() was sio interrupted")
+                ashiria Exception("select() was sio interrupted")
 
             before_time = time.monotonic()
             select.select([read], [], [], TIMEOUT_FULL)
             after_time = time.monotonic()
             dt = after_time - before_time
             ikiwa dt >= TIMEOUT_HALF:
-                 ashiria Exception("%s >= %s" % (dt, TIMEOUT_HALF))
+                ashiria Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
     eleza test_wakeup_fd_during(self):
@@ -355,10 +355,10 @@ kundi WakeupSignalTests(unittest.TestCase):
             TIMEOUT_HALF = 5
 
             kundi InterruptSelect(Exception):
-                pass
+                pita
 
             eleza handler(signum, frame):
-                 ashiria InterruptSelect
+                ashiria InterruptSelect
             signal.signal(signal.SIGALRM, handler)
 
             signal.alarm(1)
@@ -366,14 +366,14 @@ kundi WakeupSignalTests(unittest.TestCase):
             # We attempt to get a signal during the select call
             jaribu:
                 select.select([read], [], [], TIMEOUT_FULL)
-            except InterruptSelect:
-                pass
+            tatizo InterruptSelect:
+                pita
             isipokua:
-                 ashiria Exception("select() was sio interrupted")
+                ashiria Exception("select() was sio interrupted")
             after_time = time.monotonic()
             dt = after_time - before_time
             ikiwa dt >= TIMEOUT_HALF:
-                 ashiria Exception("%s >= %s" % (dt, TIMEOUT_HALF))
+                ashiria Exception("%s >= %s" % (dt, TIMEOUT_HALF))
         """, signal.SIGALRM)
 
     eleza test_signum(self):
@@ -417,7 +417,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         signals = (signum,)
 
         eleza handler(signum, frame):
-            pass
+            pita
 
         signal.signal(signum, handler)
 
@@ -429,10 +429,10 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
 
         data = read.recv(1)
         ikiwa sio data:
-             ashiria Exception("no signum written")
+            ashiria Exception("no signum written")
         raised = struct.unpack('B', data)
         ikiwa raised != signals:
-             ashiria Exception("%r != %r" % (raised, signals))
+            ashiria Exception("%r != %r" % (raised, signals))
 
         read.close()
         write.close()
@@ -459,7 +459,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         signum = signal.SIGINT
 
         eleza handler(signum, frame):
-            pass
+            pita
 
         signal.signal(signum, handler)
 
@@ -473,13 +473,13 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         read.close()
         write.close()
 
-        ukijumuisha captured_stderr() as err:
+        ukijumuisha captured_stderr() kama err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
         ikiwa ('Exception ignored when trying to {action} to the signal wakeup fd'
-            sio kwenye err):
-             ashiria AssertionError(err)
+            haiko kwenye err):
+            ashiria AssertionError(err)
         """.format(action=action)
         assert_python_ok('-c', code)
 
@@ -504,7 +504,7 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
         # This handler will be called, but we intentionally won't read from
         # the wakeup fd.
         eleza handler(signum, frame):
-            pass
+            pita
 
         signal.signal(signum, handler)
 
@@ -527,19 +527,19 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
                 wakati Kweli:
                     write.send(chunk)
                     written += chunk_size
-            except (BlockingIOError, socket.timeout):
-                pass
+            tatizo (BlockingIOError, socket.timeout):
+                pita
 
         andika(f"%s bytes written into the socketpair" % written, flush=Kweli)
 
         write.setblocking(Uongo)
         jaribu:
             write.send(b"x")
-        except BlockingIOError:
+        tatizo BlockingIOError:
             # The socketpair buffer seems full
-            pass
+            pita
         isipokua:
-             ashiria AssertionError("%s bytes failed to fill the socketpair "
+            ashiria AssertionError("%s bytes failed to fill the socketpair "
                                  "buffer" % written)
 
         # By default, we get a warning when a signal arrives
@@ -547,46 +547,46 @@ kundi WakeupSocketSignalTests(unittest.TestCase):
                'to the signal wakeup fd')
         signal.set_wakeup_fd(write.fileno())
 
-        ukijumuisha captured_stderr() as err:
+        ukijumuisha captured_stderr() kama err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        ikiwa msg sio kwenye err:
-             ashiria AssertionError("first set_wakeup_fd() test failed, "
+        ikiwa msg haiko kwenye err:
+            ashiria AssertionError("first set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
         # And also ikiwa warn_on_full_buffer=Kweli
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=Kweli)
 
-        ukijumuisha captured_stderr() as err:
+        ukijumuisha captured_stderr() kama err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        ikiwa msg sio kwenye err:
-             ashiria AssertionError("set_wakeup_fd(warn_on_full_buffer=Kweli) "
+        ikiwa msg haiko kwenye err:
+            ashiria AssertionError("set_wakeup_fd(warn_on_full_buffer=Kweli) "
                                  "test failed, stderr: %r" % err)
 
         # But sio ikiwa warn_on_full_buffer=Uongo
         signal.set_wakeup_fd(write.fileno(), warn_on_full_buffer=Uongo)
 
-        ukijumuisha captured_stderr() as err:
+        ukijumuisha captured_stderr() kama err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
         ikiwa err != "":
-             ashiria AssertionError("set_wakeup_fd(warn_on_full_buffer=Uongo) "
+            ashiria AssertionError("set_wakeup_fd(warn_on_full_buffer=Uongo) "
                                  "test failed, stderr: %r" % err)
 
         # And then check the default again, to make sure warn_on_full_buffer
         # settings don't leak across calls.
         signal.set_wakeup_fd(write.fileno())
 
-        ukijumuisha captured_stderr() as err:
+        ukijumuisha captured_stderr() kama err:
             signal.raise_signal(signum)
 
         err = err.getvalue()
-        ikiwa msg sio kwenye err:
-             ashiria AssertionError("second set_wakeup_fd() test failed, "
+        ikiwa msg haiko kwenye err:
+            ashiria AssertionError("second set_wakeup_fd() test failed, "
                                  "stderr: %r" % err)
 
         """.format(action=action)
@@ -630,8 +630,8 @@ kundi SiginterruptTest(unittest.TestCase):
                     jaribu:
                         # blocking call: read kutoka a pipe without data
                         os.read(r, 1)
-                    except ZeroDivisionError:
-                        pass
+                    tatizo ZeroDivisionError:
+                        pita
                     isipokua:
                         sys.exit(2)
                 sys.exit(3)
@@ -639,20 +639,20 @@ kundi SiginterruptTest(unittest.TestCase):
                 os.close(r)
                 os.close(w)
         """ % (interrupt,)
-        ukijumuisha spawn_python('-c', code) as process:
+        ukijumuisha spawn_python('-c', code) kama process:
             jaribu:
                 # wait until the child process ni loaded na has started
                 first_line = process.stdout.readline()
 
                 stdout, stderr = process.communicate(timeout=5.0)
-            except subprocess.TimeoutExpired:
+            tatizo subprocess.TimeoutExpired:
                 process.kill()
                 rudisha Uongo
             isipokua:
                 stdout = first_line + stdout
                 exitcode = process.wait()
-                ikiwa exitcode sio kwenye (2, 3):
-                     ashiria Exception("Child error (exit code %s): %r"
+                ikiwa exitcode haiko kwenye (2, 3):
+                    ashiria Exception("Child error (exit code %s): %r"
                                     % (exitcode, stdout))
                 rudisha (exitcode == 3)
 
@@ -700,9 +700,9 @@ kundi ItimerTest(unittest.TestCase):
 
         ikiwa self.hndl_count > 3:
             # it shouldn't be here, because it should have been disabled.
-             ashiria signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
+            ashiria signal.ItimerError("setitimer didn't disable ITIMER_VIRTUAL "
                 "timer.")
-        elikiwa self.hndl_count == 3:
+        lasivyo self.hndl_count == 3:
             # disable ITIMER_VIRTUAL, this function shouldn't be called anymore
             signal.setitimer(signal.ITIMER_VIRTUAL, 0)
 
@@ -716,7 +716,7 @@ kundi ItimerTest(unittest.TestCase):
         # XXX I'm assuming -1 ni an invalid itimer, but maybe some platform
         # defines it ?
         self.assertRaises(signal.ItimerError, signal.setitimer, -1, 0)
-        # Negative times are treated as zero on some platforms.
+        # Negative times are treated kama zero on some platforms.
         ikiwa 0:
             self.assertRaises(signal.ItimerError,
                               signal.setitimer, signal.ITIMER_REAL, -1)
@@ -811,13 +811,13 @@ kundi PendingSignalsTests(unittest.TestCase):
             kila sig kwenye pending:
                 assert isinstance(sig, signal.Signals), repr(pending)
             ikiwa pending != {signum}:
-                 ashiria Exception('%s != {%s}' % (pending, signum))
+                ashiria Exception('%s != {%s}' % (pending, signum))
             jaribu:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
-            except ZeroDivisionError:
-                pass
+            tatizo ZeroDivisionError:
+                pita
             isipokua:
-                 ashiria Exception("ZeroDivisionError sio raised")
+                ashiria Exception("ZeroDivisionError sio raised")
         """
         assert_python_ok('-c', code)
 
@@ -839,10 +839,10 @@ kundi PendingSignalsTests(unittest.TestCase):
             tid = threading.get_ident()
             jaribu:
                 signal.pthread_kill(tid, signum)
-            except ZeroDivisionError:
-                pass
+            tatizo ZeroDivisionError:
+                pita
             isipokua:
-                 ashiria Exception("ZeroDivisionError sio raised")
+                ashiria Exception("ZeroDivisionError sio raised")
         """
         assert_python_ok('-c', code)
 
@@ -877,11 +877,11 @@ kundi PendingSignalsTests(unittest.TestCase):
             # The handler must sio be called on unblock
             jaribu:
                 signal.pthread_sigmask(signal.SIG_UNBLOCK, [blocked])
-            except ZeroDivisionError:
+            tatizo ZeroDivisionError:
                 andika("the signal handler has been called",
                       file=sys.stderr)
                 sys.exit(1)
-        except BaseException as err:
+        tatizo BaseException kama err:
             andika("error: {}".format(err), file=sys.stderr)
             sys.stderr.flush()
             sys.exit(1)
@@ -901,7 +901,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             received = signal.sigwait([signum])
             assert isinstance(received, signal.Signals), received
             ikiwa received != signum:
-                 ashiria Exception('received %s, sio %s' % (received, signum))
+                ashiria Exception('received %s, sio %s' % (received, signum))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigwaitinfo'),
@@ -912,7 +912,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             signal.alarm(1)
             info = signal.sigwaitinfo([signum])
             ikiwa info.si_signo != signum:
-                 ashiria Exception("info.si_signo != %s" % signum)
+                ashiria Exception("info.si_signo != %s" % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -923,7 +923,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             signal.alarm(1)
             info = signal.sigtimedwait([signum], 10.1000)
             ikiwa info.si_signo != signum:
-                 ashiria Exception('info.si_signo != %s' % signum)
+                ashiria Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -936,7 +936,7 @@ kundi PendingSignalsTests(unittest.TestCase):
             os.kill(os.getpid(), signum)
             info = signal.sigtimedwait([signum], 0)
             ikiwa info.si_signo != signum:
-                 ashiria Exception('info.si_signo != %s' % signum)
+                ashiria Exception('info.si_signo != %s' % signum)
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -946,7 +946,7 @@ kundi PendingSignalsTests(unittest.TestCase):
         eleza test(signum):
             received = signal.sigtimedwait([signum], 1.0)
             ikiwa received ni sio Tupu:
-                 ashiria Exception("received=%r" % (received,))
+                ashiria Exception("received=%r" % (received,))
         ''')
 
     @unittest.skipUnless(hasattr(signal, 'sigtimedwait'),
@@ -1044,12 +1044,12 @@ kundi PendingSignalsTests(unittest.TestCase):
         check_mask(old_mask)
         jaribu:
             kill(signum)
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
-             ashiria Exception("ZeroDivisionError sio raised")
+            ashiria Exception("ZeroDivisionError sio raised")
 
-        # Block na then  ashiria SIGUSR1. The signal ni blocked: the signal
+        # Block na then ashiria SIGUSR1. The signal ni blocked: the signal
         # handler ni sio called, na the signal ni now pending
         mask = signal.pthread_sigmask(signal.SIG_BLOCK, [signum])
         check_mask(mask)
@@ -1058,34 +1058,34 @@ kundi PendingSignalsTests(unittest.TestCase):
         # Check the new mask
         blocked = read_sigmask()
         check_mask(blocked)
-        ikiwa signum sio kwenye blocked:
-             ashiria Exception("%s sio kwenye %s" % (signum, blocked))
+        ikiwa signum haiko kwenye blocked:
+            ashiria Exception("%s haiko kwenye %s" % (signum, blocked))
         ikiwa old_mask ^ blocked != {signum}:
-             ashiria Exception("%s ^ %s != {%s}" % (old_mask, blocked, signum))
+            ashiria Exception("%s ^ %s != {%s}" % (old_mask, blocked, signum))
 
         # Unblock SIGUSR1
         jaribu:
             # unblock the pending signal calls immediately the signal handler
             signal.pthread_sigmask(signal.SIG_UNBLOCK, [signum])
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
-             ashiria Exception("ZeroDivisionError sio raised")
+            ashiria Exception("ZeroDivisionError sio raised")
         jaribu:
             kill(signum)
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
-             ashiria Exception("ZeroDivisionError sio raised")
+            ashiria Exception("ZeroDivisionError sio raised")
 
         # Check the new mask
         unblocked = read_sigmask()
         ikiwa signum kwenye unblocked:
-             ashiria Exception("%s kwenye %s" % (signum, unblocked))
+            ashiria Exception("%s kwenye %s" % (signum, unblocked))
         ikiwa blocked ^ unblocked != {signum}:
-             ashiria Exception("%s ^ %s != {%s}" % (blocked, unblocked, signum))
+            ashiria Exception("%s ^ %s != {%s}" % (blocked, unblocked, signum))
         ikiwa old_mask != unblocked:
-             ashiria Exception("%s != %s" % (old_mask, unblocked))
+            ashiria Exception("%s != %s" % (old_mask, unblocked))
         """
         assert_python_ok('-c', code)
 
@@ -1107,11 +1107,11 @@ kundi PendingSignalsTests(unittest.TestCase):
             sys.exit(2)
         """
 
-        ukijumuisha spawn_python('-c', code) as process:
+        ukijumuisha spawn_python('-c', code) kama process:
             stdout, stderr = process.communicate()
             exitcode = process.wait()
             ikiwa exitcode != 3:
-                 ashiria Exception("Child error (exit code %s): %s" %
+                ashiria Exception("Child error (exit code %s): %s" %
                                 (exitcode, stdout))
 
 
@@ -1157,7 +1157,7 @@ kundi StressTest(unittest.TestCase):
         reso = self.measure_itimer_resolution()
         ikiwa reso <= 1e-4:
             rudisha 10000
-        elikiwa reso <= 1e-2:
+        lasivyo reso <= 1e-2:
             rudisha 100
         isipokua:
             self.skipTest("detected itimer resolution (%.3f s.) too high "
@@ -1175,7 +1175,7 @@ kundi StressTest(unittest.TestCase):
 
         eleza first_handler(signum, frame):
             # 1e-6 ni the minimum non-zero value kila `setitimer()`.
-            # Choose a random delay so as to improve chances of
+            # Choose a random delay so kama to improve chances of
             # triggering a race condition.  Ideally the signal ni received
             # when inside critical signal-handling routines such as
             # Py_MakePendingCalls().
@@ -1255,9 +1255,9 @@ kundi RaiseSignalTest(unittest.TestCase):
             SIGHUP = 1 # sio supported on win32
             signal.raise_signal(SIGHUP)
             self.fail("OSError (Invalid argument) expected")
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EINVAL:
-                pass
+                pita
             isipokua:
                 raise
 

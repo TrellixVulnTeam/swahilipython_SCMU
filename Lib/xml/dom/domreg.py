@@ -1,5 +1,5 @@
 """Registration facilities kila DOM. This module should sio be used
-directly. Instead, the functions getDOMImplementation and
+directly. Instead, the functions getDOMImplementation na
 registerDOMImplementation should be imported kutoka xml.dom."""
 
 # This ni a list of well-known implementations.  Well-known names
@@ -46,8 +46,8 @@ eleza getDOMImplementation(name=Tupu, features=()):
 
     If name ni sio given, consider the available implementations to
     find one ukijumuisha the required feature set. If no implementation can
-    be found,  ashiria an ImportError. The features list must be a sequence
-    of (feature, version) pairs which are passed to hasFeature."""
+    be found, ashiria an ImportError. The features list must be a sequence
+    of (feature, version) pairs which are pitaed to hasFeature."""
 
     agiza os
     creator = Tupu
@@ -55,9 +55,9 @@ eleza getDOMImplementation(name=Tupu, features=()):
     ikiwa mod:
         mod = __import__(mod, {}, {}, ['getDOMImplementation'])
         rudisha mod.getDOMImplementation()
-    elikiwa name:
+    lasivyo name:
         rudisha registered[name]()
-    elikiwa sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
+    lasivyo sio sys.flags.ignore_environment na "PYTHON_DOM" kwenye os.environ:
         rudisha getDOMImplementation(name = os.environ["PYTHON_DOM"])
 
     # User did sio specify a name, try implementations kwenye arbitrary
@@ -72,12 +72,12 @@ eleza getDOMImplementation(name=Tupu, features=()):
     kila creator kwenye well_known_implementations.keys():
         jaribu:
             dom = getDOMImplementation(name = creator)
-        except Exception: # typically ImportError, ama AttributeError
+        tatizo Exception: # typically ImportError, ama AttributeError
             endelea
         ikiwa _good_enough(dom, features):
             rudisha dom
 
-     ashiria ImportError("no suitable DOM implementation found")
+    ashiria ImportError("no suitable DOM implementation found")
 
 eleza _parse_feature_string(s):
     features = []
@@ -87,7 +87,7 @@ eleza _parse_feature_string(s):
     wakati i < length:
         feature = parts[i]
         ikiwa feature[0] kwenye "0123456789":
-             ashiria ValueError("bad feature name: %r" % (feature,))
+            ashiria ValueError("bad feature name: %r" % (feature,))
         i = i + 1
         version = Tupu
         ikiwa i < length:

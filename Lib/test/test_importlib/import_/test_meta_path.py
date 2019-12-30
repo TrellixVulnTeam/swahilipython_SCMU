@@ -17,15 +17,15 @@ kundi CallingOrder:
     eleza test_first_called(self):
         # [first called]
         mod = 'top_level'
-        ukijumuisha util.mock_spec(mod) as first, util.mock_spec(mod) as second:
+        ukijumuisha util.mock_spec(mod) kama first, util.mock_spec(mod) kama second:
             ukijumuisha util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod), first.modules[mod])
 
     eleza test_continuing(self):
         # [continuing]
         mod_name = 'for_real'
-        ukijumuisha util.mock_spec('nonexistent') as first, \
-             util.mock_spec(mod_name) as second:
+        ukijumuisha util.mock_spec('nonexistent') kama first, \
+             util.mock_spec(mod_name) kama second:
             first.find_spec = lambda self, fullname, path=Tupu, parent=Tupu: Tupu
             ukijumuisha util.import_state(meta_path=[first, second]):
                 self.assertIs(self.__import__(mod_name), second.modules[mod_name])
@@ -35,10 +35,10 @@ kundi CallingOrder:
         module_name = 'nothing'
         jaribu:
             toa sys.modules[module_name]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         ukijumuisha util.import_state(meta_path=[]):
-            ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+            ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
                 warnings.simplefilter('always')
                 self.assertIsTupu(importlib._bootstrap._find_spec('nothing',
                                                                   Tupu))
@@ -54,7 +54,7 @@ kundi CallingOrder:
 kundi CallSignature:
 
     """If there ni no __path__ entry on the parent module, then 'path' ni Tupu
-    [no path]. Otherwise, the value kila __path__ ni passed kwenye kila the 'path'
+    [no path]. Otherwise, the value kila __path__ ni pitaed kwenye kila the 'path'
     argument [path set]."""
 
     eleza log_finder(self, importer):
@@ -68,8 +68,8 @@ kundi CallSignature:
     eleza test_no_path(self):
         # [no path]
         mod_name = 'top_level'
-        assert '.' sio kwenye mod_name
-        ukijumuisha self.mock_modules(mod_name) as importer:
+        assert '.' haiko kwenye mod_name
+        ukijumuisha self.mock_modules(mod_name) kama importer:
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))
             ukijumuisha util.import_state(meta_path=[importer]):
@@ -86,7 +86,7 @@ kundi CallSignature:
         mod_name = pkg_name + '.module'
         path = [42]
         assert '.' kwenye mod_name
-        ukijumuisha self.mock_modules(pkg_name+'.__init__', mod_name) as importer:
+        ukijumuisha self.mock_modules(pkg_name+'.__init__', mod_name) kama importer:
             importer.modules[pkg_name].__path__ = path
             log, wrapped_call = self.log_finder(importer)
             setattr(importer, self.finder_name, MethodType(wrapped_call, importer))

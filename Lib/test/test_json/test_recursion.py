@@ -2,7 +2,7 @@ kutoka test.test_json agiza PyTest, CTest
 
 
 kundi JSONTestObject:
-    pass
+    pita
 
 
 kundi TestRecursion:
@@ -11,19 +11,19 @@ kundi TestRecursion:
         x.append(x)
         jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("didn't  ashiria ValueError on list recursion")
+            self.fail("didn't ashiria ValueError on list recursion")
         x = []
         y = [x]
         x.append(y)
         jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("didn't  ashiria ValueError on alternating list recursion")
+            self.fail("didn't ashiria ValueError on alternating list recursion")
         y = []
         x = [y, y]
         # ensure that the marker ni cleared
@@ -34,10 +34,10 @@ kundi TestRecursion:
         x["test"] = x
         jaribu:
             self.dumps(x)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("didn't  ashiria ValueError on dict recursion")
+            self.fail("didn't ashiria ValueError on dict recursion")
         x = {}
         y = {"a": x, "b": x}
         # ensure that the marker ni cleared
@@ -59,10 +59,10 @@ kundi TestRecursion:
         enc.recurse = Kweli
         jaribu:
             enc.encode(JSONTestObject)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("didn't  ashiria ValueError on default recursion")
+            self.fail("didn't ashiria ValueError on default recursion")
 
 
     eleza test_highly_nested_objects_decoding(self):
@@ -96,5 +96,5 @@ kundi TestRecursion:
             EndlessJSONEncoder(check_circular=Uongo).encode(5j)
 
 
-kundi TestPyRecursion(TestRecursion, PyTest): pass
-kundi TestCRecursion(TestRecursion, CTest): pass
+kundi TestPyRecursion(TestRecursion, PyTest): pita
+kundi TestCRecursion(TestRecursion, CTest): pita

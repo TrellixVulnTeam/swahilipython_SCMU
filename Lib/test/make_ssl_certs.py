@@ -112,19 +112,19 @@ eleza make_cert_key(hostname, sign=Uongo, extra_san='',
     andika("creating cert kila " + hostname)
     tempnames = []
     kila i kwenye range(3):
-        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) as f:
+        ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) kama f:
             tempnames.append(f.name)
     req_file, cert_file, key_file = tempnames
     jaribu:
         req = req_template.format(hostname=hostname, extra_san=extra_san)
-        ukijumuisha open(req_file, 'w') as f:
+        ukijumuisha open(req_file, 'w') kama f:
             f.write(req)
         args = ['req', '-new', '-days', '3650', '-nodes',
                 '-newkey', key, '-keyout', key_file,
                 '-extensions', ext,
                 '-config', req_file]
         ikiwa sign:
-            ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) as f:
+            ukijumuisha tempfile.NamedTemporaryFile(delete=Uongo) kama f:
                 tempnames.append(f.name)
                 reqfile = f.name
             args += ['-out', reqfile ]
@@ -146,9 +146,9 @@ eleza make_cert_key(hostname, sign=Uongo, extra_san='',
             check_call(['openssl'] + args)
 
 
-        ukijumuisha open(cert_file, 'r') as f:
+        ukijumuisha open(cert_file, 'r') kama f:
             cert = f.read()
-        ukijumuisha open(key_file, 'r') as f:
+        ukijumuisha open(key_file, 'r') kama f:
             key = f.read()
         rudisha cert, key
     mwishowe:
@@ -162,17 +162,17 @@ eleza unmake_ca():
 
 eleza make_ca():
     os.mkdir(TMP_CADIR)
-    ukijumuisha open(os.path.join('cadir','index.txt'),'a+') as f:
-        pass # empty file
-    ukijumuisha open(os.path.join('cadir','crl.txt'),'a+') as f:
+    ukijumuisha open(os.path.join('cadir','index.txt'),'a+') kama f:
+        pita # empty file
+    ukijumuisha open(os.path.join('cadir','crl.txt'),'a+') kama f:
         f.write("00")
-    ukijumuisha open(os.path.join('cadir','index.txt.attr'),'w+') as f:
+    ukijumuisha open(os.path.join('cadir','index.txt.attr'),'w+') kama f:
         f.write('unique_subject = no')
 
-    ukijumuisha tempfile.NamedTemporaryFile("w") as t:
+    ukijumuisha tempfile.NamedTemporaryFile("w") kama t:
         t.write(req_template.format(hostname='our-ca-server', extra_san=''))
         t.flush()
-        ukijumuisha tempfile.NamedTemporaryFile() as f:
+        ukijumuisha tempfile.NamedTemporaryFile() kama f:
             args = ['req', '-new', '-days', '3650', '-extensions', 'v3_ca', '-nodes',
                     '-newkey', 'rsa:3072', '-keyout', 'pycakey.pem',
                     '-out', f.name,
@@ -201,42 +201,42 @@ eleza print_cert(path):
 ikiwa __name__ == '__main__':
     os.chdir(here)
     cert, key = make_cert_key('localhost', ext='req_x509_extensions_simple')
-    ukijumuisha open('ssl_cert.pem', 'w') as f:
+    ukijumuisha open('ssl_cert.pem', 'w') kama f:
         f.write(cert)
-    ukijumuisha open('ssl_key.pem', 'w') as f:
+    ukijumuisha open('ssl_key.pem', 'w') kama f:
         f.write(key)
-    andika("password protecting ssl_key.pem kwenye ssl_key.passwd.pem")
-    check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.passwd.pem','-aes256','-passout','pass:somepass'])
-    check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.passwd.pem','-aes256','-passout','pass:somepass'])
+    andika("pitaword protecting ssl_key.pem kwenye ssl_key.pitawd.pem")
+    check_call(['openssl','pkey','-in','ssl_key.pem','-out','ssl_key.pitawd.pem','-aes256','-pitaout','pita:somepita'])
+    check_call(['openssl','pkey','-in','ssl_key.pem','-out','keycert.pitawd.pem','-aes256','-pitaout','pita:somepita'])
 
-    ukijumuisha open('keycert.pem', 'w') as f:
+    ukijumuisha open('keycert.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
-    ukijumuisha open('keycert.passwd.pem', 'a+') as f:
+    ukijumuisha open('keycert.pitawd.pem', 'a+') kama f:
         f.write(cert)
 
     # For certificate matching tests
     make_ca()
     cert, key = make_cert_key('fakehostname', ext='req_x509_extensions_simple')
-    ukijumuisha open('keycert2.pem', 'w') as f:
+    ukijumuisha open('keycert2.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key('localhost', Kweli)
-    ukijumuisha open('keycert3.pem', 'w') as f:
+    ukijumuisha open('keycert3.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key('fakehostname', Kweli)
-    ukijumuisha open('keycert4.pem', 'w') as f:
+    ukijumuisha open('keycert4.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
     cert, key = make_cert_key(
         'localhost-ecc', Kweli, key='param:secp384r1.pem'
     )
-    ukijumuisha open('keycertecc.pem', 'w') as f:
+    ukijumuisha open('keycertecc.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
@@ -255,7 +255,7 @@ ikiwa __name__ == '__main__':
     ]
 
     cert, key = make_cert_key('allsans', extra_san='\n'.join(extra_san))
-    ukijumuisha open('allsans.pem', 'w') as f:
+    ukijumuisha open('allsans.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 
@@ -272,7 +272,7 @@ ikiwa __name__ == '__main__':
 
     # IDN SANS, signed
     cert, key = make_cert_key('idnsans', Kweli, extra_san='\n'.join(extra_san))
-    ukijumuisha open('idnsans.pem', 'w') as f:
+    ukijumuisha open('idnsans.pem', 'w') kama f:
         f.write(key)
         f.write(cert)
 

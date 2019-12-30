@@ -35,7 +35,7 @@ kundi Test_ISO2022_KR(multibytecodec_support.TestBase, unittest.TestCase):
     # sequence ni only written on the first line
     @unittest.skip('iso2022_kr.txt cannot be used to test "chunk coding"')
     eleza test_chunkcoding(self):
-        pass
+        pita
 
 ikiwa __name__ == "__main__":
     unittest.main()

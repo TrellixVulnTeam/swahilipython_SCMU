@@ -28,7 +28,7 @@ jaribu:
     RegEnumValue = winreg.EnumValue
     RegError = winreg.error
 
-except ImportError:
+tatizo ImportError:
     jaribu:
         agiza win32api
         agiza win32con
@@ -39,12 +39,12 @@ except ImportError:
         RegEnumKey = win32api.RegEnumKey
         RegEnumValue = win32api.RegEnumValue
         RegError = win32api.error
-    except ImportError:
+    tatizo ImportError:
         log.info("Warning: Can't read registry to find the "
                  "necessary compiler setting\n"
                  "Make sure that Python modules winreg, "
                  "win32api ama win32con are installed.")
-        pass
+        pita
 
 ikiwa _can_read_reg:
     HKEYS = (hkey_mod.HKEY_USERS,
@@ -56,14 +56,14 @@ eleza read_keys(base, key):
     """Return list of registry keys."""
     jaribu:
         handle = RegOpenKeyEx(base, key)
-    except RegError:
+    tatizo RegError:
         rudisha Tupu
     L = []
     i = 0
     wakati Kweli:
         jaribu:
             k = RegEnumKey(handle, i)
-        except RegError:
+        tatizo RegError:
             koma
         L.append(k)
         i += 1
@@ -76,14 +76,14 @@ eleza read_values(base, key):
     """
     jaribu:
         handle = RegOpenKeyEx(base, key)
-    except RegError:
+    tatizo RegError:
         rudisha Tupu
     d = {}
     i = 0
     wakati Kweli:
         jaribu:
             name, value, type = RegEnumValue(handle, i)
-        except RegError:
+        tatizo RegError:
             koma
         name = name.lower()
         d[convert_mbcs(name)] = convert_mbcs(value)
@@ -95,8 +95,8 @@ eleza convert_mbcs(s):
     ikiwa dec ni sio Tupu:
         jaribu:
             s = dec("mbcs")
-        except UnicodeError:
-            pass
+        tatizo UnicodeError:
+            pita
     rudisha s
 
 kundi MacroExpander:
@@ -122,18 +122,18 @@ kundi MacroExpander:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallrootv1.1")
             isipokua:
                 self.set_macro("FrameworkSDKDir", net, "sdkinstallroot")
-        except KeyError as exc: #
-             ashiria DistutilsPlatformError(
+        tatizo KeyError kama exc: #
+            ashiria DistutilsPlatformError(
             """Python was built ukijumuisha Visual Studio 2003;
 extensions must be built ukijumuisha a compiler than can generate compatible binaries.
 Visual Studio 2003 was sio found on this system. If you have Cygwin installed,
-you can try compiling ukijumuisha MingW32, by passing "-c mingw32" to setup.py.""")
+you can try compiling ukijumuisha MingW32, by pitaing "-c mingw32" to setup.py.""")
 
         p = r"Software\Microsoft\NET Framework Setup\Product"
         kila base kwenye HKEYS:
             jaribu:
                 h = RegOpenKeyEx(base, p)
-            except RegError:
+            tatizo RegError:
                 endelea
             key = RegEnumKey(h, 0)
             d = read_values(base, r"%s\%s" % (p, key))
@@ -192,20 +192,20 @@ eleza normalize_and_reduce_paths(paths):
     kila p kwenye paths:
         np = os.path.normpath(p)
         # XXX(nnorwitz): O(n**2), ikiwa reduced_paths gets long perhaps use a set.
-        ikiwa np sio kwenye reduced_paths:
+        ikiwa np haiko kwenye reduced_paths:
             reduced_paths.append(np)
     rudisha reduced_paths
 
 
 kundi MSVCCompiler(CCompiler) :
     """Concrete kundi that implements an interface to Microsoft Visual C++,
-       as defined by the CCompiler abstract class."""
+       kama defined by the CCompiler abstract class."""
 
     compiler_type = 'msvc'
 
     # Just set this so CCompiler's constructor doesn't barf.  We currently
     # don't use the 'set_executables()' bureaucracy provided by CCompiler,
-    # as it really isn't necessary kila this sort of single-compiler class.
+    # kama it really isn't necessary kila this sort of single-compiler class.
     # Would be nice to have a consistent interface ukijumuisha UnixCCompiler,
     # though, so it's worth thinking about.
     executables = {}
@@ -259,7 +259,7 @@ kundi MSVCCompiler(CCompiler) :
             self.__paths = self.get_msvc_paths("path")
 
             ikiwa len(self.__paths) == 0:
-                 ashiria DistutilsPlatformError("Python was built ukijumuisha %s, "
+                ashiria DistutilsPlatformError("Python was built ukijumuisha %s, "
                        "and extensions need to be built ukijumuisha the same "
                        "version of the compiler, but it isn't installed."
                        % self.__product)
@@ -276,8 +276,8 @@ kundi MSVCCompiler(CCompiler) :
         jaribu:
             kila p kwenye os.environ['path'].split(';'):
                 self.__paths.append(p)
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         self.__paths = normalize_and_reduce_paths(self.__paths)
         os.environ['path'] = ";".join(self.__paths)
 
@@ -313,7 +313,7 @@ kundi MSVCCompiler(CCompiler) :
                          source_filenames,
                          strip_dir=0,
                          output_dir=''):
-        # Copied kutoka ccompiler.py, extended to rudisha .res as 'object'-file
+        # Copied kutoka ccompiler.py, extended to rudisha .res kama 'object'-file
         # kila .rc input file
         ikiwa output_dir ni Tupu: output_dir = ''
         obj_names = []
@@ -321,17 +321,17 @@ kundi MSVCCompiler(CCompiler) :
             (base, ext) = os.path.splitext (src_name)
             base = os.path.splitdrive(base)[1] # Chop off the drive
             base = base[os.path.isabs(base):]  # If abs, chop off leading /
-            ikiwa ext sio kwenye self.src_extensions:
-                # Better to  ashiria an exception instead of silently continuing
+            ikiwa ext haiko kwenye self.src_extensions:
+                # Better to ashiria an exception instead of silently continuing
                 # na later complain about sources na targets having
                 # different lengths
-                 ashiria CompileError ("Don't know how to compile %s" % src_name)
+                ashiria CompileError ("Don't know how to compile %s" % src_name)
             ikiwa strip_dir:
                 base = os.path.basename (base)
             ikiwa ext kwenye self._rc_extensions:
                 obj_names.append (os.path.join (output_dir,
                                                 base + self.res_extension))
-            elikiwa ext kwenye self._mc_extensions:
+            lasivyo ext kwenye self._mc_extensions:
                 obj_names.append (os.path.join (output_dir,
                                                 base + self.res_extension))
             isipokua:
@@ -360,29 +360,29 @@ kundi MSVCCompiler(CCompiler) :
         kila obj kwenye objects:
             jaribu:
                 src, ext = build[obj]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             ikiwa debug:
-                # pass the full pathname to MSVC kwenye debug mode,
+                # pita the full pathname to MSVC kwenye debug mode,
                 # this allows the debugger to find the source file
                 # without asking the user to browse kila it
                 src = os.path.abspath(src)
 
             ikiwa ext kwenye self._c_extensions:
                 input_opt = "/Tc" + src
-            elikiwa ext kwenye self._cpp_extensions:
+            lasivyo ext kwenye self._cpp_extensions:
                 input_opt = "/Tp" + src
-            elikiwa ext kwenye self._rc_extensions:
+            lasivyo ext kwenye self._rc_extensions:
                 # compile .RC to .RES file
                 input_opt = src
                 output_opt = "/fo" + obj
                 jaribu:
                     self.spawn([self.rc] + pp_opts +
                                [output_opt] + [input_opt])
-                except DistutilsExecError as msg:
-                     ashiria CompileError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria CompileError(msg)
                 endelea
-            elikiwa ext kwenye self._mc_extensions:
+            lasivyo ext kwenye self._mc_extensions:
                 # Compile .MC to .RC file to .RES file.
                 #   * '-h dir' specifies the directory kila the
                 #     generated include file
@@ -391,7 +391,7 @@ kundi MSVCCompiler(CCompiler) :
                 #     it includes
                 #
                 # For now (since there are no options to change this),
-                # we use the source-directory kila the include file and
+                # we use the source-directory kila the include file na
                 # the build directory kila the RC file na message
                 # resources. This works at least kila win32all.
                 h_dir = os.path.dirname(src)
@@ -406,12 +406,12 @@ kundi MSVCCompiler(CCompiler) :
                     self.spawn([self.rc] +
                                ["/fo" + obj] + [rc_file])
 
-                except DistutilsExecError as msg:
-                     ashiria CompileError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria CompileError(msg)
                 endelea
             isipokua:
                 # how to handle this file?
-                 ashiria CompileError("Don't know how to compile %s to %s"
+                ashiria CompileError("Don't know how to compile %s to %s"
                                    % (src, obj))
 
             output_opt = "/Fo" + obj
@@ -419,8 +419,8 @@ kundi MSVCCompiler(CCompiler) :
                 self.spawn([self.cc] + compile_opts + pp_opts +
                            [input_opt, output_opt] +
                            extra_postargs)
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
 
         rudisha objects
 
@@ -441,11 +441,11 @@ kundi MSVCCompiler(CCompiler) :
         ikiwa self._need_link(objects, output_filename):
             lib_args = objects + ['/OUT:' + output_filename]
             ikiwa debug:
-                pass # XXX what goes here?
+                pita # XXX what goes here?
             jaribu:
                 self.spawn([self.lib] + lib_args)
-            except DistutilsExecError as msg:
-                 ashiria LibError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -522,8 +522,8 @@ kundi MSVCCompiler(CCompiler) :
             self.mkpath(os.path.dirname(output_filename))
             jaribu:
                 self.spawn([self.linker] + ld_args)
-            except DistutilsExecError as msg:
-                 ashiria LinkError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LinkError(msg)
 
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
@@ -537,7 +537,7 @@ kundi MSVCCompiler(CCompiler) :
         rudisha "/LIBPATH:" + dir
 
     eleza runtime_library_dir_option(self, dir):
-         ashiria DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to set runtime library search path kila MSVC++")
 
     eleza library_option(self, lib):

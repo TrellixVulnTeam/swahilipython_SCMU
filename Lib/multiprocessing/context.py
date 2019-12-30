@@ -12,16 +12,16 @@ __all__ = ()
 #
 
 kundi ProcessError(Exception):
-    pass
+    pita
 
 kundi BufferTooShort(ProcessError):
-    pass
+    pita
 
 kundi TimeoutError(ProcessError):
-    pass
+    pita
 
 kundi AuthenticationError(ProcessError):
-    pass
+    pita
 
 #
 # Base type kila contexts. Bound methods of an instance of this type are included kwenye __all__ of __init__.py
@@ -42,14 +42,14 @@ kundi BaseContext(object):
         '''Returns the number of CPUs kwenye the system'''
         num = os.cpu_count()
         ikiwa num ni Tupu:
-             ashiria NotImplementedError('cannot determine number of cpus')
+            ashiria NotImplementedError('cannot determine number of cpus')
         isipokua:
             rudisha num
 
     eleza Manager(self):
         '''Returns a manager associated ukijumuisha a running server process
 
-        The managers methods such as `Lock()`, `Condition()` na `Queue()`
+        The managers methods such kama `Lock()`, `Condition()` na `Queue()`
         can be used to create shared objects.
         '''
         kutoka .managers agiza SyncManager
@@ -189,8 +189,8 @@ kundi BaseContext(object):
             rudisha self
         jaribu:
             ctx = _concrete_contexts[method]
-        except KeyError:
-             ashiria ValueError('cannot find context kila %r' % method) kutoka Tupu
+        tatizo KeyError:
+            ashiria ValueError('cannot find context kila %r' % method) kutoka Tupu
         ctx._check_available()
         rudisha ctx
 
@@ -198,7 +198,7 @@ kundi BaseContext(object):
         rudisha self._name
 
     eleza set_start_method(self, method, force=Uongo):
-         ashiria ValueError('cannot set start method of concrete context')
+        ashiria ValueError('cannot set start method of concrete context')
 
     @property
     eleza reducer(self):
@@ -211,7 +211,7 @@ kundi BaseContext(object):
         globals()['reduction'] = reduction
 
     eleza _check_available(self):
-        pass
+        pita
 
 #
 # Type of default context -- underlying context can be set at most once
@@ -240,7 +240,7 @@ kundi DefaultContext(BaseContext):
 
     eleza set_start_method(self, method, force=Uongo):
         ikiwa self._actual_context ni sio Tupu na sio force:
-             ashiria RuntimeError('context has already been set')
+            ashiria RuntimeError('context has already been set')
         ikiwa method ni Tupu na force:
             self._actual_context = Tupu
             return
@@ -302,7 +302,7 @@ ikiwa sys.platform != 'win32':
         Process = ForkServerProcess
         eleza _check_available(self):
             ikiwa sio reduction.HAVE_SEND_HANDLE:
-                 ashiria ValueError('forkserver start method sio available')
+                ashiria ValueError('forkserver start method sio available')
 
     _concrete_contexts = {
         'fork': ForkContext(),
@@ -355,7 +355,7 @@ eleza set_spawning_popen(popen):
 
 eleza assert_spawning(obj):
     ikiwa get_spawning_popen() ni Tupu:
-         ashiria RuntimeError(
+        ashiria RuntimeError(
             '%s objects should only be shared between processes'
             ' through inheritance' % type(obj).__name__
             )

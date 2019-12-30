@@ -127,7 +127,7 @@ kundi ToggleLevelTest(unittest.TestCase):
             """Get the stack order of the children of the frame.
 
             winfo_children() stores the children kwenye stack order, so
-            this can be used to check whether a frame ni above or
+            this can be used to check whether a frame ni above ama
             below another one.
             """
             kila index, child kwenye enumerate(dialog.frame.winfo_children()):

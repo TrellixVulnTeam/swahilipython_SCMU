@@ -11,12 +11,12 @@ agiza struct
 BIG = 100000
 
 eleza fail():
-     ashiria SyntaxError
+    ashiria SyntaxError
     tuma 1
 
 kundi BadCmp:
     eleza __eq__(self, other):
-         ashiria RuntimeError
+        ashiria RuntimeError
 
 kundi MutateCmp:
     eleza __init__(self, deque, result):
@@ -124,7 +124,7 @@ kundi TestBasic(unittest.TestCase):
         self.assertRaises(TypeError, d.count, 1, 2) # too many args
         kundi BadCompare:
             eleza __eq__(self, other):
-                 ashiria ArithmeticError
+                ashiria ArithmeticError
         d = deque([1, 2, BadCompare(), 3])
         self.assertRaises(ArithmeticError, d.count, 2)
         d = deque([1, 2, 3])
@@ -169,7 +169,7 @@ kundi TestBasic(unittest.TestCase):
         d = deque(range(n))
         kila i kwenye range(n):
             self.assertKweli(i kwenye d)
-        self.assertKweli((n+1) sio kwenye d)
+        self.assertKweli((n+1) haiko kwenye d)
 
         # Test detection of mutation during iteration
         d = deque(range(n))
@@ -282,7 +282,7 @@ kundi TestBasic(unittest.TestCase):
                 kila element kwenye elements + 'Z':
                     jaribu:
                         target = s.index(element, start, stop)
-                    except ValueError:
+                    tatizo ValueError:
                         ukijumuisha self.assertRaises(ValueError):
                             d.index(element, start, stop)
                     isipokua:
@@ -580,7 +580,7 @@ kundi TestBasic(unittest.TestCase):
                              list(range(BIG-size, BIG)))
 
     eleza test_big_queue_popleft(self):
-        pass
+        pita
         d = deque()
         append, pop = d.append, d.popleft
         kila i kwenye range(BIG):
@@ -744,7 +744,7 @@ kundi TestBasic(unittest.TestCase):
     eleza test_container_iterator(self):
         # Bug #3680: tp_traverse was sio implemented kila deque iterator objects
         kundi C(object):
-            pass
+            pita
         kila i kwenye range(2):
             obj = C()
             ref = weakref.ref(obj)
@@ -797,11 +797,11 @@ kundi TestVariousIteratorArgs(unittest.TestCase):
         self.assertRaises(RuntimeError, next, it)
 
 kundi Deque(deque):
-    pass
+    pita
 
 kundi DequeWithBadIter(deque):
     eleza __iter__(self):
-         ashiria TypeError
+        ashiria TypeError
 
 kundi TestSubclass(unittest.TestCase):
 
@@ -905,7 +905,7 @@ kundi TestSubclass(unittest.TestCase):
         # The interpreter used to crash kwenye specific cases where a deque
         # subkundi returned a non-deque.
         kundi X(deque):
-            pass
+            pita
         d = X()
         eleza bad___new__(cls, *args, **kwargs):
             rudisha [42]
@@ -922,26 +922,26 @@ kundi SubclassWithKwargs(deque):
 
 kundi TestSubclassWithKwargs(unittest.TestCase):
     eleza test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously  ashiria a TypeError
+        # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         SubclassWithKwargs(newarg=1)
 
 kundi TestSequence(seq_tests.CommonTest):
     type2test = deque
 
     eleza test_getitem(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_getslice(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_subscript(self):
-        # For now, bypass tests that require slicing
-        pass
+        # For now, bypita tests that require slicing
+        pita
 
     eleza test_free_after_iterating(self):
-        # For now, bypass tests that require slicing
+        # For now, bypita tests that require slicing
         self.skipTest("Exhausted deque iterator doesn't free a deque")
 
 #==============================================================================
@@ -1016,7 +1016,7 @@ deque(['a', 'b', 'd', 'e', 'f'])
 ...         task = pending.popleft()
 ...         jaribu:
 ...             tuma next(task)
-...         except StopIteration:
+...         tatizo StopIteration:
 ...             endelea
 ...         pending.append(task)
 ...

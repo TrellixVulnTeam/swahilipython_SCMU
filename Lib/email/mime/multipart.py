@@ -25,18 +25,18 @@ kundi MIMEMultipart(MIMEBase):
         `mixed'.
 
         boundary ni the multipart boundary string.  By default it is
-        calculated as needed.
+        calculated kama needed.
 
         _subparts ni a sequence of initial subparts kila the payload.  It
-        must be an iterable object, such as a list.  You can always
+        must be an iterable object, such kama a list.  You can always
         attach new subparts to the message by using the attach() method.
 
         Additional parameters kila the Content-Type header are taken kutoka the
-        keyword arguments (or passed into the _params argument).
+        keyword arguments (or pitaed into the _params argument).
         """
         MIMEBase.__init__(self, 'multipart', _subtype, policy=policy, **_params)
 
-        # Initialise _payload to an empty list as the Message superclass's
+        # Initialise _payload to an empty list kama the Message superclass's
         # implementation of is_multipart assumes that _payload ni a list for
         # multipart messages.
         self._payload = []

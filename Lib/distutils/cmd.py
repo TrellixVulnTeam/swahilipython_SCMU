@@ -12,7 +12,7 @@ kutoka distutils agiza log
 kundi Command:
     """Abstract base kundi kila defining command classes, the "worker bees"
     of the Distutils.  A useful analogy kila command classes ni to think of
-    them as subroutines ukijumuisha local variables called "options".  The options
+    them kama subroutines ukijumuisha local variables called "options".  The options
     are "declared" kwenye 'initialize_options()' na "defined" (given their
     final values, aka "finalized") kwenye 'finalize_options()', both of which
     must be defined by every command class.  The distinction between the
@@ -26,9 +26,9 @@ kundi Command:
     """
 
     # 'sub_commands' formalizes the notion of a "family" of commands,
-    # eg. "install" as the parent ukijumuisha sub-commands "install_lib",
+    # eg. "install" kama the parent ukijumuisha sub-commands "install_lib",
     # "install_headers", etc.  The parent of a family of commands
-    # defines 'sub_commands' as a kundi attribute; it's a list of
+    # defines 'sub_commands' kama a kundi attribute; it's a list of
     #    (command_name : string, predicate : unbound_method | string | Tupu)
     # tuples, where 'predicate' ni a method of the parent command that
     # determines whether the corresponding command ni applicable kwenye the
@@ -54,9 +54,9 @@ kundi Command:
         kutoka distutils.dist agiza Distribution
 
         ikiwa sio isinstance(dist, Distribution):
-             ashiria TypeError("dist must be a Distribution instance")
+            ashiria TypeError("dist must be a Distribution instance")
         ikiwa self.__class__ ni Command:
-             ashiria RuntimeError("Command ni an abstract class")
+            ashiria RuntimeError("Command ni an abstract class")
 
         self.distribution = dist
         self.initialize_options()
@@ -100,7 +100,7 @@ kundi Command:
             isipokua:
                 rudisha myval
         isipokua:
-             ashiria AttributeError(attr)
+            ashiria AttributeError(attr)
 
     eleza ensure_finalized(self):
         ikiwa sio self.finalized:
@@ -130,21 +130,21 @@ kundi Command:
 
         This method must be implemented by all command classes.
         """
-         ashiria RuntimeError("abstract method -- subkundi %s must override"
+        ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
     eleza finalize_options(self):
         """Set final values kila all the options that this command supports.
-        This ni always called as late as possible, ie.  after any option
+        This ni always called kama late kama possible, ie.  after any option
         assignments kutoka the command-line ama kutoka other commands have been
         done.  Thus, this ni the place to code option dependencies: if
         'foo' depends on 'bar', then it ni safe to set 'foo' kutoka 'bar' as
-        long as 'foo' still has the same value it was assigned in
+        long kama 'foo' still has the same value it was assigned in
         'initialize_options()'.
 
         This method must be implemented by all command classes.
         """
-         ashiria RuntimeError("abstract method -- subkundi %s must override"
+        ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
 
@@ -172,7 +172,7 @@ kundi Command:
 
         This method must be implemented by all command classes.
         """
-         ashiria RuntimeError("abstract method -- subkundi %s must override"
+        ashiria RuntimeError("abstract method -- subkundi %s must override"
                            % self.__class__)
 
     eleza announce(self, msg, level=1):
@@ -198,7 +198,7 @@ kundi Command:
     # value meets certain type na value constraints.  If not, we try to
     # force it into conformance (eg. ikiwa we expect a list but have a string,
     # split the string on comma and/or whitespace).  If we can't force the
-    # option into conformance,  ashiria DistutilsOptionError.  Thus, command
+    # option into conformance, ashiria DistutilsOptionError.  Thus, command
     # classes need do nothing more than (eg.)
     #   self.ensure_string_list('foo')
     # na they can be guaranteed that thereafter, self.foo will be
@@ -209,8 +209,8 @@ kundi Command:
         ikiwa val ni Tupu:
             setattr(self, option, default)
             rudisha default
-        elikiwa sio isinstance(val, str):
-             ashiria DistutilsOptionError("'%s' must be a %s (got `%s`)"
+        lasivyo sio isinstance(val, str):
+            ashiria DistutilsOptionError("'%s' must be a %s (got `%s`)"
                                        % (option, what, val))
         rudisha val
 
@@ -229,7 +229,7 @@ kundi Command:
         val = getattr(self, option)
         ikiwa val ni Tupu:
             return
-        elikiwa isinstance(val, str):
+        lasivyo isinstance(val, str):
             setattr(self, option, re.split(r',\s*|\s+', val))
         isipokua:
             ikiwa isinstance(val, list):
@@ -237,7 +237,7 @@ kundi Command:
             isipokua:
                 ok = Uongo
             ikiwa sio ok:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "'%s' must be a list of strings (got %r)"
                       % (option, val))
 
@@ -245,7 +245,7 @@ kundi Command:
                               default=Tupu):
         val = self._ensure_stringlike(option, what, default)
         ikiwa val ni sio Tupu na sio tester(val):
-             ashiria DistutilsOptionError(("error kwenye '%s' option: " + error_fmt)
+            ashiria DistutilsOptionError(("error kwenye '%s' option: " + error_fmt)
                                        % (option, val))
 
     eleza ensure_filename(self, option):
@@ -272,7 +272,7 @@ kundi Command:
         """Set the values of any "undefined" options kutoka corresponding
         option values kwenye some other command object.  "Undefined" here means
         "is Tupu", which ni the convention used to indicate that an option
-        has sio been changed between 'initialize_options()' and
+        has sio been changed between 'initialize_options()' na
         'finalize_options()'.  Usually called kutoka 'finalize_options()' for
         options that depend on some other command rather than another
         option of the same command.  'src_cmd' ni the other command from
@@ -340,7 +340,7 @@ kundi Command:
     eleza copy_file(self, infile, outfile, preserve_mode=1, preserve_times=1,
                   link=Tupu, level=1):
         """Copy a file respecting verbose, dry-run na force flags.  (The
-        former two default to whatever ni kwenye the Distribution object, and
+        former two default to whatever ni kwenye the Distribution object, na
         the latter defaults to false kila commands that don't define it.)"""
         rudisha file_util.copy_file(infile, outfile, preserve_mode,
                                    preserve_times, sio self.force, link,
@@ -372,9 +372,9 @@ kundi Command:
 
     eleza make_file(self, infiles, outfile, func, args,
                   exec_msg=Tupu, skip_msg=Tupu, level=1):
-        """Special case of 'execute()' kila operations that process one or
+        """Special case of 'execute()' kila operations that process one ama
         more input files na generate one output file.  Works just like
-        'execute()', except the operation ni skipped na a different
+        'execute()', tatizo the operation ni skipped na a different
         message printed ikiwa 'outfile' already exists na ni newer than all
         files listed kwenye 'infiles'.  If the command defined 'self.force',
         na it ni true, then the command ni unconditionally run -- does no
@@ -386,8 +386,8 @@ kundi Command:
         # Allow 'infiles' to be a single string
         ikiwa isinstance(infiles, str):
             infiles = (infiles,)
-        elikiwa sio isinstance(infiles, (list, tuple)):
-             ashiria TypeError(
+        lasivyo sio isinstance(infiles, (list, tuple)):
+            ashiria TypeError(
                   "'infiles' must be a string, ama a list ama tuple of strings")
 
         ikiwa exec_msg ni Tupu:

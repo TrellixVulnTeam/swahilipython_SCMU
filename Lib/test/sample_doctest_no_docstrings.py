@@ -9,4 +9,4 @@ kundi Foo(object):
     # A kundi ukijumuisha no docstring.
 
     eleza __init__(self):
-        pass
+        pita

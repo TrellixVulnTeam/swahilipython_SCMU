@@ -53,10 +53,10 @@ kundi TestContentManager(TestEmailBase):
             cm.get_content(m)
 
     kundi BaseThing(str):
-        pass
+        pita
     baseobject_full_path = __name__ + '.' + 'TestContentManager.BaseThing'
     kundi Thing(BaseThing):
-        pass
+        pita
     testobject_full_path = __name__ + '.' + 'TestContentManager.Thing'
 
     set_key_params = {
@@ -278,7 +278,7 @@ kundi TestRawDataManager(TestEmailBase):
                 self.assertEqual(sub_msg['to'], 'foo@example.com')
                 self.assertEqual(sub_msg['from'].addresses[0].username, 'bar')
 
-    eleza test_get_message_non_rfc822_or_external_body_yields_bytes(self):
+    eleza test_get_message_non_rfc822_or_external_body_tumas_bytes(self):
         m = self._str_msg(textwrap.dedent("""\
             Content-Type: message/partial
 
@@ -551,7 +551,7 @@ kundi TestRawDataManager(TestEmailBase):
         kila cte kwenye 'quoted-printable base64'.split():
             kila subtype kwenye 'rfc822 external-body'.split():
                 ukijumuisha self.subTest(cte=cte, subtype=subtype):
-                    ukijumuisha self.assertRaises(ValueError) as ar:
+                    ukijumuisha self.assertRaises(ValueError) kama ar:
                         m.set_content(content, subtype, cte=cte)
                     exc = str(ar.exception)
                     self.assertIn(cte, exc)
@@ -559,7 +559,7 @@ kundi TestRawDataManager(TestEmailBase):
         subtype = 'external-body'
         kila cte kwenye '8bit binary'.split():
             ukijumuisha self.subTest(cte=cte, subtype=subtype):
-                ukijumuisha self.assertRaises(ValueError) as ar:
+                ukijumuisha self.assertRaises(ValueError) kama ar:
                     m.set_content(content, subtype, cte=cte)
                 exc = str(ar.exception)
                 self.assertIn(cte, exc)

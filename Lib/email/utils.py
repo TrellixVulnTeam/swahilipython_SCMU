@@ -31,7 +31,7 @@ agiza datetime
 agiza urllib.parse
 
 kutoka email._parseaddr agiza quote
-kutoka email._parseaddr agiza AddressList as _AddressList
+kutoka email._parseaddr agiza AddressList kama _AddressList
 kutoka email._parseaddr agiza mktime_tz
 
 kutoka email._parseaddr agiza parsedate, parsedate_tz, _parsedate_tz
@@ -56,7 +56,7 @@ eleza _has_surrogates(s):
     jaribu:
         s.encode()
         rudisha Uongo
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         rudisha Kweli
 
 # How to deal ukijumuisha a string containing bytes before handing it to the
@@ -82,17 +82,17 @@ eleza formataddr(pair, charset='utf-8'):
     returned unmodified.
 
     Optional charset ikiwa given ni the character set that ni used to encode
-    realname kwenye case realname ni sio ASCII safe.  Can be an instance of str or
+    realname kwenye case realname ni sio ASCII safe.  Can be an instance of str ama
     a Charset-like object which has a header_encode method.  Default is
     'utf-8'.
     """
     name, address = pair
-    # The address MUST (per RFC) be ascii, so  ashiria a UnicodeError ikiwa it isn't.
+    # The address MUST (per RFC) be ascii, so ashiria a UnicodeError ikiwa it isn't.
     address.encode('ascii')
     ikiwa name:
         jaribu:
             name.encode('ascii')
-        except UnicodeEncodeError:
+        tatizo UnicodeEncodeError:
             ikiwa isinstance(charset, str):
                 charset = Charset(charset)
             encoded_name = charset.header_encode(name)
@@ -124,14 +124,14 @@ eleza _format_timetuple_and_zone(timetuple, zone):
         zone)
 
 eleza formatdate(timeval=Tupu, localtime=Uongo, usegmt=Uongo):
-    """Returns a date string as specified by RFC 2822, e.g.:
+    """Returns a date string kama specified by RFC 2822, e.g.:
 
     Fri, 09 Nov 2001 01:08:47 -0000
 
-    Optional timeval ikiwa given ni a floating point time value as accepted by
+    Optional timeval ikiwa given ni a floating point time value kama accepted by
     gmtime() na localtime(), otherwise the current time ni used.
 
-    Optional localtime ni a flag that when Kweli, interprets timeval, and
+    Optional localtime ni a flag that when Kweli, interprets timeval, na
     returns a date relative to the local timezone instead of UTC, properly
     taking daylight savings time into account.
 
@@ -153,7 +153,7 @@ eleza formatdate(timeval=Tupu, localtime=Uongo, usegmt=Uongo):
     rudisha format_datetime(dt, usegmt)
 
 eleza format_datetime(dt, usegmt=Uongo):
-    """Turn a datetime into a date string as specified kwenye RFC 2822.
+    """Turn a datetime into a date string kama specified kwenye RFC 2822.
 
     If usegmt ni Kweli, dt must be an aware datetime ukijumuisha an offset of zero.  In
     this case 'GMT' will be rendered instead of the normal +0000 required by
@@ -162,9 +162,9 @@ eleza format_datetime(dt, usegmt=Uongo):
     now = dt.timetuple()
     ikiwa usegmt:
         ikiwa dt.tzinfo ni Tupu ama dt.tzinfo != datetime.timezone.utc:
-             ashiria ValueError("usegmt option requires a UTC datetime")
+            ashiria ValueError("usegmt option requires a UTC datetime")
         zone = 'GMT'
-    elikiwa dt.tzinfo ni Tupu:
+    lasivyo dt.tzinfo ni Tupu:
         zone = '-0000'
     isipokua:
         zone = dt.strftime("%z")
@@ -292,13 +292,13 @@ eleza decode_params(params):
             # And now append all values kwenye numerical order, converting
             # %-encodings kila the encoded segments.  If any of the
             # continuation names ends kwenye a *, then the entire string, after
-            # decoding segments na concatenating, must have the charset and
+            # decoding segments na concatenating, must have the charset na
             # language specifiers at the beginning of the string.
             kila num, s, encoded kwenye continuations:
                 ikiwa encoded:
-                    # Decode as "latin-1", so the characters kwenye s directly
+                    # Decode kama "latin-1", so the characters kwenye s directly
                     # represent the percent-encoded octet values.
-                    # collapse_rfc2231_value treats this as an octet sequence.
+                    # collapse_rfc2231_value treats this kama an octet sequence.
                     s = urllib.parse.unquote(s, encoding="latin-1")
                     extended = Kweli
                 value.append(s)
@@ -314,9 +314,9 @@ eleza collapse_rfc2231_value(value, errors='replace',
                            fallback_charset='us-ascii'):
     ikiwa sio isinstance(value, tuple) ama len(value) != 3:
         rudisha unquote(value)
-    # While value comes to us as a unicode string, we need it to be a bytes
+    # While value comes to us kama a unicode string, we need it to be a bytes
     # object.  We do sio want bytes() normal utf-8 decoder, we want a straight
-    # interpretation of the string as character bytes.
+    # interpretation of the string kama character bytes.
     charset, language, text = value
     ikiwa charset ni Tupu:
         # Issue 17369: ikiwa charset/lang ni Tupu, decode_rfc2231 couldn't parse
@@ -325,7 +325,7 @@ eleza collapse_rfc2231_value(value, errors='replace',
     rawbytes = bytes(text, 'raw-unicode-escape')
     jaribu:
         rudisha str(rawbytes, charset, errors)
-    except LookupError:
+    tatizo LookupError:
         # charset ni sio a known codec.
         rudisha unquote(text)
 
@@ -337,7 +337,7 @@ eleza collapse_rfc2231_value(value, errors='replace',
 #
 
 eleza localtime(dt=Tupu, isdst=-1):
-    """Return local time as an aware datetime object.
+    """Return local time kama an aware datetime object.
 
     If called without arguments, rudisha current time.  Otherwise *dt*
     argument should be a datetime instance, na it ni converted to the
@@ -354,7 +354,7 @@ eleza localtime(dt=Tupu, isdst=-1):
         rudisha datetime.datetime.now(datetime.timezone.utc).astimezone()
     ikiwa dt.tzinfo ni sio Tupu:
         rudisha dt.astimezone()
-    # We have a naive datetime.  Convert to a (localtime) timetuple na pass to
+    # We have a naive datetime.  Convert to a (localtime) timetuple na pita to
     # system mktime together ukijumuisha the isdst hint.  System mktime will return
     # seconds since epoch.
     tm = dt.timetuple()[:-1] + (isdst,)
@@ -363,7 +363,7 @@ eleza localtime(dt=Tupu, isdst=-1):
     jaribu:
         delta = datetime.timedelta(seconds=localtm.tm_gmtoff)
         tz = datetime.timezone(delta, localtm.tm_zone)
-    except AttributeError:
+    tatizo AttributeError:
         # Compute UTC offset na compare ukijumuisha the value implied by tm_isdst.
         # If the values match, use the zone name implied by tm_isdst.
         delta = dt - datetime.datetime(*time.gmtime(seconds)[:6])

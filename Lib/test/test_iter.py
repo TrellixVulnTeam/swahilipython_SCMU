@@ -29,7 +29,7 @@ kundi BasicIterClass:
     eleza __next__(self):
         res = self.i
         ikiwa res >= self.n:
-             ashiria StopIteration
+            ashiria StopIteration
         self.i = res + 1
         rudisha res
     eleza __iter__(self):
@@ -48,14 +48,14 @@ kundi SequenceClass:
         ikiwa 0 <= i < self.n:
             rudisha i
         isipokua:
-             ashiria IndexError
+            ashiria IndexError
 
 kundi UnlimitedSequenceClass:
     eleza __getitem__(self, i):
         rudisha i
 
 kundi DefaultIterClass:
-    pass
+    pita
 
 kundi NoIterClass:
     eleza __getitem__(self, i):
@@ -74,7 +74,7 @@ kundi TestCase(unittest.TestCase):
         wakati 1:
             jaribu:
                 val = next(it)
-            except StopIteration:
+            tatizo StopIteration:
                 koma
             res.append(val)
         self.assertEqual(res, seq)
@@ -93,7 +93,7 @@ kundi TestCase(unittest.TestCase):
         kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
             d = pickle.dumps(itorg, proto)
             it = pickle.loads(d)
-            # Cannot assert type equality because dict iterators unpickle as list
+            # Cannot assert type equality because dict iterators unpickle kama list
             # iterators.
             # self.assertEqual(type(itorg), type(it))
             self.assertKweli(isinstance(it, collections.abc.Iterator))
@@ -102,7 +102,7 @@ kundi TestCase(unittest.TestCase):
             it = pickle.loads(d)
             jaribu:
                 next(it)
-            except StopIteration:
+            tatizo StopIteration:
                 endelea
             d = pickle.dumps(it, proto)
             it = pickle.loads(d)
@@ -112,7 +112,7 @@ kundi TestCase(unittest.TestCase):
     eleza test_iter_basic(self):
         self.check_iterator(iter(range(10)), list(range(10)))
 
-    # Test that iter(iter(x)) ni the same as iter(x)
+    # Test that iter(iter(x)) ni the same kama iter(x)
     eleza test_iter_idempotency(self):
         seq = list(range(10))
         it = iter(seq)
@@ -225,7 +225,7 @@ kundi TestCase(unittest.TestCase):
                 i = self.i
                 self.i = i + 1
                 ikiwa i > 100:
-                     ashiria IndexError # Emergency stop
+                    ashiria IndexError # Emergency stop
                 rudisha i
         self.check_iterator(iter(C(), 10), list(range(10)), pickle=Uongo)
 
@@ -242,7 +242,7 @@ kundi TestCase(unittest.TestCase):
         eleza spam(state=[0]):
             i = state[0]
             ikiwa i == 10:
-                 ashiria StopIteration
+                ashiria StopIteration
             state[0] = i+1
             rudisha i
         self.check_iterator(iter(spam, 20), list(range(10)), pickle=Uongo)
@@ -253,13 +253,13 @@ kundi TestCase(unittest.TestCase):
             i = state[0]
             state[0] = i+1
             ikiwa i == 10:
-                 ashiria RuntimeError
+                ashiria RuntimeError
             rudisha i
         res = []
         jaribu:
             kila x kwenye iter(spam, 20):
                 res.append(x)
-        except RuntimeError:
+        tatizo RuntimeError:
             self.assertEqual(res, list(range(10)))
         isipokua:
             self.fail("should have raised RuntimeError")
@@ -269,13 +269,13 @@ kundi TestCase(unittest.TestCase):
         kundi MySequenceClass(SequenceClass):
             eleza __getitem__(self, i):
                 ikiwa i == 10:
-                     ashiria RuntimeError
+                    ashiria RuntimeError
                 rudisha SequenceClass.__getitem__(self, i)
         res = []
         jaribu:
             kila x kwenye MySequenceClass(20):
                 res.append(x)
-        except RuntimeError:
+        tatizo RuntimeError:
             self.assertEqual(res, list(range(10)))
         isipokua:
             self.fail("should have raised RuntimeError")
@@ -285,7 +285,7 @@ kundi TestCase(unittest.TestCase):
         kundi MySequenceClass(SequenceClass):
             eleza __getitem__(self, i):
                 ikiwa i == 10:
-                     ashiria StopIteration
+                    ashiria StopIteration
                 rudisha SequenceClass.__getitem__(self, i)
         self.check_for_loop(MySequenceClass(20), list(range(10)), pickle=Uongo)
 
@@ -332,8 +332,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test list()'s use of iterators.
     eleza test_builtin_list(self):
@@ -363,8 +363,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test tuples()'s use of iterators.
     eleza test_builtin_tuple(self):
@@ -396,8 +396,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test filter()'s use of iterators.
     eleza test_builtin_filter(self):
@@ -437,7 +437,7 @@ kundi TestCase(unittest.TestCase):
                         ikiwa i < len(self.vals):
                             rudisha self.vals[i]
                         isipokua:
-                             ashiria StopIteration
+                            ashiria StopIteration
                 rudisha SeqIter(self.vals)
 
         seq = Seq(*([bKweli, bUongo] * 25))
@@ -473,8 +473,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test map()'s use of iterators.
     eleza test_builtin_map(self):
@@ -503,8 +503,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test zip()'s use of iterators.
     eleza test_builtin_zip(self):
@@ -552,8 +552,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         self.assertEqual(list(zip(range(5))), [(i,) kila i kwenye range(5)])
 
@@ -561,7 +561,7 @@ kundi TestCase(unittest.TestCase):
         kundi NoGuessLen5:
             eleza __getitem__(self, i):
                 ikiwa i >= 5:
-                     ashiria IndexError
+                    ashiria IndexError
                 rudisha i
 
         kundi Guess3Len5(NoGuessLen5):
@@ -616,7 +616,7 @@ kundi TestCase(unittest.TestCase):
         # until it's seen all of s's elements.  But kwenye this case, f's
         # iterator cannot be restarted.  So what we're testing here is
         # whether string.join() can manage to remember everything it's seen
-        # na pass that on to unicode.join().
+        # na pita that on to unicode.join().
         jaribu:
             got = " - ".join(OhPhooey(f))
             self.assertEqual(got, "a\n - b\n - fooled you! - c\n")
@@ -624,10 +624,10 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
-    # Test iterators ukijumuisha 'x kwenye y' na 'x sio kwenye y'.
+    # Test iterators ukijumuisha 'x kwenye y' na 'x haiko kwenye y'.
     eleza test_in_and_not_in(self):
         kila sc5 kwenye IteratingSequenceClass(5), SequenceClass(5):
             kila i kwenye range(5):
@@ -636,7 +636,7 @@ kundi TestCase(unittest.TestCase):
                 self.assertNotIn(i, sc5)
 
         self.assertRaises(TypeError, lambda: 3 kwenye 12)
-        self.assertRaises(TypeError, lambda: 3 sio kwenye map)
+        self.assertRaises(TypeError, lambda: 3 haiko kwenye map)
 
         d = {"one": 1, "two": 2, "three": 3, 1j: 2j}
         kila k kwenye d:
@@ -665,8 +665,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test iterators ukijumuisha operator.countOf (PySequence_Count).
     eleza test_countOf(self):
@@ -700,8 +700,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     # Test iterators ukijumuisha operator.indexOf (PySequence_Index).
     eleza test_indexOf(self):
@@ -736,8 +736,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         ikundi = IteratingSequenceClass(3)
         kila i kwenye range(3):
@@ -766,7 +766,7 @@ kundi TestCase(unittest.TestCase):
 
                 eleza __next__(self):
                     ikiwa self.i >= self.finish:
-                         ashiria StopIteration
+                        ashiria StopIteration
                     result = str(self.i) + '\n'
                     self.i += 1
                     rudisha result
@@ -793,8 +793,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
 
     # Test iterators on RHS of unpacking assignments.
@@ -807,22 +807,22 @@ kundi TestCase(unittest.TestCase):
 
         jaribu:    # too many values
             a, b = IteratingSequenceClass(3)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("should have raised ValueError")
 
         jaribu:    # sio enough values
             a, b, c = IteratingSequenceClass(2)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("should have raised ValueError")
 
         jaribu:    # sio iterable
             a, b, c = len
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
             self.fail("should have raised TypeError")
 
@@ -844,8 +844,8 @@ kundi TestCase(unittest.TestCase):
             f.close()
             jaribu:
                 unlink(TESTFN)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         (a, b), (c,) = IteratingSequenceClass(2), {42: 24}
         self.assertEqual((a, b, c), (0, 1, 42))
@@ -870,8 +870,8 @@ kundi TestCase(unittest.TestCase):
         self.assertEqual(C.count, 3)
         jaribu:
             a, b = iter(l)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         toa l
         self.assertEqual(C.count, 0)
 
@@ -914,7 +914,7 @@ kundi TestCase(unittest.TestCase):
             i = state[0]
             state[0] = i+1
             ikiwa i == 10:
-                 ashiria AssertionError("shouldn't have gotten this far")
+                ashiria AssertionError("shouldn't have gotten this far")
             rudisha i
         b = iter(spam, 5)
         self.assertEqual(list(b), list(range(5)))
@@ -929,7 +929,7 @@ kundi TestCase(unittest.TestCase):
             self.assertEqual(len(list(b)), 5)
             self.assertEqual(list(b), [])
 
-    eleza test_sinkstate_yield(self):
+    eleza test_sinkstate_tuma(self):
         eleza gen():
             kila i kwenye range(5):
                 tuma i
@@ -961,9 +961,9 @@ kundi TestCase(unittest.TestCase):
 
         jaribu:
             kila i kwenye BadIterator() :
-                pass
-        except TypeError:
-            pass
+                pita
+        tatizo TypeError:
+            pita
 
     eleza test_extending_list_with_iterator_does_not_segfault(self):
         # The code to extend a list ukijumuisha an iterator has a fair

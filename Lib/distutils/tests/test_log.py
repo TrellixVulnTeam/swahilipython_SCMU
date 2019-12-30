@@ -11,7 +11,7 @@ kundi TestLog(unittest.TestCase):
     eleza test_non_ascii(self):
         # Issues #8663, #34421: test that non-encodable text ni escaped with
         # backslashreplace error handler na encodable non-ASCII text is
-        # output as is.
+        # output kama is.
         kila errors kwenye ('strict', 'backslashreplace', 'surrogateescape',
                        'replace', 'ignore'):
             ukijumuisha self.subTest(errors=errors):

@@ -24,10 +24,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.charmap_decode(input,self.errors,decoding_table)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

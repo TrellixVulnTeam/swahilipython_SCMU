@@ -8,7 +8,7 @@ kutoka tkinter agiza Tk, Text
 
 kutoka unittest.mock agiza Mock
 kutoka idlelib.idle_test.mock_tk agiza Mbox
-agiza idlelib.searchengine as se
+agiza idlelib.searchengine kama se
 
 orig_mbox = se.tkMessageBox
 showerror = Mbox.showerror
@@ -233,7 +233,7 @@ kundi ReplaceDialogTest(unittest.TestCase):
         replace = self.dialog.replace_it
         self.engine.backvar.set(Kweli)
 
-        text.insert('insert', '\nis as ')
+        text.insert('insert', '\nis kama ')
 
         pv.set('is')
         rv.set('was')

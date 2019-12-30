@@ -42,7 +42,7 @@ kundi DummyProcess(threading.Thread):
 
     eleza start(self):
         ikiwa self._parent ni sio current_process():
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 "Parent ni {0!r} but current_process ni {1!r}".format(
                     self._parent, current_process()))
         self._start_called = Kweli
@@ -73,7 +73,7 @@ eleza active_children():
     rudisha list(children)
 
 eleza freeze_support():
-    pass
+    pita
 
 #
 #
@@ -117,7 +117,7 @@ eleza Manager():
     rudisha sys.modules[__name__]
 
 eleza shutdown():
-    pass
+    pita
 
 eleza Pool(processes=Tupu, initializer=Tupu, initargs=()):
     kutoka ..pool agiza ThreadPool

@@ -32,7 +32,7 @@ kundi ParenMatch:
     """
 
     RESTORE_VIRTUAL_EVENT_NAME = "<<parenmatch-check-restore>>"
-    # We want the restore event be called before the usual rudisha and
+    # We want the restore event be called before the usual rudisha na
     # backspace events.
     RESTORE_SEQUENCES = ("<KeyPress>", "<ButtonPress>",
                          "<Key-Return>", "<Key-BackSpace>")
@@ -84,7 +84,7 @@ kundi ParenMatch:
         "Handle user input of closer."
         # If user bound non-closer to <<paren-closed>>, quit.
         closer = self.text.get("insert-1c")
-        ikiwa closer sio kwenye _openers:
+        ikiwa closer haiko kwenye _openers:
             return
         hp = HyperParser(self.editwin, "insert-1c")
         ikiwa sio hp.is_in_code():

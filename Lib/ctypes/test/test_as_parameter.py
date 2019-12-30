@@ -7,7 +7,7 @@ dll = CDLL(_ctypes_test.__file__)
 
 jaribu:
     CALLBACK_FUNCTYPE = WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     CALLBACK_FUNCTYPE = CFUNCTYPE
 
@@ -31,7 +31,7 @@ kundi BasicWrapTestCase(unittest.TestCase):
         f.restype = POINTER(c_int)
         f.argtypes = [POINTER(c_int)]
 
-        # This only works ikiwa the value c_int(42) passed to the
+        # This only works ikiwa the value c_int(42) pitaed to the
         # function ni still alive wakati the pointer (the result) is
         # used.
 
@@ -103,7 +103,7 @@ kundi BasicWrapTestCase(unittest.TestCase):
         self.assertRaises(ArgumentError, f, self.wrap(-10), self.wrap(cb))
 
     eleza test_callbacks_2(self):
-        # Can also use simple datatypes as argument type specifiers
+        # Can also use simple datatypes kama argument type specifiers
         # kila the callback function.
         # In this case the call receives an instance of that type
         f = dll._testfunc_callback_i_if
@@ -169,7 +169,7 @@ kundi BasicWrapTestCase(unittest.TestCase):
         s2h = dll.ret_2h_func(self.wrap(inp))
         self.assertEqual((s2h.x, s2h.y), (99*2, 88*3))
 
-        # Test also that the original struct was unmodified (i.e. was passed by
+        # Test also that the original struct was unmodified (i.e. was pitaed by
         # value)
         self.assertEqual((inp.x, inp.y), (99, 88))
 
@@ -194,7 +194,7 @@ kundi BasicWrapTestCase(unittest.TestCase):
         kutoka ctypes agiza c_int
 
         kundi A(object):
-            pass
+            pita
 
         a = A()
         a._as_parameter_ = a

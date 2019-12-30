@@ -21,9 +21,9 @@ is read when the database ni opened, na some updates rewrite the whole index)
 
 """
 
-agiza ast as _ast
-agiza io as _io
-agiza os as _os
+agiza ast kama _ast
+agiza io kama _io
+agiza os kama _os
 agiza collections.abc
 
 __all__ = ["error", "open"]
@@ -75,15 +75,15 @@ kundi _Database(collections.abc.MutableMapping):
             kila filename kwenye (self._datfile, self._bakfile, self._dirfile):
                 jaribu:
                     _os.remove(filename)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
         # Mod by Jack: create data file ikiwa needed
         jaribu:
             f = _io.open(self._datfile, 'r', encoding="Latin-1")
-        except OSError:
-            ikiwa flag sio kwenye ('c', 'n'):
+        tatizo OSError:
+            ikiwa flag haiko kwenye ('c', 'n'):
                 raise
-            ukijumuisha _io.open(self._datfile, 'w', encoding="Latin-1") as f:
+            ukijumuisha _io.open(self._datfile, 'w', encoding="Latin-1") kama f:
                 self._chmod(self._datfile)
         isipokua:
             f.close()
@@ -94,8 +94,8 @@ kundi _Database(collections.abc.MutableMapping):
         self._index = {}
         jaribu:
             f = _io.open(self._dirfile, 'r', encoding="Latin-1")
-        except OSError:
-            ikiwa flag sio kwenye ('c', 'n'):
+        tatizo OSError:
+            ikiwa flag haiko kwenye ('c', 'n'):
                 raise
             self._modified = Kweli
         isipokua:
@@ -118,15 +118,15 @@ kundi _Database(collections.abc.MutableMapping):
 
         jaribu:
             self._os.unlink(self._bakfile)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         jaribu:
             self._os.rename(self._dirfile, self._bakfile)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
-        ukijumuisha self._io.open(self._dirfile, 'w', encoding="Latin-1") as f:
+        ukijumuisha self._io.open(self._dirfile, 'w', encoding="Latin-1") kama f:
             self._chmod(self._dirfile)
             kila key, pos_and_siz_pair kwenye self._index.items():
                 # Use Latin-1 since it has no qualms ukijumuisha any value kwenye any
@@ -138,14 +138,14 @@ kundi _Database(collections.abc.MutableMapping):
 
     eleza _verify_open(self):
         ikiwa self._index ni Tupu:
-             ashiria error('DBM object has already been closed')
+            ashiria error('DBM object has already been closed')
 
     eleza __getitem__(self, key):
         ikiwa isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
-        pos, siz = self._index[key]     # may  ashiria KeyError
-        ukijumuisha _io.open(self._datfile, 'rb') as f:
+        pos, siz = self._index[key]     # may ashiria KeyError
+        ukijumuisha _io.open(self._datfile, 'rb') kama f:
             f.seek(pos)
             dat = f.read(siz)
         rudisha dat
@@ -155,7 +155,7 @@ kundi _Database(collections.abc.MutableMapping):
     # to get to an aligned offset.  Return pair
     #     (starting offset of val, len(val))
     eleza _addval(self, val):
-        ukijumuisha _io.open(self._datfile, 'rb+') as f:
+        ukijumuisha _io.open(self._datfile, 'rb+') kama f:
             f.seek(0, 2)
             pos = int(f.tell())
             npos = ((pos + _BLOCKSIZE - 1) // _BLOCKSIZE) * _BLOCKSIZE
@@ -169,7 +169,7 @@ kundi _Database(collections.abc.MutableMapping):
     # pos to hold val, without overwriting some other value.  Return
     # pair (pos, len(val)).
     eleza _setval(self, pos, val):
-        ukijumuisha _io.open(self._datfile, 'rb+') as f:
+        ukijumuisha _io.open(self._datfile, 'rb+') kama f:
             f.seek(pos)
             f.write(val)
         rudisha (pos, len(val))
@@ -179,24 +179,24 @@ kundi _Database(collections.abc.MutableMapping):
     # the in-memory index dict, na append one to the directory file.
     eleza _addkey(self, key, pos_and_siz_pair):
         self._index[key] = pos_and_siz_pair
-        ukijumuisha _io.open(self._dirfile, 'a', encoding="Latin-1") as f:
+        ukijumuisha _io.open(self._dirfile, 'a', encoding="Latin-1") kama f:
             self._chmod(self._dirfile)
             f.write("%r, %r\n" % (key.decode("Latin-1"), pos_and_siz_pair))
 
     eleza __setitem__(self, key, val):
         ikiwa self._readonly:
-             ashiria error('The database ni opened kila reading only')
+            ashiria error('The database ni opened kila reading only')
         ikiwa isinstance(key, str):
             key = key.encode('utf-8')
-        elikiwa sio isinstance(key, (bytes, bytearray)):
-             ashiria TypeError("keys must be bytes ama strings")
+        lasivyo sio isinstance(key, (bytes, bytearray)):
+            ashiria TypeError("keys must be bytes ama strings")
         ikiwa isinstance(val, str):
             val = val.encode('utf-8')
-        elikiwa sio isinstance(val, (bytes, bytearray)):
-             ashiria TypeError("values must be bytes ama strings")
+        lasivyo sio isinstance(val, (bytes, bytearray)):
+            ashiria TypeError("values must be bytes ama strings")
         self._verify_open()
         self._modified = Kweli
-        ikiwa key sio kwenye self._index:
+        ikiwa key haiko kwenye self._index:
             self._addkey(key, self._addval(val))
         isipokua:
             # See whether the new value ni small enough to fit kwenye the
@@ -222,7 +222,7 @@ kundi _Database(collections.abc.MutableMapping):
 
     eleza __delitem__(self, key):
         ikiwa self._readonly:
-             ashiria error('The database ni opened kila reading only')
+            ashiria error('The database ni opened kila reading only')
         ikiwa isinstance(key, str):
             key = key.encode('utf-8')
         self._verify_open()
@@ -238,8 +238,8 @@ kundi _Database(collections.abc.MutableMapping):
     eleza keys(self):
         jaribu:
             rudisha list(self._index)
-        except TypeError:
-             ashiria error('DBM object has already been closed') kutoka Tupu
+        tatizo TypeError:
+            ashiria error('DBM object has already been closed') kutoka Tupu
 
     eleza items(self):
         self._verify_open()
@@ -250,24 +250,24 @@ kundi _Database(collections.abc.MutableMapping):
             key = key.encode('utf-8')
         jaribu:
             rudisha key kwenye self._index
-        except TypeError:
+        tatizo TypeError:
             ikiwa self._index ni Tupu:
-                 ashiria error('DBM object has already been closed') kutoka Tupu
+                ashiria error('DBM object has already been closed') kutoka Tupu
             isipokua:
                 raise
 
     eleza iterkeys(self):
         jaribu:
             rudisha iter(self._index)
-        except TypeError:
-             ashiria error('DBM object has already been closed') kutoka Tupu
+        tatizo TypeError:
+            ashiria error('DBM object has already been closed') kutoka Tupu
     __iter__ = iterkeys
 
     eleza __len__(self):
         jaribu:
             rudisha len(self._index)
-        except TypeError:
-             ashiria error('DBM object has already been closed') kutoka Tupu
+        tatizo TypeError:
+            ashiria error('DBM object has already been closed') kutoka Tupu
 
     eleza close(self):
         jaribu:
@@ -306,11 +306,11 @@ eleza open(file, flag='c', mode=0o666):
     jaribu:
         um = _os.umask(0)
         _os.umask(um)
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         # Turn off any bits that are set kwenye the umask
         mode = mode & (~um)
-    ikiwa flag sio kwenye ('r', 'w', 'c', 'n'):
-         ashiria ValueError("Flag must be one of 'r', 'w', 'c', ama 'n'")
+    ikiwa flag haiko kwenye ('r', 'w', 'c', 'n'):
+        ashiria ValueError("Flag must be one of 'r', 'w', 'c', ama 'n'")
     rudisha _Database(file, mode, flag=flag)

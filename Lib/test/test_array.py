@@ -13,13 +13,13 @@ agiza sys
 agiza warnings
 
 agiza array
-kutoka array agiza _array_reconstructor as array_reconstructor
+kutoka array agiza _array_reconstructor kama array_reconstructor
 
 sizeof_wchar = array.array('u').itemsize
 
 
 kundi ArraySubclass(array.array):
-    pass
+    pita
 
 kundi ArraySubclassWithKwargs(array.array):
     eleza __init__(self, typecode, newarg=Tupu):
@@ -124,7 +124,7 @@ kundi ArrayReconstructorTest(unittest.TestCase):
              [-1<<31, (1<<31)-1, 0]),
             (['l'], SIGNED_INT64_BE, '>qqq',
              [-1<<31, (1<<31)-1, 0]),
-            # The following tests kila INT64 will  ashiria an OverflowError
+            # The following tests kila INT64 will ashiria an OverflowError
             # when run on a 32-bit machine. The tests are simply skipped
             # kwenye that case.
             (['L'], UNSIGNED_INT64_LE, '<QQQQ',
@@ -150,7 +150,7 @@ kundi ArrayReconstructorTest(unittest.TestCase):
             kila typecode kwenye valid_typecodes:
                 jaribu:
                     a = array.array(typecode, values)
-                except OverflowError:
+                tatizo OverflowError:
                     endelea  # Skip this test case.
                 b = array_reconstructor(
                     array.array, typecode, mformat_code, arraystr)
@@ -178,9 +178,9 @@ kundi BaseTest:
     # Required kundi attributes (provided by subclasses
     # typecode: the typecode to test
     # example: an initializer usable kwenye the constructor kila this type
-    # smallerexample: the same length as example, but smaller
-    # biggerexample: the same length as example, but bigger
-    # outside: An entry that ni sio kwenye example
+    # smallerexample: the same length kama example, but smaller
+    # biggerexample: the same length kama example, but bigger
+    # outside: An entry that ni haiko kwenye example
     # minitemsize: the minimum guaranteed itemsize
 
     eleza assertEntryEqual(self, entry1, entry2):
@@ -427,10 +427,10 @@ kundi BaseTest:
         self.assertEqual(a, b)
 
     eleza test_tofromstring(self):
-        # Warnings sio raised when arguments are incorrect as Argument Clinic
+        # Warnings sio raised when arguments are incorrect kama Argument Clinic
         # handles that before the warning can be raised.
         nb_warnings = 2
-        ukijumuisha warnings.catch_warnings(record=Kweli) as r:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama r:
             warnings.filterwarnings("always",
                                     message=r"(to|from)string\(\) ni deprecated",
                                     category=DeprecationWarning)
@@ -749,7 +749,7 @@ kundi BaseTest:
         indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         kila start kwenye indices:
             kila stop kwenye indices:
-                # Everything except the initial 0 (invalid step)
+                # Everything tatizo the initial 0 (invalid step)
                 kila step kwenye indices[1:]:
                     self.assertEqual(list(a[start:stop:step]),
                                      list(a)[start:stop:step])
@@ -847,7 +847,7 @@ kundi BaseTest:
         indices = (0, Tupu, 1, 3, 19, 100, sys.maxsize, -1, -2, -31, -100)
         kila start kwenye indices:
             kila stop kwenye indices:
-                # Everything except the initial 0 (invalid step)
+                # Everything tatizo the initial 0 (invalid step)
                 kila step kwenye indices[1:]:
                     a = array.array(self.typecode, self.example)
                     L = list(a)
@@ -965,22 +965,22 @@ kundi BaseTest:
         # non-iterable argument
         self.assertRaises(TypeError, array.array, self.typecode, 10)
 
-        # pass through errors raised kwenye __iter__
+        # pita through errors raised kwenye __iter__
         kundi A:
             eleza __iter__(self):
-                 ashiria UnicodeError
+                ashiria UnicodeError
         self.assertRaises(UnicodeError, array.array, self.typecode, A())
 
-        # pass through errors raised kwenye next()
+        # pita through errors raised kwenye next()
         eleza B():
-             ashiria UnicodeError
+            ashiria UnicodeError
             tuma Tupu
         self.assertRaises(UnicodeError, array.array, self.typecode, B())
 
     eleza test_coveritertraverse(self):
         jaribu:
             agiza gc
-        except ImportError:
+        tatizo ImportError:
             self.skipTest('gc module sio available')
         a = array.array(self.typecode)
         l = [iter(a)]
@@ -1040,11 +1040,11 @@ kundi BaseTest:
         self.assertEqual(rc, sys.getrefcount(10))
 
     eleza test_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously  ashiria a TypeError
+        # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         ArraySubclassWithKwargs('b', newarg=1)
 
     eleza test_create_from_bytes(self):
-        # XXX This test probably needs to be moved kwenye a subkundi or
+        # XXX This test probably needs to be moved kwenye a subkundi ama
         # generalized to use self.typecode.
         a = array.array('H', b"1234")
         self.assertEqual(len(a) * a.itemsize, 4)
@@ -1064,10 +1064,10 @@ kundi BaseTest:
 
     eleza test_initialize_with_unicode(self):
         ikiwa self.typecode != 'u':
-            ukijumuisha self.assertRaises(TypeError) as cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, 'foo')
             self.assertIn("cannot use a str", str(cm.exception))
-            ukijumuisha self.assertRaises(TypeError) as cm:
+            ukijumuisha self.assertRaises(TypeError) kama cm:
                 a = array.array(self.typecode, array.array('u', 'foo'))
             self.assertIn("cannot use a unicode array", str(cm.exception))
         isipokua:
@@ -1189,7 +1189,7 @@ kundi NumberTest(BaseTest):
         self.assertEqual(list(a), list(range(10)))
         b = array.array(self.typecode, [20])
         self.assertEqual(a[-1] kwenye a, Kweli)
-        self.assertEqual(b[0] sio kwenye a, Kweli)
+        self.assertEqual(b[0] haiko kwenye a, Kweli)
 
     eleza check_overflow(self, lower, upper):
         # method to be used by subclasses
@@ -1384,15 +1384,15 @@ kundi DoubleTest(FPTest, unittest.TestCase):
         a = array.array('d', [-1]*65536)
         jaribu:
             a *= maxsize//65536 + 1
-        except MemoryError:
-            pass
+        tatizo MemoryError:
+            pita
         isipokua:
             self.fail("Array of size > maxsize created - MemoryError expected")
         b = array.array('d', [ 2.71828183, 3.14159265, -1])
         jaribu:
             b * (maxsize//3 + 1)
-        except MemoryError:
-            pass
+        tatizo MemoryError:
+            pita
         isipokua:
             self.fail("Array of size > maxsize created - MemoryError expected")
 

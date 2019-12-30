@@ -65,8 +65,8 @@ kundi Message(Dialog):
 
 # Rename _icon na _type options to allow overriding them kwenye options
 eleza _show(title=Tupu, message=Tupu, _icon=Tupu, _type=Tupu, **options):
-    ikiwa _icon na "icon" sio kwenye options:    options["icon"] = _icon
-    ikiwa _type na "type" sio kwenye options:    options["type"] = _type
+    ikiwa _icon na "icon" haiko kwenye options:    options["icon"] = _icon
+    ikiwa _type na "type" haiko kwenye options:    options["type"] = _type
     ikiwa title:   options["title"] = title
     ikiwa message: options["message"] = message
     res = Message(**options).show()

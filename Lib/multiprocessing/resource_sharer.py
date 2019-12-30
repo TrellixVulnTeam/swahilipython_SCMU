@@ -35,7 +35,7 @@ ikiwa sys.platform == 'win32':
 
         eleza detach(self):
             '''Get the socket.  This should only be called once.'''
-            ukijumuisha _resource_sharer.get_connection(self._id) as conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
                 share = conn.recv_bytes()
                 rudisha socket.fromshare(share)
 
@@ -54,7 +54,7 @@ isipokua:
 
         eleza detach(self):
             '''Get the fd.  This should only be called once.'''
-            ukijumuisha _resource_sharer.get_connection(self._id) as conn:
+            ukijumuisha _resource_sharer.get_connection(self._id) kama conn:
                 rudisha reduction.recv_handle(conn)
 
 
@@ -139,7 +139,7 @@ kundi _ResourceSharer(object):
             signal.pthread_sigmask(signal.SIG_BLOCK, signal.valid_signals())
         wakati 1:
             jaribu:
-                ukijumuisha self._listener.accept() as conn:
+                ukijumuisha self._listener.accept() kama conn:
                     msg = conn.recv()
                     ikiwa msg ni Tupu:
                         koma

@@ -88,7 +88,7 @@ eleza traced_decorated_function():
     @decorator1
     @decorator_fabric()
     eleza func():
-        pass
+        pita
     func()
 
 
@@ -365,7 +365,7 @@ kundi TestCoverage(unittest.TestCase):
 
     eleza test_coverage(self):
         tracer = trace.Trace(trace=0, count=1)
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer)
         stdout = stdout.getvalue()
         self.assertIn("pprint.py", stdout)
@@ -380,7 +380,7 @@ kundi TestCoverage(unittest.TestCase):
         # sys.prefix does sio work when running kutoka a checkout
         tracer = trace.Trace(ignoredirs=[sys.base_prefix, sys.base_exec_prefix,
                              libpath], trace=0, count=1)
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer)
         ikiwa os.path.exists(TESTFN):
             files = os.listdir(TESTFN)
@@ -392,9 +392,9 @@ kundi TestCoverage(unittest.TestCase):
         # Ensure that the module ni executed kwenye import
         ikiwa modname kwenye sys.modules:
             toa sys.modules[modname]
-        cmd = ("agiza test.tracedmodules.testmod as t;"
+        cmd = ("agiza test.tracedmodules.testmod kama t;"
                "t.func(0); t.func2();")
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             self._coverage(tracer, cmd)
         stdout.seek(0)
         stdout.readline()
@@ -402,7 +402,7 @@ kundi TestCoverage(unittest.TestCase):
         kila line kwenye stdout:
             lines, cov, module = line.split()[:3]
             coverage[module] = (int(lines), int(cov[:-1]))
-        # XXX This ni needed to run regrtest.py as a script
+        # XXX This ni needed to run regrtest.py kama a script
         modname = trace._fullmodname(sys.modules[modname].__file__)
         self.assertIn(modname, coverage)
         self.assertEqual(coverage[modname], (5, 100))
@@ -429,7 +429,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
     coverfile = 'tmp.cover'
 
     eleza setUp(self):
-        ukijumuisha open(self.codefile, 'w') as f:
+        ukijumuisha open(self.codefile, 'w') kama f:
             f.write(textwrap.dedent('''\
                 x = 42
                 ikiwa []:
@@ -452,7 +452,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         self.assertEqual(stderr, b'')
         self.assertUongo(os.path.exists(tracecoverpath))
         self.assertKweli(os.path.exists(self.coverfile))
-        ukijumuisha open(self.coverfile) as f:
+        ukijumuisha open(self.coverfile) kama f:
             self.assertEqual(f.read(),
                 "    1: x = 42\n"
                 "    1: ikiwa []:\n"
@@ -463,7 +463,7 @@ kundi TestCoverageCommandLineOutput(unittest.TestCase):
         argv = '-m trace --count --missing'.split() + [self.codefile]
         status, stdout, stderr = assert_python_ok(*argv)
         self.assertKweli(os.path.exists(self.coverfile))
-        ukijumuisha open(self.coverfile) as f:
+        ukijumuisha open(self.coverfile) kama f:
             self.assertEqual(f.read(), textwrap.dedent('''\
                     1: x = 42
                     1: ikiwa []:
@@ -486,14 +486,14 @@ kundi TestCommandLine(unittest.TestCase):
             self.assertIn(message, stderr)
 
     eleza test_listfuncs_flag_success(self):
-        ukijumuisha open(TESTFN, 'w') as fd:
+        ukijumuisha open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("a = 1\n")
             status, stdout, stderr = assert_python_ok('-m', 'trace', '-l', TESTFN)
             self.assertIn(b'functions called:', stdout)
 
     eleza test_sys_argv_list(self):
-        ukijumuisha open(TESTFN, 'w') as fd:
+        ukijumuisha open(TESTFN, 'w') kama fd:
             self.addCleanup(unlink, TESTFN)
             fd.write("agiza sys\n")
             fd.write("andika(type(sys.argv))\n")
@@ -505,7 +505,7 @@ kundi TestCommandLine(unittest.TestCase):
     eleza test_count_and_summary(self):
         filename = f'{TESTFN}.py'
         coverfilename = f'{TESTFN}.cover'
-        ukijumuisha open(filename, 'w') as fd:
+        ukijumuisha open(filename, 'w') kama fd:
             self.addCleanup(unlink, filename)
             self.addCleanup(unlink, coverfilename)
             fd.write(textwrap.dedent("""\

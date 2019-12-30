@@ -5,7 +5,7 @@ agiza unittest
 agiza warnings
 
 ikiwa sys.platform != 'win32':
-     ashiria unittest.SkipTest('Windows only')
+    ashiria unittest.SkipTest('Windows only')
 
 agiza _overlapped
 agiza _winapi
@@ -34,10 +34,10 @@ kundi PipeTests(unittest.TestCase):
             ERROR_IO_INCOMPLETE = 996
             jaribu:
                 ov1.getresult()
-            except OSError as e:
+            tatizo OSError kama e:
                 self.assertEqual(e.winerror, ERROR_IO_INCOMPLETE)
             isipokua:
-                 ashiria RuntimeError('expected ERROR_IO_INCOMPLETE')
+                ashiria RuntimeError('expected ERROR_IO_INCOMPLETE')
 
             ov2 = _overlapped.Overlapped()
             self.assertUongo(ov2.pending)
@@ -72,10 +72,10 @@ kundi PipeTests(unittest.TestCase):
             support.gc_collect()
         jaribu:
             _winapi.CloseHandle(h)
-        except OSError as e:
+        tatizo OSError kama e:
             self.assertEqual(e.winerror, 6)     # ERROR_INVALID_HANDLE
         isipokua:
-             ashiria RuntimeError('expected ERROR_INVALID_HANDLE')
+            ashiria RuntimeError('expected ERROR_INVALID_HANDLE')
 
 
 kundi PopenTests(unittest.TestCase):
@@ -125,7 +125,7 @@ kundi PopenTests(unittest.TestCase):
 
         # The context manager calls wait() na closes resources
         ukijumuisha p:
-            pass
+            pita
 
 
 ikiwa __name__ == '__main__':

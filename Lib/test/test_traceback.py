@@ -26,10 +26,10 @@ kundi TracebackCases(unittest.TestCase):
     eleza get_exception_format(self, func, exc):
         jaribu:
             func()
-        except exc as value:
+        tatizo exc kama value:
             rudisha traceback.format_exception_only(exc, value)
         isipokua:
-             ashiria ValueError("call did sio  ashiria exception")
+            ashiria ValueError("call did sio ashiria exception")
 
     eleza syntax_error_with_caret(self):
         compile("eleza fact(x):\n\trudisha x!\n", "?", "exec")
@@ -125,10 +125,10 @@ kundi TracebackCases(unittest.TestCase):
         eleza do_test(firstlines, message, charset, lineno):
             # Raise the message kwenye a subprocess, na catch the output
             jaribu:
-                ukijumuisha open(TESTFN, "w", encoding=charset) as output:
+                ukijumuisha open(TESTFN, "w", encoding=charset) kama output:
                     output.write("""{0}ikiwa 1:
                         agiza traceback;
-                         ashiria RuntimeError('{1}')
+                        ashiria RuntimeError('{1}')
                         """.format(firstlines, message))
 
                 process = subprocess.Popen([sys.executable, TESTFN],
@@ -144,7 +144,7 @@ kundi TracebackCases(unittest.TestCase):
             # na we just decoded them ukijumuisha the output_encoding.
             message_ascii = encoded_message.decode(output_encoding)
 
-            err_line = " ashiria RuntimeError('{0}')".format(message_ascii)
+            err_line = "ashiria RuntimeError('{0}')".format(message_ascii)
             err_msg = "RuntimeError: {0}".format(message_ascii)
 
             self.assertIn(("line %s" % lineno), stdout[1],
@@ -161,7 +161,7 @@ kundi TracebackCases(unittest.TestCase):
         kila charset kwenye ("ascii", "iso-8859-1", "utf-8", "GBK"):
             ikiwa charset == "ascii":
                 text = "foo"
-            elikiwa charset == "GBK":
+            lasivyo charset == "GBK":
                 text = "\u4E02\u5100"
             isipokua:
                 text = "h\xe9 ho"
@@ -186,7 +186,7 @@ kundi TracebackCases(unittest.TestCase):
                 eleza __init__(self):
                     jaribu:
                         x = 1 / 0
-                    except Exception:
+                    tatizo Exception:
                         self.exc_info = sys.exc_info()
                         # self.exc_info[1] (traceback) contains frames:
                         # explicitly clear the reference to self kwenye the current
@@ -217,14 +217,14 @@ kundi TracebackCases(unittest.TestCase):
 kundi TracebackFormatTests(unittest.TestCase):
 
     eleza some_exception(self):
-         ashiria KeyError('blah')
+        ashiria KeyError('blah')
 
     @cpython_only
     eleza check_traceback_format(self, cleanup_func=Tupu):
         kutoka _testcapi agiza traceback_print
         jaribu:
             self.some_exception()
-        except KeyError:
+        tatizo KeyError:
             type_, value, tb = sys.exc_info()
             ikiwa cleanup_func ni sio Tupu:
                 # Clear the inner frames, sio this one
@@ -235,17 +235,17 @@ kundi TracebackFormatTests(unittest.TestCase):
             traceback_andika(tb, file_)
             python_fmt  = file_.getvalue()
             # Call all _tb na _exc functions
-            ukijumuisha captured_output("stderr") as tbstderr:
+            ukijumuisha captured_output("stderr") kama tbstderr:
                 traceback.print_tb(tb)
             tbfile = StringIO()
             traceback.print_tb(tb, file=tbfile)
-            ukijumuisha captured_output("stderr") as excstderr:
+            ukijumuisha captured_output("stderr") kama excstderr:
                 traceback.print_exc()
             excfmt = traceback.format_exc()
             excfile = StringIO()
             traceback.print_exc(file=excfile)
         isipokua:
-             ashiria Error("unable to create test traceback string")
+            ashiria Error("unable to create test traceback string")
 
         # Make sure that Python na the traceback module format the same thing
         self.assertEqual(traceback_fmt, python_fmt)
@@ -276,7 +276,7 @@ kundi TracebackFormatTests(unittest.TestCase):
     eleza test_stack_format(self):
         # Verify _stack functions. Note we have to use _getframe(1) to
         # compare them without this frame appearing kwenye the output
-        ukijumuisha captured_output("stderr") as ststderr:
+        ukijumuisha captured_output("stderr") kama ststderr:
             traceback.print_stack(sys._getframe(1))
         stfile = StringIO()
         traceback.print_stack(sys._getframe(1), file=stfile)
@@ -289,7 +289,7 @@ kundi TracebackFormatTests(unittest.TestCase):
     eleza test_print_stack(self):
         eleza prn():
             traceback.print_stack()
-        ukijumuisha captured_output("stderr") as stderr:
+        ukijumuisha captured_output("stderr") kama stderr:
             prn()
         lineno = prn.__code__.co_firstlineno
         self.assertEqual(stderr.getvalue().splitlines()[-4:], [
@@ -310,10 +310,10 @@ kundi TracebackFormatTests(unittest.TestCase):
         eleza f():
             f()
 
-        ukijumuisha captured_output("stderr") as stderr_f:
+        ukijumuisha captured_output("stderr") kama stderr_f:
             jaribu:
                 f()
-            except RecursionError as exc:
+            tatizo RecursionError kama exc:
                 render_exc()
             isipokua:
                 self.fail("no recursion occurred")
@@ -347,7 +347,7 @@ kundi TracebackFormatTests(unittest.TestCase):
         # last line can have additional text appended
         self.assertIn(expected[-1], actual[-1])
 
-        # Check the recursion count ni roughly as expected
+        # Check the recursion count ni roughly kama expected
         rec_limit = sys.getrecursionlimit()
         self.assertIn(int(re.search(r"\d+", actual[-2]).group()), range(rec_limit-60, rec_limit))
 
@@ -355,12 +355,12 @@ kundi TracebackFormatTests(unittest.TestCase):
         eleza g(count=10):
             ikiwa count:
                 rudisha g(count-1)
-             ashiria ValueError
+            ashiria ValueError
 
-        ukijumuisha captured_output("stderr") as stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g()
-            except ValueError as exc:
+            tatizo ValueError kama exc:
                 render_exc()
             isipokua:
                 self.fail("no value error was raised")
@@ -375,7 +375,7 @@ kundi TracebackFormatTests(unittest.TestCase):
             '    rudisha g(count-1)\n'
             '  [Previous line repeated 7 more times]\n'
             f'  File "{__file__}", line {lineno_g+3}, kwenye g\n'
-            '     ashiria ValueError\n'
+            '    ashiria ValueError\n'
             'ValueError\n'
         )
         tb_line = (
@@ -393,10 +393,10 @@ kundi TracebackFormatTests(unittest.TestCase):
                 rudisha h(count-1)
             g()
 
-        ukijumuisha captured_output("stderr") as stderr_h:
+        ukijumuisha captured_output("stderr") kama stderr_h:
             jaribu:
                 h()
-            except ValueError as exc:
+            tatizo ValueError kama exc:
                 render_exc()
             isipokua:
                 self.fail("no value error was raised")
@@ -421,10 +421,10 @@ kundi TracebackFormatTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         # Check the boundary conditions. First, test just below the cutoff.
-        ukijumuisha captured_output("stderr") as stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g(traceback._RECURSIVE_CUTOFF)
-            except ValueError as exc:
+            tatizo ValueError kama exc:
                 render_exc()
             isipokua:
                 self.fail("no error raised")
@@ -436,7 +436,7 @@ kundi TracebackFormatTests(unittest.TestCase):
             f'  File "{__file__}", line {lineno_g+2}, kwenye g\n'
             '    rudisha g(count-1)\n'
             f'  File "{__file__}", line {lineno_g+3}, kwenye g\n'
-            '     ashiria ValueError\n'
+            '    ashiria ValueError\n'
             'ValueError\n'
         )
         tb_line = (
@@ -449,10 +449,10 @@ kundi TracebackFormatTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
         # Second, test just above the cutoff.
-        ukijumuisha captured_output("stderr") as stderr_g:
+        ukijumuisha captured_output("stderr") kama stderr_g:
             jaribu:
                 g(traceback._RECURSIVE_CUTOFF + 1)
-            except ValueError as exc:
+            tatizo ValueError kama exc:
                 render_exc()
             isipokua:
                 self.fail("no error raised")
@@ -465,7 +465,7 @@ kundi TracebackFormatTests(unittest.TestCase):
             '    rudisha g(count-1)\n'
             '  [Previous line repeated 1 more time]\n'
             f'  File "{__file__}", line {lineno_g+3}, kwenye g\n'
-            '     ashiria ValueError\n'
+            '    ashiria ValueError\n'
             'ValueError\n'
         )
         tb_line = (
@@ -511,14 +511,14 @@ kundi TracebackFormatTests(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         jaribu:
-             ashiria ex2 kutoka ex1
-        except UnhashableException:
+            ashiria ex2 kutoka ex1
+        tatizo UnhashableException:
             jaribu:
-                 ashiria ex1
-            except UnhashableException:
+                ashiria ex1
+            tatizo UnhashableException:
                 exc_type, exc_val, exc_tb = sys.exc_info()
 
-        ukijumuisha captured_output("stderr") as stderr_f:
+        ukijumuisha captured_output("stderr") kama stderr_f:
             exception_andika(exc_val)
 
         tb = stderr_f.getvalue().strip().splitlines()
@@ -547,7 +547,7 @@ kundi BaseExceptionReportingTests:
             rudisha exception_or_callable
         jaribu:
             exception_or_callable()
-        except Exception as e:
+        tatizo Exception kama e:
             rudisha e
 
     eleza zero_div(self):
@@ -562,7 +562,7 @@ kundi BaseExceptionReportingTests:
     eleza test_simple(self):
         jaribu:
             1/0 # Marker
-        except ZeroDivisionError as _:
+        tatizo ZeroDivisionError kama _:
             e = _
         lines = self.get_report(e).splitlines()
         self.assertEqual(len(lines), 4)
@@ -575,8 +575,8 @@ kundi BaseExceptionReportingTests:
         eleza inner_raise():
             jaribu:
                 self.zero_div()
-            except ZeroDivisionError as e:
-                 ashiria KeyError kutoka e
+            tatizo ZeroDivisionError kama e:
+                ashiria KeyError kutoka e
         eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
@@ -589,8 +589,8 @@ kundi BaseExceptionReportingTests:
         eleza inner_raise():
             jaribu:
                 self.zero_div()
-            except ZeroDivisionError:
-                 ashiria KeyError
+            tatizo ZeroDivisionError:
+                ashiria KeyError
         eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
@@ -602,10 +602,10 @@ kundi BaseExceptionReportingTests:
     eleza test_context_suppression(self):
         jaribu:
             jaribu:
-                 ashiria Exception
+                ashiria Exception
             tatizo:
-                 ashiria ZeroDivisionError kutoka Tupu
-        except ZeroDivisionError as _:
+                ashiria ZeroDivisionError kutoka Tupu
+        tatizo ZeroDivisionError kama _:
             e = _
         lines = self.get_report(e).splitlines()
         self.assertEqual(len(lines), 4)
@@ -620,12 +620,12 @@ kundi BaseExceptionReportingTests:
         eleza inner_raise():
             jaribu:
                 self.zero_div()
-            except ZeroDivisionError as _e:
+            tatizo ZeroDivisionError kama _e:
                 e = _e
             jaribu:
                 xyzzy
-            except NameError:
-                 ashiria KeyError kutoka e
+            tatizo NameError:
+                ashiria KeyError kutoka e
         eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
@@ -639,18 +639,18 @@ kundi BaseExceptionReportingTests:
             jaribu:
                 jaribu:
                     self.zero_div()
-                except ZeroDivisionError as e:
+                tatizo ZeroDivisionError kama e:
                     z = e
-                     ashiria KeyError kutoka e
-            except KeyError as e:
-                 ashiria z kutoka e
+                    ashiria KeyError kutoka e
+            tatizo KeyError kama e:
+                ashiria z kutoka e
         eleza outer_raise():
             inner_raise() # Marker
         blocks = boundaries.split(self.get_report(outer_raise))
         self.assertEqual(len(blocks), 3)
         self.assertEqual(blocks[1], cause_message)
         # The first block ni the KeyError raised kutoka the ZeroDivisionError
-        self.assertIn(' ashiria KeyError kutoka e', blocks[0])
+        self.assertIn('ashiria KeyError kutoka e', blocks[0])
         self.assertNotIn('1/0', blocks[0])
         # The second block (apart kutoka the boundary) ni the ZeroDivisionError
         # re-raised kutoka the KeyError
@@ -660,7 +660,7 @@ kundi BaseExceptionReportingTests:
     eleza test_syntax_error_offset_at_eol(self):
         # See #10186.
         eleza e():
-             ashiria SyntaxError('', ('', 0, 5, 'hello'))
+            ashiria SyntaxError('', ('', 0, 5, 'hello'))
         msg = self.get_report(e).splitlines()
         self.assertEqual(msg[-2], "        ^")
         eleza e():
@@ -690,7 +690,7 @@ kundi PyExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
         e = self.get_exception(e)
         s = ''.join(
             traceback.format_exception(type(e), e, e.__traceback__))
-        ukijumuisha captured_output("stderr") as sio:
+        ukijumuisha captured_output("stderr") kama sio:
             traceback.print_exception(type(e), e, e.__traceback__)
         self.assertEqual(sio.getvalue(), s)
         rudisha s
@@ -705,7 +705,7 @@ kundi CExcReportingTests(BaseExceptionReportingTests, unittest.TestCase):
     eleza get_report(self, e):
         kutoka _testcapi agiza exception_print
         e = self.get_exception(e)
-        ukijumuisha captured_output("stderr") as s:
+        ukijumuisha captured_output("stderr") kama s:
             exception_andika(e)
         rudisha s.getvalue()
 
@@ -716,7 +716,7 @@ kundi LimitTests(unittest.TestCase):
         It's enough to test extact_tb, extract_stack na format_exception '''
 
     eleza last_raises1(self):
-         ashiria Exception('Last raised')
+        ashiria Exception('Last raised')
 
     eleza last_raises2(self):
         self.last_raises1()
@@ -776,7 +776,7 @@ kundi LimitTests(unittest.TestCase):
     eleza test_extract_tb(self):
         jaribu:
             self.last_raises5()
-        except Exception:
+        tatizo Exception:
             exc_type, exc_value, tb = sys.exc_info()
         eleza extract(**kwargs):
             rudisha traceback.extract_tb(tb, **kwargs)
@@ -803,9 +803,9 @@ kundi LimitTests(unittest.TestCase):
     eleza test_format_exception(self):
         jaribu:
             self.last_raises5()
-        except Exception:
+        tatizo Exception:
             exc_type, exc_value, tb = sys.exc_info()
-        # [1:-1] to exclude "Traceback (...)" header and
+        # [1:-1] to exclude "Traceback (...)" header na
         # exception type na value
         eleza extract(**kwargs):
             rudisha traceback.format_exception(exc_type, exc_value, tb, **kwargs)[1:-1]
@@ -919,7 +919,7 @@ kundi TestStack(unittest.TestCase):
     eleza test_walk_tb(self):
         jaribu:
             1/0
-        except Exception:
+        tatizo Exception:
             _, _, tb = sys.exc_info()
         s = list(traceback.walk_tb(tb))
         self.assertEqual(len(s), 1)
@@ -1007,7 +1007,7 @@ kundi TestTracebackException(unittest.TestCase):
     eleza test_smoke(self):
         jaribu:
             1/0
-        except Exception:
+        tatizo Exception:
             exc_info = sys.exc_info()
             exc = traceback.TracebackException(*exc_info)
             expected_stack = traceback.StackSummary.extract(
@@ -1025,7 +1025,7 @@ kundi TestTracebackException(unittest.TestCase):
             1/0
         jaribu:
             foo()
-        except Exception as e:
+        tatizo Exception kama e:
             exc_info = sys.exc_info()
             self.expected_stack = traceback.StackSummary.extract(
                 traceback.walk_tb(exc_info[2]), limit=1, lookup_lines=Uongo,
@@ -1049,8 +1049,8 @@ kundi TestTracebackException(unittest.TestCase):
                 exc_info_context = sys.exc_info()
                 exc_context = traceback.TracebackException(*exc_info_context)
                 cause = Exception("cause")
-                 ashiria Exception("uh oh") kutoka cause
-        except Exception:
+                ashiria Exception("uh oh") kutoka cause
+        tatizo Exception:
             exc_info = sys.exc_info()
             exc = traceback.TracebackException(*exc_info)
             expected_stack = traceback.StackSummary.extract(
@@ -1070,8 +1070,8 @@ kundi TestTracebackException(unittest.TestCase):
             mwishowe:
                 exc_info_context = sys.exc_info()
                 exc_context = traceback.TracebackException(*exc_info_context)
-                 ashiria Exception("uh oh")
-        except Exception:
+                ashiria Exception("uh oh")
+        tatizo Exception:
             exc_info = sys.exc_info()
             exc = traceback.TracebackException(*exc_info)
             expected_stack = traceback.StackSummary.extract(
@@ -1091,11 +1091,11 @@ kundi TestTracebackException(unittest.TestCase):
         ex1 = UnhashableException('ex1')
         ex2 = UnhashableException('ex2')
         jaribu:
-             ashiria ex2 kutoka ex1
-        except UnhashableException:
+            ashiria ex2 kutoka ex1
+        tatizo UnhashableException:
             jaribu:
-                 ashiria ex1
-            except UnhashableException:
+                ashiria ex1
+            tatizo UnhashableException:
                 exc_info = sys.exc_info()
         exc = traceback.TracebackException(*exc_info)
         formatted = list(exc.format())
@@ -1110,7 +1110,7 @@ kundi TestTracebackException(unittest.TestCase):
                 1/0
         jaribu:
             recurse(10)
-        except Exception:
+        tatizo Exception:
             exc_info = sys.exc_info()
             exc = traceback.TracebackException(*exc_info, limit=5)
             expected_stack = traceback.StackSummary.extract(

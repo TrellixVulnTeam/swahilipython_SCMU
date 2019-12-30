@@ -17,9 +17,9 @@ kundi PdepsTests(unittest.TestCase):
 
     eleza test_process_errors(self):
         # Issue #14492: m_import.match(line) can be Tupu.
-        ukijumuisha tempfile.TemporaryDirectory() as tmpdir:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpdir:
             fn = os.path.join(tmpdir, 'foo')
-            ukijumuisha open(fn, 'w') as stream:
+            ukijumuisha open(fn, 'w') kama stream:
                 stream.write("#!/this/will/fail")
             self.pdeps.process(fn, {})
 

@@ -25,14 +25,14 @@ eleza traverse_imports(names):
         node = pending.pop()
         ikiwa node.type == token.NAME:
             tuma node.value
-        elikiwa node.type == syms.dotted_name:
+        lasivyo node.type == syms.dotted_name:
             tuma "".join([ch.value kila ch kwenye node.children])
-        elikiwa node.type == syms.dotted_as_name:
+        lasivyo node.type == syms.dotted_as_name:
             pending.append(node.children[0])
-        elikiwa node.type == syms.dotted_as_names:
+        lasivyo node.type == syms.dotted_as_names:
             pending.extend(node.children[::-2])
         isipokua:
-             ashiria AssertionError("unknown node type")
+            ashiria AssertionError("unknown node type")
 
 
 kundi FixImport(fixer_base.BaseFix):
@@ -56,7 +56,7 @@ kundi FixImport(fixer_base.BaseFix):
         ikiwa node.type == syms.import_from:
             # Some imps are top-level (eg: 'agiza ham')
             # some are first level (eg: 'agiza ham.eggs')
-            # some are third level (eg: 'agiza ham.eggs as spam')
+            # some are third level (eg: 'agiza ham.eggs kama spam')
             # Hence, the loop
             wakati sio hasattr(imp, 'value'):
                 imp = imp.children[0]
@@ -89,7 +89,7 @@ kundi FixImport(fixer_base.BaseFix):
         imp_name = imp_name.split(".", 1)[0]
         base_path = dirname(self.filename)
         base_path = join(base_path, imp_name)
-        # If there ni no __init__.py next to the file its sio kwenye a package
+        # If there ni no __init__.py next to the file its haiko kwenye a package
         # so can't be a relative import.
         ikiwa sio exists(join(dirname(base_path), "__init__.py")):
             rudisha Uongo

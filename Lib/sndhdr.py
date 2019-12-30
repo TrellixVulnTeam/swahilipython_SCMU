@@ -27,7 +27,7 @@ option -r tells it to recurse down directories found inside
 explicitly given directories.
 """
 
-# The file structure ni top-down except that the test program na its
+# The file structure ni top-down tatizo that the test program na its
 # subroutine come last.
 
 __all__ = ['what', 'whathdr']
@@ -46,7 +46,7 @@ SndHeaders.nchannels.__doc__ = ("""The number of channels ama 0 ikiwa it cannot 
 determined ama ikiwa the value ni difficult to decode.""")
 SndHeaders.nframes.__doc__ = ("""The value kila frames will be either the number
 of frames ama -1.""")
-SndHeaders.sampwidth.__doc__ = ("""Either the sample size kwenye bits or
+SndHeaders.sampwidth.__doc__ = ("""Either the sample size kwenye bits ama
 'A' kila A-LAW ama 'U' kila u-LAW.""")
 
 eleza what(filename):
@@ -57,7 +57,7 @@ eleza what(filename):
 
 eleza whathdr(filename):
     """Recognize sound headers."""
-    ukijumuisha open(filename, 'rb') as f:
+    ukijumuisha open(filename, 'rb') kama f:
         h = f.read(512)
         kila tf kwenye tests:
             res = tf(h, f)
@@ -78,14 +78,14 @@ eleza test_aifc(h, f):
         rudisha Tupu
     ikiwa h[8:12] == b'AIFC':
         fmt = 'aifc'
-    elikiwa h[8:12] == b'AIFF':
+    lasivyo h[8:12] == b'AIFF':
         fmt = 'aiff'
     isipokua:
         rudisha Tupu
     f.seek(0)
     jaribu:
         a = aifc.open(f, 'r')
-    except (EOFError, aifc.Error):
+    tatizo (EOFError, aifc.Error):
         rudisha Tupu
     rudisha (fmt, a.getframerate(), a.getnchannels(),
             a.getnframes(), 8 * a.getsampwidth())
@@ -96,7 +96,7 @@ tests.append(test_aifc)
 eleza test_au(h, f):
     ikiwa h.startswith(b'.snd'):
         func = get_long_be
-    elikiwa h[:4] kwenye (b'\0ds.', b'dns.'):
+    lasivyo h[:4] kwenye (b'\0ds.', b'dns.'):
         func = get_long_le
     isipokua:
         rudisha Tupu
@@ -109,9 +109,9 @@ eleza test_au(h, f):
     sample_size = 1 # default
     ikiwa encoding == 1:
         sample_bits = 'U'
-    elikiwa encoding == 2:
+    lasivyo encoding == 2:
         sample_bits = 8
-    elikiwa encoding == 3:
+    lasivyo encoding == 3:
         sample_bits = 16
         sample_size = 2
     isipokua:
@@ -161,7 +161,7 @@ eleza test_wav(h, f):
     f.seek(0)
     jaribu:
         w = wave.open(f, 'r')
-    except (EOFError, wave.Error):
+    tatizo (EOFError, wave.Error):
         rudisha Tupu
     rudisha ('wav', w.getframerate(), w.getnchannels(),
                    w.getnframes(), 8*w.getsampwidth())
@@ -228,7 +228,7 @@ eleza test():
             testall(sys.argv[1:], recursive, 1)
         isipokua:
             testall(['.'], recursive, 1)
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         sys.stderr.write('\n[Interrupted]\n')
         sys.exit(1)
 
@@ -250,7 +250,7 @@ eleza testall(list, recursive, toplevel):
             sys.stdout.flush()
             jaribu:
                 andika(what(filename))
-            except OSError:
+            tatizo OSError:
                 andika('*** sio found ***')
 
 ikiwa __name__ == '__main__':

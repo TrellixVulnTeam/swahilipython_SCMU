@@ -23,7 +23,7 @@ kundi TestTranforms(BytecodeTestCase):
         instructions = list(dis.get_instructions(code))
         targets = {instr.offset: instr kila instr kwenye instructions}
         kila instr kwenye instructions:
-            ikiwa 'JUMP_' sio kwenye instr.opname:
+            ikiwa 'JUMP_' haiko kwenye instr.opname:
                 endelea
             tgt = targets[instr.argval]
             # jump to unconditional jump
@@ -31,7 +31,7 @@ kundi TestTranforms(BytecodeTestCase):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
             # unconditional jump to RETURN_VALUE
-            ikiwa (instr.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD') and
+            ikiwa (instr.opname kwenye ('JUMP_ABSOLUTE', 'JUMP_FORWARD') na
                 tgt.opname == 'RETURN_VALUE'):
                 self.fail(f'{instr.opname} at {instr.offset} '
                           f'jumps to {tgt.opname} at {tgt.offset}')
@@ -50,7 +50,7 @@ kundi TestTranforms(BytecodeTestCase):
         max_bytecode = max(t[0] kila t kwenye lnotab)
         self.assertGreaterEqual(min_bytecode, 0)
         self.assertLess(max_bytecode, len(code.co_code))
-        # This could conceivably test more (and probably should, as there
+        # This could conceivably test more (and probably should, kama there
         # aren't very many tests of lnotab), ikiwa peepholer wasn't scheduled
         # to be replaced anyway.
 
@@ -69,7 +69,7 @@ kundi TestTranforms(BytecodeTestCase):
             ('not a ni b', 'is not',),
             ('not a kwenye b', 'not in',),
             ('not a ni sio b', 'is',),
-            ('not a sio kwenye b', 'in',),
+            ('not a haiko kwenye b', 'in',),
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'COMPARE_OP', cmp_op)
@@ -105,7 +105,7 @@ kundi TestTranforms(BytecodeTestCase):
         # Skip over:  LOAD_CONST trueconst  POP_JUMP_IF_FALSE xx
         eleza f():
             wakati 1:
-                pass
+                pita
             rudisha list
         kila elem kwenye ('LOAD_CONST', 'POP_JUMP_IF_FALSE'):
             self.assertNotInBytecode(f, elem)
@@ -169,9 +169,9 @@ kundi TestTranforms(BytecodeTestCase):
         kila line, elem kwenye (
             # in/not kwenye constants ukijumuisha BUILD_LIST should be folded to a tuple:
             ('a kwenye [1,2,3]', (1, 2, 3)),
-            ('a sio kwenye ["a","b","c"]', ('a', 'b', 'c')),
+            ('a haiko kwenye ["a","b","c"]', ('a', 'b', 'c')),
             ('a kwenye [Tupu, 1, Tupu]', (Tupu, 1, Tupu)),
-            ('a sio kwenye [(1, 2), 3, 4]', ((1, 2), 3, 4)),
+            ('a haiko kwenye [(1, 2), 3, 4]', ((1, 2), 3, 4)),
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)
@@ -182,9 +182,9 @@ kundi TestTranforms(BytecodeTestCase):
         kila line, elem kwenye (
             # in/not kwenye constants ukijumuisha BUILD_SET should be folded to a frozenset:
             ('a kwenye {1,2,3}', frozenset({1, 2, 3})),
-            ('a sio kwenye {"a","b","c"}', frozenset({'a', 'c', 'b'})),
+            ('a haiko kwenye {"a","b","c"}', frozenset({'a', 'c', 'b'})),
             ('a kwenye {Tupu, 1, Tupu}', frozenset({1, Tupu})),
-            ('a sio kwenye {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
+            ('a haiko kwenye {(1, 2), 3, 4}', frozenset({(1, 2), 3, 4})),
             ('a kwenye {1, 2, 3, 3, 2, 1}', frozenset({1, 2, 3})),
             ):
             code = compile(line, '', 'single')
@@ -197,13 +197,13 @@ kundi TestTranforms(BytecodeTestCase):
             rudisha a kwenye {1, 2, 3}
 
         eleza g(a):
-            rudisha a sio kwenye {1, 2, 3}
+            rudisha a haiko kwenye {1, 2, 3}
 
         self.assertKweli(f(3))
-        self.assertKweli(not f(4))
+        self.assertKweli(sio f(4))
         self.check_lnotab(f)
 
-        self.assertKweli(not g(3))
+        self.assertKweli(sio g(3))
         self.assertKweli(g(4))
         self.check_lnotab(g)
 
@@ -222,9 +222,9 @@ kundi TestTranforms(BytecodeTestCase):
             ('a = (12,13)[1]', 13),             # binary subscr
             ('a = 13 << 2', 52),                # binary lshift
             ('a = 13 >> 2', 3),                 # binary rshift
-            ('a = 13 & 7', 5),                  # binary and
+            ('a = 13 & 7', 5),                  # binary na
             ('a = 13 ^ 7', 10),                 # binary xor
-            ('a = 13 | 7', 15),                 # binary or
+            ('a = 13 | 7', 15),                 # binary ama
             ):
             code = compile(line, '', 'single')
             self.assertInBytecode(code, 'LOAD_CONST', elem)
@@ -427,7 +427,7 @@ kundi TestTranforms(BytecodeTestCase):
     eleza test_make_function_doesnt_bail(self):
         eleza f():
             eleza g()->1+1:
-                pass
+                pita
             rudisha g
         self.assertNotInBytecode(f, 'BINARY_ADD')
         self.check_lnotab(f)
@@ -462,7 +462,7 @@ kundi TestTranforms(BytecodeTestCase):
     eleza test_iterate_literal_list(self):
         eleza forloop():
             kila x kwenye [a, b]:
-                pass
+                pita
         self.assertEqual(count_instr_recursively(forloop, 'BUILD_LIST'), 0)
         self.check_lnotab(forloop)
 

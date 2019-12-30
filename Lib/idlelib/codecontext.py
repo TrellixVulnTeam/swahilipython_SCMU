@@ -10,7 +10,7 @@ not open blocks are sio shown kwenye the context hints pane.
 
 """
 agiza re
-kutoka sys agiza maxsize as INFINITY
+kutoka sys agiza maxsize kama INFINITY
 
 agiza tkinter
 kutoka tkinter.constants agiza NSEW, SUNKEN
@@ -84,8 +84,8 @@ kundi CodeContext:
         ikiwa self.t1 ni sio Tupu:
             jaribu:
                 self.text.after_cancel(self.t1)
-            except tkinter.TclError:
-                pass
+            tatizo tkinter.TclError:
+                pita
             self.t1 = Tupu
 
     eleza toggle_code_context_event(self, event=Tupu):
@@ -99,7 +99,7 @@ kundi CodeContext:
             # Calculate the border width na horizontal padding required to
             # align the context ukijumuisha the text kwenye the main Text widget.
             #
-            # All values are passed through getint(), since some
+            # All values are pitaed through getint(), since some
             # values may be pixel objects, which can't simply be added to ints.
             widgets = self.editwin.text, self.editwin.text_frame
             # Calculate the required horizontal padding na border width.

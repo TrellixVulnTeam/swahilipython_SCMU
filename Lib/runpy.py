@@ -4,10 +4,10 @@ Provides support kila locating na running Python scripts using the Python
 module namespace instead of the native filesystem.
 
 This allows Python code to play nicely ukijumuisha non-filesystem based PEP 302
-importers when locating support scripts as well as when importing modules.
+importers when locating support scripts kama well kama when importing modules.
 """
 # Written by Nick Coghlan <ncoghlan at gmail.com>
-#    to implement PEP 338 (Executing Modules as Scripts)
+#    to implement PEP 338 (Executing Modules kama Scripts)
 
 
 agiza sys
@@ -31,8 +31,8 @@ kundi _TempModule(object):
         mod_name = self.mod_name
         jaribu:
             self._saved_module.append(sys.modules[mod_name])
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         sys.modules[mod_name] = self.module
         rudisha self
 
@@ -50,7 +50,7 @@ kundi _ModifiedArgv0(object):
 
     eleza __enter__(self):
         ikiwa self._saved_value ni sio self._sentinel:
-             ashiria RuntimeError("Already preserving saved value")
+            ashiria RuntimeError("Already preserving saved value")
         self._saved_value = sys.argv[0]
         sys.argv[0] = self.value
 
@@ -90,28 +90,28 @@ eleza _run_module_code(code, init_globals=Tupu,
                     pkg_name=Tupu, script_name=Tupu):
     """Helper to run code kwenye new namespace ukijumuisha sys modified"""
     fname = script_name ikiwa mod_spec ni Tupu isipokua mod_spec.origin
-    ukijumuisha _TempModule(mod_name) as temp_module, _ModifiedArgv0(fname):
+    ukijumuisha _TempModule(mod_name) kama temp_module, _ModifiedArgv0(fname):
         mod_globals = temp_module.module.__dict__
         _run_code(code, mod_globals, init_globals,
                   mod_name, mod_spec, pkg_name, script_name)
-    # Copy the globals of the temporary module, as they
+    # Copy the globals of the temporary module, kama they
     # may be cleared when the temporary module goes away
     rudisha mod_globals.copy()
 
 # Helper to get the full name, spec na code kila a module
 eleza _get_module_details(mod_name, error=ImportError):
     ikiwa mod_name.startswith("."):
-         ashiria error("Relative module names sio supported")
+        ashiria error("Relative module names sio supported")
     pkg_name, _, _ = mod_name.rpartition(".")
     ikiwa pkg_name:
         # Try importing the parent to avoid catching initialization errors
         jaribu:
             __import__(pkg_name)
-        except ImportError as e:
+        tatizo ImportError kama e:
             # If the parent ama higher ancestor package ni missing, let the
             # error be raised by find_spec() below na then be caught. But do
             # sio allow other errors to be caught.
-            ikiwa e.name ni Tupu ama (e.name != pkg_name and
+            ikiwa e.name ni Tupu ama (e.name != pkg_name na
                     sio pkg_name.startswith(e.name + ".")):
                 raise
         # Warn ikiwa the module has already been imported under its normal name
@@ -126,35 +126,35 @@ eleza _get_module_details(mod_name, error=ImportError):
 
     jaribu:
         spec = importlib.util.find_spec(mod_name)
-    except (ImportError, AttributeError, TypeError, ValueError) as ex:
-        # This hack fixes an impedance mismatch between pkgutil and
+    tatizo (ImportError, AttributeError, TypeError, ValueError) kama ex:
+        # This hack fixes an impedance mismatch between pkgutil na
         # importlib, where the latter raises other errors kila cases where
         # pkgutil previously raised ImportError
         msg = "Error wakati finding module specification kila {!r} ({}: {})"
-         ashiria error(msg.format(mod_name, type(ex).__name__, ex)) kutoka ex
+        ashiria error(msg.format(mod_name, type(ex).__name__, ex)) kutoka ex
     ikiwa spec ni Tupu:
-         ashiria error("No module named %s" % mod_name)
+        ashiria error("No module named %s" % mod_name)
     ikiwa spec.submodule_search_locations ni sio Tupu:
         ikiwa mod_name == "__main__" ama mod_name.endswith(".__main__"):
-             ashiria error("Cannot use package as __main__ module")
+            ashiria error("Cannot use package kama __main__ module")
         jaribu:
             pkg_main_name = mod_name + ".__main__"
             rudisha _get_module_details(pkg_main_name, error)
-        except error as e:
-            ikiwa mod_name sio kwenye sys.modules:
-                 ashiria  # No module loaded; being a package ni irrelevant
-             ashiria error(("%s; %r ni a package na cannot " +
+        tatizo error kama e:
+            ikiwa mod_name haiko kwenye sys.modules:
+                ashiria  # No module loaded; being a package ni irrelevant
+            ashiria error(("%s; %r ni a package na cannot " +
                                "be directly executed") %(e, mod_name))
     loader = spec.loader
     ikiwa loader ni Tupu:
-         ashiria error("%r ni a namespace package na cannot be executed"
+        ashiria error("%r ni a namespace package na cannot be executed"
                                                                  % mod_name)
     jaribu:
         code = loader.get_code(mod_name)
-    except ImportError as e:
-         ashiria error(format(e)) kutoka e
+    tatizo ImportError kama e:
+        ashiria error(format(e)) kutoka e
     ikiwa code ni Tupu:
-         ashiria error("No code object available kila %s" % mod_name)
+        ashiria error("No code object available kila %s" % mod_name)
     rudisha mod_name, spec, code
 
 kundi _Error(Exception):
@@ -183,7 +183,7 @@ eleza _run_module_as_main(mod_name, alter_argv=Kweli):
             mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
         isipokua:          # i.e. directory ama zipfile execution
             mod_name, mod_spec, code = _get_main_module_details(_Error)
-    except _Error as exc:
+    tatizo _Error kama exc:
         msg = "%s: %s" % (sys.executable, exc)
         sys.exit(msg)
     main_globals = sys.modules["__main__"].__dict__
@@ -217,9 +217,9 @@ eleza _get_main_module_details(error=ImportError):
     toa sys.modules[main_name]
     jaribu:
         rudisha _get_module_details(main_name)
-    except ImportError as exc:
+    tatizo ImportError kama exc:
         ikiwa main_name kwenye str(exc):
-             ashiria error("can't find %r module kwenye %r" %
+            ashiria error("can't find %r module kwenye %r" %
                               (main_name, sys.path[0])) kutoka exc
         raise
     mwishowe:
@@ -228,11 +228,11 @@ eleza _get_main_module_details(error=ImportError):
 
 eleza _get_code_from_file(run_name, fname):
     # Check kila a compiled file first
-    ukijumuisha open(fname, "rb") as f:
+    ukijumuisha open(fname, "rb") kama f:
         code = read_code(f)
     ikiwa code ni Tupu:
-        # That didn't work, so try it as normal source code
-        ukijumuisha open(fname, "rb") as f:
+        # That didn't work, so try it kama normal source code
+        ukijumuisha open(fname, "rb") kama f:
             code = compile(f.read(), fname, 'exec')
     rudisha code, fname
 
@@ -250,14 +250,14 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
         run_name = "<run_path>"
     pkg_name = run_name.rpartition(".")[0]
     importer = get_importer(path_name)
-    # Trying to avoid importing imp so as to sio consume the deprecation warning.
+    # Trying to avoid importing imp so kama to sio consume the deprecation warning.
     is_NullImporter = Uongo
     ikiwa type(importer).__module__ == 'imp':
         ikiwa type(importer).__name__ == 'NullImporter':
             is_NullImporter = Kweli
     ikiwa isinstance(importer, type(Tupu)) ama is_NullImporter:
         # Not a valid sys.path entry, so run the code directly
-        # execfile() doesn't help as we want to allow compiled files
+        # execfile() doesn't help kama we want to allow compiled files
         code, fname = _get_code_from_file(run_name, path_name)
         rudisha _run_module_code(code, init_globals, run_name,
                                 pkg_name=pkg_name, script_name=fname)
@@ -273,7 +273,7 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
             # code. If we don't do this, a __loader__ attribute kwenye the
             # existing __main__ module may prevent location of the new module.
             mod_name, mod_spec, code = _get_main_module_details()
-            ukijumuisha _TempModule(run_name) as temp_module, \
+            ukijumuisha _TempModule(run_name) kama temp_module, \
                  _ModifiedArgv0(path_name):
                 mod_globals = temp_module.module.__dict__
                 rudisha _run_code(code, mod_globals, init_globals,
@@ -281,12 +281,12 @@ eleza run_path(path_name, init_globals=Tupu, run_name=Tupu):
         mwishowe:
             jaribu:
                 sys.path.remove(path_name)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
 
 ikiwa __name__ == "__main__":
-    # Run the module specified as the next command line argument
+    # Run the module specified kama the next command line argument
     ikiwa len(sys.argv) < 2:
         andika("No module specified kila execution", file=sys.stderr)
     isipokua:

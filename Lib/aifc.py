@@ -80,7 +80,7 @@ This returns an instance of a kundi ukijumuisha the following public methods:
   setpos(pos) -- seek to the specified position
   tell()      -- rudisha the current position
   close()     -- close the instance (make it unusable)
-The position returned by tell(), the position given to setpos() and
+The position returned by tell(), the position given to setpos() na
 the position of marks are all compatible na have nothing to do with
 the actual position kwenye the file.
 The close() method ni called automatically when the kundi instance
@@ -89,7 +89,7 @@ is destroyed.
 Writing AIFF files:
   f = aifc.open(file, 'w')
 where file ni either the name of a file ama an open file pointer.
-The open file pointer must have methods write(), tell(), seek(), and
+The open file pointer must have methods write(), tell(), seek(), na
 close().
 
 This returns an instance of a kundi ukijumuisha the following public methods:
@@ -115,13 +115,13 @@ This returns an instance of a kundi ukijumuisha the following public methods:
           -- write audio frames na patch up the file header
   close()     -- patch up the file header na close the
              output file
-You should set the parameters before the first writeframesraw or
+You should set the parameters before the first writeframesraw ama
 writeframes.  The total number of frames does sio need to be set,
 but when it ni set to the correct value, the header does sio have to
 be patched up.
 It ni best to first set all parameters, perhaps possibly the
 compression type, na then write audio frames using writeframesraw.
-When all frames have been written, either call writeframes(b'') or
+When all frames have been written, either call writeframes(b'') ama
 close() to patch up the sizes kwenye the header.
 Marks can be added anytime.  If there are any marks, you must call
 close() after all frames have been written.
@@ -130,7 +130,7 @@ is destroyed.
 
 When a file ni opened ukijumuisha the extension '.aiff', an AIFF file is
 written, otherwise an AIFF-C file ni written.  This default can be
-changed by calling aiff() ama aifc() before the first writeframes or
+changed by calling aiff() ama aifc() before the first writeframes ama
 writeframesraw.
 """
 
@@ -141,33 +141,33 @@ agiza warnings
 __all__ = ["Error", "open", "openfp"]
 
 kundi Error(Exception):
-    pass
+    pita
 
 _AIFC_version = 0xA2805140     # Version 1 of AIFF-C
 
 eleza _read_long(file):
     jaribu:
         rudisha struct.unpack('>l', file.read(4))[0]
-    except struct.error:
-         ashiria EOFError kutoka Tupu
+    tatizo struct.error:
+        ashiria EOFError kutoka Tupu
 
 eleza _read_ulong(file):
     jaribu:
         rudisha struct.unpack('>L', file.read(4))[0]
-    except struct.error:
-         ashiria EOFError kutoka Tupu
+    tatizo struct.error:
+        ashiria EOFError kutoka Tupu
 
 eleza _read_short(file):
     jaribu:
         rudisha struct.unpack('>h', file.read(2))[0]
-    except struct.error:
-         ashiria EOFError kutoka Tupu
+    tatizo struct.error:
+        ashiria EOFError kutoka Tupu
 
 eleza _read_ushort(file):
     jaribu:
         rudisha struct.unpack('>H', file.read(2))[0]
-    except struct.error:
-         ashiria EOFError kutoka Tupu
+    tatizo struct.error:
+        ashiria EOFError kutoka Tupu
 
 eleza _read_string(file):
     length = ord(file.read(1))
@@ -191,7 +191,7 @@ eleza _read_float(f): # 10 bytes
     lomant = _read_ulong(f) # 4 bytes
     ikiwa expon == himant == lomant == 0:
         f = 0.0
-    elikiwa expon == 0x7FFF:
+    lasivyo expon == 0x7FFF:
         f = _HUGE_VAL
     isipokua:
         expon = expon - 16383
@@ -212,7 +212,7 @@ eleza _write_ulong(f, x):
 
 eleza _write_string(f, s):
     ikiwa len(s) > 255:
-         ashiria ValueError("string exceeds maximum pstring length")
+        ashiria ValueError("string exceeds maximum pstring length")
     f.write(struct.pack('B', len(s)))
     f.write(s)
     ikiwa len(s) & 1 == 0:
@@ -313,37 +313,37 @@ kundi Aifc_read:
         self._file = file
         chunk = Chunk(file)
         ikiwa chunk.getname() != b'FORM':
-             ashiria Error('file does sio start ukijumuisha FORM id')
+            ashiria Error('file does sio start ukijumuisha FORM id')
         formdata = chunk.read(4)
         ikiwa formdata == b'AIFF':
             self._aifc = 0
-        elikiwa formdata == b'AIFC':
+        lasivyo formdata == b'AIFC':
             self._aifc = 1
         isipokua:
-             ashiria Error('not an AIFF ama AIFF-C file')
+            ashiria Error('not an AIFF ama AIFF-C file')
         self._comm_chunk_read = 0
         self._ssnd_chunk = Tupu
         wakati 1:
             self._ssnd_seek_needed = 1
             jaribu:
                 chunk = Chunk(self._file)
-            except EOFError:
+            tatizo EOFError:
                 koma
             chunkname = chunk.getname()
             ikiwa chunkname == b'COMM':
                 self._read_comm_chunk(chunk)
                 self._comm_chunk_read = 1
-            elikiwa chunkname == b'SSND':
+            lasivyo chunkname == b'SSND':
                 self._ssnd_chunk = chunk
                 dummy = chunk.read(8)
                 self._ssnd_seek_needed = 0
-            elikiwa chunkname == b'FVER':
+            lasivyo chunkname == b'FVER':
                 self._version = _read_ulong(chunk)
-            elikiwa chunkname == b'MARK':
+            lasivyo chunkname == b'MARK':
                 self._readmark(chunk)
             chunk.skip()
         ikiwa sio self._comm_chunk_read ama sio self._ssnd_chunk:
-             ashiria Error('COMM chunk and/or SSND chunk missing')
+            ashiria Error('COMM chunk and/or SSND chunk missing')
 
     eleza __init__(self, f):
         ikiwa isinstance(f, str):
@@ -417,11 +417,11 @@ kundi Aifc_read:
         kila marker kwenye self._markers:
             ikiwa id == marker[0]:
                 rudisha marker
-         ashiria Error('marker {0!r} does sio exist'.format(id))
+        ashiria Error('marker {0!r} does sio exist'.format(id))
 
     eleza setpos(self, pos):
         ikiwa pos < 0 ama pos > self._nframes:
-             ashiria Error('position sio kwenye range')
+            ashiria Error('position haiko kwenye range')
         self._soundpos = pos
         self._ssnd_seek_needed = 1
 
@@ -468,9 +468,9 @@ kundi Aifc_read:
         self._sampwidth = (_read_short(chunk) + 7) // 8
         self._framerate = int(_read_float(chunk))
         ikiwa self._sampwidth <= 0:
-             ashiria Error('bad sample width')
+            ashiria Error('bad sample width')
         ikiwa self._nchannels <= 0:
-             ashiria Error('bad # of channels')
+            ashiria Error('bad # of channels')
         self._framesize = self._nchannels * self._sampwidth
         ikiwa self._aifc:
             #DEBUG: SGI's soundeditor produces a bad size :-(
@@ -493,12 +493,12 @@ kundi Aifc_read:
             ikiwa self._comptype != b'NONE':
                 ikiwa self._comptype == b'G722':
                     self._convert = self._adpcm2lin
-                elikiwa self._comptype kwenye (b'ulaw', b'ULAW'):
+                lasivyo self._comptype kwenye (b'ulaw', b'ULAW'):
                     self._convert = self._ulaw2lin
-                elikiwa self._comptype kwenye (b'alaw', b'ALAW'):
+                lasivyo self._comptype kwenye (b'alaw', b'ALAW'):
                     self._convert = self._alaw2lin
                 isipokua:
-                     ashiria Error('unsupported compression type')
+                    ashiria Error('unsupported compression type')
                 self._sampwidth = 2
         isipokua:
             self._comptype = b'NONE'
@@ -518,7 +518,7 @@ kundi Aifc_read:
                     # dummy markers consisting of
                     # a position 0 na name ''
                     self._markers.append((id, pos, name))
-        except EOFError:
+        tatizo EOFError:
             w = ('Warning: MARK chunk contains only %s marker%s instead of %s' %
                  (len(self._markers), '' ikiwa len(self._markers) == 1 isipokua 's',
                   nmarkers))
@@ -565,7 +565,7 @@ kundi Aifc_write:
                 file_object.close()
                 raise
 
-            # treat .aiff file extensions as non-compressed audio
+            # treat .aiff file extensions kama non-compressed audio
             ikiwa f.endswith('.aiff'):
                 self._aifc = 0
         isipokua:
@@ -603,53 +603,53 @@ kundi Aifc_write:
     #
     eleza aiff(self):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._aifc = 0
 
     eleza aifc(self):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._aifc = 1
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nchannels < 1:
-             ashiria Error('bad # of channels')
+            ashiria Error('bad # of channels')
         self._nchannels = nchannels
 
     eleza getnchannels(self):
         ikiwa sio self._nchannels:
-             ashiria Error('number of channels sio set')
+            ashiria Error('number of channels sio set')
         rudisha self._nchannels
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa sampwidth < 1 ama sampwidth > 4:
-             ashiria Error('bad sample width')
+            ashiria Error('bad sample width')
         self._sampwidth = sampwidth
 
     eleza getsampwidth(self):
         ikiwa sio self._sampwidth:
-             ashiria Error('sample width sio set')
+            ashiria Error('sample width sio set')
         rudisha self._sampwidth
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa framerate <= 0:
-             ashiria Error('bad frame rate')
+            ashiria Error('bad frame rate')
         self._framerate = framerate
 
     eleza getframerate(self):
         ikiwa sio self._framerate:
-             ashiria Error('frame rate sio set')
+            ashiria Error('frame rate sio set')
         rudisha self._framerate
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -657,10 +657,10 @@ kundi Aifc_write:
 
     eleza setcomptype(self, comptype, compname):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
-        ikiwa comptype sio kwenye (b'NONE', b'ulaw', b'ULAW',
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa comptype haiko kwenye (b'NONE', b'ulaw', b'ULAW',
                             b'alaw', b'ALAW', b'G722'):
-             ashiria Error('unsupported compression type')
+            ashiria Error('unsupported compression type')
         self._comptype = comptype
         self._compname = compname
 
@@ -672,16 +672,16 @@ kundi Aifc_write:
 
 ##  eleza setversion(self, version):
 ##      ikiwa self._nframeswritten:
-##           ashiria Error, 'cannot change parameters after starting to write'
+##          ashiria Error, 'cannot change parameters after starting to write'
 ##      self._version = version
 
     eleza setparams(self, params):
         nchannels, sampwidth, framerate, nframes, comptype, compname = params
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
-        ikiwa comptype sio kwenye (b'NONE', b'ulaw', b'ULAW',
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa comptype haiko kwenye (b'NONE', b'ulaw', b'ULAW',
                             b'alaw', b'ALAW', b'G722'):
-             ashiria Error('unsupported compression type')
+            ashiria Error('unsupported compression type')
         self.setnchannels(nchannels)
         self.setsampwidth(sampwidth)
         self.setframerate(framerate)
@@ -690,17 +690,17 @@ kundi Aifc_write:
 
     eleza getparams(self):
         ikiwa sio self._nchannels ama sio self._sampwidth ama sio self._framerate:
-             ashiria Error('not all parameters set')
+            ashiria Error('not all parameters set')
         rudisha _aifc_params(self._nchannels, self._sampwidth, self._framerate,
                             self._nframes, self._comptype, self._compname)
 
     eleza setmark(self, id, pos, name):
         ikiwa id <= 0:
-             ashiria Error('marker ID must be > 0')
+            ashiria Error('marker ID must be > 0')
         ikiwa pos < 0:
-             ashiria Error('marker position must be >= 0')
+            ashiria Error('marker position must be >= 0')
         ikiwa sio isinstance(name, bytes):
-             ashiria Error('marker name must be bytes')
+            ashiria Error('marker name must be bytes')
         kila i kwenye range(len(self._markers)):
             ikiwa id == self._markers[i][0]:
                 self._markers[i] = id, pos, name
@@ -711,7 +711,7 @@ kundi Aifc_write:
         kila marker kwenye self._markers:
             ikiwa id == marker[0]:
                 rudisha marker
-         ashiria Error('marker {0!r} does sio exist'.format(id))
+        ashiria Error('marker {0!r} does sio exist'.format(id))
 
     eleza getmarkers(self):
         ikiwa len(self._markers) == 0:
@@ -784,22 +784,22 @@ kundi Aifc_write:
                 ikiwa sio self._sampwidth:
                     self._sampwidth = 2
                 ikiwa self._sampwidth != 2:
-                     ashiria Error('sample width must be 2 when compressing '
+                    ashiria Error('sample width must be 2 when compressing '
                                 'ukijumuisha ulaw/ULAW, alaw/ALAW ama G7.22 (ADPCM)')
             ikiwa sio self._nchannels:
-                 ashiria Error('# channels sio specified')
+                ashiria Error('# channels sio specified')
             ikiwa sio self._sampwidth:
-                 ashiria Error('sample width sio specified')
+                ashiria Error('sample width sio specified')
             ikiwa sio self._framerate:
-                 ashiria Error('sampling rate sio specified')
+                ashiria Error('sampling rate sio specified')
             self._write_header(datasize)
 
     eleza _init_compression(self):
         ikiwa self._comptype == b'G722':
             self._convert = self._lin2adpcm
-        elikiwa self._comptype kwenye (b'ulaw', b'ULAW'):
+        lasivyo self._comptype kwenye (b'ulaw', b'ULAW'):
             self._convert = self._lin2ulaw
-        elikiwa self._comptype kwenye (b'alaw', b'ALAW'):
+        lasivyo self._comptype kwenye (b'alaw', b'ALAW'):
             self._convert = self._lin2alaw
 
     eleza _write_header(self, initlength):
@@ -816,13 +816,13 @@ kundi Aifc_write:
                 self._datalength = self._datalength // 2
                 ikiwa self._datalength & 1:
                     self._datalength = self._datalength + 1
-            elikiwa self._comptype == b'G722':
+            lasivyo self._comptype == b'G722':
                 self._datalength = (self._datalength + 3) // 4
                 ikiwa self._datalength & 1:
                     self._datalength = self._datalength + 1
         jaribu:
             self._form_length_pos = self._file.tell()
-        except (AttributeError, OSError):
+        tatizo (AttributeError, OSError):
             self._form_length_pos = Tupu
         commlength = self._write_form_length(self._datalength)
         ikiwa self._aifc:
@@ -915,10 +915,10 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Aifc_read(f)
-    elikiwa mode kwenye ('w', 'wb'):
+    lasivyo mode kwenye ('w', 'wb'):
         rudisha Aifc_write(f)
     isipokua:
-         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
+        ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
 
 eleza openfp(f, mode=Tupu):
     warnings.warn("aifc.openfp ni deprecated since Python 3.7. "
@@ -930,7 +930,7 @@ ikiwa __name__ == '__main__':
     ikiwa sio sys.argv[1:]:
         sys.argv.append('/usr/demos/data/audio/bach.aiff')
     fn = sys.argv[1]
-    ukijumuisha open(fn, 'r') as f:
+    ukijumuisha open(fn, 'r') kama f:
         andika("Reading", fn)
         andika("nchannels =", f.getnchannels())
         andika("nframes   =", f.getnframes())
@@ -941,7 +941,7 @@ ikiwa __name__ == '__main__':
         ikiwa sys.argv[2:]:
             gn = sys.argv[2]
             andika("Writing", gn)
-            ukijumuisha open(gn, 'w') as g:
+            ukijumuisha open(gn, 'w') kama g:
                 g.setparams(f.getparams())
                 wakati 1:
                     data = f.readframes(1024)

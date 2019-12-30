@@ -142,7 +142,7 @@ kundi InitialisableProgram(unittest.TestProgram):
     progName = 'test'
     test = 'test'
     eleza __init__(self, *args):
-        pass
+        pita
 
 RESULT = object()
 
@@ -155,7 +155,7 @@ kundi FakeRunner(object):
         FakeRunner.initArgs = kwargs
         ikiwa FakeRunner.raiseError:
             FakeRunner.raiseError -= 1
-             ashiria TypeError
+            ashiria TypeError
 
     eleza run(self, test):
         FakeRunner.test = test
@@ -213,14 +213,14 @@ kundi TestCommandLineArgs(unittest.TestCase):
                 self.assertIs(getattr(program, attr), Kweli)
 
                 setattr(program, attr, Uongo)
-                ukijumuisha support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
+                ukijumuisha support.captured_stderr() kama stderr, \
+                    self.assertRaises(SystemExit) kama cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
                 setattr(program, attr, Kweli)
-                ukijumuisha support.captured_stderr() as stderr, \
-                    self.assertRaises(SystemExit) as cm:
+                ukijumuisha support.captured_stderr() kama stderr, \
+                    self.assertRaises(SystemExit) kama cm:
                     program.parseArgs([Tupu, opt])
                 self.assertEqual(cm.exception.args, (2,))
 
@@ -228,8 +228,8 @@ kundi TestCommandLineArgs(unittest.TestCase):
         """Test the warnings argument"""
         # see #10535
         kundi FakeTP(unittest.TestProgram):
-            eleza parseArgs(self, *args, **kw): pass
-            eleza runTests(self, *args, **kw): pass
+            eleza parseArgs(self, *args, **kw): pita
+            eleza runTests(self, *args, **kw): pita
         warnoptions = sys.warnoptions[:]
         jaribu:
             sys.warnoptions[:] = []
@@ -404,10 +404,10 @@ kundi TestCommandLineArgs(unittest.TestCase):
         self.assertEqual(program.testNames, argv[1:])
 
         # it may be better to use platform specific functions to normalise paths
-        # rather than accepting '.PY' na '\' as file separator on Linux / Mac
+        # rather than accepting '.PY' na '\' kama file separator on Linux / Mac
         # it would also be better to check that a filename ni a valid module
         # identifier (we have a regex kila this kwenye loader.py)
-        # kila invalid filenames should we  ashiria a useful error rather than
+        # kila invalid filenames should we ashiria a useful error rather than
         # leaving the current error message (agiza of filename fails) kwenye place?
 
     eleza testParseArgsSelectedTestNames(self):

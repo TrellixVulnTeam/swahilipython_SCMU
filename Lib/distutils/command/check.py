@@ -28,7 +28,7 @@ jaribu:
                                         *children, **kwargs)
 
     HAS_DOCUTILS = Kweli
-except Exception:
+tatizo Exception:
     # Catch all exceptions because exceptions besides ImportError probably
     # indicate that docutils ni sio ported to Py3k.
     HAS_DOCUTILS = Uongo
@@ -54,7 +54,7 @@ kundi check(Command):
         self._warnings = 0
 
     eleza finalize_options(self):
-        pass
+        pita
 
     eleza warn(self, msg):
         """Counts the number of warnings that occurs."""
@@ -69,18 +69,18 @@ kundi check(Command):
         ikiwa self.restructuredtext:
             ikiwa HAS_DOCUTILS:
                 self.check_restructuredtext()
-            elikiwa self.strict:
-                 ashiria DistutilsSetupError('The docutils package ni needed.')
+            lasivyo self.strict:
+                ashiria DistutilsSetupError('The docutils package ni needed.')
 
-        # let's  ashiria an error kwenye strict mode, ikiwa we have at least
+        # let's ashiria an error kwenye strict mode, ikiwa we have at least
         # one warning
         ikiwa self.strict na self._warnings > 0:
-             ashiria DistutilsSetupError('Please correct your package.')
+            ashiria DistutilsSetupError('Please correct your package.')
 
     eleza check_metadata(self):
         """Ensures that all required elements of meta-data are supplied.
 
-        name, version, URL, (author na author_email) or
+        name, version, URL, (author na author_email) ama
         (maintainer na maintainer_email)).
 
         Warns ikiwa any are missing.
@@ -98,7 +98,7 @@ kundi check(Command):
             ikiwa sio metadata.author_email:
                 self.warn("missing meta-data: ikiwa 'author' supplied, " +
                           "'author_email' must be supplied too")
-        elikiwa metadata.maintainer:
+        lasivyo metadata.maintainer:
             ikiwa sio metadata.maintainer_email:
                 self.warn("missing meta-data: ikiwa 'maintainer' supplied, " +
                           "'maintainer_email' must be supplied too")
@@ -139,7 +139,7 @@ kundi check(Command):
         document.note_source(source_path, -1)
         jaribu:
             parser.parse(data, document)
-        except AttributeError as e:
+        tatizo AttributeError kama e:
             reporter.messages.append(
                 (-1, 'Could sio finish the parsing: %s.' % e, '', {}))
 

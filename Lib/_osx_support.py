@@ -62,11 +62,11 @@ eleza _read_output(commandstring):
     jaribu:
         agiza tempfile
         fp = tempfile.NamedTemporaryFile()
-    except ImportError:
+    tatizo ImportError:
         fp = open("/tmp/_osx_support.%s"%(
             os.getpid(),), "w+b")
 
-    ukijumuisha contextlib.closing(fp) as fp:
+    ukijumuisha contextlib.closing(fp) kama fp:
         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
         rudisha fp.read().decode('utf-8').strip() ikiwa sio os.system(cmd) isipokua Tupu
 
@@ -81,7 +81,7 @@ eleza _find_build_tool(toolname):
 _SYSTEM_VERSION = Tupu
 
 eleza _get_system_version():
-    """Return the OS X system version as a string"""
+    """Return the OS X system version kama a string"""
     # Reading this plist ni a documented way to get the system
     # version (see the documentation kila the Gestalt Manager)
     # We avoid using platform.mac_ver to avoid possible bootstrap issues during
@@ -94,10 +94,10 @@ eleza _get_system_version():
         _SYSTEM_VERSION = ''
         jaribu:
             f = open('/System/Library/CoreServices/SystemVersion.plist')
-        except OSError:
+        tatizo OSError:
             # We're on a plain darwin box, fall back to the default
             # behaviour.
-            pass
+            pita
         isipokua:
             jaribu:
                 m = re.search(r'<key>ProductUserVisibleVersion</key>\s*'
@@ -121,7 +121,7 @@ eleza _save_modified_value(_config_vars, cv, newvalue):
     """Save modified na original unmodified value of configuration var"""
 
     oldvalue = _config_vars.get(cv, '')
-    ikiwa (oldvalue != newvalue) na (_INITPRE + cv sio kwenye _config_vars):
+    ikiwa (oldvalue != newvalue) na (_INITPRE + cv haiko kwenye _config_vars):
         _config_vars[_INITPRE + cv] = oldvalue
     _config_vars[cv] = newvalue
 
@@ -136,7 +136,7 @@ eleza _supports_universal_builds():
     ikiwa osx_version:
         jaribu:
             osx_version = tuple(int(i) kila i kwenye osx_version.split('.'))
-        except ValueError:
+        tatizo ValueError:
             osx_version = ''
     rudisha bool(osx_version >= (10, 4)) ikiwa osx_version isipokua Uongo
 
@@ -153,7 +153,7 @@ eleza _find_appropriate_compiler(_config_vars):
     #
     #    Furthermore, the compiler that can be used varies between
     #    Xcode releases. Up to Xcode 4 it was possible to use 'gcc-4.2'
-    #    as the compiler, after that 'clang' should be used because
+    #    kama the compiler, after that 'clang' should be used because
     #    gcc-4.2 ni either sio present, ama a copy of 'llvm-gcc' that
     #    miscompiles Python.
 
@@ -174,11 +174,11 @@ eleza _find_appropriate_compiler(_config_vars):
         # NOTE: Cannot use subprocess here because of bootstrap
         # issues when building Python itself (and os.popen is
         # implemented on top of subprocess na ni therefore not
-        # usable as well)
+        # usable kama well)
 
         cc = _find_build_tool('clang')
 
-    elikiwa os.path.basename(cc).startswith('gcc'):
+    lasivyo os.path.basename(cc).startswith('gcc'):
         # Compiler ni GCC, check ikiwa it ni LLVM-GCC
         data = _read_output("'%s' --version"
                              % (cc.replace("'", "'\"'\"'"),))
@@ -187,7 +187,7 @@ eleza _find_appropriate_compiler(_config_vars):
             cc = _find_build_tool('clang')
 
     ikiwa sio cc:
-         ashiria SystemError(
+        ashiria SystemError(
                "Cannot locate working compiler")
 
     ikiwa cc != oldcc:
@@ -195,7 +195,7 @@ eleza _find_appropriate_compiler(_config_vars):
         # Modify config vars using new compiler, ikiwa sio already explicitly
         # overridden by an env variable, preserving additional arguments.
         kila cv kwenye _COMPILER_CONFIG_VARS:
-            ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
+            ikiwa cv kwenye _config_vars na cv haiko kwenye os.environ:
                 cv_split = _config_vars[cv].split()
                 cv_split[0] = cc ikiwa cv != 'CXX' isipokua cc + '++'
                 _save_modified_value(_config_vars, cv, ' '.join(cv_split))
@@ -208,7 +208,7 @@ eleza _remove_universal_flags(_config_vars):
 
     kila cv kwenye _UNIVERSAL_CONFIG_VARS:
         # Do sio alter a config var explicitly overridden by env var
-        ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
+        ikiwa cv kwenye _config_vars na cv haiko kwenye os.environ:
             flags = _config_vars[cv]
             flags = re.sub(r'-arch\s+\w+\s', ' ', flags, flags=re.ASCII)
             flags = re.sub('-isysroot [^ \t]*', ' ', flags)
@@ -249,7 +249,7 @@ eleza _remove_unsupported_archs(_config_vars):
             # failure will show up again when trying to compile an extension
             # module.
             kila cv kwenye _UNIVERSAL_CONFIG_VARS:
-                ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
+                ikiwa cv kwenye _config_vars na cv haiko kwenye os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-arch\s+ppc\w*\s', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
@@ -259,7 +259,7 @@ eleza _remove_unsupported_archs(_config_vars):
 
 eleza _override_all_archs(_config_vars):
     """Allow override of all archs ukijumuisha ARCHFLAGS env var"""
-    # NOTE: This name was introduced by Apple kwenye OSX 10.5 and
+    # NOTE: This name was introduced by Apple kwenye OSX 10.5 na
     # ni used by several scripting languages distributed with
     # that OS release.
     ikiwa 'ARCHFLAGS' kwenye os.environ:
@@ -293,7 +293,7 @@ eleza _check_for_unavailable_sdk(_config_vars):
         ikiwa sio os.path.exists(sdk):
             kila cv kwenye _UNIVERSAL_CONFIG_VARS:
                 # Do sio alter a config var explicitly overridden by env var
-                ikiwa cv kwenye _config_vars na cv sio kwenye os.environ:
+                ikiwa cv kwenye _config_vars na cv haiko kwenye os.environ:
                     flags = _config_vars[cv]
                     flags = re.sub(r'-isysroot\s+\S+(?:\s|$)', ' ', flags)
                     _save_modified_value(_config_vars, cv, flags)
@@ -328,7 +328,7 @@ eleza compiler_fixup(compiler_so, cc_args):
                 index = compiler_so.index('-arch')
                 # Strip this argument na the next one:
                 toa compiler_so[index:index+2]
-            except ValueError:
+            tatizo ValueError:
                 koma
 
     ikiwa 'ARCHFLAGS' kwenye os.environ na sio stripArch:
@@ -342,7 +342,7 @@ eleza compiler_fixup(compiler_so, cc_args):
                 index = compiler_so.index('-isysroot')
                 # Strip this argument na the next one:
                 toa compiler_so[index:index+2]
-            except ValueError:
+            tatizo ValueError:
                 koma
 
     # Check ikiwa the SDK that ni used during compilation actually exists,
@@ -352,7 +352,7 @@ eleza compiler_fixup(compiler_so, cc_args):
     ikiwa '-isysroot' kwenye cc_args:
         idx = cc_args.index('-isysroot')
         sysroot = cc_args[idx+1]
-    elikiwa '-isysroot' kwenye compiler_so:
+    lasivyo '-isysroot' kwenye compiler_so:
         idx = compiler_so.index('-isysroot')
         sysroot = compiler_so[idx+1]
 
@@ -371,7 +371,7 @@ eleza customize_config_vars(_config_vars):
     Called internally kutoka sysconfig ukijumuisha a mutable mapping
     containing name/value pairs parsed kutoka the configured
     makefile used to build this interpreter.  Returns
-    the mapping updated as needed to reflect the environment
+    the mapping updated kama needed to reflect the environment
     kwenye which the interpreter ni running; kwenye the case of
     a Python kutoka a binary installer, the installed
     environment may be very different kutoka the build
@@ -433,7 +433,7 @@ eleza get_platform_osx(_config_vars, osname, release, machine):
     # For our purposes, we'll assume that the system version from
     # distutils' perspective ni what MACOSX_DEPLOYMENT_TARGET ni set
     # to. This makes the compatibility story a bit more sane because the
-    # machine ni going to compile na link as ikiwa it were
+    # machine ni going to compile na link kama ikiwa it were
     # MACOSX_DEPLOYMENT_TARGET.
 
     macver = _config_vars.get('MACOSX_DEPLOYMENT_TARGET', '')
@@ -453,7 +453,7 @@ eleza get_platform_osx(_config_vars, osname, release, machine):
         ikiwa macrelease:
             jaribu:
                 macrelease = tuple(int(i) kila i kwenye macrelease.split('.')[0:2])
-            except ValueError:
+            tatizo ValueError:
                 macrelease = (10, 0)
         isipokua:
             # assume no universal support
@@ -470,28 +470,28 @@ eleza get_platform_osx(_config_vars, osname, release, machine):
 
             ikiwa len(archs) == 1:
                 machine = archs[0]
-            elikiwa archs == ('i386', 'ppc'):
+            lasivyo archs == ('i386', 'ppc'):
                 machine = 'fat'
-            elikiwa archs == ('i386', 'x86_64'):
+            lasivyo archs == ('i386', 'x86_64'):
                 machine = 'intel'
-            elikiwa archs == ('i386', 'ppc', 'x86_64'):
+            lasivyo archs == ('i386', 'ppc', 'x86_64'):
                 machine = 'fat3'
-            elikiwa archs == ('ppc64', 'x86_64'):
+            lasivyo archs == ('ppc64', 'x86_64'):
                 machine = 'fat64'
-            elikiwa archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
+            lasivyo archs == ('i386', 'ppc', 'ppc64', 'x86_64'):
                 machine = 'universal'
             isipokua:
-                 ashiria ValueError(
+                ashiria ValueError(
                    "Don't know machine value kila archs=%r" % (archs,))
 
-        elikiwa machine == 'i386':
+        lasivyo machine == 'i386':
             # On OSX the machine type returned by uname ni always the
             # 32-bit variant, even ikiwa the executable architecture is
             # the 64-bit variant
             ikiwa sys.maxsize >= 2**32:
                 machine = 'x86_64'
 
-        elikiwa machine kwenye ('PowerPC', 'Power_Macintosh'):
+        lasivyo machine kwenye ('PowerPC', 'Power_Macintosh'):
             # Pick a sane name kila the PPC architecture.
             # See 'i386' case
             ikiwa sys.maxsize >= 2**32:

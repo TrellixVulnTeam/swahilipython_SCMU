@@ -19,7 +19,7 @@ eleza evaluate_slice_index(arg):
     ikiwa hasattr(arg, '__index__'):
         rudisha operator.index(arg)
     isipokua:
-         ashiria TypeError(
+        ashiria TypeError(
             "slice indices must be integers ama "
             "Tupu ama have an __index__ method")
 
@@ -28,15 +28,15 @@ eleza slice_indices(slice, length):
     Reference implementation kila the slice.indices method.
 
     """
-    # Compute step na length as integers.
+    # Compute step na length kama integers.
     length = operator.index(length)
     step = 1 ikiwa slice.step ni Tupu isipokua evaluate_slice_index(slice.step)
 
     # Raise ValueError kila negative length ama zero step.
     ikiwa length < 0:
-         ashiria ValueError("length should sio be negative")
+        ashiria ValueError("length should sio be negative")
     ikiwa step == 0:
-         ashiria ValueError("slice step cannot be zero")
+        ashiria ValueError("slice step cannot be zero")
 
     # Find lower na upper bounds kila start na stop.
     lower = -1 ikiwa step < 0 isipokua 0
@@ -95,11 +95,11 @@ kundi SliceTest(unittest.TestCase):
         self.assertNotEqual(s1, "")
 
         kundi Exc(Exception):
-            pass
+            pita
 
         kundi BadCmp(object):
             eleza __eq__(self, other):
-                 ashiria Exc
+                ashiria Exc
 
         s1 = slice(BadCmp())
         s2 = slice(BadCmp())
@@ -133,7 +133,7 @@ kundi SliceTest(unittest.TestCase):
         self.assertEqual(s.step, 3)
 
         kundi AnyClass:
-            pass
+            pita
 
         obj = AnyClass()
         s = slice(obj)
@@ -142,11 +142,11 @@ kundi SliceTest(unittest.TestCase):
     eleza check_indices(self, slice, length):
         jaribu:
             actual = slice.indices(length)
-        except ValueError:
+        tatizo ValueError:
             actual = "valueerror"
         jaribu:
             expected = slice_indices(slice, length)
-        except ValueError:
+        tatizo ValueError:
             expected = "valueerror"
         self.assertEqual(actual, expected)
 
@@ -198,15 +198,15 @@ kundi SliceTest(unittest.TestCase):
                 self.check_indices(s, length)
         self.check_indices(slice(0, 10, 1), -3)
 
-        # Negative length should  ashiria ValueError
+        # Negative length should ashiria ValueError
         ukijumuisha self.assertRaises(ValueError):
             slice(Tupu).indices(-1)
 
-        # Zero step should  ashiria ValueError
+        # Zero step should ashiria ValueError
         ukijumuisha self.assertRaises(ValueError):
             slice(0, 10, 0).indices(5)
 
-        # Using a start, stop ama step ama length that can't be interpreted as an
+        # Using a start, stop ama step ama length that can't be interpreted kama an
         # integer should give a TypeError ...
         ukijumuisha self.assertRaises(TypeError):
             slice(0.0, 10, 1).indices(5)
@@ -243,7 +243,7 @@ kundi SliceTest(unittest.TestCase):
             self.assertNotEqual(id(s), id(t))
 
     eleza test_cycle(self):
-        kundi myobj(): pass
+        kundi myobj(): pita
         o = myobj()
         o.s = slice(o)
         w = weakref.ref(o)

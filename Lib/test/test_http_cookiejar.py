@@ -146,7 +146,7 @@ kundi DateTimeTests(unittest.TestCase):
             '1994-02-03 00:00:00 +0000', # ISO 8601 format
             '1994-02-03 00:00:00',       # zone ni optional
             '1994-02-03',                # only date
-            '1994-02-03T00:00:00',       # Use T as separator
+            '1994-02-03T00:00:00',       # Use T kama separator
             '19940203',                  # only date
             '1994-02-02 24:00:00',       # using hour-24 yesterday date
             '19940203T000000Z',          # ISO 8601 compact format
@@ -203,7 +203,7 @@ kundi HeaderTests(unittest.TestCase):
             self.assertEqual(parse_ns_headers([hdr]), expected)
 
     eleza test_parse_ns_headers_special_names(self):
-        # names such as 'expires' are sio special kwenye first name=value pair
+        # names such kama 'expires' are sio special kwenye first name=value pair
         # of Set-Cookie: header
         # Cookie ukijumuisha name 'expires'
         hdr = 'expires=01 Jan 2040 22:23:32 GMT'
@@ -330,7 +330,7 @@ kundi FileCookieJarTests(unittest.TestCase):
 
     eleza test_constructor_with_other_types(self):
         kundi A:
-            pass
+            pita
 
         kila type_ kwenye (int, float, A):
             ukijumuisha self.subTest(filename=type_):
@@ -350,7 +350,7 @@ kundi FileCookieJarTests(unittest.TestCase):
             c.load(filename, ignore_discard=Kweli)
         mwishowe:
             jaribu: os.unlink(filename)
-            except OSError: pass
+            tatizo OSError: pita
         self.assertEqual(c._cookies["www.acme.com"]["/"]["boo"].value, Tupu)
 
     eleza test_bad_magic(self):
@@ -361,7 +361,7 @@ kundi FileCookieJarTests(unittest.TestCase):
             jaribu:
                 c.load(filename="kila this test to work, a file ukijumuisha this "
                                 "filename should sio exist")
-            except OSError as exc:
+            tatizo OSError kama exc:
                 # an OSError subkundi (likely FileNotFoundError), but not
                 # LoadError
                 self.assertIsNot(exc.__class__, LoadError)
@@ -370,14 +370,14 @@ kundi FileCookieJarTests(unittest.TestCase):
         # Invalid contents of cookies file (eg. bad magic string)
         # causes a LoadError.
         jaribu:
-            ukijumuisha open(filename, "w") as f:
+            ukijumuisha open(filename, "w") kama f:
                 f.write("oops\n")
                 kila cookiejar_kundi kwenye LWPCookieJar, MozillaCookieJar:
                     c = cookiejar_class()
                     self.assertRaises(LoadError, c.load, filename)
         mwishowe:
             jaribu: os.unlink(filename)
-            except OSError: pass
+            tatizo OSError: pita
 
 kundi CookieTests(unittest.TestCase):
     # XXX
@@ -388,7 +388,7 @@ kundi CookieTests(unittest.TestCase):
     # Strictness switches
     # is_third_party()
     # unverifiability / third-party blocking
-    # Netscape cookies work the same as RFC 2965 ukijumuisha regard to port.
+    # Netscape cookies work the same kama RFC 2965 ukijumuisha regard to port.
     # Set-Cookie ukijumuisha negative max age.
     # If turn RFC 2965 handling off, Set-Cookie2 cookies should sio clobber
     #  Set-Cookie cookies.
@@ -405,9 +405,9 @@ kundi CookieTests(unittest.TestCase):
 
     # Netscape peculiarities list kutoka Ronald Tschalar.
     # The first two still need tests, the rest are covered.
-## - Quoting: only quotes around the expires value are recognized as such
+## - Quoting: only quotes around the expires value are recognized kama such
 ##   (and yes, some folks quote the expires value); quotes around any other
-##   value are treated as part of the value.
+##   value are treated kama part of the value.
 ## - White space: white space around names na values ni ignored
 ## - Default path: ikiwa no path parameter ni given, the path defaults to the
 ##   path kwenye the request-uri up to, but sio including, the last '/'. Note
@@ -419,7 +419,7 @@ kundi CookieTests(unittest.TestCase):
 ##   comma-separated list, it'll be a headache to parse (at least my head
 ##   starts hurting every time I think of that code).
 ## - Expires: You'll get all sorts of date formats kwenye the expires,
-##   including empty expires attributes ("expires="). Be as flexible as you
+##   including empty expires attributes ("expires="). Be kama flexible kama you
 ##   can, na certainly don't expect the weekday to be there; ikiwa you can't
 ##   parse it, just ignore it na pretend it's a session cookie.
 ## - Domain-matching: Netscape uses the 2-dot rule kila _all_ domains, not
@@ -431,7 +431,7 @@ kundi CookieTests(unittest.TestCase):
         # domains kwenye the CookieJar before we try to access them (because that
         # may require disk access -- kwenye particular, ukijumuisha MSIECookieJar)
         # This ni only a rough check kila performance reasons, so it's sio too
-        # critical as long as it's sufficiently liberal.
+        # critical kama long kama it's sufficiently liberal.
         pol = DefaultCookiePolicy()
         kila url, domain, ok kwenye [
             ("http://foo.bar.com/", "blah.com", Uongo),
@@ -460,8 +460,8 @@ kundi CookieTests(unittest.TestCase):
             isipokua: self.assertUongo(r)
 
     eleza test_missing_value(self):
-        # missing = sign kwenye Cookie: header ni regarded by Mozilla as a missing
-        # name, na by http.cookiejar as a missing value
+        # missing = sign kwenye Cookie: header ni regarded by Mozilla kama a missing
+        # name, na by http.cookiejar kama a missing value
         filename = test.support.TESTFN
         c = MozillaCookieJar(filename)
         interact_netscape(c, "http://www.acme.com/", 'eggs')
@@ -492,7 +492,7 @@ kundi CookieTests(unittest.TestCase):
                          '"spam"; eggs')
 
     eleza test_rfc2109_handling(self):
-        # RFC 2109 cookies are handled as RFC 2965 ama Netscape cookies,
+        # RFC 2109 cookies are handled kama RFC 2965 ama Netscape cookies,
         # dependent on policy settings
         kila rfc2109_as_netscape, rfc2965, version kwenye [
             # default according to rfc2965 ikiwa sio explicitly specified
@@ -511,7 +511,7 @@ kundi CookieTests(unittest.TestCase):
             interact_netscape(c, "http://www.example.com/", "ni=ni; Version=1")
             jaribu:
                 cookie = c._cookies["www.example.com"]["/"]["ni"]
-            except KeyError:
+            tatizo KeyError:
                 self.assertIsTupu(version)  # didn't expect a stored cookie
             isipokua:
                 self.assertEqual(cookie.version, version)
@@ -571,7 +571,7 @@ kundi CookieTests(unittest.TestCase):
         self.assertIsTupu(cookie.value)
 
     eleza test_ns_parser_special_names(self):
-        # names such as 'expires' are sio special kwenye first name=value pair
+        # names such kama 'expires' are sio special kwenye first name=value pair
         # of Set-Cookie: header
         c = CookieJar()
         interact_netscape(c, "http://www.acme.com/", 'expires=eggs')
@@ -859,7 +859,7 @@ kundi CookieTests(unittest.TestCase):
 
     eleza test_two_component_domain_ns(self):
         # Netscape: .www.bar.com, www.bar.com, .bar.com, bar.com, no domain
-        # should all get accepted, as should .acme.com, acme.com na no domain
+        # should all get accepted, kama should .acme.com, acme.com na no domain
         # kila 2-component domains like acme.com.
         c = CookieJar()
 
@@ -897,7 +897,7 @@ kundi CookieTests(unittest.TestCase):
         self.assertEqual(len(c), 3)
 
 ##         # Netscape protocol doesn't allow non-special top level domains (such
-##         # as co.uk) kwenye the domain attribute unless there are at least three
+##         # kama co.uk) kwenye the domain attribute unless there are at least three
 ##         # dots kwenye it.
         # Oh yes it does!  Real implementations don't check this, na real
         # cookies (of course) rely on that behaviour.
@@ -1306,7 +1306,7 @@ kundi CookieTests(unittest.TestCase):
             # these bad cookies shouldn't be set
             self.assertEqual(len(c), 0)
 
-        # cookie ukijumuisha invalid expires ni treated as session cookie
+        # cookie ukijumuisha invalid expires ni treated kama session cookie
         headers = ["Set-Cookie: c=foo; expires=Foo Bar 12 33:22:11 2000"]
         c = cookiejar_from_cookie_headers(headers)
         cookie = c._cookies["www.example.com"]["/"]["c"]
@@ -1567,7 +1567,7 @@ kundi LWPCookieTests(unittest.TestCase):
         # The user agent makes a series of requests on the origin server, after
         # each of which it receives a new cookie.  All the cookies have the same
         # Path attribute na (default) domain.  Because the request URLs all have
-        # /acme as a prefix, na that matches the Path attribute, each request
+        # /acme kama a prefix, na that matches the Path attribute, each request
         # contains all the cookies received so far.
 
     eleza test_ietf_example_2(self):
@@ -1585,7 +1585,7 @@ kundi LWPCookieTests(unittest.TestCase):
         # Set-Cookie2: Part_Number="Rocket_Launcher_0001"; Version="1";
         #         Path="/acme"
         #
-        # and
+        # na
         #
         # Set-Cookie2: Part_Number="Riding_Rocket_0023"; Version="1";
         #         Path="/acme/ammo"
@@ -1668,7 +1668,7 @@ kundi LWPCookieTests(unittest.TestCase):
                                'version=1')
         self.assertEqual(len(c), 3)
 
-        # illegal port (request-port sio kwenye list)
+        # illegal port (request-port haiko kwenye list)
         cookie = interact_2965(c, "http://www.sol.no",
                                'whiz=ffft; domain=".sol.no"; port="90,100"; '
                                'version=1')
@@ -1710,7 +1710,7 @@ kundi LWPCookieTests(unittest.TestCase):
             c.load(filename, ignore_discard=Kweli)
         mwishowe:
             jaribu: os.unlink(filename)
-            except OSError: pass
+            tatizo OSError: pita
 
         self.assertEqual(old, repr(c))
 
@@ -1733,7 +1733,7 @@ kundi LWPCookieTests(unittest.TestCase):
             c, "http://www.acme.com/foo/%25/<<%0anew\345/\346\370\345")
         self.assertUongo(cookie)
 
-        # unicode URL doesn't  ashiria exception
+        # unicode URL doesn't ashiria exception
         cookie = interact_2965(c, "http://www.acme.com/\xfc")
 
     eleza test_mozilla(self):
@@ -1766,7 +1766,7 @@ kundi LWPCookieTests(unittest.TestCase):
                 new_c.load(ignore_discard=ignore_discard)
             mwishowe:
                 jaribu: os.unlink(filename)
-                except OSError: pass
+                tatizo OSError: pita
             rudisha new_c
 
         new_c = save_and_restore(c, Kweli)
@@ -1788,7 +1788,7 @@ kundi LWPCookieTests(unittest.TestCase):
         res = FakeResponse(headers, "http://www.acme.com/foo")
         c.extract_cookies(res, req)
 
-        # na that the domain ni the same as the host without adding a leading
+        # na that the domain ni the same kama the host without adding a leading
         # dot to the domain.  Should sio quote even ikiwa strange chars are used
         # kwenye the cookie value.
         headers.append("Set-Cookie: PART_NUMBER=3,4; domain=foo.bar.acme.com")

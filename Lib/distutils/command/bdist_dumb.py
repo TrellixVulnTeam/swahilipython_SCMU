@@ -1,7 +1,7 @@
 """distutils.command.bdist_dumb
 
 Implements the Distutils 'bdist_dumb' command (create a "dumb" built
-distribution -- i.e., just an archive to be unpacked under $prefix or
+distribution -- i.e., just an archive to be unpacked under $prefix ama
 $exec_prefix)."""
 
 agiza os
@@ -66,8 +66,8 @@ kundi bdist_dumb(Command):
         ikiwa self.format ni Tupu:
             jaribu:
                 self.format = self.default_format[os.name]
-            except KeyError:
-                 ashiria DistutilsPlatformError(
+            tatizo KeyError:
+                ashiria DistutilsPlatformError(
                        "don't know how to create dumb built distributions "
                        "on platform %s" % os.name)
 
@@ -97,9 +97,9 @@ kundi bdist_dumb(Command):
         ikiwa sio self.relative:
             archive_root = self.bdist_dir
         isipokua:
-            ikiwa (self.distribution.has_ext_modules() and
+            ikiwa (self.distribution.has_ext_modules() na
                 (install.install_base != install.install_platbase)):
-                 ashiria DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                        "can't make a dumb built distribution where "
                        "base na platbase are different (%s, %s)"
                        % (repr(install.install_base),

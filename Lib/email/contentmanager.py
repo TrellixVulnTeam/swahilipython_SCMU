@@ -22,7 +22,7 @@ kundi ContentManager:
             rudisha self.get_handlers[maintype](msg, *args, **kw)
         ikiwa '' kwenye self.get_handlers:
             rudisha self.get_handlers[''](msg, *args, **kw)
-         ashiria KeyError(content_type)
+        ashiria KeyError(content_type)
 
     eleza add_set_handler(self, typekey, handler):
         self.set_handlers[typekey] = handler
@@ -31,7 +31,7 @@ kundi ContentManager:
         ikiwa msg.get_content_maintype() == 'multipart':
             # XXX: ni this error a good idea ama not?  We can remove it later,
             # but we can't add it later, so do it kila now.
-             ashiria TypeError("set_content sio valid on multipart")
+            ashiria TypeError("set_content sio valid on multipart")
         handler = self._find_set_handler(msg, obj)
         msg.clear_content()
         handler(msg, obj, *args, **kw)
@@ -55,7 +55,7 @@ kundi ContentManager:
                 rudisha self.set_handlers[name]
         ikiwa Tupu kwenye self.set_handlers:
             rudisha self.set_handlers[Tupu]
-         ashiria KeyError(full_path_for_error)
+        ashiria KeyError(full_path_for_error)
 
 
 raw_data_manager = ContentManager()
@@ -85,8 +85,8 @@ eleza get_and_fixup_unknown_message_content(msg):
     # ikiwa it were application/octet-stream, per
     # tools.ietf.org/html/rfc2046#section-5.2.4.  Feedparser doesn't do that,
     # so do our best to fix things up.  Note that it ni *not* appropriate to
-    # motoa message/partial content as Message objects, so they are handled
-    # here as well.  (How to reassemble them ni out of scope kila this comment :)
+    # motoa message/partial content kama Message objects, so they are handled
+    # here kama well.  (How to reassemble them ni out of scope kila this comment :)
     rudisha bytes(msg.get_payload(0))
 raw_data_manager.add_get_handler('message',
                                  get_and_fixup_unknown_message_content)
@@ -102,10 +102,10 @@ eleza _prepare_set(msg, maintype, subtype, headers):
         jaribu:
             kila header kwenye headers:
                 ikiwa header.defects:
-                     ashiria header.defects[0]
+                    ashiria header.defects[0]
                 msg[header.name] = header
-        except email.errors.HeaderDefect as exc:
-             ashiria ValueError("Invalid header: {}".format(
+        tatizo email.errors.HeaderDefect kama exc:
+            ashiria ValueError("Invalid header: {}".format(
                                 header.fold(policy=msg.policy))) kutoka exc
 
 
@@ -148,9 +148,9 @@ eleza _encode_text(string, charset, cte, policy):
         # Use heuristics to decide on the "best" encoding.
         jaribu:
             rudisha '7bit', normal_body(lines).decode('ascii')
-        except UnicodeDecodeError:
-            pass
-        ikiwa (policy.cte_type == '8bit' and
+        tatizo UnicodeDecodeError:
+            pita
+        ikiwa (policy.cte_type == '8bit' na
                 max(len(x) kila x kwenye lines) <= policy.max_line_length):
             rudisha '8bit', normal_body(lines).decode('ascii', 'surrogateescape')
         sniff = embedded_body(lines[:10])
@@ -166,15 +166,15 @@ eleza _encode_text(string, charset, cte, policy):
                 rudisha cte, sniff_qp
     ikiwa cte == '7bit':
         data = normal_body(lines).decode('ascii')
-    elikiwa cte == '8bit':
+    lasivyo cte == '8bit':
         data = normal_body(lines).decode('ascii', 'surrogateescape')
-    elikiwa cte == 'quoted-printable':
+    lasivyo cte == 'quoted-printable':
         data = quoprimime.body_encode(normal_body(lines).decode('latin-1'),
                                       policy.max_line_length)
-    elikiwa cte == 'base64':
+    lasivyo cte == 'base64':
         data = _encode_base64(embedded_body(lines), policy.max_line_length)
     isipokua:
-         ashiria ValueError("Unknown content transfer encoding {}".format(cte))
+        ashiria ValueError("Unknown content transfer encoding {}".format(cte))
     rudisha cte, data
 
 
@@ -196,11 +196,11 @@ eleza set_message_content(msg, message, subtype="rfc822", cte=Tupu,
                        disposition=Tupu, filename=Tupu, cid=Tupu,
                        params=Tupu, headers=Tupu):
     ikiwa subtype == 'partial':
-         ashiria ValueError("message/partial ni sio supported kila Message objects")
+        ashiria ValueError("message/partial ni sio supported kila Message objects")
     ikiwa subtype == 'rfc822':
-        ikiwa cte sio kwenye (Tupu, '7bit', '8bit', 'binary'):
+        ikiwa cte haiko kwenye (Tupu, '7bit', '8bit', 'binary'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.1 mandate.
-             ashiria ValueError(
+            ashiria ValueError(
                 "message/rfc822 parts do sio support cte={}".format(cte))
         # 8bit will get coerced on serialization ikiwa policy.cte_type='7bit'.  We
         # may end up claiming 8bit when it isn't needed, but the only negative
@@ -208,13 +208,13 @@ eleza set_message_content(msg, message, subtype="rfc822", cte=Tupu,
         # having to look through the whole embedded message to discover whether
         # ama sio it actually has to do anything.
         cte = '8bit' ikiwa cte ni Tupu isipokua cte
-    elikiwa subtype == 'external-body':
-        ikiwa cte sio kwenye (Tupu, '7bit'):
+    lasivyo subtype == 'external-body':
+        ikiwa cte haiko kwenye (Tupu, '7bit'):
             # http://tools.ietf.org/html/rfc2046#section-5.2.3 mandate.
-             ashiria ValueError(
+            ashiria ValueError(
                 "message/external-body parts do sio support cte={}".format(cte))
         cte = '7bit'
-    elikiwa cte ni Tupu:
+    lasivyo cte ni Tupu:
         # http://tools.ietf.org/html/rfc2046#section-5.2.4 says all future
         # subtypes should be restricted to 7bit, so assume that.
         cte = '7bit'
@@ -231,17 +231,17 @@ eleza set_bytes_content(msg, data, maintype, subtype, cte='base64',
     _prepare_set(msg, maintype, subtype, headers)
     ikiwa cte == 'base64':
         data = _encode_base64(data, max_line_length=msg.policy.max_line_length)
-    elikiwa cte == 'quoted-printable':
+    lasivyo cte == 'quoted-printable':
         # XXX: quoprimime.body_encode won't encode newline characters kwenye data,
         # so we can't use it.  This means max_line_length ni ignored.  Another
         # bug to fix later.  (Note: encoders.quopri ni broken on line ends.)
         data = binascii.b2a_qp(data, istext=Uongo, header=Uongo, quotetabs=Kweli)
         data = data.decode('ascii')
-    elikiwa cte == '7bit':
+    lasivyo cte == '7bit':
         # Make sure it really ni only ASCII.  The early warning here seems
         # worth the overhead...ikiwa you care write your own content manager :).
         data.encode('ascii')
-    elikiwa cte kwenye ('8bit', 'binary'):
+    lasivyo cte kwenye ('8bit', 'binary'):
         data = data.decode('ascii', 'surrogateescape')
     msg.set_payload(data)
     msg['Content-Transfer-Encoding'] = cte

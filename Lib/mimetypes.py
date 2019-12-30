@@ -28,8 +28,8 @@ agiza sys
 agiza posixpath
 agiza urllib.parse
 jaribu:
-    agiza winreg as _winreg
-except ImportError:
+    agiza winreg kama _winreg
+tatizo ImportError:
     _winreg = Tupu
 
 __all__ = [
@@ -59,7 +59,7 @@ kundi MimeTypes:
     """MIME-types datastore.
 
     This datastore can handle information kutoka mime.types-style files
-    na supports basic determination of MIME type kutoka a filename or
+    na supports basic determination of MIME type kutoka a filename ama
     URL, na can guess a reasonable extension given a MIME type.
     """
 
@@ -91,7 +91,7 @@ kundi MimeTypes:
         """
         self.types_map[strict][ext] = type
         exts = self.types_map_inv[strict].setdefault(type, [])
-        ikiwa ext sio kwenye exts:
+        ikiwa ext haiko kwenye exts:
             exts.append(ext)
 
     eleza guess_type(self, url, strict=Kweli):
@@ -131,7 +131,7 @@ kundi MimeTypes:
                 type = url[:semi]
             isipokua:
                 type = url[:comma]
-            ikiwa '=' kwenye type ama '/' sio kwenye type:
+            ikiwa '=' kwenye type ama '/' haiko kwenye type:
                 type = 'text/plain'
             rudisha type, Tupu           # never compressed, so encoding ni Tupu
         base, ext = posixpath.splitext(url)
@@ -145,14 +145,14 @@ kundi MimeTypes:
         types_map = self.types_map[Kweli]
         ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() kwenye types_map:
+        lasivyo ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
-        elikiwa strict:
+        lasivyo strict:
             rudisha Tupu, encoding
         types_map = self.types_map[Uongo]
         ikiwa ext kwenye types_map:
             rudisha types_map[ext], encoding
-        elikiwa ext.lower() kwenye types_map:
+        lasivyo ext.lower() kwenye types_map:
             rudisha types_map[ext.lower()], encoding
         isipokua:
             rudisha Tupu, encoding
@@ -172,7 +172,7 @@ kundi MimeTypes:
         extensions = self.types_map_inv[Kweli].get(type, [])
         ikiwa sio strict:
             kila ext kwenye self.types_map_inv[Uongo].get(type, []):
-                ikiwa ext sio kwenye extensions:
+                ikiwa ext haiko kwenye extensions:
                     extensions.append(ext)
         rudisha extensions
 
@@ -202,7 +202,7 @@ kundi MimeTypes:
         list of standard types, isipokua to the list of non-standard
         types.
         """
-        ukijumuisha open(filename, encoding='utf-8') as fp:
+        ukijumuisha open(filename, encoding='utf-8') kama fp:
             self.readfp(fp, strict)
 
     eleza readfp(self, fp, strict=Kweli):
@@ -246,17 +246,17 @@ kundi MimeTypes:
             wakati Kweli:
                 jaribu:
                     ctype = _winreg.EnumKey(mimedb, i)
-                except OSError:
+                tatizo OSError:
                     koma
                 isipokua:
-                    ikiwa '\0' sio kwenye ctype:
+                    ikiwa '\0' haiko kwenye ctype:
                         tuma ctype
                 i += 1
 
-        ukijumuisha _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') as hkcr:
+        ukijumuisha _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, '') kama hkcr:
             kila subkeyname kwenye enum_types(hkcr):
                 jaribu:
-                    ukijumuisha _winreg.OpenKey(hkcr, subkeyname) as subkey:
+                    ukijumuisha _winreg.OpenKey(hkcr, subkeyname) kama subkey:
                         # Only check file extensions
                         ikiwa sio subkeyname.startswith("."):
                             endelea
@@ -266,7 +266,7 @@ kundi MimeTypes:
                         ikiwa datatype != _winreg.REG_SZ:
                             endelea
                         self.add_type(mimetype, subkeyname, strict)
-                except OSError:
+                tatizo OSError:
                     endelea
 
 eleza guess_type(url, strict=Kweli):
@@ -274,7 +274,7 @@ eleza guess_type(url, strict=Kweli):
 
     Return value ni a tuple (type, encoding) where type ni Tupu ikiwa the
     type can't be guessed (no ama unknown suffix) ama a string of the
-    form type/subtype, usable kila a MIME Content-type header; and
+    form type/subtype, usable kila a MIME Content-type header; na
     encoding ni Tupu kila no encoding ama the name of the program used
     to encode (e.g. compress ama gzip).  The mappings are table
     driven.  Encoding suffixes are case sensitive; type suffixes are
@@ -373,7 +373,7 @@ eleza init(files=Tupu):
 eleza read_mime_types(file):
     jaribu:
         f = open(file)
-    except OSError:
+    tatizo OSError:
         rudisha Tupu
     ukijumuisha f:
         db = MimeTypes()
@@ -586,7 +586,7 @@ More than one type argument may be given.
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'hle',
                                    ['help', 'lenient', 'extension'])
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         usage(1, msg)
 
     strict = 1
@@ -594,9 +594,9 @@ More than one type argument may be given.
     kila opt, arg kwenye opts:
         ikiwa opt kwenye ('-h', '--help'):
             usage(0)
-        elikiwa opt kwenye ('-l', '--lenient'):
+        lasivyo opt kwenye ('-l', '--lenient'):
             strict = 0
-        elikiwa opt kwenye ('-e', '--extension'):
+        lasivyo opt kwenye ('-e', '--extension'):
             extension = 1
     kila gtype kwenye args:
         ikiwa extension:

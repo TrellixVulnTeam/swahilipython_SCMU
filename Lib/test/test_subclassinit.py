@@ -12,7 +12,7 @@ kundi Test(unittest.TestCase):
                 cls.initialized = Kweli
 
         kundi B(A):
-            pass
+            pita
 
         self.assertUongo(A.initialized)
         self.assertKweli(B.initialized)
@@ -26,7 +26,7 @@ kundi Test(unittest.TestCase):
                 cls.initialized = Kweli
 
         kundi B(A):
-            pass
+            pita
 
         self.assertUongo(A.initialized)
         self.assertKweli(B.initialized)
@@ -37,27 +37,27 @@ kundi Test(unittest.TestCase):
                 cls.kwargs = kwargs
 
         kundi B(A, x=3):
-            pass
+            pita
 
         self.assertEqual(B.kwargs, dict(x=3))
 
     eleza test_init_subclass_error(self):
         kundi A:
             eleza __init_subclass__(cls):
-                 ashiria RuntimeError
+                ashiria RuntimeError
 
         ukijumuisha self.assertRaises(RuntimeError):
             kundi B(A):
-                pass
+                pita
 
     eleza test_init_subclass_wrong(self):
         kundi A:
             eleza __init_subclass__(cls, whatever):
-                pass
+                pita
 
         ukijumuisha self.assertRaises(TypeError):
             kundi B(A):
-                pass
+                pita
 
     eleza test_init_subclass_skipped(self):
         kundi BaseWithInit:
@@ -66,10 +66,10 @@ kundi Test(unittest.TestCase):
                 cls.initialized = cls
 
         kundi BaseWithoutInit(BaseWithInit):
-            pass
+            pita
 
         kundi A(BaseWithoutInit):
-            pass
+            pita
 
         self.assertIs(A.initialized, A)
         self.assertIs(BaseWithoutInit.initialized, BaseWithoutInit)
@@ -81,7 +81,7 @@ kundi Test(unittest.TestCase):
                 cls.calls = []
 
         kundi Left(Base):
-            pass
+            pita
 
         kundi Middle:
             eleza __init_subclass__(cls, middle, **kwargs):
@@ -94,7 +94,7 @@ kundi Test(unittest.TestCase):
                 cls.calls += [right]
 
         kundi A(Left, Middle, Right, middle="middle"):
-            pass
+            pita
 
         self.assertEqual(A.calls, ["right", "middle"])
         self.assertEqual(Left.calls, [])
@@ -134,7 +134,7 @@ kundi Test(unittest.TestCase):
             eleza __set_name__(self, owner, name):
                 1/0
 
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             kundi NotGoingToWork:
                 attr = Descriptor()
 
@@ -147,9 +147,9 @@ kundi Test(unittest.TestCase):
     eleza test_set_name_wrong(self):
         kundi Descriptor:
             eleza __set_name__(self):
-                pass
+                pita
 
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             kundi NotGoingToWork:
                 attr = Descriptor()
 
@@ -215,11 +215,11 @@ kundi Test(unittest.TestCase):
 
     eleza test_errors(self):
         kundi MyMeta(type):
-            pass
+            pita
 
         ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta, otherarg=1):
-                pass
+                pita
 
         ukijumuisha self.assertRaises(TypeError):
             types.new_class("MyClass", (object,),
@@ -233,7 +233,7 @@ kundi Test(unittest.TestCase):
 
         ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta, otherarg=1):
-                pass
+                pita
 
         kundi MyMeta(type):
             eleza __new__(cls, name, bases, namespace, otherarg):
@@ -244,7 +244,7 @@ kundi Test(unittest.TestCase):
                 self.otherarg = otherarg
 
         kundi MyClass(metaclass=MyMeta, otherarg=1):
-            pass
+            pita
 
         self.assertEqual(MyClass.otherarg, 1)
 
@@ -257,7 +257,7 @@ kundi Test(unittest.TestCase):
 
         ukijumuisha self.assertRaises(TypeError):
             kundi MyClass(metaclass=MyMeta):
-                pass
+                pita
 
         kundi MyMeta(type):
             eleza __new__(cls, name, bases, namespace, otherarg):
@@ -266,7 +266,7 @@ kundi Test(unittest.TestCase):
                 rudisha self
 
         kundi MyClass(metaclass=MyMeta, otherarg=1):
-            pass
+            pita
 
         self.assertEqual(MyClass.otherarg, 1)
 

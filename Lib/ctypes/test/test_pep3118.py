@@ -87,7 +87,7 @@ kundi PackedPoint(Structure):
     _fields_ = [("x", c_long), ("y", c_long)]
 
 kundi Point2(Structure):
-    pass
+    pita
 Point2._fields_ = [("x", c_long), ("y", c_long)]
 
 kundi EmptyStruct(Structure):
@@ -100,16 +100,16 @@ kundi StructWithArrays(Structure):
     _fields_ = [("x", c_long * 3 * 2), ("y", Point * 4)]
 
 kundi Incomplete(Structure):
-    pass
+    pita
 
 kundi Complete(Structure):
-    pass
+    pita
 PComplete = POINTER(Complete)
 Complete._fields_ = [("a", c_long)]
 
 ################################################################
 #
-# This table contains format strings as they look on little endian
+# This table contains format strings kama they look on little endian
 # machines.  The test replaces '<' ukijumuisha '>' on big endian machines.
 #
 
@@ -219,7 +219,7 @@ kundi LEPoint(LittleEndianStructure):
 
 ################################################################
 #
-# This table contains format strings as they really look, on both big
+# This table contains format strings kama they really look, on both big
 # na little endian machines.
 #
 endian_types = [

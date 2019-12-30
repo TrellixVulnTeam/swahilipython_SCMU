@@ -5,7 +5,7 @@ classes kila incremental (de)compression, na convenience functions for
 one-shot (de)compression.
 
 These classes na functions support both the XZ na legacy LZMA
-container formats, as well as raw compressed data streams.
+container formats, kama well kama raw compressed data streams.
 """
 
 __all__ = [
@@ -39,25 +39,25 @@ kundi LZMAFile(_compression.BaseStream):
 
     """A file object providing transparent LZMA (de)compression.
 
-    An LZMAFile can act as a wrapper kila an existing file object, or
+    An LZMAFile can act kama a wrapper kila an existing file object, ama
     refer directly to a named file on disk.
 
     Note that LZMAFile provides a *binary* file interface - data read
-    ni returned as bytes, na data to be written must be given as bytes.
+    ni returned kama bytes, na data to be written must be given kama bytes.
     """
 
     eleza __init__(self, filename=Tupu, mode="r", *,
                  format=Tupu, check=-1, preset=Tupu, filters=Tupu):
         """Open an LZMA-compressed file kwenye binary mode.
 
-        filename can be either an actual file name (given as a str,
+        filename can be either an actual file name (given kama a str,
         bytes, ama PathLike object), kwenye which case the named file is
-        opened, ama it can be an existing file object to read kutoka or
+        opened, ama it can be an existing file object to read kutoka ama
         write to.
 
         mode can be "r" kila reading (default), "w" kila (over)writing,
         "x" kila creating exclusively, ama "a" kila appending. These can
-        equivalently be given as "rb", "wb", "xb" na "ab" respectively.
+        equivalently be given kama "rb", "wb", "xb" na "ab" respectively.
 
         format specifies the container format to use kila the file.
         If mode ni "r", this defaults to FORMAT_AUTO. Otherwise, the
@@ -71,13 +71,13 @@ kundi LZMAFile(_compression.BaseStream):
 
         When opening a file kila reading, the *preset* argument ni not
         meaningful, na should be omitted. The *filters* argument should
-        also be omitted, except when format ni FORMAT_RAW (in which case
+        also be omitted, tatizo when format ni FORMAT_RAW (in which case
         it ni required).
 
         When opening a file kila writing, the settings used by the
-        compressor can be specified either as a preset compression
-        level (ukijumuisha the *preset* argument), ama kwenye detail as a custom
-        filter chain (ukijumuisha the *filters* argument). For FORMAT_XZ and
+        compressor can be specified either kama a preset compression
+        level (ukijumuisha the *preset* argument), ama kwenye detail kama a custom
+        filter chain (ukijumuisha the *filters* argument). For FORMAT_XZ na
         FORMAT_ALONE, the default ni to use the PRESET_DEFAULT preset
         level. For FORMAT_RAW, the caller must always specify a filter
         chain; the raw compressor does sio support preset compression
@@ -96,15 +96,15 @@ kundi LZMAFile(_compression.BaseStream):
 
         ikiwa mode kwenye ("r", "rb"):
             ikiwa check != -1:
-                 ashiria ValueError("Cannot specify an integrity check "
+                ashiria ValueError("Cannot specify an integrity check "
                                  "when opening a file kila reading")
             ikiwa preset ni sio Tupu:
-                 ashiria ValueError("Cannot specify a preset compression "
+                ashiria ValueError("Cannot specify a preset compression "
                                  "level when opening a file kila reading")
             ikiwa format ni Tupu:
                 format = FORMAT_AUTO
             mode_code = _MODE_READ
-        elikiwa mode kwenye ("w", "wb", "a", "ab", "x", "xb"):
+        lasivyo mode kwenye ("w", "wb", "a", "ab", "x", "xb"):
             ikiwa format ni Tupu:
                 format = FORMAT_XZ
             mode_code = _MODE_WRITE
@@ -112,19 +112,19 @@ kundi LZMAFile(_compression.BaseStream):
                                               preset=preset, filters=filters)
             self._pos = 0
         isipokua:
-             ashiria ValueError("Invalid mode: {!r}".format(mode))
+            ashiria ValueError("Invalid mode: {!r}".format(mode))
 
         ikiwa isinstance(filename, (str, bytes, os.PathLike)):
-            ikiwa "b" sio kwenye mode:
+            ikiwa "b" haiko kwenye mode:
                 mode += "b"
             self._fp = builtins.open(filename, mode)
             self._closefp = Kweli
             self._mode = mode_code
-        elikiwa hasattr(filename, "read") ama hasattr(filename, "write"):
+        lasivyo hasattr(filename, "read") ama hasattr(filename, "write"):
             self._fp = filename
             self._mode = mode_code
         isipokua:
-             ashiria TypeError("filename must be a str, bytes, file ama PathLike object")
+            ashiria TypeError("filename must be a str, bytes, file ama PathLike object")
 
         ikiwa self._mode == _MODE_READ:
             raw = _compression.DecompressReader(self._fp, LZMADecompressor,
@@ -135,7 +135,7 @@ kundi LZMAFile(_compression.BaseStream):
         """Flush na close the file.
 
         May be called more than once without error. Once the file is
-        closed, any other operation on it will  ashiria a ValueError.
+        closed, any other operation on it will ashiria a ValueError.
         """
         ikiwa self._mode == _MODE_CLOSED:
             return
@@ -143,7 +143,7 @@ kundi LZMAFile(_compression.BaseStream):
             ikiwa self._mode == _MODE_READ:
                 self._buffer.close()
                 self._buffer = Tupu
-            elikiwa self._mode == _MODE_WRITE:
+            lasivyo self._mode == _MODE_WRITE:
                 self._fp.write(self._compressor.flush())
                 self._compressor = Tupu
         mwishowe:
@@ -187,7 +187,7 @@ kundi LZMAFile(_compression.BaseStream):
         """
         self._check_can_read()
         # Relies on the undocumented fact that BufferedReader.peek() always
-        # returns at least one byte (except at EOF)
+        # returns at least one byte (tatizo at EOF)
         rudisha self._buffer.peek(size)
 
     eleza read(self, size=-1):
@@ -265,7 +265,7 @@ eleza open(filename, mode="rb", *,
          encoding=Tupu, errors=Tupu, newline=Tupu):
     """Open an LZMA-compressed file kwenye binary ama text mode.
 
-    filename can be either an actual file name (given as a str, bytes,
+    filename can be either an actual file name (given kama a str, bytes,
     ama PathLike object), kwenye which case the named file ni opened, ama it
     can be an existing file object to read kutoka ama write to.
 
@@ -274,7 +274,7 @@ eleza open(filename, mode="rb", *,
     mode.
 
     The format, check, preset na filters arguments specify the
-    compression settings, as kila LZMACompressor, LZMADecompressor and
+    compression settings, kama kila LZMACompressor, LZMADecompressor na
     LZMAFile.
 
     For binary mode, this function ni equivalent to the LZMAFile
@@ -288,14 +288,14 @@ eleza open(filename, mode="rb", *,
     """
     ikiwa "t" kwenye mode:
         ikiwa "b" kwenye mode:
-             ashiria ValueError("Invalid mode: %r" % (mode,))
+            ashiria ValueError("Invalid mode: %r" % (mode,))
     isipokua:
         ikiwa encoding ni sio Tupu:
-             ashiria ValueError("Argument 'encoding' sio supported kwenye binary mode")
+            ashiria ValueError("Argument 'encoding' sio supported kwenye binary mode")
         ikiwa errors ni sio Tupu:
-             ashiria ValueError("Argument 'errors' sio supported kwenye binary mode")
+            ashiria ValueError("Argument 'errors' sio supported kwenye binary mode")
         ikiwa newline ni sio Tupu:
-             ashiria ValueError("Argument 'newline' sio supported kwenye binary mode")
+            ashiria ValueError("Argument 'newline' sio supported kwenye binary mode")
 
     lz_mode = mode.replace("t", "")
     binary_file = LZMAFile(filename, lz_mode, format=format, check=check,
@@ -332,14 +332,14 @@ eleza decompress(data, format=FORMAT_AUTO, memlimit=Tupu, filters=Tupu):
         decomp = LZMADecompressor(format, memlimit, filters)
         jaribu:
             res = decomp.decompress(data)
-        except LZMAError:
+        tatizo LZMAError:
             ikiwa results:
                 koma  # Leftover data ni sio a valid LZMA/XZ stream; ignore it.
             isipokua:
-                 ashiria  # Error on the first iteration; bail out.
+                ashiria  # Error on the first iteration; bail out.
         results.append(res)
         ikiwa sio decomp.eof:
-             ashiria LZMAError("Compressed data ended before the "
+            ashiria LZMAError("Compressed data ended before the "
                             "end-of-stream marker was reached")
         data = decomp.unused_data
         ikiwa sio data:

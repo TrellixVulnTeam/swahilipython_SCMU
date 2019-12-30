@@ -9,7 +9,7 @@ agiza sys
 
 jaribu:
     agiza zipfile
-except ImportError:
+tatizo ImportError:
     zipfile = Tupu
 
 
@@ -20,12 +20,12 @@ kutoka distutils agiza log
 
 jaribu:
     kutoka pwd agiza getpwnam
-except ImportError:
+tatizo ImportError:
     getpwnam = Tupu
 
 jaribu:
     kutoka grp agiza getgrnam
-except ImportError:
+tatizo ImportError:
     getgrnam = Tupu
 
 eleza _get_gid(name):
@@ -34,7 +34,7 @@ eleza _get_gid(name):
         rudisha Tupu
     jaribu:
         result = getgrnam(name)
-    except KeyError:
+    tatizo KeyError:
         result = Tupu
     ikiwa result ni sio Tupu:
         rudisha result[2]
@@ -46,7 +46,7 @@ eleza _get_uid(name):
         rudisha Tupu
     jaribu:
         result = getpwnam(name)
-    except KeyError:
+    tatizo KeyError:
         result = Tupu
     ikiwa result ni sio Tupu:
         rudisha result[2]
@@ -57,7 +57,7 @@ eleza make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
     """Create a (possibly compressed) tar file kutoka all the files under
     'base_dir'.
 
-    'compress' must be "gzip" (the default), "bzip2", "xz", "compress", or
+    'compress' must be "gzip" (the default), "bzip2", "xz", "compress", ama
     Tupu.  ("compress" will be deprecated kwenye Python 3.2)
 
     'owner' na 'group' can be used to define an owner na a group kila the
@@ -75,8 +75,8 @@ eleza make_tarball(base_name, base_dir, compress="gzip", verbose=0, dry_run=0,
                     'compress': '.Z'}
 
     # flags kila compression program, each element of list will be an argument
-    ikiwa compress ni sio Tupu na compress sio kwenye compress_ext.keys():
-         ashiria ValueError(
+    ikiwa compress ni sio Tupu na compress haiko kwenye compress_ext.keys():
+        ashiria ValueError(
               "bad value kila 'compress': must be Tupu, 'gzip', 'bzip2', "
               "'xz' ama 'compress'")
 
@@ -147,10 +147,10 @@ eleza make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
         jaribu:
             spawn(["zip", zipoptions, zip_filename, base_dir],
                   dry_run=dry_run)
-        except DistutilsExecError:
+        tatizo DistutilsExecError:
             # XXX really should distinguish between "couldn't find
             # external 'zip' command" na "zip failed".
-             ashiria DistutilsExecError(("unable to create zip file '%s': "
+            ashiria DistutilsExecError(("unable to create zip file '%s': "
                    "could neither agiza the 'zipfile' module nor "
                    "find a standalone zip utility") % zip_filename)
 
@@ -162,7 +162,7 @@ eleza make_zipfile(base_name, base_dir, verbose=0, dry_run=0):
             jaribu:
                 zip = zipfile.ZipFile(zip_filename, "w",
                                       compression=zipfile.ZIP_DEFLATED)
-            except RuntimeError:
+            tatizo RuntimeError:
                 zip = zipfile.ZipFile(zip_filename, "w",
                                       compression=zipfile.ZIP_STORED)
 
@@ -199,7 +199,7 @@ eleza check_archive_formats(formats):
     If all formats are known, returns Tupu
     """
     kila format kwenye formats:
-        ikiwa format sio kwenye ARCHIVE_FORMATS:
+        ikiwa format haiko kwenye ARCHIVE_FORMATS:
             rudisha format
     rudisha Tupu
 
@@ -214,7 +214,7 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
     'root_dir' ni a directory that will be the root directory of the
     archive; ie. we typically chdir into 'root_dir' before creating the
     archive.  'base_dir' ni the directory where we start archiving from;
-    ie. 'base_dir' will be the common prefix of all files and
+    ie. 'base_dir' will be the common prefix of all files na
     directories kwenye the archive.  'root_dir' na 'base_dir' both default
     to the current directory.  Returns the name of the archive file.
 
@@ -235,8 +235,8 @@ eleza make_archive(base_name, format, root_dir=Tupu, base_dir=Tupu, verbose=0,
 
     jaribu:
         format_info = ARCHIVE_FORMATS[format]
-    except KeyError:
-         ashiria ValueError("unknown archive format '%s'" % format)
+    tatizo KeyError:
+        ashiria ValueError("unknown archive format '%s'" % format)
 
     func = format_info[0]
     kila arg, val kwenye format_info[1]:

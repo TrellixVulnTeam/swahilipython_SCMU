@@ -201,7 +201,7 @@ kundi WStringTestCase(unittest.TestCase):
 
 eleza run_test(rep, msg, func, arg):
     items = range(rep)
-    kutoka time agiza perf_counter as clock
+    kutoka time agiza perf_counter kama clock
     start = clock()
     kila i kwenye items:
         func(arg); func(arg); func(arg); func(arg); func(arg)

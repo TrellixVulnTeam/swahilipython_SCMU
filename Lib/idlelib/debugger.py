@@ -22,8 +22,8 @@ kundi Idb(bdb.Bdb):
         message = self.__frame2message(frame)
         jaribu:
             self.gui.interaction(message, frame)
-        except TclError:  # When closing debugger window ukijumuisha [x] kwenye 3.x
-            pass
+        tatizo TclError:  # When closing debugger window ukijumuisha [x] kwenye 3.x
+            pita
 
     eleza user_exception(self, frame, info):
         ikiwa self.in_rpc_code(frame):
@@ -63,7 +63,7 @@ kundi Debugger:
         ikiwa idb ni Tupu:
             idb = Idb(self)
         self.pyshell = pyshell
-        self.idb = idb  # If passed, a proxy of remote instance.
+        self.idb = idb  # If pitaed, a proxy of remote instance.
         self.frame = Tupu
         self.make_gui()
         self.interacting = 0
@@ -83,7 +83,7 @@ kundi Debugger:
         #                 run() kila second command
         #
         # This kind of nesting of event loops causes all kinds of problems
-        # (see e.g. issue #24455) especially when dealing ukijumuisha running as a
+        # (see e.g. issue #24455) especially when dealing ukijumuisha running kama a
         # subprocess, where there's all kinds of extra stuff happening in
         # there - insert a traceback.print_stack() to check it out.
         #
@@ -112,8 +112,8 @@ kundi Debugger:
     eleza close(self, event=Tupu):
         jaribu:
             self.quit()
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
         ikiwa self.interacting:
             self.top.bell()
             return
@@ -209,13 +209,13 @@ kundi Debugger:
             type, value, tb = info
             jaribu:
                 m1 = type.__name__
-            except AttributeError:
+            tatizo AttributeError:
                 m1 = "%s" % str(type)
             ikiwa value ni sio Tupu:
                 jaribu:
                     m1 = "%s: %s" % (m1, str(value))
                 tatizo:
-                    pass
+                    pita
             bg = "yellow"
         isipokua:
             m1 = ""
@@ -369,7 +369,7 @@ kundi Debugger:
             jaribu:
                 kila lineno kwenye editwin.komapoints:
                     self.set_komapoint_here(filename, lineno)
-            except AttributeError:
+            tatizo AttributeError:
                 endelea
 
 kundi StackViewer(ScrolledList):
@@ -500,7 +500,7 @@ kundi NamespaceViewer:
         isipokua:
             #names = sorted(dict)
             ###
-            # Because of (temporary) limitations on the dict_keys type (not yet
+            # Because of (temporary) limitations on the dict_keys type (sio yet
             # public ama pickleable), have the subprocess to send a list of
             # keys, sio a dict_keys object.  sorted() will take a dict_keys
             # (no subprocess) ama a list.

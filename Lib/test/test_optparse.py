@@ -38,10 +38,10 @@ kundi InterceptedError(Exception):
 
 kundi InterceptingOptionParser(OptionParser):
     eleza exit(self, status=0, msg=Tupu):
-         ashiria InterceptedError(exit_status=status, exit_message=msg)
+        ashiria InterceptedError(exit_status=status, exit_message=msg)
 
     eleza error(self, msg):
-         ashiria InterceptedError(error_message=msg)
+        ashiria InterceptedError(error_message=msg)
 
 
 kundi BaseTest(unittest.TestCase):
@@ -103,7 +103,7 @@ Args were %(args)s.""" % locals ())
 
         jaribu:
             func(*args, **kwargs)
-        except expected_exception as err:
+        tatizo expected_exception kama err:
             actual_message = str(err)
             ikiwa isinstance(expected_message, re.Pattern):
                 self.assertKweli(expected_message.search(actual_message),
@@ -141,7 +141,7 @@ and kwargs %(kwargs)r
         """
         jaribu:
             self.parser.parse_args(cmdline_args)
-        except InterceptedError as err:
+        tatizo InterceptedError kama err:
             self.assertEqual(err.error_message, expected_output)
         isipokua:
             self.assertUongo("expected parse failure")
@@ -161,7 +161,7 @@ and kwargs %(kwargs)r
                 output = sys.stdout.getvalue()
                 sys.stdout = save_stdout
 
-        except InterceptedError as err:
+        tatizo InterceptedError kama err:
             self.assertKweli(
                 isinstance(output, str),
                 "expected output to be an ordinary string, sio %r"
@@ -182,7 +182,7 @@ and kwargs %(kwargs)r
     eleza assertHelp(self, parser, expected_help):
         actual_help = parser.format_help()
         ikiwa actual_help != expected_help:
-             ashiria self.failureException(
+            ashiria self.failureException(
                 'help text failure; expected:\n"' +
                 expected_help + '"; got:\n"' +
                 actual_help + '"\n')
@@ -281,7 +281,7 @@ kundi TestOptionChecks(BaseTest):
                      'callback': 'foo'})
 
     eleza dummy(self):
-        pass
+        pita
 
     eleza test_callback_args_no_tuple(self):
         self.assertOptionError(
@@ -414,7 +414,7 @@ kundi TestOptionParser(BaseTest):
 
 kundi TestOptionValues(BaseTest):
     eleza setUp(self):
-        pass
+        pita
 
     eleza test_basics(self):
         values = Values()
@@ -457,8 +457,8 @@ eleza _check_duration(option, opt, value):
             rudisha int(value)
         isipokua:
             rudisha int(value[:-1]) * _time_units[value[-1]]
-    except (ValueError, IndexError):
-         ashiria OptionValueError(
+    tatizo (ValueError, IndexError):
+        ashiria OptionValueError(
             'option %s: invalid duration: %r' % (opt, value))
 
 kundi DurationOption(Option):
@@ -1023,15 +1023,15 @@ kundi TestExtendAddTypes(BaseTest):
     eleza tearDown(self):
         ikiwa os.path.isdir(support.TESTFN):
             os.rmdir(support.TESTFN)
-        elikiwa os.path.isfile(support.TESTFN):
+        lasivyo os.path.isfile(support.TESTFN):
             os.unlink(support.TESTFN)
 
     kundi MyOption (Option):
         eleza check_file(option, opt, value):
             ikiwa sio os.path.exists(value):
-                 ashiria OptionValueError("%s: file does sio exist" % value)
-            elikiwa sio os.path.isfile(value):
-                 ashiria OptionValueError("%s: sio a regular file" % value)
+                ashiria OptionValueError("%s: file does sio exist" % value)
+            lasivyo sio os.path.isfile(value):
+                ashiria OptionValueError("%s: sio a regular file" % value)
             rudisha value
 
         TYPES = Option.TYPES + ("file",)
@@ -1110,7 +1110,7 @@ kundi TestCallback(BaseTest):
             self.assertEqual(vars(parser_.values), {'filename': Tupu})
 
             parser_.values.x = 42
-        elikiwa opt == "--file":
+        lasivyo opt == "--file":
             self.assertEqual(option._short_opts, ["-f"])
             self.assertEqual(option._long_opts, ["--file"])
             self.assertKweli(parser_ ni self.parser)
@@ -1155,7 +1155,7 @@ kundi TestCallbackExtraArgs(BaseTest):
 
         ikiwa opt == "-p":
             self.assertEqual(value, "1,2,3")
-        elikiwa opt == "--point":
+        lasivyo opt == "--point":
             self.assertEqual(value, "4,5,6")
 
         value = tuple(map(type, value.split(",")))
@@ -1206,11 +1206,11 @@ kundi TestCallbackManyArgs(BaseTest):
     eleza process_many(self, option, opt, value, parser_):
         ikiwa opt == "-a":
             self.assertEqual(value, ("foo", "bar"))
-        elikiwa opt == "--apple":
+        lasivyo opt == "--apple":
             self.assertEqual(value, ("ding", "dong"))
-        elikiwa opt == "-b":
+        lasivyo opt == "-b":
             self.assertEqual(value, (1, 2, 3))
-        elikiwa opt == "--bob":
+        lasivyo opt == "--bob":
             self.assertEqual(value, (-666, 42, 0))
 
     eleza test_many_args(self):
@@ -1247,7 +1247,7 @@ kundi TestCallbackVarArgs(BaseTest):
         rargs = parser.rargs
         wakati rargs:
             arg = rargs[0]
-            ikiwa ((arg[:2] == "--" na len(arg) > 2) or
+            ikiwa ((arg[:2] == "--" na len(arg) > 2) ama
                 (arg[:1] == "-" na len(arg) > 1 na arg[1] != "-")):
                 koma
             isipokua:
@@ -1461,7 +1461,7 @@ Options:
     the evil
     spirits
     that cause
-    trouble and
+    trouble na
     mayhem)
   --foo=FOO
     store FOO
@@ -1472,7 +1472,7 @@ Options:
   -h, --help
     show this
     help
-    message and
+    message na
     exit
 """
 
@@ -1497,7 +1497,7 @@ kundi TestHelp(BaseTest):
         # we must restore its original value -- otherwise, this test
         # screws things up kila other tests when it's part of the Python
         # test suite.
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['COLUMNS'] = str(columns)
             rudisha InterceptingOptionParser(option_list=options)
 
@@ -1522,7 +1522,7 @@ kundi TestHelp(BaseTest):
         self.assertHelpEquals(_expected_help_long_opts_first)
 
     eleza test_help_title_formatter(self):
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["COLUMNS"] = "80"
             self.parser.formatter = TitledHelpFormatter()
             self.assertHelpEquals(_expected_help_title_formatter)
@@ -1560,7 +1560,7 @@ Options:
     eleza test_help_description_groups(self):
         self.parser.set_description(
             "This ni the program description kila %prog.  %prog has "
-            "an option group as well as single options.")
+            "an option group kama well kama single options.")
 
         group = OptionGroup(
             self.parser, "Dangerous Options",
@@ -1573,7 +1573,7 @@ Options:
 Usage: bar.py [options]
 
 This ni the program description kila bar.py.  bar.py has an option group as
-well as single options.
+well kama single options.
 
 Options:
   -a APPLE           throw APPLEs at basket

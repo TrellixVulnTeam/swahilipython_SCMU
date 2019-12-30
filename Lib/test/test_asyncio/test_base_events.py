@@ -14,7 +14,7 @@ kutoka unittest agiza mock
 agiza asyncio
 kutoka asyncio agiza base_events
 kutoka asyncio agiza constants
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok
 
@@ -213,7 +213,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
     eleza test_set_default_executor(self):
         kundi DummyExecutor(concurrent.futures.ThreadPoolExecutor):
             eleza submit(self, fn, *args, **kwargs):
-                 ashiria NotImplementedError(
+                ashiria NotImplementedError(
                     'cannot submit into a dummy executor')
 
         executor = DummyExecutor()
@@ -228,7 +228,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza test_call_soon(self):
         eleza cb():
-            pass
+            pita
 
         h = self.loop.call_soon(cb)
         self.assertEqual(h._callback, cb)
@@ -242,7 +242,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza test_call_later(self):
         eleza cb():
-            pass
+            pita
 
         h = self.loop.call_later(10.0, cb)
         self.assertIsInstance(h, asyncio.TimerHandle)
@@ -282,7 +282,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza check_thread(self, loop, debug):
         eleza cb():
-            pass
+            pita
 
         loop.set_debug(debug)
         ikiwa debug:
@@ -315,7 +315,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
                         loop2.close()
                 isipokua:
                     self.check_thread(loop, debug)
-            except Exception as exc:
+            tatizo Exception kama exc:
                 loop.call_soon_threadsafe(fut.set_exception, exc)
             isipokua:
                 loop.call_soon_threadsafe(fut.set_result, Tupu)
@@ -333,13 +333,13 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
         self.loop._write_to_self = mock.Mock()
 
-        #  ashiria RuntimeError ikiwa the thread has no event loop
+        # ashiria RuntimeError ikiwa the thread has no event loop
         test_thread(self.loop, Kweli)
 
         # check disabled ikiwa debug mode ni disabled
         test_thread(self.loop, Uongo)
 
-        #  ashiria RuntimeError ikiwa the event loop of the thread ni sio the called
+        # ashiria RuntimeError ikiwa the event loop of the thread ni sio the called
         # event loop
         test_thread(self.loop, Kweli, create_loop=Kweli)
 
@@ -396,7 +396,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             0 < base_events._MIN_CANCELLED_TIMER_HANDLES_FRACTION < 1.0)
 
         eleza cb():
-            pass
+            pita
 
         # Set up one "blocking" event that will sio be cancelled to
         # ensure later cancelled events do sio make it to the head
@@ -433,7 +433,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         self.assertEqual(len(self.loop._scheduled),
             cancelled_count + not_cancelled_count)
 
-        # Need enough events to pass _MIN_CANCELLED_TIMER_HANDLES_FRACTION
+        # Need enough events to pita _MIN_CANCELLED_TIMER_HANDLES_FRACTION
         # so that deletion of cancelled events will occur on next _run_once
         add_cancel_count = int(math.ceil(
             base_events._MIN_SCHEDULED_TIMER_HANDLES *
@@ -478,13 +478,13 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza test_run_until_complete_loop_orphan_future_close_loop(self):
         kundi ShowStopper(SystemExit):
-            pass
+            pita
 
         async eleza foo(delay):
             await asyncio.sleep(delay)
 
         eleza throw():
-             ashiria ShowStopper
+            ashiria ShowStopper
 
         self.loop._process_events = mock.Mock()
         self.loop.call_soon(throw)
@@ -496,7 +496,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         self.loop.run_until_complete(foo(0.2))
 
     eleza test_subprocess_exec_invalid_args(self):
-        args = [sys.executable, '-c', 'pass']
+        args = [sys.executable, '-c', 'pita']
 
         # missing program parameter (empty args)
         self.assertRaises(TypeError,
@@ -531,7 +531,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             asyncio.SubprocessProtocol, 123)
         self.assertRaises(TypeError,
             self.loop.run_until_complete, self.loop.subprocess_shell,
-            asyncio.SubprocessProtocol, [sys.executable, '-c', 'pass'])
+            asyncio.SubprocessProtocol, [sys.executable, '-c', 'pita'])
 
         # universal_newlines, shell, bufsize must sio be set
         self.assertRaises(TypeError,
@@ -552,7 +552,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             1/0
 
         # Test call_soon (events.Handle)
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             fut = self.loop.create_future()
             self.loop.call_soon(zero_error, fut)
             fut.add_done_callback(lambda fut: self.loop.stop())
@@ -562,7 +562,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
                 exc_info=(ZeroDivisionError, MOCK_ANY, MOCK_ANY))
 
         # Test call_later (events.TimerHandle)
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             fut = self.loop.create_future()
             self.loop.call_later(0.01, zero_error, fut)
             fut.add_done_callback(lambda fut: self.loop.stop())
@@ -579,7 +579,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             1/0
 
         # Test Future.__del__
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             fut = asyncio.ensure_future(zero_error_coro(), loop=self.loop)
             fut.add_done_callback(lambda *args: self.loop.stop())
             self.loop.run_forever()
@@ -629,7 +629,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         mock_handler.reset_mock()
 
         self.loop.set_exception_handler(Tupu)
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             run_loop()
             log.error.assert_called_with(
                         test_utils.MockPattern(
@@ -646,13 +646,13 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             self.loop._run_once()
 
         eleza handler(loop, context):
-             ashiria AttributeError('spam')
+            ashiria AttributeError('spam')
 
         self.loop._process_events = mock.Mock()
 
         self.loop.set_exception_handler(handler)
 
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             run_loop()
             log.error.assert_called_with(
                 test_utils.MockPattern(
@@ -671,7 +671,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
                 nonlocal _context
                 _context = context
                 # Simulates custom buggy "default_exception_handler"
-                 ashiria ValueError('spam')
+                ashiria ValueError('spam')
 
         loop = Loop()
         self.addCleanup(loop.close)
@@ -683,25 +683,25 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             loop.call_soon(zero_error)
             loop._run_once()
 
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             run_loop()
             log.error.assert_called_with(
                 'Exception kwenye default exception handler',
                 exc_info=Kweli)
 
         eleza custom_handler(loop, context):
-             ashiria ValueError('ham')
+            ashiria ValueError('ham')
 
         _context = Tupu
         loop.set_exception_handler(custom_handler)
-        ukijumuisha mock.patch('asyncio.base_events.logger') as log:
+        ukijumuisha mock.patch('asyncio.base_events.logger') kama log:
             run_loop()
             log.error.assert_called_with(
                 test_utils.MockPattern('Exception kwenye default exception.*'
                                        'wakati handling.*in custom'),
                 exc_info=Kweli)
 
-            # Check that original context was passed to default
+            # Check that original context was pitaed to default
             # exception handler.
             self.assertIn('context', _context)
             self.assertIs(type(_context['context']['exception']),
@@ -719,10 +719,10 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         self.loop._process_events = mock.Mock()
 
         kundi MyTask(asyncio.Task):
-            pass
+            pita
 
         async eleza coro():
-            pass
+            pita
 
         factory = lambda loop, coro: MyTask(coro, loop=loop)
 
@@ -774,10 +774,10 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza test_create_task(self):
         kundi MyTask(asyncio.Task):
-            pass
+            pita
 
         async eleza test():
-            pass
+            pita
 
         kundi EventLoop(base_events.BaseEventLoop):
             eleza create_task(self, coro):
@@ -796,7 +796,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
 
     eleza test_create_named_task_with_default_factory(self):
         async eleza test():
-            pass
+            pita
 
         loop = asyncio.new_event_loop()
         task = loop.create_task(test(), name='test_task')
@@ -811,7 +811,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
             rudisha asyncio.Task(coro, loop=loop)
 
         async eleza test():
-            pass
+            pita
 
         loop = asyncio.new_event_loop()
         loop.set_task_factory(task_factory)
@@ -827,15 +827,15 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         # run_forever() consumes the KeyboardInterrupt na so don't log
         # a warning
         async eleza raise_keyboard_interrupt():
-             ashiria KeyboardInterrupt
+            ashiria KeyboardInterrupt
 
         self.loop._process_events = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
 
         jaribu:
             self.loop.run_until_complete(raise_keyboard_interrupt())
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
         self.loop.close()
         support.gc_collect()
 
@@ -845,14 +845,14 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         # Python issue #22429: run_until_complete() must sio schedule a pending
         # call to stop() ikiwa the future raised a BaseException
         async eleza raise_keyboard_interrupt():
-             ashiria KeyboardInterrupt
+            ashiria KeyboardInterrupt
 
         self.loop._process_events = mock.Mock()
 
         jaribu:
             self.loop.run_until_complete(raise_keyboard_interrupt())
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
 
         eleza func():
             self.loop.stop()
@@ -861,8 +861,8 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         jaribu:
             self.loop.call_soon(func)
             self.loop.run_forever()
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
         self.assertKweli(func.called)
 
     eleza test_single_selecter_event_callback_after_stopping(self):
@@ -942,7 +942,7 @@ kundi BaseEventLoopTests(test_utils.TestCase):
         async eleza iter_one():
             jaribu:
                 item = await ai.__anext__()
-            except StopAsyncIteration:
+            tatizo StopAsyncIteration:
                 return
             ikiwa item == 'THREE':
                 status['stopped'] = Kweli
@@ -1062,7 +1062,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
     eleza test_create_connection_multiple_errors(self, m_socket):
 
         kundi MyProto(asyncio.Protocol):
-            pass
+            pita
 
         async eleza getaddrinfo(*args, **kw):
             rudisha [(2, 1, 6, '', ('107.6.106.82', 80)),
@@ -1077,14 +1077,14 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
         eleza _socket(*args, **kw):
             nonlocal idx, errors
             idx += 1
-             ashiria OSError(errors[idx])
+            ashiria OSError(errors[idx])
 
         m_socket.socket = _socket
 
         self.loop.getaddrinfo = getaddrinfo_task
 
         coro = self.loop.create_connection(MyProto, 'example.com', 80)
-        ukijumuisha self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             self.loop.run_until_complete(coro)
 
         self.assertEqual(str(cm.exception), 'Multiple exceptions: err1, err2')
@@ -1164,8 +1164,8 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
         jaribu:
             self.loop.run_until_complete(main())
-        except OSError as ex:
-            ikiwa (hasattr(errno, 'EADDRNOTAVAIL') and
+        tatizo OSError kama ex:
+            ikiwa (hasattr(errno, 'EADDRNOTAVAIL') na
                     ex.errno == errno.EADDRNOTAVAIL):
                 self.skipTest('failed to bind to ::1')
             isipokua:
@@ -1234,7 +1234,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
             ikiwa addr[0] == '0.0.0.1':
                 err = OSError('Err')
                 err.strerror = 'Err'
-                 ashiria err
+                ashiria err
 
         m_socket.socket.return_value.bind = bind
 
@@ -1252,7 +1252,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
         coro = self.loop.create_connection(
             MyProto, 'example.com', 80, family=socket.AF_INET,
             local_addr=(Tupu, 8080))
-        ukijumuisha self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             self.loop.run_until_complete(coro)
 
         self.assertKweli(str(cm.exception).startswith('Multiple exceptions: '))
@@ -1660,7 +1660,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
     @patch_socket
     eleza test_create_datagram_endpoint_cant_bind(self, m_socket):
         kundi Err(OSError):
-            pass
+            pita
 
         m_socket.getaddrinfo = socket.getaddrinfo
         m_sock = m_socket.socket.return_value = mock.Mock()
@@ -1696,7 +1696,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
 
     @unittest.skipUnless(hasattr(socket, 'AF_UNIX'), 'No UNIX Sockets')
     eleza test_create_datagram_endpoint_existing_sock_unix(self):
-        ukijumuisha test_utils.unix_socket_path() as path:
+        ukijumuisha test_utils.unix_socket_path() kama path:
             sock = socket.socket(socket.AF_UNIX, type=socket.SOCK_DGRAM)
             sock.bind(path)
             sock.close()
@@ -1872,7 +1872,7 @@ kundi BaseEventLoopWithSelectorTests(test_utils.TestCase):
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza simple_coroutine():
-                pass
+                pita
 
         self.loop.set_debug(Kweli)
         coro_func = simple_coroutine
@@ -1969,7 +1969,7 @@ kundi BaseLoopSockSendfileTests(test_utils.TestCase):
     eleza setUpClass(cls):
         cls.__old_bufsize = constants.SENDFILE_FALLBACK_READBUFFER_SIZE
         constants.SENDFILE_FALLBACK_READBUFFER_SIZE = 1024 * 16
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -2007,7 +2007,7 @@ kundi BaseLoopSockSendfileTests(test_utils.TestCase):
         kila _ kwenye range(10):
             jaribu:
                 self.run_loop(self.loop.sock_connect(sock, addr))
-            except OSError:
+            tatizo OSError:
                 self.run_loop(asyncio.sleep(0.5))
                 endelea
             isipokua:
@@ -2081,7 +2081,7 @@ kundi BaseLoopSockSendfileTests(test_utils.TestCase):
 
     eleza test_nonbinary_file(self):
         sock = self.make_socket()
-        ukijumuisha open(support.TESTFN, 'r') as f:
+        ukijumuisha open(support.TESTFN, 'r') kama f:
             ukijumuisha self.assertRaisesRegex(ValueError, "binary mode"):
                 self.run_loop(self.loop.sock_sendfile(sock, f))
 

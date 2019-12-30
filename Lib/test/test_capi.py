@@ -17,7 +17,7 @@ kutoka test.support agiza MISSING_C_DOCSTRINGS
 kutoka test.support.script_helper agiza assert_python_failure, assert_python_ok
 jaribu:
     agiza _posixsubprocess
-except ImportError:
+tatizo ImportError:
     _posixsubprocess = Tupu
 
 # Skip this test ikiwa the _testcapi module isn't available.
@@ -70,8 +70,8 @@ kundi CAPITest(unittest.TestCase):
         raised_exception = ValueError("5")
         new_exc = TypeError("TEST")
         jaribu:
-             ashiria raised_exception
-        except ValueError as e:
+            ashiria raised_exception
+        tatizo ValueError kama e:
             tb = e.__traceback__
             orig_sys_exc_info = sys.exc_info()
             orig_exc_info = _testcapi.set_exc_info(new_exc.__class__, new_exc, Tupu)
@@ -206,7 +206,7 @@ kundi CAPITest(unittest.TestCase):
                              br'Current thread.*:\n'
                              br'  File .*", line 6 kwenye <module>')
         isipokua:
-            ukijumuisha self.assertRaises(SystemError) as cm:
+            ukijumuisha self.assertRaises(SystemError) kama cm:
                 _testcapi.return_null_without_error()
             self.assertRegex(str(cm.exception),
                              'return_null_without_error.* '
@@ -239,7 +239,7 @@ kundi CAPITest(unittest.TestCase):
                              br'Current thread.*:\n'
                              br'  File .*, line 6 kwenye <module>')
         isipokua:
-            ukijumuisha self.assertRaises(SystemError) as cm:
+            ukijumuisha self.assertRaises(SystemError) kama cm:
                 _testcapi.return_result_with_error()
             self.assertRegex(str(cm.exception),
                              'return_result_with_error.* '
@@ -252,7 +252,7 @@ kundi CAPITest(unittest.TestCase):
         code = """ikiwa 1:
             agiza _testcapi
 
-            kundi C(): pass
+            kundi C(): pita
 
             # The first loop tests both functions na that remove_mem_hooks()
             # can be called twice kwenye a row. The second loop checks a call to
@@ -268,7 +268,7 @@ kundi CAPITest(unittest.TestCase):
                             _testcapi.set_nomemory(start, start + 1)
                     jaribu:
                         C()
-                    except MemoryError as e:
+                    tatizo MemoryError kama e:
                         ikiwa outer_cnt != 3:
                             _testcapi.remove_mem_hooks()
                         andika('MemoryError', outer_cnt, j)
@@ -513,7 +513,7 @@ kundi TestPendingCalls(unittest.TestCase):
         #do every callback on a separate thread
         n = 32 #total callbacks
         threads = []
-        kundi foo(object):pass
+        kundi foo(object):pita
         context = foo()
         context.l = []
         context.n = 2 #submits per thread
@@ -558,11 +558,11 @@ kundi SubinterpreterTest(unittest.TestCase):
         r, w = os.pipe()
         code = """ikiwa 1:
             agiza sys, builtins, pickle
-            ukijumuisha open({:d}, "wb") as f:
+            ukijumuisha open({:d}, "wb") kama f:
                 pickle.dump(id(sys.modules), f)
                 pickle.dump(id(builtins), f)
             """.format(w)
-        ukijumuisha open(r, "rb") as f:
+        ukijumuisha open(r, "rb") kama f:
             ret = support.run_in_subinterp(code)
             self.assertEqual(ret, 0)
             self.assertNotEqual(pickle.load(f), id(sys.modules))
@@ -628,7 +628,7 @@ kundi PyMemDebugTests(unittest.TestCase):
         out = self.check('agiza _testcapi; _testcapi.pymem_buffer_overflow()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
-                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.\n"
+                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, kama expected.\n"
                  r"    The [0-9] pad bytes at tail={ptr} are sio all FORBIDDENBYTE \(0x[0-9a-f]{{2}}\):\n"
                  r"        at tail\+0: 0x78 \*\*\* OUCH\n"
                  r"        at tail\+1: 0xfd\n"
@@ -648,8 +648,8 @@ kundi PyMemDebugTests(unittest.TestCase):
         out = self.check('agiza _testcapi; _testcapi.pymem_api_misuse()')
         regex = (r"Debug memory block at address p={ptr}: API 'm'\n"
                  r"    16 bytes originally requested\n"
-                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.\n"
-                 r"    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, as expected.\n"
+                 r"    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, kama expected.\n"
+                 r"    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, kama expected.\n"
                  r"(    The block was made by call #[0-9]+ to debug malloc/realloc.\n)?"
                  r"    Data at p: cd cd cd .*\n"
                  r"\n"
@@ -666,13 +666,13 @@ kundi PyMemDebugTests(unittest.TestCase):
         self.assertIn(expected, out)
 
     eleza test_pymem_malloc_without_gil(self):
-        # Debug hooks must  ashiria an error ikiwa PyMem_Malloc() ni called
+        # Debug hooks must ashiria an error ikiwa PyMem_Malloc() ni called
         # without holding the GIL
         code = 'agiza _testcapi; _testcapi.pymem_malloc_without_gil()'
         self.check_malloc_without_gil(code)
 
     eleza test_pyobject_malloc_without_gil(self):
-        # Debug hooks must  ashiria an error ikiwa PyObject_Malloc() ni called
+        # Debug hooks must ashiria an error ikiwa PyObject_Malloc() ni called
         # without holding the GIL
         code = 'agiza _testcapi; _testcapi.pyobject_malloc_without_gil()'
         self.check_malloc_without_gil(code)
@@ -687,7 +687,7 @@ kundi PyMemDebugTests(unittest.TestCase):
                 # Exit immediately to avoid a crash wakati deallocating
                 # the invalid object
                 os._exit(0)
-            except _testcapi.error:
+            tatizo _testcapi.error:
                 os._exit(1)
         ''')
         assert_python_ok('-c', code, PYTHONMALLOC=self.PYTHONMALLOC)

@@ -6,7 +6,7 @@ agiza re
 agiza sys
 kutoka email._policybase agiza Policy, Compat32, compat32, _extend_docstrings
 kutoka email.utils agiza _has_surrogates
-kutoka email.headerregistry agiza HeaderRegistry as HeaderRegistry
+kutoka email.headerregistry agiza HeaderRegistry kama HeaderRegistry
 kutoka email.contentmanager agiza raw_data_manager
 kutoka email.message agiza EmailMessage
 
@@ -41,7 +41,7 @@ kundi EmailPolicy(Policy):
     all Policies, this policy adds the following additional attributes:
 
     utf8                -- ikiwa Uongo (the default) message headers will be
-                           serialized as ASCII, using encoded words to encode
+                           serialized kama ASCII, using encoded words to encode
                            any non-ASCII characters kwenye the source strings.  If
                            Kweli, the message headers will be serialized using
                            utf8 na will sio contain encoded words (see RFC
@@ -61,24 +61,24 @@ kundi EmailPolicy(Policy):
 
                            The default ni 'long'.
 
-    header_factory      -- a callable that takes two arguments, 'name' and
-                           'value', where 'name' ni a header field name and
-                           'value' ni an unfolded header field value, and
+    header_factory      -- a callable that takes two arguments, 'name' na
+                           'value', where 'name' ni a header field name na
+                           'value' ni an unfolded header field value, na
                            returns a string-like object that represents that
                            header.  A default header_factory ni provided that
                            understands some of the RFC5322 header field types.
                            (Currently address fields na date fields have
                            special treatment, wakati all other fields are
-                           treated as unstructured.  This list will be
+                           treated kama unstructured.  This list will be
                            completed before the extension ni marked stable.)
 
     content_manager     -- an object ukijumuisha at least two methods: get_content
-                           na set_content.  When the get_content or
+                           na set_content.  When the get_content ama
                            set_content method of a Message object ni called,
                            it calls the corresponding method of this object,
-                           passing it the message object as its first argument,
-                           na any arguments ama keywords that were passed to
-                           it as additional arguments.  The default
+                           pitaing it the message object kama its first argument,
+                           na any arguments ama keywords that were pitaed to
+                           it kama additional arguments.  The default
                            content_manager is
                            :data:`~email.contentmanager.raw_data_manager`.
 
@@ -93,7 +93,7 @@ kundi EmailPolicy(Policy):
     eleza __init__(self, **kw):
         # Ensure that each new instance gets a unique header factory
         # (as opposed to clones, which share the factory).
-        ikiwa 'header_factory' sio kwenye kw:
+        ikiwa 'header_factory' haiko kwenye kw:
             object.__setattr__(self, 'header_factory', HeaderRegistry())
         super().__init__(**kw)
 
@@ -108,20 +108,20 @@ kundi EmailPolicy(Policy):
     # The logic of the next three methods ni chosen such that it ni possible to
     # switch a Message object between a Compat32 policy na a policy derived
     # kutoka this kundi na have the results stay consistent.  This allows a
-    # Message object constructed ukijumuisha this policy to be passed to a library
-    # that only handles Compat32 objects, ama to receive such an object and
+    # Message object constructed ukijumuisha this policy to be pitaed to a library
+    # that only handles Compat32 objects, ama to receive such an object na
     # convert it to use the newer style by just changing its policy.  It is
     # also chosen because it postpones the relatively expensive full rfc5322
-    # parse until as late as possible when parsing kutoka source, since kwenye many
+    # parse until kama late kama possible when parsing kutoka source, since kwenye many
     # applications only a few headers will actually be inspected.
 
     eleza header_source_parse(self, sourcelines):
         """+
-        The name ni parsed as everything up to the ':' na returned unmodified.
+        The name ni parsed kama everything up to the ':' na returned unmodified.
         The value ni determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, and
+        remainder of the first line, joining all subsequent lines together, na
         stripping any trailing carriage rudisha ama linefeed characters.  (This
-        ni the same as Compat32).
+        ni the same kama Compat32).
 
         """
         name, value = sourcelines[0].split(':', 1)
@@ -132,8 +132,8 @@ kundi EmailPolicy(Policy):
         """+
         The name ni returned unchanged.  If the input value has a 'name'
         attribute na it matches the name ignoring case, the value ni returned
-        unchanged.  Otherwise the name na value are passed to header_factory
-        method, na the resulting custom header object ni returned as the
+        unchanged.  Otherwise the name na value are pitaed to header_factory
+        method, na the resulting custom header object ni returned kama the
         value.  In this case a ValueError ni raised ikiwa the input value contains
         CR ama LF characters.
 
@@ -143,7 +143,7 @@ kundi EmailPolicy(Policy):
         ikiwa isinstance(value, str) na len(value.splitlines())>1:
             # XXX this error message isn't quite right when we use splitlines
             # (see issue 22233), but I'm sio sure what should happen here.
-             ashiria ValueError("Header values may sio contain linefeed "
+            ashiria ValueError("Header values may sio contain linefeed "
                              "or carriage rudisha characters")
         rudisha (name, self.header_factory(name, value))
 
@@ -151,7 +151,7 @@ kundi EmailPolicy(Policy):
         """+
         If the value has a 'name' attribute, it ni returned to unmodified.
         Otherwise the name na the value ukijumuisha any linesep characters removed
-        are passed to the header_factory method, na the resulting custom
+        are pitaed to the header_factory method, na the resulting custom
         header object ni returned.  Any surrogateescaped bytes get turned
         into the unicode unknown-character glyph.
 
@@ -168,7 +168,7 @@ kundi EmailPolicy(Policy):
         value ni considered to be a 'source value' ikiwa na only ikiwa it does not
         have a 'name' attribute (having a 'name' attribute means it ni a header
         object of some sort).  If a source value needs to be refolded according
-        to the policy, it ni converted into a custom header object by passing
+        to the policy, it ni converted into a custom header object by pitaing
         the name na the value ukijumuisha any linesep characters removed to the
         header_factory method.  Folding of a custom header object ni done by
         calling its fold method ukijumuisha the current policy.
@@ -185,7 +185,7 @@ kundi EmailPolicy(Policy):
 
     eleza fold_binary(self, name, value):
         """+
-        The same as fold ikiwa cte_type ni 7bit, except that the returned value is
+        The same kama fold ikiwa cte_type ni 7bit, tatizo that the returned value is
         bytes.
 
         If cte_type ni 8bit, non-ASCII binary data ni converted back into
@@ -194,7 +194,7 @@ kundi EmailPolicy(Policy):
         data consists of single byte characters ama multibyte characters.
 
         If utf8 ni true, headers are encoded to utf8, otherwise to ascii with
-        non-ASCII unicode rendered as encoded words.
+        non-ASCII unicode rendered kama encoded words.
 
         """
         folded = self._fold(name, value, refold_binary=self.cte_type=='7bit')
@@ -206,9 +206,9 @@ kundi EmailPolicy(Policy):
             rudisha value.fold(policy=self)
         maxlen = self.max_line_length ikiwa self.max_line_length isipokua sys.maxsize
         lines = value.splitlines()
-        refold = (self.refold_source == 'all' or
-                  self.refold_source == 'long' and
-                    (lines na len(lines[0])+len(name)+2 > maxlen or
+        refold = (self.refold_source == 'all' ama
+                  self.refold_source == 'long' na
+                    (lines na len(lines[0])+len(name)+2 > maxlen ama
                      any(len(x) > maxlen kila x kwenye lines[1:])))
         ikiwa refold ama refold_binary na _has_surrogates(value):
             rudisha self.header_factory(name, ''.join(lines)).fold(policy=self)

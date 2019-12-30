@@ -9,20 +9,20 @@ dbm = test.support.import_module('dbm')
 
 jaribu:
     kutoka dbm agiza ndbm
-except ImportError:
+tatizo ImportError:
     ndbm = Tupu
 
 _fname = test.support.TESTFN
 
 #
 # Iterates over every database module supported by dbm currently available,
-# setting dbm to use each kwenye turn, na yielding that module
+# setting dbm to use each kwenye turn, na tumaing that module
 #
 eleza dbm_iterator():
     kila name kwenye dbm._names:
         jaribu:
             mod = __import__(name, fromlist=['open'])
-        except ImportError:
+        tatizo ImportError:
             endelea
         dbm._modules[name] = mod
         tuma mod
@@ -75,7 +75,7 @@ kundi AnyDBMTestCase:
     eleza test_anydbm_creation_n_file_exists_with_invalid_contents(self):
         # create an empty file
         test.support.create_empty_file(_fname)
-        ukijumuisha dbm.open(_fname, 'n') as f:
+        ukijumuisha dbm.open(_fname, 'n') kama f:
             self.assertEqual(len(f), 0)
 
     eleza test_anydbm_modification(self):
@@ -83,7 +83,7 @@ kundi AnyDBMTestCase:
         f = dbm.open(_fname, 'c')
         self._dict['g'] = f[b'g'] = b"indented"
         self.read_helper(f)
-        # setdefault() works as kwenye the dict interface
+        # setdefault() works kama kwenye the dict interface
         self.assertEqual(f.setdefault(b'xxx', b'foo'), b'foo')
         self.assertEqual(f[b'xxx'], b'foo')
         f.close()
@@ -92,7 +92,7 @@ kundi AnyDBMTestCase:
         self.init_db()
         f = dbm.open(_fname, 'r')
         self.read_helper(f)
-        # get() works as kwenye the dict interface
+        # get() works kama kwenye the dict interface
         self.assertEqual(f.get(b'a'), self._dict['a'])
         self.assertEqual(f.get(b'xxx', b'foo'), b'foo')
         self.assertIsTupu(f.get(b'xxx'))

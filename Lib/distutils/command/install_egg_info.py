@@ -11,7 +11,7 @@ agiza os, sys, re
 kundi install_egg_info(Command):
     """Install an .egg-info file kila the package"""
 
-    description = "Install package's PKG-INFO metadata as an .egg-info file"
+    description = "Install package's PKG-INFO metadata kama an .egg-info file"
     user_options = [
         ('install-dir=', 'd', "directory to install to"),
     ]
@@ -33,21 +33,21 @@ kundi install_egg_info(Command):
         target = self.target
         ikiwa os.path.isdir(target) na sio os.path.islink(target):
             dir_util.remove_tree(target, dry_run=self.dry_run)
-        elikiwa os.path.exists(target):
+        lasivyo os.path.exists(target):
             self.execute(os.unlink,(self.target,),"Removing "+target)
-        elikiwa sio os.path.isdir(self.install_dir):
+        lasivyo sio os.path.isdir(self.install_dir):
             self.execute(os.makedirs, (self.install_dir,),
                          "Creating "+self.install_dir)
         log.info("Writing %s", target)
         ikiwa sio self.dry_run:
-            ukijumuisha open(target, 'w', encoding='UTF-8') as f:
+            ukijumuisha open(target, 'w', encoding='UTF-8') kama f:
                 self.distribution.metadata.write_pkg_file(f)
 
     eleza get_outputs(self):
         rudisha self.outputs
 
 
-# The following routines are taken kutoka setuptools' pkg_resources module and
+# The following routines are taken kutoka setuptools' pkg_resources module na
 # can be replaced by importing them kutoka pkg_resources once it ni included
 # kwenye the stdlib.
 

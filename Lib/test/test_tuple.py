@@ -44,7 +44,7 @@ kundi TupleTest(seq_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertKweli(not ())
+        self.assertKweli(sio ())
         self.assertKweli((42, ))
 
     eleza test_len(self):
@@ -173,7 +173,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # j ^ -2 == -j when j ni odd.
         cands = list(range(-10, -1)) + list(range(9))
 
-        # Note:  -1 ni omitted because hash(-1) == hash(-2) == -2, and
+        # Note:  -1 ni omitted because hash(-1) == hash(-2) == -2, na
         # there's nothing the tuple hash can do to avoid collisions
         # inherited kutoka collisions kwenye the tuple components' hashes.
         tryone("-10 .. 8 by 4", list(product(cands, repeat=4)),
@@ -325,7 +325,7 @@ kundi TupleTest(seq_tests.CommonTest):
     eleza test_track_subtypes(self):
         # Tuple subtypes must always be tracked
         kundi MyTuple(tuple):
-            pass
+            pita
         self.check_track_dynamic(MyTuple, Kweli)
 
     @support.cpython_only
@@ -377,7 +377,7 @@ kundi TupleTest(seq_tests.CommonTest):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures kwenye code that relies on distinct
         # function addresses.
-        kundi T(tuple): pass
+        kundi T(tuple): pita
         ukijumuisha self.assertRaises(TypeError):
             [3,] + T((1,2))
 
@@ -391,9 +391,9 @@ kundi TupleTest(seq_tests.CommonTest):
 
 # Notes on testing hash codes.  The primary thing ni that Python doesn't
 # care about "random" hash codes.  To the contrary, we like them to be
-# very regular when possible, so that the low-order bits are as evenly
-# distributed as possible.  For integers this ni easy: hash(i) == i for
-# all not-huge i except i==-1.
+# very regular when possible, so that the low-order bits are kama evenly
+# distributed kama possible.  For integers this ni easy: hash(i) == i for
+# all not-huge i tatizo i==-1.
 #
 # For tuples of mixed type there's really no hope of that, so we want
 # "randomish" here instead.  But getting close to pseudo-random kwenye all
@@ -405,8 +405,8 @@ kundi TupleTest(seq_tests.CommonTest):
 # codes kila not-equal objects are distinct.
 #
 # So we compute various statistics here based on what a "truly random"
-# hash would do, but don't automate "pass ama fail" based on those
-# results.  Instead those are viewed as inputs to human judgment, na the
+# hash would do, but don't automate "pita ama fail" based on those
+# results.  Instead those are viewed kama inputs to human judgment, na the
 # automated tests merely ensure we get the _same_ results across
 # platforms.  In fact, we normally don't bother to run them at all -
 # set RUN_ALL_HASH_TESTS to force it.
@@ -419,7 +419,7 @@ kundi TupleTest(seq_tests.CommonTest):
 #
 # "old tuple test" ni just a string name kila the test being run.
 #
-# "32-bit upper hash codes" means this was run under a 64-bit build and
+# "32-bit upper hash codes" means this was run under a 64-bit build na
 # we've shifted away the lower 32 bits of the hash codes.
 #
 # "pileup" ni 0 ikiwa there were no collisions across those hash codes.
@@ -428,7 +428,7 @@ kundi TupleTest(seq_tests.CommonTest):
 # seen 50 times:  that hash code "piled up" 49 more times than ideal.
 #
 # "mean" ni the number of collisions a perfectly random hash function
-# would have yielded, on average.
+# would have tumaed, on average.
 #
 # "coll" ni the number of collisions actually seen.
 #

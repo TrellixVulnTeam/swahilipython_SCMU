@@ -8,14 +8,14 @@ agiza unittest
 kutoka unittest agiza mock
 
 ikiwa sys.platform != 'win32':
-     ashiria unittest.SkipTest('Windows only')
+    ashiria unittest.SkipTest('Windows only')
 
 agiza _overlapped
 agiza _winapi
 
 agiza asyncio
 kutoka asyncio agiza windows_events
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 eleza tearDownModule():
@@ -51,8 +51,8 @@ kundi ProactorLoopCtrlC(test_utils.TestCase):
             loop.call_soon(thread.start)
             loop.run_forever()
             self.fail("should sio fall through 'run_forever'")
-        except KeyboardInterrupt:
-            pass
+        tatizo KeyboardInterrupt:
+            pita
         mwishowe:
             self.close_loop(loop)
         thread.join()
@@ -146,7 +146,7 @@ kundi ProactorTests(test_utils.TestCase):
         exc = OSError()
         exc.winerror = _overlapped.ERROR_PIPE_BUSY
         ukijumuisha mock.patch.object(_overlapped, 'ConnectPipe',
-                               side_effect=exc) as connect:
+                               side_effect=exc) kama connect:
             coro = self.loop._proactor.connect_pipe('pipe_address')
             task = self.loop.create_task(coro)
 

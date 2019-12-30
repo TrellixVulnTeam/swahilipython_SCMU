@@ -137,5 +137,5 @@ kundi TestScanstring:
             self.json.decoder.scanstring(b"xxx", sys.maxsize+1)
 
 
-kundi TestPyScanstring(TestScanstring, PyTest): pass
-kundi TestCScanstring(TestScanstring, CTest): pass
+kundi TestPyScanstring(TestScanstring, PyTest): pita
+kundi TestCScanstring(TestScanstring, CTest): pita

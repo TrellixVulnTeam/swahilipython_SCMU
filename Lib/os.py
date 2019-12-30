@@ -24,7 +24,7 @@ and opendir), na leave all pathname manipulation to os.path
 #'
 agiza abc
 agiza sys
-agiza stat as st
+agiza stat kama st
 
 _names = sys.builtin_module_names
 
@@ -40,11 +40,11 @@ eleza _exists(name):
 eleza _get_exports_list(module):
     jaribu:
         rudisha list(module.__all__)
-    except AttributeError:
+    tatizo AttributeError:
         rudisha [n kila n kwenye dir(module) ikiwa n[0] != '_']
 
 # Any new dependencies of the os module and/or changes kwenye path separator
-# requires updating importlib as well.
+# requires updating importlib kama well.
 ikiwa 'posix' kwenye _names:
     name = 'posix'
     linesep = '\n'
@@ -52,29 +52,29 @@ ikiwa 'posix' kwenye _names:
     jaribu:
         kutoka posix agiza _exit
         __all__.append('_exit')
-    except ImportError:
-        pass
-    agiza posixpath as path
+    tatizo ImportError:
+        pita
+    agiza posixpath kama path
 
     jaribu:
         kutoka posix agiza _have_functions
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
 
     agiza posix
     __all__.extend(_get_exports_list(posix))
     toa posix
 
-elikiwa 'nt' kwenye _names:
+lasivyo 'nt' kwenye _names:
     name = 'nt'
     linesep = '\r\n'
     kutoka nt agiza *
     jaribu:
         kutoka nt agiza _exit
         __all__.append('_exit')
-    except ImportError:
-        pass
-    agiza ntpath as path
+    tatizo ImportError:
+        pita
+    agiza ntpath kama path
 
     agiza nt
     __all__.extend(_get_exports_list(nt))
@@ -82,11 +82,11 @@ elikiwa 'nt' kwenye _names:
 
     jaribu:
         kutoka nt agiza _have_functions
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
 
 isipokua:
-     ashiria ImportError('no os specific module found')
+    ashiria ImportError('no os specific module found')
 
 sys.modules['os.path'] = path
 kutoka os.path agiza (curdir, pardir, sep, pathsep, defpath, extsep, altsep,
@@ -143,7 +143,7 @@ ikiwa _exists("_have_functions"):
     _set = set()
     _add("HAVE_FACCESSAT",  "access")
     # Some platforms don't support lchmod().  Often the function exists
-    # anyway, as a stub that always returns ENOSUP ama perhaps EOPNOTSUPP.
+    # anyway, kama a stub that always returns ENOSUP ama perhaps EOPNOTSUPP.
     # (No, I don't know why that's a good design.)  ./configure will detect
     # this na reject it--so HAVE_LCHMOD still won't be defined on such
     # platforms.  This ni Very Helpful.
@@ -197,9 +197,9 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
     """makedirs(name [, mode=0o777][, exist_ok=Uongo])
 
     Super-mkdir; create a leaf directory na all intermediate ones.  Works like
-    mkdir, except that any intermediate path segment (not just the rightmost)
+    mkdir, tatizo that any intermediate path segment (sio just the rightmost)
     will be created ikiwa it does sio exist. If the target directory already
-    exists,  ashiria an OSError ikiwa exist_ok ni Uongo. Otherwise no exception is
+    exists, ashiria an OSError ikiwa exist_ok ni Uongo. Otherwise no exception is
     raised.  This ni recursive.
 
     """
@@ -209,9 +209,9 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
     ikiwa head na tail na sio path.exists(head):
         jaribu:
             makedirs(head, exist_ok=exist_ok)
-        except FileExistsError:
+        tatizo FileExistsError:
             # Defeats race condition when another thread created the path
-            pass
+            pita
         cdir = curdir
         ikiwa isinstance(tail, bytes):
             cdir = bytes(curdir, 'ASCII')
@@ -219,7 +219,7 @@ eleza makedirs(name, mode=0o777, exist_ok=Uongo):
             return
     jaribu:
         mkdir(name, mode)
-    except OSError:
+    tatizo OSError:
         # Cannot rely on checking kila EEXIST, since the operating system
         # could give priority to other errors like EACCES ama EROFS
         ikiwa sio exist_ok ama sio path.isdir(name):
@@ -229,7 +229,7 @@ eleza removedirs(name):
     """removedirs(name)
 
     Super-rmdir; remove a leaf directory na all empty intermediate
-    ones.  Works like rmdir except that, ikiwa the leaf directory is
+    ones.  Works like rmdir tatizo that, ikiwa the leaf directory is
     successfully removed, directories corresponding to rightmost path
     segments will be pruned away until either the whole path is
     consumed ama an error occurs.  Errors during this latter phase are
@@ -243,22 +243,22 @@ eleza removedirs(name):
     wakati head na tail:
         jaribu:
             rmdir(head)
-        except OSError:
+        tatizo OSError:
             koma
         head, tail = path.split(head)
 
 eleza renames(old, new):
     """renames(old, new)
 
-    Super-rename; create directories as necessary na delete any left
-    empty.  Works like rename, except creation of any intermediate
+    Super-rename; create directories kama necessary na delete any left
+    empty.  Works like rename, tatizo creation of any intermediate
     directories needed to make the new pathname good ni attempted
     first.  After the rename, directories corresponding to rightmost
     path segments of the old name will be pruned until either the
     whole path ni consumed ama a nonempty directory ni found.
 
     Note: this function can fail ukijumuisha the new directory structure made
-    ikiwa you lack permissions needed to unlink the leaf directory or
+    ikiwa you lack permissions needed to unlink the leaf directory ama
     file.
 
     """
@@ -270,8 +270,8 @@ eleza renames(old, new):
     ikiwa head na tail:
         jaribu:
             removedirs(head)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
 __all__.extend(["makedirs", "removedirs", "renames"])
 
@@ -279,7 +279,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
     """Directory tree generator.
 
     For each directory kwenye the directory tree rooted at top (including top
-    itself, but excluding '.' na '..'), yields a 3-tuple
+    itself, but excluding '.' na '..'), tumas a 3-tuple
 
         dirpath, dirnames, filenames
 
@@ -309,15 +309,15 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
     By default errors kutoka the os.scandir() call are ignored.  If
     optional arg 'onerror' ni specified, it should be a function; it
     will be called ukijumuisha one argument, an OSError instance.  It can
-    report the error to endelea ukijumuisha the walk, ama  ashiria the exception
-    to abort the walk.  Note that the filename ni available as the
+    report the error to endelea ukijumuisha the walk, ama ashiria the exception
+    to abort the walk.  Note that the filename ni available kama the
     filename attribute of the exception object.
 
     By default, os.walk does sio follow symbolic links to subdirectories on
     systems that support them.  In order to get this functionality, set the
     optional argument 'followlinks' to true.
 
-    Caution:  ikiwa you pass a relative pathname kila top, don't change the
+    Caution:  ikiwa you pita a relative pathname kila top, don't change the
     current working directory between resumptions of walk.  walk never
     changes the current directory, na assumes that the client doesn't
     either.
@@ -348,7 +348,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
         # Note that scandir ni global kwenye this module due
         # to earlier import-*.
         scandir_it = scandir(top)
-    except OSError as error:
+    tatizo OSError kama error:
         ikiwa onerror ni sio Tupu:
             onerror(error)
         return
@@ -358,16 +358,16 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
             jaribu:
                 jaribu:
                     entry = next(scandir_it)
-                except StopIteration:
+                tatizo StopIteration:
                     koma
-            except OSError as error:
+            tatizo OSError kama error:
                 ikiwa onerror ni sio Tupu:
                     onerror(error)
                 return
 
             jaribu:
                 is_dir = entry.is_dir()
-            except OSError:
+            tatizo OSError:
                 # If is_dir() raises an OSError, consider that the entry ni not
                 # a directory, same behaviour than os.path.isdir().
                 is_dir = Uongo
@@ -385,7 +385,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
                 isipokua:
                     jaribu:
                         is_symlink = entry.is_symlink()
-                    except OSError:
+                    tatizo OSError:
                         # If is_symlink() raises an OSError, consider that the
                         # entry ni sio a symbolic link, same behaviour than
                         # os.path.islink().
@@ -405,7 +405,7 @@ eleza walk(top, topdown=Kweli, onerror=Tupu, followlinks=Uongo):
             new_path = join(top, dirname)
             # Issue #23605: os.path.islink() ni used instead of caching
             # entry.is_symlink() result during the loop on os.scandir() because
-            # the caller can replace the directory entry during the "yield"
+            # the caller can replace the directory entry during the "tuma"
             # above.
             ikiwa followlinks ama sio islink(new_path):
                 tuma kutoka walk(new_path, topdown, onerror, followlinks)
@@ -423,7 +423,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
     eleza fwalk(top=".", topdown=Kweli, onerror=Tupu, *, follow_symlinks=Uongo, dir_fd=Tupu):
         """Directory tree generator.
 
-        This behaves exactly like walk(), except that it yields a 4-tuple
+        This behaves exactly like walk(), tatizo that it tumas a 4-tuple
 
             dirpath, dirnames, filenames, dirfd
 
@@ -438,7 +438,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
           (dir_fd ni always supported kila fwalk.)
 
         Caution:
-        Since fwalk() yields file descriptors, those are only valid until the
+        Since fwalk() tumas file descriptors, those are only valid until the
         next iteration step, so you should dup() them ikiwa you want to keep them
         kila a longer period.
 
@@ -461,7 +461,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
             orig_st = stat(top, follow_symlinks=Uongo, dir_fd=dir_fd)
         topfd = open(top, O_RDONLY, dir_fd=dir_fd)
         jaribu:
-            ikiwa (follow_symlinks ama (st.S_ISDIR(orig_st.st_mode) and
+            ikiwa (follow_symlinks ama (st.S_ISDIR(orig_st.st_mode) na
                                     path.samestat(orig_st, stat(topfd)))):
                 tuma kutoka _fwalk(topfd, top, isinstance(top, bytes),
                                   topdown, onerror, follow_symlinks)
@@ -488,13 +488,13 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
                         entries.append(entry)
                 isipokua:
                     nondirs.append(name)
-            except OSError:
+            tatizo OSError:
                 jaribu:
                     # Add dangling symlinks, ignore disappeared files
                     ikiwa entry.is_symlink():
                         nondirs.append(name)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
 
         ikiwa topdown:
             tuma toppath, dirs, nondirs, topfd
@@ -509,7 +509,7 @@ ikiwa {open, stat} <= supports_dir_fd na {scandir, stat} <= supports_fd:
                         name, entry = name
                         orig_st = entry.stat(follow_symlinks=Uongo)
                 dirfd = open(name, O_RDONLY, dir_fd=topfd)
-            except OSError as err:
+            tatizo OSError kama err:
                 ikiwa onerror ni sio Tupu:
                     onerror(err)
                 endelea
@@ -536,7 +536,7 @@ eleza execl(file, *args):
 eleza execle(file, *args):
     """execle(file, *args, env)
 
-    Execute the executable file ukijumuisha argument list args and
+    Execute the executable file ukijumuisha argument list args na
     environment env, replacing the current process. """
     env = args[-1]
     execve(file, args[:-1], env)
@@ -597,15 +597,15 @@ eleza _execvpe(file, args, env=Tupu):
         fullname = path.join(dir, file)
         jaribu:
             exec_func(fullname, *argrest)
-        except (FileNotFoundError, NotADirectoryError) as e:
+        tatizo (FileNotFoundError, NotADirectoryError) kama e:
             last_exc = e
-        except OSError as e:
+        tatizo OSError kama e:
             last_exc = e
             ikiwa saved_exc ni Tupu:
                 saved_exc = e
     ikiwa saved_exc ni sio Tupu:
-         ashiria saved_exc
-     ashiria last_exc
+        ashiria saved_exc
+    ashiria last_exc
 
 
 eleza get_exec_path(env=Tupu):
@@ -630,17 +630,17 @@ eleza get_exec_path(env=Tupu):
 
         jaribu:
             path_list = env.get('PATH')
-        except TypeError:
+        tatizo TypeError:
             path_list = Tupu
 
         ikiwa supports_bytes_environ:
             jaribu:
                 path_listb = env[b'PATH']
-            except (KeyError, TypeError):
-                pass
+            tatizo (KeyError, TypeError):
+                pita
             isipokua:
                 ikiwa path_list ni sio Tupu:
-                     ashiria ValueError(
+                    ashiria ValueError(
                         "env cannot contain 'PATH' na b'PATH' keys")
                 path_list = path_listb
 
@@ -668,9 +668,9 @@ kundi _Environ(MutableMapping):
     eleza __getitem__(self, key):
         jaribu:
             value = self._data[self.encodekey(key)]
-        except KeyError:
-            #  ashiria KeyError ukijumuisha the original key value
-             ashiria KeyError(key) kutoka Tupu
+        tatizo KeyError:
+            # ashiria KeyError ukijumuisha the original key value
+            ashiria KeyError(key) kutoka Tupu
         rudisha self.decodevalue(value)
 
     eleza __setitem__(self, key, value):
@@ -684,9 +684,9 @@ kundi _Environ(MutableMapping):
         self.unsetenv(encodedkey)
         jaribu:
             toa self._data[encodedkey]
-        except KeyError:
-            #  ashiria KeyError ukijumuisha the original key value
-             ashiria KeyError(key) kutoka Tupu
+        tatizo KeyError:
+            # ashiria KeyError ukijumuisha the original key value
+            ashiria KeyError(key) kutoka Tupu
 
     eleza __iter__(self):
         # list() kutoka dict object ni an atomic operation
@@ -706,24 +706,24 @@ kundi _Environ(MutableMapping):
         rudisha dict(self)
 
     eleza setdefault(self, key, value):
-        ikiwa key sio kwenye self:
+        ikiwa key haiko kwenye self:
             self[key] = value
         rudisha self[key]
 
 jaribu:
     _putenv = putenv
-except NameError:
+tatizo NameError:
     _putenv = lambda key, value: Tupu
 isipokua:
-    ikiwa "putenv" sio kwenye __all__:
+    ikiwa "putenv" haiko kwenye __all__:
         __all__.append("putenv")
 
 jaribu:
     _unsetenv = unsetenv
-except NameError:
+tatizo NameError:
     _unsetenv = lambda key: _putenv(key, "")
 isipokua:
-    ikiwa "unsetenv" sio kwenye __all__:
+    ikiwa "unsetenv" haiko kwenye __all__:
         __all__.append("unsetenv")
 
 eleza _createenviron():
@@ -731,7 +731,7 @@ eleza _createenviron():
         # Where Env Var Names Must Be UPPERCASE
         eleza check_str(value):
             ikiwa sio isinstance(value, str):
-                 ashiria TypeError("str expected, sio %s" % type(value).__name__)
+                ashiria TypeError("str expected, sio %s" % type(value).__name__)
             rudisha value
         encode = check_str
         decode = str
@@ -745,7 +745,7 @@ eleza _createenviron():
         encoding = sys.getfilesystemencoding()
         eleza encode(value):
             ikiwa sio isinstance(value, str):
-                 ashiria TypeError("str expected, sio %s" % type(value).__name__)
+                ashiria TypeError("str expected, sio %s" % type(value).__name__)
             rudisha value.encode(encoding, 'surrogateescape')
         eleza decode(value):
             rudisha value.decode(encoding, 'surrogateescape')
@@ -773,7 +773,7 @@ __all__.extend(("getenv", "supports_bytes_environ"))
 ikiwa supports_bytes_environ:
     eleza _check_bytes(value):
         ikiwa sio isinstance(value, bytes):
-             ashiria TypeError("bytes expected, sio %s" % type(value).__name__)
+            ashiria TypeError("bytes expected, sio %s" % type(value).__name__)
         rudisha value
 
     # bytes environ
@@ -834,14 +834,14 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
 
     # XXX Should we support P_DETACH?  I suppose it could fork()**2
     # na close the std I/O streams.  Also, P_OVERLAY ni the same
-    # as execv*()?
+    # kama execv*()?
 
     eleza _spawnvef(mode, file, args, env, func):
         # Internal helper; func ni the exec*() function to use
         ikiwa sio isinstance(args, (tuple, list)):
-             ashiria TypeError('argv must be a tuple ama a list')
+            ashiria TypeError('argv must be a tuple ama a list')
         ikiwa sio args ama sio args[0]:
-             ashiria ValueError('argv first element cannot be empty')
+            ashiria ValueError('argv first element cannot be empty')
         pid = fork()
         ikiwa sio pid:
             # Child
@@ -860,12 +860,12 @@ ikiwa _exists("fork") na sio _exists("spawnv") na _exists("execv"):
                 wpid, sts = waitpid(pid, 0)
                 ikiwa WIFSTOPPED(sts):
                     endelea
-                elikiwa WIFSIGNALED(sts):
+                lasivyo WIFSIGNALED(sts):
                     rudisha -WTERMSIG(sts)
-                elikiwa WIFEXITED(sts):
+                lasivyo WIFEXITED(sts):
                     rudisha WEXITSTATUS(sts)
                 isipokua:
-                     ashiria OSError("Not stopped, signaled ama exited???")
+                    ashiria OSError("Not stopped, signaled ama exited???")
 
     eleza spawnv(mode, file, args):
         """spawnv(mode, file, args) -> integer
@@ -971,11 +971,11 @@ otherwise rudisha -SIG, where SIG ni the signal that killed it. """
 # Supply os.popen()
 eleza popen(cmd, mode="r", buffering=-1):
     ikiwa sio isinstance(cmd, str):
-         ashiria TypeError("invalid cmd type (%s, expected string)" % type(cmd))
-    ikiwa mode sio kwenye ("r", "w"):
-         ashiria ValueError("invalid mode %r" % mode)
+        ashiria TypeError("invalid cmd type (%s, expected string)" % type(cmd))
+    ikiwa mode haiko kwenye ("r", "w"):
+        ashiria ValueError("invalid mode %r" % mode)
     ikiwa buffering == 0 ama buffering ni Tupu:
-         ashiria ValueError("popen() does sio support unbuffered streams")
+        ashiria ValueError("popen() does sio support unbuffered streams")
     agiza subprocess, io
     ikiwa mode == "r":
         proc = subprocess.Popen(cmd,
@@ -1016,7 +1016,7 @@ kundi _wrap_close:
 # Supply os.fdopen()
 eleza fdopen(fd, *args, **kwargs):
     ikiwa sio isinstance(fd, int):
-         ashiria TypeError("invalid fd type (%s, expected integer)" % type(fd))
+        ashiria TypeError("invalid fd type (%s, expected integer)" % type(fd))
     agiza io
     rudisha io.open(fd, *args, **kwargs)
 
@@ -1026,7 +1026,7 @@ eleza fdopen(fd, *args, **kwargs):
 eleza _fspath(path):
     """Return the path representation of a path-like object.
 
-    If str ama bytes ni passed in, it ni returned unchanged. Otherwise the
+    If str ama bytes ni pitaed in, it ni returned unchanged. Otherwise the
     os.PathLike interface ni used to get the path representation. If the
     path representation ni sio str ama bytes, TypeError ni raised. If the
     provided path ni sio str, bytes, ama os.PathLike, TypeError ni raised.
@@ -1039,21 +1039,21 @@ eleza _fspath(path):
     path_type = type(path)
     jaribu:
         path_repr = path_type.__fspath__(path)
-    except AttributeError:
+    tatizo AttributeError:
         ikiwa hasattr(path_type, '__fspath__'):
             raise
         isipokua:
-             ashiria TypeError("expected str, bytes ama os.PathLike object, "
+            ashiria TypeError("expected str, bytes ama os.PathLike object, "
                             "not " + path_type.__name__)
     ikiwa isinstance(path_repr, (str, bytes)):
         rudisha path_repr
     isipokua:
-         ashiria TypeError("expected {}.__fspath__() to rudisha str ama bytes, "
+        ashiria TypeError("expected {}.__fspath__() to rudisha str ama bytes, "
                         "not {}".format(path_type.__name__,
                                         type(path_repr).__name__))
 
 # If there ni no C implementation, make the pure Python version the
-# implementation as transparently as possible.
+# implementation kama transparently kama possible.
 ikiwa sio _exists('fspath'):
     fspath = _fspath
     fspath.__name__ = "fspath"
@@ -1066,7 +1066,7 @@ kundi PathLike(abc.ABC):
     @abc.abstractmethod
     eleza __fspath__(self):
         """Return the file system path representation of the object."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @classmethod
     eleza __subclasshook__(cls, subclass):
@@ -1098,7 +1098,7 @@ ikiwa name == 'nt':
         extension modules (the module itself ni resolved through sys.path),
         na also by ctypes.
 
-        Remove the directory by calling close() on the returned object or
+        Remove the directory by calling close() on the returned object ama
         using it kwenye a ukijumuisha statement.
         """
         agiza nt

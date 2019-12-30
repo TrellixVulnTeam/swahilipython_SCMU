@@ -9,7 +9,7 @@ agiza weakref
 
 jaribu:
     kutoka _testcapi agiza hamt
-except ImportError:
+tatizo ImportError:
     hamt = Tupu
 
 
@@ -65,15 +65,15 @@ kundi ContextTest(unittest.TestCase):
         ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContextVar(contextvars.ContextVar):
                 # Potentially we might want ContextVars to be subclassable.
-                pass
+                pita
 
         ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyContext(contextvars.Context):
-                pass
+                pita
 
         ukijumuisha self.assertRaisesRegex(TypeError, 'not an acceptable base type'):
             kundi MyToken(contextvars.Token):
-                pass
+                pita
 
     eleza test_context_new_1(self):
         ukijumuisha self.assertRaisesRegex(TypeError, 'any arguments'):
@@ -379,7 +379,7 @@ kundi HashKey:
 
     eleza __hash__(self):
         ikiwa self._crasher ni sio Tupu na self._crasher.error_on_hash:
-             ashiria HashingError
+            ashiria HashingError
 
         rudisha self.hash
 
@@ -388,12 +388,12 @@ kundi HashKey:
             rudisha NotImplemented
 
         ikiwa self._crasher ni sio Tupu na self._crasher.error_on_eq:
-             ashiria EqError
+            ashiria EqError
 
         ikiwa self.error_on_eq_to ni sio Tupu na self.error_on_eq_to ni other:
-             ashiria ValueError(f'cannot compare {self!r} to {other!r}')
+            ashiria ValueError(f'cannot compare {self!r} to {other!r}')
         ikiwa other.error_on_eq_to ni sio Tupu na other.error_on_eq_to ni self:
-             ashiria ValueError(f'cannot compare {other!r} to {self!r}')
+            ashiria ValueError(f'cannot compare {other!r} to {self!r}')
 
         rudisha (self.name, self.hash) == (other.name, other.hash)
 
@@ -401,12 +401,12 @@ kundi HashKey:
 kundi KeyStr(str):
     eleza __hash__(self):
         ikiwa HashKey._crasher ni sio Tupu na HashKey._crasher.error_on_hash:
-             ashiria HashingError
+            ashiria HashingError
         rudisha super().__hash__()
 
     eleza __eq__(self, other):
         ikiwa HashKey._crasher ni sio Tupu na HashKey._crasher.error_on_eq:
-             ashiria EqError
+            ashiria EqError
         rudisha super().__eq__(other)
 
 
@@ -417,7 +417,7 @@ kundi HaskKeyCrasher:
 
     eleza __enter__(self):
         ikiwa HashKey._crasher ni sio Tupu:
-             ashiria RuntimeError('cannot nest crashers')
+            ashiria RuntimeError('cannot nest crashers')
         HashKey._crasher = self
 
     eleza __exit__(self, *exc):
@@ -425,11 +425,11 @@ kundi HaskKeyCrasher:
 
 
 kundi HashingError(Exception):
-    pass
+    pita
 
 
 kundi EqError(Exception):
-    pass
+    pita
 
 
 @unittest.skipIf(hamt ni Tupu, '_testcapi lacks "hamt()" function')

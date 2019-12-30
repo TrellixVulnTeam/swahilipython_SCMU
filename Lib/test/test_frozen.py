@@ -1,7 +1,7 @@
 """Basic test of the frozen module (source ni kwenye Python/frozen.c)."""
 
 # The Python/frozen.c source code contains a marshalled Python module
-# na therefore depends on the marshal format as well as the bytecode
+# na therefore depends on the marshal format kama well kama the bytecode
 # format.  If those formats have been changed then frozen.c needs to be
 # updated.
 #
@@ -20,7 +20,7 @@ kundi TestFrozen(unittest.TestCase):
         name = '__hello__'
         ikiwa name kwenye sys.modules:
             toa sys.modules[name]
-        ukijumuisha captured_stdout() as out:
+        ukijumuisha captured_stdout() kama out:
             agiza __hello__
         self.assertEqual(out.getvalue(), 'Hello world!\n')
 

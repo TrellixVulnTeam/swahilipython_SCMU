@@ -24,11 +24,11 @@ __author__ = 'Ka-Ping Yee <ping@lfw.org>'
 __credits__ = ('GvR, ESR, Tim Peters, Thomas Wouters, Fred Drake, '
                'Skip Montanaro, Raymond Hettinger, Trent Nelson, '
                'Michael Foord')
-kutoka builtins agiza open as _builtin_open
+kutoka builtins agiza open kama _builtin_open
 kutoka codecs agiza lookup, BOM_UTF8
 agiza collections
 kutoka io agiza TextIOWrapper
-agiza itertools as _itertools
+agiza itertools kama _itertools
 agiza re
 agiza sys
 kutoka token agiza *
@@ -116,7 +116,7 @@ String = group(StringPrefix + r"'[^\n'\\]*(?:\\.[^\n'\\]*)*'",
                StringPrefix + r'"[^\n"\\]*(?:\\.[^\n"\\]*)*"')
 
 # Sorting kwenye reverse order puts the long operators before their prefixes.
-# Otherwise ikiwa = came before ==, == would get recognized as two instances
+# Otherwise ikiwa = came before ==, == would get recognized kama two instances
 # of =.
 Special = group(*map(re.escape, sorted(EXACT_TOKEN_TYPES, reverse=Kweli)))
 Funny = group(r'\r?\n', Special)
@@ -154,9 +154,9 @@ kila t kwenye _all_string_prefixes():
 
 tabsize = 8
 
-kundi TokenError(Exception): pass
+kundi TokenError(Exception): pita
 
-kundi StopTokenizing(Exception): pass
+kundi StopTokenizing(Exception): pita
 
 
 kundi Untokenizer:
@@ -170,7 +170,7 @@ kundi Untokenizer:
     eleza add_whitespace(self, start):
         row, col = start
         ikiwa row < self.prev_row ama row == self.prev_row na col < self.prev_col:
-             ashiria ValueError("start ({},{}) precedes previous end ({},{})"
+            ashiria ValueError("start ({},{}) precedes previous end ({},{})"
                              .format(row, col, self.prev_row, self.prev_col))
         row_offset = row - self.prev_row
         ikiwa row_offset:
@@ -197,13 +197,13 @@ kundi Untokenizer:
             ikiwa tok_type == INDENT:
                 indents.append(token)
                 endelea
-            elikiwa tok_type == DEDENT:
+            lasivyo tok_type == DEDENT:
                 indents.pop()
                 self.prev_row, self.prev_col = end
                 endelea
-            elikiwa tok_type kwenye (NEWLINE, NL):
+            lasivyo tok_type kwenye (NEWLINE, NL):
                 startline = Kweli
-            elikiwa startline na indents:
+            lasivyo startline na indents:
                 indent = indents[-1]
                 ikiwa start[1] >= len(indent):
                     self.tokens.append(indent)
@@ -243,12 +243,12 @@ kundi Untokenizer:
             ikiwa toknum == INDENT:
                 indents.append(tokval)
                 endelea
-            elikiwa toknum == DEDENT:
+            lasivyo toknum == DEDENT:
                 indents.pop()
                 endelea
-            elikiwa toknum kwenye (NEWLINE, NL):
+            lasivyo toknum kwenye (NEWLINE, NL):
                 startline = Kweli
-            elikiwa startline na indents:
+            lasivyo startline na indents:
                 toks_append(indents[-1])
                 startline = Uongo
             toks_append(tokval)
@@ -261,7 +261,7 @@ eleza untokenize(iterable):
 
     Each element returned by the iterable must be a token sequence
     ukijumuisha at least two elements, a token number na token value.  If
-    only two tokens are passed, the resulting output ni poor.
+    only two tokens are pitaed, the resulting output ni poor.
 
     Round-trip invariant kila full input:
         Untokenized source will match input source exactly
@@ -296,22 +296,22 @@ eleza detect_encoding(readline):
     """
     The detect_encoding() function ni used to detect the encoding that should
     be used to decode a Python source file.  It requires one argument, readline,
-    kwenye the same way as the tokenize() generator.
+    kwenye the same way kama the tokenize() generator.
 
     It will call readline a maximum of twice, na rudisha the encoding used
-    (as a string) na a list of any lines (left as bytes) it has read in.
+    (as a string) na a list of any lines (left kama bytes) it has read in.
 
     It detects the encoding kutoka the presence of a utf-8 bom ama an encoding
-    cookie as specified kwenye pep-0263.  If both a bom na a cookie are present,
+    cookie kama specified kwenye pep-0263.  If both a bom na a cookie are present,
     but disagree, a SyntaxError will be raised.  If the encoding cookie ni an
-    invalid charset,  ashiria a SyntaxError.  Note that ikiwa a utf-8 bom ni found,
+    invalid charset, ashiria a SyntaxError.  Note that ikiwa a utf-8 bom ni found,
     'utf-8-sig' ni returned.
 
     If no encoding ni specified, then the default of 'utf-8' will be returned.
     """
     jaribu:
         filename = readline.__self__.name
-    except AttributeError:
+    tatizo AttributeError:
         filename = Tupu
     bom_found = Uongo
     encoding = Tupu
@@ -319,20 +319,20 @@ eleza detect_encoding(readline):
     eleza read_or_stop():
         jaribu:
             rudisha readline()
-        except StopIteration:
+        tatizo StopIteration:
             rudisha b''
 
     eleza find_cookie(line):
         jaribu:
-            # Decode as UTF-8. Either the line ni an encoding declaration,
+            # Decode kama UTF-8. Either the line ni an encoding declaration,
             # kwenye which case it should be pure ASCII, ama it must be UTF-8
             # per default encoding.
             line_string = line.decode('utf-8')
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             msg = "invalid ama missing encoding declaration"
             ikiwa filename ni sio Tupu:
                 msg = '{} kila {!r}'.format(msg, filename)
-             ashiria SyntaxError(msg)
+            ashiria SyntaxError(msg)
 
         match = cookie_re.match(line_string)
         ikiwa sio match:
@@ -340,14 +340,14 @@ eleza detect_encoding(readline):
         encoding = _get_normal_name(match.group(1))
         jaribu:
             codec = lookup(encoding)
-        except LookupError:
+        tatizo LookupError:
             # This behaviour mimics the Python interpreter
             ikiwa filename ni Tupu:
                 msg = "unknown encoding: " + encoding
             isipokua:
                 msg = "unknown encoding kila {!r}: {}".format(filename,
                         encoding)
-             ashiria SyntaxError(msg)
+            ashiria SyntaxError(msg)
 
         ikiwa bom_found:
             ikiwa encoding != 'utf-8':
@@ -356,7 +356,7 @@ eleza detect_encoding(readline):
                     msg = 'encoding problem: utf-8'
                 isipokua:
                     msg = 'encoding problem kila {!r}: utf-8'.format(filename)
-                 ashiria SyntaxError(msg)
+                ashiria SyntaxError(msg)
             encoding += '-sig'
         rudisha encoding
 
@@ -404,17 +404,17 @@ eleza open(filename):
 eleza tokenize(readline):
     """
     The tokenize() generator requires one argument, readline, which
-    must be a callable object which provides the same interface as the
+    must be a callable object which provides the same interface kama the
     readline() method of built-in file objects.  Each call to the function
-    should rudisha one line of input as bytes.  Alternatively, readline
+    should rudisha one line of input kama bytes.  Alternatively, readline
     can be a callable function terminating ukijumuisha StopIteration:
         readline = open(myfile, 'rb').__next__  # Example of alternate readline
 
     The generator produces 5-tuples ukijumuisha these members: the token type; the
-    token string; a 2-tuple (srow, scol) of ints specifying the row and
+    token string; a 2-tuple (srow, scol) of ints specifying the row na
     column where the token begins kwenye the source; a 2-tuple (erow, ecol) of
     ints specifying the row na column where the token ends kwenye the source;
-    na the line on which the token was found.  The line passed ni the
+    na the line on which the token was found.  The line pitaed ni the
     physical line.
 
     The first token sequence will always be an ENCODING token
@@ -448,7 +448,7 @@ eleza _tokenize(readline, encoding):
             # of this loop.
             last_line = line
             line = readline()
-        except StopIteration:
+        tatizo StopIteration:
             line = b''
 
         ikiwa encoding ni sio Tupu:
@@ -458,7 +458,7 @@ eleza _tokenize(readline, encoding):
 
         ikiwa contstr:                            # endelead string
             ikiwa sio line:
-                 ashiria TokenError("EOF kwenye multi-line string", strstart)
+                ashiria TokenError("EOF kwenye multi-line string", strstart)
             endmatch = endprog.match(line)
             ikiwa endmatch:
                 pos = end = endmatch.end(0)
@@ -466,7 +466,7 @@ eleza _tokenize(readline, encoding):
                        strstart, (lnum, end), contline + line)
                 contstr, needcont = '', 0
                 contline = Tupu
-            elikiwa needcont na line[-2:] != '\\\n' na line[-3:] != '\\\r\n':
+            lasivyo needcont na line[-2:] != '\\\n' na line[-3:] != '\\\r\n':
                 tuma TokenInfo(ERRORTOKEN, contstr + line,
                            strstart, (lnum, len(line)), contline)
                 contstr = ''
@@ -477,15 +477,15 @@ eleza _tokenize(readline, encoding):
                 contline = contline + line
                 endelea
 
-        elikiwa parenlev == 0 na sio endelead:  # new statement
+        lasivyo parenlev == 0 na sio endelead:  # new statement
             ikiwa sio line: koma
             column = 0
             wakati pos < max:                   # measure leading whitespace
                 ikiwa line[pos] == ' ':
                     column += 1
-                elikiwa line[pos] == '\t':
+                lasivyo line[pos] == '\t':
                     column = (column//tabsize + 1)*tabsize
-                elikiwa line[pos] == '\f':
+                lasivyo line[pos] == '\f':
                     column = 0
                 isipokua:
                     koma
@@ -508,8 +508,8 @@ eleza _tokenize(readline, encoding):
                 indents.append(column)
                 tuma TokenInfo(INDENT, line[:pos], (lnum, 0), (lnum, pos), line)
             wakati column < indents[-1]:
-                ikiwa column sio kwenye indents:
-                     ashiria IndentationError(
+                ikiwa column haiko kwenye indents:
+                    ashiria IndentationError(
                         "unindent does sio match any outer indentation level",
                         ("<tokenize>", lnum, pos, line))
                 indents = indents[:-1]
@@ -518,7 +518,7 @@ eleza _tokenize(readline, encoding):
 
         isipokua:                                  # endelead statement
             ikiwa sio line:
-                 ashiria TokenError("EOF kwenye multi-line statement", (lnum, 0))
+                ashiria TokenError("EOF kwenye multi-line statement", (lnum, 0))
             endelead = 0
 
         wakati pos < max:
@@ -533,17 +533,17 @@ eleza _tokenize(readline, encoding):
                 ikiwa (initial kwenye numchars ama                 # ordinary number
                     (initial == '.' na token != '.' na token != '...')):
                     tuma TokenInfo(NUMBER, token, spos, epos, line)
-                elikiwa initial kwenye '\r\n':
+                lasivyo initial kwenye '\r\n':
                     ikiwa parenlev > 0:
                         tuma TokenInfo(NL, token, spos, epos, line)
                     isipokua:
                         tuma TokenInfo(NEWLINE, token, spos, epos, line)
 
-                elikiwa initial == '#':
+                lasivyo initial == '#':
                     assert sio token.endswith("\n")
                     tuma TokenInfo(COMMENT, token, spos, epos, line)
 
-                elikiwa token kwenye triple_quoted:
+                lasivyo token kwenye triple_quoted:
                     endprog = _compile(endpats[token])
                     endmatch = endprog.match(line, pos)
                     ikiwa endmatch:                           # all on one line
@@ -566,8 +566,8 @@ eleza _tokenize(readline, encoding):
                 # Note that initial == token[:1].
                 # Also note that single quote checking must come after
                 #  triple quote checking (above).
-                elikiwa (initial kwenye single_quoted or
-                      token[:2] kwenye single_quoted or
+                lasivyo (initial kwenye single_quoted ama
+                      token[:2] kwenye single_quoted ama
                       token[:3] kwenye single_quoted):
                     ikiwa token[-1] == '\n':                  # endelead string
                         strstart = (lnum, start)
@@ -577,8 +577,8 @@ eleza _tokenize(readline, encoding):
                         #  character. So it's really looking for
                         #  endpats["'"] ama endpats['"'], by trying to
                         #  skip string prefix characters, ikiwa any.
-                        endprog = _compile(endpats.get(initial) or
-                                           endpats.get(token[1]) or
+                        endprog = _compile(endpats.get(initial) ama
+                                           endpats.get(token[1]) ama
                                            endpats.get(token[2]))
                         contstr, needcont = line[start:], 1
                         contline = line
@@ -586,14 +586,14 @@ eleza _tokenize(readline, encoding):
                     isipokua:                                  # ordinary string
                         tuma TokenInfo(STRING, token, spos, epos, line)
 
-                elikiwa initial.isidentifier():               # ordinary name
+                lasivyo initial.isidentifier():               # ordinary name
                     tuma TokenInfo(NAME, token, spos, epos, line)
-                elikiwa initial == '\\':                      # endelead stmt
+                lasivyo initial == '\\':                      # endelead stmt
                     endelead = 1
                 isipokua:
                     ikiwa initial kwenye '([{':
                         parenlev += 1
-                    elikiwa initial kwenye ')]}':
+                    lasivyo initial kwenye ')]}':
                         parenlev -= 1
                     tuma TokenInfo(OP, token, spos, epos, line)
             isipokua:
@@ -602,7 +602,7 @@ eleza _tokenize(readline, encoding):
                 pos += 1
 
     # Add an implicit NEWLINE ikiwa the input doesn't end kwenye one
-    ikiwa last_line na last_line[-1] sio kwenye '\r\n':
+    ikiwa last_line na last_line[-1] haiko kwenye '\r\n':
         tuma TokenInfo(NEWLINE, '', (lnum - 1, len(last_line)), (lnum - 1, len(last_line) + 1), '')
     kila indent kwenye indents[1:]:                 # pop remaining indent levels
         tuma TokenInfo(DEDENT, '', (lnum, 0), (lnum, 0), '')
@@ -610,9 +610,9 @@ eleza _tokenize(readline, encoding):
 
 
 eleza generate_tokens(readline):
-    """Tokenize a source reading Python code as unicode strings.
+    """Tokenize a source reading Python code kama unicode strings.
 
-    This has the same API as tokenize(), except that it expects the *readline*
+    This has the same API kama tokenize(), tatizo that it expects the *readline*
     callable to rudisha str objects instead of bytes.
     """
     rudisha _tokenize(readline, Tupu)
@@ -629,7 +629,7 @@ eleza main():
         ikiwa location:
             args = (filename,) + location + (message,)
             perror("%s:%d:%d: error: %s" % args)
-        elikiwa filename:
+        lasivyo filename:
             perror("%s: error: %s" % (filename, message))
         isipokua:
             perror("error: %s" % message)
@@ -648,7 +648,7 @@ eleza main():
         # Tokenize the input
         ikiwa args.filename:
             filename = args.filename
-            ukijumuisha _builtin_open(filename, 'rb') as f:
+            ukijumuisha _builtin_open(filename, 'rb') kama f:
                 tokens = list(tokenize(f.readline))
         isipokua:
             filename = "<stdin>"
@@ -662,19 +662,19 @@ eleza main():
             token_range = "%d,%d-%d,%d:" % (token.start + token.end)
             andika("%-20s%-15s%-15r" %
                   (token_range, tok_name[token_type], token.string))
-    except IndentationError as err:
+    tatizo IndentationError kama err:
         line, column = err.args[1][1:3]
         error(err.args[0], filename, (line, column))
-    except TokenError as err:
+    tatizo TokenError kama err:
         line, column = err.args[1]
         error(err.args[0], filename, (line, column))
-    except SyntaxError as err:
+    tatizo SyntaxError kama err:
         error(err, filename)
-    except OSError as err:
+    tatizo OSError kama err:
         error(err)
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         andika("interrupted\n")
-    except Exception as err:
+    tatizo Exception kama err:
         perror("unexpected error: %s" % err)
         raise
 

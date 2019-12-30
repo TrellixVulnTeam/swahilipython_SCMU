@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 
-"""Conversions to/kutoka quoted-printable transport encoding as per RFC 1521."""
+"""Conversions to/kutoka quoted-printable transport encoding kama per RFC 1521."""
 
 # (Dec 1991 version).
 
@@ -13,7 +13,7 @@ EMPTYSTRING = b''
 
 jaribu:
     kutoka binascii agiza a2b_qp, b2a_qp
-except ImportError:
+tatizo ImportError:
     a2b_qp = Tupu
     b2a_qp = Tupu
 
@@ -22,7 +22,7 @@ eleza needsquoting(c, quotetabs, header):
     """Decide whether a particular byte ordinal needs to be quoted.
 
     The 'quotetabs' flag indicates whether embedded tabs na spaces should be
-    quoted.  Note that line-ending tabs na spaces are always encoded, as per
+    quoted.  Note that line-ending tabs na spaces are always encoded, kama per
     RFC 1521.
     """
     assert isinstance(c, bytes)
@@ -46,8 +46,8 @@ eleza encode(input, output, quotetabs, header=Uongo):
 
     'input' na 'output' are binary file objects. The 'quotetabs' flag
     indicates whether embedded tabs na spaces should be quoted. Note that
-    line-ending tabs na spaces are always encoded, as per RFC 1521.
-    The 'header' flag indicates whether we are encoding spaces as _ as per RFC
+    line-ending tabs na spaces are always encoded, kama per RFC 1521.
+    The 'header' flag indicates whether we are encoding spaces kama _ kama per RFC
     1522."""
 
     ikiwa b2a_qp ni sio Tupu:
@@ -61,7 +61,7 @@ eleza encode(input, output, quotetabs, header=Uongo):
         # that trailing character encoded.
         ikiwa s na s[-1:] kwenye b' \t':
             output.write(s[:-1] + quote(s[-1:]) + lineEnd)
-        elikiwa s == b'.':
+        lasivyo s == b'.':
             output.write(quote(s) + lineEnd)
         isipokua:
             output.write(s + lineEnd)
@@ -117,7 +117,7 @@ eleza encodestring(s, quotetabs=Uongo, header=Uongo):
 eleza decode(input, output, header=Uongo):
     """Read 'input', apply quoted-printable decoding, na write to 'output'.
     'input' na 'output' are binary file objects.
-    If 'header' ni true, decode underscore as space (per RFC 1522)."""
+    If 'header' ni true, decode underscore kama space (per RFC 1522)."""
 
     ikiwa a2b_qp ni sio Tupu:
         data = input.read()
@@ -141,13 +141,13 @@ eleza decode(input, output, header=Uongo):
             c = line[i:i+1]
             ikiwa c == b'_' na header:
                 new = new + b' '; i = i+1
-            elikiwa c != ESCAPE:
+            lasivyo c != ESCAPE:
                 new = new + c; i = i+1
-            elikiwa i+1 == n na sio partial:
+            lasivyo i+1 == n na sio partial:
                 partial = 1; koma
-            elikiwa i+1 < n na line[i+1:i+2] == ESCAPE:
+            lasivyo i+1 < n na line[i+1:i+2] == ESCAPE:
                 new = new + ESCAPE; i = i+2
-            elikiwa i+2 < n na ishex(line[i+1:i+2]) na ishex(line[i+2:i+3]):
+            lasivyo i+2 < n na ishex(line[i+1:i+2]) na ishex(line[i+2:i+3]):
                 new = new + bytes((unhex(line[i+1:i+3]),)); i = i+3
             isipokua: # Bad escape sequence -- leave it in
                 new = new + c; i = i+1
@@ -181,9 +181,9 @@ eleza unhex(s):
         c = bytes((c,))
         ikiwa b'0' <= c <= b'9':
             i = ord('0')
-        elikiwa b'a' <= c <= b'f':
+        lasivyo b'a' <= c <= b'f':
             i = ord('a')-10
-        elikiwa b'A' <= c <= b'F':
+        lasivyo b'A' <= c <= b'F':
             i = ord(b'A')-10
         isipokua:
             assert Uongo, "non-hex digit "+repr(c)
@@ -197,7 +197,7 @@ eleza main():
     agiza getopt
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], 'td')
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         sys.stdout = sys.stderr
         andika(msg)
         andika("usage: quopri [-t | -d] [file] ...")
@@ -221,7 +221,7 @@ eleza main():
         isipokua:
             jaribu:
                 fp = open(file, "rb")
-            except OSError as msg:
+            tatizo OSError kama msg:
                 sys.stderr.write("%s: can't open (%s)\n" % (file, msg))
                 sts = 1
                 endelea

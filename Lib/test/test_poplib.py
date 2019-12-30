@@ -12,7 +12,7 @@ agiza errno
 agiza threading
 
 kutoka unittest agiza TestCase, skipUnless
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 
 HOST = test_support.HOST
 PORT = 0
@@ -85,11 +85,11 @@ kundi DummyPOP3Handler(asynchat.async_chat):
     eleza cmd_user(self, arg):
         ikiwa arg != "guido":
             self.push("-ERR no such user")
-        self.push('+OK password required')
+        self.push('+OK pitaword required')
 
-    eleza cmd_pass(self, arg):
+    eleza cmd_pita(self, arg):
         ikiwa arg != "python":
-            self.push("-ERR wrong password")
+            self.push("-ERR wrong pitaword")
         self.push('+OK 10 messages')
 
     eleza cmd_stat(self, arg):
@@ -170,18 +170,18 @@ kundi DummyPOP3Handler(asynchat.async_chat):
         eleza _do_tls_handshake(self):
             jaribu:
                 self.socket.do_handshake()
-            except ssl.SSLError as err:
+            tatizo ssl.SSLError kama err:
                 ikiwa err.args[0] kwenye (ssl.SSL_ERROR_WANT_READ,
                                    ssl.SSL_ERROR_WANT_WRITE):
                     return
-                elikiwa err.args[0] == ssl.SSL_ERROR_EOF:
+                lasivyo err.args[0] == ssl.SSL_ERROR_EOF:
                     rudisha self.handle_close()
                 # TODO: SSLError does sio expose alert information
-                elikiwa ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] or
+                lasivyo ("SSLV3_ALERT_BAD_CERTIFICATE" kwenye err.args[1] ama
                       "SSLV3_ALERT_CERTIFICATE_UNKNOWN" kwenye err.args[1]):
                     rudisha self.handle_close()
                 raise
-            except OSError as err:
+            tatizo OSError kama err:
                 ikiwa err.args[0] == errno.ECONNABORTED:
                     rudisha self.handle_close()
             isipokua:
@@ -194,7 +194,7 @@ kundi DummyPOP3Handler(asynchat.async_chat):
             isipokua:
                 jaribu:
                     asynchat.async_chat.handle_read(self)
-                except ssl.SSLEOFError:
+                tatizo ssl.SSLEOFError:
                     self.handle_close()
 
 kundi DummyPOP3Server(asyncore.dispatcher, threading.Thread):
@@ -274,8 +274,8 @@ kundi TestPOP3Class(TestCase):
         self.assertOK(self.client.user('guido'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
-    eleza test_pass_(self):
-        self.assertOK(self.client.pass_('python'))
+    eleza test_pita_(self):
+        self.assertOK(self.client.pita_('python'))
         self.assertRaises(poplib.error_proto, self.client.user, 'invalid')
 
     eleza test_stat(self):
@@ -311,7 +311,7 @@ kundi TestPOP3Class(TestCase):
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_normal(self):
-        self.assertOK(self.client.apop('foo', 'dummypassword'))
+        self.assertOK(self.client.apop('foo', 'dummypitaword'))
 
     @test_support.requires_hashdigest('md5')
     eleza test_apop_REDOS(self):
@@ -452,9 +452,9 @@ kundi TestPOP3_TLSClass(TestPOP3Class):
         ikiwa self.client.file ni sio Tupu na self.client.sock ni sio Tupu:
             jaribu:
                 self.client.quit()
-            except poplib.error_proto:
+            tatizo poplib.error_proto:
                 # happens kwenye the test_too_long_lines case; the overlong
-                # response will be treated as response to QUIT na raise
+                # response will be treated kama response to QUIT na raise
                 # this exception
                 self.client.close()
         self.server.stop()
@@ -495,8 +495,8 @@ kundi TestTimeouts(TestCase):
             conn, addr = serv.accept()
             conn.send(b"+ Hola mundo\n")
             conn.close()
-        except socket.timeout:
-            pass
+        tatizo socket.timeout:
+            pita
         mwishowe:
             serv.close()
 

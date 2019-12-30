@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 
@@ -43,7 +43,7 @@ kundi DeadlockAvoidanceTests:
         jaribu:
             self.old_switchinterval = sys.getswitchinterval()
             support.setswitchinterval(0.000001)
-        except AttributeError:
+        tatizo AttributeError:
             self.old_switchinterval = Tupu
 
     eleza tearDown(self):
@@ -66,7 +66,7 @@ kundi DeadlockAvoidanceTests:
             Uongo on deadlock."""
             jaribu:
                 lock.acquire()
-            except self.DeadlockError:
+            tatizo self.DeadlockError:
                 rudisha Uongo
             isipokua:
                 rudisha Kweli

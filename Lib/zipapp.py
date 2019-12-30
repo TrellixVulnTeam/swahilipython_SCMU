@@ -10,7 +10,7 @@ __all__ = ['ZipAppError', 'create_archive', 'get_interpreter']
 
 
 # The __main__.py used ikiwa the users specifies "-m module:fn".
-# Note that this will always be written as UTF-8 (module and
+# Note that this will always be written kama UTF-8 (module na
 # function names can be non-ASCII kwenye Python 3).
 # We add a coding cookie even though UTF-8 ni the default kwenye Python 3
 # because the resulting archive may be intended to be run under Python 2.
@@ -31,13 +31,13 @@ isipokua:
 
 
 kundi ZipAppError(ValueError):
-    pass
+    pita
 
 
 @contextlib.contextmanager
 eleza _maybe_open(archive, mode):
     ikiwa isinstance(archive, (str, os.PathLike)):
-        ukijumuisha open(archive, mode) as f:
+        ukijumuisha open(archive, mode) kama f:
             tuma f
     isipokua:
         tuma archive
@@ -52,7 +52,7 @@ eleza _write_file_prefix(f, interpreter):
 
 eleza _copy_archive(archive, new_archive, interpreter=Tupu):
     """Copy an application archive, modifying the shebang line."""
-    ukijumuisha _maybe_open(archive, 'rb') as src:
+    ukijumuisha _maybe_open(archive, 'rb') kama src:
         # Skip the shebang line kutoka the source.
         # Read 2 bytes of the source na check ikiwa they are #!.
         first_2 = src.read(2)
@@ -61,7 +61,7 @@ eleza _copy_archive(archive, new_archive, interpreter=Tupu):
             first_2 = b''
             src.readline()
 
-        ukijumuisha _maybe_open(new_archive, 'wb') as dst:
+        ukijumuisha _maybe_open(new_archive, 'wb') kama dst:
             _write_file_prefix(dst, interpreter)
             # If there was no shebang, "first_2" contains the first 2 bytes
             # of the source file, so write them before copying the rest
@@ -108,13 +108,13 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
 
     # We are creating a new archive kutoka a directory.
     ikiwa sio source.exists():
-         ashiria ZipAppError("Source does sio exist")
+        ashiria ZipAppError("Source does sio exist")
     has_main = (source / '__main__.py').is_file()
     ikiwa main na has_main:
-         ashiria ZipAppError(
+        ashiria ZipAppError(
             "Cannot specify entry point ikiwa the source has __main__.py")
     ikiwa sio (main ama has_main):
-         ashiria ZipAppError("Archive has no entry point")
+        ashiria ZipAppError("Archive has no entry point")
 
     main_py = Tupu
     ikiwa main:
@@ -123,19 +123,19 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
         mod_ok = all(part.isidentifier() kila part kwenye mod.split('.'))
         fn_ok = all(part.isidentifier() kila part kwenye fn.split('.'))
         ikiwa sio (sep == ':' na mod_ok na fn_ok):
-             ashiria ZipAppError("Invalid entry point: " + main)
+            ashiria ZipAppError("Invalid entry point: " + main)
         main_py = MAIN_TEMPLATE.format(module=mod, fn=fn)
 
     ikiwa target ni Tupu:
         target = source.with_suffix('.pyz')
-    elikiwa sio hasattr(target, 'write'):
+    lasivyo sio hasattr(target, 'write'):
         target = pathlib.Path(target)
 
-    ukijumuisha _maybe_open(target, 'wb') as fd:
+    ukijumuisha _maybe_open(target, 'wb') kama fd:
         _write_file_prefix(fd, interpreter)
         compression = (zipfile.ZIP_DEFLATED ikiwa compressed else
                        zipfile.ZIP_STORED)
-        ukijumuisha zipfile.ZipFile(fd, 'w', compression=compression) as z:
+        ukijumuisha zipfile.ZipFile(fd, 'w', compression=compression) kama z:
             kila child kwenye source.rglob('*'):
                 arcname = child.relative_to(source)
                 ikiwa filter ni Tupu ama filter(arcname):
@@ -148,7 +148,7 @@ eleza create_archive(source, target=Tupu, interpreter=Tupu, main=Tupu,
 
 
 eleza get_interpreter(archive):
-    ukijumuisha _maybe_open(archive, 'rb') as f:
+    ukijumuisha _maybe_open(archive, 'rb') kama f:
         ikiwa f.read(2) == b'#!':
             rudisha f.readline().strip().decode(shebang_encoding)
 
@@ -157,8 +157,8 @@ eleza main(args=Tupu):
     """Run the zipapp command line interface.
 
     The ARGS parameter lets you specify the argument list directly.
-    Omitting ARGS (or setting it to Tupu) works as kila argparse, using
-    sys.argv[1:] as the argument list.
+    Omitting ARGS (or setting it to Tupu) works kama kila argparse, using
+    sys.argv[1:] kama the argument list.
     """
     agiza argparse
 
@@ -185,17 +185,17 @@ eleza main(args=Tupu):
     # Handle `python -m zipapp archive.pyz --info`.
     ikiwa args.info:
         ikiwa sio os.path.isfile(args.source):
-             ashiria SystemExit("Can only get info kila an archive file")
+            ashiria SystemExit("Can only get info kila an archive file")
         interpreter = get_interpreter(args.source)
         andika("Interpreter: {}".format(interpreter ama "<none>"))
         sys.exit(0)
 
     ikiwa os.path.isfile(args.source):
-        ikiwa args.output ni Tupu ama (os.path.exists(args.output) and
+        ikiwa args.output ni Tupu ama (os.path.exists(args.output) na
                                    os.path.samefile(args.source, args.output)):
-             ashiria SystemExit("In-place editing of archives ni sio supported")
+            ashiria SystemExit("In-place editing of archives ni sio supported")
         ikiwa args.main:
-             ashiria SystemExit("Cannot change the main function when copying")
+            ashiria SystemExit("Cannot change the main function when copying")
 
     create_archive(args.source, args.output,
                    interpreter=args.python, main=args.main,

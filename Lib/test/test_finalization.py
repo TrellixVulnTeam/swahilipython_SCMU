@@ -1,5 +1,5 @@
 """
-Tests kila object finalization semantics, as outlined kwenye PEP 442.
+Tests kila object finalization semantics, kama outlined kwenye PEP 442.
 """
 
 agiza contextlib
@@ -9,11 +9,11 @@ agiza weakref
 
 jaribu:
     kutoka _testcapi agiza with_tp_del
-except ImportError:
+tatizo ImportError:
     eleza with_tp_del(cls):
         kundi C(object):
             eleza __new__(cls, *args, **kwargs):
-                 ashiria TypeError('requires _testcapi.with_tp_del')
+                ashiria TypeError('requires _testcapi.with_tp_del')
         rudisha C
 
 kutoka test agiza support
@@ -54,9 +54,9 @@ kundi NonGCSimpleBase:
             cls.tp_del_calls.clear()
             NonGCSimpleBase._cleaning = Uongo
             jaribu:
-                yield
+                tuma
                 ikiwa cls.errors:
-                     ashiria cls.errors[0]
+                    ashiria cls.errors[0]
             mwishowe:
                 NonGCSimpleBase._cleaning = Kweli
                 cls._cleanup()
@@ -76,7 +76,7 @@ kundi NonGCSimpleBase:
                 self.del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
     eleza side_effect(self):
@@ -107,10 +107,10 @@ kundi NonGCResurrector(NonGCSimpleBase):
         self.survivors.append(self)
 
 kundi Simple(SimpleBase):
-    pass
+    pita
 
 kundi SimpleResurrector(NonGCResurrector, SimpleBase):
-    pass
+    pita
 
 
 kundi TestBase:
@@ -217,10 +217,10 @@ kundi SelfCycleBase:
         assert self.ref ni self
 
 kundi SimpleSelfCycle(SelfCycleBase, Simple):
-    pass
+    pita
 
 kundi SelfCycleResurrector(SelfCycleBase, SimpleResurrector):
-    pass
+    pita
 
 kundi SuicidalSelfCycle(SelfCycleBase, Simple):
 
@@ -314,10 +314,10 @@ kundi ChainedBase:
                 assert right.left ni self
 
 kundi SimpleChained(ChainedBase, Simple):
-    pass
+    pita
 
 kundi ChainedResurrector(ChainedBase, SimpleResurrector):
-    pass
+    pita
 
 kundi SuicidalChained(ChainedBase, Simple):
 
@@ -416,7 +416,7 @@ kundi LegacyBase(SimpleBase):
             ikiwa sio self._cleaning:
                 self.del_calls.append(id(self))
                 self.check_sanity()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
     eleza __tp_del__(self):
@@ -428,12 +428,12 @@ kundi LegacyBase(SimpleBase):
                 self.tp_del_calls.append(id(self))
                 self.check_sanity()
                 self.side_effect()
-        except Exception as e:
+        tatizo Exception kama e:
             self.errors.append(e)
 
 @with_tp_del
 kundi Legacy(LegacyBase):
-    pass
+    pita
 
 @with_tp_del
 kundi LegacyResurrector(LegacyBase):
@@ -446,7 +446,7 @@ kundi LegacyResurrector(LegacyBase):
 
 @with_tp_del
 kundi LegacySelfCycle(SelfCycleBase, LegacyBase):
-    pass
+    pita
 
 
 @support.cpython_only

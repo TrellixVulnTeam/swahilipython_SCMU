@@ -11,13 +11,13 @@ Middle-clicking will copy the text to the clipboard. Right-clicking will open
 the text kwenye a separate viewing window.
 
 Additionally, any output can be manually "squeezed" by the user. This includes
-output written to the standard error stream ("stderr"), such as exception
+output written to the standard error stream ("stderr"), such kama exception
 messages na their tracebacks.
 """
 agiza re
 
-agiza tkinter as tk
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter kama tk
+agiza tkinter.messagebox kama tkMessageBox
 
 kutoka idlelib.config agiza idleConf
 kutoka idlelib.textview agiza view_text
@@ -28,7 +28,7 @@ kutoka idlelib agiza macosx
 eleza count_lines_with_wrapping(s, linewidth=80):
     """Count the number of lines kwenye a given string.
 
-    Lines are counted as ikiwa the string was wrapped so that lines are never over
+    Lines are counted kama ikiwa the string was wrapped so that lines are never over
     linewidth characters long.
 
     Tabs are considered tabwidth characters long.
@@ -61,8 +61,8 @@ eleza count_lines_with_wrapping(s, linewidth=80):
             assert s[pos] == '\t'
             current_column += tabwidth - (current_column % tabwidth)
 
-            # If a tab passes the end of the line, consider the entire
-            # tab as being on the next line.
+            # If a tab pitaes the end of the line, consider the entire
+            # tab kama being on the next line.
             ikiwa current_column > linewidth:
                 linecount += 1
                 current_column = tabwidth
@@ -114,7 +114,7 @@ kundi ExpandingButton(tk.Button):
 
         self.bind("<Double-Button-1>", self.expand)
         ikiwa macosx.isAquaTk():
-            # AquaTk defines <2> as the right button, sio <3>.
+            # AquaTk defines <2> kama the right button, sio <3>.
             self.bind("<Button-2>", self.context_menu_event)
         isipokua:
             self.bind("<Button-3>", self.context_menu_event)
@@ -127,8 +127,8 @@ kundi ExpandingButton(tk.Button):
     eleza set_is_dangerous(self):
         dangerous_line_len = 50 * self.text.winfo_width()
         self.is_dangerous = (
-            self.numoflines > 1000 or
-            len(self.s) > 50000 or
+            self.numoflines > 1000 ama
+            len(self.s) > 50000 ama
             any(
                 len(line_match.group(0)) >= dangerous_line_len
                 kila line_match kwenye re.finditer(r'[^\n]+', self.s)
@@ -278,7 +278,7 @@ kundi Squeezer:
         Before calculation, the tab width na line length of the text are
         fetched, so that up-to-date values are used.
 
-        Lines are counted as ikiwa the string was wrapped so that lines are never
+        Lines are counted kama ikiwa the string was wrapped so that lines are never
         over linewidth characters long.
 
         Tabs are considered tabwidth characters long.
@@ -290,7 +290,7 @@ kundi Squeezer:
 
         Squeeze the block of text inside which contains the "insert" cursor.
 
-        If the insert cursor ni sio kwenye a squeezable block of text, give the
+        If the insert cursor ni haiko kwenye a squeezable block of text, give the
         user a small warning na do nothing.
         """
         # Set tag_name to the first valid tag found on the "insert" cursor.

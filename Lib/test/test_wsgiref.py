@@ -43,7 +43,7 @@ kundi MockHandler(WSGIRequestHandler):
         self.rfile, self.wfile = self.connection
 
     eleza finish(self):
-        pass
+        pita
 
 
 eleza hello_app(environ,start_response):
@@ -83,37 +83,37 @@ eleza compare_generic_iter(make_it,match):
     """Utility to compare a generic 2.1/2.2+ iterator ukijumuisha an iterable
 
     If running under Python 2.2+, this tests the iterator using iter()/next(),
-    as well as __getitem__.  'make_it' must be a function returning a fresh
+    kama well kama __getitem__.  'make_it' must be a function returning a fresh
     iterator to be tested (since this may test the iterator twice)."""
 
     it = make_it()
     n = 0
     kila item kwenye match:
-        ikiwa sio it[n]==item:  ashiria AssertionError
+        ikiwa sio it[n]==item: ashiria AssertionError
         n+=1
     jaribu:
         it[n]
-    except IndexError:
-        pass
+    tatizo IndexError:
+        pita
     isipokua:
-         ashiria AssertionError("Too many items kutoka __getitem__",it)
+        ashiria AssertionError("Too many items kutoka __getitem__",it)
 
     jaribu:
         iter, StopIteration
-    except NameError:
-        pass
+    tatizo NameError:
+        pita
     isipokua:
         # Only test iter mode under 2.2+
         it = make_it()
-        ikiwa sio iter(it) ni it:  ashiria AssertionError
+        ikiwa sio iter(it) ni it: ashiria AssertionError
         kila item kwenye match:
-            ikiwa sio next(it) == item:  ashiria AssertionError
+            ikiwa sio next(it) == item: ashiria AssertionError
         jaribu:
             next(it)
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         isipokua:
-             ashiria AssertionError("Too many items kutoka .__next__()", it)
+            ashiria AssertionError("Too many items kutoka .__next__()", it)
 
 
 kundi IntegrationTests(TestCase):
@@ -233,8 +233,8 @@ kundi IntegrationTests(TestCase):
                 ("Content-Type", "text/plain"),
                 ("Date", "Wed, 24 Dec 2008 13:29:32 GMT"),
                 ])
-            # PEP3333 says environ variables are decoded as latin1.
-            # Encode as latin1 to get original bytes
+            # PEP3333 says environ variables are decoded kama latin1.
+            # Encode kama latin1 to get original bytes
             rudisha [e["PATH_INFO"].encode("latin1")]
 
         out, err = run_amock(
@@ -261,7 +261,7 @@ kundi IntegrationTests(TestCase):
             rudisha [b'\0' * support.SOCK_MAX_SIZE]
 
         kundi WsgiHandler(NoLogRequestHandler, WSGIRequestHandler):
-            pass
+            pita
 
         server = make_server(support.HOST, 0, app, handler_class=WsgiHandler)
         self.addCleanup(server.server_close)
@@ -278,7 +278,7 @@ kundi IntegrationTests(TestCase):
         eleza run_client():
             http = HTTPConnection(*server.server_address)
             http.request("GET", "/")
-            ukijumuisha http.getresponse() as response:
+            ukijumuisha http.getresponse() kama response:
                 response.read(100)
                 # The main thread should now be blocking kwenye a send() system
                 # call.  But kwenye theory, it could get interrupted by other
@@ -316,7 +316,7 @@ kundi UtilityTests(TestCase):
         util.setup_testing_defaults(env)
         ikiwa isinstance(value, StringIO):
             self.assertIsInstance(env[key], StringIO)
-        elikiwa isinstance(value,BytesIO):
+        lasivyo isinstance(value,BytesIO):
             self.assertIsInstance(env[key],BytesIO)
         isipokua:
             self.assertEqual(env[key], value)
@@ -350,7 +350,7 @@ kundi UtilityTests(TestCase):
         self.assertUongo(it.filelike.closed)
 
         kila item kwenye it:
-            pass
+            pita
 
         self.assertUongo(it.filelike.closed)
 
@@ -483,7 +483,7 @@ kundi HeaderTests(TestCase):
         self.assertIsNot(Headers(test).items(), test)  # must be copy!
 
         h = Headers()
-        toa h['foo']   # should sio  ashiria an error
+        toa h['foo']   # should sio ashiria an error
 
         h['Foo'] = 'bar'
         kila m kwenye h.__contains__, h.get, h.get_all, h.__getitem__:
@@ -541,10 +541,10 @@ kundi ErrorHandler(BaseCGIHandler):
         )
 
 kundi TestHandler(ErrorHandler):
-    """Simple handler subkundi kila testing BaseHandler, w/error passthru"""
+    """Simple handler subkundi kila testing BaseHandler, w/error pitathru"""
 
     eleza handle_error(self):
-         ashiria   # kila testing, we want to see what's happening
+        ashiria   # kila testing, we want to see what's happening
 
 
 kundi HandlerTests(TestCase):
@@ -575,13 +575,13 @@ kundi HandlerTests(TestCase):
             self.assertEqual(getattr(handler, 'wsgi_' + attr),
                              handler.environ['wsgi.' + attr])
 
-        # Test handler.environ as a dict
+        # Test handler.environ kama a dict
         expected = {}
         setup_testing_defaults(expected)
         # Handler inherits os_environ variables which are sio overriden
         # by SimpleHandler.add_cgi_vars() (SimpleHandler.base_env)
         kila key, value kwenye os_environ.items():
-            ikiwa key sio kwenye expected:
+            ikiwa key haiko kwenye expected:
                 expected[key] = value
         expected.update({
             # X doesn't exist kwenye os_environ
@@ -682,7 +682,7 @@ kundi HandlerTests(TestCase):
             rudisha []
 
         eleza error_app(e,s):
-             ashiria AssertionError("This should be caught by handler")
+            ashiria AssertionError("This should be caught by handler")
 
         h = ErrorHandler()
         h.run(non_error_app)
@@ -707,7 +707,7 @@ kundi HandlerTests(TestCase):
         MSG = b"Some output has been sent"
         eleza error_app(e,s):
             s("200 OK",[])(MSG)
-             ashiria AssertionError("This should be caught by handler")
+            ashiria AssertionError("This should be caught by handler")
 
         h = ErrorHandler()
         h.run(error_app)
@@ -784,7 +784,7 @@ kundi HandlerTests(TestCase):
                 eleza __iter__(self):
                     wakati Kweli:
                         tuma b'blah'
-                         ashiria AssertionError("This should be caught by handler")
+                        ashiria AssertionError("This should be caught by handler")
                 eleza close(self):
                     side_effects['close_called'] = Kweli
             rudisha CrashyIterable()
@@ -803,7 +803,7 @@ kundi HandlerTests(TestCase):
                 rudisha len(partial)
 
             eleza flush(self):
-                pass
+                pita
 
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}
         h = SimpleHandler(BytesIO(), PartialWriter(), sys.stderr, environ)
@@ -828,7 +828,7 @@ kundi HandlerTests(TestCase):
             ukijumuisha self.subTest(exception=exception):
                 kundi AbortingWriter:
                     eleza write(self, b):
-                         ashiria exception
+                        ashiria exception
 
                 stderr = StringIO()
                 h = SimpleHandler(BytesIO(), AbortingWriter(), stderr, environ)
@@ -838,7 +838,7 @@ kundi HandlerTests(TestCase):
 
     eleza testDontResetInternalStateOnException(self):
         kundi CustomException(ValueError):
-            pass
+            pita
 
         # We are raising CustomException here to trigger an exception
         # during the execution of SimpleHandler.finish_response(), so
@@ -846,7 +846,7 @@ kundi HandlerTests(TestCase):
         # preserved kwenye case of an exception.
         kundi AbortingWriter:
             eleza write(self, b):
-                 ashiria CustomException
+                ashiria CustomException
 
         stderr = StringIO()
         environ = {"SERVER_PROTOCOL": "HTTP/1.0"}

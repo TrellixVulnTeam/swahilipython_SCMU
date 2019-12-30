@@ -15,7 +15,7 @@ kundi MD5SumTests(unittest.TestCase):
         cls.script = os.path.join(scriptsdir, 'md5sum.py')
         os.mkdir(support.TESTFN)
         cls.fodder = os.path.join(support.TESTFN, 'md5sum.fodder')
-        ukijumuisha open(cls.fodder, 'wb') as f:
+        ukijumuisha open(cls.fodder, 'wb') kama f:
             f.write(b'md5sum\r\ntest file\r\n')
         cls.fodder_md5 = b'd38dae2eb1ab346a292ef6850f9e1a0d'
         cls.fodder_textmode_md5 = b'a8b07894e2ca3f2a4c3094065fa6e0a5'

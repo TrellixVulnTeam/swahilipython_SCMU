@@ -4,7 +4,7 @@ agiza unittest
 kutoka unittest agiza mock
 
 agiza asyncio
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 eleza tearDownModule():
@@ -27,7 +27,7 @@ kundi QueueBasicTests(_QueueTestBase):
         appear kwenye fn(Queue()).
         """
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0.1
             self.assertAlmostEqual(0.2, when)
@@ -123,7 +123,7 @@ kundi QueueBasicTests(_QueueTestBase):
     eleza test_maxsize(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.01, when)
             when = tuma 0.01
             self.assertAlmostEqual(0.02, when)
@@ -192,7 +192,7 @@ kundi QueueGetTests(_QueueTestBase):
     eleza test_blocking_get_wait(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.01, when)
             tuma 0.01
 
@@ -237,7 +237,7 @@ kundi QueueGetTests(_QueueTestBase):
     eleza test_get_cancelled(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.01, when)
             when = tuma 0.01
             self.assertAlmostEqual(0.061, when)
@@ -317,8 +317,8 @@ kundi QueueGetTests(_QueueTestBase):
         async eleza consumer(queue):
             jaribu:
                 item = await asyncio.wait_for(queue.get(), 0.1)
-            except asyncio.TimeoutError:
-                pass
+            tatizo asyncio.TimeoutError:
+                pita
 
         ukijumuisha self.assertWarns(DeprecationWarning):
             queue = asyncio.Queue(loop=self.loop, maxsize=5)
@@ -341,7 +341,7 @@ kundi QueuePutTests(_QueueTestBase):
     eleza test_blocking_put_wait(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.01, when)
             tuma 0.01
 
@@ -396,7 +396,7 @@ kundi QueuePutTests(_QueueTestBase):
 
         jaribu:
             loop.run_until_complete(reader)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             # try again
             reader = loop.create_task(q.get())
             loop.run_until_complete(reader)
@@ -428,8 +428,8 @@ kundi QueuePutTests(_QueueTestBase):
 
         jaribu:
             loop.run_until_complete(reader1)
-        except asyncio.CancelledError:
-            pass
+        tatizo asyncio.CancelledError:
+            pita
 
         loop.run_until_complete(reader3)
 
@@ -459,7 +459,7 @@ kundi QueuePutTests(_QueueTestBase):
         writer.cancel()
         jaribu:
             loop.run_until_complete(writer)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             # try again
             writer = loop.create_task(q.put(2))
             loop.run_until_complete(writer)

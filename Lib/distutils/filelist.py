@@ -82,22 +82,22 @@ kundi FileList:
         ikiwa action kwenye ('include', 'exclude',
                       'global-include', 'global-exclude'):
             ikiwa len(words) < 2:
-                 ashiria DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects <pattern1> <pattern2> ..." % action)
             patterns = [convert_path(w) kila w kwenye words[1:]]
-        elikiwa action kwenye ('recursive-include', 'recursive-exclude'):
+        lasivyo action kwenye ('recursive-include', 'recursive-exclude'):
             ikiwa len(words) < 3:
-                 ashiria DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects <dir> <pattern1> <pattern2> ..." % action)
             dir = convert_path(words[1])
             patterns = [convert_path(w) kila w kwenye words[2:]]
-        elikiwa action kwenye ('graft', 'prune'):
+        lasivyo action kwenye ('graft', 'prune'):
             ikiwa len(words) != 2:
-                 ashiria DistutilsTemplateError(
+                ashiria DistutilsTemplateError(
                       "'%s' expects a single <dir_pattern>" % action)
             dir_pattern = convert_path(words[1])
         isipokua:
-             ashiria DistutilsTemplateError("unknown action '%s'" % action)
+            ashiria DistutilsTemplateError("unknown action '%s'" % action)
 
         rudisha (action, patterns, dir, dir_pattern)
 
@@ -119,21 +119,21 @@ kundi FileList:
                     log.warn("warning: no files found matching '%s'",
                              pattern)
 
-        elikiwa action == 'exclude':
+        lasivyo action == 'exclude':
             self.debug_andika("exclude " + ' '.join(patterns))
             kila pattern kwenye patterns:
                 ikiwa sio self.exclude_pattern(pattern, anchor=1):
                     log.warn(("warning: no previously-included files "
                               "found matching '%s'"), pattern)
 
-        elikiwa action == 'global-include':
+        lasivyo action == 'global-include':
             self.debug_andika("global-include " + ' '.join(patterns))
             kila pattern kwenye patterns:
                 ikiwa sio self.include_pattern(pattern, anchor=0):
                     log.warn(("warning: no files found matching '%s' "
                               "anywhere kwenye distribution"), pattern)
 
-        elikiwa action == 'global-exclude':
+        lasivyo action == 'global-exclude':
             self.debug_andika("global-exclude " + ' '.join(patterns))
             kila pattern kwenye patterns:
                 ikiwa sio self.exclude_pattern(pattern, anchor=0):
@@ -141,7 +141,7 @@ kundi FileList:
                               "'%s' found anywhere kwenye distribution"),
                              pattern)
 
-        elikiwa action == 'recursive-include':
+        lasivyo action == 'recursive-include':
             self.debug_andika("recursive-include %s %s" %
                              (dir, ' '.join(patterns)))
             kila pattern kwenye patterns:
@@ -150,7 +150,7 @@ kundi FileList:
                                 "under directory '%s'"),
                              pattern, dir)
 
-        elikiwa action == 'recursive-exclude':
+        lasivyo action == 'recursive-exclude':
             self.debug_andika("recursive-exclude %s %s" %
                              (dir, ' '.join(patterns)))
             kila pattern kwenye patterns:
@@ -159,19 +159,19 @@ kundi FileList:
                               "'%s' found under directory '%s'"),
                              pattern, dir)
 
-        elikiwa action == 'graft':
+        lasivyo action == 'graft':
             self.debug_andika("graft " + dir_pattern)
             ikiwa sio self.include_pattern(Tupu, prefix=dir_pattern):
                 log.warn("warning: no directories found matching '%s'",
                          dir_pattern)
 
-        elikiwa action == 'prune':
+        lasivyo action == 'prune':
             self.debug_andika("prune " + dir_pattern)
             ikiwa sio self.exclude_pattern(Tupu, prefix=dir_pattern):
                 log.warn(("no previously-included directories found "
                           "matching '%s'"), dir_pattern)
         isipokua:
-             ashiria DistutilsInternalError(
+            ashiria DistutilsInternalError(
                   "this cannot happen: invalid action '%s'" % action)
 
 
@@ -180,7 +180,7 @@ kundi FileList:
     eleza include_pattern(self, pattern, anchor=1, prefix=Tupu, is_regex=0):
         """Select strings (presumably filenames) kutoka 'self.files' that
         match 'pattern', a Unix-style wildcard (glob) pattern.  Patterns
-        are sio quite the same as implemented by the 'fnmatch' module: '*'
+        are sio quite the same kama implemented by the 'fnmatch' module: '*'
         na '?'  match non-special characters, where "special" ni platform-
         dependent: slash on Unix; colon, slash, na backslash on
         DOS/Windows; na colon on Mac OS.
@@ -193,7 +193,7 @@ kundi FileList:
         (itself a pattern) na ending ukijumuisha 'pattern', ukijumuisha anything kwenye between
         them, will match.  'anchor' ni ignored kwenye this case.
 
-        If 'is_regex' ni true, 'anchor' na 'prefix' are ignored, and
+        If 'is_regex' ni true, 'anchor' na 'prefix' are ignored, na
         'pattern' ni assumed to be either a string containing a regex ama a
         regex object -- no translation ni done, the regex ni just compiled
         na used as-is.
@@ -223,7 +223,7 @@ kundi FileList:
     eleza exclude_pattern (self, pattern,
                          anchor=1, prefix=Tupu, is_regex=0):
         """Remove strings (presumably filenames) kutoka 'files' that match
-        'pattern'.  Other parameters are the same as for
+        'pattern'.  Other parameters are the same kama for
         'include_pattern()', above.
         The list 'self.files' ni modified kwenye place.
         Return Kweli ikiwa files are found, Uongo otherwise.
@@ -279,7 +279,7 @@ eleza glob_to_re(pattern):
     # IMHO ni wrong -- '?' na '*' aren't supposed to match slash kwenye Unix,
     # na by extension they shouldn't match such "special characters" under
     # any OS.  So change all non-escaped dots kwenye the RE to match any
-    # character except the special characters (currently: just os.sep).
+    # character tatizo the special characters (currently: just os.sep).
     sep = os.sep
     ikiwa os.sep == '\\':
         # we're using a regex to manipulate a regex, so we need

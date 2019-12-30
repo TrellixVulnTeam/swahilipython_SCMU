@@ -2,11 +2,11 @@
 
 The simplest way to use this module ni to call the urlopen function,
 which accepts a string containing a URL ama a Request object (described
-below).  It opens the URL na returns the results as file-like
+below).  It opens the URL na returns the results kama file-like
 object; the returned object has some extra methods described below.
 
 The OpenerDirector manages a collection of Handler objects that do
-all the actual work.  Each Handler implements a particular protocol or
+all the actual work.  Each Handler implements a particular protocol ama
 option.  The OpenerDirector ni a composite object that invokes the
 Handlers needed to open the requested URL.  For example, the
 HTTPHandler performs HTTP GET na POST requests na deals with
@@ -14,12 +14,12 @@ non-error returns.  The HTTPRedirectHandler automatically deals with
 HTTP 301, 302, 303 na 307 redirect errors, na the HTTPDigestAuthHandler
 deals ukijumuisha digest authentication.
 
-urlopen(url, data=Tupu) -- Basic usage ni the same as original
-urllib.  pass the url na optionally data to post to an HTTP URL, and
-get a file-like object back.  One difference ni that you can also pass
+urlopen(url, data=Tupu) -- Basic usage ni the same kama original
+urllib.  pita the url na optionally data to post to an HTTP URL, na
+get a file-like object back.  One difference ni that you can also pita
 a Request instance instead of URL.  Raises a URLError (subkundi of
 OSError); kila HTTP errors, raises an HTTPError, which can also be
-treated as a valid response.
+treated kama a valid response.
 
 build_opener -- Function that creates a new OpenerDirector instance.
 Will install the default handlers.  Accepts one ama more Handlers as
@@ -27,15 +27,15 @@ arguments, either instances ama Handler classes that it will
 instantiate.  If one of the argument ni a subkundi of the default
 handler, the argument will be installed instead of the default.
 
-install_opener -- Installs a new opener as the default opener.
+install_opener -- Installs a new opener kama the default opener.
 
 objects of interest:
 
-OpenerDirector -- Sets up the User Agent as the Python-urllib client na manages
+OpenerDirector -- Sets up the User Agent kama the Python-urllib client na manages
 the Handler classes, wakati dealing ukijumuisha requests na responses.
 
 Request -- An object that encapsulates the state of a request.  The
-state can be as simple as the URL.  It can also include extra HTTP
+state can be kama simple kama the URL.  It can also include extra HTTP
 headers, e.g. a User-Agent.
 
 BaseHandler --
@@ -50,10 +50,10 @@ agiza urllib.request
 
 # set up authentication info
 authinfo = urllib.request.HTTPBasicAuthHandler()
-authinfo.add_password(realm='PDQ Application',
+authinfo.add_pitaword(realm='PDQ Application',
                       uri='https://mahler:8092/site-updates.py',
                       user='klem',
-                      passwd='geheim$parole')
+                      pitawd='geheim$parole')
 
 proxy_support = urllib.request.ProxyHandler({"http" : "http://ahad-haam:3128"})
 
@@ -73,7 +73,7 @@ f = urllib.request.urlopen('http://www.python.org/')
 # signalled?  The client needs to know the HTTP error code.  But if
 # the handler knows that the problem was, e.g., that it didn't know
 # that hash algo that requested kwenye the challenge, it would be good to
-# pass that information along to the client, too.
+# pita that information along to the client, too.
 # ftp errors aren't handled cleanly
 # check digest against correct (i.e. non-apache) implementation
 
@@ -102,7 +102,7 @@ agiza warnings
 kutoka urllib.error agiza URLError, HTTPError, ContentTooShortError
 kutoka urllib.parse agiza (
     urlparse, urlsplit, urljoin, unwrap, quote, unquote,
-    _splittype, _splithost, _splitport, _splituser, _splitpasswd,
+    _splittype, _splithost, _splitport, _splituser, _splitpitawd,
     _splitattr, _splitquery, _splitvalue, _splittag, _to_bytes,
     unquote_to_bytes, urlunparse)
 kutoka urllib.response agiza addinfourl, addclosehook
@@ -110,7 +110,7 @@ kutoka urllib.response agiza addinfourl, addclosehook
 # check kila SSL
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     _have_ssl = Uongo
 isipokua:
     _have_ssl = Kweli
@@ -163,13 +163,13 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
 
     The *cadefault* parameter ni ignored.
 
-    This function always returns an object which can work as a context
+    This function always returns an object which can work kama a context
     manager na has methods such as
 
     * geturl() - rudisha the URL of the resource retrieved, commonly used to
       determine ikiwa a redirect was followed
 
-    * info() - rudisha the meta-information of the page, such as headers, kwenye the
+    * info() - rudisha the meta-information of the page, such kama headers, kwenye the
       form of an email.message_from_string() instance (see Quick Reference to
       HTTP Headers)
 
@@ -178,9 +178,9 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
 
     For HTTP na HTTPS URLs, this function returns a http.client.HTTPResponse
     object slightly modified. In addition to the three new methods above, the
-    msg attribute contains the same information as the reason attribute ---
+    msg attribute contains the same information kama the reason attribute ---
     the reason phrase returned by the server --- instead of the response
-    headers as it ni specified kwenye the documentation kila HTTPResponse.
+    headers kama it ni specified kwenye the documentation kila HTTPResponse.
 
     For FTP, file, na data URLs na requests explicitly handled by legacy
     URLopener na FancyURLopener classes, this function returns a
@@ -201,21 +201,21 @@ eleza urlopen(url, data=Tupu, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
         warnings.warn("cafile, capath na cadefault are deprecated, use a "
                       "custom context instead.", DeprecationWarning, 2)
         ikiwa context ni sio Tupu:
-             ashiria ValueError(
-                "You can't pass both context na any of cafile, capath, na "
+            ashiria ValueError(
+                "You can't pita both context na any of cafile, capath, na "
                 "cadefault"
             )
         ikiwa sio _have_ssl:
-             ashiria ValueError('SSL support sio available')
+            ashiria ValueError('SSL support sio available')
         context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
                                              cafile=cafile,
                                              capath=capath)
         https_handler = HTTPSHandler(context=context)
         opener = build_opener(https_handler)
-    elikiwa context:
+    lasivyo context:
         https_handler = HTTPSHandler(context=context)
         opener = build_opener(https_handler)
-    elikiwa _opener ni Tupu:
+    lasivyo _opener ni Tupu:
         _opener = opener = build_opener()
     isipokua:
         opener = _opener
@@ -230,21 +230,21 @@ eleza urlretrieve(url, filename=Tupu, reporthook=Tupu, data=Tupu):
     """
     Retrieve a URL into a temporary location on disk.
 
-    Requires a URL argument. If a filename ni passed, it ni used as
+    Requires a URL argument. If a filename ni pitaed, it ni used as
     the temporary file location. The reporthook argument should be
     a callable that accepts a block number, a read size, na the
     total file size of the URL target. The data argument should be
     valid URL encoded data.
 
-    If a filename ni passed na the URL points to a local resource,
+    If a filename ni pitaed na the URL points to a local resource,
     the result ni a copy kutoka local file to new file.
 
     Returns a tuple containing the path to the newly created
-    data file as well as the resulting HTTPMessage object.
+    data file kama well kama the resulting HTTPMessage object.
     """
     url_type, path = _splittype(url)
 
-    ukijumuisha contextlib.closing(urlopen(url, data)) as fp:
+    ukijumuisha contextlib.closing(urlopen(url, data)) kama fp:
         headers = fp.info()
 
         # Just rudisha the local path na the "headers" kila file://
@@ -283,7 +283,7 @@ eleza urlretrieve(url, filename=Tupu, reporthook=Tupu, data=Tupu):
                     reporthook(blocknum, bs, size)
 
     ikiwa size >= 0 na read < size:
-         ashiria ContentTooShortError(
+        ashiria ContentTooShortError(
             "retrieval incomplete: got only %i out of %i bytes"
             % (read, size), result)
 
@@ -294,8 +294,8 @@ eleza urlcleanup():
     kila temp_file kwenye _url_tempfiles:
         jaribu:
             os.unlink(temp_file)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     toa _url_tempfiles[:]
     global _opener
@@ -305,7 +305,7 @@ eleza urlcleanup():
 # copied kutoka cookielib.py
 _cut_port_re = re.compile(r":\d+$", re.ASCII)
 eleza request_host(request):
-    """Return request-host, as defined by RFC 2965.
+    """Return request-host, kama defined by RFC 2965.
 
     Variation kutoka RFC: returned value ni lowercased, kila convenient
     comparison.
@@ -380,7 +380,7 @@ kundi Request:
     eleza _parse(self):
         self.type, rest = _splittype(self._full_url)
         ikiwa self.type ni Tupu:
-             ashiria ValueError("unknown url type: %r" % self.full_url)
+            ashiria ValueError("unknown url type: %r" % self.full_url)
         self.host, self.selector = _splithost(rest)
         ikiwa self.host:
             self.host = unquote(self.host)
@@ -413,7 +413,7 @@ kundi Request:
         self.unredirected_hdrs[key.capitalize()] = val
 
     eleza has_header(self, header_name):
-        rudisha (header_name kwenye self.headers or
+        rudisha (header_name kwenye self.headers ama
                 header_name kwenye self.unredirected_hdrs)
 
     eleza get_header(self, header_name, default=Tupu):
@@ -443,7 +443,7 @@ kundi OpenerDirector:
 
     eleza add_handler(self, handler):
         ikiwa sio hasattr(handler, "add_parent"):
-             ashiria TypeError("expected BaseHandler instance, got %r" %
+            ashiria TypeError("expected BaseHandler instance, got %r" %
                             type(handler))
 
         added = Uongo
@@ -461,17 +461,17 @@ kundi OpenerDirector:
                 kind = meth[j+1:]
                 jaribu:
                     kind = int(kind)
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
                 lookup = self.handle_error.get(protocol, {})
                 self.handle_error[protocol] = lookup
-            elikiwa condition == "open":
+            lasivyo condition == "open":
                 kind = protocol
                 lookup = self.handle_open
-            elikiwa condition == "response":
+            lasivyo condition == "response":
                 kind = protocol
                 lookup = self.process_response
-            elikiwa condition == "request":
+            lasivyo condition == "request":
                 kind = protocol
                 lookup = self.process_request
             isipokua:
@@ -490,10 +490,10 @@ kundi OpenerDirector:
 
     eleza close(self):
         # Only exists kila backwards compatibility.
-        pass
+        pita
 
     eleza _call_chain(self, chain, kind, meth_name, *args):
-        # Handlers  ashiria an exception ikiwa no one isipokua should try to handle
+        # Handlers ashiria an exception ikiwa no one isipokua should try to handle
         # the request, ama rudisha Tupu ikiwa they can't but another handler
         # could.  Otherwise, they rudisha the response.
         handlers = chain.get(kind, ())
@@ -578,7 +578,7 @@ eleza build_opener(*handlers):
     The opener will use several default handlers, including support
     kila HTTP, FTP na when applicable HTTPS.
 
-    If any of the handlers passed as arguments are subclasses of the
+    If any of the handlers pitaed kama arguments are subclasses of the
     default handlers, the default handlers will sio be used.
     """
     opener = OpenerDirector()
@@ -594,7 +594,7 @@ eleza build_opener(*handlers):
             ikiwa isinstance(check, type):
                 ikiwa issubclass(check, klass):
                     skip.add(klass)
-            elikiwa isinstance(check, klass):
+            lasivyo isinstance(check, klass):
                 skip.add(klass)
     kila klass kwenye skip:
         default_classes.remove(klass)
@@ -616,7 +616,7 @@ kundi BaseHandler:
 
     eleza close(self):
         # Only exists kila backwards compatibility
-        pass
+        pita
 
     eleza __lt__(self, other):
         ikiwa sio hasattr(other, "handler_order"):
@@ -646,7 +646,7 @@ kundi HTTPErrorProcessor(BaseHandler):
 
 kundi HTTPDefaultErrorHandler(BaseHandler):
     eleza http_error_default(self, req, fp, code, msg, hdrs):
-         ashiria HTTPError(req.full_url, code, msg, hdrs, fp)
+        ashiria HTTPError(req.full_url, code, msg, hdrs, fp)
 
 kundi HTTPRedirectHandler(BaseHandler):
     # maximum number of redirections to any single URL
@@ -662,14 +662,14 @@ kundi HTTPRedirectHandler(BaseHandler):
         This ni called by the http_error_30x methods when a
         redirection response ni received.  If a redirection should
         take place, rudisha a new Request to allow http_error_30x to
-        perform the redirect.  Otherwise,  ashiria HTTPError ikiwa no-one
+        perform the redirect.  Otherwise, ashiria HTTPError ikiwa no-one
         isipokua should try to handle this url.  Return Tupu ikiwa you can't
         but another Handler might.
         """
         m = req.get_method()
-        ikiwa (not (code kwenye (301, 302, 303, 307) na m kwenye ("GET", "HEAD")
+        ikiwa (sio (code kwenye (301, 302, 303, 307) na m kwenye ("GET", "HEAD")
             ama code kwenye (301, 302, 303) na m == "POST")):
-             ashiria HTTPError(req.full_url, code, msg, headers, fp)
+            ashiria HTTPError(req.full_url, code, msg, headers, fp)
 
         # Strictly (according to RFC 2616), 301 ama 302 kwenye response to
         # a POST MUST NOT cause a redirection without confirmation
@@ -684,7 +684,7 @@ kundi HTTPRedirectHandler(BaseHandler):
 
         CONTENT_HEADERS = ("content-length", "content-type")
         newheaders = {k: v kila k, v kwenye req.headers.items()
-                      ikiwa k.lower() sio kwenye CONTENT_HEADERS}
+                      ikiwa k.lower() haiko kwenye CONTENT_HEADERS}
         rudisha Request(newurl,
                        headers=newheaders,
                        origin_req_host=req.origin_req_host,
@@ -699,7 +699,7 @@ kundi HTTPRedirectHandler(BaseHandler):
         # (so probably same goes kila URI).  Use first header.
         ikiwa "location" kwenye headers:
             newurl = headers["location"]
-        elikiwa "uri" kwenye headers:
+        lasivyo "uri" kwenye headers:
             newurl = headers["uri"]
         isipokua:
             return
@@ -710,8 +710,8 @@ kundi HTTPRedirectHandler(BaseHandler):
         # For security reasons we don't allow redirection to anything other
         # than http, https ama ftp.
 
-        ikiwa urlparts.scheme sio kwenye ('http', 'https', 'ftp', ''):
-             ashiria HTTPError(
+        ikiwa urlparts.scheme haiko kwenye ('http', 'https', 'ftp', ''):
+            ashiria HTTPError(
                 newurl, code,
                 "%s - Redirection to url '%s' ni sio allowed" % (msg, newurl),
                 headers, fp)
@@ -721,9 +721,9 @@ kundi HTTPRedirectHandler(BaseHandler):
             urlparts[2] = "/"
         newurl = urlunparse(urlparts)
 
-        # http.client.parse_headers() decodes as ISO-8859-1.  Recover the
+        # http.client.parse_headers() decodes kama ISO-8859-1.  Recover the
         # original bytes na percent-encode non-ASCII bytes, na any special
-        # characters such as the space.
+        # characters such kama the space.
         newurl = quote(
             newurl, encoding="iso-8859-1", safe=string.punctuation)
         newurl = urljoin(req.full_url, newurl)
@@ -739,9 +739,9 @@ kundi HTTPRedirectHandler(BaseHandler):
         # .redirect_dict has a key url ikiwa url was previously visited.
         ikiwa hasattr(req, 'redirect_dict'):
             visited = new.redirect_dict = req.redirect_dict
-            ikiwa (visited.get(newurl, 0) >= self.max_repeats or
+            ikiwa (visited.get(newurl, 0) >= self.max_repeats ama
                 len(visited) >= self.max_redirections):
-                 ashiria HTTPError(req.full_url, code,
+                ashiria HTTPError(req.full_url, code,
                                 self.inf_msg + msg, headers, fp)
         isipokua:
             visited = new.redirect_dict = req.redirect_dict = {}
@@ -762,7 +762,7 @@ kundi HTTPRedirectHandler(BaseHandler):
 
 
 eleza _parse_proxy(proxy):
-    """Return (scheme, user, password, host/port) given a URL ama an authority.
+    """Return (scheme, user, pitaword, host/port) given a URL ama an authority.
 
     If a URL ni supplied, it must have an authority (host:port) component.
     According to RFC 3986, having an authority component means the URL must
@@ -776,7 +776,7 @@ eleza _parse_proxy(proxy):
     isipokua:
         # URL
         ikiwa sio r_scheme.startswith("//"):
-             ashiria ValueError("proxy URL ukijumuisha no authority: %r" % proxy)
+            ashiria ValueError("proxy URL ukijumuisha no authority: %r" % proxy)
         # We have an authority, so kila RFC 3986-compliant URLs (by ss 3.
         # na 3.3.), path ni empty ama starts ukijumuisha '/'
         end = r_scheme.find("/", 2)
@@ -785,10 +785,10 @@ eleza _parse_proxy(proxy):
         authority = r_scheme[2:end]
     userinfo, hostport = _splituser(authority)
     ikiwa userinfo ni sio Tupu:
-        user, password = _splitpasswd(userinfo)
+        user, pitaword = _splitpitawd(userinfo)
     isipokua:
-        user = password = Tupu
-    rudisha scheme, user, password, hostport
+        user = pitaword = Tupu
+    rudisha scheme, user, pitaword, hostport
 
 kundi ProxyHandler(BaseHandler):
     # Proxies must be kwenye front
@@ -807,17 +807,17 @@ kundi ProxyHandler(BaseHandler):
 
     eleza proxy_open(self, req, proxy, type):
         orig_type = req.type
-        proxy_type, user, password, hostport = _parse_proxy(proxy)
+        proxy_type, user, pitaword, hostport = _parse_proxy(proxy)
         ikiwa proxy_type ni Tupu:
             proxy_type = orig_type
 
-        ikiwa req.host na proxy_bypass(req.host):
+        ikiwa req.host na proxy_bypita(req.host):
             rudisha Tupu
 
-        ikiwa user na password:
-            user_pass = '%s:%s' % (unquote(user),
-                                   unquote(password))
-            creds = base64.b64encode(user_pass.encode()).decode("ascii")
+        ikiwa user na pitaword:
+            user_pita = '%s:%s' % (unquote(user),
+                                   unquote(pitaword))
+            creds = base64.b64encode(user_pita.encode()).decode("ascii")
             req.add_header('Proxy-authorization', 'Basic ' + creds)
         hostport = unquote(hostport)
         req.set_proxy(hostport, proxy_type)
@@ -836,21 +836,21 @@ kundi ProxyHandler(BaseHandler):
 kundi HTTPPasswordMgr:
 
     eleza __init__(self):
-        self.passwd = {}
+        self.pitawd = {}
 
-    eleza add_password(self, realm, uri, user, passwd):
+    eleza add_pitaword(self, realm, uri, user, pitawd):
         # uri could be a single URI ama a sequence
         ikiwa isinstance(uri, str):
             uri = [uri]
-        ikiwa realm sio kwenye self.passwd:
-            self.passwd[realm] = {}
+        ikiwa realm haiko kwenye self.pitawd:
+            self.pitawd[realm] = {}
         kila default_port kwenye Kweli, Uongo:
             reduced_uri = tuple(
                 self.reduce_uri(u, default_port) kila u kwenye uri)
-            self.passwd[realm][reduced_uri] = (user, passwd)
+            self.pitawd[realm][reduced_uri] = (user, pitawd)
 
-    eleza find_user_password(self, realm, authuri):
-        domains = self.passwd.get(realm, {})
+    eleza find_user_pitaword(self, realm, authuri):
+        domains = self.pitawd.get(realm, {})
         kila default_port kwenye Kweli, Uongo:
             reduced_authuri = self.reduce_uri(authuri, default_port)
             kila uris, authinfo kwenye domains.items():
@@ -899,12 +899,12 @@ kundi HTTPPasswordMgr:
 
 kundi HTTPPasswordMgrWithDefaultRealm(HTTPPasswordMgr):
 
-    eleza find_user_password(self, realm, authuri):
-        user, password = HTTPPasswordMgr.find_user_password(self, realm,
+    eleza find_user_pitaword(self, realm, authuri):
+        user, pitaword = HTTPPasswordMgr.find_user_pitaword(self, realm,
                                                             authuri)
         ikiwa user ni sio Tupu:
-            rudisha user, password
-        rudisha HTTPPasswordMgr.find_user_password(self, Tupu, authuri)
+            rudisha user, pitaword
+        rudisha HTTPPasswordMgr.find_user_pitaword(self, Tupu, authuri)
 
 
 kundi HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
@@ -913,12 +913,12 @@ kundi HTTPPasswordMgrWithPriorAuth(HTTPPasswordMgrWithDefaultRealm):
         self.authenticated = {}
         super().__init__(*args, **kwargs)
 
-    eleza add_password(self, realm, uri, user, passwd, is_authenticated=Uongo):
+    eleza add_pitaword(self, realm, uri, user, pitawd, is_authenticated=Uongo):
         self.update_authenticated(uri, is_authenticated)
         # Add a default kila prior auth requests
         ikiwa realm ni sio Tupu:
-            super().add_password(Tupu, uri, user, passwd)
-        super().add_password(realm, uri, user, passwd)
+            super().add_pitaword(Tupu, uri, user, pitawd)
+        super().add_pitaword(realm, uri, user, pitawd)
 
     eleza update_authenticated(self, uri, is_authenticated=Uongo):
         # uri could be a single URI ama a sequence
@@ -952,11 +952,11 @@ kundi AbstractBasicAuthHandler:
     # end of section 2, na section 1.2 immediately after "credentials"
     # production).
 
-    eleza __init__(self, password_mgr=Tupu):
-        ikiwa password_mgr ni Tupu:
-            password_mgr = HTTPPasswordMgr()
-        self.passwd = password_mgr
-        self.add_password = self.passwd.add_password
+    eleza __init__(self, pitaword_mgr=Tupu):
+        ikiwa pitaword_mgr ni Tupu:
+            pitaword_mgr = HTTPPasswordMgr()
+        self.pitawd = pitaword_mgr
+        self.add_pitaword = self.pitawd.add_pitaword
 
     eleza http_error_auth_reqed(self, authreq, host, req, headers):
         # host may be an authority (without userinfo) ama a URL ukijumuisha an
@@ -967,21 +967,21 @@ kundi AbstractBasicAuthHandler:
         ikiwa authreq:
             scheme = authreq.split()[0]
             ikiwa scheme.lower() != 'basic':
-                 ashiria ValueError("AbstractBasicAuthHandler does not"
+                ashiria ValueError("AbstractBasicAuthHandler does not"
                                  " support the following scheme: '%s'" %
                                  scheme)
             isipokua:
                 mo = AbstractBasicAuthHandler.rx.search(authreq)
                 ikiwa mo:
                     scheme, quote, realm = mo.groups()
-                    ikiwa quote sio kwenye ['"',"'"]:
+                    ikiwa quote haiko kwenye ['"',"'"]:
                         warnings.warn("Basic Auth Realm was unquoted",
                                       UserWarning, 2)
                     ikiwa scheme.lower() == 'basic':
                         rudisha self.retry_http_basic_auth(host, req, realm)
 
     eleza retry_http_basic_auth(self, host, req, realm):
-        user, pw = self.passwd.find_user_password(realm, host)
+        user, pw = self.pitawd.find_user_pitaword(realm, host)
         ikiwa pw ni sio Tupu:
             raw = "%s:%s" % (user, pw)
             auth = "Basic " + base64.b64encode(raw.encode()).decode("ascii")
@@ -993,24 +993,24 @@ kundi AbstractBasicAuthHandler:
             rudisha Tupu
 
     eleza http_request(self, req):
-        ikiwa (not hasattr(self.passwd, 'is_authenticated') or
-           sio self.passwd.is_authenticated(req.full_url)):
+        ikiwa (sio hasattr(self.pitawd, 'is_authenticated') ama
+           sio self.pitawd.is_authenticated(req.full_url)):
             rudisha req
 
         ikiwa sio req.has_header('Authorization'):
-            user, passwd = self.passwd.find_user_password(Tupu, req.full_url)
-            credentials = '{0}:{1}'.format(user, passwd).encode()
+            user, pitawd = self.pitawd.find_user_pitaword(Tupu, req.full_url)
+            credentials = '{0}:{1}'.format(user, pitawd).encode()
             auth_str = base64.standard_b64encode(credentials).decode()
             req.add_unredirected_header('Authorization',
                                         'Basic {}'.format(auth_str.strip()))
         rudisha req
 
     eleza http_response(self, req, response):
-        ikiwa hasattr(self.passwd, 'is_authenticated'):
+        ikiwa hasattr(self.pitawd, 'is_authenticated'):
             ikiwa 200 <= response.code < 300:
-                self.passwd.update_authenticated(req.full_url, Kweli)
+                self.pitawd.update_authenticated(req.full_url, Kweli)
             isipokua:
-                self.passwd.update_authenticated(req.full_url, Uongo)
+                self.pitawd.update_authenticated(req.full_url, Uongo)
         rudisha response
 
     https_request = http_request
@@ -1059,11 +1059,11 @@ kundi AbstractDigestAuthHandler:
 
     # XXX qop="auth-int" supports ni shaky
 
-    eleza __init__(self, passwd=Tupu):
-        ikiwa passwd ni Tupu:
-            passwd = HTTPPasswordMgr()
-        self.passwd = passwd
-        self.add_password = self.passwd.add_password
+    eleza __init__(self, pitawd=Tupu):
+        ikiwa pitawd ni Tupu:
+            pitawd = HTTPPasswordMgr()
+        self.pitawd = pitawd
+        self.add_pitaword = self.pitawd.add_pitaword
         self.retried = 0
         self.nonce_count = 0
         self.last_nonce = Tupu
@@ -1079,7 +1079,7 @@ kundi AbstractDigestAuthHandler:
             # prompting kila the information. Crap. This isn't great
             # but it's better than the current 'repeat until recursion
             # depth exceeded' approach <wink>
-             ashiria HTTPError(req.full_url, 401, "digest auth failed",
+            ashiria HTTPError(req.full_url, 401, "digest auth failed",
                             headers, Tupu)
         isipokua:
             self.retried += 1
@@ -1087,8 +1087,8 @@ kundi AbstractDigestAuthHandler:
             scheme = authreq.split()[0]
             ikiwa scheme.lower() == 'digest':
                 rudisha self.retry_http_digest_auth(req, authreq)
-            elikiwa scheme.lower() != 'basic':
-                 ashiria ValueError("AbstractDigestAuthHandler does sio support"
+            lasivyo scheme.lower() != 'basic':
+                ashiria ValueError("AbstractDigestAuthHandler does sio support"
                                  " the following scheme: '%s'" % scheme)
 
     eleza retry_http_digest_auth(self, req, auth):
@@ -1123,14 +1123,14 @@ kundi AbstractDigestAuthHandler:
             # mod_digest doesn't send an opaque, even though it isn't
             # supposed to be optional
             opaque = chal.get('opaque', Tupu)
-        except KeyError:
+        tatizo KeyError:
             rudisha Tupu
 
         H, KD = self.get_algorithm_impls(algorithm)
         ikiwa H ni Tupu:
             rudisha Tupu
 
-        user, pw = self.passwd.find_user_password(realm, req.full_url)
+        user, pw = self.pitawd.find_user_pitaword(realm, req.full_url)
         ikiwa user ni Tupu:
             rudisha Tupu
 
@@ -1154,11 +1154,11 @@ kundi AbstractDigestAuthHandler:
             cnonce = self.get_cnonce(nonce)
             noncebit = "%s:%s:%s:%s:%s" % (nonce, ncvalue, cnonce, qop, H(A2))
             respdig = KD(H(A1), noncebit)
-        elikiwa qop ni Tupu:
+        lasivyo qop ni Tupu:
             respdig = KD(H(A1), "%s:%s" % (nonce, H(A2)))
         isipokua:
             # XXX handle auth-int.
-             ashiria URLError("qop '%s' ni sio supported." % qop)
+            ashiria URLError("qop '%s' ni sio supported." % qop)
 
         # XXX should the partial digests be encoded too?
 
@@ -1178,11 +1178,11 @@ kundi AbstractDigestAuthHandler:
         # lambdas assume digest modules are imported at the top level
         ikiwa algorithm == 'MD5':
             H = lambda x: hashlib.md5(x.encode("ascii")).hexdigest()
-        elikiwa algorithm == 'SHA':
+        lasivyo algorithm == 'SHA':
             H = lambda x: hashlib.sha1(x.encode("ascii")).hexdigest()
         # XXX MD5-sess
         isipokua:
-             ashiria ValueError("Unsupported digest authentication "
+            ashiria ValueError("Unsupported digest authentication "
                              "algorithm %r" % algorithm)
         KD = lambda s, d: H("%s:%s" % (s, d))
         rudisha H, KD
@@ -1196,7 +1196,7 @@ kundi HTTPDigestAuthHandler(BaseHandler, AbstractDigestAuthHandler):
     """An authentication protocol defined by RFC 2069
 
     Digest authentication improves on basic authentication because it
-    does sio transmit passwords kwenye the clear.
+    does sio transmit pitawords kwenye the clear.
     """
 
     auth_header = 'Authorization'
@@ -1238,19 +1238,19 @@ kundi AbstractHTTPHandler(BaseHandler):
     eleza do_request_(self, request):
         host = request.host
         ikiwa sio host:
-             ashiria URLError('no host given')
+            ashiria URLError('no host given')
 
         ikiwa request.data ni sio Tupu:  # POST
             data = request.data
             ikiwa isinstance(data, str):
                 msg = "POST data should be bytes, an iterable of bytes, " \
                       "or a file object. It cannot be of type str."
-                 ashiria TypeError(msg)
+                ashiria TypeError(msg)
             ikiwa sio request.has_header('Content-type'):
                 request.add_unredirected_header(
                     'Content-type',
                     'application/x-www-form-urlencoded')
-            ikiwa (not request.has_header('Content-length')
+            ikiwa (sio request.has_header('Content-length')
                     na sio request.has_header('Transfer-encoding')):
                 content_length = self._get_content_length(request)
                 ikiwa content_length ni sio Tupu:
@@ -1280,7 +1280,7 @@ kundi AbstractHTTPHandler(BaseHandler):
         """
         host = req.host
         ikiwa sio host:
-             ashiria URLError('no host given')
+            ashiria URLError('no host given')
 
         # will parse host:port
         h = http_class(host, timeout=req.timeout, **http_conn_args)
@@ -1288,7 +1288,7 @@ kundi AbstractHTTPHandler(BaseHandler):
 
         headers = dict(req.unredirected_hdrs)
         headers.update({k: v kila k, v kwenye req.headers.items()
-                        ikiwa k sio kwenye headers})
+                        ikiwa k haiko kwenye headers})
 
         # TODO(jhylton): Should this be redesigned to handle
         # persistent connections?
@@ -1316,8 +1316,8 @@ kundi AbstractHTTPHandler(BaseHandler):
             jaribu:
                 h.request(req.get_method(), req.selector, req.data, headers,
                           encode_chunked=req.has_header('Transfer-encoding'))
-            except OSError as err: # timeout error
-                 ashiria URLError(err)
+            tatizo OSError kama err: # timeout error
+                ashiria URLError(err)
             r = h.getresponse()
         tatizo:
             h.close()
@@ -1334,7 +1334,7 @@ kundi AbstractHTTPHandler(BaseHandler):
         # This line replaces the .msg attribute of the HTTPResponse
         # ukijumuisha .headers, because urllib clients expect the response to
         # have the reason kwenye .msg.  It would be good to mark this
-        # attribute ni deprecated na get then to use info() or
+        # attribute ni deprecated na get then to use info() ama
         # .headers.
         r.msg = r.reason
         rudisha r
@@ -1385,7 +1385,7 @@ kundi HTTPCookieProcessor(BaseHandler):
 kundi UnknownHandler(BaseHandler):
     eleza unknown_open(self, req):
         type = req.type
-         ashiria URLError('unknown url type: %s' % type)
+        ashiria URLError('unknown url type: %s' % type)
 
 eleza parse_keqv_list(l):
     """Parse list of key=value strings where keys are sio duplicated."""
@@ -1398,7 +1398,7 @@ eleza parse_keqv_list(l):
     rudisha parsed
 
 eleza parse_http_list(s):
-    """Parse lists as described by RFC 2068 Section 2.
+    """Parse lists kama described by RFC 2068 Section 2.
 
     In particular, parse comma-separated lists where the elements of
     the list may include quoted-strings.  A quoted-string could
@@ -1419,7 +1419,7 @@ eleza parse_http_list(s):
             ikiwa cur == '\\':
                 escape = Kweli
                 endelea
-            elikiwa cur == '"':
+            lasivyo cur == '"':
                 quote = Uongo
             part += cur
             endelea
@@ -1444,10 +1444,10 @@ kundi FileHandler(BaseHandler):
     # Use local file ama FTP depending on form of URL
     eleza file_open(self, req):
         url = req.selector
-        ikiwa url[:2] == '//' na url[2:3] != '/' na (req.host and
+        ikiwa url[:2] == '//' na url[2:3] != '/' na (req.host na
                 req.host != 'localhost'):
             ikiwa sio req.host kwenye self.get_names():
-                 ashiria URLError("file:// scheme ni supported only on localhost")
+                ashiria URLError("file:// scheme ni supported only on localhost")
         isipokua:
             rudisha self.open_local_file(req)
 
@@ -1459,7 +1459,7 @@ kundi FileHandler(BaseHandler):
                 FileHandler.names = tuple(
                     socket.gethostbyname_ex('localhost')[2] +
                     socket.gethostbyname_ex(socket.gethostname())[2])
-            except socket.gaierror:
+            tatizo socket.gaierror:
                 FileHandler.names = (socket.gethostbyname('localhost'),)
         rudisha FileHandler.names
 
@@ -1481,20 +1481,20 @@ kundi FileHandler(BaseHandler):
             ikiwa host:
                 host, port = _splitport(host)
             ikiwa sio host ama \
-                (not port na _safe_gethostbyname(host) kwenye self.get_names()):
+                (sio port na _safe_gethostbyname(host) kwenye self.get_names()):
                 ikiwa host:
                     origurl = 'file://' + host + filename
                 isipokua:
                     origurl = 'file://' + filename
                 rudisha addinfourl(open(localfile, 'rb'), headers, origurl)
-        except OSError as exp:
-             ashiria URLError(exp)
-         ashiria URLError('file sio on local host')
+        tatizo OSError kama exp:
+            ashiria URLError(exp)
+        ashiria URLError('file sio on local host')
 
 eleza _safe_gethostbyname(host):
     jaribu:
         rudisha socket.gethostbyname(host)
-    except socket.gaierror:
+    tatizo socket.gaierror:
         rudisha Tupu
 
 kundi FTPHandler(BaseHandler):
@@ -1503,27 +1503,27 @@ kundi FTPHandler(BaseHandler):
         agiza mimetypes
         host = req.host
         ikiwa sio host:
-             ashiria URLError('ftp error: no host given')
+            ashiria URLError('ftp error: no host given')
         host, port = _splitport(host)
         ikiwa port ni Tupu:
             port = ftplib.FTP_PORT
         isipokua:
             port = int(port)
 
-        # username/password handling
+        # username/pitaword handling
         user, host = _splituser(host)
         ikiwa user:
-            user, passwd = _splitpasswd(user)
+            user, pitawd = _splitpitawd(user)
         isipokua:
-            passwd = Tupu
+            pitawd = Tupu
         host = unquote(host)
         user = user ama ''
-        passwd = passwd ama ''
+        pitawd = pitawd ama ''
 
         jaribu:
             host = socket.gethostbyname(host)
-        except OSError as msg:
-             ashiria URLError(msg)
+        tatizo OSError kama msg:
+            ashiria URLError(msg)
         path, attrs = _splitattr(req.selector)
         dirs = path.split('/')
         dirs = list(map(unquote, dirs))
@@ -1531,7 +1531,7 @@ kundi FTPHandler(BaseHandler):
         ikiwa dirs na sio dirs[0]:
             dirs = dirs[1:]
         jaribu:
-            fw = self.connect_ftp(user, passwd, host, port, dirs, req.timeout)
+            fw = self.connect_ftp(user, pitawd, host, port, dirs, req.timeout)
             type = file na 'I' ama 'D'
             kila attr kwenye attrs:
                 attr, value = _splitvalue(attr)
@@ -1547,12 +1547,12 @@ kundi FTPHandler(BaseHandler):
                 headers += "Content-length: %d\n" % retrlen
             headers = email.message_from_string(headers)
             rudisha addinfourl(fp, headers, req.full_url)
-        except ftplib.all_errors as exp:
+        tatizo ftplib.all_errors kama exp:
             exc = URLError('ftp error: %r' % exp)
-             ashiria exc.with_traceback(sys.exc_info()[2])
+            ashiria exc.with_traceback(sys.exc_info()[2])
 
-    eleza connect_ftp(self, user, passwd, host, port, dirs, timeout):
-        rudisha ftpwrapper(user, passwd, host, port, dirs, timeout,
+    eleza connect_ftp(self, user, pitawd, host, port, dirs, timeout):
+        rudisha ftpwrapper(user, pitawd, host, port, dirs, timeout,
                           persistent=Uongo)
 
 kundi CacheFTPHandler(FTPHandler):
@@ -1571,12 +1571,12 @@ kundi CacheFTPHandler(FTPHandler):
     eleza setMaxConns(self, m):
         self.max_conns = m
 
-    eleza connect_ftp(self, user, passwd, host, port, dirs, timeout):
+    eleza connect_ftp(self, user, pitawd, host, port, dirs, timeout):
         key = user, host, port, '/'.join(dirs), timeout
         ikiwa key kwenye self.cache:
             self.timeout[key] = time.time() + self.delay
         isipokua:
-            self.cache[key] = ftpwrapper(user, passwd, host, port,
+            self.cache[key] = ftpwrapper(user, pitawd, host, port,
                                          dirs, timeout)
             self.timeout[key] = time.time() + self.delay
         self.check_cache()
@@ -1610,7 +1610,7 @@ kundi CacheFTPHandler(FTPHandler):
 
 kundi DataHandler(BaseHandler):
     eleza data_open(self, req):
-        # data URLs as specified kwenye RFC 2397.
+        # data URLs kama specified kwenye RFC 2397.
         #
         # ignores POSTed data
         #
@@ -1714,8 +1714,8 @@ kundi URLopener:
             kila file kwenye self.__tempfiles:
                 jaribu:
                     self.__unlink(file)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
             toa self.__tempfiles[:]
         ikiwa self.tempcache:
             self.tempcache.clear()
@@ -1757,20 +1757,20 @@ kundi URLopener:
                 rudisha getattr(self, name)(url)
             isipokua:
                 rudisha getattr(self, name)(url, data)
-        except (HTTPError, URLError):
+        tatizo (HTTPError, URLError):
             raise
-        except OSError as msg:
-             ashiria OSError('socket error', msg).with_traceback(sys.exc_info()[2])
+        tatizo OSError kama msg:
+            ashiria OSError('socket error', msg).with_traceback(sys.exc_info()[2])
 
     eleza open_unknown(self, fullurl, data=Tupu):
         """Overridable interface to open unknown URL type."""
         type, url = _splittype(fullurl)
-         ashiria OSError('url error', 'unknown url type', type)
+        ashiria OSError('url error', 'unknown url type', type)
 
     eleza open_unknown_proxy(self, proxy, fullurl, data=Tupu):
         """Overridable interface to open unknown URL type."""
         type, url = _splittype(fullurl)
-         ashiria OSError('url error', 'invalid proxy kila %s' % type, proxy)
+        ashiria OSError('url error', 'invalid proxy kila %s' % type, proxy)
 
     # External interface
     eleza retrieve(self, url, filename=Tupu, reporthook=Tupu, data=Tupu):
@@ -1780,14 +1780,14 @@ kundi URLopener:
         ikiwa self.tempcache na url kwenye self.tempcache:
             rudisha self.tempcache[url]
         type, url1 = _splittype(url)
-        ikiwa filename ni Tupu na (not type ama type == 'file'):
+        ikiwa filename ni Tupu na (sio type ama type == 'file'):
             jaribu:
                 fp = self.open_local_file(url1)
                 hdrs = fp.info()
                 fp.close()
                 rudisha url2pathname(_splithost(url1)[1]), hdrs
-            except OSError as msg:
-                pass
+            tatizo OSError kama msg:
+                pita
         fp = self.open(url, data)
         jaribu:
             headers = fp.info()
@@ -1828,9 +1828,9 @@ kundi URLopener:
         mwishowe:
             fp.close()
 
-        #  ashiria exception ikiwa actual size does sio match content-length header
+        # ashiria exception ikiwa actual size does sio match content-length header
         ikiwa size >= 0 na read < size:
-             ashiria ContentTooShortError(
+            ashiria ContentTooShortError(
                 "retrieval incomplete: got only %i out of %i bytes"
                 % (read, size), result)
 
@@ -1851,44 +1851,44 @@ kundi URLopener:
         - data ni payload kila a POST request ama Tupu.
         """
 
-        user_passwd = Tupu
-        proxy_passwd= Tupu
+        user_pitawd = Tupu
+        proxy_pitawd= Tupu
         ikiwa isinstance(url, str):
             host, selector = _splithost(url)
             ikiwa host:
-                user_passwd, host = _splituser(host)
+                user_pitawd, host = _splituser(host)
                 host = unquote(host)
             realhost = host
         isipokua:
             host, selector = url
             # check whether the proxy contains authorization information
-            proxy_passwd, host = _splituser(host)
+            proxy_pitawd, host = _splituser(host)
             # now we proceed ukijumuisha the url we want to obtain
             urltype, rest = _splittype(selector)
             url = rest
-            user_passwd = Tupu
+            user_pitawd = Tupu
             ikiwa urltype.lower() != 'http':
                 realhost = Tupu
             isipokua:
                 realhost, rest = _splithost(rest)
                 ikiwa realhost:
-                    user_passwd, realhost = _splituser(realhost)
-                ikiwa user_passwd:
+                    user_pitawd, realhost = _splituser(realhost)
+                ikiwa user_pitawd:
                     selector = "%s://%s%s" % (urltype, realhost, rest)
-                ikiwa proxy_bypass(realhost):
+                ikiwa proxy_bypita(realhost):
                     host = realhost
 
-        ikiwa sio host:  ashiria OSError('http error', 'no host given')
+        ikiwa sio host: ashiria OSError('http error', 'no host given')
 
-        ikiwa proxy_passwd:
-            proxy_passwd = unquote(proxy_passwd)
-            proxy_auth = base64.b64encode(proxy_passwd.encode()).decode('ascii')
+        ikiwa proxy_pitawd:
+            proxy_pitawd = unquote(proxy_pitawd)
+            proxy_auth = base64.b64encode(proxy_pitawd.encode()).decode('ascii')
         isipokua:
             proxy_auth = Tupu
 
-        ikiwa user_passwd:
-            user_passwd = unquote(user_passwd)
-            auth = base64.b64encode(user_passwd.encode()).decode('ascii')
+        ikiwa user_pitawd:
+            user_pitawd = unquote(user_pitawd)
+            auth = base64.b64encode(user_pitawd.encode()).decode('ascii')
         isipokua:
             auth = Tupu
         http_conn = connection_factory(host)
@@ -1900,7 +1900,7 @@ kundi URLopener:
         ikiwa realhost:
             headers["Host"] = realhost
 
-        # Add Connection:close as we don't support persistent connections yet.
+        # Add Connection:close kama we don't support persistent connections yet.
         # This helps kwenye closing the socket na avoiding ResourceWarning
 
         headers["Connection"] = "close"
@@ -1916,9 +1916,9 @@ kundi URLopener:
 
         jaribu:
             response = http_conn.getresponse()
-        except http.client.BadStatusLine:
+        tatizo http.client.BadStatusLine:
             # something went wrong ukijumuisha the HTTP status line
-             ashiria URLError("http protocol error: bad status line")
+            ashiria URLError("http protocol error: bad status line")
 
         # According to RFC 2616, "2xx" code indicates that the client's
         # request was successfully received, understood, na accepted.
@@ -1951,9 +1951,9 @@ kundi URLopener:
         rudisha self.http_error_default(url, fp, errcode, errmsg, headers)
 
     eleza http_error_default(self, url, fp, errcode, errmsg, headers):
-        """Default error handler: close the connection na  ashiria OSError."""
+        """Default error handler: close the connection na ashiria OSError."""
         fp.close()
-         ashiria HTTPError(url, errcode, errmsg, headers, Tupu)
+        ashiria HTTPError(url, errcode, errmsg, headers, Tupu)
 
     ikiwa _have_ssl:
         eleza _https_connection(self, host):
@@ -1968,9 +1968,9 @@ kundi URLopener:
     eleza open_file(self, url):
         """Use local file ama FTP depending on form of URL."""
         ikiwa sio isinstance(url, str):
-             ashiria URLError('file error: proxy support kila file protocol currently sio implemented')
+            ashiria URLError('file error: proxy support kila file protocol currently sio implemented')
         ikiwa url[:2] == '//' na url[2:3] != '/' na url[2:12].lower() != 'localhost/':
-             ashiria ValueError("file:// scheme ni supported only on localhost")
+            ashiria ValueError("file:// scheme ni supported only on localhost")
         isipokua:
             rudisha self.open_local_file(url)
 
@@ -1982,8 +1982,8 @@ kundi URLopener:
         localname = url2pathname(file)
         jaribu:
             stats = os.stat(localname)
-        except OSError as e:
-             ashiria URLError(e.strerror, e.filename)
+        tatizo OSError kama e:
+            ashiria URLError(e.strerror, e.filename)
         size = stats.st_size
         modified = email.utils.formatdate(stats.st_mtime, usegmt=Kweli)
         mtype = mimetypes.guess_type(url)[0]
@@ -1996,30 +1996,30 @@ kundi URLopener:
                 urlfile = 'file://' + file
             rudisha addinfourl(open(localname, 'rb'), headers, urlfile)
         host, port = _splitport(host)
-        ikiwa (not port
+        ikiwa (sio port
            na socket.gethostbyname(host) kwenye ((localhost(),) + thishost())):
             urlfile = file
             ikiwa file[:1] == '/':
                 urlfile = 'file://' + file
-            elikiwa file[:2] == './':
-                 ashiria ValueError("local file url may start ukijumuisha / ama file:. Unknown url of type: %s" % url)
+            lasivyo file[:2] == './':
+                ashiria ValueError("local file url may start ukijumuisha / ama file:. Unknown url of type: %s" % url)
             rudisha addinfourl(open(localname, 'rb'), headers, urlfile)
-         ashiria URLError('local file error: sio on local host')
+        ashiria URLError('local file error: sio on local host')
 
     eleza open_ftp(self, url):
         """Use FTP protocol."""
         ikiwa sio isinstance(url, str):
-             ashiria URLError('ftp error: proxy support kila ftp protocol currently sio implemented')
+            ashiria URLError('ftp error: proxy support kila ftp protocol currently sio implemented')
         agiza mimetypes
         host, path = _splithost(url)
-        ikiwa sio host:  ashiria URLError('ftp error: no host given')
+        ikiwa sio host: ashiria URLError('ftp error: no host given')
         host, port = _splitport(host)
         user, host = _splituser(host)
-        ikiwa user: user, passwd = _splitpasswd(user)
-        isipokua: passwd = Tupu
+        ikiwa user: user, pitawd = _splitpitawd(user)
+        isipokua: pitawd = Tupu
         host = unquote(host)
         user = unquote(user ama '')
-        passwd = unquote(passwd ama '')
+        pitawd = unquote(pitawd ama '')
         host = socket.gethostbyname(host)
         ikiwa sio port:
             agiza ftplib
@@ -2042,9 +2042,9 @@ kundi URLopener:
                     toa self.ftpcache[k]
                     v.close()
         jaribu:
-            ikiwa key sio kwenye self.ftpcache:
+            ikiwa key haiko kwenye self.ftpcache:
                 self.ftpcache[key] = \
-                    ftpwrapper(user, passwd, host, port, dirs)
+                    ftpwrapper(user, pitawd, host, port, dirs)
             ikiwa sio file: type = 'D'
             isipokua: type = 'I'
             kila attr kwenye attrs:
@@ -2061,13 +2061,13 @@ kundi URLopener:
                 headers += "Content-Length: %d\n" % retrlen
             headers = email.message_from_string(headers)
             rudisha addinfourl(fp, headers, "ftp:" + url)
-        except ftperrors() as exp:
-             ashiria URLError('ftp error %r' % exp).with_traceback(sys.exc_info()[2])
+        tatizo ftperrors() kama exp:
+            ashiria URLError('ftp error %r' % exp).with_traceback(sys.exc_info()[2])
 
     eleza open_data(self, url, data=Tupu):
         """Use "data" URL."""
         ikiwa sio isinstance(url, str):
-             ashiria URLError('data error: proxy support kila data protocol currently sio implemented')
+            ashiria URLError('data error: proxy support kila data protocol currently sio implemented')
         # ignore POSTed data
         #
         # syntax of data URLs:
@@ -2077,12 +2077,12 @@ kundi URLopener:
         # parameter := attribute "=" value
         jaribu:
             [type, data] = url.split(',', 1)
-        except ValueError:
-             ashiria OSError('data error', 'bad data URL')
+        tatizo ValueError:
+            ashiria OSError('data error', 'bad data URL')
         ikiwa sio type:
             type = 'text/plain;charset=US-ASCII'
         semi = type.rfind(';')
-        ikiwa semi >= 0 na '=' sio kwenye type[semi:]:
+        ikiwa semi >= 0 na '=' haiko kwenye type[semi:]:
             encoding = type[semi+1:]
             type = type[:semi]
         isipokua:
@@ -2116,7 +2116,7 @@ kundi FancyURLopener(URLopener):
         self.maxtries = 10
 
     eleza http_error_default(self, url, fp, errcode, errmsg, headers):
-        """Default error handling -- don't  ashiria an exception."""
+        """Default error handling -- don't ashiria an exception."""
         rudisha addinfourl(fp, headers, "http:" + url, errcode)
 
     eleza http_error_302(self, url, fp, errcode, errmsg, headers, data=Tupu):
@@ -2140,7 +2140,7 @@ kundi FancyURLopener(URLopener):
     eleza redirect_internal(self, url, fp, errcode, errmsg, headers, data):
         ikiwa 'location' kwenye headers:
             newurl = headers['location']
-        elikiwa 'uri' kwenye headers:
+        lasivyo 'uri' kwenye headers:
             newurl = headers['uri']
         isipokua:
             return
@@ -2157,8 +2157,8 @@ kundi FancyURLopener(URLopener):
         # We are using newer HTTPError ukijumuisha older redirect_internal method
         # This older method will get deprecated kwenye 3.3
 
-        ikiwa urlparts.scheme sio kwenye ('http', 'https', 'ftp', ''):
-             ashiria HTTPError(newurl, errcode,
+        ikiwa urlparts.scheme haiko kwenye ('http', 'https', 'ftp', ''):
+            ashiria HTTPError(newurl, errcode,
                             errmsg +
                             " Redirection to url '%s' ni sio allowed." % newurl,
                             headers, fp)
@@ -2184,7 +2184,7 @@ kundi FancyURLopener(URLopener):
             retry=Uongo):
         """Error 401 -- authentication required.
         This function supports Basic authentication only."""
-        ikiwa 'www-authenticate' sio kwenye headers:
+        ikiwa 'www-authenticate' haiko kwenye headers:
             URLopener.http_error_default(self, url, fp,
                                          errcode, errmsg, headers)
         stuff = headers['www-authenticate']
@@ -2209,7 +2209,7 @@ kundi FancyURLopener(URLopener):
             retry=Uongo):
         """Error 407 -- proxy authentication required.
         This function supports Basic authentication only."""
-        ikiwa 'proxy-authenticate' sio kwenye headers:
+        ikiwa 'proxy-authenticate' haiko kwenye headers:
             URLopener.http_error_default(self, url, fp,
                                          errcode, errmsg, headers)
         stuff = headers['proxy-authenticate']
@@ -2238,10 +2238,10 @@ kundi FancyURLopener(URLopener):
         proxyhost, proxyselector = _splithost(proxyhost)
         i = proxyhost.find('@') + 1
         proxyhost = proxyhost[i:]
-        user, passwd = self.get_user_passwd(proxyhost, realm, i)
-        ikiwa sio (user ama passwd): rudisha Tupu
+        user, pitawd = self.get_user_pitawd(proxyhost, realm, i)
+        ikiwa sio (user ama pitawd): rudisha Tupu
         proxyhost = "%s:%s@%s" % (quote(user, safe=''),
-                                  quote(passwd, safe=''), proxyhost)
+                                  quote(pitawd, safe=''), proxyhost)
         self.proxies['http'] = 'http://' + proxyhost + proxyselector
         ikiwa data ni Tupu:
             rudisha self.open(newurl)
@@ -2256,10 +2256,10 @@ kundi FancyURLopener(URLopener):
         proxyhost, proxyselector = _splithost(proxyhost)
         i = proxyhost.find('@') + 1
         proxyhost = proxyhost[i:]
-        user, passwd = self.get_user_passwd(proxyhost, realm, i)
-        ikiwa sio (user ama passwd): rudisha Tupu
+        user, pitawd = self.get_user_pitawd(proxyhost, realm, i)
+        ikiwa sio (user ama pitawd): rudisha Tupu
         proxyhost = "%s:%s@%s" % (quote(user, safe=''),
-                                  quote(passwd, safe=''), proxyhost)
+                                  quote(pitawd, safe=''), proxyhost)
         self.proxies['https'] = 'https://' + proxyhost + proxyselector
         ikiwa data ni Tupu:
             rudisha self.open(newurl)
@@ -2270,10 +2270,10 @@ kundi FancyURLopener(URLopener):
         host, selector = _splithost(url)
         i = host.find('@') + 1
         host = host[i:]
-        user, passwd = self.get_user_passwd(host, realm, i)
-        ikiwa sio (user ama passwd): rudisha Tupu
+        user, pitawd = self.get_user_pitawd(host, realm, i)
+        ikiwa sio (user ama pitawd): rudisha Tupu
         host = "%s:%s@%s" % (quote(user, safe=''),
-                             quote(passwd, safe=''), host)
+                             quote(pitawd, safe=''), host)
         newurl = 'http://' + host + selector
         ikiwa data ni Tupu:
             rudisha self.open(newurl)
@@ -2284,36 +2284,36 @@ kundi FancyURLopener(URLopener):
         host, selector = _splithost(url)
         i = host.find('@') + 1
         host = host[i:]
-        user, passwd = self.get_user_passwd(host, realm, i)
-        ikiwa sio (user ama passwd): rudisha Tupu
+        user, pitawd = self.get_user_pitawd(host, realm, i)
+        ikiwa sio (user ama pitawd): rudisha Tupu
         host = "%s:%s@%s" % (quote(user, safe=''),
-                             quote(passwd, safe=''), host)
+                             quote(pitawd, safe=''), host)
         newurl = 'https://' + host + selector
         ikiwa data ni Tupu:
             rudisha self.open(newurl)
         isipokua:
             rudisha self.open(newurl, data)
 
-    eleza get_user_passwd(self, host, realm, clear_cache=0):
+    eleza get_user_pitawd(self, host, realm, clear_cache=0):
         key = realm + '@' + host.lower()
         ikiwa key kwenye self.auth_cache:
             ikiwa clear_cache:
                 toa self.auth_cache[key]
             isipokua:
                 rudisha self.auth_cache[key]
-        user, passwd = self.prompt_user_passwd(host, realm)
-        ikiwa user ama passwd: self.auth_cache[key] = (user, passwd)
-        rudisha user, passwd
+        user, pitawd = self.prompt_user_pitawd(host, realm)
+        ikiwa user ama pitawd: self.auth_cache[key] = (user, pitawd)
+        rudisha user, pitawd
 
-    eleza prompt_user_passwd(self, host, realm):
+    eleza prompt_user_pitawd(self, host, realm):
         """Override this kwenye a GUI environment!"""
-        agiza getpass
+        agiza getpita
         jaribu:
             user = uliza("Enter username kila %s at %s: " % (realm, host))
-            passwd = getpass.getpass("Enter password kila %s kwenye %s at %s: " %
+            pitawd = getpita.getpita("Enter pitaword kila %s kwenye %s at %s: " %
                 (user, realm, host))
-            rudisha user, passwd
-        except KeyboardInterrupt:
+            rudisha user, pitawd
+        tatizo KeyboardInterrupt:
             andika()
             rudisha Tupu, Tupu
 
@@ -2335,7 +2335,7 @@ eleza thishost():
     ikiwa _thishost ni Tupu:
         jaribu:
             _thishost = tuple(socket.gethostbyname_ex(socket.gethostname())[2])
-        except socket.gaierror:
+        tatizo socket.gaierror:
             _thishost = tuple(socket.gethostbyname_ex('localhost')[2])
     rudisha _thishost
 
@@ -2362,10 +2362,10 @@ eleza noheaders():
 kundi ftpwrapper:
     """Class used by open_ftp() kila cache of open FTP connections."""
 
-    eleza __init__(self, user, passwd, host, port, dirs, timeout=Tupu,
+    eleza __init__(self, user, pitawd, host, port, dirs, timeout=Tupu,
                  persistent=Kweli):
         self.user = user
-        self.passwd = passwd
+        self.pitawd = pitawd
         self.host = host
         self.port = port
         self.dirs = dirs
@@ -2383,7 +2383,7 @@ kundi ftpwrapper:
         self.busy = 0
         self.ftp = ftplib.FTP()
         self.ftp.connect(self.host, self.port, self.timeout)
-        self.ftp.login(self.user, self.passwd)
+        self.ftp.login(self.user, self.pitawd)
         _target = '/'.join(self.dirs)
         self.ftp.cwd(_target)
 
@@ -2394,18 +2394,18 @@ kundi ftpwrapper:
         isipokua: cmd = 'TYPE ' + type; isdir = 0
         jaribu:
             self.ftp.voidcmd(cmd)
-        except ftplib.all_errors:
+        tatizo ftplib.all_errors:
             self.init()
             self.ftp.voidcmd(cmd)
         conn = Tupu
         ikiwa file na sio isdir:
-            # Try to retrieve as a file
+            # Try to retrieve kama a file
             jaribu:
                 cmd = 'RETR ' + file
                 conn, retrlen = self.ftp.ntransfercmd(cmd)
-            except ftplib.error_perm as reason:
+            tatizo ftplib.error_perm kama reason:
                 ikiwa str(reason)[:3] != '550':
-                     ashiria URLError('ftp error: %r' % reason).with_traceback(
+                    ashiria URLError('ftp error: %r' % reason).with_traceback(
                         sys.exc_info()[2])
         ikiwa sio conn:
             # Set transfer mode to ASCII!
@@ -2416,8 +2416,8 @@ kundi ftpwrapper:
                 jaribu:
                     jaribu:
                         self.ftp.cwd(file)
-                    except ftplib.error_perm as reason:
-                         ashiria URLError('ftp error: %r' % reason) kutoka reason
+                    tatizo ftplib.error_perm kama reason:
+                        ashiria URLError('ftp error: %r' % reason) kutoka reason
                 mwishowe:
                     self.ftp.cwd(pwd)
                 cmd = 'LIST ' + file
@@ -2450,8 +2450,8 @@ kundi ftpwrapper:
         self.endtransfer()
         jaribu:
             self.ftp.close()
-        except ftperrors():
-            pass
+        tatizo ftperrors():
+            pita
 
 # Proxy handling
 eleza getproxies_environment():
@@ -2459,19 +2459,19 @@ eleza getproxies_environment():
 
     Scan the environment kila variables named <scheme>_proxy;
     this seems to be the standard convention.  If you need a
-    different way, you can pass a proxies dictionary to the
+    different way, you can pita a proxies dictionary to the
     [Fancy]URLopener constructor.
 
     """
     proxies = {}
     # kwenye order to prefer lowercase variables, process environment in
-    # two passes: first matches any, second pass matches lowercase only
+    # two pitaes: first matches any, second pita matches lowercase only
     kila name, value kwenye os.environ.items():
         name = name.lower()
         ikiwa value na name[-6:] == '_proxy':
             proxies[name[:-6]] = value
-    # CVE-2016-1000110 - If we are running as CGI script, forget HTTP_PROXY
-    # (non-all-lowercase) as it may be set kutoka the web server by a "Proxy:"
+    # CVE-2016-1000110 - If we are running kama CGI script, forget HTTP_PROXY
+    # (non-all-lowercase) kama it may be set kutoka the web server by a "Proxy:"
     # header kutoka the client
     # If "proxy" ni lowercase, it will still be used thanks to the next block
     ikiwa 'REQUEST_METHOD' kwenye os.environ:
@@ -2485,7 +2485,7 @@ eleza getproxies_environment():
                 proxies.pop(name[:-6], Tupu)
     rudisha proxies
 
-eleza proxy_bypass_environment(host, proxies=Tupu):
+eleza proxy_bypita_environment(host, proxies=Tupu):
     """Test ikiwa proxies should sio be used kila a particular host.
 
     Checks the proxy dict kila the value of no_proxy, which should
@@ -2494,12 +2494,12 @@ eleza proxy_bypass_environment(host, proxies=Tupu):
     """
     ikiwa proxies ni Tupu:
         proxies = getproxies_environment()
-    # don't bypass, ikiwa no_proxy isn't specified
+    # don't bypita, ikiwa no_proxy isn't specified
     jaribu:
         no_proxy = proxies['no']
-    except KeyError:
+    tatizo KeyError:
         rudisha 0
-    # '*' ni special case kila always bypass
+    # '*' ni special case kila always bypita
     ikiwa no_proxy == '*':
         rudisha 1
     # strip port off host
@@ -2514,13 +2514,13 @@ eleza proxy_bypass_environment(host, proxies=Tupu):
             ikiwa (re.match(pattern, hostonly, re.I)
                     ama re.match(pattern, host, re.I)):
                 rudisha 1
-    # otherwise, don't bypass
+    # otherwise, don't bypita
     rudisha 0
 
 
 # This code tests an OSX specific data structure but ni testable on all
 # platforms
-eleza _proxy_bypass_macosx_sysconf(host, proxy_settings):
+eleza _proxy_bypita_macosx_sysconf(host, proxy_settings):
     """
     Return Kweli iff this host shouldn't be accessed using a proxy
 
@@ -2544,7 +2544,7 @@ eleza _proxy_bypass_macosx_sysconf(host, proxy_settings):
         rudisha (parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]
 
     # Check kila simple host names:
-    ikiwa '.' sio kwenye host:
+    ikiwa '.' haiko kwenye host:
         ikiwa proxy_settings['exclude_simple']:
             rudisha Kweli
 
@@ -2560,7 +2560,7 @@ eleza _proxy_bypass_macosx_sysconf(host, proxy_settings):
                 jaribu:
                     hostIP = socket.gethostbyname(hostonly)
                     hostIP = ip2num(hostIP)
-                except OSError:
+                tatizo OSError:
                     endelea
 
             base = ip2num(m.group(1))
@@ -2574,7 +2574,7 @@ eleza _proxy_bypass_macosx_sysconf(host, proxy_settings):
             ikiwa (hostIP >> mask) == (base >> mask):
                 rudisha Kweli
 
-        elikiwa fnmatch(host, value):
+        lasivyo fnmatch(host, value):
             rudisha Kweli
 
     rudisha Uongo
@@ -2583,9 +2583,9 @@ eleza _proxy_bypass_macosx_sysconf(host, proxy_settings):
 ikiwa sys.platform == 'darwin':
     kutoka _scproxy agiza _get_proxy_settings, _get_proxies
 
-    eleza proxy_bypass_macosx_sysconf(host):
+    eleza proxy_bypita_macosx_sysconf(host):
         proxy_settings = _get_proxy_settings()
-        rudisha _proxy_bypass_macosx_sysconf(host, proxy_settings)
+        rudisha _proxy_bypita_macosx_sysconf(host, proxy_settings)
 
     eleza getproxies_macosx_sysconf():
         """Return a dictionary of scheme -> proxy server URL mappings.
@@ -2597,8 +2597,8 @@ ikiwa sys.platform == 'darwin':
 
 
 
-    eleza proxy_bypass(host):
-        """Return Kweli, ikiwa host should be bypassed.
+    eleza proxy_bypita(host):
+        """Return Kweli, ikiwa host should be bypitaed.
 
         Checks proxy settings gathered kutoka the environment, ikiwa specified,
         ama kutoka the MacOSX framework SystemConfiguration.
@@ -2606,15 +2606,15 @@ ikiwa sys.platform == 'darwin':
         """
         proxies = getproxies_environment()
         ikiwa proxies:
-            rudisha proxy_bypass_environment(host, proxies)
+            rudisha proxy_bypita_environment(host, proxies)
         isipokua:
-            rudisha proxy_bypass_macosx_sysconf(host)
+            rudisha proxy_bypita_macosx_sysconf(host)
 
     eleza getproxies():
         rudisha getproxies_environment() ama getproxies_macosx_sysconf()
 
 
-elikiwa os.name == 'nt':
+lasivyo os.name == 'nt':
     eleza getproxies_registry():
         """Return a dictionary of scheme -> proxy server URL mappings.
 
@@ -2624,7 +2624,7 @@ elikiwa os.name == 'nt':
         proxies = {}
         jaribu:
             agiza winreg
-        except ImportError:
+        tatizo ImportError:
             # Std module, so should be around - but you never know!
             rudisha proxies
         jaribu:
@@ -2633,7 +2633,7 @@ elikiwa os.name == 'nt':
             proxyEnable = winreg.QueryValueEx(internetSettings,
                                                'ProxyEnable')[0]
             ikiwa proxyEnable:
-                # Returned as Unicode but problems ikiwa sio converted to ASCII
+                # Returned kama Unicode but problems ikiwa sio converted to ASCII
                 proxyServer = str(winreg.QueryValueEx(internetSettings,
                                                        'ProxyServer')[0])
                 ikiwa '=' kwenye proxyServer:
@@ -2653,11 +2653,11 @@ elikiwa os.name == 'nt':
                         proxies['https'] = 'https://%s' % proxyServer
                         proxies['ftp'] = 'ftp://%s' % proxyServer
             internetSettings.Close()
-        except (OSError, ValueError, TypeError):
+        tatizo (OSError, ValueError, TypeError):
             # Either registry key sio found etc, ama the value kwenye an
             # unexpected format.
             # proxies already set up to be empty so nothing to do
-            pass
+            pita
         rudisha proxies
 
     eleza getproxies():
@@ -2669,10 +2669,10 @@ elikiwa os.name == 'nt':
         """
         rudisha getproxies_environment() ama getproxies_registry()
 
-    eleza proxy_bypass_registry(host):
+    eleza proxy_bypita_registry(host):
         jaribu:
             agiza winreg
-        except ImportError:
+        tatizo ImportError:
             # Std modules, so should be around - but you never know!
             rudisha 0
         jaribu:
@@ -2682,8 +2682,8 @@ elikiwa os.name == 'nt':
                                                'ProxyEnable')[0]
             proxyOverride = str(winreg.QueryValueEx(internetSettings,
                                                      'ProxyOverride')[0])
-            # ^^^^ Returned as Unicode but problems ikiwa sio converted to ASCII
-        except OSError:
+            # ^^^^ Returned kama Unicode but problems ikiwa sio converted to ASCII
+        tatizo OSError:
             rudisha 0
         ikiwa sio proxyEnable ama sio proxyOverride:
             rudisha 0
@@ -2694,14 +2694,14 @@ elikiwa os.name == 'nt':
             addr = socket.gethostbyname(rawHost)
             ikiwa addr != rawHost:
                 host.append(addr)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         jaribu:
             fqdn = socket.getfqdn(rawHost)
             ikiwa fqdn != rawHost:
                 host.append(fqdn)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
         # make a check value list kutoka the registry enjaribu: replace the
         # '<local>' string by the localhost entry na the corresponding
         # canonical entry.
@@ -2709,7 +2709,7 @@ elikiwa os.name == 'nt':
         # now check ikiwa we match one of the registry values.
         kila test kwenye proxyOverride:
             ikiwa test == '<local>':
-                ikiwa '.' sio kwenye rawHost:
+                ikiwa '.' haiko kwenye rawHost:
                     rudisha 1
             test = test.replace(".", r"\.")     # mask dots
             test = test.replace("*", r".*")     # change glob sequence
@@ -2719,8 +2719,8 @@ elikiwa os.name == 'nt':
                     rudisha 1
         rudisha 0
 
-    eleza proxy_bypass(host):
-        """Return Kweli, ikiwa host should be bypassed.
+    eleza proxy_bypita(host):
+        """Return Kweli, ikiwa host should be bypitaed.
 
         Checks proxy settings gathered kutoka the environment, ikiwa specified,
         ama the registry.
@@ -2728,11 +2728,11 @@ elikiwa os.name == 'nt':
         """
         proxies = getproxies_environment()
         ikiwa proxies:
-            rudisha proxy_bypass_environment(host, proxies)
+            rudisha proxy_bypita_environment(host, proxies)
         isipokua:
-            rudisha proxy_bypass_registry(host)
+            rudisha proxy_bypita_registry(host)
 
 isipokua:
     # By default use environment variables
     getproxies = getproxies_environment
-    proxy_bypass = proxy_bypass_environment
+    proxy_bypita = proxy_bypita_environment

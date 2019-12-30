@@ -10,10 +10,10 @@ kutoka time agiza sleep
 agiza unittest
 agiza unittest.mock
 agiza tempfile
-kutoka time agiza monotonic as time
+kutoka time agiza monotonic kama time
 jaribu:
     agiza resource
-except ImportError:
+tatizo ImportError:
     resource = Tupu
 
 
@@ -21,7 +21,7 @@ ikiwa hasattr(socket, 'socketpair'):
     socketpair = socket.socketpair
 isipokua:
     eleza socketpair(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=0):
-        ukijumuisha socket.socket(family, type, proto) as l:
+        ukijumuisha socket.socket(family, type, proto) kama l:
             l.bind((support.HOST, 0))
             l.listen()
             c = socket.socket(family, type, proto)
@@ -34,7 +34,7 @@ isipokua:
                     ikiwa addr == caddr:
                         rudisha c, a
                     a.close()
-            except OSError:
+            tatizo OSError:
                 c.close()
                 raise
 
@@ -181,16 +181,16 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         ikiwa self.SELECTOR.__name__ == 'EpollSelector':
             patch = unittest.mock.patch(
                 'selectors.EpollSelector._selector_cls')
-        elikiwa self.SELECTOR.__name__ == 'PollSelector':
+        lasivyo self.SELECTOR.__name__ == 'PollSelector':
             patch = unittest.mock.patch(
                 'selectors.PollSelector._selector_cls')
-        elikiwa self.SELECTOR.__name__ == 'DevpollSelector':
+        lasivyo self.SELECTOR.__name__ == 'DevpollSelector':
             patch = unittest.mock.patch(
                 'selectors.DevpollSelector._selector_cls')
         isipokua:
-             ashiria self.skipTest("")
+            ashiria self.skipTest("")
 
-        ukijumuisha patch as m:
+        ukijumuisha patch kama m:
             m.return_value.modify = unittest.mock.Mock(
                 side_effect=ZeroDivisionError)
             s = self.SELECTOR()
@@ -279,7 +279,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
 
         rd, wr = self.make_socketpair()
 
-        ukijumuisha s as sel:
+        ukijumuisha s kama sel:
             sel.register(rd, selectors.EVENT_READ)
             sel.register(wr, selectors.EVENT_WRITE)
 
@@ -332,7 +332,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
                                                     selectors.EVENT_READ)
                 ikiwa ready_readers:
                     koma
-                # there might be a delay between the write to the write end and
+                # there might be a delay between the write to the write end na
                 # the read end ni reported ready
                 sleep(0.1)
             isipokua:
@@ -392,10 +392,10 @@ kundi BaseSelectorTestCase(unittest.TestCase):
         rd, wr = self.make_socketpair()
 
         kundi InterruptSelect(Exception):
-            pass
+            pita
 
         eleza handler(*args):
-             ashiria InterruptSelect
+            ashiria InterruptSelect
 
         orig_alrm_handler = signal.signal(signal.SIGALRM, handler)
         self.addCleanup(signal.signal, signal.SIGALRM, orig_alrm_handler)
@@ -430,7 +430,7 @@ kundi BaseSelectorTestCase(unittest.TestCase):
             s.register(rd, selectors.EVENT_READ)
             t = time()
             # select() ni interrupted by a signal, but the signal handler doesn't
-            #  ashiria an exception, so select() should by retries ukijumuisha a recomputed
+            # ashiria an exception, so select() should by retries ukijumuisha a recomputed
             # timeout
             self.assertUongo(s.select(1.5))
             self.assertGreaterEqual(time() - t, 1.0)
@@ -453,7 +453,7 @@ kundi ScalableSelectorMixIn:
             self.addCleanup(resource.setrlimit, resource.RLIMIT_NOFILE,
                             (soft, hard))
             NUM_FDS = min(hard, 2**16)
-        except (OSError, ValueError):
+        tatizo (OSError, ValueError):
             NUM_FDS = soft
 
         # guard kila already allocated FDs (stdin, stdout...)
@@ -465,7 +465,7 @@ kundi ScalableSelectorMixIn:
         kila i kwenye range(NUM_FDS // 2):
             jaribu:
                 rd, wr = self.make_socketpair()
-            except OSError:
+            tatizo OSError:
                 # too many FDs, skip - note that we should only catch EMFILE
                 # here, but apparently *BSD na Solaris can fail upon connect()
                 # ama bind() ukijumuisha EADDRNOTAVAIL, so let's be safe
@@ -474,7 +474,7 @@ kundi ScalableSelectorMixIn:
             jaribu:
                 s.register(rd, selectors.EVENT_READ)
                 s.register(wr, selectors.EVENT_WRITE)
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno == errno.ENOSPC:
                     # this can be raised by epoll ikiwa we go over
                     # fs.epoll.max_user_watches sysctl
@@ -483,7 +483,7 @@ kundi ScalableSelectorMixIn:
 
         jaribu:
             fds = s.select()
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EINVAL na sys.platform == 'darwin':
                 # unexplainable errors on macOS don't need to fail the test
                 self.skipTest("Invalid argument error calling poll()")
@@ -517,7 +517,7 @@ kundi EpollSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
     eleza test_register_file(self):
         # epoll(7) returns EPERM when given a file to watch
         s = self.SELECTOR()
-        ukijumuisha tempfile.NamedTemporaryFile() as f:
+        ukijumuisha tempfile.NamedTemporaryFile() kama f:
             ukijumuisha self.assertRaises(IOError):
                 s.register(f, selectors.EVENT_READ)
             # the SelectorKey has been removed
@@ -532,11 +532,11 @@ kundi KqueueSelectorTestCase(BaseSelectorTestCase, ScalableSelectorMixIn):
     SELECTOR = getattr(selectors, 'KqueueSelector', Tupu)
 
     eleza test_register_bad_fd(self):
-        # a file descriptor that's been closed should  ashiria an OSError
+        # a file descriptor that's been closed should ashiria an OSError
         # ukijumuisha EBADF
         s = self.SELECTOR()
         bad_f = support.make_bad_fd()
-        ukijumuisha self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             s.register(bad_f, selectors.EVENT_READ)
         self.assertEqual(cm.exception.errno, errno.EBADF)
         # the SelectorKey has been removed

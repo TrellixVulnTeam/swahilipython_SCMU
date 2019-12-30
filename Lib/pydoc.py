@@ -11,7 +11,7 @@ Run "pydoc <name>" to show documentation on something.  <name> may be
 the name of a function, module, package, ama a dotted reference to a
 kundi ama function within a module ama module kwenye a package.  If the
 argument contains a path segment delimiter (e.g. slash on Unix,
-backslash on Windows) it ni treated as the path to a Python source file.
+backslash on Windows) it ni treated kama the path to a Python source file.
 
 Run "pydoc -k <keyword>" to search kila a keyword kwenye the synopsis lines
 of all available modules.
@@ -22,7 +22,7 @@ hostname (default: localhost) on the local machine.
 Run "pydoc -p <port>" to start an HTTP server on the given port on the
 local machine.  Port number 0 can be used to get an arbitrary unused port.
 
-Run "pydoc -b" to start an HTTP server on an arbitrary unused port and
+Run "pydoc -b" to start an HTTP server on an arbitrary unused port na
 open a Web browser to interactively browse documentation.  Combine with
 the -n na -p options to control the hostname na port used.
 
@@ -50,7 +50,7 @@ Richard Chamberlain, kila the first implementation of textdoc.
 # Known bugs that can't be fixed here:
 #   - synopsis() cannot be prevented kutoka clobbering existing
 #     loaded modules.
-#   - If the __file__ attribute on a module ni a relative path and
+#   - If the __file__ attribute on a module ni a relative path na
 #     the current directory ni changed ukijumuisha os.chdir(), an incorrect
 #     path will be displayed.
 
@@ -84,7 +84,7 @@ eleza pathdirs():
     kila dir kwenye sys.path:
         dir = os.path.abspath(dir ama '.')
         normdir = os.path.normcase(dir)
-        ikiwa normdir sio kwenye normdirs na os.path.isdir(dir):
+        ikiwa normdir haiko kwenye normdirs na os.path.isdir(dir):
             dirs.append(dir)
             normdirs.append(normdir)
     rudisha dirs
@@ -99,7 +99,7 @@ eleza splitdoc(doc):
     lines = doc.strip().split('\n')
     ikiwa len(lines) == 1:
         rudisha lines[0], ''
-    elikiwa len(lines) >= 2 na sio lines[1].rstrip():
+    lasivyo len(lines) >= 2 na sio lines[1].rstrip():
         rudisha lines[0], '\n'.join(lines[2:])
     rudisha '', '\n'.join(lines)
 
@@ -112,8 +112,8 @@ eleza classname(object, modname):
 
 eleza isdata(object):
     """Check ikiwa an object ni of a type that probably means it's data."""
-    rudisha sio (inspect.ismodule(object) ama inspect.isclass(object) or
-                inspect.isroutine(object) ama inspect.isframe(object) or
+    rudisha sio (inspect.ismodule(object) ama inspect.isclass(object) ama
+                inspect.isroutine(object) ama inspect.isframe(object) ama
                 inspect.istraceback(object) ama inspect.iscode(object))
 
 eleza replace(text, *pairs):
@@ -215,7 +215,7 @@ eleza sort_attributes(attrs, object):
     fields = getattr(object, '_fields', [])
     jaribu:
         field_order = {name : i-len(fields) kila (i, name) kwenye enumerate(fields)}
-    except TypeError:
+    tatizo TypeError:
         field_order = {}
     keyfunc = lambda attr: (field_order.get(attr[0], 0), attr[0])
     attrs.sort(key=keyfunc)
@@ -255,7 +255,7 @@ eleza synopsis(filename, cache={}):
         # Look kila binary suffixes first, falling back to source.
         ikiwa filename.endswith(tuple(importlib.machinery.BYTECODE_SUFFIXES)):
             loader_cls = importlib.machinery.SourcelessFileLoader
-        elikiwa filename.endswith(tuple(importlib.machinery.EXTENSION_SUFFIXES)):
+        lasivyo filename.endswith(tuple(importlib.machinery.EXTENSION_SUFFIXES)):
             loader_cls = importlib.machinery.ExtensionFileLoader
         isipokua:
             loader_cls = Tupu
@@ -264,7 +264,7 @@ eleza synopsis(filename, cache={}):
             # Must be a source file.
             jaribu:
                 file = tokenize.open(filename)
-            except OSError:
+            tatizo OSError:
                 # module can't be opened, so skip it
                 rudisha Tupu
             # text modules can be directly examined
@@ -273,7 +273,7 @@ eleza synopsis(filename, cache={}):
         isipokua:
             # Must be a binary module, which has to be imported.
             loader = loader_cls('__temp__', filename)
-            # XXX We probably don't need to pass kwenye the loader here.
+            # XXX We probably don't need to pita kwenye the loader here.
             spec = importlib.util.spec_from_file_location('__temp__', filename,
                                                           loader=loader)
             jaribu:
@@ -299,7 +299,7 @@ kundi ErrorDuringImport(Exception):
 eleza importfile(path):
     """Import a Python source file ama compiled file given its path."""
     magic = importlib.util.MAGIC_NUMBER
-    ukijumuisha open(path, 'rb') as file:
+    ukijumuisha open(path, 'rb') kama file:
         is_bytecode = magic == file.read(len(magic))
     filename = os.path.basename(path)
     name, ext = os.path.splitext(filename)
@@ -307,12 +307,12 @@ eleza importfile(path):
         loader = importlib._bootstrap_external.SourcelessFileLoader(name, path)
     isipokua:
         loader = importlib._bootstrap_external.SourceFileLoader(name, path)
-    # XXX We probably don't need to pass kwenye the loader here.
+    # XXX We probably don't need to pita kwenye the loader here.
     spec = importlib.util.spec_from_file_location(name, path, loader=loader)
     jaribu:
         rudisha importlib._bootstrap._load(spec)
     tatizo:
-         ashiria ErrorDuringImport(path, sys.exc_info())
+        ashiria ErrorDuringImport(path, sys.exc_info())
 
 eleza safeimport(path, forceload=0, cache={}):
     """Import a module; handle errors; rudisha Tupu ikiwa the module isn't found.
@@ -328,7 +328,7 @@ eleza safeimport(path, forceload=0, cache={}):
         # mtime isn't good enough (e.g. the module could contain a class
         # that inherits kutoka another module that has changed).
         ikiwa forceload na path kwenye sys.modules:
-            ikiwa path sio kwenye sys.builtin_module_names:
+            ikiwa path haiko kwenye sys.builtin_module_names:
                 # Remove the module kutoka sys.modules na re-agiza to try
                 # na avoid problems ukijumuisha partially loaded modules.
                 # Also remove any submodules because they won't appear
@@ -345,19 +345,19 @@ eleza safeimport(path, forceload=0, cache={}):
         (exc, value, tb) = info = sys.exc_info()
         ikiwa path kwenye sys.modules:
             # An error occurred wakati executing the imported module.
-             ashiria ErrorDuringImport(sys.modules[path].__file__, info)
-        elikiwa exc ni SyntaxError:
+            ashiria ErrorDuringImport(sys.modules[path].__file__, info)
+        lasivyo exc ni SyntaxError:
             # A SyntaxError occurred before we could execute the module.
-             ashiria ErrorDuringImport(value.filename, info)
-        elikiwa issubclass(exc, ImportError) na value.name == path:
+            ashiria ErrorDuringImport(value.filename, info)
+        lasivyo issubclass(exc, ImportError) na value.name == path:
             # No such module kwenye the path.
             rudisha Tupu
         isipokua:
             # Some other error occurred during the importing process.
-             ashiria ErrorDuringImport(path, sys.exc_info())
+            ashiria ErrorDuringImport(path, sys.exc_info())
     kila part kwenye path.split('.')[1:]:
         jaribu: module = getattr(module, part)
-        except AttributeError: rudisha Tupu
+        tatizo AttributeError: rudisha Tupu
     rudisha module
 
 # ---------------------------------------------------- formatter base class
@@ -379,8 +379,8 @@ kundi Doc:
             ikiwa inspect.ismodule(object): rudisha self.docmodule(*args)
             ikiwa inspect.isclass(object): rudisha self.docclass(*args)
             ikiwa inspect.isroutine(object): rudisha self.docroutine(*args)
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         ikiwa inspect.isdatadescriptor(object): rudisha self.docdata(*args)
         rudisha self.docother(*args)
 
@@ -388,7 +388,7 @@ kundi Doc:
         """Raise an exception kila unimplemented types."""
         message = "don't know how to document object%s of type %s" % (
             name na ' ' + repr(name), type(object).__name__)
-         ashiria TypeError(message)
+        ashiria TypeError(message)
 
     docmodule = dockundi = docroutine = docother = docproperty = docdata = fail
 
@@ -399,19 +399,19 @@ kundi Doc:
 
         jaribu:
             file = inspect.getabsfile(object)
-        except TypeError:
+        tatizo TypeError:
             file = '(built-in)'
 
         docloc = os.environ.get("PYTHONDOCS", self.PYTHONDOCS)
 
         basedir = os.path.normcase(basedir)
-        ikiwa (isinstance(object, type(os)) and
+        ikiwa (isinstance(object, type(os)) na
             (object.__name__ kwenye ('errno', 'exceptions', 'gc', 'imp',
                                  'marshal', 'posix', 'signal', 'sys',
-                                 '_thread', 'zipimport') or
-             (file.startswith(basedir) and
-              sio file.startswith(os.path.join(basedir, 'site-packages')))) and
-            object.__name__ sio kwenye ('xml.etree', 'test.pydoc_mod')):
+                                 '_thread', 'zipimport') ama
+             (file.startswith(basedir) na
+              sio file.startswith(os.path.join(basedir, 'site-packages')))) na
+            object.__name__ haiko kwenye ('xml.etree', 'test.pydoc_mod')):
             ikiwa docloc.startswith(("http://", "https://")):
                 docloc = "%s/%s" % (docloc.rstrip("/"), object.__name__.lower())
             isipokua:
@@ -446,7 +446,7 @@ kundi HTMLRepr(Repr):
     eleza repr_string(self, x, level):
         test = cram(x, self.maxstring)
         testrepr = repr(test)
-        ikiwa '\\' kwenye test na '\\' sio kwenye replace(testrepr, r'\\', ''):
+        ikiwa '\\' kwenye test na '\\' haiko kwenye replace(testrepr, r'\\', ''):
             # Backslashes are only literal kwenye the string na are never
             # needed to make any special characters, so show a raw string.
             rudisha 'r' + testrepr[0] + self.escape(test) + testrepr[0]
@@ -599,20 +599,20 @@ kundi HTMLDoc(Doc):
             ikiwa scheme:
                 url = escape(all).replace('"', '&quot;')
                 results.append('<a href="%s">%s</a>' % (url, url))
-            elikiwa rfc:
+            lasivyo rfc:
                 url = 'http://www.rfc-editor.org/rfc/rfc%d.txt' % int(rfc)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa pep:
+            lasivyo pep:
                 url = 'http://www.python.org/dev/peps/pep-%04d/' % int(pep)
                 results.append('<a href="%s">%s</a>' % (url, escape(all)))
-            elikiwa selfdot:
+            lasivyo selfdot:
                 # Create a link kila methods like 'self.method(...)'
                 # na use <strong> kila attributes like 'self.attr'
                 ikiwa text[end:end+1] == '(':
                     results.append('self.' + self.namelink(name, methods))
                 isipokua:
                     results.append('self.<strong>%s</strong>' % name)
-            elikiwa text[end:end+1] == '(':
+            lasivyo text[end:end+1] == '(':
                 results.append(self.namelink(name, methods, funcs, classes))
             isipokua:
                 results.append(self.namelink(name, classes))
@@ -623,7 +623,7 @@ kundi HTMLDoc(Doc):
     # ---------------------------------------------- type-specific routines
 
     eleza formattree(self, tree, modname, parent=Tupu):
-        """Produce HTML kila a kundi tree as given by inspect.getclasstree()."""
+        """Produce HTML kila a kundi tree kama given by inspect.getclasstree()."""
         result = ''
         kila entry kwenye tree:
             ikiwa type(entry) ni type(()):
@@ -636,17 +636,17 @@ kundi HTMLDoc(Doc):
                         parents.append(self.classlink(base, modname))
                     result = result + '(' + ', '.join(parents) + ')'
                 result = result + '\n</font></dt>'
-            elikiwa type(entry) ni type([]):
+            lasivyo type(entry) ni type([]):
                 result = result + '<dd>\n%s</dd>\n' % self.formattree(
                     entry, modname, c)
         rudisha '<dl>\n%s</dl>\n' % result
 
     eleza docmodule(self, object, name=Tupu, mod=Tupu, *ignored):
         """Produce HTML documentation kila a module object."""
-        name = object.__name__ # ignore the passed-in name
+        name = object.__name__ # ignore the pitaed-in name
         jaribu:
             all = object.__all__
-        except AttributeError:
+        tatizo AttributeError:
             all = Tupu
         parts = name.split('.')
         links = []
@@ -660,7 +660,7 @@ kundi HTMLDoc(Doc):
             path = inspect.getabsfile(object)
             url = urllib.parse.quote(path)
             filelink = self.filelink(url, path)
-        except TypeError:
+        tatizo TypeError:
             filelink = '(built-in)'
         info = []
         ikiwa hasattr(object, '__version__'):
@@ -686,7 +686,7 @@ kundi HTMLDoc(Doc):
         classes, cdict = [], {}
         kila key, value kwenye inspect.getmembers(object, inspect.isclass):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 (inspect.getmodule(value) ama object) ni object):
                 ikiwa visiblename(key, all, object):
                     classes.append((key, value))
@@ -702,7 +702,7 @@ kundi HTMLDoc(Doc):
         funcs, fdict = [], {}
         kila key, value kwenye inspect.getmembers(object, inspect.isroutine):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 inspect.isbuiltin(value) ama inspect.getmodule(value) ni object):
                 ikiwa visiblename(key, all, object):
                     funcs.append((key, value))
@@ -725,7 +725,7 @@ kundi HTMLDoc(Doc):
             contents = self.multicolumn(modpkgs, self.modpkglink)
             result = result + self.bigsection(
                 'Package Contents', '#ffffff', '#aa55cc', contents)
-        elikiwa modules:
+        lasivyo modules:
             contents = self.multicolumn(
                 modules, lambda t: self.modulelink(t[1]))
             result = result + self.bigsection(
@@ -800,7 +800,7 @@ kundi HTMLDoc(Doc):
                 kila name, kind, homecls, value kwenye ok:
                     jaribu:
                         value = getattr(object, name)
-                    except Exception:
+                    tatizo Exception:
                         # Some descriptors may meet a failure kwenye their __get__.
                         # (bug #1785)
                         push(self.docdata(value, name, mod))
@@ -849,16 +849,16 @@ kundi HTMLDoc(Doc):
             mdict[key] = anchor = '#' + name + '-' + key
             jaribu:
                 value = getattr(object, name)
-            except Exception:
+            tatizo Exception:
                 # Some descriptors may meet a failure kwenye their __get__.
                 # (bug #1785)
-                pass
+                pita
             jaribu:
                 # The value may sio be hashable (e.g., a data attr with
                 # a dict ama list value).
                 mdict[value] = anchor
-            except TypeError:
-                pass
+            tatizo TypeError:
+                pita
 
         wakati attrs:
             ikiwa mro:
@@ -870,7 +870,7 @@ kundi HTMLDoc(Doc):
             ikiwa object ni sio builtins.object na thiskundi ni builtins.object:
                 attrs = inherited
                 endelea
-            elikiwa thiskundi ni object:
+            lasivyo thiskundi ni object:
                 tag = 'defined here'
             isipokua:
                 tag = 'inherited kutoka %s' % self.classlink(thisclass,
@@ -912,7 +912,7 @@ kundi HTMLDoc(Doc):
         decl = ''
         jaribu:
             signature = inspect.signature(object)
-        except (ValueError, TypeError):
+        tatizo (ValueError, TypeError):
             signature = Tupu
         ikiwa signature:
             argspec = str(signature)
@@ -928,7 +928,7 @@ kundi HTMLDoc(Doc):
         rudisha self.section(title, '#000000', '#ffc8d8', contents, 3, doc)
 
     eleza formatvalue(self, object):
-        """Format an argument default value as text."""
+        """Format an argument default value kama text."""
         rudisha self.grey('=' + self.repr(object))
 
     eleza docroutine(self, object, name=Tupu, mod=Tupu,
@@ -951,7 +951,7 @@ kundi HTMLDoc(Doc):
                 isipokua:
                     note = ' unbound %s method' % self.classlink(imclass,mod)
 
-        ikiwa (inspect.iscoroutinefunction(object) or
+        ikiwa (inspect.iscoroutinefunction(object) ama
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         isipokua:
@@ -972,7 +972,7 @@ kundi HTMLDoc(Doc):
         ikiwa inspect.isroutine(object):
             jaribu:
                 signature = inspect.signature(object)
-            except (ValueError, TypeError):
+            tatizo (ValueError, TypeError):
                 signature = Tupu
             ikiwa signature:
                 argspec = str(signature)
@@ -985,7 +985,7 @@ kundi HTMLDoc(Doc):
         ikiwa sio argspec:
             argspec = '(...)'
 
-        decl = asyncqualifier + title + self.escape(argspec) + (note and
+        decl = asyncqualifier + title + self.escape(argspec) + (note na
                self.grey('<font face="helvetica, arial">%s</font>' % note))
 
         ikiwa skipdocs:
@@ -1052,7 +1052,7 @@ kundi TextRepr(Repr):
     eleza repr_string(self, x, level):
         test = cram(x, self.maxstring)
         testrepr = repr(test)
-        ikiwa '\\' kwenye test na '\\' sio kwenye replace(testrepr, r'\\', ''):
+        ikiwa '\\' kwenye test na '\\' haiko kwenye replace(testrepr, r'\\', ''):
             # Backslashes are only literal kwenye the string na are never
             # needed to make any special characters, so show a raw string.
             rudisha 'r' + testrepr[0] + test + testrepr[0]
@@ -1093,7 +1093,7 @@ kundi TextDoc(Doc):
     # ---------------------------------------------- type-specific routines
 
     eleza formattree(self, tree, modname, parent=Tupu, prefix=''):
-        """Render kwenye text a kundi tree as returned by inspect.getclasstree()."""
+        """Render kwenye text a kundi tree kama returned by inspect.getclasstree()."""
         result = ''
         kila entry kwenye tree:
             ikiwa type(entry) ni type(()):
@@ -1103,14 +1103,14 @@ kundi TextDoc(Doc):
                     parents = (classname(c, modname) kila c kwenye bases)
                     result = result + '(%s)' % ', '.join(parents)
                 result = result + '\n'
-            elikiwa type(entry) ni type([]):
+            lasivyo type(entry) ni type([]):
                 result = result + self.formattree(
                     entry, modname, c, prefix + '    ')
         rudisha result
 
     eleza docmodule(self, object, name=Tupu, mod=Tupu):
         """Produce text documentation kila a given module object."""
-        name = object.__name__ # ignore the passed-in name
+        name = object.__name__ # ignore the pitaed-in name
         synop, desc = splitdoc(getdoc(object))
         result = self.section('NAME', name + (synop na ' - ' + synop))
         all = getattr(object, '__all__', Tupu)
@@ -1138,7 +1138,7 @@ location listed above.
         funcs = []
         kila key, value kwenye inspect.getmembers(object, inspect.isroutine):
             # ikiwa __all__ exists, believe it.  Otherwise use old heuristic.
-            ikiwa (all ni sio Tupu or
+            ikiwa (all ni sio Tupu ama
                 inspect.isbuiltin(value) ama inspect.getmodule(value) ni object):
                 ikiwa visiblename(key, all, object):
                     funcs.append((key, value))
@@ -1161,10 +1161,10 @@ location listed above.
             result = result + self.section(
                 'PACKAGE CONTENTS', '\n'.join(modpkgs))
 
-        # Detect submodules as sometimes created by C extensions
+        # Detect submodules kama sometimes created by C extensions
         submodules = []
         kila key, value kwenye inspect.getmembers(object, inspect.ismodule):
-            ikiwa value.__name__.startswith(name + '.') na key sio kwenye modpkgs_names:
+            ikiwa value.__name__.startswith(name + '.') na key haiko kwenye modpkgs_names:
                 submodules.append(key)
         ikiwa submodules:
             submodules.sort()
@@ -1204,7 +1204,7 @@ location listed above.
             result = result + self.section('CREDITS', str(object.__credits__))
         jaribu:
             file = inspect.getabsfile(object)
-        except TypeError:
+        tatizo TypeError:
             file = '(built-in)'
         result = result + self.section('FILE', file)
         rudisha result
@@ -1231,7 +1231,7 @@ location listed above.
 
         jaribu:
             signature = inspect.signature(object)
-        except (ValueError, TypeError):
+        tatizo (ValueError, TypeError):
             signature = Tupu
         ikiwa signature:
             argspec = str(signature)
@@ -1286,7 +1286,7 @@ location listed above.
                 kila name, kind, homecls, value kwenye ok:
                     jaribu:
                         value = getattr(object, name)
-                    except Exception:
+                    tatizo Exception:
                         # Some descriptors may meet a failure kwenye their __get__.
                         # (bug #1785)
                         push(self.docdata(value, name, mod))
@@ -1316,7 +1316,7 @@ location listed above.
                         doc = Tupu
                     jaribu:
                         obj = getattr(object, name)
-                    except AttributeError:
+                    tatizo AttributeError:
                         obj = homecls.__dict__[name]
                     push(self.docother(obj, name, mod, maxlen=70, doc=doc) +
                          '\n')
@@ -1336,7 +1336,7 @@ location listed above.
             ikiwa object ni sio builtins.object na thiskundi ni builtins.object:
                 attrs = inherited
                 endelea
-            elikiwa thiskundi ni object:
+            lasivyo thiskundi ni object:
                 tag = "defined here"
             isipokua:
                 tag = "inherited kutoka %s" % classname(thisclass,
@@ -1367,7 +1367,7 @@ location listed above.
         rudisha title + '\n' + self.indent(contents.rstrip(), ' |  ') + '\n'
 
     eleza formatvalue(self, object):
-        """Format an argument default value as text."""
+        """Format an argument default value kama text."""
         rudisha '=' + self.repr(object)
 
     eleza docroutine(self, object, name=Tupu, mod=Tupu, cl=Tupu):
@@ -1388,7 +1388,7 @@ location listed above.
                 isipokua:
                     note = ' unbound %s method' % classname(imclass,mod)
 
-        ikiwa (inspect.iscoroutinefunction(object) or
+        ikiwa (inspect.iscoroutinefunction(object) ama
                 inspect.isasyncgenfunction(object)):
             asyncqualifier = 'async '
         isipokua:
@@ -1405,7 +1405,7 @@ location listed above.
         ikiwa inspect.isroutine(object):
             jaribu:
                 signature = inspect.signature(object)
-            except (ValueError, TypeError):
+            tatizo (ValueError, TypeError):
                 signature = Tupu
             ikiwa signature:
                 argspec = str(signature)
@@ -1478,7 +1478,7 @@ eleza getpager():
     ikiwa use_pager:
         ikiwa sys.platform == 'win32': # pipes completely broken kwenye Windows
             rudisha lambda text: tempfilepager(plain(text), use_pager)
-        elikiwa os.environ.get('TERM') kwenye ('dumb', 'emacs'):
+        lasivyo os.environ.get('TERM') kwenye ('dumb', 'emacs'):
             rudisha lambda text: pipepager(plain(text), use_pager)
         isipokua:
             rudisha lambda text: pipepager(text, use_pager)
@@ -1509,29 +1509,29 @@ eleza pipepager(text, cmd):
     agiza subprocess
     proc = subprocess.Popen(cmd, shell=Kweli, stdin=subprocess.PIPE)
     jaribu:
-        ukijumuisha io.TextIOWrapper(proc.stdin, errors='backslashreplace') as pipe:
+        ukijumuisha io.TextIOWrapper(proc.stdin, errors='backslashreplace') kama pipe:
             jaribu:
                 pipe.write(text)
-            except KeyboardInterrupt:
+            tatizo KeyboardInterrupt:
                 # We've hereby abandoned whatever text hasn't been written,
                 # but the pager ni still kwenye control of the terminal.
-                pass
-    except OSError:
-        pass # Ignore broken pipes caused by quitting the pager program.
+                pita
+    tatizo OSError:
+        pita # Ignore broken pipes caused by quitting the pager program.
     wakati Kweli:
         jaribu:
             proc.wait()
             koma
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             # Ignore ctl-c like the pager itself does.  Otherwise the pager is
             # left running na the terminal ni kwenye raw mode na unusable.
-            pass
+            pita
 
 eleza tempfilepager(text, cmd):
     """Page through text by invoking a program on a temporary file."""
     agiza tempfile
     filename = tempfile.mktemp()
-    ukijumuisha open(filename, 'w', errors='backslashreplace') as file:
+    ukijumuisha open(filename, 'w', errors='backslashreplace') kama file:
         file.write(text)
     jaribu:
         os.system(cmd + ' "' + filename + '"')
@@ -1552,14 +1552,14 @@ eleza ttypager(text):
         old = tty.tcgetattr(fd)
         tty.setckoma(fd)
         getchar = lambda: sys.stdin.read(1)
-    except (ImportError, AttributeError, io.UnsupportedOperation):
+    tatizo (ImportError, AttributeError, io.UnsupportedOperation):
         tty = Tupu
         getchar = lambda: sys.stdin.readline()[:-1][:1]
 
     jaribu:
         jaribu:
             h = int(os.environ.get('LINES', 0))
-        except ValueError:
+        tatizo ValueError:
             h = 0
         ikiwa h <= 1:
             h = 25
@@ -1573,7 +1573,7 @@ eleza ttypager(text):
             ikiwa c kwenye ('q', 'Q'):
                 sys.stdout.write('\r          \r')
                 koma
-            elikiwa c kwenye ('\r', '\n'):
+            lasivyo c kwenye ('\r', '\n'):
                 sys.stdout.write('\r          \r' + lines[r] + '\n')
                 r = r + 1
                 endelea
@@ -1619,7 +1619,7 @@ eleza describe(thing):
     rudisha type(thing).__name__
 
 eleza locate(path, forceload=0):
-    """Locate an object by name ama dotted path, importing as necessary."""
+    """Locate an object by name ama dotted path, importing kama necessary."""
     parts = [part kila part kwenye path.split('.') ikiwa part]
     module, n = Tupu, 0
     wakati n < len(parts):
@@ -1633,7 +1633,7 @@ eleza locate(path, forceload=0):
     kila part kwenye parts[n:]:
         jaribu:
             object = getattr(object, part)
-        except AttributeError:
+        tatizo AttributeError:
             rudisha Tupu
     rudisha object
 
@@ -1648,7 +1648,7 @@ eleza resolve(thing, forceload=0):
     ikiwa isinstance(thing, str):
         object = locate(thing, forceload)
         ikiwa object ni Tupu:
-             ashiria ImportError('''\
+            ashiria ImportError('''\
 No Python documentation found kila %r.
 Use help() to get the interactive help utility.
 Use help(str) kila help on the str class.''' % thing)
@@ -1667,14 +1667,14 @@ eleza render_doc(thing, title='Python Library Documentation: %s', forceload=0,
     module = inspect.getmodule(object)
     ikiwa name na '.' kwenye name:
         desc += ' kwenye ' + name[:name.rfind('.')]
-    elikiwa module na module ni sio object:
+    lasivyo module na module ni sio object:
         desc += ' kwenye module ' + module.__name__
 
-    ikiwa sio (inspect.ismodule(object) or
-              inspect.isclass(object) or
-              inspect.isroutine(object) or
+    ikiwa sio (inspect.ismodule(object) ama
+              inspect.isclass(object) ama
+              inspect.isroutine(object) ama
               inspect.isdatadescriptor(object)):
-        # If the passed object ni a piece of data ama an instance,
+        # If the pitaed object ni a piece of data ama an instance,
         # document its available methods instead of its value.
         object = type(object)
         desc += ' object'
@@ -1688,7 +1688,7 @@ eleza doc(thing, title='Python Library Documentation: %s', forceload=0,
             pager(render_doc(thing, title, forceload))
         isipokua:
             output.write(render_doc(thing, title, forceload, plaintext))
-    except (ImportError, ErrorDuringImport) as value:
+    tatizo (ImportError, ErrorDuringImport) kama value:
         andika(value)
 
 eleza writedoc(thing, forceload=0):
@@ -1696,10 +1696,10 @@ eleza writedoc(thing, forceload=0):
     jaribu:
         object, name = resolve(thing, forceload)
         page = html.page(describe(object), html.document(object, name))
-        ukijumuisha open(name + '.html', 'w', encoding='utf-8') as file:
+        ukijumuisha open(name + '.html', 'w', encoding='utf-8') kama file:
             file.write(page)
         andika('wrote', name + '.html')
-    except (ImportError, ErrorDuringImport) as value:
+    tatizo (ImportError, ErrorDuringImport) kama value:
         andika(value)
 
 eleza writedocs(dir, pkgpath='', done=Tupu):
@@ -1717,7 +1717,7 @@ kundi Helper:
     # kwenye pydoc_data/topics.py.
     #
     # CAUTION: ikiwa you change one of these dictionaries, be sure to adapt the
-    #          list of needed labels kwenye Doc/tools/extensions/pyspecific.py and
+    #          list of needed labels kwenye Doc/tools/extensions/pyspecific.py na
     #          regenerate the pydoc_data/topics.py file by running
     #              make pydoc-topics
     #          kwenye Doc/ na copying the output file into the Lib/ directory.
@@ -1751,13 +1751,13 @@ kundi Helper:
         'nonlocal': ('nonlocal', 'global NAMESPACES'),
         'not': 'BOOLEAN',
         'or': 'BOOLEAN',
-        'pass': ('pass', ''),
+        'pita': ('pita', ''),
         'raise': ('raise', 'EXCEPTIONS'),
         'return': ('return', 'FUNCTIONS'),
         'try': ('try', 'EXCEPTIONS'),
         'while': ('while', 'koma endelea ikiwa TRUTHVALUE'),
-        'with': ('with', 'CONTEXTMANAGERS EXCEPTIONS yield'),
-        'yield': ('yield', ''),
+        'with': ('with', 'CONTEXTMANAGERS EXCEPTIONS tuma'),
+        'tuma': ('tuma', ''),
     }
     # Either add symbols to this dictionary ama to the symbols dictionary
     # directly: Whichever ni easier. They are merged later.
@@ -1793,7 +1793,7 @@ kundi Helper:
     kila topic, symbols_ kwenye _symbols_inverse.items():
         kila symbol kwenye symbols_:
             topics = symbols.get(symbol, topic)
-            ikiwa topic sio kwenye topics:
+            ikiwa topic haiko kwenye topics:
                 topics = topics + ' ' + topic
             symbols[symbol] = topics
 
@@ -1824,7 +1824,7 @@ kundi Helper:
         'CLASSES': ('types', 'kundi SPECIALMETHODS PRIVATENAMES'),
         'MODULES': ('typesmodules', 'import'),
         'PACKAGES': 'import',
-        'EXPRESSIONS': ('operator-summary', 'lambda ama na sio kwenye ni BOOLEAN '
+        'EXPRESSIONS': ('operator-summary', 'lambda ama na haiko kwenye ni BOOLEAN '
                         'COMPARISON BITWISE SHIFTING BINARY FORMATTING POWER '
                         'UNARY ATTRIBUTES SUBSCRIPTS SLICINGS CALLS TUPLES '
                         'LISTS DICTIONARIES'),
@@ -1847,7 +1847,7 @@ kundi Helper:
         'DYNAMICFEATURES': ('dynamic-features', ''),
         'SCOPING': 'NAMESPACES',
         'FRAMES': 'NAMESPACES',
-        'EXCEPTIONS': ('exceptions', 'try except finally raise'),
+        'EXCEPTIONS': ('exceptions', 'try tatizo finally raise'),
         'CONVERSIONS': ('conversions', ''),
         'IDENTIFIERS': ('identifiers', 'keywords SPECIALIDENTIFIERS'),
         'SPECIALIDENTIFIERS': ('id-classes', ''),
@@ -1914,7 +1914,7 @@ kundi Helper:
 You are now leaving help na returning to the Python interpreter.
 If you want to ask kila help on a particular object directly kutoka the
 interpreter, you can type "help(object)".  Executing "help('string')"
-has the same effect as typing a particular string at the help> prompt.
+has the same effect kama typing a particular string at the help> prompt.
 ''')
 
     eleza interact(self):
@@ -1923,14 +1923,14 @@ has the same effect as typing a particular string at the help> prompt.
             jaribu:
                 request = self.getline('help> ')
                 ikiwa sio request: koma
-            except (KeyboardInterrupt, EOFError):
+            tatizo (KeyboardInterrupt, EOFError):
                 koma
             request = request.strip()
 
             # Make sure significant trailing quoting marks of literals don't
             # get deleted wakati cleaning input
             ikiwa (len(request) > 2 na request[0] == request[-1] kwenye ("'", '"')
-                    na request[0] sio kwenye request[1:-1]):
+                    na request[0] haiko kwenye request[1:-1]):
                 request = request[1:-1]
             ikiwa request.lower() kwenye ('q', 'quit'): koma
             ikiwa request == 'help':
@@ -1951,20 +1951,20 @@ has the same effect as typing a particular string at the help> prompt.
         ikiwa type(request) ni type(''):
             request = request.strip()
             ikiwa request == 'keywords': self.listkeywords()
-            elikiwa request == 'symbols': self.listsymbols()
-            elikiwa request == 'topics': self.listtopics()
-            elikiwa request == 'modules': self.listmodules()
-            elikiwa request[:8] == 'modules ':
+            lasivyo request == 'symbols': self.listsymbols()
+            lasivyo request == 'topics': self.listtopics()
+            lasivyo request == 'modules': self.listmodules()
+            lasivyo request[:8] == 'modules ':
                 self.listmodules(request.split()[1])
-            elikiwa request kwenye self.symbols: self.showsymbol(request)
-            elikiwa request kwenye ['Kweli', 'Uongo', 'Tupu']:
+            lasivyo request kwenye self.symbols: self.showsymbol(request)
+            lasivyo request kwenye ['Kweli', 'Uongo', 'Tupu']:
                 # special case these keywords since they are objects too
                 doc(eval(request), 'Help on %s:')
-            elikiwa request kwenye self.keywords: self.showtopic(request)
-            elikiwa request kwenye self.topics: self.showtopic(request)
-            elikiwa request: doc(request, 'Help on %s:', output=self._output)
+            lasivyo request kwenye self.keywords: self.showtopic(request)
+            lasivyo request kwenye self.topics: self.showtopic(request)
+            lasivyo request: doc(request, 'Help on %s:', output=self._output)
             isipokua: doc(str, 'Help on %s:', output=self._output)
-        elikiwa isinstance(request, Helper): self()
+        lasivyo isinstance(request, Helper): self()
         isipokua: doc(request, 'Help on %s:', output=self._output)
         self.output.write('\n')
 
@@ -1976,13 +1976,13 @@ If this ni your first time using Python, you should definitely check out
 the tutorial on the Internet at https://docs.python.org/{0}/tutorial/.
 
 Enter the name of any module, keyword, ama topic to get help on writing
-Python programs na using Python modules.  To quit this help utility and
+Python programs na using Python modules.  To quit this help utility na
 rudisha to the interpreter, just type "quit".
 
 To get a list of available modules, keywords, symbols, ama topics, type
 "modules", "keywords", "symbols", ama "topics".  Each module also comes
 ukijumuisha a one-line summary of what it does; to list the modules whose name
-or summary contain a given string such as "spam", type "modules spam".
+or summary contain a given string such kama "spam", type "modules spam".
 '''.format('%d.%d' % sys.version_info[:2]))
 
     eleza list(self, items, columns=4, width=80):
@@ -2023,7 +2023,7 @@ Here ni a list of available topics.  Enter any topic name to get more help.
     eleza showtopic(self, topic, more_xrefs=''):
         jaribu:
             agiza pydoc_data.topics
-        except ImportError:
+        tatizo ImportError:
             self.output.write('''
 Sorry, topic na keyword documentation ni sio available because the
 module "pydoc_data.topics" could sio be found.
@@ -2039,7 +2039,7 @@ module "pydoc_data.topics" could sio be found.
         label, xrefs = target
         jaribu:
             doc = pydoc_data.topics.topics[label]
-        except KeyError:
+        tatizo KeyError:
             self.output.write('no documentation found kila %s\n' % repr(topic))
             return
         doc = doc.strip() + '\n'
@@ -2063,14 +2063,14 @@ module "pydoc_data.topics" could sio be found.
         """
         jaribu:
             agiza pydoc_data.topics
-        except ImportError:
+        tatizo ImportError:
             return('''
 Sorry, topic na keyword documentation ni sio available because the
 module "pydoc_data.topics" could sio be found.
 ''' , '')
         target = self.topics.get(topic, self.keywords.get(topic))
         ikiwa sio target:
-             ashiria ValueError('could sio find topic')
+            ashiria ValueError('could sio find topic')
         ikiwa isinstance(target, str):
             rudisha self._gettopic(target, more_xrefs)
         label, xrefs = target
@@ -2143,14 +2143,14 @@ kundi ModuleScanner:
             isipokua:
                 jaribu:
                     spec = pkgutil._get_spec(importer, modname)
-                except SyntaxError:
+                tatizo SyntaxError:
                     # raised by tests kila bad coding cookies ama BOM
                     endelea
                 loader = spec.loader
                 ikiwa hasattr(loader, 'get_source'):
                     jaribu:
                         source = loader.get_source(modname)
-                    except Exception:
+                    tatizo Exception:
                         ikiwa onerror:
                             onerror(modname)
                         endelea
@@ -2162,7 +2162,7 @@ kundi ModuleScanner:
                 isipokua:
                     jaribu:
                         module = importlib._bootstrap._load(spec)
-                    except ImportError:
+                    tatizo ImportError:
                         ikiwa onerror:
                             onerror(modname)
                         endelea
@@ -2182,7 +2182,7 @@ eleza apropos(key):
             modname = modname[:-9] + ' (package)'
         andika(modname, desc na '- ' + desc)
     eleza onerror(modname):
-        pass
+        pita
     ukijumuisha warnings.catch_warnings():
         warnings.filterwarnings('ignore') # ignore problems during import
         ModuleScanner().run(callback, key, onerror=onerror)
@@ -2215,7 +2215,7 @@ eleza _start_server(urlhandler, hostname, port):
         >>> serverthread = pydoc._start_server(my_url_handler, port)
 
         Check that the server ni really started.  If it is, open browser
-        na get first page.  Use serverthread.url as the starting page.
+        na get first page.  Use serverthread.url kama the starting page.
 
         >>> ikiwa serverthread.serving:
         ...    agiza webbrowser
@@ -2270,7 +2270,7 @@ eleza _start_server(urlhandler, hostname, port):
 
         eleza log_message(self, *args):
             # Don't log messages.
-            pass
+            pita
 
     kundi DocServer(http.server.HTTPServer):
 
@@ -2313,7 +2313,7 @@ eleza _start_server(urlhandler, hostname, port):
                 docsvr = DocServer(self.host, self.port, self.ready)
                 self.docserver = docsvr
                 docsvr.serve_until_quit()
-            except Exception as e:
+            tatizo Exception kama e:
                 self.error = e
 
         eleza ready(self, server):
@@ -2436,7 +2436,7 @@ eleza _url_handler(url, content_type="text/html"):
         ukijumuisha warnings.catch_warnings():
             warnings.filterwarnings('ignore') # ignore problems during import
             eleza onerror(modname):
-                pass
+                pita
             ModuleScanner().run(callback, key, onerror=onerror)
 
         # format page
@@ -2456,7 +2456,7 @@ eleza _url_handler(url, content_type="text/html"):
     eleza html_getfile(path):
         """Get na display a source file listing safely."""
         path = urllib.parse.unquote(path)
-        ukijumuisha tokenize.open(path) as fp:
+        ukijumuisha tokenize.open(path) kama fp:
             lines = html.escape(fp.read())
         body = '<pre>%s</pre>' % lines
         heading = html.heading(
@@ -2526,7 +2526,7 @@ eleza _url_handler(url, content_type="text/html"):
     eleza html_getobj(url):
         obj = locate(url, forceload=1)
         ikiwa obj ni Tupu na url != 'Tupu':
-             ashiria ValueError('could sio find object')
+            ashiria ValueError('could sio find object')
         title = describe(obj)
         content = html.document(obj, url)
         rudisha title, content
@@ -2549,36 +2549,36 @@ eleza _url_handler(url, content_type="text/html"):
         jaribu:
             ikiwa url kwenye ("", "index"):
                 title, content = html_index()
-            elikiwa url == "topics":
+            lasivyo url == "topics":
                 title, content = html_topics()
-            elikiwa url == "keywords":
+            lasivyo url == "keywords":
                 title, content = html_keywords()
-            elikiwa '=' kwenye url:
+            lasivyo '=' kwenye url:
                 op, _, url = url.partition('=')
                 ikiwa op == "search?key":
                     title, content = html_search(url)
-                elikiwa op == "getfile?key":
+                lasivyo op == "getfile?key":
                     title, content = html_getfile(url)
-                elikiwa op == "topic?key":
+                lasivyo op == "topic?key":
                     # try topics first, then objects.
                     jaribu:
                         title, content = html_topicpage(url)
-                    except ValueError:
+                    tatizo ValueError:
                         title, content = html_getobj(url)
-                elikiwa op == "get?key":
+                lasivyo op == "get?key":
                     # try objects first, then topics.
                     ikiwa url kwenye ("", "index"):
                         title, content = html_index()
                     isipokua:
                         jaribu:
                             title, content = html_getobj(url)
-                        except ValueError:
+                        tatizo ValueError:
                             title, content = html_topicpage(url)
                 isipokua:
-                     ashiria ValueError('bad pydoc url')
+                    ashiria ValueError('bad pydoc url')
             isipokua:
                 title, content = html_getobj(url)
-        except Exception as exc:
+        tatizo Exception kama exc:
             # Catch any errors na display them kwenye an error page.
             title, content = html_error(complete_url, exc)
         rudisha html.page(title, content)
@@ -2588,12 +2588,12 @@ eleza _url_handler(url, content_type="text/html"):
     ikiwa content_type == 'text/css':
         path_here = os.path.dirname(os.path.realpath(__file__))
         css_path = os.path.join(path_here, url)
-        ukijumuisha open(css_path) as fp:
+        ukijumuisha open(css_path) kama fp:
             rudisha ''.join(fp.readlines())
-    elikiwa content_type == 'text/html':
+    lasivyo content_type == 'text/html':
         rudisha get_html_page(url)
     # Errors outside the url handler are caught by the server.
-     ashiria TypeError('unknown content type %r kila url %s' % (content_type, url))
+    ashiria TypeError('unknown content type %r kila url %s' % (content_type, url))
 
 
 eleza browse(port=0, *, open_browser=Kweli, hostname='localhost'):
@@ -2619,11 +2619,11 @@ eleza browse(port=0, *, open_browser=Kweli, hostname='localhost'):
                 cmd = cmd.lower()
                 ikiwa cmd == 'q':
                     koma
-                elikiwa cmd == 'b':
+                lasivyo cmd == 'b':
                     webbrowser.open(serverthread.url)
                 isipokua:
                     andika(server_help_msg)
-        except (KeyboardInterrupt, EOFError):
+        tatizo (KeyboardInterrupt, EOFError):
             andika()
         mwishowe:
             ikiwa serverthread.serving:
@@ -2653,7 +2653,7 @@ eleza _get_revised_path(given_path, argv0):
         rudisha Tupu
 
     # Otherwise, add the current directory to the given path, na remove the
-    # script directory (as long as the latter isn't also pydoc's directory.
+    # script directory (as long kama the latter isn't also pydoc's directory.
     stdlib_dir = os.path.dirname(__file__)
     script_dir = os.path.dirname(argv0)
     revised_path = given_path.copy()
@@ -2677,7 +2677,7 @@ eleza _adjust_cli_sys_path():
 eleza cli():
     """Command-line interface (looks at sys.argv to decide what to do)."""
     agiza getopt
-    kundi BadUsage(Exception): pass
+    kundi BadUsage(Exception): pita
 
     _adjust_cli_sys_path()
 
@@ -2708,7 +2708,7 @@ eleza cli():
             browse(port, hostname=hostname, open_browser=open_browser)
             return
 
-        ikiwa sio args:  ashiria BadUsage
+        ikiwa sio args: ashiria BadUsage
         kila arg kwenye args:
             ikiwa ispath(arg) na sio os.path.exists(arg):
                 andika('file %r does sio exist' % arg)
@@ -2723,10 +2723,10 @@ eleza cli():
                         writedoc(arg)
                 isipokua:
                     help.help(arg)
-            except ErrorDuringImport as value:
+            tatizo ErrorDuringImport kama value:
                 andika(value)
 
-    except (getopt.error, BadUsage):
+    tatizo (getopt.error, BadUsage):
         cmd = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         andika("""pydoc - the Python documentation tool
 
@@ -2734,7 +2734,7 @@ eleza cli():
     Show text documentation on something.  <name> may be the name of a
     Python keyword, topic, function, module, ama package, ama a dotted
     reference to a kundi ama function within a module ama module kwenye a
-    package.  If <name> contains a '{sep}', it ni used as the path to a
+    package.  If <name> contains a '{sep}', it ni used kama the path to a
     Python source file to document. If name ni 'keywords', 'topics',
     ama 'modules', a listing of these things ni displayed.
 
@@ -2755,7 +2755,7 @@ eleza cli():
 
 {cmd} -w <name> ...
     Write out the HTML documentation kila a module to a file kwenye the current
-    directory.  If <name> contains a '{sep}', it ni treated as a filename; if
+    directory.  If <name> contains a '{sep}', it ni treated kama a filename; if
     it names a directory, documentation ni written kila all the contents.
 """.format(cmd=cmd, sep=os.sep))
 

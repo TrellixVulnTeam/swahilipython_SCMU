@@ -159,7 +159,7 @@ kundi AifcMiscTest(audiotests.AudioMiscTests, unittest.TestCase):
                 # `aifc.open` will fail (without raising a ResourceWarning)
                 self.f = aifc.open(non_aifc_file, 'rb')
 
-            # Aifc_write.initfp() won't  ashiria kwenye normal case.  But some errors
+            # Aifc_write.initfp() won't ashiria kwenye normal case.  But some errors
             # (e.g. MemoryError, KeyboardInterrupt, etc..) can happen.
             ukijumuisha mock.patch.object(aifc.Aifc_write, 'initfp',
                                    side_effect=RuntimeError):
@@ -306,7 +306,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
         b += b'MARK' + struct.pack('>LhB', 3, 1, 1)
-        ukijumuisha self.assertWarns(UserWarning) as cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: MARK chunk contains '
                                           'only 0 markers instead of 1')
@@ -318,7 +318,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 4) + b'even' + b'\x00'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        ukijumuisha self.assertWarns(UserWarning) as cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'even')
@@ -329,7 +329,7 @@ kundi AIFCLowLevelTest(unittest.TestCase):
                                    0x4000 | 12, 11025<<18, 0)
         b += b'NONE' + struct.pack('B', 3) + b'odd'
         b += b'SSND' + struct.pack('>L', 8) + b'\x00' * 8
-        ukijumuisha self.assertWarns(UserWarning) as cm:
+        ukijumuisha self.assertWarns(UserWarning) kama cm:
             f = aifc.open(io.BytesIO(b))
         self.assertEqual(str(cm.warning), 'Warning: bad COMM chunk size')
         self.assertEqual(f.getcompname(), b'odd')

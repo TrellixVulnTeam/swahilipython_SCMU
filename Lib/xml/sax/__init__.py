@@ -48,7 +48,7 @@ eleza parseString(string, handler, errorHandler=ErrorHandler()):
     parser.parse(inpsrc)
 
 # this ni the parser list used by the make_parser function ikiwa no
-# alternatives are given as parameters to the function
+# alternatives are given kama parameters to the function
 
 default_parser_list = ["xml.sax.expatreader"]
 
@@ -71,25 +71,25 @@ eleza make_parser(parser_list=()):
     """Creates na returns a SAX parser.
 
     Creates the first parser it ni able to instantiate of the ones
-    given kwenye the iterable created by chaining parser_list and
+    given kwenye the iterable created by chaining parser_list na
     default_parser_list.  The iterables must contain the names of Python
     modules containing both a SAX parser na a create_parser function."""
 
     kila parser_name kwenye list(parser_list) + default_parser_list:
         jaribu:
             rudisha _create_parser(parser_name)
-        except ImportError as e:
+        tatizo ImportError kama e:
             agiza sys
             ikiwa parser_name kwenye sys.modules:
                 # The parser module was found, but importing it
-                # failed unexpectedly, pass this exception through
+                # failed unexpectedly, pita this exception through
                 raise
-        except SAXReaderNotAvailable:
+        tatizo SAXReaderNotAvailable:
             # The parser module detected that it won't work properly,
             # so try the next one
-            pass
+            pita
 
-     ashiria SAXReaderNotAvailable("No parsers found", Tupu)
+    ashiria SAXReaderNotAvailable("No parsers found", Tupu)
 
 # --- Internal utility methods used by make_parser
 

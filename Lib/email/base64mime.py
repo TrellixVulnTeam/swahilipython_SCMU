@@ -6,7 +6,7 @@
 
 This module handles the content transfer encoding method defined kwenye RFC 2045
 to encode arbitrary 8-bit data using the three 8-bit bytes kwenye four 7-bit
-characters encoding known as Base64.
+characters encoding known kama Base64.
 
 It ni used kwenye the MIME standards kila email to attach images, audio, na text
 using some 8-bit character sets to messages.
@@ -16,10 +16,10 @@ ukijumuisha Base64 encoding.
 
 RFC 2045 defines a method kila including character set information kwenye an
 `encoded-word' kwenye a header.  This method ni commonly used kila 8-bit real names
-in To:, From:, Cc:, etc. fields, as well as Subject: lines.
+in To:, From:, Cc:, etc. fields, kama well kama Subject: lines.
 
 This module does sio do the line wrapping ama end-of-line character conversion
-necessary kila proper internationalized headers; it only does dumb encoding and
+necessary kila proper internationalized headers; it only does dumb encoding na
 decoding.  To deal ukijumuisha the various line wrapping issues, use the email.header
 module.
 """
@@ -108,7 +108,7 @@ eleza decode(string):
     """
     ikiwa sio string:
         rudisha bytes()
-    elikiwa isinstance(string, str):
+    lasivyo isinstance(string, str):
         rudisha a2b_base64(string.encode('raw-unicode-escape'))
     isipokua:
         rudisha a2b_base64(string)

@@ -9,7 +9,7 @@ __all__ = ['WeakSet']
 
 kundi _IterationGuard:
     # This context manager registers itself kwenye the current iterators of the
-    # weak container, such as to delay all removals until the context manager
+    # weak container, such kama to delay all removals until the context manager
     # exits.
     # This technique should be relatively thread-safe (since sets are).
 
@@ -70,7 +70,7 @@ kundi WeakSet:
     eleza __contains__(self, item):
         jaribu:
             wr = ref(item)
-        except TypeError:
+        tatizo TypeError:
             rudisha Uongo
         rudisha wr kwenye self.data
 
@@ -97,8 +97,8 @@ kundi WeakSet:
         wakati Kweli:
             jaribu:
                 itemref = self.data.pop()
-            except KeyError:
-                 ashiria KeyError('pop kutoka empty WeakSet') kutoka Tupu
+            tatizo KeyError:
+                ashiria KeyError('pop kutoka empty WeakSet') kutoka Tupu
             item = itemref()
             ikiwa item ni sio Tupu:
                 rudisha item

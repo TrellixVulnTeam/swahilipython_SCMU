@@ -19,7 +19,7 @@ ikiwa sys.version_info[:2] >= (3, 6):
 
     kundi B(Generic[T]):
         kundi A(Generic[T]):
-            pass
+            pita
 
         my_inner_a1: 'B.A'
         my_inner_a2: A
@@ -44,7 +44,7 @@ isipokua:  # This should stay kwenye sync ukijumuisha the syntax above.
 
     kundi B(Generic[T]):
         kundi A(Generic[T]):
-            pass
+            pita
 
         __annotations__ = dict(
             my_inner_a1='B.A',

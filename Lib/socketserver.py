@@ -51,9 +51,9 @@ unix server classes.
 
 Forking na threading versions of each type of server can be created
 using the ForkingMixIn na ThreadingMixIn mix-in classes.  For
-instance, a threading UDP server kundi ni created as follows:
+instance, a threading UDP server kundi ni created kama follows:
 
-        kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
+        kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pita
 
 The Mix-in kundi must come first, since it overrides a method defined
 in UDPServer! Setting the various member variables also changes
@@ -73,7 +73,7 @@ Of course, you still have to use your head!
 For instance, it makes no sense to use a forking server ikiwa the service
 contains state kwenye memory that can be modified by requests (since the
 modifications kwenye the child process would never reach the initial state
-kept kwenye the parent process na passed to each child).  In this case,
+kept kwenye the parent process na pitaed to each child).  In this case,
 you can use a threading server, but you will probably have to use
 locks to avoid two requests that come kwenye nearly simultaneous to apply
 conflicting changes to the server state.
@@ -129,7 +129,7 @@ agiza os
 agiza sys
 agiza threading
 kutoka io agiza BufferedIOBase
-kutoka time agiza monotonic as time
+kutoka time agiza monotonic kama time
 
 __all__ = ["BaseServer", "TCPServer", "UDPServer",
            "ThreadingUDPServer", "ThreadingTCPServer",
@@ -180,7 +180,7 @@ kundi BaseServer:
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes ama
     instances:
 
     - timeout
@@ -210,7 +210,7 @@ kundi BaseServer:
         May be overridden.
 
         """
-        pass
+        pita
 
     eleza serve_forever(self, poll_interval=0.5):
         """Handle one request at a time until shutdown.
@@ -225,7 +225,7 @@ kundi BaseServer:
             # socket to wake this up instead of polling. Polling reduces our
             # responsiveness to a shutdown request na wastes cpu at all other
             # times.
-            ukijumuisha _ServerSelector() as selector:
+            ukijumuisha _ServerSelector() kama selector:
                 selector.register(self, selectors.EVENT_READ)
 
                 wakati sio self.__shutdown_request:
@@ -257,7 +257,7 @@ kundi BaseServer:
         May be overridden by a subkundi / Mixin to implement any code that
         needs to be run during the loop.
         """
-        pass
+        pita
 
     # The distinction between handling, getting, processing na finishing a
     # request ni fairly arbitrary.  Remember:
@@ -280,14 +280,14 @@ kundi BaseServer:
         timeout = self.socket.gettimeout()
         ikiwa timeout ni Tupu:
             timeout = self.timeout
-        elikiwa self.timeout ni sio Tupu:
+        lasivyo self.timeout ni sio Tupu:
             timeout = min(timeout, self.timeout)
         ikiwa timeout ni sio Tupu:
             deadline = time() + timeout
 
         # Wait until a request arrives ama the timeout expires - the loop is
         # necessary to accommodate early wakeups due to EINTR.
-        ukijumuisha _ServerSelector() as selector:
+        ukijumuisha _ServerSelector() kama selector:
             selector.register(self, selectors.EVENT_READ)
 
             wakati Kweli:
@@ -309,12 +309,12 @@ kundi BaseServer:
         """
         jaribu:
             request, client_address = self.get_request()
-        except OSError:
+        tatizo OSError:
             return
         ikiwa self.verify_request(request, client_address):
             jaribu:
                 self.process_request(request, client_address)
-            except Exception:
+            tatizo Exception:
                 self.handle_error(request, client_address)
                 self.shutdown_request(request)
             tatizo:
@@ -328,7 +328,7 @@ kundi BaseServer:
 
         Overridden by ForkingMixIn.
         """
-        pass
+        pita
 
     eleza verify_request(self, request, client_address):
         """Verify the request.  May be overridden.
@@ -353,7 +353,7 @@ kundi BaseServer:
         May be overridden.
 
         """
-        pass
+        pita
 
     eleza finish_request(self, request, client_address):
         """Finish one request by instantiating RequestHandlerClass."""
@@ -365,7 +365,7 @@ kundi BaseServer:
 
     eleza close_request(self, request):
         """Called to clean up an individual request."""
-        pass
+        pita
 
     eleza handle_error(self, request, client_address):
         """Handle an error gracefully.  May be overridden.
@@ -417,7 +417,7 @@ kundi TCPServer(BaseServer):
 
     - finish_request(request, client_address)
 
-    Class variables that may be overridden by derived classes or
+    Class variables that may be overridden by derived classes ama
     instances:
 
     - timeout
@@ -504,8 +504,8 @@ kundi TCPServer(BaseServer):
             #explicitly shutdown.  socket.close() merely releases
             #the socket na waits kila GC to perform the actual close.
             request.shutdown(socket.SHUT_WR)
-        except OSError:
-            pass #some platforms may  ashiria ENOTCONN here
+        tatizo OSError:
+            pita #some platforms may ashiria ENOTCONN here
         self.close_request(request)
 
     eleza close_request(self, request):
@@ -529,7 +529,7 @@ kundi UDPServer(TCPServer):
 
     eleza server_activate(self):
         # No need to call listen() kila UDP.
-        pass
+        pita
 
     eleza shutdown_request(self, request):
         # No need to shutdown anything.
@@ -537,7 +537,7 @@ kundi UDPServer(TCPServer):
 
     eleza close_request(self, request):
         # No need to close anything.
-        pass
+        pita
 
 ikiwa hasattr(os, "fork"):
     kundi ForkingMixIn:
@@ -564,10 +564,10 @@ ikiwa hasattr(os, "fork"):
                 jaribu:
                     pid, _ = os.waitpid(-1, 0)
                     self.active_children.discard(pid)
-                except ChildProcessError:
+                tatizo ChildProcessError:
                     # we don't have any children, we're done
                     self.active_children.clear()
-                except OSError:
+                tatizo OSError:
                     koma
 
             # Now reap all defunct children.
@@ -578,11 +578,11 @@ ikiwa hasattr(os, "fork"):
                     # ikiwa the child hasn't exited yet, pid will be 0 na ignored by
                     # discard() below
                     self.active_children.discard(pid)
-                except ChildProcessError:
+                tatizo ChildProcessError:
                     # someone isipokua reaped it
                     self.active_children.discard(pid)
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
 
         eleza handle_timeout(self):
             """Wait kila zombies after self.timeout seconds of inactivity.
@@ -615,7 +615,7 @@ ikiwa hasattr(os, "fork"):
                 jaribu:
                     self.finish_request(request, client_address)
                     status = 0
-                except Exception:
+                tatizo Exception:
                     self.handle_error(request, client_address)
                 mwishowe:
                     jaribu:
@@ -641,14 +641,14 @@ kundi ThreadingMixIn:
     _threads = Tupu
 
     eleza process_request_thread(self, request, client_address):
-        """Same as kwenye BaseServer but as a thread.
+        """Same kama kwenye BaseServer but kama a thread.
 
         In addition, exception handling ni done here.
 
         """
         jaribu:
             self.finish_request(request, client_address)
-        except Exception:
+        tatizo Exception:
             self.handle_error(request, client_address)
         mwishowe:
             self.shutdown_request(request)
@@ -675,11 +675,11 @@ kundi ThreadingMixIn:
 
 
 ikiwa hasattr(os, "fork"):
-    kundi ForkingUDPServer(ForkingMixIn, UDPServer): pass
-    kundi ForkingTCPServer(ForkingMixIn, TCPServer): pass
+    kundi ForkingUDPServer(ForkingMixIn, UDPServer): pita
+    kundi ForkingTCPServer(ForkingMixIn, TCPServer): pita
 
-kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pass
-kundi ThreadingTCPServer(ThreadingMixIn, TCPServer): pass
+kundi ThreadingUDPServer(ThreadingMixIn, UDPServer): pita
+kundi ThreadingTCPServer(ThreadingMixIn, TCPServer): pita
 
 ikiwa hasattr(socket, 'AF_UNIX'):
 
@@ -689,9 +689,9 @@ ikiwa hasattr(socket, 'AF_UNIX'):
     kundi UnixDatagramServer(UDPServer):
         address_family = socket.AF_UNIX
 
-    kundi ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pass
+    kundi ThreadingUnixStreamServer(ThreadingMixIn, UnixStreamServer): pita
 
-    kundi ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pass
+    kundi ThreadingUnixDatagramServer(ThreadingMixIn, UnixDatagramServer): pita
 
 kundi BaseRequestHandler:
 
@@ -703,9 +703,9 @@ kundi BaseRequestHandler:
     specific service, all you need to do ni to derive a kundi which
     defines a handle() method.
 
-    The handle() method can find the request as self.request, the
-    client address as self.client_address, na the server (in case it
-    needs access to per-server information) as self.server.  Since a
+    The handle() method can find the request kama self.request, the
+    client address kama self.client_address, na the server (in case it
+    needs access to per-server information) kama self.server.  Since a
     separate instance ni created kila each request, the handle() method
     can define other arbitrary instance variables.
 
@@ -722,13 +722,13 @@ kundi BaseRequestHandler:
             self.finish()
 
     eleza setup(self):
-        pass
+        pita
 
     eleza handle(self):
-        pass
+        pita
 
     eleza finish(self):
-        pass
+        pita
 
 
 # The following two classes make it possible to use the same service
@@ -777,10 +777,10 @@ kundi StreamRequestHandler(BaseRequestHandler):
         ikiwa sio self.wfile.closed:
             jaribu:
                 self.wfile.flush()
-            except socket.error:
+            tatizo socket.error:
                 # A final socket error may have occurred here, such as
                 # the local error ECONNABORTED.
-                pass
+                pita
         self.wfile.close()
         self.rfile.close()
 
@@ -797,7 +797,7 @@ kundi _SocketWriter(BufferedIOBase):
 
     eleza write(self, b):
         self._sock.sendall(b)
-        ukijumuisha memoryview(b) as view:
+        ukijumuisha memoryview(b) kama view:
             rudisha view.nbytes
 
     eleza fileno(self):

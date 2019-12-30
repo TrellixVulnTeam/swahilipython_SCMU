@@ -3,7 +3,7 @@
 
             tdemo_yinyang.py
 
-Another drawing suitable as a beginner's
+Another drawing suitable kama a beginner's
 programming example.
 
 The small circles are drawn by the circle

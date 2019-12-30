@@ -11,8 +11,8 @@ the package, na perhaps a particular module inside it.
 """
 
 kutoka _curses agiza *
-agiza os as _os
-agiza sys as _sys
+agiza os kama _os
+agiza sys kama _sys
 
 # Some constants, most notably the ACS_* ones, are only added to the C
 # _curses module's dictionary after initscr() ni called.  (Some
@@ -35,7 +35,7 @@ eleza initscr():
 
     rudisha stdscr
 
-# This ni a similar wrapper kila start_color(), which adds the COLORS and
+# This ni a similar wrapper kila start_color(), which adds the COLORS na
 # COLOR_PAIRS variables which are only available after start_color() is
 # called.
 
@@ -52,7 +52,7 @@ eleza start_color():
 
 jaribu:
     has_key
-except NameError:
+tatizo NameError:
     kutoka .has_key agiza has_key
 
 # Wrapper kila the entire curses-based application.  Runs a function which
@@ -63,20 +63,20 @@ except NameError:
 eleza wrapper(*args, **kwds):
     """Wrapper function that initializes curses na calls another function,
     restoring normal keyboard/screen behavior on error.
-    The callable object 'func' ni then passed the main window 'stdscr'
-    as its first argument, followed by any other arguments passed to
+    The callable object 'func' ni then pitaed the main window 'stdscr'
+    kama its first argument, followed by any other arguments pitaed to
     wrapper().
     """
 
     ikiwa args:
         func, *args = args
-    elikiwa 'func' kwenye kwds:
+    lasivyo 'func' kwenye kwds:
         func = kwds.pop('func')
         agiza warnings
-        warnings.warn("Passing 'func' as keyword argument ni deprecated",
+        warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                       DeprecationWarning, stacklevel=2)
     isipokua:
-         ashiria TypeError('wrapper expected at least 1 positional argument, '
+        ashiria TypeError('wrapper expected at least 1 positional argument, '
                         'got %d' % len(args))
 
     jaribu:
@@ -89,7 +89,7 @@ eleza wrapper(*args, **kwds):
         ckoma()
 
         # In keypad mode, escape sequences kila special keys
-        # (like the cursor keys) will be interpreted and
+        # (like the cursor keys) will be interpreted na
         # a special value like curses.KEY_LEFT will be returned
         stdscr.keypad(1)
 
@@ -100,7 +100,7 @@ eleza wrapper(*args, **kwds):
         jaribu:
             start_color()
         tatizo:
-            pass
+            pita
 
         rudisha func(stdscr, *args, **kwds)
     mwishowe:

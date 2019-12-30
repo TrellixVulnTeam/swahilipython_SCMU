@@ -20,7 +20,7 @@ kundi PEP3131Test(unittest.TestCase):
     eleza test_invalid(self):
         jaribu:
             kutoka test agiza badsyntax_3131
-        except SyntaxError as s:
+        tatizo SyntaxError kama s:
             self.assertEqual(str(s),
               "invalid character kwenye identifier (badsyntax_3131.py, line 2)")
         isipokua:

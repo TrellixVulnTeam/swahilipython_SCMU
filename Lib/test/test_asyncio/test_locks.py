@@ -5,7 +5,7 @@ kutoka unittest agiza mock
 agiza re
 
 agiza asyncio
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 STR_RGX_REPR = (
     r'^<(?P<class>.*?) object at (?P<address>.*?)'
@@ -91,7 +91,7 @@ kundi LockTests(test_utils.TestCase):
                 tuma kutoka asyncio.sleep(0.01)
                 self.assertUongo(lock.locked())
                 ukijumuisha self.assertWarns(DeprecationWarning):
-                    ukijumuisha (tuma kutoka lock) as _lock:
+                    ukijumuisha (tuma kutoka lock) kama _lock:
                         self.assertIs(_lock, Tupu)
                         self.assertKweli(lock.locked())
                         tuma kutoka asyncio.sleep(0.01)
@@ -333,19 +333,19 @@ kundi LockTests(test_utils.TestCase):
 
         ukijumuisha self.assertRaises(AttributeError):
             ukijumuisha cm:
-                pass
+                pita
 
-    eleza test_context_manager_no_yield(self):
+    eleza test_context_manager_no_tuma(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
             lock = asyncio.Lock(loop=self.loop)
 
         jaribu:
             ukijumuisha lock:
                 self.fail('RuntimeError ni sio raised kwenye ukijumuisha expression')
-        except RuntimeError as err:
+        tatizo RuntimeError kama err:
             self.assertEqual(
                 str(err),
-                '"tuma from" should be used as context manager expression')
+                '"tuma from" should be used kama context manager expression')
 
         self.assertUongo(lock.locked())
 
@@ -601,9 +601,9 @@ kundi ConditionTests(test_utils.TestCase):
 
         jaribu:
             self.loop.run_until_complete(wait_task)
-        except asyncio.CancelledError:
+        tatizo asyncio.CancelledError:
             # Should sio happen, since no cancellation points
-            pass
+            pita
 
         self.assertKweli(cond.locked())
 
@@ -823,17 +823,17 @@ kundi ConditionTests(test_utils.TestCase):
 
         self.assertUongo(cond.locked())
 
-    eleza test_context_manager_no_yield(self):
+    eleza test_context_manager_no_tuma(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
             cond = asyncio.Condition(loop=self.loop)
 
         jaribu:
             ukijumuisha cond:
                 self.fail('RuntimeError ni sio raised kwenye ukijumuisha expression')
-        except RuntimeError as err:
+        tatizo RuntimeError kama err:
             self.assertEqual(
                 str(err),
-                '"tuma from" should be used as context manager expression')
+                '"tuma from" should be used kama context manager expression')
 
         self.assertUongo(cond.locked())
 
@@ -901,7 +901,7 @@ kundi SemaphoreTests(test_utils.TestCase):
 
         self.loop.run_until_complete(sem.acquire())
         self.assertKweli(repr(sem).endswith('[locked]>'))
-        self.assertKweli('waiters' sio kwenye repr(sem))
+        self.assertKweli('waiters' haiko kwenye repr(sem))
         self.assertKweli(RGX_REPR.match(repr(sem)))
 
         sem._waiters.append(mock.Mock())
@@ -1008,7 +1008,7 @@ kundi SemaphoreTests(test_utils.TestCase):
         self.assertRaises(
             asyncio.CancelledError,
             self.loop.run_until_complete, acquire)
-        self.assertKweli((not sem._waiters) or
+        self.assertKweli((sio sem._waiters) ama
                         all(waiter.done() kila waiter kwenye sem._waiters))
 
     eleza test_acquire_cancel_before_awoken(self):
@@ -1082,17 +1082,17 @@ kundi SemaphoreTests(test_utils.TestCase):
 
         self.assertEqual(2, sem._value)
 
-    eleza test_context_manager_no_yield(self):
+    eleza test_context_manager_no_tuma(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
             sem = asyncio.Semaphore(2, loop=self.loop)
 
         jaribu:
             ukijumuisha sem:
                 self.fail('RuntimeError ni sio raised kwenye ukijumuisha expression')
-        except RuntimeError as err:
+        tatizo RuntimeError kama err:
             self.assertEqual(
                 str(err),
-                '"tuma from" should be used as context manager expression')
+                '"tuma from" should be used kama context manager expression')
 
         self.assertEqual(2, sem._value)
 

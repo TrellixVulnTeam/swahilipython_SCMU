@@ -9,7 +9,7 @@ kutoka test.support agiza script_helper
 
 kundi LegacyBase64TestCase(unittest.TestCase):
 
-    # Legacy API ni sio as permissive as the modern API
+    # Legacy API ni sio kama permissive kama the modern API
     eleza check_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -95,8 +95,8 @@ kundi LegacyBase64TestCase(unittest.TestCase):
 
 kundi BaseXYTestCase(unittest.TestCase):
 
-    # Modern API completely ignores exported dimension na format data and
-    # treats any buffer as a stream of bytes
+    # Modern API completely ignores exported dimension na format data na
+    # treats any buffer kama a stream of bytes
     eleza check_encode_type_errors(self, f):
         self.assertRaises(TypeError, f, "")
         self.assertRaises(TypeError, f, [])
@@ -669,19 +669,19 @@ kundi TestMain(unittest.TestCase):
         ))
 
     eleza test_encode_file(self):
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(b'a\xffb\n')
         output = self.get_output('-e', support.TESTFN)
         self.assertEqual(output.rstrip(), b'Yf9iCg==')
 
     eleza test_encode_from_stdin(self):
-        ukijumuisha script_helper.spawn_python('-m', 'base64', '-e') as proc:
+        ukijumuisha script_helper.spawn_python('-m', 'base64', '-e') kama proc:
             out, err = proc.communicate(b'a\xffb\n')
         self.assertEqual(out.rstrip(), b'Yf9iCg==')
         self.assertIsTupu(err)
 
     eleza test_decode(self):
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(b'Yf9iCg==')
         output = self.get_output('-d', support.TESTFN)
         self.assertEqual(output.rstrip(), b'a\xffb')

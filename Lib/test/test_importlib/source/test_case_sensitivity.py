@@ -5,7 +5,7 @@ importlib = util.import_importlib('importlib')
 machinery = util.import_importlib('importlib.machinery')
 
 agiza os
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 agiza unittest
 
 
@@ -31,7 +31,7 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
         sensitive_pkg = 'sensitive.{0}'.format(self.name)
         insensitive_pkg = 'insensitive.{0}'.format(self.name.lower())
         context = util.create_modules(insensitive_pkg, sensitive_pkg)
-        ukijumuisha context as mapping:
+        ukijumuisha context kama mapping:
             sensitive_path = os.path.join(mapping['.root'], 'sensitive')
             insensitive_path = os.path.join(mapping['.root'], 'insensitive')
             sensitive_finder = self.finder(sensitive_path)
@@ -39,7 +39,7 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
             rudisha self.find(sensitive_finder), self.find(insensitive_finder)
 
     eleza test_sensitive(self):
-        ukijumuisha test_support.EnvironmentVarGuard() as env:
+        ukijumuisha test_support.EnvironmentVarGuard() kama env:
             env.unset('PYTHONCASEOK')
             self.caseok_env_changed(should_exist=Uongo)
             sensitive, insensitive = self.sensitivity_test()
@@ -48,7 +48,7 @@ kundi CaseSensitivityTest(util.CASEOKTestBase):
             self.assertIsTupu(insensitive)
 
     eleza test_insensitive(self):
-        ukijumuisha test_support.EnvironmentVarGuard() as env:
+        ukijumuisha test_support.EnvironmentVarGuard() kama env:
             env.set('PYTHONCASEOK', '1')
             self.caseok_env_changed(should_exist=Kweli)
             sensitive, insensitive = self.sensitivity_test()

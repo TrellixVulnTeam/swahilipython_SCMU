@@ -79,11 +79,11 @@ kundi SimpleDialog:
         y = m_y + (m_height - w_height) * rely
         ikiwa x+w_width > master.winfo_screenwidth():
             x = master.winfo_screenwidth() - w_width
-        elikiwa x < 0:
+        lasivyo x < 0:
             x = 0
         ikiwa y+w_height > master.winfo_screenheight():
             y = master.winfo_screenheight() - w_height
-        elikiwa y < 0:
+        lasivyo y < 0:
             y = 0
         widget.geometry("+%d+%d" % (x, y))
         widget.deiconify() # Become visible at the desired location
@@ -116,7 +116,7 @@ kundi Dialog(Toplevel):
 
     '''Class to open dialogs.
 
-    This kundi ni intended as a base kundi kila custom dialogs
+    This kundi ni intended kama a base kundi kila custom dialogs
     '''
 
     eleza __init__(self, parent, title = Tupu):
@@ -183,7 +183,7 @@ kundi Dialog(Toplevel):
         This method should be overridden, na ni called
         by the __init__ method.
         '''
-        pass
+        pita
 
     eleza buttonbox(self):
         '''add standard button box.
@@ -246,7 +246,7 @@ kundi Dialog(Toplevel):
         the dialog ni destroyed. By default, it does nothing.
         '''
 
-        pass # override
+        pita # override
 
 
 # --------------------------------------------------------------------
@@ -291,7 +291,7 @@ kundi _QueryDialog(Dialog):
     eleza validate(self):
         jaribu:
             result = self.getresult()
-        except ValueError:
+        tatizo ValueError:
             messagebox.showwarning(
                 "Illegal value",
                 self.errormessage + "\nPlease try again",

@@ -56,7 +56,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
         eleza gcv(v):
             ikiwa v == 'CC':
                 rudisha 'gcc'
-            elikiwa v == 'GNULD':
+            lasivyo v == 'GNULD':
                 rudisha 'yes'
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-Wl,--enable-new-dtags,-R/foo')
@@ -66,7 +66,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
         eleza gcv(v):
             ikiwa v == 'CC':
                 rudisha 'gcc'
-            elikiwa v == 'GNULD':
+            lasivyo v == 'GNULD':
                 rudisha 'no'
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-Wl,-R/foo')
@@ -77,7 +77,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
         eleza gcv(v):
             ikiwa v == 'CC':
                 rudisha 'x86_64-pc-linux-gnu-gcc-4.4.2'
-            elikiwa v == 'GNULD':
+            lasivyo v == 'GNULD':
                 rudisha 'yes'
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-Wl,--enable-new-dtags,-R/foo')
@@ -87,7 +87,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
         eleza gcv(v):
             ikiwa v == 'CC':
                 rudisha 'cc'
-            elikiwa v == 'GNULD':
+            lasivyo v == 'GNULD':
                 rudisha 'yes'
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-R/foo')
@@ -97,7 +97,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
         eleza gcv(v):
             ikiwa v == 'CC':
                 rudisha 'cc'
-            elikiwa v == 'GNULD':
+            lasivyo v == 'GNULD':
                 rudisha 'no'
         sysconfig.get_config_var = gcv
         self.assertEqual(self.cc.rpath_foo(), '-R/foo')
@@ -111,7 +111,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
                 rudisha 'gcc-4.2 -bundle -undefined dynamic_lookup '
             rudisha 'gcc-4.2'
         sysconfig.get_config_var = gcv
-        ukijumuisha EnvironmentVarGuard() as env:
+        ukijumuisha EnvironmentVarGuard() kama env:
             env['CC'] = 'my_cc'
             toa env['LDSHARED']
             sysconfig.customize_compiler(self.cc)
@@ -127,7 +127,7 @@ kundi UnixCCompilerTestCase(unittest.TestCase):
                 rudisha 'gcc-4.2 -bundle -undefined dynamic_lookup '
             rudisha 'gcc-4.2'
         sysconfig.get_config_var = gcv
-        ukijumuisha EnvironmentVarGuard() as env:
+        ukijumuisha EnvironmentVarGuard() kama env:
             env['CC'] = 'my_cc'
             env['LDSHARED'] = 'my_ld -bundle -dynamic'
             sysconfig.customize_compiler(self.cc)

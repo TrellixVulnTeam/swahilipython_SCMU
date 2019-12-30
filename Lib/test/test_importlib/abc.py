@@ -3,39 +3,39 @@ agiza abc
 
 kundi FinderTests(metaclass=abc.ABCMeta):
 
-    """Basic tests kila a finder to pass."""
+    """Basic tests kila a finder to pita."""
 
     @abc.abstractmethod
     eleza test_module(self):
         # Test importing a top-level module.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package(self):
         # Test importing a package.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_module_in_package(self):
         # Test importing a module contained within a package.
         # A value kila 'path' should be used ikiwa kila a meta_path finder.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package_in_package(self):
         # Test importing a subpackage.
         # A value kila 'path' should be used ikiwa kila a meta_path finder.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package_over_module(self):
         # Test that packages are chosen over modules.
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_failure(self):
         # Test trying to find a module that cannot be handled.
-        pass
+        pita
 
 
 kundi LoaderTests(metaclass=abc.ABCMeta):
@@ -54,7 +54,7 @@ kundi LoaderTests(metaclass=abc.ABCMeta):
             * No __path__
 
         """
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_package(self):
@@ -71,23 +71,23 @@ kundi LoaderTests(metaclass=abc.ABCMeta):
             * __loader__
 
         """
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_lacking_parent(self):
         """A loader should sio be dependent on it's parent package being
         imported."""
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_state_after_failure(self):
         """If a module ni already kwenye sys.modules na a reload fails
         (e.g. a SyntaxError), the module should be kwenye the state it was before
         the reload began."""
-        pass
+        pita
 
     @abc.abstractmethod
     eleza test_unloadable(self):
         """Test ImportError ni raised when the loader ni asked to load a module
         it can't."""
-        pass
+        pita

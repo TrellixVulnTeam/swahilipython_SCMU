@@ -3,7 +3,7 @@ agiza asyncio
 agiza sys
 kutoka asyncio agiza proactor_events
 kutoka itertools agiza cycle, islice
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 
 
@@ -45,7 +45,7 @@ kundi MyProto(asyncio.Protocol):
 kundi BaseSockTestsMixin:
 
     eleza create_event_loop(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza setUp(self):
         self.loop = self.create_event_loop()
@@ -64,7 +64,7 @@ kundi BaseSockTestsMixin:
     eleza _basetest_sock_client_ops(self, httpd, sock):
         ikiwa sio isinstance(self.loop, proactor_events.BaseProactorEventLoop):
             # kwenye debug mode, socket operations must fail
-            # ikiwa the socket ni sio kwenye blocking mode
+            # ikiwa the socket ni haiko kwenye blocking mode
             self.loop.set_debug(Kweli)
             sock.setblocking(Kweli)
             ukijumuisha self.assertRaises(ValueError):
@@ -98,14 +98,14 @@ kundi BaseSockTestsMixin:
         self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
 
     eleza _basetest_sock_recv_into(self, httpd, sock):
-        # same as _basetest_sock_client_ops, but using sock_recv_into
+        # same kama _basetest_sock_client_ops, but using sock_recv_into
         sock.setblocking(Uongo)
         self.loop.run_until_complete(
             self.loop.sock_connect(sock, httpd.address))
         self.loop.run_until_complete(
             self.loop.sock_sendall(sock, b'GET / HTTP/1.0\r\n\r\n'))
         data = bytearray(1024)
-        ukijumuisha memoryview(data) as buf:
+        ukijumuisha memoryview(data) kama buf:
             nbytes = self.loop.run_until_complete(
                 self.loop.sock_recv_into(sock, buf[:1024]))
             # consume data
@@ -115,7 +115,7 @@ kundi BaseSockTestsMixin:
         self.assertKweli(data.startswith(b'HTTP/1.0 200 OK'))
 
     eleza test_sock_client_ops(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             sock = socket.socket()
             self._basetest_sock_client_ops(httpd, sock)
             sock = socket.socket()
@@ -166,7 +166,7 @@ kundi BaseSockTestsMixin:
         sock.close()
 
     eleza test_huge_content(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             self.loop.run_until_complete(
                 self._basetest_huge_content(httpd.address))
 
@@ -221,13 +221,13 @@ kundi BaseSockTestsMixin:
         sock.close()
 
     eleza test_huge_content_recvinto(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             self.loop.run_until_complete(
                 self._basetest_huge_content_recvinto(httpd.address))
 
     @support.skip_unless_bind_unix_socket
     eleza test_unix_sock_client_ops(self):
-        ukijumuisha test_utils.run_test_unix_server() as httpd:
+        ukijumuisha test_utils.run_test_unix_server() kama httpd:
             sock = socket.socket(socket.AF_UNIX)
             self._basetest_sock_client_ops(httpd, sock)
             sock = socket.socket(socket.AF_UNIX)
@@ -268,7 +268,7 @@ kundi BaseSockTestsMixin:
         listener.close()
 
     eleza test_create_connection_sock(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             sock = Tupu
             infos = self.loop.run_until_complete(
                 self.loop.getaddrinfo(
@@ -279,8 +279,8 @@ kundi BaseSockTestsMixin:
                     sock.setblocking(Uongo)
                     self.loop.run_until_complete(
                         self.loop.sock_connect(sock, address))
-                except BaseException:
-                    pass
+                tatizo BaseException:
+                    pita
                 isipokua:
                     koma
             isipokua:

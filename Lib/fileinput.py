@@ -8,9 +8,9 @@ Typical use is:
 
 This iterates over the lines of all files listed kwenye sys.argv[1:],
 defaulting to sys.stdin ikiwa the list ni empty.  If a filename ni '-' it
-is also replaced by sys.stdin na the optional arguments mode and
+is also replaced by sys.stdin na the optional arguments mode na
 openhook are ignored.  To specify an alternative list of filenames,
-pass it as the argument to uliza().  A single file name ni also allowed.
+pita it kama the argument to uliza().  A single file name ni also allowed.
 
 Functions filename(), lineno() rudisha the filename na cumulative line
 number of the line that has just been read; filelineno() returns its
@@ -34,7 +34,7 @@ If an I/O error occurs during opening ama reading a file, the OSError
 exception ni raised.
 
 If sys.stdin ni used more than once, the second na further use will
-rudisha no lines, except perhaps kila interactive use, ama ikiwa it has been
+rudisha no lines, tatizo perhaps kila interactive use, ama ikiwa it has been
 explicitly reset (e.g. using sys.stdin.seek(0)).
 
 Empty files are opened na immediately closed; the only time their
@@ -54,7 +54,7 @@ sequence must be accessed kwenye strictly sequential order; sequence
 access na readline() cannot be mixed.
 
 Optional in-place filtering: ikiwa the keyword argument inplace=1 is
-passed to uliza() ama to the FileInput constructor, the file ni moved
+pitaed to uliza() ama to the FileInput constructor, the file ni moved
 to a backup file na standard output ni directed to the input file.
 This makes it possible to write a filter that rewrites its input file
 in place.  If the keyword argument backup=".<some extension>" ni also
@@ -83,13 +83,13 @@ _state = Tupu
 eleza uliza(files=Tupu, inplace=Uongo, backup="", *, mode="r", openhook=Tupu):
     """Return an instance of the FileInput class, which can be iterated.
 
-    The parameters are passed to the constructor of the FileInput class.
+    The parameters are pitaed to the constructor of the FileInput class.
     The returned instance, kwenye addition to being an iterator,
     keeps global state kila the functions of this module,.
     """
     global _state
     ikiwa _state na _state._file:
-         ashiria RuntimeError("uliza() already active")
+        ashiria RuntimeError("uliza() already active")
     _state = FileInput(files, inplace, backup, mode=mode, openhook=openhook)
     rudisha _state
 
@@ -112,7 +112,7 @@ eleza nextfile():
     last file has been read, this function has no effect.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.nextfile()
 
 eleza filename():
@@ -121,7 +121,7 @@ eleza filename():
     Before the first line has been read, returns Tupu.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.filename()
 
 eleza lineno():
@@ -131,7 +131,7 @@ eleza lineno():
     of the last file has been read, returns the line number of that line.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.lineno()
 
 eleza filelineno():
@@ -141,7 +141,7 @@ eleza filelineno():
     been read, returns the line number of that line within the file.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.filelineno()
 
 eleza fileno():
@@ -150,7 +150,7 @@ eleza fileno():
     opened, returns -1.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.fileno()
 
 eleza isfirstline():
@@ -159,7 +159,7 @@ eleza isfirstline():
     otherwise returns false.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.isfirstline()
 
 eleza isstdin():
@@ -168,7 +168,7 @@ eleza isstdin():
     otherwise returns false.
     """
     ikiwa sio _state:
-         ashiria RuntimeError("no active uliza()")
+        ashiria RuntimeError("no active uliza()")
     rudisha _state.isstdin()
 
 kundi FileInput:
@@ -188,7 +188,7 @@ kundi FileInput:
                  mode="r", openhook=Tupu):
         ikiwa isinstance(files, str):
             files = (files,)
-        elikiwa isinstance(files, os.PathLike):
+        lasivyo isinstance(files, os.PathLike):
             files = (os.fspath(files), )
         isipokua:
             ikiwa files ni Tupu:
@@ -209,20 +209,20 @@ kundi FileInput:
         self._isstdin = Uongo
         self._backupfilename = Tupu
         # restrict mode argument to reading modes
-        ikiwa mode sio kwenye ('r', 'rU', 'U', 'rb'):
-             ashiria ValueError("FileInput opening mode must be one of "
+        ikiwa mode haiko kwenye ('r', 'rU', 'U', 'rb'):
+            ashiria ValueError("FileInput opening mode must be one of "
                              "'r', 'rU', 'U' na 'rb'")
         ikiwa 'U' kwenye mode:
             agiza warnings
             warnings.warn("'U' mode ni deprecated",
                           DeprecationWarning, 2)
         self._mode = mode
-        self._write_mode = mode.replace('r', 'w') ikiwa 'U' sio kwenye mode isipokua 'w'
+        self._write_mode = mode.replace('r', 'w') ikiwa 'U' haiko kwenye mode isipokua 'w'
         ikiwa openhook:
             ikiwa inplace:
-                 ashiria ValueError("FileInput cannot use an opening hook kwenye inplace mode")
+                ashiria ValueError("FileInput cannot use an opening hook kwenye inplace mode")
             ikiwa sio callable(openhook):
-                 ashiria ValueError("FileInput openhook must be callable")
+                ashiria ValueError("FileInput openhook must be callable")
         self._openhook = openhook
 
     eleza __del__(self):
@@ -250,7 +250,7 @@ kundi FileInput:
                 self._filelineno += 1
                 rudisha line
             ikiwa sio self._file:
-                 ashiria StopIteration
+                ashiria StopIteration
             self.nextfile()
             # repeat ukijumuisha next file
 
@@ -263,11 +263,11 @@ kundi FileInput:
             stacklevel=2
         )
         ikiwa i != self.lineno():
-             ashiria RuntimeError("accessing lines out of order")
+            ashiria RuntimeError("accessing lines out of order")
         jaribu:
             rudisha self.__next__()
-        except StopIteration:
-             ashiria IndexError("end of input reached")
+        tatizo StopIteration:
+            ashiria IndexError("end of input reached")
 
     eleza nextfile(self):
         savestdout = self._savestdout
@@ -285,8 +285,8 @@ kundi FileInput:
             self._file = Tupu
             jaribu:
                 toa self._readline  # restore FileInput._readline
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
             jaribu:
                 ikiwa file na sio self._isstdin:
                     file.close()
@@ -295,7 +295,7 @@ kundi FileInput:
                 self._backupfilename = Tupu
                 ikiwa backupfilename na sio self._backup:
                     jaribu: os.unlink(backupfilename)
-                    except OSError: pass
+                    tatizo OSError: pita
 
                 self._isstdin = Uongo
 
@@ -336,14 +336,14 @@ kundi FileInput:
                     os.fspath(self._filename) + (self._backup ama ".bak"))
                 jaribu:
                     os.unlink(self._backupfilename)
-                except OSError:
-                    pass
-                # The next few lines may  ashiria OSError
+                tatizo OSError:
+                    pita
+                # The next few lines may ashiria OSError
                 os.rename(self._filename, self._backupfilename)
                 self._file = open(self._backupfilename, self._mode)
                 jaribu:
                     perm = os.fstat(self._file.fileno()).st_mode
-                except OSError:
+                tatizo OSError:
                     self._output = open(self._filename, self._write_mode)
                 isipokua:
                     mode = os.O_CREAT | os.O_WRONLY | os.O_TRUNC
@@ -354,12 +354,12 @@ kundi FileInput:
                     self._output = os.fdopen(fd, self._write_mode)
                     jaribu:
                         os.chmod(self._filename, perm)
-                    except OSError:
-                        pass
+                    tatizo OSError:
+                        pita
                 self._savestdout = sys.stdout
                 sys.stdout = self._output
             isipokua:
-                # This may  ashiria OSError
+                # This may ashiria OSError
                 ikiwa self._openhook:
                     self._file = self._openhook(self._filename, self._mode)
                 isipokua:
@@ -380,7 +380,7 @@ kundi FileInput:
         ikiwa self._file:
             jaribu:
                 rudisha self._file.fileno()
-            except ValueError:
+            tatizo ValueError:
                 rudisha -1
         isipokua:
             rudisha -1
@@ -397,7 +397,7 @@ eleza hook_compressed(filename, mode):
     ikiwa ext == '.gz':
         agiza gzip
         rudisha gzip.open(filename, mode)
-    elikiwa ext == '.bz2':
+    lasivyo ext == '.bz2':
         agiza bz2
         rudisha bz2.BZ2File(filename, mode)
     isipokua:

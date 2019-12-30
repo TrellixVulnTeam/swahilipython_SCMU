@@ -47,7 +47,7 @@ kundi FinderTests:
             self.check_found(found, importer)
 
     eleza test_empty_list(self):
-        # An empty list should sio count as asking kila sys.path.
+        # An empty list should sio count kama asking kila sys.path.
         module = 'module'
         path = '<test path>'
         importer = util.mock_spec(module)
@@ -74,7 +74,7 @@ kundi FinderTests:
         path_entry = 'bogus_path'
         ukijumuisha util.import_state(path_importer_cache={}, path_hooks=[],
                                path=[path_entry]):
-            ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+            ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
                 warnings.simplefilter('always')
                 self.assertIsTupu(self.find('os'))
                 self.assertIsTupu(sys.path_importer_cache[path_entry])
@@ -171,7 +171,7 @@ kundi FinderTests:
             os.chdir(new_dir)
             jaribu:
                 os.rmdir(new_dir)
-            except OSError:
+            tatizo OSError:
                 # EINVAL on Solaris, EBUSY on AIX, ENOTEMPTY on Windows
                 self.skipTest("platform does sio allow "
                               "the deletion of the cwd")
@@ -239,7 +239,7 @@ kundi PathEntryFinderTests:
             path_location = 'test_finder_with_find_module'
             eleza __init__(self, path):
                 ikiwa path != self.path_location:
-                     ashiria ImportError
+                    ashiria ImportError
 
             @staticmethod
             eleza find_module(fullname):
@@ -257,7 +257,7 @@ kundi PathEntryFinderTests:
             path_location = 'test_finder_with_find_module'
             eleza __init__(self, path):
                 ikiwa path != self.path_location:
-                     ashiria ImportError
+                    ashiria ImportError
 
             @staticmethod
             eleza find_module(fullname):

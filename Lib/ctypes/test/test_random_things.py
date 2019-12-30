@@ -3,12 +3,12 @@ agiza unittest, sys
 
 eleza callback_func(arg):
     42 / arg
-     ashiria ValueError(arg)
+    ashiria ValueError(arg)
 
 @unittest.skipUnless(sys.platform == "win32", 'Windows-specific test')
 kundi call_function_TestCase(unittest.TestCase):
     # _ctypes.call_function ni deprecated na private, but used by
-    # Gary Bishp's readline module.  If we have it, we must test it as well.
+    # Gary Bishp's readline module.  If we have it, we must test it kama well.
 
     eleza test(self):
         kutoka _ctypes agiza call_function

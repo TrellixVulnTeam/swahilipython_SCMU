@@ -115,8 +115,8 @@ eleza tick():
         hour_hand.setheading(30*stunde)
         tracer(Kweli)
         ontimer(tick, 100)
-    except Terminator:
-        pass  # turtledemo user pressed STOP
+    tatizo Terminator:
+        pita  # turtledemo user pressed STOP
 
 eleza main():
     tracer(Uongo)

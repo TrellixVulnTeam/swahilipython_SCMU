@@ -211,9 +211,9 @@ kundi TestMessageAPI(TestEmailBase):
         # XXX: there ought to be tests of the uniqueness of the boundary, too.
 
     eleza test_message_rfc822_only(self):
-        # Issue 7970: message/rfc822 sio kwenye multipart parsed by
+        # Issue 7970: message/rfc822 haiko kwenye multipart parsed by
         # HeaderParser caused an exception when flattened.
-        ukijumuisha openfile('msg_46.txt') as fp:
+        ukijumuisha openfile('msg_46.txt') kama fp:
             msgdata = fp.read()
         parser = HeaderParser()
         msg = parser.parsestr(msgdata)
@@ -223,8 +223,8 @@ kundi TestMessageAPI(TestEmailBase):
         self.assertEqual(out.getvalue(), msgdata)
 
     eleza test_byte_message_rfc822_only(self):
-        # Make sure new bytes header parser also passes this.
-        ukijumuisha openfile('msg_46.txt') as fp:
+        # Make sure new bytes header parser also pitaes this.
+        ukijumuisha openfile('msg_46.txt') kama fp:
             msgdata = fp.read().encode('ascii')
         parser = email.parser.BytesHeaderParser()
         msg = parser.parsebytes(msgdata)
@@ -273,7 +273,7 @@ kundi TestMessageAPI(TestEmailBase):
     eleza test_decoded_generator(self):
         eq = self.assertEqual
         msg = self._msgobj('msg_07.txt')
-        ukijumuisha openfile('msg_17.txt') as fp:
+        ukijumuisha openfile('msg_17.txt') kama fp:
             text = fp.read()
         s = StringIO()
         g = DecodedGenerator(s)
@@ -294,7 +294,7 @@ kundi TestMessageAPI(TestEmailBase):
 
     eleza test_as_string(self):
         msg = self._msgobj('msg_01.txt')
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             text = fp.read()
         self.assertEqual(text, str(msg))
         fullrepr = msg.as_string(unixfrom=Kweli)
@@ -313,7 +313,7 @@ kundi TestMessageAPI(TestEmailBase):
 
     eleza test_as_bytes(self):
         msg = self._msgobj('msg_01.txt')
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             data = fp.read().encode('ascii')
         self.assertEqual(data, bytes(msg))
         fullrepr = msg.as_bytes(unixfrom=Kweli)
@@ -458,7 +458,7 @@ kundi TestMessageAPI(TestEmailBase):
 
     eleza test_del_param_on_nonexistent_header(self):
         msg = Message()
-        # Deleting param on empty msg should sio  ashiria exception.
+        # Deleting param on empty msg should sio ashiria exception.
         msg.del_param('filename', 'content-disposition')
 
     eleza test_del_nonexistent_param(self):
@@ -761,7 +761,7 @@ kundi TestMessageAPI(TestEmailBase):
 kundi TestEncoders(unittest.TestCase):
 
     eleza test_EncodersEncode_base64(self):
-        ukijumuisha openfile('PyBanner048.gif', 'rb') as fp:
+        ukijumuisha openfile('PyBanner048.gif', 'rb') kama fp:
             bindata = fp.read()
         mimed = email.mime.image.MIMEImage(bindata)
         base64ed = mimed.get_payload()
@@ -1479,7 +1479,7 @@ Blah blah blah
 # Test the basic MIMEAudio class
 kundi TestMIMEAudio(unittest.TestCase):
     eleza setUp(self):
-        ukijumuisha openfile('audiotest.au', 'rb') as fp:
+        ukijumuisha openfile('audiotest.au', 'rb') kama fp:
             self._audiodata = fp.read()
         self._au = MIMEAudio(self._audiodata)
 
@@ -1519,7 +1519,7 @@ kundi TestMIMEAudio(unittest.TestCase):
 # Test the basic MIMEImage class
 kundi TestMIMEImage(unittest.TestCase):
     eleza setUp(self):
-        ukijumuisha openfile('PyBanner048.gif', 'rb') as fp:
+        ukijumuisha openfile('PyBanner048.gif', 'rb') kama fp:
             self._imgdata = fp.read()
         self._im = MIMEImage(self._imgdata)
 
@@ -1576,7 +1576,7 @@ kundi TestMIMEApplication(unittest.TestCase):
         # Issue 17171.
         bytesdata = b'\xfa\xfb\xfc\xfd\xfe\xff'
         msg = MIMEApplication(bytesdata, _encoder=encoders.encode_7or8bit)
-        # Treated as a string, this will be invalid code points.
+        # Treated kama a string, this will be invalid code points.
         self.assertEqual(msg.get_payload(), '\uFFFD' * len(bytesdata))
         self.assertEqual(msg.get_payload(decode=Kweli), bytesdata)
         self.assertEqual(msg['Content-Transfer-Encoding'], '8bit')
@@ -1592,10 +1592,10 @@ kundi TestMIMEApplication(unittest.TestCase):
     eleza test_binary_body_with_encode_noop(self):
         # Issue 16564: This does sio produce an RFC valid message, since to be
         # valid it should have a CTE of binary.  But the below works in
-        # Python2, na ni documented as working this way.
+        # Python2, na ni documented kama working this way.
         bytesdata = b'\xfa\xfb\xfc\xfd\xfe\xff'
         msg = MIMEApplication(bytesdata, _encoder=encoders.encode_noop)
-        # Treated as a string, this will be invalid code points.
+        # Treated kama a string, this will be invalid code points.
         self.assertEqual(msg.get_payload(), '\uFFFD' * len(bytesdata))
         self.assertEqual(msg.get_payload(decode=Kweli), bytesdata)
         s = BytesIO()
@@ -1711,7 +1711,7 @@ kundi TestMIMEText(unittest.TestCase):
 # Test complicated multipart/* messages
 kundi TestMultipart(TestEmailBase):
     eleza setUp(self):
-        ukijumuisha openfile('PyBanner048.gif', 'rb') as fp:
+        ukijumuisha openfile('PyBanner048.gif', 'rb') kama fp:
             data = fp.read()
         container = MIMEBase('multipart', 'mixed', boundary='BOUNDARY')
         image = MIMEImage(data, name='dingusfish.gif')
@@ -2005,7 +2005,7 @@ hello world
         eq = self.ndiffAssertEqual
         # msg_38.txt has an inner part that contains outer boundaries.  My
         # interpretation of RFC 2046 (based on sections 5.1 na 5.1.2) say
-        # these are illegal na should be interpreted as unterminated inner
+        # these are illegal na should be interpreted kama unterminated inner
         # parts.
         msg = self._msgobj('msg_38.txt')
         sfp = StringIO()
@@ -2023,7 +2023,7 @@ multipart/mixed
     eleza test_nested_with_same_boundary(self):
         eq = self.ndiffAssertEqual
         # msg 39.txt ni similarly evil kwenye that it's got inner parts that use
-        # the same boundary as outer parts.  Again, I believe the way this is
+        # the same boundary kama outer parts.  Again, I believe the way this is
         # parsed ni closest to the spirit of RFC 2046
         msg = self._msgobj('msg_39.txt')
         sfp = StringIO()
@@ -2172,7 +2172,7 @@ kundi TestNonConformant(TestEmailBase):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual
         msg = Message()
-        # RFC 2045, $5.2 says invalid yields text/plain
+        # RFC 2045, $5.2 says invalid tumas text/plain
         msg['Content-Type'] = 'text'
         eq(msg.get_content_maintype(), 'text')
         eq(msg.get_content_subtype(), 'plain')
@@ -2400,7 +2400,7 @@ Re: =?mac-iceland?q?r=8Aksm=9Arg=8Cs?= baz foo bar =?mac-iceland?q?r=8Aksm?=
 # Test the MIMEMessage class
 kundi TestMIMEMessage(TestEmailBase):
     eleza setUp(self):
-        ukijumuisha openfile('msg_11.txt') as fp:
+        ukijumuisha openfile('msg_11.txt') kama fp:
             self._text = fp.read()
 
     eleza test_type_error(self):
@@ -2491,7 +2491,7 @@ Your message cannot be delivered to the following recipients:
         subpart = msg.get_payload(1)
         eq(subpart.get_content_type(), 'message/delivery-status')
         eq(len(subpart.get_payload()), 2)
-        # message/delivery-status should treat each block as a bunch of
+        # message/delivery-status should treat each block kama a bunch of
         # headers, i.e. a bunch of Message objects.
         dsn1 = subpart.get_payload(0)
         self.assertIsInstance(dsn1, Message)
@@ -2519,7 +2519,7 @@ Your message cannot be delivered to the following recipients:
 
     eleza test_epilogue(self):
         eq = self.ndiffAssertEqual
-        ukijumuisha openfile('msg_21.txt') as fp:
+        ukijumuisha openfile('msg_21.txt') kama fp:
             text = fp.read()
         msg = Message()
         msg['From'] = 'aperson@dom.ain'
@@ -2574,7 +2574,7 @@ Two
 
     eleza test_default_type(self):
         eq = self.assertEqual
-        ukijumuisha openfile('msg_30.txt') as fp:
+        ukijumuisha openfile('msg_30.txt') kama fp:
             msg = email.message_from_file(fp)
         container1 = msg.get_payload(0)
         eq(container1.get_default_type(), 'message/rfc822')
@@ -2591,7 +2591,7 @@ Two
 
     eleza test_default_type_with_explicit_container_type(self):
         eq = self.assertEqual
-        ukijumuisha openfile('msg_28.txt') as fp:
+        ukijumuisha openfile('msg_28.txt') kama fp:
             msg = email.message_from_file(fp)
         container1 = msg.get_payload(0)
         eq(container1.get_default_type(), 'message/rfc822')
@@ -2702,7 +2702,7 @@ message 2
     eleza test_multipart_custom_policy(self):
         msg = MIMEMultipart(policy=email.policy.default)
         msg['To'] = 'a@b.com'
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             msg['To'] = 'c@d.com'
         self.assertEqual(str(cm.exception),
                          'There may be at most 1 To headers kwenye a message')
@@ -2717,7 +2717,7 @@ kundi TestIdempotent(TestEmailBase):
     linesep = '\n'
 
     eleza _msgobj(self, filename):
-        ukijumuisha openfile(filename) as fp:
+        ukijumuisha openfile(filename) kama fp:
             data = fp.read()
         msg = email.message_from_string(data)
         rudisha msg, data
@@ -2873,7 +2873,7 @@ kundi TestIdempotent(TestEmailBase):
 # Test various other bits of the package's functionality
 kundi TestMiscellaneous(TestEmailBase):
     eleza test_message_from_string(self):
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             text = fp.read()
         msg = email.message_from_string(text)
         s = StringIO()
@@ -2884,7 +2884,7 @@ kundi TestMiscellaneous(TestEmailBase):
         self.assertEqual(text, s.getvalue())
 
     eleza test_message_from_file(self):
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             text = fp.read()
             fp.seek(0)
             msg = email.message_from_file(fp)
@@ -2896,17 +2896,17 @@ kundi TestMiscellaneous(TestEmailBase):
             self.assertEqual(text, s.getvalue())
 
     eleza test_message_from_string_with_class(self):
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             text = fp.read()
 
         # Create a subclass
         kundi MyMessage(Message):
-            pass
+            pita
 
         msg = email.message_from_string(text, MyMessage)
         self.assertIsInstance(msg, MyMessage)
         # Try something more complicated
-        ukijumuisha openfile('msg_02.txt') as fp:
+        ukijumuisha openfile('msg_02.txt') kama fp:
             text = fp.read()
         msg = email.message_from_string(text, MyMessage)
         kila subpart kwenye msg.walk():
@@ -2915,13 +2915,13 @@ kundi TestMiscellaneous(TestEmailBase):
     eleza test_message_from_file_with_class(self):
         # Create a subclass
         kundi MyMessage(Message):
-            pass
+            pita
 
-        ukijumuisha openfile('msg_01.txt') as fp:
+        ukijumuisha openfile('msg_01.txt') kama fp:
             msg = email.message_from_file(fp, MyMessage)
         self.assertIsInstance(msg, MyMessage)
         # Try something more complicated
-        ukijumuisha openfile('msg_02.txt') as fp:
+        ukijumuisha openfile('msg_02.txt') kama fp:
             msg = email.message_from_file(fp, MyMessage)
         kila subpart kwenye msg.walk():
             self.assertIsInstance(subpart, MyMessage)
@@ -3133,7 +3133,7 @@ kundi TestMiscellaneous(TestEmailBase):
         # backslashes ni sio actually a quoted pair because it ni sio inside a
         # comment ama quoted string: the address being parsed has a quoted
         # string containing a quoted backslash, followed by 'example' na two
-        # backslashes, followed by another quoted string containing a space and
+        # backslashes, followed by another quoted string containing a space na
         # the word 'example'.  parseaddr copies those two backslashes
         # literally.  Per rfc5322 this ni sio technically correct since a \ may
         # sio appear kwenye an address outside of a quoted string.  It ni probably
@@ -3152,7 +3152,7 @@ kundi TestMiscellaneous(TestEmailBase):
         # of atoms, sio dotatoms).  On the other hand we strip whitespace from
         # before the @ na around dots, on the assumption that the whitespace
         # around the punctuation ni a mistake kwenye what would otherwise be
-        # an RFC5322 local part.  Leading whitespace is, usual, stripped as well.
+        # an RFC5322 local part.  Leading whitespace is, usual, stripped kama well.
         self.assertEqual(('', "merwok wok@xample.com"),
             utils.parseaddr("merwok wok@xample.com"))
         self.assertEqual(('', "merwok  wok@xample.com"),
@@ -3242,7 +3242,7 @@ Foo
 
         threads = [MsgidsThread() kila i kwenye range(5)]
         ukijumuisha start_threads(threads):
-            pass
+            pita
         all_ids = sum([t.msgids kila t kwenye threads], [])
         self.assertEqual(len(set(all_ids)), len(all_ids))
 
@@ -3348,7 +3348,7 @@ multipart/report
 
     eleza test_Generator_linend(self):
         # Issue 14645.
-        ukijumuisha openfile('msg_26.txt', newline='\n') as f:
+        ukijumuisha openfile('msg_26.txt', newline='\n') kama f:
             msgtxt = f.read()
         msgtxt_nl = msgtxt.replace('\r\n', '\n')
         msg = email.message_from_string(msgtxt)
@@ -3359,7 +3359,7 @@ multipart/report
 
     eleza test_BytesGenerator_linend(self):
         # Issue 14645.
-        ukijumuisha openfile('msg_26.txt', newline='\n') as f:
+        ukijumuisha openfile('msg_26.txt', newline='\n') kama f:
             msgtxt = f.read()
         msgtxt_nl = msgtxt.replace('\r\n', '\n')
         msg = email.message_from_string(msgtxt_nl)
@@ -3370,7 +3370,7 @@ multipart/report
 
     eleza test_BytesGenerator_linend_with_non_ascii(self):
         # Issue 14645.
-        ukijumuisha openfile('msg_26.txt', 'rb') as f:
+        ukijumuisha openfile('msg_26.txt', 'rb') kama f:
             msgtxt = f.read()
         msgtxt = msgtxt.replace(b'ukijumuisha attachment', b'fo\xf6')
         msgtxt_nl = msgtxt.replace(b'\r\n', b'\n')
@@ -3381,9 +3381,9 @@ multipart/report
         self.assertEqual(s.getvalue(), msgtxt)
 
     eleza test_mime_classes_policy_argument(self):
-        ukijumuisha openfile('audiotest.au', 'rb') as fp:
+        ukijumuisha openfile('audiotest.au', 'rb') kama fp:
             audiodata = fp.read()
-        ukijumuisha openfile('PyBanner048.gif', 'rb') as fp:
+        ukijumuisha openfile('PyBanner048.gif', 'rb') kama fp:
             bindata = fp.read()
         classes = [
             (MIMEApplication, ('',)),
@@ -3418,7 +3418,7 @@ kundi TestIterators(TestEmailBase):
         it = iterators.body_line_iterator(msg)
         lines = list(it)
         eq(len(lines), 43)
-        ukijumuisha openfile('msg_19.txt') as fp:
+        ukijumuisha openfile('msg_19.txt') kama fp:
             neq(EMPTYSTRING.join(lines), fp.read())
 
     eleza test_typed_subpart_iterator(self):
@@ -3559,7 +3559,7 @@ kundi TestParsers(TestEmailBase):
     eleza test_header_parser(self):
         eq = self.assertEqual
         # Parse only the headers of a complex multipart MIME document
-        ukijumuisha openfile('msg_02.txt') as fp:
+        ukijumuisha openfile('msg_02.txt') kama fp:
             msg = HeaderParser().parse(fp)
         eq(msg['from'], 'ppp-request@zzz.org')
         eq(msg['to'], 'ppp@zzz.org')
@@ -3570,7 +3570,7 @@ kundi TestParsers(TestEmailBase):
     eleza test_bytes_header_parser(self):
         eq = self.assertEqual
         # Parse only the headers of a complex multipart MIME document
-        ukijumuisha openfile('msg_02.txt', 'rb') as fp:
+        ukijumuisha openfile('msg_02.txt', 'rb') kama fp:
             msg = email.parser.BytesHeaderParser().parse(fp)
         eq(msg['from'], 'ppp-request@zzz.org')
         eq(msg['to'], 'ppp@zzz.org')
@@ -3580,12 +3580,12 @@ kundi TestParsers(TestEmailBase):
         self.assertIsInstance(msg.get_payload(decode=Kweli), bytes)
 
     eleza test_bytes_parser_does_not_close_file(self):
-        ukijumuisha openfile('msg_02.txt', 'rb') as fp:
+        ukijumuisha openfile('msg_02.txt', 'rb') kama fp:
             email.parser.BytesParser().parse(fp)
             self.assertUongo(fp.closed)
 
     eleza test_bytes_parser_on_exception_does_not_close_file(self):
-        ukijumuisha openfile('msg_15.txt', 'rb') as fp:
+        ukijumuisha openfile('msg_15.txt', 'rb') kama fp:
             bytesParser = email.parser.BytesParser
             self.assertRaises(email.errors.StartBoundaryNotFoundDefect,
                               bytesParser(policy=email.policy.strict).parse,
@@ -3593,12 +3593,12 @@ kundi TestParsers(TestEmailBase):
             self.assertUongo(fp.closed)
 
     eleza test_parser_does_not_close_file(self):
-        ukijumuisha openfile('msg_02.txt', 'r') as fp:
+        ukijumuisha openfile('msg_02.txt', 'r') kama fp:
             email.parser.Parser().parse(fp)
             self.assertUongo(fp.closed)
 
     eleza test_parser_on_exception_does_not_close_file(self):
-        ukijumuisha openfile('msg_15.txt', 'r') as fp:
+        ukijumuisha openfile('msg_15.txt', 'r') kama fp:
             parser = email.parser.Parser
             self.assertRaises(email.errors.StartBoundaryNotFoundDefect,
                               parser(policy=email.policy.strict).parse, fp)
@@ -3642,7 +3642,7 @@ Here's the message body
 
     eleza test_crlf_separation(self):
         eq = self.assertEqual
-        ukijumuisha openfile('msg_26.txt', newline='\n') as fp:
+        ukijumuisha openfile('msg_26.txt', newline='\n') kama fp:
             msg = Parser().parse(fp)
         eq(len(msg.get_payload()), 2)
         part1 = msg.get_payload(0)
@@ -3653,7 +3653,7 @@ Here's the message body
 
     eleza test_crlf_flatten(self):
         # Using newline='\n' preserves the crlfs kwenye this input file.
-        ukijumuisha openfile('msg_26.txt', newline='\n') as fp:
+        ukijumuisha openfile('msg_26.txt', newline='\n') kama fp:
             text = fp.read()
         msg = email.message_from_string(text)
         s = StringIO()
@@ -3666,7 +3666,7 @@ Here's the message body
     eleza test_multipart_digest_with_extra_mime_headers(self):
         eq = self.assertEqual
         neq = self.ndiffAssertEqual
-        ukijumuisha openfile('msg_28.txt') as fp:
+        ukijumuisha openfile('msg_28.txt') kama fp:
             msg = email.message_from_file(fp)
         # Structure is:
         # multipart/digest
@@ -3759,7 +3759,7 @@ Here's the message body
 kundi Test8BitBytesHandling(TestEmailBase):
     # In Python3 all input ni string, but that doesn't work ikiwa the actual input
     # uses an 8bit transfer encoding.  To hack around that, kwenye email 5.1 we
-    # decode byte streams using the surrogateescape error handler, and
+    # decode byte streams using the surrogateescape error handler, na
     # reconvert to binary at appropriate places ikiwa we detect surrogates.  This
     # doesn't allow us to transform headers ukijumuisha 8bit bytes (they get munged),
     # but it does allow us to parse na preserve them, na to decode body
@@ -3798,7 +3798,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
         # decodes the body using the charset kutoka the headers, na because the
         # source byte really ni utf-8 this works.  This ni likely to fail
         # against real dirty data (ie: produce mojibake), but the data is
-        # invalid anyway so it ni as good a guess as any.  But this means that
+        # invalid anyway so it ni kama good a guess kama any.  But this means that
         # this test just confirms the current behavior; that behavior ni not
         # necessarily the best possible behavior.  With 'decode' it is
         # returning the raw bytes, so that test should be of correct behavior,
@@ -3829,7 +3829,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
     # test_defect_handling:test_invalid_chars_in_base64_payload
     eleza test_8bit_in_base64_body(self):
         # If we get 8bit bytes kwenye a base64 body, we can just ignore them
-        # as being outside the base64 alphabet na decode anyway.  But
+        # kama being outside the base64 alphabet na decode anyway.  But
         # we register a defect.
         m = self.bodytest_msg.format(charset='utf-8',
                                      cte='base64',
@@ -3842,7 +3842,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
 
     eleza test_8bit_in_uuencode_body(self):
         # Sticking an 8bit byte kwenye a uuencode block makes it undecodable by
-        # normal means, so the block ni returned undecoded, but as bytes.
+        # normal means, so the block ni returned undecoded, but kama bytes.
         m = self.bodytest_msg.format(charset='utf-8',
                                      cte='uuencode',
                                      bodyline='<,.V<W1A; á ').encode('utf-8')
@@ -4039,9 +4039,9 @@ kundi Test8BitBytesHandling(TestEmailBase):
     eleza test_message_from_binary_file(self):
         fn = 'test.msg'
         self.addCleanup(unlink, fn)
-        ukijumuisha open(fn, 'wb') as testfile:
+        ukijumuisha open(fn, 'wb') kama testfile:
             testfile.write(self.non_latin_bin_msg)
-        ukijumuisha open(fn, 'rb') as testfile:
+        ukijumuisha open(fn, 'rb') kama testfile:
             m = email.parser.BytesParser().parse(testfile)
         self.assertEqual(str(m), self.non_latin_bin_msg_as7bit)
 
@@ -4089,7 +4089,7 @@ kundi Test8BitBytesHandling(TestEmailBase):
         self.assertEqual(str(m), self.latin_bin_msg_as7bit)
 
     eleza test_crlf_flatten(self):
-        ukijumuisha openfile('msg_26.txt', 'rb') as fp:
+        ukijumuisha openfile('msg_26.txt', 'rb') kama fp:
             text = fp.read()
         msg = email.message_from_bytes(text)
         s = BytesIO()
@@ -4175,7 +4175,7 @@ kundi BaseTestBytesGeneratorIdempotent:
     maxDiff = Tupu
 
     eleza _msgobj(self, filename):
-        ukijumuisha openfile(filename, 'rb') as fp:
+        ukijumuisha openfile(filename, 'rb') kama fp:
             data = fp.read()
         data = self.normalize_linesep_regex.sub(self.blinesep, data)
         msg = email.message_from_bytes(data)
@@ -4209,10 +4209,10 @@ kundi TestBase64(unittest.TestCase):
            len(base64mime.body_encode(b'hello', eol='')))
         kila size kwenye range(15):
             ikiwa   size == 0 : bsize = 0
-            elikiwa size <= 3 : bsize = 4
-            elikiwa size <= 6 : bsize = 8
-            elikiwa size <= 9 : bsize = 12
-            elikiwa size <= 12: bsize = 16
+            lasivyo size <= 3 : bsize = 4
+            lasivyo size <= 6 : bsize = 8
+            lasivyo size <= 9 : bsize = 12
+            lasivyo size <= 12: bsize = 16
             isipokua           : bsize = 20
             eq(base64mime.header_length('x' * size), bsize)
 
@@ -4266,7 +4266,7 @@ kundi TestQuopri(unittest.TestCase):
             (c kila c kwenye b'!*+-/')))
         # Set of characters (as byte integers) that do need to be encoded in
         # headers.
-        self.hnon = [c kila c kwenye range(256) ikiwa c sio kwenye self.hlit]
+        self.hnon = [c kila c kwenye range(256) ikiwa c haiko kwenye self.hlit]
         assert len(self.hlit) + len(self.hnon) == 256
         # Set of characters (as byte integers) that don't need to be encoded
         # kwenye bodies.
@@ -4275,7 +4275,7 @@ kundi TestQuopri(unittest.TestCase):
         self.blit.remove(ord('='))
         # Set of characters (as byte integers) that do need to be encoded in
         # bodies.
-        self.bnon = [c kila c kwenye range(256) ikiwa c sio kwenye self.blit]
+        self.bnon = [c kila c kwenye range(256) ikiwa c haiko kwenye self.blit]
         assert len(self.blit) + len(self.bnon) == 256
 
     eleza test_quopri_header_check(self):
@@ -4579,11 +4579,11 @@ two line""")
 # Test the Charset class
 kundi TestCharset(unittest.TestCase):
     eleza tearDown(self):
-        kutoka email agiza charset as CharsetModule
+        kutoka email agiza charset kama CharsetModule
         jaribu:
             toa CharsetModule.CHARSETS['fake']
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
 
     eleza test_codec_encodeable(self):
         eq = self.assertEqual
@@ -4616,13 +4616,13 @@ kundi TestCharset(unittest.TestCase):
 ##                c.body_encode('\xb5\xc6\xc3\xcf\xbb\xfe\xc9\xd7'))
 ##             eq('\xb5\xc6\xc3\xcf\xbb\xfe\xc9\xd7',
 ##                c.body_encode('\xb5\xc6\xc3\xcf\xbb\xfe\xc9\xd7', Uongo))
-##         except LookupError:
+##         tatizo LookupError:
 ##             # We probably don't have the Japanese codecs installed
-##             pass
+##             pita
         # Testing SF bug #625509, which we have to fake, since there are no
         # built-in encodings where the header encoding ni QP but the body
         # encoding ni not.
-        kutoka email agiza charset as CharsetModule
+        kutoka email agiza charset kama CharsetModule
         CharsetModule.add_charset('fake', CharsetModule.QP, Tupu, 'utf-8')
         c = Charset('fake')
         eq('hello world', c.body_encode('hello world'))
@@ -5410,7 +5410,7 @@ Content-Transfer-Encoding: 8bit
 kundi TestSigned(TestEmailBase):
 
     eleza _msg_and_obj(self, filename):
-        ukijumuisha openfile(filename) as fp:
+        ukijumuisha openfile(filename) kama fp:
             original = fp.read()
             msg = email.message_from_string(original)
         rudisha original, msg

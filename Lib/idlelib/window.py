@@ -15,9 +15,9 @@ kundi WindowList:
     eleza delete(self, window):
         jaribu:
             toa self.dict[str(window)]
-        except KeyError:
+        tatizo KeyError:
             # Sometimes, destroy() ni called twice
-            pass
+            pita
         self.call_callbacks()
 
     eleza add_windows_to_menu(self,  menu):
@@ -26,7 +26,7 @@ kundi WindowList:
             window = self.dict[key]
             jaribu:
                 title = window.get_title()
-            except TclError:
+            tatizo TclError:
                 endelea
             list.append((title, key, window))
         list.sort()
@@ -39,8 +39,8 @@ kundi WindowList:
     eleza unregister_callback(self, callback):
         jaribu:
             self.callbacks.remove(callback)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
     eleza call_callbacks(self):
         kila callback kwenye self.callbacks:
@@ -87,10 +87,10 @@ kundi ListedToplevel(Toplevel):
                 self.wm_deiconify()
             self.tkraise()
             self.focused_widget.focus_set()
-        except TclError:
+        tatizo TclError:
             # This can happen when the Window menu was torn off.
             # Simply ignore it.
-            pass
+            pita
 
 
 ikiwa __name__ == "__main__":

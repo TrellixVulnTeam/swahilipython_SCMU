@@ -21,7 +21,7 @@ kundi Parser:
         can then be manipulated na turned over to a Generator to rudisha the
         textual representation of the message.
 
-        The string must be formatted as a block of RFC 2822 headers na header
+        The string must be formatted kama a block of RFC 2822 headers na header
         continuation lines, optionally preceded by a `Unix-from' header.  The
         header block ni terminated either by the end of the string ama by a
         blank line.
@@ -60,7 +60,7 @@ kundi Parser:
         """Create a message structure kutoka a string.
 
         Returns the root of the message structure.  Optional headersonly ni a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers ama
         not.  The default ni Uongo, meaning it parses the entire contents of
         the file.
         """
@@ -85,7 +85,7 @@ kundi BytesParser:
         can then be manipulated na turned over to a Generator to rudisha the
         textual representation of the message.
 
-        The input must be formatted as a block of RFC 2822 headers na header
+        The input must be formatted kama a block of RFC 2822 headers na header
         continuation lines, optionally preceded by a `Unix-from' header.  The
         header block ni terminated either by the end of the input ama by a
         blank line.
@@ -115,7 +115,7 @@ kundi BytesParser:
         """Create a message structure kutoka a byte string.
 
         Returns the root of the message structure.  Optional headersonly ni a
-        flag specifying whether to stop parsing after reading the headers or
+        flag specifying whether to stop parsing after reading the headers ama
         not.  The default ni Uongo, meaning it parses the entire contents of
         the file.
         """

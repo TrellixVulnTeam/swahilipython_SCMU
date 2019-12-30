@@ -64,7 +64,7 @@ kundi RelativeImports:
                 uncache_names.append(name)
             isipokua:
                 uncache_names.append(name[:-len('.__init__')])
-        ukijumuisha util.mock_spec(*create) as importer:
+        ukijumuisha util.mock_spec(*create) kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 ukijumuisha warnings.catch_warnings():
                     warnings.simplefilter("ignore")

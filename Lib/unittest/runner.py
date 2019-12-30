@@ -17,7 +17,7 @@ kundi _WritelnDecorator(object):
 
     eleza __getattr__(self, attr):
         ikiwa attr kwenye ('stream', '__getstate__'):
-             ashiria AttributeError(attr)
+            ashiria AttributeError(attr)
         rudisha getattr(self.stream,attr)
 
     eleza writeln(self, arg=Tupu):
@@ -59,7 +59,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addSuccess(test)
         ikiwa self.showAll:
             self.stream.writeln("ok")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('.')
             self.stream.flush()
 
@@ -67,7 +67,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addError(test, err)
         ikiwa self.showAll:
             self.stream.writeln("ERROR")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('E')
             self.stream.flush()
 
@@ -75,7 +75,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addFailure(test, err)
         ikiwa self.showAll:
             self.stream.writeln("FAIL")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write('F')
             self.stream.flush()
 
@@ -83,7 +83,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addSkip(test, reason)
         ikiwa self.showAll:
             self.stream.writeln("skipped {0!r}".format(reason))
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("s")
             self.stream.flush()
 
@@ -91,7 +91,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addExpectedFailure(test, err)
         ikiwa self.showAll:
             self.stream.writeln("expected failure")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("x")
             self.stream.flush()
 
@@ -99,7 +99,7 @@ kundi TextTestResult(result.TestResult):
         super(TextTestResult, self).addUnexpectedSuccess(test)
         ikiwa self.showAll:
             self.stream.writeln("unexpected success")
-        elikiwa self.dots:
+        lasivyo self.dots:
             self.stream.write("u")
             self.stream.flush()
 
@@ -120,7 +120,7 @@ kundi TextTestResult(result.TestResult):
 kundi TextTestRunner(object):
     """A test runner kundi that displays results kwenye textual form.
 
-    It prints out the names of tests as they are run, errors as they
+    It prints out the names of tests kama they are run, errors kama they
     occur, na a summary of the results at the end of the test run.
     """
     resultkundi = TextTestResult
@@ -130,7 +130,7 @@ kundi TextTestRunner(object):
                  *, tb_locals=Uongo):
         """Construct a TextTestRunner.
 
-        Subclasses should accept **kwargs to ensure compatibility as the
+        Subclasses should accept **kwargs to ensure compatibility kama the
         interface changes.
         """
         ikiwa stream ni Tupu:
@@ -162,7 +162,7 @@ kundi TextTestRunner(object):
                 # ikiwa the filter ni 'default' ama 'always', special-case the
                 # warnings kutoka the deprecated unittest methods to show them
                 # no more than once per module, because they can be fairly
-                # noisy.  The -Wd na -Wa flags can be used to bypass this
+                # noisy.  The -Wd na -Wa flags can be used to bypita this
                 # only when self.warnings ni Tupu.
                 ikiwa self.warnings kwenye ['default', 'always']:
                     warnings.filterwarnings('module',
@@ -193,8 +193,8 @@ kundi TextTestRunner(object):
             results = map(len, (result.expectedFailures,
                                 result.unexpectedSuccesses,
                                 result.skipped))
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
             expectedFails, unexpectedSuccesses, skipped = results
 

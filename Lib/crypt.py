@@ -1,18 +1,18 @@
 """Wrapper to the POSIX crypt library call na associated functionality."""
 
-agiza sys as _sys
+agiza sys kama _sys
 
 jaribu:
     agiza _crypt
-except ModuleNotFoundError:
+tatizo ModuleNotFoundError:
     ikiwa _sys.platform == 'win32':
-         ashiria ImportError("The crypt module ni sio supported on Windows")
+        ashiria ImportError("The crypt module ni sio supported on Windows")
     isipokua:
-         ashiria ImportError("The required _crypt module was sio built as part of CPython")
+        ashiria ImportError("The required _crypt module was sio built kama part of CPython")
 
-agiza string as _string
-kutoka random agiza SystemRandom as _SystemRandom
-kutoka collections agiza namedtuple as _namedtuple
+agiza string kama _string
+kutoka random agiza SystemRandom kama _SystemRandom
+kutoka collections agiza namedtuple kama _namedtuple
 
 
 _saltchars = _string.ascii_letters + _string.digits + './'
@@ -37,8 +37,8 @@ eleza mksalt(method=Tupu, *, rounds=Tupu):
     ikiwa method ni Tupu:
         method = methods[0]
     ikiwa rounds ni sio Tupu na sio isinstance(rounds, int):
-         ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
-                        f'interpreted as an integer')
+        ashiria TypeError(f'{rounds.__class__.__name__} object cannot be '
+                        f'interpreted kama an integer')
     ikiwa sio method.ident:  # traditional
         s = ''
     isipokua:  # modular
@@ -50,24 +50,24 @@ eleza mksalt(method=Tupu, *, rounds=Tupu):
         isipokua:
             log_rounds = int.bit_length(rounds-1)
             ikiwa rounds != 1 << log_rounds:
-                 ashiria ValueError('rounds must be a power of 2')
+                ashiria ValueError('rounds must be a power of 2')
             ikiwa sio 4 <= log_rounds <= 31:
-                 ashiria ValueError('rounds out of the range 2**4 to 2**31')
+                ashiria ValueError('rounds out of the range 2**4 to 2**31')
         s += f'{log_rounds:02d}$'
-    elikiwa method.ident kwenye ('5', '6'):  # SHA-2
+    lasivyo method.ident kwenye ('5', '6'):  # SHA-2
         ikiwa rounds ni sio Tupu:
             ikiwa sio 1000 <= rounds <= 999_999_999:
-                 ashiria ValueError('rounds out of the range 1000 to 999_999_999')
+                ashiria ValueError('rounds out of the range 1000 to 999_999_999')
             s += f'rounds={rounds}$'
-    elikiwa rounds ni sio Tupu:
-         ashiria ValueError(f"{method} doesn't support the rounds argument")
+    lasivyo rounds ni sio Tupu:
+        ashiria ValueError(f"{method} doesn't support the rounds argument")
 
     s += ''.join(_sr.choice(_saltchars) kila char kwenye range(method.salt_chars))
     rudisha s
 
 
 eleza crypt(word, salt=Tupu):
-    """Return a string representing the one-way hash of a password, ukijumuisha a salt
+    """Return a string representing the one-way hash of a pitaword, ukijumuisha a salt
     prepended.
 
     If ``salt`` ni sio specified ama ni ``Tupu``, the strongest
@@ -100,7 +100,7 @@ _add_method('SHA256', '5', 16, 63)
 # Choose the strongest supported version of Blowfish hashing.
 # Early versions have flaws.  Version 'a' fixes flaws of
 # the initial implementation, 'b' fixes flaws of 'a'.
-# 'y' ni the same as 'b', kila compatibility
+# 'y' ni the same kama 'b', kila compatibility
 # ukijumuisha openwall crypt_blowfish.
 kila _v kwenye 'b', 'y', 'a', '':
     ikiwa _add_method('BLOWFISH', '2' + _v, 22, 59 + len(_v), rounds=1<<4):

@@ -18,7 +18,7 @@ kundi addbase(tempfile._TemporaryFileWrapper):
 
     eleza __init__(self, fp):
         super(addbase,  self).__init__(fp, '<urllib response>', delete=Uongo)
-        # Keep reference around as this was part of the original API.
+        # Keep reference around kama this was part of the original API.
         self.fp = fp
 
     eleza __repr__(self):
@@ -27,7 +27,7 @@ kundi addbase(tempfile._TemporaryFileWrapper):
 
     eleza __enter__(self):
         ikiwa self.fp.closed:
-             ashiria ValueError("I/O operation on closed file")
+            ashiria ValueError("I/O operation on closed file")
         rudisha self
 
     eleza __exit__(self, type, value, traceback):

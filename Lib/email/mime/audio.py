@@ -27,7 +27,7 @@ eleza _whatsnd(data):
 
     sndhdr.what() has a pretty cruddy interface, unfortunately.  This ni why
     we re-do it here.  It would be easier to reverse engineer the Unix 'file'
-    command na use the standard 'magic' file, as shipped ukijumuisha a modern Unix.
+    command na use the standard 'magic' file, kama shipped ukijumuisha a modern Unix.
     """
     hdr = data[:512]
     fakefile = BytesIO(hdr)
@@ -60,14 +60,14 @@ kundi MIMEAudio(MIMENonMultipart):
         Content-Transfer-Encoding ama other headers to the message as
         necessary.  The default encoding ni Base64.
 
-        Any additional keyword arguments are passed to the base class
+        Any additional keyword arguments are pitaed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
         ikiwa _subtype ni Tupu:
             _subtype = _whatsnd(_audiodata)
         ikiwa _subtype ni Tupu:
-             ashiria TypeError('Could sio find audio MIME subtype')
+            ashiria TypeError('Could sio find audio MIME subtype')
         MIMENonMultipart.__init__(self, 'audio', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_audiodata)

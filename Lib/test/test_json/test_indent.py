@@ -63,5 +63,5 @@ kundi TestIndent:
         check(Tupu, '{"3": 1}')
 
 
-kundi TestPyIndent(TestIndent, PyTest): pass
-kundi TestCIndent(TestIndent, CTest): pass
+kundi TestPyIndent(TestIndent, PyTest): pita
+kundi TestCIndent(TestIndent, CTest): pita

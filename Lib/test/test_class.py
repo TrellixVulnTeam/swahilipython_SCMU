@@ -124,7 +124,7 @@ eleza __ge__(self, *args):
 method_template = """\
 @trackCall
 eleza __%s__(self, *args):
-    pass
+    pita
 """
 
 d = {}
@@ -273,13 +273,13 @@ kundi ClassTests(unittest.TestCase):
 
         # List/dict operations
 
-        kundi Empty: pass
+        kundi Empty: pita
 
         jaribu:
             1 kwenye Empty()
             self.fail('failed, should have raised TypeError')
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         callLst[:] = []
         1 kwenye testme
@@ -424,11 +424,11 @@ kundi ClassTests(unittest.TestCase):
 
             @trackCall
             eleza __setattr__(self, *args):
-                pass
+                pita
 
             @trackCall
             eleza __delattr__(self, *args):
-                pass
+                pita
 
         testme = ExtraTests()
 
@@ -480,9 +480,9 @@ kundi ClassTests(unittest.TestCase):
         #  no __hash__
 
         kundi C0:
-            pass
+            pita
 
-        hash(C0()) # This should work; the next two should  ashiria TypeError
+        hash(C0()) # This should work; the next two should ashiria TypeError
 
         kundi C2:
             eleza __eq__(self, other): rudisha 1
@@ -494,28 +494,28 @@ kundi ClassTests(unittest.TestCase):
         # Test kila SF bug 532646
 
         kundi A:
-            pass
+            pita
         A.__call__ = A()
         a = A()
 
         jaribu:
             a() # This should sio segfault
-        except RecursionError:
-            pass
+        tatizo RecursionError:
+            pita
         isipokua:
-            self.fail("Failed to  ashiria RecursionError")
+            self.fail("Failed to ashiria RecursionError")
 
     eleza testForExceptionsRaisedInInstanceGetattr2(self):
         # Tests kila exceptions raised kwenye instance_getattr2().
 
         eleza booh(self):
-             ashiria AttributeError("booh")
+            ashiria AttributeError("booh")
 
         kundi A:
             a = property(booh)
         jaribu:
             A().a # Raised AttributeError: A instance has no attribute 'a'
-        except AttributeError as x:
+        tatizo AttributeError kama x:
             ikiwa str(x) != "booh":
                 self.fail("attribute error kila A().a got masked: %s" % x)
 
@@ -526,11 +526,11 @@ kundi ClassTests(unittest.TestCase):
         kundi I:
             __init__ = property(booh)
         jaribu:
-            # In debug mode, printed XXX undetected error and
+            # In debug mode, printed XXX undetected error na
             #  raises AttributeError
             I()
-        except AttributeError as x:
-            pass
+        tatizo AttributeError kama x:
+            pita
         isipokua:
             self.fail("attribute error kila I.__init__ got masked")
 
@@ -550,15 +550,15 @@ kundi ClassTests(unittest.TestCase):
             eleza __init__(self, x):
                 self.x = x
             eleza f(self):
-                pass
+                pita
             eleza g(self):
-                pass
+                pita
             eleza __eq__(self, other):
                 rudisha Kweli
             eleza __hash__(self):
-                 ashiria TypeError
+                ashiria TypeError
         kundi B(A):
-            pass
+            pita
 
         a1 = A(1)
         a2 = A(1)
@@ -587,7 +587,7 @@ kundi ClassTests(unittest.TestCase):
     eleza testSetattrWrapperNameIntern(self):
         # Issue #25794: __setattr__ should intern the attribute name
         kundi A:
-            pass
+            pita
 
         eleza add(self, other):
             rudisha 'summa'
@@ -606,7 +606,7 @@ kundi ClassTests(unittest.TestCase):
 
     eleza testSetattrNonStringName(self):
         kundi A:
-            pass
+            pita
 
         ukijumuisha self.assertRaises(TypeError):
             type.__setattr__(A, b'x', Tupu)
@@ -616,7 +616,7 @@ kundi ClassTests(unittest.TestCase):
 
         # Class without any method overrides
         kundi C:
-            pass
+            pita
 
         error_msg = r'C.__init__\(\) takes exactly one argument \(the instance to initialize\)'
 

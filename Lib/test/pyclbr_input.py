@@ -1,15 +1,15 @@
 """Test cases kila test_pyclbr.py"""
 
-eleza f(): pass
+eleza f(): pita
 
 kundi Other(object):
     @classmethod
-    eleza foo(c): pass
+    eleza foo(c): pita
 
-    eleza om(self): pass
+    eleza om(self): pita
 
 kundi B (object):
-    eleza bm(self): pass
+    eleza bm(self): pita
 
 kundi C (B):
     foo = Other().foo
@@ -20,14 +20,14 @@ kundi C (B):
     # XXX: This causes test_pyclbr.py to fail, but only because the
     #      introspection-based is_method() code kwenye the test can't
     #      distinguish between this na a genuine method function like m().
-    #      The pyclbr.py module gets this right as it parses the text.
+    #      The pyclbr.py module gets this right kama it parses the text.
     #
     #f = f
 
-    eleza m(self): pass
+    eleza m(self): pita
 
     @staticmethod
-    eleza sm(self): pass
+    eleza sm(self): pita
 
     @classmethod
-    eleza cm(self): pass
+    eleza cm(self): pita

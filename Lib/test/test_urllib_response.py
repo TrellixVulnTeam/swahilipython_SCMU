@@ -19,8 +19,8 @@ kundi TestResponse(unittest.TestCase):
         self.assertIsInstance(addbase, tempfile._TemporaryFileWrapper)
 
         eleza f():
-            ukijumuisha addbase as spam:
-                pass
+            ukijumuisha addbase kama spam:
+                pita
         self.assertUongo(self.fp.closed)
         f()
         self.assertKweli(self.fp.closed)

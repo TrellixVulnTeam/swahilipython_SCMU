@@ -30,7 +30,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
     eleza test_issue2301(self):
         jaribu:
             compile(b"# coding: cp932\nprint '\x94\x4e'", "dummy", "exec")
-        except SyntaxError as v:
+        tatizo SyntaxError kama v:
             self.assertEqual(v.text.rstrip('\n'), "print '\u5e74'")
         isipokua:
             self.fail()
@@ -99,7 +99,7 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
 
         path = os.path.dirname(__file__)
         filename = os.path.join(path, module_name + '.py')
-        ukijumuisha open(filename, "rb") as fp:
+        ukijumuisha open(filename, "rb") kama fp:
             bytes = fp.read()
         self.assertRaises(SyntaxError, compile, bytes, filename, 'exec')
 
@@ -135,10 +135,10 @@ kundi MiscSourceEncodingTest(unittest.TestCase):
     eleza test_error_from_string(self):
         # See http://bugs.python.org/issue6289
         input = "# coding: ascii\n\N{SNOWMAN}".encode('utf-8')
-        ukijumuisha self.assertRaises(SyntaxError) as c:
+        ukijumuisha self.assertRaises(SyntaxError) kama c:
             compile(input, "<string>", "exec")
         expected = "'ascii' codec can't decode byte 0xe2 kwenye position 16: " \
-                   "ordinal sio kwenye range(128)"
+                   "ordinal haiko kwenye range(128)"
         self.assertKweli(c.exception.args[0].startswith(expected),
                         msg=c.exception.args[0])
 
@@ -204,7 +204,7 @@ kundi AbstractSourceEncodingTest:
 kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             exec(src)
         out = stdout.getvalue().encode('latin1')
         self.assertEqual(out.rstrip(), expected)
@@ -213,9 +213,9 @@ kundi BytesSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 kundi FileSourceEncodingTest(AbstractSourceEncodingTest, unittest.TestCase):
 
     eleza check_script_output(self, src, expected):
-        ukijumuisha tempfile.TemporaryDirectory() as tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, 'test.py')
-            ukijumuisha open(fn, 'wb') as fp:
+            ukijumuisha open(fn, 'wb') kama fp:
                 fp.write(src)
             res = script_helper.assert_python_ok(fn)
         self.assertEqual(res.out.rstrip(), expected)

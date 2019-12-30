@@ -1,6 +1,6 @@
 """ Python 'undefined' Codec
 
-    This codec will always  ashiria a ValueError exception when being
+    This codec will always ashiria a ValueError exception when being
     used. It ni intended kila use by the site.py file to switch off
     automatic string to Unicode coercion.
 
@@ -16,24 +16,24 @@ agiza codecs
 kundi Codec(codecs.Codec):
 
     eleza encode(self,input,errors='strict'):
-         ashiria UnicodeError("undefined encoding")
+        ashiria UnicodeError("undefined encoding")
 
     eleza decode(self,input,errors='strict'):
-         ashiria UnicodeError("undefined encoding")
+        ashiria UnicodeError("undefined encoding")
 
 kundi IncrementalEncoder(codecs.IncrementalEncoder):
     eleza encode(self, input, final=Uongo):
-         ashiria UnicodeError("undefined encoding")
+        ashiria UnicodeError("undefined encoding")
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
     eleza decode(self, input, final=Uongo):
-         ashiria UnicodeError("undefined encoding")
+        ashiria UnicodeError("undefined encoding")
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

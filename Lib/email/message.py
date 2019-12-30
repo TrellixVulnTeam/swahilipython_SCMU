@@ -15,7 +15,7 @@ kutoka io agiza BytesIO, StringIO
 kutoka email agiza utils
 kutoka email agiza errors
 kutoka email._policybase agiza Policy, compat32
-kutoka email agiza charset as _charset
+kutoka email agiza charset kama _charset
 kutoka email._encoded_words agiza decode_b
 Charset = _charset.Charset
 
@@ -42,7 +42,7 @@ eleza _formatparam(param, value=Tupu, quote=Kweli):
     This will quote the value ikiwa needed ama ikiwa quote ni true.  If value ni a
     three tuple (charset, language, value), it will be encoded according
     to RFC2231 rules.  If it contains non-ascii characters it will likewise
-    be encoded according to RFC2231 rules, using the utf-8 charset and
+    be encoded according to RFC2231 rules, using the utf-8 charset na
     a null language.
     """
     ikiwa value ni sio Tupu na len(value) > 0:
@@ -50,14 +50,14 @@ eleza _formatparam(param, value=Tupu, quote=Kweli):
         # are (charset, language, value).  charset ni a string, sio a Charset
         # instance.  RFC 2231 encoded values are never quoted, per RFC.
         ikiwa isinstance(value, tuple):
-            # Encode as per RFC 2231
+            # Encode kama per RFC 2231
             param += '*'
             value = utils.encode_rfc2231(value[2], value[0], value[1])
             rudisha '%s=%s' % (param, value)
         isipokua:
             jaribu:
                 value.encode('ascii')
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 param += '*'
                 value = utils.encode_rfc2231(value, 'utf-8', '')
                 rudisha '%s=%s' % (param, value)
@@ -92,7 +92,7 @@ eleza _parseparam(s):
 
 eleza _unquotevalue(value):
     # This ni different than utils.collapse_rfc2231_value() because it doesn't
-    # try to convert the value to a unicode.  Message.get_param() and
+    # try to convert the value to a unicode.  Message.get_param() na
     # Message.get_params() are both currently defined to rudisha the tuple in
     # the face of RFC 2231 parameters.
     ikiwa isinstance(value, tuple):
@@ -105,7 +105,7 @@ eleza _unquotevalue(value):
 kundi Message:
     """Basic message object.
 
-    A message object ni defined as something that has a bunch of RFC 2822
+    A message object ni defined kama something that has a bunch of RFC 2822
     headers na a payload.  It may optionally have an envelope header
     (a.k.a. Unix-From ama From_ header).  If the message ni a container (i.e. a
     multipart ama a message/rfc822), then the payload ni a list of Message
@@ -130,17 +130,17 @@ kundi Message:
         self._default_type = 'text/plain'
 
     eleza __str__(self):
-        """Return the entire formatted message as a string.
+        """Return the entire formatted message kama a string.
         """
         rudisha self.as_string()
 
     eleza as_string(self, unixfrom=Uongo, maxheaderlen=0, policy=Tupu):
-        """Return the entire formatted message as a string.
+        """Return the entire formatted message kama a string.
 
         Optional 'unixfrom', when true, means include the Unix From_ envelope
         header.  For backward compatibility reasons, ikiwa maxheaderlen is
         sio specified it defaults to 0, so you must override it explicitly
-        ikiwa you want a different maxheaderlen.  'policy' ni passed to the
+        ikiwa you want a different maxheaderlen.  'policy' ni pitaed to the
         Generator instance used to serialize the mesasge; ikiwa it ni not
         specified the policy associated ukijumuisha the message instance ni used.
 
@@ -159,15 +159,15 @@ kundi Message:
         rudisha fp.getvalue()
 
     eleza __bytes__(self):
-        """Return the entire formatted message as a bytes object.
+        """Return the entire formatted message kama a bytes object.
         """
         rudisha self.as_bytes()
 
     eleza as_bytes(self, unixfrom=Uongo, policy=Tupu):
-        """Return the entire formatted message as a bytes object.
+        """Return the entire formatted message kama a bytes object.
 
         Optional 'unixfrom', when true, means include the Unix From_ envelope
-        header.  'policy' ni passed to the BytesGenerator instance used to
+        header.  'policy' ni pitaed to the BytesGenerator instance used to
         serialize the message; ikiwa sio specified the policy associated with
         the message instance ni used.
         """
@@ -206,8 +206,8 @@ kundi Message:
         isipokua:
             jaribu:
                 self._payload.append(payload)
-            except AttributeError:
-                 ashiria TypeError("Attach ni sio valid on a message ukijumuisha a"
+            tatizo AttributeError:
+                ashiria TypeError("Attach ni sio valid on a message ukijumuisha a"
                                 " non-multipart payload")
 
     eleza get_payload(self, i=Tupu, decode=Uongo):
@@ -237,8 +237,8 @@ kundi Message:
         #   i     Kweli    Kweli          Tupu
         #  Tupu   Uongo   Kweli          _payload (a list)
         #   i     Uongo   Kweli          _payload element i (a Message)
-        #   i     Uongo   Uongo         error (not a list)
-        #   i     Kweli    Uongo         error (not a list)
+        #   i     Uongo   Uongo         error (sio a list)
+        #   i     Kweli    Uongo         error (sio a list)
         #  Tupu   Uongo   Uongo         _payload
         #  Tupu   Kweli    Uongo         _payload decoded (bytes)
         # Note that Barry planned to factor out the 'decode' case, but that
@@ -254,7 +254,7 @@ kundi Message:
         # For backward compatibility, Use isinstance na this error message
         # instead of the more logical is_multipart test.
         ikiwa i ni sio Tupu na sio isinstance(self._payload, list):
-             ashiria TypeError('Expected list, got %s' % type(self._payload))
+            ashiria TypeError('Expected list, got %s' % type(self._payload))
         payload = self._payload
         # cte might be a Header, so kila now stringify it.
         cte = str(self.get('content-transfer-encoding', '')).lower()
@@ -265,12 +265,12 @@ kundi Message:
                 ikiwa sio decode:
                     jaribu:
                         payload = bpayload.decode(self.get_param('charset', 'ascii'), 'replace')
-                    except LookupError:
+                    tatizo LookupError:
                         payload = bpayload.decode('ascii', 'replace')
-            elikiwa decode:
+            lasivyo decode:
                 jaribu:
                     bpayload = payload.encode('ascii')
-                except UnicodeError:
+                tatizo UnicodeError:
                     # This won't happen kila RFC compliant messages (messages
                     # containing only ASCII code points kwenye the unicode input).
                     # If it does happen, turn the string into bytes kwenye a way
@@ -280,20 +280,20 @@ kundi Message:
             rudisha payload
         ikiwa cte == 'quoted-printable':
             rudisha quopri.decodestring(bpayload)
-        elikiwa cte == 'base64':
+        lasivyo cte == 'base64':
             # XXX: this ni a bit of a hack; decode_b should probably be factored
             # out somewhere, but I haven't figured out where yet.
             value, defects = decode_b(b''.join(bpayload.splitlines()))
             kila defect kwenye defects:
                 self.policy.handle_defect(self, defect)
             rudisha value
-        elikiwa cte kwenye ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
+        lasivyo cte kwenye ('x-uuencode', 'uuencode', 'uue', 'x-uue'):
             in_file = BytesIO(bpayload)
             out_file = BytesIO()
             jaribu:
                 uu.decode(in_file, out_file, quiet=Kweli)
                 rudisha out_file.getvalue()
-            except uu.Error:
+            tatizo uu.Error:
                 # Some decoding problem
                 rudisha bpayload
         ikiwa isinstance(payload, str):
@@ -323,7 +323,7 @@ kundi Message:
     eleza set_charset(self, charset):
         """Set the charset of the payload to a given character set.
 
-        charset can be a Charset instance, a string naming a character set, or
+        charset can be a Charset instance, a string naming a character set, ama
         Tupu.  If it ni a string it will be converted to a Charset instance.
         If charset ni Tupu, the charset parameter will be removed kutoka the
         Content-Type field.  Anything isipokua will generate a TypeError.
@@ -332,7 +332,7 @@ kundi Message:
         charset.input_charset.  It will be converted to charset.output_charset
         na encoded properly, ikiwa needed, when generating the plain text
         representation of the message.  MIME headers (MIME-Version,
-        Content-Type, Content-Transfer-Encoding) will be added as needed.
+        Content-Type, Content-Transfer-Encoding) will be added kama needed.
         """
         ikiwa charset ni Tupu:
             self.del_param('charset')
@@ -341,20 +341,20 @@ kundi Message:
         ikiwa sio isinstance(charset, Charset):
             charset = Charset(charset)
         self._charset = charset
-        ikiwa 'MIME-Version' sio kwenye self:
+        ikiwa 'MIME-Version' haiko kwenye self:
             self.add_header('MIME-Version', '1.0')
-        ikiwa 'Content-Type' sio kwenye self:
+        ikiwa 'Content-Type' haiko kwenye self:
             self.add_header('Content-Type', 'text/plain',
                             charset=charset.get_output_charset())
         isipokua:
             self.set_param('charset', charset.get_output_charset())
         ikiwa charset != charset.get_output_charset():
             self._payload = charset.body_encode(self._payload)
-        ikiwa 'Content-Transfer-Encoding' sio kwenye self:
+        ikiwa 'Content-Transfer-Encoding' haiko kwenye self:
             cte = charset.get_body_encoding()
             jaribu:
                 cte(self)
-            except TypeError:
+            tatizo TypeError:
                 # This 'if' ni kila backward compatibility, it allows unicode
                 # through even though that won't work correctly ikiwa the
                 # message ni serialized.
@@ -362,7 +362,7 @@ kundi Message:
                 ikiwa payload:
                     jaribu:
                         payload = payload.encode('ascii', 'surrogateescape')
-                    except UnicodeError:
+                    tatizo UnicodeError:
                         payload = payload.encode(charset.output_charset)
                 self._payload = charset.body_encode(payload)
                 self.add_header('Content-Transfer-Encoding', cte)
@@ -404,14 +404,14 @@ kundi Message:
                 ikiwa k.lower() == lname:
                     found += 1
                     ikiwa found >= max_count:
-                         ashiria ValueError("There may be at most {} {} headers "
+                        ashiria ValueError("There may be at most {} {} headers "
                                          "in a message".format(max_count, name))
         self._headers.append(self.policy.header_store_parse(name, val))
 
     eleza __delitem__(self, name):
         """Delete all occurrences of a header, ikiwa present.
 
-        Does sio  ashiria an exception ikiwa the header ni missing.
+        Does sio ashiria an exception ikiwa the header ni missing.
         """
         name = name.lower()
         newheaders = []
@@ -498,7 +498,7 @@ kundi Message:
         """Return a list of all the values kila the named field.
 
         These will be sorted kwenye the order they appeared kwenye the original
-        message, na may contain duplicates.  Any fields deleted and
+        message, na may contain duplicates.  Any fields deleted na
         re-inserted are always appended to the header list.
 
         If no such fields exist, failobj ni returned (defaults to Tupu).
@@ -517,9 +517,9 @@ kundi Message:
 
         name ni the header field to add.  keyword arguments can be used to set
         additional parameters kila the header field, ukijumuisha underscores converted
-        to dashes.  Normally the parameter will be added as key="value" unless
+        to dashes.  Normally the parameter will be added kama key="value" unless
         value ni Tupu, kwenye which case only the key will be added.  If a
-        parameter value contains non-ASCII characters it can be specified as a
+        parameter value contains non-ASCII characters it can be specified kama a
         three-tuple of (charset, language, value), kwenye which case it will be
         encoded according to RFC2231 rules.  Otherwise it will be encoded using
         the utf-8 charset na a language of ''.
@@ -555,7 +555,7 @@ kundi Message:
                 self._headers[i] = self.policy.header_store_parse(k, _value)
                 koma
         isipokua:
-             ashiria KeyError(_name)
+            ashiria KeyError(_name)
 
     #
     # Use these three methods instead of the three above.
@@ -566,7 +566,7 @@ kundi Message:
 
         The returned string ni coerced to lower case of the form
         `maintype/subtype'.  If there was no Content-Type header kwenye the
-        message, the default type as given by get_default_type() will be
+        message, the default type kama given by get_default_type() will be
         returned.  Since according to RFC 2045, messages always have a default
         type this will always rudisha a value.
 
@@ -606,7 +606,7 @@ kundi Message:
     eleza get_default_type(self):
         """Return the `default' content type.
 
-        Most messages have a default content type of text/plain, except for
+        Most messages have a default content type of text/plain, tatizo for
         messages that are subparts of multipart/digest containers.  Such
         subparts have a default content type of message/rfc822.
         """
@@ -634,7 +634,7 @@ kundi Message:
                 name, val = p.split('=', 1)
                 name = name.strip()
                 val = val.strip()
-            except ValueError:
+            tatizo ValueError:
                 # Must have been a bare attribute
                 name = p.strip()
                 val = ''
@@ -643,7 +643,7 @@ kundi Message:
         rudisha params
 
     eleza get_params(self, failobj=Tupu, header='content-type', unquote=Kweli):
-        """Return the message's Content-Type parameters, as a list.
+        """Return the message's Content-Type parameters, kama a list.
 
         The elements of the returned list are 2-tuples of key/value pairs, as
         split on the `=' sign.  The left hand side of the `=' ni the key,
@@ -675,20 +675,20 @@ kundi Message:
         Parameter keys are always compared case insensitively.  The return
         value can either be a string, ama a 3-tuple ikiwa the parameter was RFC
         2231 encoded.  When it's a 3-tuple, the elements of the value are of
-        the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET and
+        the form (CHARSET, LANGUAGE, VALUE).  Note that both CHARSET na
         LANGUAGE can be Tupu, kwenye which case you should consider VALUE to be
         encoded kwenye the us-ascii charset.  You can usually ignore LANGUAGE.
         The parameter value (either the returned string, ama the VALUE item in
         the 3-tuple) ni always unquoted, unless unquote ni set to Uongo.
 
         If your application doesn't care whether the parameter was RFC 2231
-        encoded, it can turn the rudisha value into a string as follows:
+        encoded, it can turn the rudisha value into a string kama follows:
 
             rawparam = msg.get_param('foo')
             param = email.utils.collapse_rfc2231_value(rawparam)
 
         """
-        ikiwa header sio kwenye self:
+        ikiwa header haiko kwenye self:
             rudisha failobj
         kila k, v kwenye self._get_params_preserve(failobj, header):
             ikiwa k.lower() == param.lower():
@@ -706,11 +706,11 @@ kundi Message:
         replaced ukijumuisha the new value.
 
         If header ni Content-Type na has sio yet been defined kila this
-        message, it will be set to "text/plain" na the new parameter and
-        value will be appended as per RFC 2045.
+        message, it will be set to "text/plain" na the new parameter na
+        value will be appended kama per RFC 2045.
 
         An alternate header can be specified kwenye the header argument, na all
-        parameters will be quoted as necessary unless requote ni Uongo.
+        parameters will be quoted kama necessary unless requote ni Uongo.
 
         If charset ni specified, the parameter will be encoded according to RFC
         2231.  Optional language specifies the RFC 2231 language, defaulting
@@ -719,7 +719,7 @@ kundi Message:
         ikiwa sio isinstance(value, tuple) na charset:
             value = (charset, language, value)
 
-        ikiwa header sio kwenye self na header.lower() == 'content-type':
+        ikiwa header haiko kwenye self na header.lower() == 'content-type':
             ctype = 'text/plain'
         isipokua:
             ctype = self.get(header)
@@ -753,11 +753,11 @@ kundi Message:
         """Remove the given parameter completely kutoka the Content-Type header.
 
         The header will be re-written kwenye place without the parameter ama its
-        value. All values will be quoted as necessary unless requote is
+        value. All values will be quoted kama necessary unless requote is
         Uongo.  Optional header specifies an alternative to the Content-Type
         header.
         """
-        ikiwa header sio kwenye self:
+        ikiwa header haiko kwenye self:
             return
         new_ctype = ''
         kila p, v kwenye self.get_params(header=header, unquote=requote):
@@ -779,7 +779,7 @@ kundi Message:
 
         This method replaces the Content-Type header, keeping all the
         parameters kwenye place.  If requote ni Uongo, this leaves the existing
-        header's quoting as is.  Otherwise, the parameters will be quoted (the
+        header's quoting kama is.  Otherwise, the parameters will be quoted (the
         default).
 
         An alternative header can be specified kwenye the header argument.  When
@@ -788,12 +788,12 @@ kundi Message:
         """
         # BAW: should we be strict?
         ikiwa sio type.count('/') == 1:
-             ashiria ValueError
+            ashiria ValueError
         # Set the Content-Type, you get a MIME-Version
         ikiwa header.lower() == 'content-type':
             toa self['mime-version']
             self['MIME-Version'] = '1.0'
-        ikiwa header sio kwenye self:
+        ikiwa header haiko kwenye self:
             self[header] = type
             return
         params = self.get_params(header=header, unquote=requote)
@@ -835,7 +835,7 @@ kundi Message:
     eleza set_boundary(self, boundary):
         """Set the boundary parameter kwenye Content-Type to 'boundary'.
 
-        This ni subtly different than deleting the Content-Type header and
+        This ni subtly different than deleting the Content-Type header na
         adding a new one ukijumuisha a new boundary parameter via add_header().  The
         main difference ni that using the set_boundary() method preserves the
         order of the Content-Type header kwenye the original message.
@@ -846,8 +846,8 @@ kundi Message:
         params = self._get_params_preserve(missing, 'content-type')
         ikiwa params ni missing:
             # There was no Content-Type header, na we don't know what type
-            # to set it to, so  ashiria an exception.
-             ashiria errors.HeaderParseError('No Content-Type header found')
+            # to set it to, so ashiria an exception.
+            ashiria errors.HeaderParseError('No Content-Type header found')
         newparams = []
         foundp = Uongo
         kila pk, pv kwenye params:
@@ -858,7 +858,7 @@ kundi Message:
                 newparams.append((pk, pv))
         ikiwa sio foundp:
             # The original Content-Type header had no boundary attribute.
-            # Tack one on the end.  BAW: should we  ashiria an exception
+            # Tack one on the end.  BAW: should we ashiria an exception
             # instead???
             newparams.append(('boundary', '"%s"' % boundary))
         # Replace the existing Content-Type header ukijumuisha the new value
@@ -890,20 +890,20 @@ kundi Message:
         ikiwa charset ni missing:
             rudisha failobj
         ikiwa isinstance(charset, tuple):
-            # RFC 2231 encoded, so decode it, na it better end up as ascii.
+            # RFC 2231 encoded, so decode it, na it better end up kama ascii.
             pcharset = charset[0] ama 'us-ascii'
             jaribu:
                 # LookupError will be raised ikiwa the charset isn't known to
                 # Python.  UnicodeError will be raised ikiwa the encoded text
-                # contains a character sio kwenye the charset.
+                # contains a character haiko kwenye the charset.
                 as_bytes = charset[2].encode('raw-unicode-escape')
                 charset = str(as_bytes, pcharset)
-            except (LookupError, UnicodeError):
+            tatizo (LookupError, UnicodeError):
                 charset = charset[2]
         # charset characters must be kwenye us-ascii range
         jaribu:
             charset.encode('us-ascii')
-        except UnicodeError:
+        tatizo UnicodeError:
             rudisha failobj
         # RFC 2046, $4.1.2 says charsets are sio case sensitive
         rudisha charset.lower()
@@ -952,13 +952,13 @@ kundi MIMEPart(Message):
 
 
     eleza as_string(self, unixfrom=Uongo, maxheaderlen=Tupu, policy=Tupu):
-        """Return the entire formatted message as a string.
+        """Return the entire formatted message kama a string.
 
         Optional 'unixfrom', when true, means include the Unix From_ envelope
         header.  maxheaderlen ni retained kila backward compatibility ukijumuisha the
         base Message class, but defaults to Tupu, meaning that the policy value
         kila max_line_length controls the header maximum length.  'policy' is
-        passed to the Generator instance used to serialize the mesasge; ikiwa it
+        pitaed to the Generator instance used to serialize the mesasge; ikiwa it
         ni sio specified the policy associated ukijumuisha the message instance is
         used.
         """
@@ -1004,13 +1004,13 @@ kundi MIMEPart(Message):
             tuma kutoka self._find_body(candidate, preferencelist)
 
     eleza get_body(self, preferencelist=('related', 'html', 'plain')):
-        """Return best candidate mime part kila display as 'body' of message.
+        """Return best candidate mime part kila display kama 'body' of message.
 
         Do a depth first search, starting ukijumuisha self, looking kila the first part
         matching each of the items kwenye preferencelist, na rudisha the part
         corresponding to the first item that has a match, ama Tupu ikiwa no items
         have a match.  If 'related' ni sio included kwenye preferencelist, consider
-        the root part of any multipart/related encountered as a candidate
+        the root part of any multipart/related encountered kama a candidate
         match.  Ignore parts ukijumuisha 'Content-Disposition: attachment'.
         """
         best_prio = len(preferencelist)
@@ -1034,7 +1034,7 @@ kundi MIMEPart(Message):
         multipart/related, ama multipart/alternative kwenye the multipart (unless
         they have a 'Content-Disposition: attachment' header) na include all
         remaining subparts kwenye the returned iterator.  When applied to a
-        multipart/related, rudisha all parts except the root part.  Return an
+        multipart/related, rudisha all parts tatizo the root part.  Return an
         empty iterator when applied to a multipart/alternative ama a
         non-multipart.
         """
@@ -1047,14 +1047,14 @@ kundi MIMEPart(Message):
         # fail ukijumuisha AttributeError.
         jaribu:
             parts = payload.copy()
-        except AttributeError:
+        tatizo AttributeError:
             # payload ni sio a list, it ni most probably a string.
             return
 
         ikiwa maintype == 'multipart' na subtype == 'related':
-            # For related, we treat everything but the root as an attachment.
+            # For related, we treat everything but the root kama an attachment.
             # The root may be indicated by 'start'; ikiwa there's no start ama we
-            # can't find the named start, treat the first subpart as the root.
+            # can't find the named start, treat the first subpart kama the root.
             start = self.get_param('start')
             ikiwa start:
                 found = Uongo
@@ -1071,13 +1071,13 @@ kundi MIMEPart(Message):
             tuma kutoka parts
             return
         # Otherwise we more ama less invert the remaining logic kwenye get_body.
-        # This only really works kwenye edge cases (ex: non-text related or
+        # This only really works kwenye edge cases (ex: non-text related ama
         # alternatives) ikiwa the sending agent sets content-disposition.
         seen = []   # Only skip the first example of each candidate type.
         kila part kwenye parts:
             maintype, subtype = part.get_content_type().split('/')
-            ikiwa ((maintype, subtype) kwenye self._body_types and
-                    sio part.is_attachment() na subtype sio kwenye seen):
+            ikiwa ((maintype, subtype) kwenye self._body_types na
+                    sio part.is_attachment() na subtype haiko kwenye seen):
                 seen.append(subtype)
                 endelea
             tuma part
@@ -1105,7 +1105,7 @@ kundi MIMEPart(Message):
             existing_subtype = self.get_content_subtype()
             disallowed_subtypes = disallowed_subtypes + (subtype,)
             ikiwa existing_subtype kwenye disallowed_subtypes:
-                 ashiria ValueError("Cannot convert {} to {}".format(
+                ashiria ValueError("Cannot convert {} to {}".format(
                     existing_subtype, subtype))
         keep_headers = []
         part_headers = []
@@ -1137,12 +1137,12 @@ kundi MIMEPart(Message):
         self._make_multipart('mixed', (), boundary)
 
     eleza _add_multipart(self, _subtype, *args, _disp=Tupu, **kw):
-        ikiwa (self.get_content_maintype() != 'multipart' or
+        ikiwa (self.get_content_maintype() != 'multipart' ama
                 self.get_content_subtype() != _subtype):
             getattr(self, 'make_' + _subtype)()
         part = type(self)(policy=self.policy)
         part.set_content(*args, **kw)
-        ikiwa _disp na 'content-disposition' sio kwenye part:
+        ikiwa _disp na 'content-disposition' haiko kwenye part:
             part['Content-Disposition'] = _disp
         self.attach(part)
 
@@ -1169,5 +1169,5 @@ kundi EmailMessage(MIMEPart):
 
     eleza set_content(self, *args, **kw):
         super().set_content(*args, **kw)
-        ikiwa 'MIME-Version' sio kwenye self:
+        ikiwa 'MIME-Version' haiko kwenye self:
             self['MIME-Version'] = '1.0'

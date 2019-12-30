@@ -1,22 +1,22 @@
 """Thread module emulating a subset of Java's threading model."""
 
-agiza os as _os
-agiza sys as _sys
+agiza os kama _os
+agiza sys kama _sys
 agiza _thread
 
-kutoka time agiza monotonic as _time
+kutoka time agiza monotonic kama _time
 kutoka _weakrefset agiza WeakSet
-kutoka itertools agiza islice as _islice, count as _count
+kutoka itertools agiza islice kama _islice, count kama _count
 jaribu:
-    kutoka _collections agiza deque as _deque
-except ImportError:
-    kutoka collections agiza deque as _deque
+    kutoka _collections agiza deque kama _deque
+tatizo ImportError:
+    kutoka collections agiza deque kama _deque
 
 # Note regarding PEP 8 compliant names
 #  This threading motoa was originally inspired by Java, na inherited
 # the convention of camelCase function na method names kutoka that
-# language. Those original names are sio kwenye any imminent danger of
-# being deprecated (even kila Py3k),so this module provides them as an
+# language. Those original names are haiko kwenye any imminent danger of
+# being deprecated (even kila Py3k),so this module provides them kama an
 # alias kila the PEP 8 compliant names
 # Note that using the new PEP 8 compliant names facilitates substitution
 # ukijumuisha the multiprocessing module, which doesn't provide the old
@@ -38,12 +38,12 @@ jaribu:
     get_native_id = _thread.get_native_id
     _HAVE_THREAD_NATIVE_ID = Kweli
     __all__.append('get_native_id')
-except AttributeError:
+tatizo AttributeError:
     _HAVE_THREAD_NATIVE_ID = Uongo
 ThreadError = _thread.error
 jaribu:
     _CRLock = _thread.RLock
-except AttributeError:
+tatizo AttributeError:
     _CRLock = Tupu
 TIMEOUT_MAX = _thread.TIMEOUT_MAX
 toa _thread
@@ -57,7 +57,7 @@ _trace_hook = Tupu
 eleza setprofile(func):
     """Set a profile function kila all threads started kutoka the threading module.
 
-    The func will be passed to sys.setprofile() kila each thread, before its
+    The func will be pitaed to sys.setprofile() kila each thread, before its
     run() method ni called.
 
     """
@@ -67,7 +67,7 @@ eleza setprofile(func):
 eleza settrace(func):
     """Set a trace function kila all threads started kutoka the threading module.
 
-    The func will be passed to sys.settrace() kila each thread, before its run()
+    The func will be pitaed to sys.settrace() kila each thread, before its run()
     method ni called.
 
     """
@@ -110,8 +110,8 @@ kundi _RLock:
         owner = self._owner
         jaribu:
             owner = _active[owner].name
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         rudisha "<%s %s.%s object owner=%r count=%d at %s>" % (
             "locked" ikiwa self._block.locked() isipokua "unlocked",
             self.__class__.__module__,
@@ -127,23 +127,23 @@ kundi _RLock:
         When invoked without arguments: ikiwa this thread already owns the lock,
         increment the recursion level by one, na rudisha immediately. Otherwise,
         ikiwa another thread owns the lock, block until the lock ni unlocked. Once
-        the lock ni unlocked (not owned by any thread), then grab ownership, set
+        the lock ni unlocked (sio owned by any thread), then grab ownership, set
         the recursion level to one, na return. If more than one thread is
         blocked waiting until the lock ni unlocked, only one at a time will be
         able to grab ownership of the lock. There ni no rudisha value kwenye this
         case.
 
         When invoked ukijumuisha the blocking argument set to true, do the same thing
-        as when called without arguments, na rudisha true.
+        kama when called without arguments, na rudisha true.
 
         When invoked ukijumuisha the blocking argument set to false, do sio block. If a
         call without an argument would block, rudisha false immediately;
-        otherwise, do the same thing as when called without arguments, and
+        otherwise, do the same thing kama when called without arguments, na
         rudisha true.
 
         When invoked ukijumuisha the floating-point timeout argument set to a positive
         value, block kila at most the number of seconds specified by timeout
-        na as long as the lock cannot be acquired.  Return true ikiwa the lock has
+        na kama long kama the lock cannot be acquired.  Return true ikiwa the lock has
         been acquired, false ikiwa the timeout has elapsed.
 
         """
@@ -162,7 +162,7 @@ kundi _RLock:
     eleza release(self):
         """Release a lock, decrementing the recursion level.
 
-        If after the decrement it ni zero, reset the lock to unlocked (not owned
+        If after the decrement it ni zero, reset the lock to unlocked (sio owned
         by any thread), na ikiwa any other threads are blocked waiting kila the
         lock to become unlocked, allow exactly one of them to proceed. If after
         the decrement the recursion level ni still nonzero, the lock remains
@@ -176,7 +176,7 @@ kundi _RLock:
 
         """
         ikiwa self._owner != get_ident():
-             ashiria RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         self._count = count = self._count - 1
         ikiwa sio count:
             self._owner = Tupu
@@ -193,7 +193,7 @@ kundi _RLock:
 
     eleza _release_save(self):
         ikiwa self._count == 0:
-             ashiria RuntimeError("cannot release un-acquired lock")
+            ashiria RuntimeError("cannot release un-acquired lock")
         count = self._count
         self._count = 0
         owner = self._owner
@@ -214,8 +214,8 @@ kundi Condition:
     notified by another thread.
 
     If the lock argument ni given na sio Tupu, it must be a Lock ama RLock
-    object, na it ni used as the underlying lock. Otherwise, a new RLock object
-    ni created na used as the underlying lock.
+    object, na it ni used kama the underlying lock. Otherwise, a new RLock object
+    ni created na used kama the underlying lock.
 
     """
 
@@ -231,16 +231,16 @@ kundi Condition:
         # release() na acquire() on the lock).  Ditto kila _is_owned().
         jaribu:
             self._release_save = lock._release_save
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         jaribu:
             self._acquire_restore = lock._acquire_restore
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         jaribu:
             self._is_owned = lock._is_owned
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self._waiters = _deque()
 
     eleza __enter__(self):
@@ -291,7 +291,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-             ashiria RuntimeError("cannot wait on un-acquired lock")
+            ashiria RuntimeError("cannot wait on un-acquired lock")
         waiter = _allocate_lock()
         waiter.acquire()
         self._waiters.append(waiter)
@@ -312,13 +312,13 @@ kundi Condition:
             ikiwa sio gotit:
                 jaribu:
                     self._waiters.remove(waiter)
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
 
     eleza wait_for(self, predicate, timeout=Tupu):
         """Wait until a condition evaluates to Kweli.
 
-        predicate should be a callable which result will be interpreted as a
+        predicate should be a callable which result will be interpreted kama a
         boolean value.  A timeout may be provided giving the maximum time to
         wait.
 
@@ -349,7 +349,7 @@ kundi Condition:
 
         """
         ikiwa sio self._is_owned():
-             ashiria RuntimeError("cannot notify on un-acquired lock")
+            ashiria RuntimeError("cannot notify on un-acquired lock")
         all_waiters = self._waiters
         waiters_to_notify = _deque(_islice(all_waiters, n))
         ikiwa sio waiters_to_notify:
@@ -358,8 +358,8 @@ kundi Condition:
             waiter.release()
             jaribu:
                 all_waiters.remove(waiter)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
     eleza notify_all(self):
         """Wake up all threads waiting on this condition.
@@ -387,7 +387,7 @@ kundi Semaphore:
 
     eleza __init__(self, value=1):
         ikiwa value < 0:
-             ashiria ValueError("semaphore initial value must be >= 0")
+            ashiria ValueError("semaphore initial value must be >= 0")
         self._cond = Condition(Lock())
         self._value = value
 
@@ -403,12 +403,12 @@ kundi Semaphore:
         which blocked threads are awakened should sio be relied on. There ni no
         rudisha value kwenye this case.
 
-        When invoked ukijumuisha blocking set to true, do the same thing as when called
+        When invoked ukijumuisha blocking set to true, do the same thing kama when called
         without arguments, na rudisha true.
 
         When invoked ukijumuisha blocking set to false, do sio block. If a call without
         an argument would block, rudisha false immediately; otherwise, do the
-        same thing as when called without arguments, na rudisha true.
+        same thing kama when called without arguments, na rudisha true.
 
         When invoked ukijumuisha a timeout other than Tupu, it will block kila at
         most timeout seconds.  If acquire does sio complete successfully in
@@ -416,7 +416,7 @@ kundi Semaphore:
 
         """
         ikiwa sio blocking na timeout ni sio Tupu:
-             ashiria ValueError("can't specify timeout kila non-blocking acquire")
+            ashiria ValueError("can't specify timeout kila non-blocking acquire")
         rc = Uongo
         endtime = Tupu
         ukijumuisha self._cond:
@@ -481,12 +481,12 @@ kundi BoundedSemaphore(Semaphore):
         to become larger than zero again, wake up that thread.
 
         If the number of releases exceeds the number of acquires,
-         ashiria a ValueError.
+        ashiria a ValueError.
 
         """
         ukijumuisha self._cond:
             ikiwa self._value >= self._initial_value:
-                 ashiria ValueError("Semaphore released too many times")
+                ashiria ValueError("Semaphore released too many times")
             self._value += 1
             self._cond.notify()
 
@@ -549,7 +549,7 @@ kundi Event:
         (or fractions thereof).
 
         This method returns the internal flag on exit, so it will always return
-        Kweli except ikiwa a timeout ni given na the operation times out.
+        Kweli tatizo ikiwa a timeout ni given na the operation times out.
 
         """
         ukijumuisha self._cond:
@@ -559,16 +559,16 @@ kundi Event:
             rudisha signaled
 
 
-# A barrier class.  Inspired kwenye part by the pthread_barrier_* api and
+# A barrier class.  Inspired kwenye part by the pthread_barrier_* api na
 # the CyclicBarrier kundi kutoka Java.  See
-# http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html and
+# http://sourceware.org/pthreads-win32/manual/pthread_barrier_init.html na
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/
 #        CyclicBarrier.html
 # kila information.
 # We maintain two main states, 'filling' na 'draining' enabling the barrier
 # to be cyclic.  Threads are sio allowed into it until it has fully drained
 # since the previous cycle.  In addition, a 'resetting' state exists which is
-# similar to 'draining' except that threads leave ukijumuisha a BrokenBarrierError,
+# similar to 'draining' tatizo that threads leave ukijumuisha a BrokenBarrierError,
 # na a 'broken' state kwenye which all threads get the exception.
 kundi Barrier:
     """Implements a Barrier.
@@ -584,7 +584,7 @@ kundi Barrier:
 
         'action' ni a callable which, when supplied, will be called by one of
         the threads after they have all entered the barrier na just prior to
-        releasing them all. If a 'timeout' ni provided, it ni used as the
+        releasing them all. If a 'timeout' ni provided, it ni used kama the
         default kila all subsequent 'wait()' calls.
 
         """
@@ -623,7 +623,7 @@ kundi Barrier:
                 # Wake up any threads waiting kila barrier to drain.
                 self._exit()
 
-    # Block until the barrier ni ready kila us, ama  ashiria an exception
+    # Block until the barrier ni ready kila us, ama ashiria an exception
     # ikiwa it ni broken.
     eleza _enter(self):
         wakati self._state kwenye (-1, 1):
@@ -631,7 +631,7 @@ kundi Barrier:
             self._cond.wait()
         #see ikiwa the barrier ni kwenye a broken state
         ikiwa self._state < 0:
-             ashiria BrokenBarrierError
+            ashiria BrokenBarrierError
         assert self._state == 0
 
     # Optionally run the 'action' na release the threads waiting
@@ -654,9 +654,9 @@ kundi Barrier:
         ikiwa sio self._cond.wait_for(lambda : self._state != 0, timeout):
             #timed out.  Break the barrier
             self._koma()
-             ashiria BrokenBarrierError
+            ashiria BrokenBarrierError
         ikiwa self._state < 0:
-             ashiria BrokenBarrierError
+            ashiria BrokenBarrierError
         assert self._state == 1
 
     # If we are the last thread to exit the barrier, signal any threads
@@ -680,7 +680,7 @@ kundi Barrier:
                 ikiwa self._state == 0:
                     #reset the barrier, waking up threads
                     self._state = -1
-                elikiwa self._state == -2:
+                lasivyo self._state == -2:
                     #was broken, set it to reset state
                     #which clears when the last thread exits
                     self._state = -1
@@ -725,7 +725,7 @@ kundi Barrier:
 
 # exception raised by the Barrier class
 kundi BrokenBarrierError(RuntimeError):
-    pass
+    pita
 
 
 # Helper to generate new thread names
@@ -751,7 +751,7 @@ kundi Thread:
     """A kundi that represents a thread of control.
 
     This kundi can be safely subclassed kwenye a limited fashion. There are two ways
-    to specify the activity: by passing a callable object to the constructor, or
+    to specify the activity: by pitaing a callable object to the constructor, ama
     by overriding the run() method kwenye a subclass.
 
     """
@@ -837,20 +837,20 @@ kundi Thread:
         It must be called at most once per thread object. It arranges kila the
         object's run() method to be invoked kwenye a separate thread of control.
 
-        This method will  ashiria a RuntimeError ikiwa called more than once on the
+        This method will ashiria a RuntimeError ikiwa called more than once on the
         same thread object.
 
         """
         ikiwa sio self._initialized:
-             ashiria RuntimeError("thread.__init__() sio called")
+            ashiria RuntimeError("thread.__init__() sio called")
 
         ikiwa self._started.is_set():
-             ashiria RuntimeError("threads can only be started once")
+            ashiria RuntimeError("threads can only be started once")
         ukijumuisha _active_limbo_lock:
             _limbo[self] = self
         jaribu:
             _start_new_thread(self._bootstrap, ())
-        except Exception:
+        tatizo Exception:
             ukijumuisha _active_limbo_lock:
                 toa _limbo[self]
             raise
@@ -860,7 +860,7 @@ kundi Thread:
         """Method representing the thread's activity.
 
         You may override this method kwenye a subclass. The standard run() method
-        invokes the callable object passed to the object's constructor as the
+        invokes the callable object pitaed to the object's constructor kama the
         target argument, ikiwa any, ukijumuisha sequential na keyword arguments taken
         kutoka the args na kwargs arguments, respectively.
 
@@ -939,19 +939,19 @@ kundi Thread:
                     # grabs _active_limbo_lock.
                     toa _active[get_ident()]
                 tatizo:
-                    pass
+                    pita
 
     eleza _stop(self):
         # After calling ._stop(), .is_alive() returns Uongo na .join() returns
         # immediately.  ._tstate_lock must be released before calling ._stop().
         #
         # Normal case:  C code at the end of the thread's life
-        # (release_sentinel kwenye _threadmodule.c) releases ._tstate_lock, and
+        # (release_sentinel kwenye _threadmodule.c) releases ._tstate_lock, na
         # that's detected by our ._wait_for_tstate_lock(), called by .join()
         # na .is_alive().  Any number of threads _may_ call ._stop()
         # simultaneously (kila example, ikiwa multiple threads are blocked in
         # .join() calls), na they're sio serialized.  That's harmless -
-        # they'll just make redundant rebindings of ._is_stopped and
+        # they'll just make redundant rebindings of ._is_stopped na
         # ._tstate_lock.  Obscure:  we rebind ._tstate_lock last so that the
         # "assert self._is_stopped" kwenye ._wait_for_tstate_lock() always works
         # (the assert ni executed only ikiwa ._tstate_lock ni Tupu).
@@ -995,36 +995,36 @@ kundi Thread:
         A thread can be join()ed many times.
 
         join() raises a RuntimeError ikiwa an attempt ni made to join the current
-        thread as that would cause a deadlock. It ni also an error to join() a
+        thread kama that would cause a deadlock. It ni also an error to join() a
         thread before it has been started na attempts to do so raises the same
         exception.
 
         """
         ikiwa sio self._initialized:
-             ashiria RuntimeError("Thread.__init__() sio called")
+            ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa sio self._started.is_set():
-             ashiria RuntimeError("cannot join thread before it ni started")
+            ashiria RuntimeError("cannot join thread before it ni started")
         ikiwa self ni current_thread():
-             ashiria RuntimeError("cannot join current thread")
+            ashiria RuntimeError("cannot join current thread")
 
         ikiwa timeout ni Tupu:
             self._wait_for_tstate_lock()
         isipokua:
             # the behavior of a negative timeout isn't documented, but
-            # historically .join(timeout=x) kila x<0 has acted as ikiwa timeout=0
+            # historically .join(timeout=x) kila x<0 has acted kama ikiwa timeout=0
             self._wait_for_tstate_lock(timeout=max(timeout, 0))
 
     eleza _wait_for_tstate_lock(self, block=Kweli, timeout=-1):
         # Issue #18808: wait kila the thread state to be gone.
         # At the end of the thread's life, after all knowledge of the thread
         # ni removed kutoka C data structures, C code releases our _tstate_lock.
-        # This method passes its arguments to _tstate_lock.acquire().
+        # This method pitaes its arguments to _tstate_lock.acquire().
         # If the lock ni acquired, the C code ni done, na self._stop() is
         # called.  That sets ._is_stopped to Kweli, na ._tstate_lock to Tupu.
         lock = self._tstate_lock
         ikiwa lock ni Tupu:  # already determined that the C code ni done
             assert self._is_stopped
-        elikiwa lock.acquire(block, timeout):
+        lasivyo lock.acquire(block, timeout):
             lock.release()
             self._stop()
 
@@ -1062,7 +1062,7 @@ kundi Thread:
             """Native integral thread ID of this thread, ama Tupu ikiwa it has sio been started.
 
             This ni a non-negative integer. See the get_native_id() function.
-            This represents the Thread ID as reported by the kernel.
+            This represents the Thread ID kama reported by the kernel.
 
             """
             assert self._initialized, "Thread.__init__() sio called"
@@ -1110,9 +1110,9 @@ kundi Thread:
     @daemon.setter
     eleza daemon(self, daemonic):
         ikiwa sio self._initialized:
-             ashiria RuntimeError("Thread.__init__() sio called")
+            ashiria RuntimeError("Thread.__init__() sio called")
         ikiwa self._started.is_set():
-             ashiria RuntimeError("cannot set daemon status of active thread")
+            ashiria RuntimeError("cannot set daemon status of active thread")
         self._daemonic = daemonic
 
     eleza isDaemon(self):
@@ -1129,11 +1129,11 @@ kundi Thread:
 
 
 jaribu:
-    kutoka _thread agiza (_excepthook as excepthook,
-                         _ExceptHookArgs as ExceptHookArgs)
-except ImportError:
+    kutoka _thread agiza (_excepthook kama excepthook,
+                         _ExceptHookArgs kama ExceptHookArgs)
+tatizo ImportError:
     # Simple Python implementation ikiwa _thread._excepthook() ni sio available
-    kutoka traceback agiza print_exception as _print_exception
+    kutoka traceback agiza print_exception kama _print_exception
     kutoka collections agiza namedtuple
 
     _ExceptHookArgs = namedtuple(
@@ -1153,7 +1153,7 @@ except ImportError:
 
         ikiwa _sys ni sio Tupu na _sys.stderr ni sio Tupu:
             stderr = _sys.stderr
-        elikiwa args.thread ni sio Tupu:
+        lasivyo args.thread ni sio Tupu:
             stderr = args.thread._stderr
             ikiwa stderr ni Tupu:
                 # do nothing ikiwa sys.stderr ni Tupu na sys.stderr was Tupu
@@ -1182,9 +1182,9 @@ eleza _make_invoke_excepthook():
     old_excepthook = excepthook
     old_sys_excepthook = _sys.excepthook
     ikiwa old_excepthook ni Tupu:
-         ashiria RuntimeError("threading.excepthook ni Tupu")
+        ashiria RuntimeError("threading.excepthook ni Tupu")
     ikiwa old_sys_excepthook ni Tupu:
-         ashiria RuntimeError("sys.excepthook ni Tupu")
+        ashiria RuntimeError("sys.excepthook ni Tupu")
 
     sys_exc_info = _sys.exc_info
     local_print = print
@@ -1200,7 +1200,7 @@ eleza _make_invoke_excepthook():
             args = ExceptHookArgs([*sys_exc_info(), thread])
 
             hook(args)
-        except Exception as exc:
+        tatizo Exception kama exc:
             exc.__suppress_context__ = Kweli
             toa exc
 
@@ -1275,7 +1275,7 @@ kundi _MainThread(Thread):
 # If they invoke anything kwenye threading.py that calls current_thread(), they
 # leave an entry kwenye the _active dict forever after.
 # Their purpose ni to rudisha *something* kutoka current_thread().
-# They are marked as daemon threads so we won't wait kila them
+# They are marked kama daemon threads so we won't wait kila them
 # when we exit (conform previous semantics).
 
 kundi _DummyThread(Thread):
@@ -1291,7 +1291,7 @@ kundi _DummyThread(Thread):
             _active[self._ident] = self
 
     eleza _stop(self):
-        pass
+        pita
 
     eleza is_alive(self):
         assert sio self._is_stopped na self._started.is_set()
@@ -1312,7 +1312,7 @@ eleza current_thread():
     """
     jaribu:
         rudisha _active[get_ident()]
-    except KeyError:
+    tatizo KeyError:
         rudisha _DummyThread()
 
 currentThread = current_thread
@@ -1330,14 +1330,14 @@ eleza active_count():
 activeCount = active_count
 
 eleza _enumerate():
-    # Same as enumerate(), but without the lock. Internal use only.
+    # Same kama enumerate(), but without the lock. Internal use only.
     rudisha list(_active.values()) + list(_limbo.values())
 
 eleza enumerate():
     """Return a list of all Thread objects currently alive.
 
     The list includes daemonic threads, dummy thread objects created by
-    current_thread(), na the main thread. It excludes terminated threads and
+    current_thread(), na the main thread. It excludes terminated threads na
     threads that have sio yet been started.
 
     """
@@ -1348,7 +1348,7 @@ kutoka _thread agiza stack_size
 
 # Create the main thread object,
 # na make it available kila the interpreter
-# (Py_Main) as threading._shutdown.
+# (Py_Main) kama threading._shutdown.
 
 _main_thread = _MainThread()
 
@@ -1404,8 +1404,8 @@ eleza main_thread():
 # module, ama kutoka the python fallback
 
 jaribu:
-    kutoka _thread agiza _local as local
-except ImportError:
+    kutoka _thread agiza _local kama local
+tatizo ImportError:
     kutoka _threading_local agiza local
 
 

@@ -44,11 +44,11 @@ kundi StrftimeTest(unittest.TestCase):
         jaribu:
             ikiwa now[8]: self.tz = time.tzname[1]
             isipokua: self.tz = time.tzname[0]
-        except AttributeError:
+        tatizo AttributeError:
             self.tz = ''
 
         ikiwa now[3] > 12: self.clock12 = now[3] - 12
-        elikiwa now[3] > 0: self.clock12 = now[3]
+        lasivyo now[3] > 0: self.clock12 = now[3]
         isipokua: self.clock12 = 12
 
         self.now = now
@@ -57,7 +57,7 @@ kundi StrftimeTest(unittest.TestCase):
         jaribu:
             agiza java
             java.util.Locale.setDefault(java.util.Locale.US)
-        except ImportError:
+        tatizo ImportError:
             kutoka locale agiza setlocale, LC_TIME
             saved_locale = setlocale(LC_TIME)
             setlocale(LC_TIME, 'C')
@@ -84,7 +84,7 @@ kundi StrftimeTest(unittest.TestCase):
         ikiwa support.verbose:
             andika("strftime test for", time.ctime(now))
         now = self.now
-        # Make sure any characters that could be taken as regex syntax is
+        # Make sure any characters that could be taken kama regex syntax is
         # escaped kwenye escapestr()
         expectations = (
             ('%a', calendar.day_abbr[now[6]], 'abbreviated weekday name'),
@@ -92,17 +92,17 @@ kundi StrftimeTest(unittest.TestCase):
             ('%b', calendar.month_abbr[now[1]], 'abbreviated month name'),
             ('%B', calendar.month_name[now[1]], 'full month name'),
             # %c see below
-            ('%d', '%02d' % now[2], 'day of month as number (00-31)'),
+            ('%d', '%02d' % now[2], 'day of month kama number (00-31)'),
             ('%H', '%02d' % now[3], 'hour (00-23)'),
             ('%I', '%02d' % self.clock12, 'hour (01-12)'),
             ('%j', '%03d' % now[7], 'julian day (001-366)'),
-            ('%m', '%02d' % now[1], 'month as number (01-12)'),
+            ('%m', '%02d' % now[1], 'month kama number (01-12)'),
             ('%M', '%02d' % now[4], 'minute, (00-59)'),
-            ('%p', self.ampm, 'AM ama PM as appropriate'),
+            ('%p', self.ampm, 'AM ama PM kama appropriate'),
             ('%S', '%02d' % now[5], 'seconds of current time (00-60)'),
             ('%U', '%02d' % ((now[7] + self.jan1[6])//7),
              'week number of the year (Sun 1st)'),
-            ('%w', '0?%d' % ((1+now[6]) % 7), 'weekday as a number (Sun 1st)'),
+            ('%w', '0?%d' % ((1+now[6]) % 7), 'weekday kama a number (Sun 1st)'),
             ('%W', '%02d' % ((now[7] + (self.jan1[6] - 1)%7)//7),
             'week number of the year (Mon 1st)'),
             # %x see below
@@ -114,10 +114,10 @@ kundi StrftimeTest(unittest.TestCase):
         )
 
         kila e kwenye expectations:
-            # musn't  ashiria a value error
+            # musn't ashiria a value error
             jaribu:
                 result = time.strftime(e[0], now)
-            except ValueError as error:
+            tatizo ValueError kama error:
                 self.fail("strftime '%s' format gave error: %s" % (e[0], error))
             ikiwa re.match(escapestr(e[1], self.ampm), result):
                 endelea
@@ -141,7 +141,7 @@ kundi StrftimeTest(unittest.TestCase):
 
             # These are some platform specific extensions
             ('%D', '%02d/%02d/%02d' % (now[1], now[2], (now[0]%100)), 'mm/dd/yy'),
-            ('%e', '%2d' % now[2], 'day of month as number, blank padded ( 0-31)'),
+            ('%e', '%2d' % now[2], 'day of month kama number, blank padded ( 0-31)'),
             ('%h', calendar.month_abbr[now[1]], 'abbreviated month name'),
             ('%k', '%2d' % now[3], 'hour, blank padded ( 0-23)'),
             ('%n', '\n', 'newline character'),
@@ -159,7 +159,7 @@ kundi StrftimeTest(unittest.TestCase):
         kila e kwenye nonstandard_expectations:
             jaribu:
                 result = time.strftime(e[0], now)
-            except ValueError as result:
+            tatizo ValueError kama result:
                 msg = "Error kila nonstandard '%s' format (%s): %s" % \
                       (e[0], e[2], str(result))
                 ikiwa support.verbose:
@@ -168,7 +168,7 @@ kundi StrftimeTest(unittest.TestCase):
             ikiwa re.match(escapestr(e[1], self.ampm), result):
                 ikiwa support.verbose:
                     andika("Supports nonstandard '%s' format (%s)" % (e[0], e[2]))
-            elikiwa sio result ama result[0] == '%':
+            lasivyo sio result ama result[0] == '%':
                 ikiwa support.verbose:
                     andika("Does sio appear to support '%s' format (%s)" % \
                            (e[0], e[2]))
@@ -181,7 +181,7 @@ kundi StrftimeTest(unittest.TestCase):
 
 kundi Y1900Tests(unittest.TestCase):
     """A limitation of the MS C runtime library ni that it crashes if
-    a date before 1900 ni passed ukijumuisha a format string containing "%y"
+    a date before 1900 ni pitaed ukijumuisha a format string containing "%y"
     """
 
     eleza test_y_before_1900(self):

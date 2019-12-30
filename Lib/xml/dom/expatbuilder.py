@@ -20,12 +20,12 @@ This avoids all the overhead of SAX na pulldom to gain performance.
 #      speedup since pyexpat can koma up character data into multiple
 #      callbacks even though we set the buffer_text attribute on the
 #      parser.  This also gives us the advantage that we don't need a
-#      separate normalization pass.
+#      separate normalization pita.
 #
 #   -  Determining that a node exists ni done using an identity comparison
-#      ukijumuisha Tupu rather than a truth test; this avoids searching kila and
+#      ukijumuisha Tupu rather than a truth test; this avoids searching kila na
 #      calling any methods on the node object ikiwa it exists.  (A rather
-#      nice speedup ni achieved this way as well!)
+#      nice speedup ni achieved this way kama well!)
 
 kutoka xml.dom agiza xmlbuilder, minidom, Node
 kutoka xml.dom agiza EMPTY_NAMESPACE, EMPTY_PREFIX, XMLNS_NAMESPACE
@@ -87,7 +87,7 @@ kundi ElementInfo(object):
     eleza isElementContent(self):
         ikiwa self._model:
             type = self._model[0]
-            rudisha type sio kwenye (expat.model.XML_CTYPE_ANY,
+            rudisha type haiko kwenye (expat.model.XML_CTYPE_ANY,
                                 expat.model.XML_CTYPE_MIXED)
         isipokua:
             rudisha Uongo
@@ -121,12 +121,12 @@ eleza _parse_ns_name(builder, name):
         qname = "%s:%s" % (prefix, localname)
         qname = intern(qname, qname)
         localname = intern(localname, localname)
-    elikiwa len(parts) == 2:
+    lasivyo len(parts) == 2:
         uri, localname = parts
         prefix = EMPTY_PREFIX
         qname = localname = intern(localname, localname)
     isipokua:
-         ashiria ValueError("Unsupported syntax: spaces kwenye URIs sio supported: %r" % name)
+        ashiria ValueError("Unsupported syntax: spaces kwenye URIs sio supported: %r" % name)
     rudisha intern(uri, uri), localname, prefix, qname
 
 
@@ -209,8 +209,8 @@ kundi ExpatBuilder:
                     self._setup_subset(buffer)
                 first_buffer = Uongo
             parser.Parse("", Kweli)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
         doc = self.document
         self.reset()
         self._parser = Tupu
@@ -222,8 +222,8 @@ kundi ExpatBuilder:
         jaribu:
             parser.Parse(string, Kweli)
             self._setup_subset(string)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
         doc = self.document
         self.reset()
         self._parser = Tupu
@@ -280,7 +280,7 @@ kundi ExpatBuilder:
                 return
             node = self.document.createCDATASection(data)
             self._cdata_endelea = Kweli
-        elikiwa childNodes na childNodes[-1].nodeType == TEXT_NODE:
+        lasivyo childNodes na childNodes[-1].nodeType == TEXT_NODE:
             node = childNodes[-1]
             value = node.data + data
             node.data = value
@@ -376,7 +376,7 @@ kundi ExpatBuilder:
             ikiwa filt == FILTER_REJECT:
                 # ignore this node & all descendents
                 Rejecter(self)
-            elikiwa filt == FILTER_SKIP:
+            lasivyo filt == FILTER_SKIP:
                 # ignore this node, but make it's children become
                 # children of the parent node
                 Skipper(self)
@@ -467,9 +467,9 @@ kundi FilterVisibilityController(object):
         ikiwa self.filter.whatToShow & mask:
             val = self.filter.startContainer(node)
             ikiwa val == FILTER_INTERRUPT:
-                 ashiria ParseEscape
-            ikiwa val sio kwenye _ALLOWED_FILTER_RETURNS:
-                 ashiria ValueError(
+                ashiria ParseEscape
+            ikiwa val haiko kwenye _ALLOWED_FILTER_RETURNS:
+                ashiria ValueError(
                       "startContainer() returned illegal value: " + repr(val))
             rudisha val
         isipokua:
@@ -480,7 +480,7 @@ kundi FilterVisibilityController(object):
         ikiwa self.filter.whatToShow & mask:
             val = self.filter.acceptNode(node)
             ikiwa val == FILTER_INTERRUPT:
-                 ashiria ParseEscape
+                ashiria ParseEscape
             ikiwa val == FILTER_SKIP:
                 # move all child nodes to the parent, na remove this node
                 parent = node.parentNode
@@ -488,8 +488,8 @@ kundi FilterVisibilityController(object):
                     parent.appendChild(child)
                 # node ni handled by the caller
                 rudisha FILTER_REJECT
-            ikiwa val sio kwenye _ALLOWED_FILTER_RETURNS:
-                 ashiria ValueError(
+            ikiwa val haiko kwenye _ALLOWED_FILTER_RETURNS:
+                ashiria ValueError(
                       "acceptNode() returned illegal value: " + repr(val))
             rudisha val
         isipokua:
@@ -630,7 +630,7 @@ kundi FragmentBuilder(ExpatBuilder):
             ikiwa doctype.publicId:
                 ident = ('PUBLIC "%s" "%s"'
                          % (doctype.publicId, doctype.systemId))
-            elikiwa doctype.systemId:
+            lasivyo doctype.systemId:
                 ident = 'SYSTEM "%s"' % doctype.systemId
         isipokua:
             subset = ""
@@ -650,7 +650,7 @@ kundi FragmentBuilder(ExpatBuilder):
         """Re-create the internal subset kutoka the DocumentType node.
 
         This ni only needed ikiwa we don't already have the
-        internalSubset as a string.
+        internalSubset kama a string.
         """
         doctype = self.context.ownerDocument.doctype
         s = ""
@@ -673,7 +673,7 @@ kundi FragmentBuilder(ExpatBuilder):
                 ikiwa entity.publicId:
                     s = '%s PUBLIC "%s"\n             "%s"' \
                         % (s, entity.publicId, entity.systemId)
-                elikiwa entity.systemId:
+                lasivyo entity.systemId:
                     s = '%s SYSTEM "%s"' % (s, entity.systemId)
                 isipokua:
                     s = '%s "%s"' % (s, entity.firstChild.data)
@@ -784,7 +784,7 @@ kundi Namespaces:
         # This only adds some asserts to the original
         # end_element_handler(), so we only define this when -O ni not
         # used.  If changing one, be sure to check the other to see if
-        # it needs to be changed as well.
+        # it needs to be changed kama well.
         #
         eleza end_element_handler(self, name):
             curNode = self.curNode
@@ -819,7 +819,7 @@ kundi FragmentBuilderNS(Namespaces, FragmentBuilder):
         self._initNamespaces()
 
     eleza _getNSattrs(self):
-        """Return string of namespace attributes kutoka this element and
+        """Return string of namespace attributes kutoka this element na
         ancestors."""
         # XXX This needs to be re-written to walk the ancestors of the
         # context to build up the namespace information from
@@ -850,7 +850,7 @@ kundi FragmentBuilderNS(Namespaces, FragmentBuilder):
 
 kundi ParseEscape(Exception):
     """Exception raised to short-circuit parsing kwenye InternalSubsetExtractor."""
-    pass
+    pita
 
 kundi InternalSubsetExtractor(ExpatBuilder):
     """XML processor which can rip out the internal document type subset."""
@@ -858,20 +858,20 @@ kundi InternalSubsetExtractor(ExpatBuilder):
     subset = Tupu
 
     eleza getSubset(self):
-        """Return the internal subset as a string."""
+        """Return the internal subset kama a string."""
         rudisha self.subset
 
     eleza parseFile(self, file):
         jaribu:
             ExpatBuilder.parseFile(self, file)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
 
     eleza parseString(self, string):
         jaribu:
             ExpatBuilder.parseString(self, string)
-        except ParseEscape:
-            pass
+        tatizo ParseEscape:
+            pita
 
     eleza install(self, parser):
         parser.StartDoctypeDeclHandler = self.start_doctype_decl_handler
@@ -885,15 +885,15 @@ kundi InternalSubsetExtractor(ExpatBuilder):
             parser.DefaultHandler = self.subset.append
             parser.EndDoctypeDeclHandler = self.end_doctype_decl_handler
         isipokua:
-             ashiria ParseEscape()
+            ashiria ParseEscape()
 
     eleza end_doctype_decl_handler(self):
         s = ''.join(self.subset).replace('\r\n', '\n').replace('\r', '\n')
         self.subset = s
-         ashiria ParseEscape()
+        ashiria ParseEscape()
 
     eleza start_element_handler(self, name, attrs):
-         ashiria ParseEscape()
+        ashiria ParseEscape()
 
 
 eleza parse(file, namespaces=Kweli):
@@ -907,7 +907,7 @@ eleza parse(file, namespaces=Kweli):
         builder = ExpatBuilder()
 
     ikiwa isinstance(file, str):
-        ukijumuisha open(file, 'rb') as fp:
+        ukijumuisha open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
     isipokua:
         result = builder.parseFile(file)
@@ -938,7 +938,7 @@ eleza parseFragment(file, context, namespaces=Kweli):
         builder = FragmentBuilder(context)
 
     ikiwa isinstance(file, str):
-        ukijumuisha open(file, 'rb') as fp:
+        ukijumuisha open(file, 'rb') kama fp:
             result = builder.parseFile(fp)
     isipokua:
         result = builder.parseFile(file)

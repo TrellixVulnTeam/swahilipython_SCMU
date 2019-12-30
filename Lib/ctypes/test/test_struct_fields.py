@@ -2,19 +2,19 @@ agiza unittest
 kutoka ctypes agiza *
 
 kundi StructFieldsTestCase(unittest.TestCase):
-    # Structure/Union classes must get 'finalized' sooner or
+    # Structure/Union classes must get 'finalized' sooner ama
     # later, when one of these things happen:
     #
     # 1. _fields_ ni set.
     # 2. An instance ni created.
-    # 3. The type ni used as field of another Structure/Union.
+    # 3. The type ni used kama field of another Structure/Union.
     # 4. The type ni subclassed
     #
     # When they are finalized, assigning _fields_ ni no longer allowed.
 
     eleza test_1_A(self):
         kundi X(Structure):
-            pass
+            pita
         self.assertEqual(sizeof(X), 0) # sio finalized
         X._fields_ = [] # finalized
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
@@ -26,27 +26,27 @@ kundi StructFieldsTestCase(unittest.TestCase):
 
     eleza test_2(self):
         kundi X(Structure):
-            pass
+            pita
         X()
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
     eleza test_3(self):
         kundi X(Structure):
-            pass
+            pita
         kundi Y(Structure):
             _fields_ = [("x", X)] # finalizes X
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
     eleza test_4(self):
         kundi X(Structure):
-            pass
+            pita
         kundi Y(X):
-            pass
+            pita
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
         Y._fields_ = []
         self.assertRaises(AttributeError, setattr, X, "_fields_", [])
 
-    # __set__ na __get__ should  ashiria a TypeError kwenye case their self
+    # __set__ na __get__ should ashiria a TypeError kwenye case their self
     # argument ni sio a ctype instance.
     eleza test___set__(self):
         kundi MyCStruct(Structure):

@@ -70,20 +70,20 @@ eleza get_msvcr():
         ikiwa msc_ver == '1300':
             # MSVC 7.0
             rudisha ['msvcr70']
-        elikiwa msc_ver == '1310':
+        lasivyo msc_ver == '1310':
             # MSVC 7.1
             rudisha ['msvcr71']
-        elikiwa msc_ver == '1400':
+        lasivyo msc_ver == '1400':
             # VS2005 / MSVC 8.0
             rudisha ['msvcr80']
-        elikiwa msc_ver == '1500':
+        lasivyo msc_ver == '1500':
             # VS2008 / MSVC 9.0
             rudisha ['msvcr90']
-        elikiwa msc_ver == '1600':
+        lasivyo msc_ver == '1600':
             # VS2010 / MSVC 10.0
             rudisha ['msvcr100']
         isipokua:
-             ashiria ValueError("Unknown MS Compiler version %s " % msc_ver)
+            ashiria ValueError("Unknown MS Compiler version %s " % msc_ver)
 
 
 kundi CygwinCCompiler(UnixCCompiler):
@@ -121,7 +121,7 @@ kundi CygwinCCompiler(UnixCCompiler):
         # ld_version >= "2.10.90" na < "2.13" should also be able to use
         # gcc -mdll instead of dllwrap
         # Older dllwraps had own version numbers, newer ones use the
-        # same as the rest of binutils ( also ld )
+        # same kama the rest of binutils ( also ld )
         # dllwrap 2.10.90 ni buggy
         ikiwa self.ld_version >= "2.10.90":
             self.linker_dll = "gcc"
@@ -162,14 +162,14 @@ kundi CygwinCCompiler(UnixCCompiler):
             # gcc needs '.res' na '.rc' compiled to object files !!!
             jaribu:
                 self.spawn(["windres", "-i", src, "-o", obj])
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
         isipokua: # kila other files use the C-compiler
             jaribu:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
                            extra_postargs)
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
 
     eleza link(self, target_desc, objects, output_filename, output_dir=Tupu,
              libraries=Tupu, library_dirs=Tupu, runtime_library_dirs=Tupu,
@@ -185,15 +185,15 @@ kundi CygwinCCompiler(UnixCCompiler):
         libraries.extend(self.dll_libraries)
 
         # handle export symbols by creating a def-file
-        # ukijumuisha executables this only works ukijumuisha gcc/ld as linker
-        ikiwa ((export_symbols ni sio Tupu) and
+        # ukijumuisha executables this only works ukijumuisha gcc/ld kama linker
+        ikiwa ((export_symbols ni sio Tupu) na
             (target_desc != self.EXECUTABLE ama self.linker_dll == "gcc")):
             # (The linker doesn't do anything ikiwa output ni up-to-date.
             # So it would probably better to check ikiwa we really need this,
             # but kila this we had to insert some unchanged parts of
             # UnixCCompiler, na this ni sio what we want.)
 
-            # we want to put some files kwenye the same directory as the
+            # we want to put some files kwenye the same directory kama the
             # object files are, build_temp doesn't help much
             # where are the object files
             temp_dir = os.path.dirname(objects[0])
@@ -225,10 +225,10 @@ kundi CygwinCCompiler(UnixCCompiler):
             isipokua:
                 # doesn't work: bfd_close build\...\libfoo.a: Invalid operation
                 #extra_preargs.extend(["-Wl,--out-implib,%s" % lib_file])
-                # kila gcc/ld the def-file ni specified as any object files
+                # kila gcc/ld the def-file ni specified kama any object files
                 objects.append(def_file)
 
-        #end: ikiwa ((export_symbols ni sio Tupu) and
+        #end: ikiwa ((export_symbols ni sio Tupu) na
         #        (target_desc != self.EXECUTABLE ama self.linker_dll == "gcc")):
 
         # who wants symbols na a many times larger output file
@@ -257,8 +257,8 @@ kundi CygwinCCompiler(UnixCCompiler):
         kila src_name kwenye source_filenames:
             # use normcase to make sure '.rc' ni really '.rc' na sio '.RC'
             base, ext = os.path.splitext(os.path.normcase(src_name))
-            ikiwa ext sio kwenye (self.src_extensions + ['.rc','.res']):
-                 ashiria UnknownFileError("unknown file type '%s' (kutoka '%s')" % \
+            ikiwa ext haiko kwenye (self.src_extensions + ['.rc','.res']):
+                ashiria UnknownFileError("unknown file type '%s' (kutoka '%s')" % \
                       (ext, src_name))
             ikiwa strip_dir:
                 base = os.path.basename (base)
@@ -271,7 +271,7 @@ kundi CygwinCCompiler(UnixCCompiler):
                                                base + self.obj_extension))
         rudisha obj_names
 
-# the same as cygwin plus some additional parameters
+# the same kama cygwin plus some additional parameters
 kundi Mingw32CCompiler(CygwinCCompiler):
     """ Handles the Mingw32 port of the GNU C compiler to Windows.
     """
@@ -296,7 +296,7 @@ kundi Mingw32CCompiler(CygwinCCompiler):
             entry_point = ''
 
         ikiwa is_cygwingcc():
-             ashiria CCompilerError(
+            ashiria CCompilerError(
                 'Cygwin gcc cannot be used ukijumuisha --compiler=mingw32')
 
         self.set_executables(compiler='gcc -O -Wall',
@@ -364,7 +364,7 @@ eleza check_config_h():
                 rudisha CONFIG_H_NOTOK, "'%s' does sio mention '__GNUC__'" % fn
         mwishowe:
             config_h.close()
-    except OSError as exc:
+    tatizo OSError kama exc:
         rudisha (CONFIG_H_UNCERTAIN,
                 "couldn't read '%s': %s" % (fn, exc.strerror))
 

@@ -1,6 +1,6 @@
 """Test the parser na generator are inverses.
 
-Note that this ni only strictly true ikiwa we are parsing RFC valid messages and
+Note that this ni only strictly true ikiwa we are parsing RFC valid messages na
 producing RFC valid messages.
 """
 
@@ -11,12 +11,12 @@ kutoka email.message agiza EmailMessage
 kutoka email.generator agiza BytesGenerator
 kutoka test.test_email agiza TestEmailBase, parameterize
 
-# This ni like textwrap.dedent kila bytes, except that it uses \r\n kila the line
+# This ni like textwrap.dedent kila bytes, tatizo that it uses \r\n kila the line
 # separators on the rebuilt string.
 eleza dedent(bstr):
     lines = bstr.splitlines()
     ikiwa sio lines[0].strip():
-         ashiria ValueError("First line must contain text")
+        ashiria ValueError("First line must contain text")
     stripamt = len(lines[0]) - len(lines[0].lstrip())
     rudisha b'\r\n'.join(
         [x[stripamt:] ikiwa len(x)>=stripamt isipokua b''

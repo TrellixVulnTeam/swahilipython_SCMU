@@ -6,17 +6,17 @@ directly imported it would have made all subsequent imports succeed
 regardless of whether ``_thread`` was available which ni sio desired.
 
 """
-kutoka sys agiza modules as sys_modules
+kutoka sys agiza modules kama sys_modules
 
 agiza _dummy_thread
 
-# Declaring now so as to sio have to nest ``try``s to get proper clean-up.
+# Declaring now so kama to sio have to nest ``try``s to get proper clean-up.
 holding_thread = Uongo
 holding_threading = Uongo
 holding__threading_local = Uongo
 
 jaribu:
-    # Could have checked ikiwa ``_thread`` was sio kwenye sys.modules na gone
+    # Could have checked ikiwa ``_thread`` was haiko kwenye sys.modules na gone
     # a different route, but decided to mirror technique used with
     # ``threading`` below.
     ikiwa '_thread' kwenye sys_modules:
@@ -27,7 +27,7 @@ jaribu:
     sys_modules['_thread'] = sys_modules['_dummy_thread']
 
     ikiwa 'threading' kwenye sys_modules:
-        # If ``threading`` ni already imported, might as well prevent
+        # If ``threading`` ni already imported, might kama well prevent
         # trying to agiza it more than needed by saving it ikiwa it is
         # already imported before deleting it.
         held_threading = sys_modules['threading']
@@ -35,7 +35,7 @@ jaribu:
         toa sys_modules['threading']
 
     ikiwa '_threading_local' kwenye sys_modules:
-        # If ``_threading_local`` ni already imported, might as well prevent
+        # If ``_threading_local`` ni already imported, might kama well prevent
         # trying to agiza it more than needed by saving it ikiwa it is
         # already imported before deleting it.
         held__threading_local = sys_modules['_threading_local']

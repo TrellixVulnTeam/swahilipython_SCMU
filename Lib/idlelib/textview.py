@@ -23,10 +23,10 @@ kundi AutoHideScrollbar(Scrollbar):
         super().set(lo, hi)
 
     eleza pack(self, **kwargs):
-         ashiria TclError(f'{self.__class__.__name__} does sio support "pack"')
+        ashiria TclError(f'{self.__class__.__name__} does sio support "pack"')
 
     eleza place(self, **kwargs):
-         ashiria TclError(f'{self.__class__.__name__} does sio support "place"')
+        ashiria TclError(f'{self.__class__.__name__} does sio support "place"')
 
 
 kundi ScrollableTextFrame(Frame):
@@ -38,7 +38,7 @@ kundi ScrollableTextFrame(Frame):
         master - master widget kila this frame
         wrap - type of text wrapping to use ('word', 'char' ama 'none')
 
-        All parameters except kila 'wrap' are passed to Frame.__init__().
+        All parameters tatizo kila 'wrap' are pitaed to Frame.__init__().
 
         The Text widget ni accessible via the 'text' attribute.
 
@@ -170,13 +170,13 @@ eleza view_file(parent, title, filename, encoding, modal=Kweli, wrap='word',
     ukijumuisha contents of the file.
     """
     jaribu:
-        ukijumuisha open(filename, 'r', encoding=encoding) as file:
+        ukijumuisha open(filename, 'r', encoding=encoding) kama file:
             contents = file.read()
-    except OSError:
+    tatizo OSError:
         showerror(title='File Load Error',
                   message=f'Unable to load file {filename!r} .',
                   parent=parent)
-    except UnicodeDecodeError as err:
+    tatizo UnicodeDecodeError kama err:
         showerror(title='Unicode Decode Error',
                   message=str(err),
                   parent=parent)

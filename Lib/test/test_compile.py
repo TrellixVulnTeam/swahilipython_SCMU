@@ -27,8 +27,8 @@ kundi TestSpecifics(unittest.TestCase):
     eleza test_other_newlines(self):
         compile("\r\n", "<test>", "exec")
         compile("\r", "<test>", "exec")
-        compile("hi\r\nstuff\r\neleza f():\n    pass\r", "<test>", "exec")
-        compile("this_is\rreally_old_mac\releza f():\n    pass", "<test>", "exec")
+        compile("hi\r\nstuff\r\neleza f():\n    pita\r", "<test>", "exec")
+        compile("this_is\rreally_old_mac\releza f():\n    pita", "<test>", "exec")
 
     eleza test_debug_assignment(self):
         # catch assignments to __debug__
@@ -44,8 +44,8 @@ kundi TestSpecifics(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, 'lambda a,a:0')
         self.assertRaises(SyntaxError, eval, 'lambda a,a=1:0')
         self.assertRaises(SyntaxError, eval, 'lambda a=1,a=1:0')
-        self.assertRaises(SyntaxError, exec, 'eleza f(a, a): pass')
-        self.assertRaises(SyntaxError, exec, 'eleza f(a = 0, a = 1): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a, a): pita')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a = 0, a = 1): pita')
         self.assertRaises(SyntaxError, exec, 'eleza f(a): global a; a = 1')
 
     eleza test_syntax_error(self):
@@ -64,7 +64,7 @@ kundi TestSpecifics(unittest.TestCase):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
                     rudisha 12
-                 ashiria KeyError
+                ashiria KeyError
             eleza __setitem__(self, key, value):
                 self.results = (key, value)
             eleza keys(self):
@@ -76,8 +76,8 @@ kundi TestSpecifics(unittest.TestCase):
         self.assertEqual(m.results, ('z', 12))
         jaribu:
             exec('z = b', g, m)
-        except NameError:
-            pass
+        tatizo NameError:
+            pita
         isipokua:
             self.fail('Did sio detect a KeyError')
         exec('z = dir()', g, m)
@@ -90,11 +90,11 @@ kundi TestSpecifics(unittest.TestCase):
 
         kundi A:
             "Non-mapping"
-            pass
+            pita
         m = A()
         self.assertRaises(TypeError, exec, 'z = a', g, m)
 
-        # Verify that dict subclasses work as well
+        # Verify that dict subclasses work kama well
         kundi D(dict):
             eleza __getitem__(self, key):
                 ikiwa key == 'a':
@@ -129,7 +129,7 @@ eleza f(x):
         self.assertEqual(g['f'](5), 0)
 
     eleza test_argument_order(self):
-        self.assertRaises(SyntaxError, exec, 'eleza f(a=1, b): pass')
+        self.assertRaises(SyntaxError, exec, 'eleza f(a=1, b): pita')
 
     eleza test_float_literals(self):
         # testing bad float literals
@@ -143,7 +143,7 @@ eleza f(x):
         s = """
 ikiwa 1:
     ikiwa 2:
-        pass"""
+        pita"""
         compile(s, "<string>", "exec")
 
     # This test ni probably specific to CPython na may sio generalize
@@ -196,7 +196,7 @@ ikiwa 1:
             all_one_bits = '0xffffffff'
             self.assertEqual(eval(all_one_bits), 4294967295)
             self.assertEqual(eval("-" + all_one_bits), -4294967295)
-        elikiwa sys.maxsize == 9223372036854775807:
+        lasivyo sys.maxsize == 9223372036854775807:
             # 64-bit machine
             all_one_bits = '0xffffffffffffffff'
             self.assertEqual(eval(all_one_bits), 18446744073709551615)
@@ -234,15 +234,15 @@ ikiwa 1:
             'Tupu = 0',
             'Tupu += 0',
             '__builtins__.Tupu = 0',
-            'eleza Tupu(): pass',
-            'kundi Tupu: pass',
+            'eleza Tupu(): pita',
+            'kundi Tupu: pita',
             '(a, Tupu) = 0, 0',
-            'kila Tupu kwenye range(10): pass',
-            'eleza f(Tupu): pass',
+            'kila Tupu kwenye range(10): pita',
+            'eleza f(Tupu): pita',
             'agiza Tupu',
-            'agiza x as Tupu',
+            'agiza x kama Tupu',
             'kutoka x agiza Tupu',
-            'kutoka x agiza y as Tupu'
+            'kutoka x agiza y kama Tupu'
         ]
         kila stmt kwenye stmts:
             stmt += "\n"
@@ -253,8 +253,8 @@ ikiwa 1:
         succeed = [
             'agiza sys',
             'agiza os, sys',
-            'agiza os as bar',
-            'agiza os.path as bar',
+            'agiza os kama bar',
+            'agiza os.path kama bar',
             'kutoka __future__ agiza nested_scopes, generators',
             'kutoka __future__ agiza (nested_scopes,\ngenerators)',
             'kutoka __future__ agiza (nested_scopes,\ngenerators,)',
@@ -263,9 +263,9 @@ ikiwa 1:
             'kutoka sys agiza (stdin, stderr,\nstdout,)',
             'kutoka sys agiza (stdin\n, stderr, stdout)',
             'kutoka sys agiza (stdin\n, stderr, stdout,)',
-            'kutoka sys agiza stdin as si, stdout as so, stderr as se',
-            'kutoka sys agiza (stdin as si, stdout as so, stderr as se)',
-            'kutoka sys agiza (stdin as si, stdout as so, stderr as se,)',
+            'kutoka sys agiza stdin kama si, stdout kama so, stderr kama se',
+            'kutoka sys agiza (stdin kama si, stdout kama so, stderr kama se)',
+            'kutoka sys agiza (stdin kama si, stdout kama so, stderr kama se,)',
             ]
         fail = [
             'agiza (os, sys)',
@@ -310,7 +310,7 @@ ikiwa 1:
         self.assertIsTupu(l.__doc__)
 
     eleza test_encoding(self):
-        code = b'# -*- coding: badencoding -*-\npass\n'
+        code = b'# -*- coding: badencoding -*-\npita\n'
         self.assertRaises(SyntaxError, compile, code, 'tmp', 'exec')
         code = '# -*- coding: badencoding -*-\n"\xc2\xa4"\n'
         compile(code, 'tmp', 'exec')
@@ -404,7 +404,7 @@ ikiwa 1:
 
     eleza test_annotation_limit(self):
         # more than 255 annotations, should compile ok
-        s = "eleza f(%s): pass"
+        s = "eleza f(%s): pita"
         s %= ', '.join('a%d:%d' % (i,i) kila i kwenye range(300))
         compile(s, '?', 'exec')
 
@@ -425,13 +425,13 @@ ikiwa 1:
         fname = __file__
         ikiwa fname.lower().endswith('pyc'):
             fname = fname[:-1]
-        ukijumuisha open(fname, 'r') as f:
+        ukijumuisha open(fname, 'r') kama f:
             fcontents = f.read()
         sample_code = [
             ['<assign>', 'x = 5'],
-            ['<ifblock>', """ikiwa Kweli:\n    pass\n"""],
+            ['<ifblock>', """ikiwa Kweli:\n    pita\n"""],
             ['<forblock>', """kila n kwenye [1, 2, 3]:\n    andika(n)\n"""],
-            ['<deffunc>', """eleza foo():\n    pass\nfoo()\n"""],
+            ['<deffunc>', """eleza foo():\n    pita\nfoo()\n"""],
             [fname, fcontents],
         ]
 
@@ -444,14 +444,14 @@ ikiwa 1:
             # the code object's filename comes kutoka the second compilation step
             self.assertEqual(co2.co_filename, '%s3' % fname)
 
-        #  ashiria exception when node type doesn't match ukijumuisha compile mode
+        # ashiria exception when node type doesn't match ukijumuisha compile mode
         co1 = compile('andika(1)', '<string>', 'exec', _ast.PyCF_ONLY_AST)
         self.assertRaises(TypeError, compile, co1, '<ast>', 'eval')
 
-        #  ashiria exception when node type ni no start node
+        # ashiria exception when node type ni no start node
         self.assertRaises(TypeError, compile, _ast.If(), '<ast>', 'exec')
 
-        #  ashiria exception when node has invalid children
+        # ashiria exception when node has invalid children
         ast = _ast.Module()
         ast.body = [_ast.BoolOp()]
         self.assertRaises(TypeError, compile, ast, '<ast>', 'exec')
@@ -469,17 +469,17 @@ ikiwa 1:
 
     eleza test_compile_filename(self):
         kila filename kwenye 'file.py', b'file.py':
-            code = compile('pass', filename, 'exec')
+            code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
         kila filename kwenye bytearray(b'file.py'), memoryview(b'file.py'):
             ukijumuisha self.assertWarns(DeprecationWarning):
-                code = compile('pass', filename, 'exec')
+                code = compile('pita', filename, 'exec')
             self.assertEqual(code.co_filename, 'file.py')
-        self.assertRaises(TypeError, compile, 'pass', list(b'file.py'), 'exec')
+        self.assertRaises(TypeError, compile, 'pita', list(b'file.py'), 'exec')
 
     @support.cpython_only
     eleza test_same_filename_used(self):
-        s = """eleza f(): pass\neleza g(): pass"""
+        s = """eleza f(): pita\neleza g(): pita"""
         c = compile(s, "myfile", "exec")
         kila obj kwenye c.co_consts:
             ikiwa isinstance(obj, types.CodeType):
@@ -495,15 +495,15 @@ ikiwa 1:
         self.compile_single("1 + 2 # one plus two")
         self.compile_single("1; 2")
         self.compile_single("agiza sys; sys")
-        self.compile_single("eleza f():\n   pass")
-        self.compile_single("wakati Uongo:\n   pass")
+        self.compile_single("eleza f():\n   pita")
+        self.compile_single("wakati Uongo:\n   pita")
         self.compile_single("ikiwa x:\n   f(x)")
         self.compile_single("ikiwa x:\n   f(x)\nisipokua:\n   g(x)")
-        self.compile_single("kundi T:\n   pass")
+        self.compile_single("kundi T:\n   pita")
 
     eleza test_bad_single_statement(self):
         self.assertInvalidSingle('1\n2')
-        self.assertInvalidSingle('eleza f(): pass')
+        self.assertInvalidSingle('eleza f(): pita')
         self.assertInvalidSingle('a = 13\nb = 187')
         self.assertInvalidSingle('toa x\ntoa y')
         self.assertInvalidSingle('f()\ng()')
@@ -514,9 +514,9 @@ ikiwa 1:
     eleza test_particularly_evil_undecodable(self):
         # Issue 24022
         src = b'0000\x00\n00000000000\n\x00\n\x9e\n'
-        ukijumuisha tempfile.TemporaryDirectory() as tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            ukijumuisha open(fn, "wb") as fp:
+            ukijumuisha open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
@@ -524,9 +524,9 @@ ikiwa 1:
     eleza test_yet_more_evil_still_undecodable(self):
         # Issue #25388
         src = b"#\x00\n#\xfd\n"
-        ukijumuisha tempfile.TemporaryDirectory() as tmpd:
+        ukijumuisha tempfile.TemporaryDirectory() kama tmpd:
             fn = os.path.join(tmpd, "bad.py")
-            ukijumuisha open(fn, "wb") as fp:
+            ukijumuisha open(fn, "wb") kama fp:
                 fp.write(src)
             res = script_helper.run_python_until_end(fn)[0]
         self.assertIn(b"Non-UTF-8", res.err)
@@ -639,9 +639,9 @@ ikiwa 1:
         """Regression test kila issue35193 when run under clang msan."""
         eleza unused_code_at_end():
             rudisha 3
-             ashiria RuntimeError("unreachable")
+            ashiria RuntimeError("unreachable")
         # The above function definition will trigger the out of bounds
-        # bug kwenye the peephole optimizer as it scans opcodes past the
+        # bug kwenye the peephole optimizer kama it scans opcodes past the
         # RETURN_VALUE opcode.  This does sio always crash an interpreter.
         # When you build ukijumuisha the clang memory sanitizer it reliably aborts.
         self.assertEqual(
@@ -803,7 +803,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             ikiwa x:
                 a
-            elikiwa y:
+            lasivyo y:
                 b
             isipokua:
                 c
@@ -823,7 +823,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             jaribu:
                 a
-            except ImportError:
+            tatizo ImportError:
                 b
             tatizo:
                 c
@@ -836,7 +836,7 @@ kundi TestStackSizeStability(unittest.TestCase):
         snippet = """
             jaribu:
                 a
-            except ImportError as e:
+            tatizo ImportError kama e:
                 b
             tatizo:
                 c
@@ -856,7 +856,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_with(self):
         snippet = """
-            ukijumuisha x as y:
+            ukijumuisha x kama y:
                 a
             """
         self.check_stack_size(snippet)
@@ -891,7 +891,7 @@ kundi TestStackSizeStability(unittest.TestCase):
             kila x kwenye y:
                 ikiwa z:
                     koma
-                elikiwa u:
+                lasivyo u:
                     endelea
                 isipokua:
                     a
@@ -906,7 +906,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 jaribu:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -925,7 +925,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 mwishowe:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -942,7 +942,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 tatizo:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -957,7 +957,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 ukijumuisha c:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a
@@ -1014,7 +1014,7 @@ kundi TestStackSizeStability(unittest.TestCase):
 
     eleza test_async_with(self):
         snippet = """
-            async ukijumuisha x as y:
+            async ukijumuisha x kama y:
                 a
             """
         self.check_stack_size(snippet, async_=Kweli)
@@ -1041,7 +1041,7 @@ kundi TestStackSizeStability(unittest.TestCase):
                 async ukijumuisha c:
                     ikiwa z:
                         koma
-                    elikiwa u:
+                    lasivyo u:
                         endelea
                     isipokua:
                         a

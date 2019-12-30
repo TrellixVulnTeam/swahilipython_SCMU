@@ -72,5 +72,5 @@ kundi clean(Command):
             jaribu:
                 os.rmdir(self.build_base)
                 log.info("removing '%s'", self.build_base)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita

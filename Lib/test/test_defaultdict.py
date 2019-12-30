@@ -43,10 +43,10 @@ kundi TestDefaultDict(unittest.TestCase):
         self.assertEqual(d2.default_factory, Tupu)
         jaribu:
             d2[15]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args, (15,))
         isipokua:
-            self.fail("d2[15] didn't  ashiria KeyError")
+            self.fail("d2[15] didn't ashiria KeyError")
         self.assertRaises(TypeError, defaultdict, 1)
 
     eleza test_missing(self):
@@ -143,7 +143,7 @@ kundi TestDefaultDict(unittest.TestCase):
         d1 = defaultdict()
         jaribu:
             d1[(1,)]
-        except KeyError as err:
+        tatizo KeyError kama err:
             self.assertEqual(err.args[0], (1,))
         isipokua:
             self.fail("expected KeyError")
@@ -161,7 +161,7 @@ kundi TestDefaultDict(unittest.TestCase):
             r"of sub\(\.\.\., \{\}\)>, \{\}\)")
 
         # NOTE: printing a subkundi of a builtin type does sio call its
-        # tp_print slot. So this part ni essentially the same test as above.
+        # tp_print slot. So this part ni essentially the same test kama above.
         tfn = tempfile.mktemp()
         jaribu:
             f = open(tfn, "w+")

@@ -29,8 +29,8 @@ import_module('curses.ascii')
 import_module('curses.textpad')
 jaribu:
     agiza curses.panel
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 eleza requires_curses_func(name):
     rudisha unittest.skipUnless(hasattr(curses, name),
@@ -39,7 +39,7 @@ eleza requires_curses_func(name):
 term = os.environ.get('TERM')
 
 # If newterm was supported we could use it instead of initscr na sio exit
-@unittest.skipIf(not term ama term == 'unknown',
+@unittest.skipIf(sio term ama term == 'unknown',
                  "$TERM=%r, calling initscr() may cause exit" % term)
 @unittest.skipIf(sys.platform == "cygwin",
                  "cygwin's curses mostly just hangs")
@@ -49,7 +49,7 @@ kundi TestCurses(unittest.TestCase):
     eleza setUpClass(cls):
         ikiwa sio sys.__stdout__.isatty():
             # Temporary skip tests on non-tty
-             ashiria unittest.SkipTest('sys.__stdout__ ni sio a tty')
+            ashiria unittest.SkipTest('sys.__stdout__ ni sio a tty')
             cls.tmp = tempfile.TemporaryFile()
             fd = cls.tmp.fileno()
         isipokua:
@@ -122,7 +122,7 @@ kundi TestCurses(unittest.TestCase):
         win.border('|', '!', '-', '_',
                    '+', '\\', '#', '/')
         ukijumuisha self.assertRaises(TypeError,
-                               msg="Expected win.border() to  ashiria TypeError"):
+                               msg="Expected win.border() to ashiria TypeError"):
             win.border(65, 66, 67, 68,
                        69, [], 71, 72)
 
@@ -245,7 +245,7 @@ kundi TestCurses(unittest.TestCase):
         curses.delay_output(1)
         curses.echo() ; curses.echo(1)
 
-        ukijumuisha tempfile.TemporaryFile() as f:
+        ukijumuisha tempfile.TemporaryFile() kama f:
             self.stdscr.putwin(f)
             f.seek(0)
             curses.getwin(f)
@@ -376,11 +376,11 @@ kundi TestCurses(unittest.TestCase):
         kila ch kwenye ('a', '\xe9', '\u20ac', '\U0010FFFF'):
             jaribu:
                 ch.encode(encoding)
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 endelea
             jaribu:
                 curses.unget_wch(ch)
-            except Exception as err:
+            tatizo Exception kama err:
                 self.fail("unget_wch(%a) failed ukijumuisha encoding %s: %s"
                           % (ch, stdscr.encoding, err))
             read = stdscr.get_wch()
@@ -420,13 +420,13 @@ kundi TestCurses(unittest.TestCase):
         jaribu:
             signature = inspect.signature(stdscr.addch)
             self.assertUongo(signature)
-        except ValueError:
+        tatizo ValueError:
             # sio generating a signature ni fine.
-            pass
+            pita
 
         # So.  No signature kila addch.
         # But Argument Clinic gave us a human-readable equivalent
-        # as the first line of the docstring.  So we parse that,
+        # kama the first line of the docstring.  So we parse that,
         # na ensure that the parameters appear kwenye the correct order.
         # Since this ni parsing output kutoka Argument Clinic, we can
         # be reasonably certain the generated parsing code will be
@@ -437,7 +437,7 @@ kundi TestCurses(unittest.TestCase):
     eleza test_issue13051(self):
         stdscr = self.stdscr
         ikiwa sio hasattr(stdscr, 'resize'):
-             ashiria unittest.SkipTest('requires curses.window.resize')
+            ashiria unittest.SkipTest('requires curses.window.resize')
         box = curses.textpad.Textbox(stdscr, insert_mode=Kweli)
         lines, cols = stdscr.getmaxyx()
         stdscr.resize(lines-2, cols-2)

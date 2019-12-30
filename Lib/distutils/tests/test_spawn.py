@@ -5,7 +5,7 @@ agiza sys
 agiza unittest
 kutoka unittest agiza mock
 kutoka test.support agiza run_unittest, unix_shell
-kutoka test agiza support as test_support
+kutoka test agiza support kama test_support
 
 kutoka distutils.spawn agiza find_executable
 kutoka distutils.spawn agiza _nt_quote_args
@@ -56,7 +56,7 @@ kundi SpawnTestCase(support.TempdirManager,
         spawn([exe])  # should work without any error
 
     eleza test_find_executable(self):
-        ukijumuisha test_support.temp_dir() as tmp_dir:
+        ukijumuisha test_support.temp_dir() kama tmp_dir:
             # use TESTFN to get a pseudo-unique filename
             program_noeext = test_support.TESTFN
             # Give the temporary program an ".exe" suffix kila all.
@@ -65,7 +65,7 @@ kundi SpawnTestCase(support.TempdirManager,
 
             filename = os.path.join(tmp_dir, program)
             ukijumuisha open(filename, "wb"):
-                pass
+                pita
             os.chmod(filename, stat.S_IXUSR)
 
             # test path parameter
@@ -87,8 +87,8 @@ kundi SpawnTestCase(support.TempdirManager,
             rv = find_executable(dont_exist_program , path=tmp_dir)
             self.assertIsTupu(rv)
 
-            # PATH='': no match, except kwenye the current directory
-            ukijumuisha test_support.EnvironmentVarGuard() as env:
+            # PATH='': no match, tatizo kwenye the current directory
+            ukijumuisha test_support.EnvironmentVarGuard() kama env:
                 env['PATH'] = ''
                 ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
                                          return_value=tmp_dir, create=Kweli), \
@@ -103,7 +103,7 @@ kundi SpawnTestCase(support.TempdirManager,
                         self.assertEqual(rv, program)
 
             # PATH=':': explicitly looks kwenye the current directory
-            ukijumuisha test_support.EnvironmentVarGuard() as env:
+            ukijumuisha test_support.EnvironmentVarGuard() kama env:
                 env['PATH'] = os.pathsep
                 ukijumuisha unittest.mock.patch('distutils.spawn.os.confstr',
                                          return_value='', create=Kweli), \
@@ -117,7 +117,7 @@ kundi SpawnTestCase(support.TempdirManager,
                         self.assertEqual(rv, program)
 
             # missing PATH: test os.confstr("CS_PATH") na os.defpath
-            ukijumuisha test_support.EnvironmentVarGuard() as env:
+            ukijumuisha test_support.EnvironmentVarGuard() kama env:
                 env.pop('PATH', Tupu)
 
                 # without confstr

@@ -47,8 +47,8 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         name = 'dssdsdfff'
-        assert name sio kwenye sys.builtin_module_names
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        assert name haiko kwenye sys.builtin_module_names
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module(name)
         self.assertEqual(cm.exception.name, name)
 
@@ -56,11 +56,11 @@ kundi LoaderTests(abc.LoaderTests):
         # Using the name of a module already imported but sio a built-in should
         # still fail.
         module_name = 'builtin_reload_test'
-        assert module_name sio kwenye sys.builtin_module_names
+        assert module_name haiko kwenye sys.builtin_module_names
         ukijumuisha util.uncache(module_name):
             module = types.ModuleType(module_name)
             sys.modules[module_name] = module
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.load_module(module_name)
         self.assertEqual(cm.exception.name, module_name)
 
@@ -92,10 +92,10 @@ kundi InspectLoaderTests:
 
     @unittest.skipIf(util.BUILTINS.bad_name ni Tupu, 'all modules are built in')
     eleza test_not_builtin(self):
-        # Modules sio built-in should  ashiria ImportError.
+        # Modules sio built-in should ashiria ImportError.
         kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.BuiltinImporter, meth_name)
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             method(util.BUILTINS.bad_name)
 
 

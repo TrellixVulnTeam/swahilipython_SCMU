@@ -3,7 +3,7 @@ kutoka ctypes agiza *
 
 jaribu:
     WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
@@ -36,7 +36,7 @@ kundi CFuncPtrTestCase(unittest.TestCase):
         self.assertEqual(s(1, 2), 3)
         self.assertEqual(c(1, 2), 3)
         # The following no longer raises a TypeError - it ni now
-        # possible, as kwenye C, to call cdecl functions ukijumuisha more parameters.
+        # possible, kama kwenye C, to call cdecl functions ukijumuisha more parameters.
         #self.assertRaises(TypeError, c, 1, 2, 3)
         self.assertEqual(c(1, 2, 3, 4, 5, 6), 3)
         ikiwa sio WINFUNCTYPE ni CFUNCTYPE:
@@ -91,7 +91,7 @@ kundi CFuncPtrTestCase(unittest.TestCase):
 
         eleza NoNullHandle(value):
             ikiwa sio value:
-                 ashiria WinError()
+                ashiria WinError()
             rudisha value
 
         strchr = lib.my_strchr
@@ -103,7 +103,7 @@ kundi CFuncPtrTestCase(unittest.TestCase):
 
         strtok = lib.my_strtok
         strtok.restype = c_char_p
-        # Neither of this does work: strtok changes the buffer it ni passed
+        # Neither of this does work: strtok changes the buffer it ni pitaed
 ##        strtok.argtypes = (c_char_p, c_char_p)
 ##        strtok.argtypes = (c_string, c_char_p)
 

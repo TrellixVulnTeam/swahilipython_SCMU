@@ -126,7 +126,7 @@ kundi LocaltimeTests(unittest.TestCase):
     # XXX: Need a more robust test kila Olson's tzdata
     @unittest.skipIf(sys.platform.startswith('win'),
                      "Windows does sio use Olson's TZ database")
-    @unittest.skipUnless(os.path.exists('/usr/share/zoneinfo') or
+    @unittest.skipUnless(os.path.exists('/usr/share/zoneinfo') ama
                          os.path.exists('/usr/lib/zoneinfo'),
                          "Can't find the Olson's TZ database")
     @test.support.run_with_tz('Europe/Kiev')

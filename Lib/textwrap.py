@@ -35,13 +35,13 @@ kundi TextWrapper:
       expand_tabs (default: true)
         Expand tabs kwenye input text to spaces before further processing.
         Each tab will become 0 .. 'tabsize' spaces, depending on its position
-        kwenye its line.  If false, each tab ni treated as a single character.
+        kwenye its line.  If false, each tab ni treated kama a single character.
       tabsize (default: 8)
         Expand tabs kwenye input text to 0 .. 'tabsize' spaces, unless
         'expand_tabs' ni false.
       replace_whitespace (default: true)
         Replace all whitespace characters kwenye the input text by spaces
-        after tab expansion.  Note that ikiwa expand_tabs ni false and
+        after tab expansion.  Note that ikiwa expand_tabs ni false na
         replace_whitespace ni true, every tab will be converted to a
         single space!
       fix_sentence_endings (default: false)
@@ -161,7 +161,7 @@ kundi TextWrapper:
         """_split(text : string) -> [string]
 
         Split the text to wrap into indivisible chunks.  Chunks are
-        sio quite the same as words; see _wrap_chunks() kila full
+        sio quite the same kama words; see _wrap_chunks() kila full
         details.  As an example, the text
           Look, goof-ball -- use the -b option!
         komas into the following chunks:
@@ -206,14 +206,14 @@ kundi TextWrapper:
         ni too long to fit kwenye any line.
         """
         # Figure out when indent ni larger than the specified width, na make
-        # sure at least one character ni stripped off on every pass
+        # sure at least one character ni stripped off on every pita
         ikiwa width < 1:
             space_left = 1
         isipokua:
             space_left = width - cur_len
 
-        # If we're allowed to koma long words, then do so: put as much
-        # of the next chunk onto the current line as will fit.
+        # If we're allowed to koma long words, then do so: put kama much
+        # of the next chunk onto the current line kama will fit.
         ikiwa self.koma_long_words:
             cur_line.append(reversed_chunks[-1][:space_left])
             reversed_chunks[-1] = reversed_chunks[-1][space_left:]
@@ -221,7 +221,7 @@ kundi TextWrapper:
         # Otherwise, we have to preserve the long word intact.  Only add
         # it to the current line ikiwa there's nothing already there --
         # that minimizes how much we violate the width constraint.
-        elikiwa sio cur_line:
+        lasivyo sio cur_line:
             cur_line.append(reversed_chunks.pop())
 
         # If we're sio allowed to koma long words, na there's already
@@ -245,14 +245,14 @@ kundi TextWrapper:
         """
         lines = []
         ikiwa self.width <= 0:
-             ashiria ValueError("invalid width %r (must be > 0)" % self.width)
+            ashiria ValueError("invalid width %r (must be > 0)" % self.width)
         ikiwa self.max_lines ni sio Tupu:
             ikiwa self.max_lines > 1:
                 indent = self.subsequent_indent
             isipokua:
                 indent = self.initial_indent
             ikiwa len(indent) + len(self.placeholder.lstrip()) > self.width:
-                 ashiria ValueError("placeholder too large kila max width")
+                ashiria ValueError("placeholder too large kila max width")
 
         # Arrange kwenye reverse order so items can be efficiently popped
         # kutoka a stack of chucks.
@@ -292,7 +292,7 @@ kundi TextWrapper:
                     koma
 
             # The current line ni full, na the next chunk ni too big to
-            # fit on *any* line (not just this one).
+            # fit on *any* line (sio just this one).
             ikiwa chunks na len(chunks[-1]) > width:
                 self._handle_long_word(chunks, cur_line, cur_len, width)
                 cur_len = sum(map(len, cur_line))
@@ -303,18 +303,18 @@ kundi TextWrapper:
                 toa cur_line[-1]
 
             ikiwa cur_line:
-                ikiwa (self.max_lines ni Tupu or
-                    len(lines) + 1 < self.max_lines or
-                    (not chunks or
-                     self.drop_whitespace and
-                     len(chunks) == 1 and
+                ikiwa (self.max_lines ni Tupu ama
+                    len(lines) + 1 < self.max_lines ama
+                    (sio chunks ama
+                     self.drop_whitespace na
+                     len(chunks) == 1 na
                      sio chunks[0].strip()) na cur_len <= width):
                     # Convert current line back to a string na store it in
                     # list of all lines (rudisha value).
                     lines.append(indent + ''.join(cur_line))
                 isipokua:
                     wakati cur_line:
-                        ikiwa (cur_line[-1].strip() and
+                        ikiwa (cur_line[-1].strip() na
                             cur_len + len(self.placeholder) <= width):
                             cur_line.append(self.placeholder)
                             lines.append(indent + ''.join(cur_line))
@@ -370,7 +370,7 @@ eleza wrap(text, width=70, **kwargs):
 
     Reformat the single paragraph kwenye 'text' so it fits kwenye lines of no
     more than 'width' columns, na rudisha a list of wrapped lines.  By
-    default, tabs kwenye 'text' are expanded ukijumuisha string.expandtabs(), and
+    default, tabs kwenye 'text' are expanded ukijumuisha string.expandtabs(), na
     all other whitespace characters (including newline) are converted to
     space.  See TextWrapper kundi kila available keyword args to customize
     wrapping behaviour.
@@ -394,8 +394,8 @@ eleza shorten(text, width, **kwargs):
     """Collapse na truncate the given text to fit kwenye the given width.
 
     The text first has its whitespace collapsed.  If it then fits in
-    the *width*, it ni returned as is.  Otherwise, as many words
-    as possible are joined na then the placeholder ni appended::
+    the *width*, it ni returned kama is.  Otherwise, kama many words
+    kama possible are joined na then the placeholder ni appended::
 
         >>> textwrap.shorten("Hello  world!", width=12)
         'Hello world!'
@@ -418,7 +418,7 @@ eleza dedent(text):
     edge of the display, wakati still presenting them kwenye the source code
     kwenye indented form.
 
-    Note that tabs na spaces are both treated as whitespace, but they
+    Note that tabs na spaces are both treated kama whitespace, but they
     are sio equal: the lines "  hello" na "\\thello" are
     considered to have no common leading whitespace.
 
@@ -435,12 +435,12 @@ eleza dedent(text):
 
         # Current line more deeply indented than previous winner:
         # no change (previous winner ni still on top).
-        elikiwa indent.startswith(margin):
-            pass
+        lasivyo indent.startswith(margin):
+            pita
 
         # Current line consistent ukijumuisha na no deeper than previous winner:
         # it's the new winner.
-        elikiwa margin.startswith(indent):
+        lasivyo margin.startswith(indent):
             margin = indent
 
         # Find the largest common whitespace between current line na previous

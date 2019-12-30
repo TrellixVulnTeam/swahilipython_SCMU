@@ -1,6 +1,6 @@
 kutoka test.support agiza requires_IEEE_754, cpython_only
 kutoka test.test_math agiza parse_testfile, test_file
-agiza test.test_math as test_math
+agiza test.test_math kama test_math
 agiza unittest
 agiza cmath, math
 kutoka cmath agiza phase, polar, rect, pi
@@ -67,9 +67,9 @@ kundi CMathTests(unittest.TestCase):
 
     eleza assertFloatIdentical(self, x, y):
         """Fail unless floats x na y are identical, kwenye the sense that:
-        (1) both x na y are nans, or
-        (2) both x na y are infinities, ukijumuisha the same sign, or
-        (3) both x na y are zeros, ukijumuisha the same sign, or
+        (1) both x na y are nans, ama
+        (2) both x na y are infinities, ukijumuisha the same sign, ama
+        (3) both x na y are zeros, ukijumuisha the same sign, ama
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -78,11 +78,11 @@ kundi CMathTests(unittest.TestCase):
         ikiwa math.isnan(x) ama math.isnan(y):
             ikiwa math.isnan(x) na math.isnan(y):
                 return
-        elikiwa x == y:
+        lasivyo x == y:
             ikiwa x != 0.0:
                 return
             # both zero; check that signs match
-            elikiwa math.copysign(1.0, x) == math.copysign(1.0, y):
+            lasivyo math.copysign(1.0, x) == math.copysign(1.0, y):
                 return
             isipokua:
                 msg += ': zeros have different signs'
@@ -103,7 +103,7 @@ kundi CMathTests(unittest.TestCase):
         """Fail ikiwa the two floating-point numbers are sio almost equal.
 
         Determine whether floating-point values a na b are equal to within
-        a (small) rounding error.  The default values kila rel_err and
+        a (small) rounding error.  The default values kila rel_err na
         abs_err are chosen to be suitable kila platforms where a float is
         represented by an IEEE 754 double.  They allow an error of between
         9 na 19 ulps.
@@ -136,16 +136,16 @@ kundi CMathTests(unittest.TestCase):
         # infinite.  In practice these examples are rare.
         jaribu:
             absolute_error = abs(b-a)
-        except OverflowError:
-            pass
+        tatizo OverflowError:
+            pita
         isipokua:
-            # test passes ikiwa either the absolute error ama the relative
+            # test pitaes ikiwa either the absolute error ama the relative
             # error ni sufficiently small.  The defaults amount to an
             # error of between 9 ulps na 19 ulps on an IEEE-754 compliant
             # machine.
             ikiwa absolute_error <= max(abs_err, rel_err * abs(a)):
                 return
-        self.fail(msg or
+        self.fail(msg ama
                   '{!r} na {!r} are sio sufficiently close'.format(a, b))
 
     eleza test_constants(self):
@@ -177,7 +177,7 @@ kundi CMathTests(unittest.TestCase):
         # Test automatic calling of __complex__ na __float__ by cmath
         # functions
 
-        # some random values to use as test values; we avoid values
+        # some random values to use kama test values; we avoid values
         # kila which any of the functions kwenye cmath ni undefined
         # (i.e. 0., 1., -1., 1j, -1j) ama would cause overflow
         cx_arg = 4.419414439 + 1.497100113j
@@ -189,7 +189,7 @@ kundi CMathTests(unittest.TestCase):
                          object(), NotImplemented]
 
         # Now we introduce a variety of classes whose instances might
-        # end up being passed to the cmath functions
+        # end up being pitaed to the cmath functions
 
         # usual case: new-style kundi implementing __complex__
         kundi MyComplex(object):
@@ -207,19 +207,19 @@ kundi CMathTests(unittest.TestCase):
 
         # classes kila which __complex__ raises an exception
         kundi SomeException(Exception):
-            pass
+            pita
         kundi MyComplexException(object):
             eleza __complex__(self):
-                 ashiria SomeException
+                ashiria SomeException
         kundi MyComplexExceptionOS:
             eleza __complex__(self):
-                 ashiria SomeException
+                ashiria SomeException
 
         # some classes sio providing __float__ ama __complex__
         kundi NeitherComplexNorFloat(object):
-            pass
+            pita
         kundi NeitherComplexNorFloatOS:
-            pass
+            pita
         kundi Index:
             eleza __int__(self): rudisha 2
             eleza __index__(self): rudisha 2
@@ -342,8 +342,8 @@ kundi CMathTests(unittest.TestCase):
             version_txt = platform.mac_ver()[0]
             jaribu:
                 osx_version = tuple(map(int, version_txt.split('.')))
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
         eleza rect_complex(z):
             """Wrapped version of rect that accepts a complex number instead of
@@ -366,14 +366,14 @@ kundi CMathTests(unittest.TestCase):
 
             ikiwa fn == 'rect':
                 function = rect_complex
-            elikiwa fn == 'polar':
+            lasivyo fn == 'polar':
                 function = polar_complex
             isipokua:
                 function = getattr(cmath, fn)
             ikiwa 'divide-by-zero' kwenye flags ama 'invalid' kwenye flags:
                 jaribu:
                     actual = function(arg)
-                except ValueError:
+                tatizo ValueError:
                     endelea
                 isipokua:
                     self.fail('ValueError sio raised kwenye test '
@@ -382,7 +382,7 @@ kundi CMathTests(unittest.TestCase):
             ikiwa 'overflow' kwenye flags:
                 jaribu:
                     actual = function(arg)
-                except OverflowError:
+                tatizo OverflowError:
                     endelea
                 isipokua:
                     self.fail('OverflowError sio raised kwenye test '

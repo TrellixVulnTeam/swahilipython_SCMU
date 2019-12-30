@@ -15,8 +15,8 @@ eleza server(evt, serv):
     jaribu:
         conn, addr = serv.accept()
         conn.close()
-    except socket.timeout:
-        pass
+    tatizo socket.timeout:
+        pita
     mwishowe:
         serv.close()
 
@@ -42,7 +42,7 @@ kundi GeneralTests(unittest.TestCase):
         telnet.sock.close()
 
     eleza testContextManager(self):
-        ukijumuisha telnetlib.Telnet(HOST, self.port) as tn:
+        ukijumuisha telnetlib.Telnet(HOST, self.port) kama tn:
             self.assertIsNotTupu(tn.get_socket())
         self.assertIsTupu(tn.get_socket())
 
@@ -105,12 +105,12 @@ kundi SocketStub(object):
 
 kundi TelnetAlike(telnetlib.Telnet):
     eleza fileno(self):
-         ashiria NotImplementedError()
-    eleza close(self): pass
+        ashiria NotImplementedError()
+    eleza close(self): pita
     eleza sock_avail(self):
-        rudisha (not self.sock.block)
+        rudisha (sio self.sock.block)
     eleza msg(self, msg, *args):
-        ukijumuisha support.captured_stdout() as out:
+        ukijumuisha support.captured_stdout() kama out:
             telnetlib.Telnet.msg(self, msg, *args)
         self._messages += out.getvalue()
         return
@@ -236,7 +236,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         wakati Kweli:
             jaribu:
                 data += func()
-            except EOFError:
+            tatizo EOFError:
                 koma
         self.assertEqual(data, want)
 
@@ -246,7 +246,7 @@ kundi ReadTests(ExpectAndReadTestCase):
         self._read_eager('read_eager')
         self._read_eager('read_very_eager')
         # NB -- we need to test the IAC block which ni mentioned kwenye the
-        # docstring but sio kwenye the module docs
+        # docstring but haiko kwenye the module docs
 
     eleza read_very_lazy(self):
         want = b'x' * 100
@@ -269,7 +269,7 @@ kundi ReadTests(ExpectAndReadTestCase):
                 data += read_data
                 ikiwa sio read_data:
                     telnet.fill_rawq()
-            except EOFError:
+            tatizo EOFError:
                 koma
             self.assertKweli(want.startswith(data))
         self.assertEqual(data, want)

@@ -10,7 +10,7 @@ parsing tables to Python data structures na writing a Python parse
 engine.
 
 Note that the token numbers are constants determined by the standard
-Python tokenizer.  The standard token module defines these numbers and
+Python tokenizer.  The standard token module defines these numbers na
 their names (the names are sio used much).  The token numbers are
 hardcoded into the Python tokenizer na into pgen.  A Python
 implementation of the Python tokenizer ni also available, kwenye the
@@ -36,8 +36,8 @@ kutoka pgen2 agiza grammar, token
 kundi Converter(grammar.Grammar):
     """Grammar subkundi that reads classic pgen output files.
 
-    The run() method reads the tables as produced by the pgen parser
-    generator, typically contained kwenye two C files, graminit.h and
+    The run() method reads the tables kama produced by the pgen parser
+    generator, typically contained kwenye two C files, graminit.h na
     graminit.c.  The other methods are kila internal use only.
 
     See the base kundi kila more documentation.
@@ -54,13 +54,13 @@ kundi Converter(grammar.Grammar):
         """Parse the .h file written by pgen.  (Internal)
 
         This file ni a sequence of #define statements defining the
-        nonterminals of the grammar as numbers.  We build two tables
+        nonterminals of the grammar kama numbers.  We build two tables
         mapping the numbers to names na back.
 
         """
         jaribu:
             f = open(filename)
-        except OSError as err:
+        tatizo OSError kama err:
             andika("Can't open %s: %s" % (filename, err))
             rudisha Uongo
         self.symbol2number = {}
@@ -75,8 +75,8 @@ kundi Converter(grammar.Grammar):
             isipokua:
                 symbol, number = mo.groups()
                 number = int(number)
-                assert symbol sio kwenye self.symbol2number
-                assert number sio kwenye self.number2symbol
+                assert symbol haiko kwenye self.symbol2number
+                assert number haiko kwenye self.number2symbol
                 self.symbol2number[symbol] = number
                 self.number2symbol[number] = symbol
         rudisha Kweli
@@ -84,7 +84,7 @@ kundi Converter(grammar.Grammar):
     eleza parse_graminit_c(self, filename):
         """Parse the .c file written by pgen.  (Internal)
 
-        The file looks as follows.  The first two lines are always this:
+        The file looks kama follows.  The first two lines are always this:
 
         #include "pgenheaders.h"
         #include "grammar.h"
@@ -111,7 +111,7 @@ kundi Converter(grammar.Grammar):
         """
         jaribu:
             f = open(filename)
-        except OSError as err:
+        tatizo OSError kama err:
             andika("Can't open %s: %s" % (filename, err))
             rudisha Uongo
         # The code below essentially uses f's iterator-ness!
@@ -241,8 +241,8 @@ kundi Converter(grammar.Grammar):
         assert line == "};\n", (lineno, line)
         jaribu:
             lineno, line = lineno+1, next(f)
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         isipokua:
             assert 0, (lineno, line)
 
@@ -253,5 +253,5 @@ kundi Converter(grammar.Grammar):
         kila ilabel, (type, value) kwenye enumerate(self.labels):
             ikiwa type == token.NAME na value ni sio Tupu:
                 self.keywords[value] = ilabel
-            elikiwa value ni Tupu:
+            lasivyo value ni Tupu:
                 self.tokens[type] = ilabel

@@ -6,7 +6,7 @@ agiza unittest
 kutoka unittest agiza mock
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 agiza asyncio
@@ -14,7 +14,7 @@ kutoka asyncio.selector_events agiza BaseSelectorEventLoop
 kutoka asyncio.selector_events agiza _SelectorTransport
 kutoka asyncio.selector_events agiza _SelectorSocketTransport
 kutoka asyncio.selector_events agiza _SelectorDatagramTransport
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 MOCK_ANY = mock.ANY
@@ -32,7 +32,7 @@ kundi TestBaseSelectorEventLoop(BaseSelectorEventLoop):
         self._internal_fds += 1
 
     eleza _close_self_pipe(self):
-        pass
+        pita
 
 
 eleza list_to_buffer(l=()):
@@ -159,7 +159,7 @@ kundi BaseSelectorEventLoopTests(test_utils.TestCase):
         self.assertRaises(RuntimeError, self.loop.run_until_complete, f)
         fd = 0
         eleza callback():
-            pass
+            pita
         self.assertRaises(RuntimeError, self.loop.add_reader, fd, callback)
         self.assertRaises(RuntimeError, self.loop.add_writer, fd, callback)
 
@@ -369,7 +369,7 @@ kundi BaseSelectorEventLoopTests(test_utils.TestCase):
         # asyncio.sleep(0) to ensure created tasks are complete to avoid
         # task pending warnings.
         mock_obj = mock.patch.object
-        ukijumuisha mock_obj(self.loop, '_accept_connection2') as accept2_mock:
+        ukijumuisha mock_obj(self.loop, '_accept_connection2') kama accept2_mock:
             self.loop._accept_connection(
                 mock.Mock(), sock, backlog=backlog)
         self.loop.run_until_complete(asyncio.sleep(0))
@@ -457,7 +457,7 @@ kundi SelectorTransportTests(test_utils.TestCase):
     @mock.patch('asyncio.log.logger.error')
     eleza test_fatal_error_custom_exception(self, m_exc):
         kundi MyError(Exception):
-            pass
+            pita
         exc = MyError()
         tr = self.create_transport()
         tr._force_close = mock.Mock()
@@ -1358,7 +1358,7 @@ kundi SelectorDatagramTransportTests(test_utils.TestCase):
     @mock.patch('asyncio.base_events.logger.error')
     eleza test_fatal_error_connected_custom_error(self, m_exc):
         kundi MyException(Exception):
-            pass
+            pita
         transport = self.datagram_transport(address=('0.0.0.0', 1))
         err = MyException()
         transport._fatal_error(err)

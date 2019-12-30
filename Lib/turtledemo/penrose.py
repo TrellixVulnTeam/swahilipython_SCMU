@@ -17,7 +17,7 @@ For more information see:
 """
 kutoka turtle agiza *
 kutoka math agiza cos, pi
-kutoka time agiza perf_counter as clock, sleep
+kutoka time agiza perf_counter kama clock, sleep
 
 f = (5**0.5-1)/2.0   # (sqrt(5)-1)/2 -- golden ratio
 d = 2 * cos(3*pi/10)

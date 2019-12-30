@@ -24,4 +24,4 @@ kundi NodeFilter:
     SHOW_NOTATION               = 0x00000800
 
     eleza acceptNode(self, node):
-         ashiria NotImplementedError
+        ashiria NotImplementedError

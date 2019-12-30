@@ -15,7 +15,7 @@ agiza nntplib
 kutoka unittest.mock agiza patch
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 
@@ -60,7 +60,7 @@ kundi NetworkedNNTPTestsMixin:
             self.assertEqual(str, type(groups[0].group))
 
     eleza test_unknown_command(self):
-        ukijumuisha self.assertRaises(nntplib.NNTPPermanentError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPPermanentError) kama cm:
             self.server._shortcmd("XYZZY")
         resp = cm.exception.response
         self.assertKweli(resp.startswith("500 "), resp)
@@ -180,7 +180,7 @@ kundi NetworkedNNTPTestsMixin:
         kila art_num kwenye (last, first, last - 1):
             jaribu:
                 resp, head = self.server.head(art_num)
-            except nntplib.NNTPTemporaryError as e:
+            tatizo nntplib.NNTPTemporaryError kama e:
                 ikiwa sio e.response.startswith("423 "):
                     raise
                 # "423 No such article" => choose another one
@@ -222,13 +222,13 @@ kundi NetworkedNNTPTestsMixin:
         # This test must be the penultimate because further commands will be
         # refused.
         baduser = "notarealuser"
-        badpw = "notarealpassword"
+        badpw = "notarealpitaword"
         # Check that bogus credentials cause failure
         self.assertRaises(nntplib.NNTPError, self.server.login,
-                          user=baduser, password=badpw, usenetrc=Uongo)
+                          user=baduser, pitaword=badpw, usenetrc=Uongo)
         # FIXME: We should check that correct credentials succeed, but that
         # would require valid details kila some server somewhere to be kwenye the
-        # test suite, I think. Gmane ni anonymous, at least as used kila the
+        # test suite, I think. Gmane ni anonymous, at least kama used kila the
         # other tests.
 
     eleza test_zzquit(self):
@@ -265,23 +265,23 @@ kundi NetworkedNNTPTestsMixin:
                 rudisha Uongo
             jaribu:
                 server.help()
-            except (OSError, EOFError):
+            tatizo (OSError, EOFError):
                 rudisha Uongo
             rudisha Kweli
 
         jaribu:
-            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) as server:
+            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
                 self.assertKweli(is_connected())
                 self.assertKweli(server.help())
             self.assertUongo(is_connected())
 
-            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) as server:
+            ukijumuisha self.NNTP_CLASS(self.NNTP_HOST, timeout=TIMEOUT, usenetrc=Uongo) kama server:
                 server.quit()
             self.assertUongo(is_connected())
-        except SSLError as ssl_err:
+        tatizo SSLError kama ssl_err:
             # matches "[SSL: DH_KEY_TOO_SMALL] dh key too small"
             ikiwa re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
-                 ashiria unittest.SkipTest(f"Got {ssl_err} connecting "
+                ashiria unittest.SkipTest(f"Got {ssl_err} connecting "
                                         f"to {self.NNTP_HOST!r}")
             raise
 
@@ -309,14 +309,14 @@ kundi NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
             jaribu:
                 cls.server = cls.NNTP_CLASS(cls.NNTP_HOST, timeout=TIMEOUT,
                                             usenetrc=Uongo)
-            except SSLError as ssl_err:
+            tatizo SSLError kama ssl_err:
                 # matches "[SSL: DH_KEY_TOO_SMALL] dh key too small"
                 ikiwa re.search(r'(?i)KEY.TOO.SMALL', ssl_err.reason):
-                     ashiria unittest.SkipTest(f"{cls} got {ssl_err} connecting "
+                    ashiria unittest.SkipTest(f"{cls} got {ssl_err} connecting "
                                             f"to {cls.NNTP_HOST!r}")
                 raise
-            except EOF_ERRORS:
-                 ashiria unittest.SkipTest(f"{cls} got EOF error on connecting "
+            tatizo EOF_ERRORS:
+                ashiria unittest.SkipTest(f"{cls} got EOF error on connecting "
                                         f"to {cls.NNTP_HOST!r}")
 
     @classmethod
@@ -328,7 +328,7 @@ kundi NetworkedNNTPTests(NetworkedNNTPTestsMixin, unittest.TestCase):
 kundi NetworkedNNTP_SSLTests(NetworkedNNTPTests):
 
     # Technical limits kila this public NNTP server (see http://www.aioe.org):
-    # "Only two concurrent connections per IP address are allowed and
+    # "Only two concurrent connections per IP address are allowed na
     # 400 connections per day are accepted kutoka each IP address."
 
     NNTP_HOST = 'nntp.aioe.org'
@@ -337,10 +337,10 @@ kundi NetworkedNNTP_SSLTests(NetworkedNNTPTests):
 
     NNTP_CLASS = getattr(nntplib, 'NNTP_SSL', Tupu)
 
-    # Disabled as it produces too much data
+    # Disabled kama it produces too much data
     test_list = Tupu
 
-    # Disabled as the connection will already be encrypted.
+    # Disabled kama the connection will already be encrypted.
     test_starttls = Tupu
 
 
@@ -464,7 +464,7 @@ kundi NNTPv1Handler:
             ikiwa sio line:
                 return
             ikiwa sio line.endswith("\r\n"):
-                 ashiria ValueError("line doesn't end ukijumuisha \\r\\n: {!r}".format(line))
+                ashiria ValueError("line doesn't end ukijumuisha \\r\\n: {!r}".format(line))
             line = line[:-2]
             cmd, *tokens = line.split()
             #meth = getattr(self.handler, "handle_" + cmd.upper(), Tupu)
@@ -474,8 +474,8 @@ kundi NNTPv1Handler:
             isipokua:
                 jaribu:
                     meth(*tokens)
-                except Exception as e:
-                     ashiria ValueError("command failed: {!r}".format(line)) kutoka e
+                tatizo Exception kama e:
+                    ashiria ValueError("command failed: {!r}".format(line)) kutoka e
                 isipokua:
                     ikiwa self.in_body:
                         self.body_callback = meth, tokens
@@ -517,7 +517,7 @@ kundi NNTPv1Handler:
     eleza handle_HELP(self):
         self.push_lit("""\
             100 Legal commands
-              authinfo user Name|pass Password|generic <prog> <args>
+              authinfo user Name|pita Password|generic <prog> <args>
               date
               help
             Report problems to <root@example.org>
@@ -526,9 +526,9 @@ kundi NNTPv1Handler:
     eleza handle_STAT(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("412 No newsgroup selected")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("223 3000234 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("223 0 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -550,7 +550,7 @@ kundi NNTPv1Handler:
                 free.it.comp.lang.python.learner 0000000000 0000000001 y
                 tw.bbs.comp.lang.python 0000000304 0000000304 y
                 .""")
-        elikiwa action == "ACTIVE":
+        lasivyo action == "ACTIVE":
             ikiwa param == "*distutils*":
                 self.push_lit("""\
                     215 Newsgroups kwenye form "group high low flags"
@@ -561,7 +561,7 @@ kundi NNTPv1Handler:
                 self.push_lit("""\
                     215 Newsgroups kwenye form "group high low flags"
                     .""")
-        elikiwa action == "OVERVIEW.FMT":
+        lasivyo action == "OVERVIEW.FMT":
             self.push_lit("""\
                 215 Order of fields kwenye overview database.
                 Subject:
@@ -573,14 +573,14 @@ kundi NNTPv1Handler:
                 Lines:
                 Xref:full
                 .""")
-        elikiwa action == "NEWSGROUPS":
+        lasivyo action == "NEWSGROUPS":
             assert param ni sio Tupu
             ikiwa param == "comp.lang.python":
                 self.push_lit("""\
                     215 Descriptions kwenye form "group description".
                     comp.lang.python\tThe Python computer language.
                     .""")
-            elikiwa param == "comp.lang.python*":
+            lasivyo param == "comp.lang.python*":
                 self.push_lit("""\
                     215 Descriptions kwenye form "group description".
                     comp.lang.python.announce\tAnnouncements about the Python language. (Moderated)
@@ -594,26 +594,26 @@ kundi NNTPv1Handler:
             self.push_lit('501 Unknown LIST keyword')
 
     eleza handle_NEWNEWS(self, group, date_str, time_str):
-        # We hard code different rudisha messages depending on passed
+        # We hard code different rudisha messages depending on pitaed
         # argument na date syntax.
         ikiwa (group == "comp.lang.python" na date_str == "20100913"
             na time_str == "082004"):
-            # Date was passed kwenye RFC 3977 format (NNTP "v2")
+            # Date was pitaed kwenye RFC 3977 format (NNTP "v2")
             self.push_lit("""\
                 230 list of newsarticles (NNTP v2) created after Mon Sep 13 08:20:04 2010 follows
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elikiwa (group == "comp.lang.python" na date_str == "100913"
+        lasivyo (group == "comp.lang.python" na date_str == "100913"
             na time_str == "082004"):
-            # Date was passed kwenye RFC 977 format (NNTP "v1")
+            # Date was pitaed kwenye RFC 977 format (NNTP "v1")
             self.push_lit("""\
                 230 list of newsarticles (NNTP v1) created after Mon Sep 13 08:20:04 2010 follows
                 <a4929a40-6328-491a-aaaf-cb79ed7309a2@q2g2000vbk.googlegroups.com>
                 <f30c0419-f549-4218-848f-d7d0131da931@y3g2000vbm.googlegroups.com>
                 .""")
-        elikiwa (group == 'comp.lang.python' and
-              date_str kwenye ('20100101', '100101') and
+        lasivyo (group == 'comp.lang.python' na
+              date_str kwenye ('20100101', '100101') na
               time_str == '090000'):
             self.push_lit('too long line' * 3000 +
                           '\n.')
@@ -670,7 +670,7 @@ kundi NNTPv1Handler:
 
     eleza handle_IHAVE(self, message_id, *, body=Tupu):
         ikiwa body ni Tupu:
-            ikiwa (self.allow_posting and
+            ikiwa (self.allow_posting na
                 message_id == "<i.am.an.article.you.will.want@example.com>"):
                 self.push_lit("335 Send it; end ukijumuisha <CR-LF>.<CR-LF>")
                 self.expect_body()
@@ -698,9 +698,9 @@ kundi NNTPv1Handler:
     eleza handle_ARTICLE(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("220 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("220 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("220 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -711,9 +711,9 @@ kundi NNTPv1Handler:
     eleza handle_HEAD(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("221 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("221 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("221 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -724,9 +724,9 @@ kundi NNTPv1Handler:
     eleza handle_BODY(self, message_spec=Tupu):
         ikiwa message_spec ni Tupu:
             self.push_lit("222 3000237 <45223423@example.com>")
-        elikiwa message_spec == "<45223423@example.com>":
+        lasivyo message_spec == "<45223423@example.com>":
             self.push_lit("222 0 <45223423@example.com>")
-        elikiwa message_spec == "3000234":
+        lasivyo message_spec == "3000234":
             self.push_lit("222 3000234 <45223423@example.com>")
         isipokua:
             self.push_lit("430 No Such Article Found")
@@ -737,17 +737,17 @@ kundi NNTPv1Handler:
     eleza handle_AUTHINFO(self, cred_type, data):
         ikiwa self._logged_in:
             self.push_lit('502 Already Logged In')
-        elikiwa cred_type == 'user':
+        lasivyo cred_type == 'user':
             ikiwa self._user_sent:
                 self.push_lit('482 User Credential Already Sent')
             isipokua:
                 self.push_lit('381 Password Required')
                 self._user_sent = Kweli
-        elikiwa cred_type == 'pass':
+        lasivyo cred_type == 'pita':
             self.push_lit('281 Login Successful')
             self._logged_in = Kweli
         isipokua:
-             ashiria Exception('Unknown cred type {}'.format(cred_type))
+            ashiria Exception('Unknown cred type {}'.format(cred_type))
 
 
 kundi NNTPv2Handler(NNTPv1Handler):
@@ -771,7 +771,7 @@ kundi NNTPv2Handler(NNTPv1Handler):
             self.push_lit(fmt.format(''))
 
     eleza handle_MODE(self, _):
-         ashiria Exception('MODE READER sent despite READER has been advertised')
+        ashiria Exception('MODE READER sent despite READER has been advertised')
 
     eleza handle_OVER(self, message_spec=Tupu):
         rudisha self.handle_XOVER(message_spec)
@@ -828,7 +828,7 @@ kundi NNTPv1v2TestsMixin:
             self.assertIn('AUTHINFO', self.server._caps)
         self.server.login('testuser', 'testpw')
         # ikiwa AUTHINFO ni gone kutoka _caps we also know that getcapabilities()
-        # has been called after login as it should
+        # has been called after login kama it should
         self.assertNotIn('AUTHINFO', self.server._caps)
 
     eleza test_date(self):
@@ -846,7 +846,7 @@ kundi NNTPv1v2TestsMixin:
         resp, help = self.server.help()
         self.assertEqual(resp, "100 Legal commands")
         self.assertEqual(help, [
-            '  authinfo user Name|pass Password|generic <prog> <args>',
+            '  authinfo user Name|pita Password|generic <prog> <args>',
             '  date',
             '  help',
             'Report problems to <root@example.org>',
@@ -875,10 +875,10 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(resp, "223 0 <45223423@example.com>")
         self.assertEqual(art_num, 0)
         self.assertEqual(message_id, "<45223423@example.com>")
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.stat("<non.existent.id>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.stat()
         self.assertEqual(cm.exception.response, "412 No newsgroup selected")
 
@@ -921,7 +921,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(last, 1265)
         self.assertEqual(count, 486)
         self.assertEqual(group, "fr.comp.lang.python")
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.group("comp.lang.python.devel")
         exc = cm.exception
         self.assertKweli(exc.response.startswith("411 No such group"),
@@ -987,7 +987,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_data(lines)
         # Non-existent id
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.article("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1035,7 +1035,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_head(lines)
         # Non-existent id
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.head("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1082,7 +1082,7 @@ kundi NNTPv1v2TestsMixin:
         self.assertEqual(message_id, "<45223423@example.com>")
         self._check_article_body(lines)
         # Non-existent id
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.body("<non-existent@example.com>")
         self.assertEqual(cm.exception.response, "430 No Such Article Found")
 
@@ -1149,7 +1149,7 @@ kundi NNTPv1v2TestsMixin:
     )
 
     eleza _check_posted_body(self):
-        # Check the raw body as received by the server
+        # Check the raw body kama received by the server
         lines = self.handler.posted_body
         # One additional line kila the "." terminator
         self.assertEqual(len(lines), 10)
@@ -1199,7 +1199,7 @@ kundi NNTPv1v2TestsMixin:
     eleza test_post(self):
         self.check_post_ihave(self.server.post, "240 Article received OK")
         self.handler.allow_posting = Uongo
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.post(self.sample_post)
         self.assertEqual(cm.exception.response,
                          "440 Posting sio permitted")
@@ -1207,7 +1207,7 @@ kundi NNTPv1v2TestsMixin:
     eleza test_ihave(self):
         self.check_post_ihave(self.server.ihave, "235 Article transferred OK",
                               "<i.am.an.article.you.will.want@example.com>")
-        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) as cm:
+        ukijumuisha self.assertRaises(nntplib.NNTPTemporaryError) kama cm:
             self.server.ihave("<another.message.id>", self.sample_post)
         self.assertEqual(cm.exception.response,
                          "435 Article sio wanted")
@@ -1268,7 +1268,7 @@ kundi CapsAfterLoginNNTPv2Tests(MockedNNTPTestsMixin, unittest.TestCase):
 
 kundi SendReaderNNTPv2Tests(MockedNNTPWithReaderModeMixin,
         unittest.TestCase):
-    """Same tests as kila v2 but we tell NTTP to send MODE READER to a server
+    """Same tests kama kila v2 but we tell NTTP to send MODE READER to a server
     that isn't kwenye READER mode by default."""
 
     nntp_version = 2
@@ -1359,7 +1359,7 @@ kundi MiscTests(unittest.TestCase):
             'xref': 'news.example.com misc.test:3000363',
         })
         # Second example; here the "Xref" field ni totally absent (including
-        # the header name) na comes out as Tupu
+        # the header name) na comes out kama Tupu
         lines = [
             '3000234\tI am just a test article\t"Demo User" '
             '<nobody@example.com>\t6 Oct 1998 04:38:40 -0500\t'
@@ -1462,7 +1462,7 @@ kundi MockSocketTests(unittest.TestCase):
     eleza check_constructor_error_conditions(
             self, handler_class,
             expected_error_type, expected_error_msg,
-            login=Tupu, password=Tupu):
+            login=Tupu, pitaword=Tupu):
 
         kundi mock_socket_module:
             eleza create_connection(address, timeout):
@@ -1483,7 +1483,7 @@ kundi MockSocketTests(unittest.TestCase):
         files = []
         ukijumuisha patch('nntplib.socket', mock_socket_module), \
              self.assertRaisesRegex(expected_error_type, expected_error_msg):
-            self.nntp_class('dummy', user=login, password=password)
+            self.nntp_class('dummy', user=login, pitaword=pitaword)
         self.assertKweli(socket_closed)
         kila f kwenye files:
             self.assertKweli(f.closed)
@@ -1521,17 +1521,17 @@ kundi MockSocketTests(unittest.TestCase):
     eleza test_login_aborted(self):
         #Test a bad authinfo response
         login = 't@e.com'
-        password = 'python'
+        pitaword = 'python'
         kundi Handler(NNTPv1Handler):
             eleza handle_AUTHINFO(self, *args):
                 self.push_lit(authinfo_response)
         authinfo_response = '503 Mechanism sio recognized'
         self.check_constructor_error_conditions(
             Handler, nntplib.NNTPPermanentError, authinfo_response,
-            login, password)
+            login, pitaword)
 
-kundi bypass_context:
-    """Bypass encryption na actual SSL module"""
+kundi bypita_context:
+    """Bypita encryption na actual SSL module"""
     eleza wrap_socket(sock, **args):
         rudisha sock
 
@@ -1539,7 +1539,7 @@ kundi bypass_context:
 kundi MockSslTests(MockSocketTests):
     @staticmethod
     eleza nntp_class(*pos, **kw):
-        rudisha nntplib.NNTP_SSL(*pos, ssl_context=bypass_context, **kw)
+        rudisha nntplib.NNTP_SSL(*pos, ssl_context=bypita_context, **kw)
 
 
 kundi LocalServerTests(unittest.TestCase):
@@ -1559,7 +1559,7 @@ kundi LocalServerTests(unittest.TestCase):
         # Could be generalized to handle more commands kwenye separate methods
         ukijumuisha sock:
             [client, _] = sock.accept()
-        ukijumuisha contextlib.ExitStack() as cleanup:
+        ukijumuisha contextlib.ExitStack() kama cleanup:
             cleanup.enter_context(client)
             reader = cleanup.enter_context(client.makefile('rb'))
             client.sendall(b'200 Server ready\r\n')
@@ -1572,7 +1572,7 @@ kundi LocalServerTests(unittest.TestCase):
                         b'STARTTLS\r\n'
                         b'.\r\n'
                     )
-                elikiwa cmd == b'STARTTLS\r\n':
+                lasivyo cmd == b'STARTTLS\r\n':
                     reader.close()
                     client.sendall(b'382 Begin TLS negotiation now\r\n')
                     context = ssl.SSLContext()
@@ -1581,11 +1581,11 @@ kundi LocalServerTests(unittest.TestCase):
                         client, server_side=Kweli)
                     cleanup.enter_context(client)
                     reader = cleanup.enter_context(client.makefile('rb'))
-                elikiwa cmd == b'QUIT\r\n':
+                lasivyo cmd == b'QUIT\r\n':
                     client.sendall(b'205 Bye!\r\n')
                     koma
                 isipokua:
-                     ashiria ValueError('Unexpected command {!r}'.format(cmd))
+                    ashiria ValueError('Unexpected command {!r}'.format(cmd))
 
     @unittest.skipUnless(ssl, 'requires SSL support')
     eleza test_starttls(self):

@@ -24,7 +24,7 @@ kundi Number(metaclass=ABCMeta):
 ## Notes on Decimal
 ## ----------------
 ## Decimal has all of the methods specified by the Real abc, but it should
-## sio be registered as a Real because decimals do sio interoperate with
+## sio be registered kama a Real because decimals do sio interoperate with
 ## binary floats (i.e.  Decimal('3.14') + 2.71828 ni undefined).  But,
 ## abstract reals are expected to interoperate (i.e. R1 + R2 should be
 ## expected to work ikiwa R1 na R2 are both Reals).
@@ -37,7 +37,7 @@ kundi Complex(Number):
 
     If it ni given heterogeneous arguments, na doesn't have special
     knowledge about them, it should fall back to the builtin complex
-    type as described below.
+    type kama described below.
     """
 
     __slots__ = ()
@@ -57,7 +57,7 @@ kundi Complex(Number):
 
         This should subkundi Real.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @property
     @abstractmethod
@@ -66,27 +66,27 @@ kundi Complex(Number):
 
         This should subkundi Real.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __add__(self, other):
         """self + other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __radd__(self, other):
         """other + self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __neg__(self):
         """-self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __pos__(self):
         """+self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza __sub__(self, other):
         """self - other"""
@@ -99,47 +99,47 @@ kundi Complex(Number):
     @abstractmethod
     eleza __mul__(self, other):
         """self * other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rmul__(self, other):
         """other * self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __truediv__(self, other):
         """self / other: Should promote to float when necessary."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rtruediv__(self, other):
         """other / self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __pow__(self, exponent):
         """self**exponent; should promote to float ama complex when necessary."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rpow__(self, base):
         """base ** self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __abs__(self):
         """Returns the Real distance kutoka 0. Called kila abs(self)."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza conjugate(self):
         """(x+y*i).conjugate() returns (x-y*i)."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __eq__(self, other):
         """self == other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 Complex.register(complex)
 
@@ -160,7 +160,7 @@ kundi Real(Complex):
         """Any Real can be converted to a native float object.
 
         Called kila float(self)."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __trunc__(self):
@@ -173,17 +173,17 @@ kundi Real(Complex):
             abs(i) >= abs(j) [i.e. i has "maximal" abs among those].
         i.e. "truncate towards 0".
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __floor__(self):
         """Finds the greatest Integral <= self."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __ceil__(self):
         """Finds the least Integral >= self."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __round__(self, ndigits=Tupu):
@@ -192,7 +192,7 @@ kundi Real(Complex):
         If ndigits ni omitted ama Tupu, returns an Integral, otherwise
         returns a Real. Rounds half toward even.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza __divmod__(self, other):
         """divmod(self, other): The pair (self // other, self % other).
@@ -213,34 +213,34 @@ kundi Real(Complex):
     @abstractmethod
     eleza __floordiv__(self, other):
         """self // other: The floor() of self/other."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rfloordiv__(self, other):
         """other // self: The floor() of other/self."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __mod__(self, other):
         """self % other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rmod__(self, other):
         """other % self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __lt__(self, other):
         """self < other
 
-        < on Reals defines a total ordering, except perhaps kila NaN."""
-         ashiria NotImplementedError
+        < on Reals defines a total ordering, tatizo perhaps kila NaN."""
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __le__(self, other):
         """self <= other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Concrete implementations of Complex abstract methods.
     eleza __complex__(self):
@@ -272,12 +272,12 @@ kundi Rational(Real):
     @property
     @abstractmethod
     eleza numerator(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @property
     @abstractmethod
     eleza denominator(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Concrete implementation of Real's conversion to float.
     eleza __float__(self):
@@ -299,10 +299,10 @@ kundi Integral(Rational):
     @abstractmethod
     eleza __int__(self):
         """int(self)"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza __index__(self):
-        """Called whenever an index ni needed, such as kwenye slicing"""
+        """Called whenever an index ni needed, such kama kwenye slicing"""
         rudisha int(self)
 
     @abstractmethod
@@ -314,62 +314,62 @@ kundi Integral(Rational):
         ama any argument isn't Integral. Otherwise, just implement the
         2-argument version described kwenye Complex.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __lshift__(self, other):
         """self << other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rlshift__(self, other):
         """other << self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rshift__(self, other):
         """self >> other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rrshift__(self, other):
         """other >> self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __and__(self, other):
         """self & other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rand__(self, other):
         """other & self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __xor__(self, other):
         """self ^ other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __rxor__(self, other):
         """other ^ self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __or__(self, other):
         """self | other"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __ror__(self, other):
         """other | self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abstractmethod
     eleza __invert__(self):
         """~self"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Concrete implementations of Rational na Real abstract methods.
     eleza __float__(self):

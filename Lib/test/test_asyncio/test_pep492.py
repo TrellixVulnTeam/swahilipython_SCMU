@@ -7,7 +7,7 @@ agiza unittest
 kutoka unittest agiza mock
 
 agiza asyncio
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 eleza tearDownModule():
@@ -17,16 +17,16 @@ eleza tearDownModule():
 # Test that asyncio.iscoroutine() uses collections.abc.Coroutine
 kundi FakeCoro:
     eleza send(self, value):
-        pass
+        pita
 
     eleza throw(self, typ, val=Tupu, tb=Tupu):
-        pass
+        pita
 
     eleza close(self):
-        pass
+        pita
 
     eleza __await__(self):
-        yield
+        tuma
 
 
 kundi BaseTest(test_utils.TestCase):
@@ -54,7 +54,7 @@ kundi LockTests(BaseTest):
         async eleza test(lock):
             await asyncio.sleep(0.01)
             self.assertUongo(lock.locked())
-            async ukijumuisha lock as _lock:
+            async ukijumuisha lock kama _lock:
                 self.assertIs(_lock, Tupu)
                 self.assertKweli(lock.locked())
                 await asyncio.sleep(0.01)
@@ -78,7 +78,7 @@ kundi LockTests(BaseTest):
             await asyncio.sleep(0.01)
             self.assertUongo(lock.locked())
             ukijumuisha self.assertWarns(DeprecationWarning):
-                ukijumuisha await lock as _lock:
+                ukijumuisha await lock kama _lock:
                     self.assertIs(_lock, Tupu)
                     self.assertKweli(lock.locked())
                     await asyncio.sleep(0.01)
@@ -112,7 +112,7 @@ kundi StreamReaderTests(BaseTest):
 kundi CoroutineTests(BaseTest):
 
     eleza test_iscoroutine(self):
-        async eleza foo(): pass
+        async eleza foo(): pita
 
         f = foo()
         jaribu:
@@ -123,7 +123,7 @@ kundi CoroutineTests(BaseTest):
         self.assertKweli(asyncio.iscoroutine(FakeCoro()))
 
     eleza test_iscoroutinefunction(self):
-        async eleza foo(): pass
+        async eleza foo(): pita
         self.assertKweli(asyncio.iscoroutinefunction(foo))
 
     eleza test_function_returning_awaitable(self):

@@ -10,11 +10,11 @@ kutoka asyncio agiza base_events
 kutoka asyncio agiza constants
 kutoka unittest agiza mock
 kutoka test agiza support
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 
@@ -93,11 +93,11 @@ kundi SendfileBase:
     BUF_SIZE = 4 * 1024   # 4 KiB
 
     eleza create_event_loop(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @classmethod
     eleza setUpClass(cls):
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(cls.DATA)
         super().setUpClass()
 
@@ -211,7 +211,7 @@ kundi SockSendfileMixin(SendfileBase):
 
     eleza test_sock_sendfile_zero_size(self):
         sock, proto = self.prepare_socksendfile()
-        ukijumuisha tempfile.TemporaryFile() as f:
+        ukijumuisha tempfile.TemporaryFile() kama f:
             ret = self.run_loop(self.loop.sock_sendfile(sock, f,
                                                         0, Tupu))
         sock.close()
@@ -312,7 +312,7 @@ kundi SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         eleza sendfile_native(transp, file, offset, count):
-            # to  ashiria SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             rudisha base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -334,7 +334,7 @@ kundi SendfileMixin(SendfileBase):
         srv_proto, cli_proto = self.prepare_sendfile()
 
         eleza sendfile_native(transp, file, offset, count):
-            # to  ashiria SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             rudisha base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -460,7 +460,7 @@ kundi SendfileMixin(SendfileBase):
     eleza test_sendfile_fallback_close_peer_in_the_middle_of_receiving(self):
 
         eleza sendfile_native(transp, file, offset, count):
-            # to  ashiria SendfileNotAvailableError
+            # to ashiria SendfileNotAvailableError
             rudisha base_events.BaseEventLoop._sendfile_native(
                 self.loop, transp, file, offset, count)
 
@@ -477,7 +477,7 @@ kundi SendfileMixin(SendfileBase):
         self.assertKweli(1024 <= self.file.tell() < len(self.DATA),
                         self.file.tell())
 
-    @unittest.skipIf(not hasattr(os, 'sendfile'),
+    @unittest.skipIf(sio hasattr(os, 'sendfile'),
                      "Don't have native sendfile support")
     eleza test_sendfile_prevents_bare_write(self):
         srv_proto, cli_proto = self.prepare_sendfile()
@@ -505,7 +505,7 @@ kundi SendfileMixin(SendfileBase):
 
 
 kundi SendfileTestsBase(SendfileMixin, SockSendfileMixin):
-    pass
+    pita
 
 
 ikiwa sys.platform == 'win32':

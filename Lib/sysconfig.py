@@ -100,7 +100,7 @@ _USER_BASE = Tupu
 eleza _safe_realpath(path):
     jaribu:
         rudisha realpath(path)
-    except OSError:
+    tatizo OSError:
         rudisha path
 
 ikiwa sys.executable:
@@ -110,7 +110,7 @@ isipokua:
     # unable to retrieve the real program name
     _PROJECT_BASE = _safe_realpath(os.getcwd())
 
-ikiwa (os.name == 'nt' and
+ikiwa (os.name == 'nt' na
     _PROJECT_BASE.lower().endswith(('\\pcbuild\\win32', '\\pcbuild\\amd64'))):
     _PROJECT_BASE = _safe_realpath(os.path.join(_PROJECT_BASE, pardir, pardir))
 
@@ -151,11 +151,11 @@ ikiwa _PYTHON_BUILD:
 eleza _subst_vars(s, local_vars):
     jaribu:
         rudisha s.format(**local_vars)
-    except KeyError:
+    tatizo KeyError:
         jaribu:
             rudisha s.format(**os.environ)
-        except KeyError as var:
-             ashiria AttributeError('{%s}' % var) kutoka Tupu
+        tatizo KeyError kama var:
+            ashiria AttributeError('{%s}' % var) kutoka Tupu
 
 eleza _extend_dict(target_dict, other_dict):
     target_keys = target_dict.keys()
@@ -210,7 +210,7 @@ eleza _parse_makefile(filename, vars=Tupu):
     """Parse a Makefile-style file.
 
     A dictionary containing name/value pairs ni returned.  If an
-    optional dictionary ni passed kwenye as the second argument, it is
+    optional dictionary ni pitaed kwenye kama the second argument, it is
     used instead of a new dictionary.
     """
     # Regexes needed kila parsing Makefile (and similar syntaxes,
@@ -225,7 +225,7 @@ eleza _parse_makefile(filename, vars=Tupu):
     done = {}
     notdone = {}
 
-    ukijumuisha open(filename, errors="surrogateescape") as f:
+    ukijumuisha open(filename, errors="surrogateescape") kama f:
         lines = f.readlines()
 
     kila line kwenye lines:
@@ -243,7 +243,7 @@ eleza _parse_makefile(filename, vars=Tupu):
             isipokua:
                 jaribu:
                     v = int(v)
-                except ValueError:
+                tatizo ValueError:
                     # insert literal `$'
                     done[n] = v.replace('$$', '$')
                 isipokua:
@@ -272,19 +272,19 @@ eleza _parse_makefile(filename, vars=Tupu):
                 found = Kweli
                 ikiwa n kwenye done:
                     item = str(done[n])
-                elikiwa n kwenye notdone:
+                lasivyo n kwenye notdone:
                     # get it on a subsequent round
                     found = Uongo
-                elikiwa n kwenye os.environ:
+                lasivyo n kwenye os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
 
-                elikiwa n kwenye renamed_variables:
-                    ikiwa (name.startswith('PY_') and
+                lasivyo n kwenye renamed_variables:
+                    ikiwa (name.startswith('PY_') na
                         name[3:] kwenye renamed_variables):
                         item = ""
 
-                    elikiwa 'PY_' + n kwenye notdone:
+                    lasivyo 'PY_' + n kwenye notdone:
                         found = Uongo
 
                     isipokua:
@@ -301,7 +301,7 @@ eleza _parse_makefile(filename, vars=Tupu):
                     isipokua:
                         jaribu:
                             value = int(value)
-                        except ValueError:
+                        tatizo ValueError:
                             done[name] = value.strip()
                         isipokua:
                             done[name] = value
@@ -311,7 +311,7 @@ eleza _parse_makefile(filename, vars=Tupu):
                         na name[3:] kwenye renamed_variables:
 
                             name = name[3:]
-                            ikiwa name sio kwenye done:
+                            ikiwa name haiko kwenye done:
                                 done[name] = value
 
             isipokua:
@@ -360,21 +360,21 @@ eleza _generate_posix_vars():
     makefile = get_makefile_filename()
     jaribu:
         _parse_makefile(makefile, vars)
-    except OSError as e:
+    tatizo OSError kama e:
         msg = "invalid Python installation: unable to open %s" % makefile
         ikiwa hasattr(e, "strerror"):
             msg = msg + " (%s)" % e.strerror
-         ashiria OSError(msg)
+        ashiria OSError(msg)
     # load the installed pyconfig.h:
     config_h = get_config_h_filename()
     jaribu:
-        ukijumuisha open(config_h) as f:
+        ukijumuisha open(config_h) kama f:
             parse_config_h(f, vars)
-    except OSError as e:
+    tatizo OSError kama e:
         msg = "invalid Python installation: unable to open %s" % config_h
         ikiwa hasattr(e, "strerror"):
             msg = msg + " (%s)" % e.strerror
-         ashiria OSError(msg)
+        ashiria OSError(msg)
     # On AIX, there are wrong paths to the linker scripts kwenye the Makefile
     # -- these paths are relative to the Python source, but when installed
     # the scripts are kwenye another directory.
@@ -383,7 +383,7 @@ eleza _generate_posix_vars():
 
     # There's a chicken-and-egg situation on OS X ukijumuisha regards to the
     # _sysconfigdata module after the changes introduced by #15298:
-    # get_config_vars() ni called by get_platform() as part of the
+    # get_config_vars() ni called by get_platform() kama part of the
     # `make pybuilddir.txt` target -- which ni a precursor to the
     # _sysconfigdata.py module being constructed.  Unfortunately,
     # get_config_vars() eventually calls _init_posix(), which attempts
@@ -405,18 +405,18 @@ eleza _generate_posix_vars():
     os.makedirs(pybuilddir, exist_ok=Kweli)
     destfile = os.path.join(pybuilddir, name + '.py')
 
-    ukijumuisha open(destfile, 'w', encoding='utf8') as f:
+    ukijumuisha open(destfile, 'w', encoding='utf8') kama f:
         f.write('# system configuration generated na used by'
                 ' the sysconfig module\n')
         f.write('build_time_vars = ')
         pprint.pandika(vars, stream=f)
 
     # Create file used kila sys.path fixup -- see Modules/getpath.c
-    ukijumuisha open('pybuilddir.txt', 'w', encoding='utf8') as f:
+    ukijumuisha open('pybuilddir.txt', 'w', encoding='utf8') kama f:
         f.write(pybuilddir)
 
 eleza _init_posix(vars):
-    """Initialize the module as appropriate kila POSIX systems."""
+    """Initialize the module kama appropriate kila POSIX systems."""
     # _sysconfigdata ni generated at build time, see _generate_posix_vars()
     name = _get_sysconfigdata_name()
     _temp = __import__(name, globals(), locals(), ['build_time_vars'], 0)
@@ -424,7 +424,7 @@ eleza _init_posix(vars):
     vars.update(build_time_vars)
 
 eleza _init_non_posix(vars):
-    """Initialize the module as appropriate kila NT"""
+    """Initialize the module kama appropriate kila NT"""
     # set basic install directories
     vars['LIBDEST'] = get_path('stdlib')
     vars['BINLIBDEST'] = get_path('platstdlib')
@@ -443,7 +443,7 @@ eleza parse_config_h(fp, vars=Tupu):
     """Parse a config.h-style file.
 
     A dictionary containing name/value pairs ni returned.  If an
-    optional dictionary ni passed kwenye as the second argument, it is
+    optional dictionary ni pitaed kwenye kama the second argument, it is
     used instead of a new dictionary.
     """
     ikiwa vars ni Tupu:
@@ -461,8 +461,8 @@ eleza parse_config_h(fp, vars=Tupu):
             n, v = m.group(1, 2)
             jaribu:
                 v = int(v)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             vars[n] = v
         isipokua:
             m = undef_rx.match(line)
@@ -541,7 +541,7 @@ eleza get_config_vars(*args):
         _CONFIG_VARS['projectbase'] = _PROJECT_BASE
         jaribu:
             _CONFIG_VARS['abiflags'] = sys.abiflags
-        except AttributeError:
+        tatizo AttributeError:
             # sys.abiflags may sio be defined on all platforms.
             _CONFIG_VARS['abiflags'] = ''
 
@@ -605,8 +605,8 @@ eleza get_config_var(name):
 eleza get_platform():
     """Return a string that identifies the current platform.
 
-    This ni used mainly to distinguish platform-specific build directories and
-    platform-specific built distributions.  Typically includes the OS name and
+    This ni used mainly to distinguish platform-specific build directories na
+    platform-specific built distributions.  Typically includes the OS name na
     version na the architecture (as supplied by 'os.uname()'), although the
     exact information included depends on the OS; on Linux, the kernel version
     isn't particularly important.
@@ -654,7 +654,7 @@ eleza get_platform():
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         rudisha  "%s-%s" % (osname, machine)
-    elikiwa osname[:5] == "sunos":
+    lasivyo osname[:5] == "sunos":
         ikiwa release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
             release = "%d.%s" % (int(release[0]) - 3, release[2:])
@@ -664,16 +664,16 @@ eleza get_platform():
             bitness = {2147483647:"32bit", 9223372036854775807:"64bit"}
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
-    elikiwa osname[:3] == "aix":
+    lasivyo osname[:3] == "aix":
         rudisha "%s-%s.%s" % (osname, version, release)
-    elikiwa osname[:6] == "cygwin":
+    lasivyo osname[:6] == "cygwin":
         osname = "cygwin"
         agiza re
         rel_re = re.compile(r'[\d.]+')
         m = rel_re.match(release)
         ikiwa m:
             release = m.group()
-    elikiwa osname[:6] == "darwin":
+    lasivyo osname[:6] == "darwin":
         agiza _osx_support
         osname, release, machine = _osx_support.get_platform_osx(
                                             get_config_vars(),

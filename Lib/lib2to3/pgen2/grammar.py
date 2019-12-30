@@ -7,7 +7,7 @@ These are a bit arcane because they are derived kutoka the data
 structures used by Python's 'pgen' parser generator.
 
 There's also a table here mapping operators to their names kwenye the
-token module; the Python tokenize module reports all operators as the
+token module; the Python tokenize module reports all operators kama the
 fallback token code OP, but the parser needs the actual token code.
 
 """
@@ -34,11 +34,11 @@ kundi Grammar(object):
     tables using a subclass).  The report() method prints a readable
     representation of the tables to stdout, kila debugging.
 
-    The instance variables are as follows:
+    The instance variables are kama follows:
 
     symbol2number -- a dict mapping symbol names to numbers.  Symbol
                      numbers are always 256 ama higher, to distinguish
-                     them kutoka token numbers, which are between 0 and
+                     them kutoka token numbers, which are between 0 na
                      255 (inclusive).
 
     number2symbol -- a dict mapping numbers to symbol names;
@@ -86,12 +86,12 @@ kundi Grammar(object):
 
     eleza dump(self, filename):
         """Dump the grammar tables to a pickle file."""
-        ukijumuisha open(filename, "wb") as f:
+        ukijumuisha open(filename, "wb") kama f:
             pickle.dump(self.__dict__, f, pickle.HIGHEST_PROTOCOL)
 
     eleza load(self, filename):
         """Load the grammar tables kutoka a pickle file."""
-        ukijumuisha open(filename, "rb") as f:
+        ukijumuisha open(filename, "rb") kama f:
             d = pickle.load(f)
         self.__dict__.update(d)
 

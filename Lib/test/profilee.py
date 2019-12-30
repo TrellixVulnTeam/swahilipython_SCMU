@@ -103,7 +103,7 @@ eleza subhelper():
     kila i kwenye range(2):                  # 0
         jaribu:
             C().foo                     # 1 x 2
-        except AttributeError:
+        tatizo AttributeError:
             TICKS += 3                  # 3 x 2
 
 kundi C:
@@ -112,4 +112,4 @@ kundi C:
         # 1 tick, local
         global TICKS
         TICKS += 1
-         ashiria AttributeError
+        ashiria AttributeError

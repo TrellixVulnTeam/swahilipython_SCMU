@@ -1,5 +1,5 @@
 # Tests that the crashers kwenye the Lib/test/crashers directory actually
-# do crash the interpreter as expected
+# do crash the interpreter kama expected
 #
 # If a crasher ni fixed, it should be moved elsewhere kwenye the test suite to
 # ensure it endeleas to work correctly.

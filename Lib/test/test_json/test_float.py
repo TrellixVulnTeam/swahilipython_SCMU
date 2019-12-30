@@ -29,5 +29,5 @@ kundi TestFloat:
             self.assertRaises(ValueError, self.dumps, [val], allow_nan=Uongo)
 
 
-kundi TestPyFloat(TestFloat, PyTest): pass
-kundi TestCFloat(TestFloat, CTest): pass
+kundi TestPyFloat(TestFloat, PyTest): pita
+kundi TestCFloat(TestFloat, CTest): pita

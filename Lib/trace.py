@@ -19,7 +19,7 @@
 # Copyright 1991-1995, Stichting Mathematisch Centrum, all rights reserved.
 #
 #
-# Permission to use, copy, modify, na distribute this Python software and
+# Permission to use, copy, modify, na distribute this Python software na
 # its associated documentation kila any purpose without fee ni hereby
 # granted, provided that the above copyright notice appears kwenye all copies,
 # na that both that copyright notice na this permission notice appear in
@@ -58,7 +58,7 @@ agiza inspect
 agiza gc
 agiza dis
 agiza pickle
-kutoka time agiza monotonic as _time
+kutoka time agiza monotonic kama _time
 
 agiza threading
 
@@ -100,10 +100,10 @@ kundi _Ignore:
         # Ignore a file when it contains one of the ignorable paths
         kila d kwenye self._dirs:
             # The '+ os.sep' ni to ensure that d ni a parent directory,
-            # as compared to cases like:
+            # kama compared to cases like:
             #  d = "/usr/local"
             #  filename = "/usr/local.py"
-            # or
+            # ama
             #  d = "/usr/local.py"
             #  filename = "/usr/local.py"
             ikiwa filename.startswith(d + os.sep):
@@ -169,10 +169,10 @@ kundi CoverageResults:
         ikiwa self.infile:
             # Try to merge existing counts file.
             jaribu:
-                ukijumuisha open(self.infile, 'rb') as f:
+                ukijumuisha open(self.infile, 'rb') kama f:
                     counts, calledfuncs, callers = pickle.load(f)
                 self.update(self.__class__(counts, calledfuncs, callers))
-            except (OSError, EOFError, ValueError) as err:
+            tatizo (OSError, EOFError, ValueError) kama err:
                 andika(("Skipping counts file %r: %s"
                                       % (self.infile, err)), file=sys.stderr)
 
@@ -261,14 +261,14 @@ kundi CoverageResults:
                 modulename = _fullmodname(filename)
 
             # If desired, get a list of the line numbers which represent
-            # executable content (returned as a dict kila better lookup speed)
+            # executable content (returned kama a dict kila better lookup speed)
             ikiwa show_missing:
                 lnotab = _find_executable_linenos(filename)
             isipokua:
                 lnotab = {}
             source = linecache.getlines(filename)
             coverpath = os.path.join(dir, modulename + ".cover")
-            ukijumuisha open(filename, 'rb') as fp:
+            ukijumuisha open(filename, 'rb') kama fp:
                 encoding, _ = tokenize.detect_encoding(fp.readline)
             n_hits, n_lines = self.write_results_file(coverpath, source,
                                                       lnotab, count, encoding)
@@ -288,7 +288,7 @@ kundi CoverageResults:
             jaribu:
                 pickle.dump((self.counts, self.calledfuncs, self.callers),
                             open(self.outfile, 'wb'), 1)
-            except OSError as err:
+            tatizo OSError kama err:
                 andika("Can't save counts files because %s" % err, file=sys.stderr)
 
     eleza write_results_file(self, path, lines, lnotab, lines_hit, encoding=Tupu):
@@ -297,7 +297,7 @@ kundi CoverageResults:
 
         jaribu:
             outfile = open(path, "w", encoding=encoding)
-        except OSError as err:
+        tatizo OSError kama err:
             andika(("trace: Could sio open %r kila writing: %s "
                                   "- skipping" % (path, err)), file=sys.stderr)
             rudisha 0, 0
@@ -312,7 +312,7 @@ kundi CoverageResults:
                     outfile.write("%5d: " % lines_hit[lineno])
                     n_hits += 1
                     n_lines += 1
-                elikiwa lineno kwenye lnotab na sio PRAGMA_NOCOVER kwenye line:
+                lasivyo lineno kwenye lnotab na sio PRAGMA_NOCOVER kwenye line:
                     # Highlight never-executed lines, unless the line contains
                     # #pragma: NO COVER
                     outfile.write(">>>>>> ")
@@ -328,7 +328,7 @@ eleza _find_lines_from_code(code, strs):
     linenos = {}
 
     kila _, lineno kwenye dis.findlinestarts(code):
-        ikiwa lineno sio kwenye strs:
+        ikiwa lineno haiko kwenye strs:
             linenos[lineno] = 1
 
     rudisha linenos
@@ -354,9 +354,9 @@ eleza _find_strings(filename, encoding=Tupu):
     """
     d = {}
     # If the first token ni a string, then it's the module docstring.
-    # Add this special case so that the test kwenye the loop passes.
+    # Add this special case so that the test kwenye the loop pitaes.
     prev_ttype = token.INDENT
-    ukijumuisha open(filename, encoding=encoding) as f:
+    ukijumuisha open(filename, encoding=encoding) kama f:
         tok = tokenize.generate_tokens(f.readline)
         kila ttype, tstr, start, end, line kwenye tok:
             ikiwa ttype == token.STRING:
@@ -371,10 +371,10 @@ eleza _find_strings(filename, encoding=Tupu):
 eleza _find_executable_linenos(filename):
     """Return dict where keys are line numbers kwenye the line number table."""
     jaribu:
-        ukijumuisha tokenize.open(filename) as f:
+        ukijumuisha tokenize.open(filename) kama f:
             prog = f.read()
             encoding = f.encoding
-    except OSError as err:
+    tatizo OSError kama err:
         andika(("Not printing coverage data kila %r: %s"
                               % (filename, err)), file=sys.stderr)
         rudisha {}
@@ -418,15 +418,15 @@ kundi Trace:
             self.start_time = _time()
         ikiwa countcallers:
             self.globaltrace = self.globaltrace_trackcallers
-        elikiwa countfuncs:
+        lasivyo countfuncs:
             self.globaltrace = self.globaltrace_countfuncs
-        elikiwa trace na count:
+        lasivyo trace na count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace_and_count
-        elikiwa trace:
+        lasivyo trace:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_trace
-        elikiwa count:
+        lasivyo count:
             self.globaltrace = self.globaltrace_lt
             self.localtrace = self.localtrace_count
         isipokua:
@@ -454,17 +454,17 @@ kundi Trace:
     eleza runfunc(*args, **kw):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor 'runfunc' of 'Trace' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor 'runfunc' of 'Trace' object "
                             "needs an argument")
-        elikiwa 'func' kwenye kw:
+        lasivyo 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument ni deprecated",
+            warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError('runfunc expected at least 1 positional argument, '
+            ashiria TypeError('runfunc expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         result = Tupu
@@ -669,7 +669,7 @@ eleza main():
     parser.add_argument('--module', action='store_true', default=Uongo,
                         help='Trace a module. ')
     parser.add_argument('progname', nargs='?',
-            help='file to run as main program')
+            help='file to run kama main program')
     parser.add_argument('arguments', nargs=argparse.REMAINDER,
             help='arguments to the program')
 
@@ -731,9 +731,9 @@ eleza main():
             sys.argv = [opts.progname, *opts.arguments]
             sys.path[0] = os.path.dirname(opts.progname)
 
-            ukijumuisha open(opts.progname) as fp:
+            ukijumuisha open(opts.progname) kama fp:
                 code = compile(fp.read(), opts.progname, 'exec')
-            # try to emulate __main__ namespace as much as possible
+            # try to emulate __main__ namespace kama much kama possible
             globs = {
                 '__file__': opts.progname,
                 '__name__': '__main__',
@@ -741,10 +741,10 @@ eleza main():
                 '__cached__': Tupu,
             }
         t.runctx(code, globs, globs)
-    except OSError as err:
+    tatizo OSError kama err:
         sys.exit("Cannot run file %r because: %s" % (sys.argv[0], err))
-    except SystemExit:
-        pass
+    tatizo SystemExit:
+        pita
 
     results = t.results()
 

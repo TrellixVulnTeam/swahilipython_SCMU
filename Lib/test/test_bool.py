@@ -10,9 +10,9 @@ kundi BoolTest(unittest.TestCase):
     eleza test_subclass(self):
         jaribu:
             kundi C(bool):
-                pass
-        except TypeError:
-            pass
+                pita
+        tatizo TypeError:
+            pita
         isipokua:
             self.fail("bool should sio be subclassable")
 
@@ -20,9 +20,9 @@ kundi BoolTest(unittest.TestCase):
 
     eleza test_andika(self):
         jaribu:
-            ukijumuisha open(support.TESTFN, "w") as fo:
+            ukijumuisha open(support.TESTFN, "w") kama fo:
                 andika(Uongo, Kweli, file=fo)
-            ukijumuisha open(support.TESTFN, "r") as fi:
+            ukijumuisha open(support.TESTFN, "r") kama fi:
                 self.assertEqual(fi.read(), 'Uongo Kweli\n')
         mwishowe:
             os.remove(support.TESTFN)
@@ -143,8 +143,8 @@ kundi BoolTest(unittest.TestCase):
 
         self.assertIs(1 kwenye x, Kweli)
         self.assertIs(0 kwenye x, Uongo)
-        self.assertIs(1 sio kwenye x, Uongo)
-        self.assertIs(0 sio kwenye x, Kweli)
+        self.assertIs(1 haiko kwenye x, Uongo)
+        self.assertIs(0 haiko kwenye x, Kweli)
 
         x = {1: 2}
         self.assertIs(x ni x, Kweli)
@@ -152,11 +152,11 @@ kundi BoolTest(unittest.TestCase):
 
         self.assertIs(1 kwenye x, Kweli)
         self.assertIs(0 kwenye x, Uongo)
-        self.assertIs(1 sio kwenye x, Uongo)
-        self.assertIs(0 sio kwenye x, Kweli)
+        self.assertIs(1 haiko kwenye x, Uongo)
+        self.assertIs(0 haiko kwenye x, Kweli)
 
-        self.assertIs(not Kweli, Uongo)
-        self.assertIs(not Uongo, Kweli)
+        self.assertIs(sio Kweli, Uongo)
+        self.assertIs(sio Uongo, Kweli)
 
     eleza test_convert(self):
         self.assertRaises(TypeError, bool, 42, 42)
@@ -243,7 +243,7 @@ kundi BoolTest(unittest.TestCase):
 
     eleza test_fileclosed(self):
         jaribu:
-            ukijumuisha open(support.TESTFN, "w") as f:
+            ukijumuisha open(support.TESTFN, "w") kama f:
                 self.assertIs(f.closed, Uongo)
             self.assertIs(f.closed, Kweli)
         mwishowe:
@@ -335,10 +335,10 @@ kundi BoolTest(unittest.TestCase):
                     rudisha badval
             jaribu:
                 bool(A())
-            except (Exception) as e_bool:
+            tatizo (Exception) kama e_bool:
                 jaribu:
                     len(A())
-                except (Exception) as e_len:
+                tatizo (Exception) kama e_len:
                     self.assertEqual(str(e_bool), str(e_len))
 
     eleza test_blocked(self):

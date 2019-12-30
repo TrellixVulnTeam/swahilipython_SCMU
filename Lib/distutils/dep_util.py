@@ -15,7 +15,7 @@ eleza newer (source, target):
     Raise DistutilsFileError ikiwa 'source' does sio exist.
     """
     ikiwa sio os.path.exists(source):
-         ashiria DistutilsFileError("file '%s' does sio exist" %
+        ashiria DistutilsFileError("file '%s' does sio exist" %
                                  os.path.abspath(source))
     ikiwa sio os.path.exists(target):
         rudisha 1
@@ -36,7 +36,7 @@ eleza newer_pairwise (sources, targets):
     of 'newer()'.
     """
     ikiwa len(sources) != len(targets):
-         ashiria ValueError("'sources' na 'targets' must be same length")
+        ashiria ValueError("'sources' na 'targets' must be same length")
 
     # build a pair of lists (sources, targets) where  source ni newer
     n_sources = []
@@ -69,7 +69,7 @@ eleza newer_group (sources, target, missing='error'):
         rudisha 1
 
     # Otherwise we have to find out the hard way: ikiwa *any* source file
-    # ni more recent than 'target', then 'target' ni out-of-date and
+    # ni more recent than 'target', then 'target' ni out-of-date na
     # we can immediately rudisha true.  If we fall through to the end
     # of the loop, then 'target' ni up-to-date na we rudisha false.
     kutoka stat agiza ST_MTIME
@@ -77,10 +77,10 @@ eleza newer_group (sources, target, missing='error'):
     kila source kwenye sources:
         ikiwa sio os.path.exists(source):
             ikiwa missing == 'error':      # blow up when we stat() the file
-                pass
-            elikiwa missing == 'ignore':   # missing source dropped from
+                pita
+            lasivyo missing == 'ignore':   # missing source dropped from
                 endelea                #  target's dependency list
-            elikiwa missing == 'newer':    # missing source means target is
+            lasivyo missing == 'newer':    # missing source means target is
                 rudisha 1                #  out-of-date
 
         source_mtime = os.stat(source)[ST_MTIME]

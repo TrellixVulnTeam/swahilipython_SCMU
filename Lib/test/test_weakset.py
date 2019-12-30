@@ -1,13 +1,13 @@
 agiza unittest
 kutoka weakref agiza WeakSet
 agiza string
-kutoka collections agiza UserString as ustr
+kutoka collections agiza UserString kama ustr
 agiza gc
 agiza contextlib
 
 
 kundi Foo:
-    pass
+    pita
 
 kundi RefCycle:
     eleza __init__(self):
@@ -97,7 +97,7 @@ kundi TestWeakSet(unittest.TestCase):
 
     eleza test_isdisjoint(self):
         self.assertKweli(self.s.isdisjoint(WeakSet(self.items2)))
-        self.assertKweli(not self.s.isdisjoint(WeakSet(self.letters)))
+        self.assertKweli(sio self.s.isdisjoint(WeakSet(self.letters)))
 
     eleza test_and(self):
         i = self.s.intersection(self.items2)
@@ -107,7 +107,7 @@ kundi TestWeakSet(unittest.TestCase):
     eleza test_difference(self):
         i = self.s.difference(self.items2)
         kila c kwenye self.letters:
-            self.assertEqual(c kwenye i, c kwenye self.d na c sio kwenye self.items2)
+            self.assertEqual(c kwenye i, c kwenye self.d na c haiko kwenye self.items2)
         self.assertEqual(self.s, WeakSet(self.items))
         self.assertEqual(type(i), WeakSet)
         self.assertRaises(TypeError, self.s.difference, [[]])
@@ -277,7 +277,7 @@ kundi TestWeakSet(unittest.TestCase):
         retval = self.s.difference_update(self.items2)
         self.assertEqual(retval, Tupu)
         kila c kwenye (self.items + self.items2):
-            ikiwa c kwenye self.items na c sio kwenye self.items2:
+            ikiwa c kwenye self.items na c haiko kwenye self.items2:
                 self.assertIn(c, self.s)
             isipokua:
                 self.assertNotIn(c, self.s)
@@ -287,7 +287,7 @@ kundi TestWeakSet(unittest.TestCase):
     eleza test_isub(self):
         self.s -= set(self.items2)
         kila c kwenye (self.items + self.items2):
-            ikiwa c kwenye self.items na c sio kwenye self.items2:
+            ikiwa c kwenye self.items na c haiko kwenye self.items2:
                 self.assertIn(c, self.s)
             isipokua:
                 self.assertNotIn(c, self.s)
@@ -363,10 +363,10 @@ kundi TestWeakSet(unittest.TestCase):
             jaribu:
                 it = iter(s)
                 # Start iterator
-                yielded = ustr(str(next(it)))
+                tumaed = ustr(str(next(it)))
                 # Schedule an item kila removal na recreate it
                 u = ustr(str(items.pop()))
-                ikiwa yielded == u:
+                ikiwa tumaed == u:
                     # The iterator still has a reference to the removed item,
                     # advance it (issue #20006).
                     next(it)
@@ -375,19 +375,19 @@ kundi TestWeakSet(unittest.TestCase):
             mwishowe:
                 it = Tupu           # should commit all removals
 
-        ukijumuisha testcontext() as u:
+        ukijumuisha testcontext() kama u:
             self.assertNotIn(u, s)
-        ukijumuisha testcontext() as u:
+        ukijumuisha testcontext() kama u:
             self.assertRaises(KeyError, s.remove, u)
         self.assertNotIn(u, s)
-        ukijumuisha testcontext() as u:
+        ukijumuisha testcontext() kama u:
             s.add(u)
         self.assertIn(u, s)
         t = s.copy()
-        ukijumuisha testcontext() as u:
+        ukijumuisha testcontext() kama u:
             s.update(t)
         self.assertEqual(len(s), len(t))
-        ukijumuisha testcontext() as u:
+        ukijumuisha testcontext() kama u:
             s.clear()
         self.assertEqual(len(s), 0)
 
@@ -399,8 +399,8 @@ kundi TestWeakSet(unittest.TestCase):
         it = iter(s)
         jaribu:
             next(it)
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         gc.collect()
         n1 = len(s)
         toa it
@@ -420,12 +420,12 @@ kundi TestWeakSet(unittest.TestCase):
             items = [RefCycle() kila i kwenye range(N)]
             s = WeakSet(items)
             toa items
-            # All items will be collected at next garbage collection pass
+            # All items will be collected at next garbage collection pita
             it = iter(s)
             jaribu:
                 next(it)
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
             n1 = len(s)
             toa it
             n2 = len(s)

@@ -110,7 +110,7 @@ kundi BasicTestCase(CfgParserTestCaseClass):
             eq(name, section.name)
         eq(cf.defaults(), cf[self.default_section])
 
-        # The use of spaces kwenye the section names serves as a
+        # The use of spaces kwenye the section names serves kama a
         # regression test kila SourceForge bug #583248:
         # http://www.python.org/sf/583248
 
@@ -235,7 +235,7 @@ kundi BasicTestCase(CfgParserTestCaseClass):
             eq(cf['NoValue'].get('no-such-option-without-value',
                       fallback=Uongo), Uongo)
 
-        # Make sure the right things happen kila remove_section() and
+        # Make sure the right things happen kila remove_section() na
         # remove_option(); added to include check kila SourceForge bug #123324.
 
         cf[self.default_section]['this_value'] = '1'
@@ -259,7 +259,7 @@ kundi BasicTestCase(CfgParserTestCaseClass):
         self.assertUongo(cf.has_option('Foo Bar', 'this_value'))
         self.assertUongo(cf.remove_option(self.default_section, 'this_value'))
 
-        ukijumuisha self.assertRaises(configparser.NoSectionError) as cm:
+        ukijumuisha self.assertRaises(configparser.NoSectionError) kama cm:
             cf.remove_option('No Such Section', 'foo')
         self.assertEqual(cm.exception.args, ('No Such Section',))
 
@@ -287,7 +287,7 @@ kundi BasicTestCase(CfgParserTestCaseClass):
         ukijumuisha self.assertRaises(KeyError):
             toa cf['No Such Section']['foo']
 
-        # Don't add new asserts below kwenye this method as most of the options
+        # Don't add new asserts below kwenye this method kama most of the options
         # na sections are now removed.
 
     eleza test_basic(self):
@@ -543,8 +543,8 @@ boolean {0[0]} NO
             isipokua:
                 error = configparser.MissingSectionHeaderError
                 expected = (tricky, 1,
-                            '  # INI ukijumuisha as many tricky parts as possible\n')
-            ukijumuisha open(tricky, encoding='utf-8') as f:
+                            '  # INI ukijumuisha kama many tricky parts kama possible\n')
+            ukijumuisha open(tricky, encoding='utf-8') kama f:
                 e = self.parse_error(cf, error, f)
             self.assertEqual(e.args, expected)
 
@@ -553,7 +553,7 @@ boolean {0[0]} NO
             sio = src
         isipokua:
             sio = io.StringIO(src)
-        ukijumuisha self.assertRaises(exc) as cm:
+        ukijumuisha self.assertRaises(exc) kama cm:
             cf.read_file(sio)
         rudisha cm.exception
 
@@ -577,7 +577,7 @@ boolean {0[0]} NO
     eleza get_error(self, cf, exc, section, option):
         jaribu:
             cf.get(section, option)
-        except exc as e:
+        tatizo exc kama e:
             rudisha e
         isipokua:
             self.fail("expected exception type %s.%s"
@@ -611,14 +611,14 @@ boolean {0[0]} NO
     eleza test_weird_errors(self):
         cf = self.newconfig()
         cf.add_section("Foo")
-        ukijumuisha self.assertRaises(configparser.DuplicateSectionError) as cm:
+        ukijumuisha self.assertRaises(configparser.DuplicateSectionError) kama cm:
             cf.add_section("Foo")
         e = cm.exception
         self.assertEqual(str(e), "Section 'Foo' already exists")
         self.assertEqual(e.args, ("Foo", Tupu, Tupu))
 
         ikiwa self.strict:
-            ukijumuisha self.assertRaises(configparser.DuplicateSectionError) as cm:
+            ukijumuisha self.assertRaises(configparser.DuplicateSectionError) kama cm:
                 cf.read_string(textwrap.dedent("""\
                     [Foo]
                     will this be added{equals}Kweli
@@ -632,7 +632,7 @@ boolean {0[0]} NO
                                      "[line  5]: section 'Foo' already exists")
             self.assertEqual(e.args, ("Foo", '<foo-bar>', 5))
 
-            ukijumuisha self.assertRaises(configparser.DuplicateOptionError) as cm:
+            ukijumuisha self.assertRaises(configparser.DuplicateOptionError) kama cm:
                 cf.read_dict({'Bar': {'opt': 'val', 'OPT': 'is really `opt`'}})
             e = cm.exception
             self.assertEqual(str(e), "While reading kutoka '<dict>': option "
@@ -699,7 +699,7 @@ boolean {0[0]} NO
         # Check that we don't get an exception when setting values in
         # an existing section using strings:
         kundi mystr(str):
-            pass
+            pita
         cf.set("sect", "option1", "splat")
         cf.set("sect", "option1", mystr("splat"))
         cf.set("sect", "option2", "splat")
@@ -711,31 +711,31 @@ boolean {0[0]} NO
         ikiwa self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1 = support.findfile("cfgparser.1")
-        # check when we pass a mix of readable na non-readable files:
+        # check when we pita a mix of readable na non-readable files:
         cf = self.newconfig()
         parsed_files = cf.read([file1, "nonexistent-file"])
         self.assertEqual(parsed_files, [file1])
         self.assertEqual(cf.get("Foo Bar", "foo"), "newbar")
-        # check when we pass only a filename:
+        # check when we pita only a filename:
         cf = self.newconfig()
         parsed_files = cf.read(file1)
         self.assertEqual(parsed_files, [file1])
         self.assertEqual(cf.get("Foo Bar", "foo"), "newbar")
-        # check when we pass only a Path object:
+        # check when we pita only a Path object:
         cf = self.newconfig()
         parsed_files = cf.read(pathlib.Path(file1))
         self.assertEqual(parsed_files, [file1])
         self.assertEqual(cf.get("Foo Bar", "foo"), "newbar")
-        # check when we passed both a filename na a Path object:
+        # check when we pitaed both a filename na a Path object:
         cf = self.newconfig()
         parsed_files = cf.read([pathlib.Path(file1), file1])
         self.assertEqual(parsed_files, [file1, file1])
         self.assertEqual(cf.get("Foo Bar", "foo"), "newbar")
-        # check when we pass only missing files:
+        # check when we pita only missing files:
         cf = self.newconfig()
         parsed_files = cf.read(["nonexistent-file"])
         self.assertEqual(parsed_files, [])
-        # check when we pass no files:
+        # check when we pita no files:
         cf = self.newconfig()
         parsed_files = cf.read([])
         self.assertEqual(parsed_files, [])
@@ -744,15 +744,15 @@ boolean {0[0]} NO
         ikiwa self.delimiters[0] != '=':
             self.skipTest('incompatible format')
         file1_bytestring = support.findfile("cfgparser.1").encode()
-        # check when passing an existing bytestring path
+        # check when pitaing an existing bytestring path
         cf = self.newconfig()
         parsed_files = cf.read(file1_bytestring)
         self.assertEqual(parsed_files, [file1_bytestring])
-        # check when passing an non-existing bytestring path
+        # check when pitaing an non-existing bytestring path
         cf = self.newconfig()
         parsed_files = cf.read(b'nonexistent-file')
         self.assertEqual(parsed_files, [])
-        # check when passing both an existing na non-existing bytestring path
+        # check when pitaing both an existing na non-existing bytestring path
         cf = self.newconfig()
         parsed_files = cf.read([file1_bytestring, b'nonexistent-file'])
         self.assertEqual(parsed_files, [file1_bytestring])
@@ -899,7 +899,7 @@ kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ("bar11", "Foo",
                 "something %(with11)s lots of interpolation (11 steps)"))
-        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
+        lasivyo isinstance(self.interpolation, configparser.LegacyInterpolation):
             self.assertEqual(e.args, ("bar11", "Foo",
                 "something %(with11)s lots of interpolation (11 steps)"))
 
@@ -913,7 +913,7 @@ kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(e.args, ('name', 'Interpolation Error',
                                     '%(reference)s', 'reference'))
-        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
+        lasivyo isinstance(self.interpolation, configparser.LegacyInterpolation):
             self.assertEqual(e.args, ('name', 'Interpolation Error',
                                     '%(reference)s', 'reference'))
 
@@ -934,7 +934,7 @@ kundi ConfigParserTestCase(BasicTestCase, unittest.TestCase):
         self.assertEqual(cf.get("section", "ok"), "xxx/%s")
         ikiwa self.interpolation == configparser._UNSET:
             self.assertEqual(cf.get("section", "not_ok"), "xxx/xxx/%s")
-        elikiwa isinstance(self.interpolation, configparser.LegacyInterpolation):
+        lasivyo isinstance(self.interpolation, configparser.LegacyInterpolation):
             ukijumuisha self.assertRaises(TypeError):
                 cf.get("section", "not_ok")
 
@@ -1063,7 +1063,7 @@ kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
             cf.add_section(s)
             kila j kwenye range(10):
                 cf.set(s, 'lovely_spam{}'.format(j), self.wonderful_spam)
-        ukijumuisha open(support.TESTFN, 'w') as f:
+        ukijumuisha open(support.TESTFN, 'w') kama f:
             cf.write(f)
 
     eleza tearDown(self):
@@ -1073,7 +1073,7 @@ kundi MultilineValuesTestCase(BasicTestCase, unittest.TestCase):
         # We're reading kutoka file because this ni where the code changed
         # during performance updates kwenye Python 3.2
         cf_from_file = self.newconfig()
-        ukijumuisha open(support.TESTFN) as f:
+        ukijumuisha open(support.TESTFN) kama f:
             cf_from_file.read_file(f)
         self.assertEqual(cf_from_file.get('section8', 'lovely_spam4'),
                          self.wonderful_spam.replace('\t\n', '\n'))
@@ -1122,7 +1122,7 @@ kundi RawConfigParserTestCase(BasicTestCase, unittest.TestCase):
 
     eleza test_defaults_keyword(self):
         """bpo-23835 legacy behavior kila RawConfigParser"""
-        ukijumuisha self.assertRaises(AttributeError) as ctx:
+        ukijumuisha self.assertRaises(AttributeError) kama ctx:
             self.newconfig(defaults={1: 2.4})
         err = ctx.exception
         self.assertEqual(str(err), "'int' object has no attribute 'lower'")
@@ -1144,7 +1144,7 @@ kundi RawConfigParserTestSambaConf(CfgParserTestCaseClass, unittest.TestCase):
 
     eleza test_reading(self):
         smbconf = support.findfile("cfgparser.2")
-        # check when we pass a mix of readable na non-readable files:
+        # check when we pita a mix of readable na non-readable files:
         cf = self.newconfig()
         parsed_files = cf.read([smbconf, "nonexistent-file"], encoding='utf-8')
         self.assertEqual(parsed_files, [smbconf])
@@ -1247,7 +1247,7 @@ kundi ConfigParserTestCaseExtendedInterpolation(BasicTestCase, unittest.TestCase
         self.assertEqual(cf['interpolated']['$other'], '$value')
         self.assertEqual(cf['dollars']['${sick}'], 'cannot interpolate me')
         exception_kundi = configparser.InterpolationMissingOptionError
-        ukijumuisha self.assertRaises(exception_class) as cm:
+        ukijumuisha self.assertRaises(exception_class) kama cm:
             cf['interpolated']['$trying']
         self.assertEqual(cm.exception.reference, 'dollars:${sick')
         self.assertEqual(cm.exception.args[2], '${dollars:${sick}}') #rawval
@@ -1344,7 +1344,7 @@ kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
         self.assertEqual(cf.sections(), ['strange',
                                          'corruption',
                                          'yeah, sections can be '
-                                         'indented as well',
+                                         'indented kama well',
                                          'another one!',
                                          'no values here',
                                          'tricky interpolation',
@@ -1357,10 +1357,10 @@ kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
                       vars={'interpolate': '-1'})
         self.assertEqual(len(cf.get('strange', 'other').split('\n')), 4)
         self.assertEqual(len(cf.get('corruption', 'value').split('\n')), 10)
-        longname = 'yeah, sections can be indented as well'
+        longname = 'yeah, sections can be indented kama well'
         self.assertUongo(cf.getboolean(longname, 'are they subsections'))
         self.assertEqual(cf.get(longname, 'lets use some Unicode'), '片仮名')
-        self.assertEqual(len(cf.items('another one!')), 5) # 4 kwenye section and
+        self.assertEqual(len(cf.items('another one!')), 5) # 4 kwenye section na
                                                            # `go` kutoka DEFAULT
         ukijumuisha self.assertRaises(configparser.InterpolationMissingOptionError):
             cf.items('no values here')
@@ -1377,7 +1377,7 @@ kundi ConfigParserTestCaseTrickyFile(CfgParserTestCaseClass, unittest.TestCase):
 
 
 kundi Issue7005TestCase(unittest.TestCase):
-    """Test output when Tupu ni set() as a value na allow_no_value == Uongo.
+    """Test output when Tupu ni set() kama a value na allow_no_value == Uongo.
 
     http://bugs.python.org/issue7005
 
@@ -1472,7 +1472,7 @@ kundi CopyTestCase(BasicTestCase, unittest.TestCase):
 kundi FakeFile:
     eleza __init__(self):
         file_path = support.findfile("cfgparser.1")
-        ukijumuisha open(file_path) as f:
+        ukijumuisha open(file_path) kama f:
             self.lines = f.readlines()
             self.lines.reverse()
 
@@ -1495,11 +1495,11 @@ kundi ReadFileTestCase(unittest.TestCase):
         file_paths = [support.findfile("cfgparser.1")]
         jaribu:
             file_paths.append(file_paths[0].encode('utf8'))
-        except UnicodeEncodeError:
-            pass   # unfortunately we can't test bytes on this path
+        tatizo UnicodeEncodeError:
+            pita   # unfortunately we can't test bytes on this path
         kila file_path kwenye file_paths:
             parser = configparser.ConfigParser()
-            ukijumuisha open(file_path) as f:
+            ukijumuisha open(file_path) kama f:
                 parser.read_file(f)
             self.assertIn("Foo Bar", parser)
             self.assertIn("foo", parser["Foo Bar"])
@@ -1531,7 +1531,7 @@ kundi ReadFileTestCase(unittest.TestCase):
         [badbad]
         [badbad]""").strip().split('\n')
         parser = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.DuplicateSectionError) as dse:
+        ukijumuisha self.assertRaises(configparser.DuplicateSectionError) kama dse:
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
@@ -1543,7 +1543,7 @@ kundi ReadFileTestCase(unittest.TestCase):
         bad = bad
         bad = bad""").strip().split('\n')
         parser = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.DuplicateOptionError) as dse:
+        ukijumuisha self.assertRaises(configparser.DuplicateOptionError) kama dse:
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
@@ -1554,7 +1554,7 @@ kundi ReadFileTestCase(unittest.TestCase):
         [badbad]
         = bad""").strip().split('\n')
         parser = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.ParsingError) as dse:
+        ukijumuisha self.assertRaises(configparser.ParsingError) kama dse:
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
@@ -1564,7 +1564,7 @@ kundi ReadFileTestCase(unittest.TestCase):
         [badbad
         bad = bad""").strip().split('\n')
         parser = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.MissingSectionHeaderError) as dse:
+        ukijumuisha self.assertRaises(configparser.MissingSectionHeaderError) kama dse:
             parser.read_file(lines, source=b"badbad")
         self.assertEqual(
             str(dse.exception),
@@ -1594,17 +1594,17 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(error.section, 'section')
 
     eleza test_parsing_error(self):
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             configparser.ParsingError()
         self.assertEqual(str(cm.exception), "Required argument `source' sio "
                                             "given.")
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             configparser.ParsingError(source='source', filename='filename')
         self.assertEqual(str(cm.exception), "Cannot specify both `filename' "
                                             "and `source'. Use `source'.")
         error = configparser.ParsingError(filename='source')
         self.assertEqual(error.source, 'source')
-        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter("always", DeprecationWarning)
             self.assertEqual(error.filename, 'source')
             error.filename = 'filename'
@@ -1620,11 +1620,11 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
             invalid_reference = %(()
             invalid_variable = %(does_not_exist)s
         """)
-        ukijumuisha self.assertRaises(configparser.InterpolationSyntaxError) as cm:
+        ukijumuisha self.assertRaises(configparser.InterpolationSyntaxError) kama cm:
             parser['section']['invalid_percent']
         self.assertEqual(str(cm.exception), "'%' must be followed by '%' ama "
                                             "'(', found: '%'")
-        ukijumuisha self.assertRaises(configparser.InterpolationSyntaxError) as cm:
+        ukijumuisha self.assertRaises(configparser.InterpolationSyntaxError) kama cm:
             parser['section']['invalid_reference']
         self.assertEqual(str(cm.exception), "bad interpolation variable "
                                             "reference '%(()'")
@@ -1635,7 +1635,7 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
         option = value
         """)
         parser = configparser.ConfigParser()
-        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter("always", DeprecationWarning)
             parser.readfp(sio, filename='StringIO')
         kila warning kwenye w:
@@ -1644,7 +1644,7 @@ kundi CoverageOneHundredTestCase(unittest.TestCase):
         self.assertEqual(parser['section']['option'], 'value')
 
     eleza test_safeconfigparser_deprecation(self):
-        ukijumuisha warnings.catch_warnings(record=Kweli) as w:
+        ukijumuisha warnings.catch_warnings(record=Kweli) kama w:
             warnings.simplefilter("always", DeprecationWarning)
             parser = configparser.SafeConfigParser()
         kila warning kwenye w:
@@ -1915,19 +1915,19 @@ kundi ExceptionContextTestCase(unittest.TestCase):
         [Paths]
         home_dir: /Users
         """)
-        ukijumuisha self.assertRaises(configparser.NoSectionError) as cm:
+        ukijumuisha self.assertRaises(configparser.NoSectionError) kama cm:
             parser.options('test')
         self.assertIs(cm.exception.__suppress_context__, Kweli)
 
     eleza test_missing_section(self):
         config = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.NoSectionError) as cm:
+        ukijumuisha self.assertRaises(configparser.NoSectionError) kama cm:
             config.set('Section1', 'an_int', '15')
         self.assertIs(cm.exception.__suppress_context__, Kweli)
 
     eleza test_remove_option(self):
         config = configparser.ConfigParser()
-        ukijumuisha self.assertRaises(configparser.NoSectionError) as cm:
+        ukijumuisha self.assertRaises(configparser.NoSectionError) kama cm:
             config.remove_option('Section1', 'an_int')
         self.assertIs(cm.exception.__suppress_context__, Kweli)
 

@@ -34,7 +34,7 @@ kundi TextTest(AbstractTkTest, unittest.TestCase):
         # Invalid text index.
         self.assertRaises(tkinter.TclError, text.search, '', 0)
 
-        # Check ikiwa we are getting the indices as strings -- you are likely
+        # Check ikiwa we are getting the indices kama strings -- you are likely
         # to get Tcl_Obj under Tk 8.5 ikiwa Tkinter doesn't convert it.
         text.insert('1.0', 'hi-test')
         self.assertEqual(text.search('-test', '1.0', 'end'), '1.2')

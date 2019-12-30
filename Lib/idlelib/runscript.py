@@ -13,7 +13,7 @@ agiza os
 agiza tabnanny
 agiza tokenize
 
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.messagebox kama tkMessageBox
 
 kutoka idlelib.config agiza idleConf
 kutoka idlelib agiza macosx
@@ -56,17 +56,17 @@ kundi ScriptBinding:
         rudisha "koma"
 
     eleza tabnanny(self, filename):
-        # XXX: tabnanny should work on binary files as well
-        ukijumuisha tokenize.open(filename) as f:
+        # XXX: tabnanny should work on binary files kama well
+        ukijumuisha tokenize.open(filename) kama f:
             jaribu:
                 tabnanny.process_tokens(tokenize.generate_tokens(f.readline))
-            except tokenize.TokenError as msg:
+            tatizo tokenize.TokenError kama msg:
                 msgtxt, (lineno, start) = msg.args
                 self.editwin.gotoline(lineno)
                 self.errorbox("Tabnanny Tokenizing Error",
                               "Token Error: %s" % msgtxt)
                 rudisha Uongo
-            except tabnanny.NannyNag as nag:
+            tatizo tabnanny.NannyNag kama nag:
                 # The error messages kutoka tabnanny are too confusing...
                 self.editwin.gotoline(nag.get_lineno())
                 self.errorbox("Tab/space error", indent_message)
@@ -77,7 +77,7 @@ kundi ScriptBinding:
         self.shell = shell = self.flist.open_shell()
         saved_stream = shell.get_warning_stream()
         shell.set_warning_stream(shell.stderr)
-        ukijumuisha open(filename, 'rb') as f:
+        ukijumuisha open(filename, 'rb') kama f:
             source = f.read()
         ikiwa b'\r' kwenye source:
             source = source.replace(b'\r\n', b'\n')
@@ -90,7 +90,7 @@ kundi ScriptBinding:
         jaribu:
             # If successful, rudisha the compiled code
             rudisha compile(source, filename, "exec")
-        except (SyntaxError, OverflowError, ValueError) as value:
+        tatizo (SyntaxError, OverflowError, ValueError) kama value:
             msg = getattr(value, 'msg', '') ama value ama "<no detail available>"
             lineno = getattr(value, 'lineno', '') ama 1
             offset = getattr(value, 'offset', '') ama 0
@@ -154,14 +154,14 @@ kundi ScriptBinding:
             argv += self.cli_args
         interp.runcommand(f"""ikiwa 1:
             __file__ = {filename!r}
-            agiza sys as _sys
-            kutoka os.path agiza basename as _basename
+            agiza sys kama _sys
+            kutoka os.path agiza basename kama _basename
             argv = {argv!r}
-            ikiwa (not _sys.argv or
-                _basename(_sys.argv[0]) != _basename(__file__) or
+            ikiwa (sio _sys.argv ama
+                _basename(_sys.argv[0]) != _basename(__file__) ama
                 len(argv) > 1):
                 _sys.argv = argv
-            agiza os as _os
+            agiza os kama _os
             _os.chdir({dirname!r})
             toa _sys, argv, _basename, _os
             \n""")

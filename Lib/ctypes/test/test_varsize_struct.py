@@ -38,7 +38,7 @@ kundi VarSizeTest(unittest.TestCase):
 
     eleza test_zerosized_array(self):
         array = (c_int * 0)()
-        # accessing elements of zero-sized arrays  ashiria IndexError
+        # accessing elements of zero-sized arrays ashiria IndexError
         self.assertRaises(IndexError, array.__setitem__, 0, Tupu)
         self.assertRaises(IndexError, array.__getitem__, 0)
         self.assertRaises(IndexError, array.__setitem__, 1, Tupu)

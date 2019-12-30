@@ -14,7 +14,7 @@ kundi IsolatedAsyncioTestCase(TestCase):
     # but uses a different approach:
     # 1. create a long-running task that reads self.setUp()
     #    awaitable kutoka queue along ukijumuisha a future
-    # 2. await the awaitable object passing kwenye na set the result
+    # 2. await the awaitable object pitaing kwenye na set the result
     #    into the future object
     # 3. Outer code puts the awaitable na the future object into a queue
     #    ukijumuisha waiting kila the future
@@ -37,10 +37,10 @@ kundi IsolatedAsyncioTestCase(TestCase):
         self._asyncioCallsQueue = Tupu
 
     async eleza asyncSetUp(self):
-        pass
+        pita
 
     async eleza asyncTearDown(self):
-        pass
+        pita
 
     eleza addAsyncCleanup(self, func, /, *args, **kwargs):
         # A trivial trampoline to addCleanup()
@@ -102,9 +102,9 @@ kundi IsolatedAsyncioTestCase(TestCase):
                 ret = await awaitable
                 ikiwa sio fut.cancelled():
                     fut.set_result(ret)
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 raise
-            except Exception as ex:
+            tatizo Exception kama ex:
                 ikiwa sio fut.cancelled():
                     fut.set_exception(ex)
 

@@ -17,7 +17,7 @@ eleza exists(path):
     """Test whether a path exists.  Returns Uongo kila broken symbolic links"""
     jaribu:
         os.stat(path)
-    except (OSError, ValueError):
+    tatizo (OSError, ValueError):
         rudisha Uongo
     rudisha Kweli
 
@@ -28,7 +28,7 @@ eleza isfile(path):
     """Test whether a path ni a regular file"""
     jaribu:
         st = os.stat(path)
-    except (OSError, ValueError):
+    tatizo (OSError, ValueError):
         rudisha Uongo
     rudisha stat.S_ISREG(st.st_mode)
 
@@ -40,7 +40,7 @@ eleza isdir(s):
     """Return true ikiwa the pathname refers to an existing directory."""
     jaribu:
         st = os.stat(s)
-    except (OSError, ValueError):
+    tatizo (OSError, ValueError):
         rudisha Uongo
     rudisha stat.S_ISDIR(st.st_mode)
 
@@ -69,8 +69,8 @@ eleza getctime(filename):
 eleza commonprefix(m):
     "Given a list of pathnames, returns the longest common leading component"
     ikiwa sio m: rudisha ''
-    # Some people pass kwenye a list of pathname parts to operate kwenye an OS-agnostic
-    # fashion; don't try to translate kwenye that case as that's an abuse of the
+    # Some people pita kwenye a list of pathname parts to operate kwenye an OS-agnostic
+    # fashion; don't try to translate kwenye that case kama that's an abuse of the
     # API na they are already doing what they need to be OS-agnostic na so
     # they most likely won't be using an os.PathLike object kwenye the sublists.
     ikiwa sio isinstance(m[0], (list, tuple)):
@@ -86,7 +86,7 @@ eleza commonprefix(m):
 # describing the same file?
 eleza samestat(s1, s2):
     """Test whether two stat buffers reference the same file"""
-    rudisha (s1.st_ino == s2.st_ino and
+    rudisha (s1.st_ino == s2.st_ino na
             s1.st_dev == s2.st_dev)
 
 
@@ -94,7 +94,7 @@ eleza samestat(s1, s2):
 eleza samefile(f1, f2):
     """Test whether two pathnames reference the same actual file ama directory
 
-    This ni determined by the device number na i-node number and
+    This ni determined by the device number na i-node number na
     raises an exception ikiwa an os.stat() call on either pathname fails.
     """
     s1 = os.stat(f1)
@@ -146,10 +146,10 @@ eleza _check_arg_types(funcname, *args):
     kila s kwenye args:
         ikiwa isinstance(s, str):
             hasstr = Kweli
-        elikiwa isinstance(s, bytes):
+        lasivyo isinstance(s, bytes):
             hasbytes = Kweli
         isipokua:
-             ashiria TypeError('%s() argument must be str ama bytes, sio %r' %
+            ashiria TypeError('%s() argument must be str ama bytes, sio %r' %
                             (funcname, s.__class__.__name__)) kutoka Tupu
     ikiwa hasstr na hasbytes:
-         ashiria TypeError("Can't mix strings na bytes kwenye path components") kutoka Tupu
+        ashiria TypeError("Can't mix strings na bytes kwenye path components") kutoka Tupu

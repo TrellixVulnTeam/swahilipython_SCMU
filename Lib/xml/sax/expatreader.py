@@ -12,19 +12,19 @@ kutoka xml.sax.handler agiza feature_external_ges, feature_external_pes
 kutoka xml.sax.handler agiza feature_string_interning
 kutoka xml.sax.handler agiza property_xml_string, property_interning_dict
 
-# xml.parsers.expat does sio  ashiria ImportError kwenye Jython
+# xml.parsers.expat does sio ashiria ImportError kwenye Jython
 agiza sys
 ikiwa sys.platform[:4] == "java":
-     ashiria SAXReaderNotAvailable("expat sio available kwenye Java", Tupu)
+    ashiria SAXReaderNotAvailable("expat sio available kwenye Java", Tupu)
 toa sys
 
 jaribu:
     kutoka xml.parsers agiza expat
-except ImportError:
-     ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
+tatizo ImportError:
+    ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
 isipokua:
     ikiwa sio hasattr(expat, "ParserCreate"):
-         ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
+        ashiria SAXReaderNotAvailable("expat sio supported", Tupu)
 kutoka xml.sax agiza xmlreader, saxutils, handler
 
 AttributesImpl = xmlreader.AttributesImpl
@@ -35,7 +35,7 @@ AttributesNSImpl = xmlreader.AttributesNSImpl
 # handler, otherwise we'll just have to pretend.
 jaribu:
     agiza _weakref
-except ImportError:
+tatizo ImportError:
     eleza _mkproxy(o):
         rudisha o
 isipokua:
@@ -44,7 +44,7 @@ isipokua:
     toa weakref, _weakref
 
 kundi _ClosedParser:
-    pass
+    pita
 
 # --- ExpatLocator
 
@@ -130,75 +130,75 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
     eleza getFeature(self, name):
         ikiwa name == feature_namespaces:
             rudisha self._namespaces
-        elikiwa name == feature_string_interning:
+        lasivyo name == feature_string_interning:
             rudisha self._interning ni sio Tupu
-        elikiwa name kwenye (feature_validation, feature_external_pes,
+        lasivyo name kwenye (feature_validation, feature_external_pes,
                       feature_namespace_prefixes):
             rudisha 0
-        elikiwa name == feature_external_ges:
+        lasivyo name == feature_external_ges:
             rudisha self._external_ges
-         ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
+        ashiria SAXNotRecognizedException("Feature '%s' sio recognized" % name)
 
     eleza setFeature(self, name, state):
         ikiwa self._parsing:
-             ashiria SAXNotSupportedException("Cannot set features wakati parsing")
+            ashiria SAXNotSupportedException("Cannot set features wakati parsing")
 
         ikiwa name == feature_namespaces:
             self._namespaces = state
-        elikiwa name == feature_external_ges:
+        lasivyo name == feature_external_ges:
             self._external_ges = state
-        elikiwa name == feature_string_interning:
+        lasivyo name == feature_string_interning:
             ikiwa state:
                 ikiwa self._interning ni Tupu:
                     self._interning = {}
             isipokua:
                 self._interning = Tupu
-        elikiwa name == feature_validation:
+        lasivyo name == feature_validation:
             ikiwa state:
-                 ashiria SAXNotSupportedException(
+                ashiria SAXNotSupportedException(
                     "expat does sio support validation")
-        elikiwa name == feature_external_pes:
+        lasivyo name == feature_external_pes:
             ikiwa state:
-                 ashiria SAXNotSupportedException(
+                ashiria SAXNotSupportedException(
                     "expat does sio read external parameter entities")
-        elikiwa name == feature_namespace_prefixes:
+        lasivyo name == feature_namespace_prefixes:
             ikiwa state:
-                 ashiria SAXNotSupportedException(
+                ashiria SAXNotSupportedException(
                     "expat does sio report namespace prefixes")
         isipokua:
-             ashiria SAXNotRecognizedException(
+            ashiria SAXNotRecognizedException(
                 "Feature '%s' sio recognized" % name)
 
     eleza getProperty(self, name):
         ikiwa name == handler.property_lexical_handler:
             rudisha self._lex_handler_prop
-        elikiwa name == property_interning_dict:
+        lasivyo name == property_interning_dict:
             rudisha self._interning
-        elikiwa name == property_xml_string:
+        lasivyo name == property_xml_string:
             ikiwa self._parser:
                 ikiwa hasattr(self._parser, "GetInputContext"):
                     rudisha self._parser.GetInputContext()
                 isipokua:
-                     ashiria SAXNotRecognizedException(
+                    ashiria SAXNotRecognizedException(
                         "This version of expat does sio support getting"
                         " the XML string")
             isipokua:
-                 ashiria SAXNotSupportedException(
+                ashiria SAXNotSupportedException(
                     "XML string cannot be returned when sio parsing")
-         ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
+        ashiria SAXNotRecognizedException("Property '%s' sio recognized" % name)
 
     eleza setProperty(self, name, value):
         ikiwa name == handler.property_lexical_handler:
             self._lex_handler_prop = value
             ikiwa self._parsing:
                 self._reset_lex_handler_prop()
-        elikiwa name == property_interning_dict:
+        lasivyo name == property_interning_dict:
             self._interning = value
-        elikiwa name == property_xml_string:
-             ashiria SAXNotSupportedException("Property '%s' cannot be set" %
+        lasivyo name == property_xml_string:
+            ashiria SAXNotSupportedException("Property '%s' cannot be set" %
                                            name)
         isipokua:
-             ashiria SAXNotRecognizedException("Property '%s' sio recognized" %
+            ashiria SAXNotRecognizedException("Property '%s' sio recognized" %
                                             name)
 
     # IncrementalParser methods
@@ -213,9 +213,9 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
             # The isFinal parameter ni internal to the expat reader.
             # If it ni set to true, expat will check validity of the entire
             # document. When feeding chunks, they are sio normally final -
-            # except when invoked kutoka close.
+            # tatizo when invoked kutoka close.
             self._parser.Parse(data, isFinal)
-        except expat.error as e:
+        tatizo expat.error kama e:
             exc = SAXParseException(expat.ErrorString(e.code), e, self)
             # FIXME: when to invoke error()?
             self._err_handler.fatalError(exc)
@@ -232,7 +232,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 file.close()
 
     eleza close(self):
-        ikiwa (self._entity_stack ama self._parser ni Tupu or
+        ikiwa (self._entity_stack ama self._parser ni Tupu ama
             isinstance(self._parser, _ClosedParser)):
             # If we are completing an external entity, do nothing here
             return
@@ -301,9 +301,9 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         self._parser.ExternalEntityRefHandler = self.external_entity_ref
         jaribu:
             self._parser.SkippedEntityHandler = self.skipped_entity_handler
-        except AttributeError:
+        tatizo AttributeError:
             # This pyexpat does sio support SkippedEntity
-            pass
+            pita
         self._parser.SetParamEntityParsing(
             expat.XML_PARAM_ENTITY_PARSING_UNLESS_STANDALONE)
 
@@ -340,7 +340,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         ikiwa len(pair) == 1:
             # no namespace
             pair = (Tupu, name)
-        elikiwa len(pair) == 3:
+        lasivyo len(pair) == 3:
             pair = pair[0], pair[1]
         isipokua:
             # default namespace
@@ -355,7 +355,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
                 # no namespace
                 qname = aname
                 apair = (Tupu, aname)
-            elikiwa length == 3:
+            lasivyo length == 3:
                 qname = "%s:%s" % (parts[2], parts[1])
                 apair = parts[0], parts[1]
             isipokua:
@@ -373,7 +373,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
         pair = name.split()
         ikiwa len(pair) == 1:
             pair = (Tupu, name)
-        elikiwa len(pair) == 3:
+        lasivyo len(pair) == 3:
             pair = pair[0], pair[1]
         isipokua:
             pair = tuple(pair)
@@ -409,7 +409,7 @@ kundi ExpatParser(xmlreader.IncrementalParser, xmlreader.Locator):
 
         source = self._ent_handler.resolveEntity(pubid, sysid)
         source = saxutils.prepare_input_source(source,
-                                               self._source.getSystemId() or
+                                               self._source.getSystemId() ama
                                                "")
 
         self._entity_stack.append((self._parser, self._source))

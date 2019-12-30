@@ -2,7 +2,7 @@ agiza collections.abc
 agiza unittest
 kutoka test agiza support
 
-agiza xmlrpc.client as xmlrpclib
+agiza xmlrpc.client kama xmlrpclib
 
 
 @unittest.skip('XXX: buildbot.python.org/all/xmlrpc/ ni gone')
@@ -14,7 +14,7 @@ kundi PythonBuildersTest(unittest.TestCase):
         server = xmlrpclib.ServerProxy("http://buildbot.python.org/all/xmlrpc/")
         jaribu:
             builders = server.getAllBuilders()
-        except OSError as e:
+        tatizo OSError kama e:
             self.skipTest("network error: %s" % e)
         self.addCleanup(lambda: server('close')())
 

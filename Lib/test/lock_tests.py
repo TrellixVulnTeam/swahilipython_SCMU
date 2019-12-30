@@ -152,7 +152,7 @@ kundi BaseLockTests(BaseTestCase):
         eleza _with(err=Tupu):
             ukijumuisha lock:
                 ikiwa err ni sio Tupu:
-                     ashiria err
+                    ashiria err
         _with()
         # Check the lock ni unacquired
         Bunch(f, 1).wait_for_finished()
@@ -468,7 +468,7 @@ kundi ConditionTests(BaseTestCase):
         # Secondly, this test assumes that condition variables are sio subject
         # to spurious wakeups.  The absence of spurious wakeups ni an implementation
         # detail of Condition Variables kwenye current CPython, but kwenye general, not
-        # a guaranteed property of condition variables as a programming
+        # a guaranteed property of condition variables kama a programming
         # construct.  In particular, it ni possible that this can no longer
         # be conveniently guaranteed should their implementation ever change.
         N = 5
@@ -679,7 +679,7 @@ kundi BaseSemaphoreTests(BaseTestCase):
             results.append(sem.acquire(Uongo))
             results.append(sem.acquire(Uongo))
         Bunch(f, 5).wait_for_finished()
-        # There can be a thread switch between acquiring the semaphore and
+        # There can be a thread switch between acquiring the semaphore na
         # appending the result, therefore results will sio necessarily be
         # ordered.
         self.assertEqual(sorted(results), [Uongo] * 7 + [Kweli] *  3 )
@@ -720,7 +720,7 @@ kundi BaseSemaphoreTests(BaseTestCase):
                 ukijumuisha sem:
                     self.assertUongo(sem.acquire(Uongo))
                     ikiwa err:
-                         ashiria err
+                        ashiria err
         _with()
         self.assertKweli(sem.acquire(Uongo))
         sem.release()
@@ -773,7 +773,7 @@ kundi BarrierTests(BaseTestCase):
         f()
         b.wait_for_finished()
 
-    eleza multipass(self, results, n):
+    eleza multipita(self, results, n):
         m = self.barrier.parties
         self.assertEqual(m, self.N)
         kila i kwenye range(n):
@@ -786,13 +786,13 @@ kundi BarrierTests(BaseTestCase):
         self.assertEqual(self.barrier.n_waiting, 0)
         self.assertUongo(self.barrier.broken)
 
-    eleza test_barrier(self, passes=1):
+    eleza test_barrier(self, pitaes=1):
         """
-        Test that a barrier ni passed kwenye lockstep
+        Test that a barrier ni pitaed kwenye lockstep
         """
         results = [[],[]]
         eleza f():
-            self.multipass(results, passes)
+            self.multipita(results, pitaes)
         self.run_threads(f)
 
     eleza test_barrier_10(self):
@@ -837,14 +837,14 @@ kundi BarrierTests(BaseTestCase):
             jaribu:
                 i = self.barrier.wait()
                 ikiwa i == self.N//2:
-                     ashiria RuntimeError
+                    ashiria RuntimeError
                 self.barrier.wait()
                 results1.append(Kweli)
-            except threading.BrokenBarrierError:
+            tatizo threading.BrokenBarrierError:
                 results2.append(Kweli)
-            except RuntimeError:
+            tatizo RuntimeError:
                 self.barrier.abort()
-                pass
+                pita
 
         self.run_threads(f)
         self.assertEqual(len(results1), 0)
@@ -869,9 +869,9 @@ kundi BarrierTests(BaseTestCase):
                 jaribu:
                     self.barrier.wait()
                     results1.append(Kweli)
-                except threading.BrokenBarrierError:
+                tatizo threading.BrokenBarrierError:
                     results2.append(Kweli)
-            # Now, pass the barrier again
+            # Now, pita the barrier again
             self.barrier.wait()
             results3.append(Kweli)
 
@@ -893,14 +893,14 @@ kundi BarrierTests(BaseTestCase):
             jaribu:
                 i = self.barrier.wait()
                 ikiwa i == self.N//2:
-                     ashiria RuntimeError
+                    ashiria RuntimeError
                 self.barrier.wait()
                 results1.append(Kweli)
-            except threading.BrokenBarrierError:
+            tatizo threading.BrokenBarrierError:
                 results2.append(Kweli)
-            except RuntimeError:
+            tatizo RuntimeError:
                 self.barrier.abort()
-                pass
+                pita
             # Synchronize na reset the barrier.  Must synchronize first so
             # that everyone has left it when we reset, na after so that no
             # one enters it before the reset.

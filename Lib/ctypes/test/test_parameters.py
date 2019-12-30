@@ -8,16 +8,16 @@ kundi SimpleTypesTestCase(unittest.TestCase):
         agiza ctypes
         jaribu:
             kutoka _ctypes agiza set_conversion_mode
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         isipokua:
             self.prev_conv_mode = set_conversion_mode("ascii", "strict")
 
     eleza tearDown(self):
         jaribu:
             kutoka _ctypes agiza set_conversion_mode
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         isipokua:
             set_conversion_mode(*self.prev_conv_mode)
 
@@ -164,7 +164,7 @@ kundi SimpleTypesTestCase(unittest.TestCase):
 
         kundi Adapter(object):
             eleza from_param(cls, obj):
-                 ashiria ValueError(obj)
+                ashiria ValueError(obj)
 
         func.argtypes = (Adapter(),)
         # ArgumentError: argument 1: ValueError: 99
@@ -183,14 +183,14 @@ kundi SimpleTypesTestCase(unittest.TestCase):
 
     @test.support.cpython_only
     eleza test_issue31311(self):
-        # __setstate__ should neither  ashiria a SystemError nor crash kwenye case
+        # __setstate__ should neither ashiria a SystemError nor crash kwenye case
         # of a bad __dict__.
         kutoka ctypes agiza Structure
 
         kundi BadStruct(Structure):
             @property
             eleza __dict__(self):
-                pass
+                pita
         ukijumuisha self.assertRaises(TypeError):
             BadStruct().__setstate__({}, b'foo')
 

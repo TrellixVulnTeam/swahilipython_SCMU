@@ -5,7 +5,7 @@ Allows fine grained feature control of how the package parses na emits data.
 
 agiza abc
 kutoka email agiza header
-kutoka email agiza charset as _charset
+kutoka email agiza charset kama _charset
 kutoka email.utils agiza _has_surrogates
 
 __all__ = [
@@ -25,8 +25,8 @@ kundi _PolicyBase:
     non-default values to be set kila these attributes at instance
     creation time.  The instance will be callable, taking these same
     attributes keyword arguments, na returning a new instance
-    identical to the called instance except kila those values changed
-    by the keyword arguments.  Instances may be added, yielding new
+    identical to the called instance tatizo kila those values changed
+    by the keyword arguments.  Instances may be added, tumaing new
     instances ukijumuisha any non-default values kutoka the right hand
     operand overriding those kwenye the left hand operand.  That is,
 
@@ -48,7 +48,7 @@ kundi _PolicyBase:
             ikiwa hasattr(self, name):
                 super(_PolicyBase,self).__setattr__(name, value)
             isipokua:
-                 ashiria TypeError(
+                ashiria TypeError(
                     "{!r} ni an invalid keyword argument kila {}".format(
                         name, self.__class__.__name__))
 
@@ -60,8 +60,8 @@ kundi _PolicyBase:
     eleza clone(self, **kw):
         """Return a new instance ukijumuisha specified attributes changed.
 
-        The new instance has the same attribute values as the current object,
-        except kila the changes passed kwenye as keyword arguments.
+        The new instance has the same attribute values kama the current object,
+        tatizo kila the changes pitaed kwenye kama keyword arguments.
 
         """
         newpolicy = self.__class__.__new__(self.__class__)
@@ -69,7 +69,7 @@ kundi _PolicyBase:
             object.__setattr__(newpolicy, attr, value)
         kila attr, value kwenye kw.items():
             ikiwa sio hasattr(self, attr):
-                 ashiria TypeError(
+                ashiria TypeError(
                     "{!r} ni an invalid keyword argument kila {}".format(
                         attr, self.__class__.__name__))
             object.__setattr__(newpolicy, attr, value)
@@ -80,7 +80,7 @@ kundi _PolicyBase:
             msg = "{!r} object attribute {!r} ni read-only"
         isipokua:
             msg = "{!r} object has no attribute {!r}"
-         ashiria AttributeError(msg.format(self.__class__.__name__, name))
+        ashiria AttributeError(msg.format(self.__class__.__name__, name))
 
     eleza __add__(self, other):
         """Non-default values kutoka right operand override those kutoka left.
@@ -114,14 +114,14 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
     r"""Controls kila how messages are interpreted na formatted.
 
     Most of the classes na many of the methods kwenye the email package accept
-    Policy objects as parameters.  A Policy object contains a set of values and
+    Policy objects kama parameters.  A Policy object contains a set of values na
     functions that control how input ni interpreted na how output ni rendered.
     For example, the parameter 'raise_on_defect' controls whether ama sio an RFC
     violation results kwenye an error being raised ama not, wakati 'max_line_length'
     controls the maximum length of output lines when a Message ni serialized.
 
-    Any valid attribute may be overridden when a Policy ni created by passing
-    it as a keyword argument to the constructor.  Policy objects are immutable,
+    Any valid attribute may be overridden when a Policy ni created by pitaing
+    it kama a keyword argument to the constructor.  Policy objects are immutable,
     but a new Policy object can be created ukijumuisha only certain values changed by
     calling the Policy instance ukijumuisha keyword arguments.  Policy objects can
     also be added, producing a new Policy object kwenye which the non-default
@@ -130,10 +130,10 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
 
     Settable attributes:
 
-    raise_on_defect     -- If true, then defects should be raised as errors.
+    raise_on_defect     -- If true, then defects should be raised kama errors.
                            Default: Uongo.
 
-    linesep             -- string containing the value to use as separation
+    linesep             -- string containing the value to use kama separation
                            between output lines.  Default '\n'.
 
     cte_type            -- Type of allowed content transfer encodings
@@ -167,22 +167,22 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
     message_factory = Tupu
 
     eleza handle_defect(self, obj, defect):
-        """Based on policy, either  ashiria defect ama call register_defect.
+        """Based on policy, either ashiria defect ama call register_defect.
 
             handle_defect(obj, defect)
 
         defect should be a Defect subclass, but kwenye any case must be an
         Exception subclass.  obj ni the object on which the defect should be
         registered ikiwa it ni sio raised.  If the raise_on_defect ni Kweli, the
-        defect ni raised as an error, otherwise the object na the defect are
-        passed to register_defect.
+        defect ni raised kama an error, otherwise the object na the defect are
+        pitaed to register_defect.
 
         This method ni intended to be called by parsers that discover defects.
         The email package parsers always call it ukijumuisha Defect instances.
 
         """
         ikiwa self.raise_on_defect:
-             ashiria defect
+            ashiria defect
         self.register_defect(obj, defect)
 
     eleza register_defect(self, obj, defect):
@@ -192,7 +192,7 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
         part of the Policy API so that Policy subclasses can implement custom
         defect handling.  The default implementation calls the append method of
         the defects attribute of obj.  The objects used by the email package by
-        default that get passed to this method will always have a defects
+        default that get pitaed to this method will always have a defects
         attribute ukijumuisha an append method.
 
         """
@@ -210,7 +210,7 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
         without realizing it.  This method allows certain headers to be limited
         kwenye the number of instances of that header that may be added to a
         Message programmatically.  (The limit ni sio observed by the parser,
-        which will faithfully produce as many headers as exist kwenye the message
+        which will faithfully produce kama many headers kama exist kwenye the message
         being parsed.)
 
         The default implementation returns Tupu kila all header names.
@@ -222,50 +222,50 @@ kundi Policy(_PolicyBase, metaclass=abc.ABCMeta):
         """Given a list of linesep terminated strings constituting the lines of
         a single header, rudisha the (name, value) tuple that should be stored
         kwenye the model.  The input lines should retain their terminating linesep
-        characters.  The lines passed kwenye by the email package may contain
+        characters.  The lines pitaed kwenye by the email package may contain
         surrogateescaped binary data.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     eleza header_store_parse(self, name, value):
         """Given the header name na the value provided by the application
         program, rudisha the (name, value) that should be stored kwenye the model.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     eleza header_fetch_parse(self, name, value):
         """Given the header name na the value kutoka the model, rudisha the value
         to be returned to the application program that ni requesting that
-        header.  The value passed kwenye by the email package may contain
+        header.  The value pitaed kwenye by the email package may contain
         surrogateescaped binary data ikiwa the lines were parsed by a BytesParser.
         The returned value should sio contain any surrogateescaped data.
 
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     eleza fold(self, name, value):
         """Given the header name na the value kutoka the model, rudisha a string
         containing linesep characters that implement the folding of the header
-        according to the policy controls.  The value passed kwenye by the email
+        according to the policy controls.  The value pitaed kwenye by the email
         package may contain surrogateescaped binary data ikiwa the lines were
         parsed by a BytesParser.  The returned value should sio contain any
         surrogateescaped data.
 
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     @abc.abstractmethod
     eleza fold_binary(self, name, value):
         """Given the header name na the value kutoka the model, rudisha binary
         data containing linesep characters that implement the folding of the
-        header according to the policy controls.  The value passed kwenye by the
+        header according to the policy controls.  The value pitaed kwenye by the
         email package may contain surrogateescaped binary data.
 
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 @_extend_docstrings
@@ -280,7 +280,7 @@ kundi Compat32(Policy):
 
     eleza _sanitize_header(self, name, value):
         # If the header value contains surrogates, rudisha a Header using
-        # the unknown-8bit charset to encode the bytes as encoded words.
+        # the unknown-8bit charset to encode the bytes kama encoded words.
         ikiwa sio isinstance(value, str):
             # Assume it ni already a header object
             rudisha value
@@ -292,9 +292,9 @@ kundi Compat32(Policy):
 
     eleza header_source_parse(self, sourcelines):
         """+
-        The name ni parsed as everything up to the ':' na returned unmodified.
+        The name ni parsed kama everything up to the ':' na returned unmodified.
         The value ni determined by stripping leading whitespace off the
-        remainder of the first line, joining all subsequent lines together, and
+        remainder of the first line, joining all subsequent lines together, na
         stripping any trailing carriage rudisha ama linefeed characters.
 
         """
@@ -361,8 +361,8 @@ kundi Compat32(Policy):
             # Assume it ni a Header-like object.
             h = value
         ikiwa h ni sio Tupu:
-            # The Header kundi interprets a value of Tupu kila maxlinelen as the
-            # default value of 78, as recommended by RFC 2822.
+            # The Header kundi interprets a value of Tupu kila maxlinelen kama the
+            # default value of 78, kama recommended by RFC 2822.
             maxlinelen = 0
             ikiwa self.max_line_length ni sio Tupu:
                 maxlinelen = self.max_line_length

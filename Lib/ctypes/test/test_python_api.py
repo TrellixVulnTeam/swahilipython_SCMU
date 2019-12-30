@@ -9,7 +9,7 @@ kutoka _ctypes agiza PyObj_FromPtr
 
 ################################################################
 
-kutoka sys agiza getrefcount as grc
+kutoka sys agiza getrefcount kama grc
 ikiwa sys.version_info > (2, 4):
     c_py_ssize_t = c_size_t
 isipokua:

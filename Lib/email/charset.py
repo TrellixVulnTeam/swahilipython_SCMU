@@ -97,9 +97,9 @@ ALIASES = {
 CODEC_MAP = {
     'gb2312':      'eucgb2312_cn',
     'big5':        'big5_tw',
-    # Hack: We don't want *any* conversion kila stuff marked us-ascii, as all
+    # Hack: We don't want *any* conversion kila stuff marked us-ascii, kama all
     # sorts of garbage might be sent to us kwenye the guise of 7-bit us-ascii.
-    # Let that stuff pass through without conversion to/kutoka Unicode.
+    # Let that stuff pita through without conversion to/kutoka Unicode.
     'us-ascii':    Tupu,
     }
 
@@ -115,14 +115,14 @@ eleza add_charset(charset, header_enc=Tupu, body_enc=Tupu, output_charset=Tupu):
     Optional header_enc na body_enc ni either Charset.QP for
     quoted-printable, Charset.BASE64 kila base64 encoding, Charset.SHORTEST for
     the shortest of qp ama base64 encoding, ama Tupu kila no encoding.  SHORTEST
-    ni only valid kila header_enc.  It describes how message headers and
+    ni only valid kila header_enc.  It describes how message headers na
     message bodies kwenye the input charset are to be encoded.  Default ni no
     encoding.
 
     Optional output_charset ni the character set that the output should be
     in.  Conversions will proceed kutoka input charset, to Unicode, to the
     output charset when the method Charset.convert() ni called.  The default
-    ni to output kwenye the same character set as the input.
+    ni to output kwenye the same character set kama the input.
 
     Both input_charset na output_charset must have Unicode codec entries in
     the module's charset-to-codec mapping; use add_codec(charset, codecname)
@@ -130,7 +130,7 @@ eleza add_charset(charset, header_enc=Tupu, body_enc=Tupu, output_charset=Tupu):
     documentation kila more information.
     """
     ikiwa body_enc == SHORTEST:
-         ashiria ValueError('SHORTEST sio allowed kila body_enc')
+        ashiria ValueError('SHORTEST sio allowed kila body_enc')
     CHARSETS[charset] = (header_enc, body_enc, output_charset)
 
 
@@ -147,7 +147,7 @@ eleza add_codec(charset, codecname):
     """Add a codec that map characters kwenye the given charset to/kutoka Unicode.
 
     charset ni the canonical name of a character set.  codecname ni the name
-    of a Python codec, as appropriate kila the second argument to the unicode()
+    of a Python codec, kama appropriate kila the second argument to the unicode()
     built-in, ama to the encode() method of a Unicode string.
     """
     CODEC_MAP[charset] = codecname
@@ -189,7 +189,7 @@ kundi Charset:
                      base64 encoding), ama Charset.SHORTEST kila the shortest of
                      QP ama BASE64 encoding.  Otherwise, it will be Tupu.
 
-    body_encoding: Same as header_encoding, but describes the encoding kila the
+    body_encoding: Same kama header_encoding, but describes the encoding kila the
                    mail message's body, which indeed may be different than the
                    header encoding.  Charset.SHORTEST ni sio allowed for
                    body_encoding.
@@ -206,20 +206,20 @@ kundi Charset:
 
     output_codec: The name of the Python codec used to convert Unicode
                   to the output_charset.  If no conversion codec ni necessary,
-                  this attribute will have the same value as the input_codec.
+                  this attribute will have the same value kama the input_codec.
     """
     eleza __init__(self, input_charset=DEFAULT_CHARSET):
         # RFC 2046, $4.1.2 says charsets are sio case sensitive.  We coerce to
         # unicode because its .lower() ni locale insensitive.  If the argument
         # ni already a unicode, we leave it at that, but ensure that the
-        # charset ni ASCII, as the standard (RFC XXX) requires.
+        # charset ni ASCII, kama the standard (RFC XXX) requires.
         jaribu:
             ikiwa isinstance(input_charset, str):
                 input_charset.encode('ascii')
             isipokua:
                 input_charset = str(input_charset, 'ascii')
-        except UnicodeError:
-             ashiria errors.CharsetError(input_charset)
+        tatizo UnicodeError:
+            ashiria errors.CharsetError(input_charset)
         input_charset = input_charset.lower()
         # Set the input charset after filtering through the aliases
         self.input_charset = ALIASES.get(input_charset, input_charset)
@@ -235,7 +235,7 @@ kundi Charset:
         self.body_encoding = benc
         self.output_charset = ALIASES.get(conv, conv)
         # Now set the codecs.  If one isn't defined kila input_charset,
-        # guess na try a Unicode codec ukijumuisha the same name as input_codec.
+        # guess na try a Unicode codec ukijumuisha the same name kama input_codec.
         self.input_codec = CODEC_MAP.get(self.input_charset,
                                          self.input_charset)
         self.output_codec = CODEC_MAP.get(self.output_charset,
@@ -263,7 +263,7 @@ kundi Charset:
         assert self.body_encoding != SHORTEST
         ikiwa self.body_encoding == QP:
             rudisha 'quoted-printable'
-        elikiwa self.body_encoding == BASE64:
+        lasivyo self.body_encoding == BASE64:
             rudisha 'base64'
         isipokua:
             rudisha encode_7or8bit
@@ -298,15 +298,15 @@ kundi Charset:
     eleza header_encode_lines(self, string, maxlengths):
         """Header-encode a string by converting it first to bytes.
 
-        This ni similar to `header_encode()` except that the string ni fit
-        into maximum line lengths as given by the argument.
+        This ni similar to `header_encode()` tatizo that the string ni fit
+        into maximum line lengths kama given by the argument.
 
         :param string: A unicode string kila the header.  It must be possible
             to encode this string to bytes using the character set's
             output codec.
         :param maxlengths: Maximum line length iterator.  Each element
             returned kutoka this iterator will provide the next maximum line
-            length.  This parameter ni used as an argument to built-in next()
+            length.  This parameter ni used kama an argument to built-in next()
             na should never be exhausted.  The maximum line lengths should
             sio count the RFC 2047 chrome.  These line lengths are only a
             hint; the splitter does the best it can.
@@ -360,9 +360,9 @@ kundi Charset:
     eleza _get_encoder(self, header_bytes):
         ikiwa self.header_encoding == BASE64:
             rudisha email.base64mime
-        elikiwa self.header_encoding == QP:
+        lasivyo self.header_encoding == QP:
             rudisha email.quoprimime
-        elikiwa self.header_encoding == SHORTEST:
+        lasivyo self.header_encoding == SHORTEST:
             len64 = email.base64mime.header_length(header_bytes)
             lenqp = email.quoprimime.header_length(header_bytes)
             ikiwa len64 < lenqp:
@@ -387,12 +387,12 @@ kundi Charset:
             ikiwa isinstance(string, str):
                 string = string.encode(self.output_charset)
             rudisha email.base64mime.body_encode(string)
-        elikiwa self.body_encoding ni QP:
-            # quopromime.body_encode takes a string, but operates on it as if
+        lasivyo self.body_encoding ni QP:
+            # quopromime.body_encode takes a string, but operates on it kama if
             # it were a list of byte codes.  For a (minimal) history on why
             # this ni so, see changeset 0cf700464177.  To correctly encode a
             # character set, then, we must turn it into pseudo bytes via the
-            # latin1 charset, which will encode any byte as a single code point
+            # latin1 charset, which will encode any byte kama a single code point
             # between 0 na 255, which ni what body_encode ni expecting.
             ikiwa isinstance(string, str):
                 string = string.encode(self.output_charset)

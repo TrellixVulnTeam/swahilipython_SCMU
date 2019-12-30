@@ -80,7 +80,7 @@ kundi TestSysConfig(unittest.TestCase):
         path = TESTFN
         ikiwa os.path.isfile(path):
             os.remove(path)
-        elikiwa os.path.isdir(path):
+        lasivyo os.path.isdir(path):
             shutil.rmtree(path)
 
     eleza test_get_path_names(self):
@@ -234,7 +234,7 @@ kundi TestSysConfig(unittest.TestCase):
 
     @skip_unless_symlink
     eleza test_symlink(self): # Issue 7880
-        ukijumuisha PythonSymlink() as py:
+        ukijumuisha PythonSymlink() kama py:
             cmd = "-c", "agiza sysconfig; andika(sysconfig.get_platform())"
             self.assertEqual(py.call_real(*cmd), py.call_link(*cmd))
 
@@ -243,7 +243,7 @@ kundi TestSysConfig(unittest.TestCase):
         # ni similar to the global posix_prefix one
         base = get_config_var('base')
         user = get_config_var('userbase')
-        # the global scheme mirrors the distinction between prefix and
+        # the global scheme mirrors the distinction between prefix na
         # exec-prefix but sio the user scheme, so we have to adapt the paths
         # before comparing (issue #9100)
         adapt = sys.base_prefix != sys.base_exec_prefix
@@ -252,7 +252,7 @@ kundi TestSysConfig(unittest.TestCase):
             ikiwa adapt:
                 global_path = global_path.replace(sys.exec_prefix, sys.base_prefix)
                 base = base.replace(sys.exec_prefix, sys.base_prefix)
-            elikiwa sys.base_prefix != sys.prefix:
+            lasivyo sys.base_prefix != sys.prefix:
                 # virtual environment? Likewise, we have to adapt the paths
                 # before comparing
                 global_path = global_path.replace(sys.base_prefix, sys.prefix)
@@ -262,7 +262,7 @@ kundi TestSysConfig(unittest.TestCase):
 
     eleza test_main(self):
         # just making sure _main() runs na returns things kwenye the stdout
-        ukijumuisha captured_stdout() as output:
+        ukijumuisha captured_stdout() kama output:
             _main()
         self.assertKweli(len(output.getvalue().split('\n')) > 0)
 
@@ -297,7 +297,7 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertEqual(status, 0)
         self.assertEqual(my_platform, test_platform)
 
-        # Test ukijumuisha MACOSX_DEPLOYMENT_TARGET kwenye the environment, and
+        # Test ukijumuisha MACOSX_DEPLOYMENT_TARGET kwenye the environment, na
         # using a value that ni unlikely to be the default one.
         env = os.environ.copy()
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.1'
@@ -329,7 +329,7 @@ kundi TestSysConfig(unittest.TestCase):
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertKweli(os.path.exists(Python_h), Python_h)
             self.assertKweli(sysconfig._is_python_source_dir(srcdir))
-        elikiwa os.name == 'posix':
+        lasivyo os.name == 'posix':
             makefile_dir = os.path.dirname(sysconfig.get_makefile_filename())
             # Issue #19340: srcdir has been realpath'ed already
             makefile_dir = os.path.realpath(makefile_dir)
@@ -363,7 +363,7 @@ kundi TestSysConfig(unittest.TestCase):
         self.assertIsNotTupu(vars['SO'])
         self.assertEqual(vars['SO'], vars['EXT_SUFFIX'])
 
-    @unittest.skipUnless(sys.platform == 'linux' and
+    @unittest.skipUnless(sys.platform == 'linux' na
                          hasattr(sys.implementation, '_multiarch'),
                          'multiarch-specific test')
     eleza test_triplet_in_ext_suffix(self):
@@ -375,7 +375,7 @@ kundi TestSysConfig(unittest.TestCase):
             self.assertKweli('linux' kwenye suffix, suffix)
         ikiwa re.match('(i[3-6]86|x86_64)$', machine):
             ikiwa ctypes.sizeof(ctypes.c_char_p()) == 4:
-                self.assertKweli(suffix.endswith('i386-linux-gnu.so') or
+                self.assertKweli(suffix.endswith('i386-linux-gnu.so') ama
                                 suffix.endswith('x86_64-linux-gnux32.so'),
                                 suffix)
             isipokua: # 8 byte pointer size
@@ -396,7 +396,7 @@ kundi MakefileTests(unittest.TestCase):
 
     eleza test_parse_makefile(self):
         self.addCleanup(unlink, TESTFN)
-        ukijumuisha open(TESTFN, "w") as makefile:
+        ukijumuisha open(TESTFN, "w") kama makefile:
             andika("var1=a$(VAR2)", file=makefile)
             andika("VAR2=b$(var3)", file=makefile)
             andika("var3=42", file=makefile)

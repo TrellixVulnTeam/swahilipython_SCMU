@@ -2,7 +2,7 @@ agiza os
 agiza unittest
 agiza random
 kutoka test agiza support
-agiza _thread as thread
+agiza _thread kama thread
 agiza time
 agiza weakref
 
@@ -73,14 +73,14 @@ kundi ThreadRunningTests(BasicThreadTest):
         thread.stack_size(0)
         self.assertEqual(thread.stack_size(), 0, "stack_size sio reset to default")
 
-    @unittest.skipIf(os.name sio kwenye ("nt", "posix"), 'test meant kila nt na posix')
+    @unittest.skipIf(os.name haiko kwenye ("nt", "posix"), 'test meant kila nt na posix')
     eleza test_nt_and_posix_stack_size(self):
         jaribu:
             thread.stack_size(4096)
-        except ValueError:
+        tatizo ValueError:
             verbose_andika("caught expected ValueError setting "
                             "stack_size(4096)")
-        except thread.error:
+        tatizo thread.error:
             self.skipTest("platform does sio support changing thread stack "
                           "size")
 
@@ -136,10 +136,10 @@ kundi ThreadRunningTests(BasicThreadTest):
     eleza test_unraisable_exception(self):
         eleza task():
             started.release()
-             ashiria ValueError("task failed")
+            ashiria ValueError("task failed")
 
         started = thread.allocate_lock()
-        ukijumuisha support.catch_unraisable_exception() as cm:
+        ukijumuisha support.catch_unraisable_exception() kama cm:
             ukijumuisha support.wait_threads_exit():
                 started.acquire()
                 thread.start_new_thread(task, ())
@@ -208,7 +208,7 @@ kundi BarrierTest(BasicThreadTest):
         ukijumuisha self.running_mutex:
             self.running -= 1
             # Must release mutex before releasing done, isipokua the main thread can
-            # exit na set mutex to Tupu as part of global teardown; then
+            # exit na set mutex to Tupu kama part of global teardown; then
             # mutex.release() raises AttributeError.
             finished = self.running == 0
         ikiwa finished:
@@ -253,13 +253,13 @@ kundi TestForkInThread(unittest.TestCase):
     eleza tearDown(self):
         jaribu:
             os.close(self.read_fd)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         jaribu:
             os.close(self.write_fd)
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
 
 ikiwa __name__ == "__main__":

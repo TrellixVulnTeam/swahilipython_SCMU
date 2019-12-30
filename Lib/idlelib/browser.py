@@ -32,7 +32,7 @@ eleza transform_children(child_dict, modname=Tupu):
     The insertion order of the dictionary ni assumed to have been kwenye line
     number order, so sorting ni sio necessary.
 
-    The current tree only calls this once per child_dict as it saves
+    The current tree only calls this once per child_dict kama it saves
     TreeItems once created.  A future tree na tests might violate this,
     so a check prevents multiple in-place augmentations.
     """
@@ -77,7 +77,7 @@ kundi ModuleBrowser:
         Instance variables:
             name: Module name.
             file: Full path na module ukijumuisha .py extension.  Used in
-                creating ModuleBrowserTreeItem as the rootnode for
+                creating ModuleBrowserTreeItem kama the rootnode for
                 the tree na subsequently kwenye the children.
         """
         self.master = master
@@ -128,14 +128,14 @@ kundi ModuleBrowser:
         self.top.wm_iconname("Module Browser")
 
     eleza rootnode(self):
-        "Return a ModuleBrowserTreeItem as the root of the tree."
+        "Return a ModuleBrowserTreeItem kama the root of the tree."
         rudisha ModuleBrowserTreeItem(self.path)
 
 
 kundi ModuleBrowserTreeItem(TreeItem):
     """Browser tree kila Python module.
 
-    Uses TreeItem as the basis kila the structure of the tree.
+    Uses TreeItem kama the basis kila the structure of the tree.
     Used by both browsers.
     """
 
@@ -148,7 +148,7 @@ kundi ModuleBrowserTreeItem(TreeItem):
         self.file = file
 
     eleza GetText(self):
-        "Return the module name as the text string to display."
+        "Return the module name kama the text string to display."
         rudisha os.path.basename(self.file)
 
     eleza GetIconName(self):
@@ -179,7 +179,7 @@ kundi ModuleBrowserTreeItem(TreeItem):
             rudisha []
         jaribu:
             tree = pyclbr.readmodule_ex(name, [dir] + sys.path)
-        except ImportError:
+        tatizo ImportError:
             rudisha []
         rudisha transform_children(tree, name)
 
@@ -187,7 +187,7 @@ kundi ModuleBrowserTreeItem(TreeItem):
 kundi ChildBrowserTreeItem(TreeItem):
     """Browser tree kila child nodes within the module.
 
-    Uses TreeItem as the basis kila the structure of the tree.
+    Uses TreeItem kama the basis kila the structure of the tree.
     """
 
     eleza __init__(self, obj):
@@ -225,24 +225,24 @@ kundi ChildBrowserTreeItem(TreeItem):
         jaribu:
             edit = file_open(self.obj.file)
             edit.gotoline(self.obj.lineno)
-        except (OSError, AttributeError):
-            pass
+        tatizo (OSError, AttributeError):
+            pita
 
 
 eleza _module_browser(parent): # htest #
-    ikiwa len(sys.argv) > 1:  # If pass file on command line.
+    ikiwa len(sys.argv) > 1:  # If pita file on command line.
         file = sys.argv[1]
     isipokua:
         file = __file__
         # Add nested objects kila htest.
         kundi Nested_in_func(TreeNode):
-            eleza nested_in_class(): pass
+            eleza nested_in_class(): pita
         eleza closure():
-            kundi Nested_in_closure: pass
+            kundi Nested_in_closure: pita
     ModuleBrowser(parent, file, _htest=Kweli)
 
 ikiwa __name__ == "__main__":
-    ikiwa len(sys.argv) == 1:  # If pass file on command line, unittest fails.
+    ikiwa len(sys.argv) == 1:  # If pita file on command line, unittest fails.
         kutoka unittest agiza main
         main('idlelib.idle_test.test_browser', verbosity=2, exit=Uongo)
     kutoka idlelib.idle_test.htest agiza run

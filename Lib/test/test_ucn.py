@@ -16,7 +16,7 @@ kutoka test.test_normalization agiza check_version
 
 jaribu:
     kutoka _testcapi agiza INT_MAX, PY_SSIZE_T_MAX, UINT_MAX
-except ImportError:
+tatizo ImportError:
     INT_MAX = PY_SSIZE_T_MAX = UINT_MAX = 2**64 - 1
 
 kundi UnicodeNamesTest(unittest.TestCase):
@@ -143,14 +143,14 @@ kundi UnicodeNamesTest(unittest.TestCase):
     eleza test_aliases_names_in_pua_range(self):
         # We are storing aliases kwenye the PUA 15, but their names shouldn't leak
         kila cp kwenye range(0xf0000, 0xf0100):
-            ukijumuisha self.assertRaises(ValueError) as cm:
+            ukijumuisha self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
     eleza test_named_sequences_names_in_pua_range(self):
         # We are storing named seq kwenye the PUA 15, but their names shouldn't leak
         kila cp kwenye range(0xf0100, 0xf0fff):
-            ukijumuisha self.assertRaises(ValueError) as cm:
+            ukijumuisha self.assertRaises(ValueError) kama cm:
                 unicodedata.name(chr(cp))
             self.assertEqual(str(cm.exception), 'no such name')
 
@@ -177,7 +177,7 @@ kundi UnicodeNamesTest(unittest.TestCase):
         jaribu:
             testdata = support.open_urlresource(url, encoding="utf-8",
                                                 check=check_version)
-        except (OSError, HTTPException):
+        tatizo (OSError, HTTPException):
             self.skipTest("Could sio retrieve " + url)
         self.addCleanup(testdata.close)
         kila line kwenye testdata:

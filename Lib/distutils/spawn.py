@@ -14,7 +14,7 @@ kutoka distutils.debug agiza DEBUG
 kutoka distutils agiza log
 
 eleza spawn(cmd, search_path=1, verbose=0, dry_run=0):
-    """Run another program, specified as a command list 'cmd', kwenye a new process.
+    """Run another program, specified kama a command list 'cmd', kwenye a new process.
 
     'cmd' ni just the argument list kila the new process, ie.
     cmd[0] ni the program to run na cmd[1:] are the rest of its arguments.
@@ -29,21 +29,21 @@ eleza spawn(cmd, search_path=1, verbose=0, dry_run=0):
     Raise DistutilsExecError ikiwa running the program fails kwenye any way; just
     rudisha on success.
     """
-    # cmd ni documented as a list, but just kwenye case some code passes a tuple
+    # cmd ni documented kama a list, but just kwenye case some code pitaes a tuple
     # in, protect our %-formatting code against horrible death
     cmd = list(cmd)
     ikiwa os.name == 'posix':
         _spawn_posix(cmd, search_path, dry_run=dry_run)
-    elikiwa os.name == 'nt':
+    lasivyo os.name == 'nt':
         _spawn_nt(cmd, search_path, dry_run=dry_run)
     isipokua:
-         ashiria DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
               "don't know how to spawn programs on platform '%s'" % os.name)
 
 eleza _nt_quote_args(args):
     """Quote command-line arguments kila DOS/Windows conventions.
 
-    Just wraps every argument which contains blanks kwenye double quotes, and
+    Just wraps every argument which contains blanks kwenye double quotes, na
     returns a new argument list.
     """
     # XXX this doesn't seem very robust to me -- but ikiwa the Windows guys
@@ -67,17 +67,17 @@ eleza _spawn_nt(cmd, search_path=1, verbose=0, dry_run=0):
         # spawn kila NT requires a full path to the .exe
         jaribu:
             rc = os.spawnv(os.P_WAIT, executable, cmd)
-        except OSError as exc:
+        tatizo OSError kama exc:
             # this seems to happen when the command isn't found
             ikiwa sio DEBUG:
                 cmd = executable
-             ashiria DistutilsExecError(
+            ashiria DistutilsExecError(
                   "command %r failed: %s" % (cmd, exc.args[-1]))
         ikiwa rc != 0:
             # na this reflects the command running but failing
             ikiwa sio DEBUG:
                 cmd = executable
-             ashiria DistutilsExecError(
+            ashiria DistutilsExecError(
                   "command %r failed ukijumuisha exit status %d" % (cmd, rc))
 
 ikiwa sys.platform == 'darwin':
@@ -108,7 +108,7 @@ eleza _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 my_msg = ('$MACOSX_DEPLOYMENT_TARGET mismatch: '
                           'now "%s" but "%s" during configure'
                                 % (cur_target, _cfg_target))
-                 ashiria DistutilsPlatformError(my_msg)
+                ashiria DistutilsPlatformError(my_msg)
             env = dict(os.environ,
                        MACOSX_DEPLOYMENT_TARGET=cur_target)
             exec_fn = search_path na os.execvpe ama os.execve
@@ -119,7 +119,7 @@ eleza _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
                 exec_fn(executable, cmd)
             isipokua:
                 exec_fn(executable, cmd, env)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa sio DEBUG:
                 cmd = executable
             sys.stderr.write("unable to execute %r: %s\n"
@@ -136,33 +136,33 @@ eleza _spawn_posix(cmd, search_path=1, verbose=0, dry_run=0):
         wakati Kweli:
             jaribu:
                 pid, status = os.waitpid(pid, 0)
-            except OSError as exc:
+            tatizo OSError kama exc:
                 ikiwa sio DEBUG:
                     cmd = executable
-                 ashiria DistutilsExecError(
+                ashiria DistutilsExecError(
                       "command %r failed: %s" % (cmd, exc.args[-1]))
             ikiwa os.WIFSIGNALED(status):
                 ikiwa sio DEBUG:
                     cmd = executable
-                 ashiria DistutilsExecError(
+                ashiria DistutilsExecError(
                       "command %r terminated by signal %d"
                       % (cmd, os.WTERMSIG(status)))
-            elikiwa os.WIFEXITED(status):
+            lasivyo os.WIFEXITED(status):
                 exit_status = os.WEXITSTATUS(status)
                 ikiwa exit_status == 0:
                     rudisha   # hey, it succeeded!
                 isipokua:
                     ikiwa sio DEBUG:
                         cmd = executable
-                     ashiria DistutilsExecError(
+                    ashiria DistutilsExecError(
                           "command %r failed ukijumuisha exit status %d"
                           % (cmd, exit_status))
-            elikiwa os.WIFSTOPPED(status):
+            lasivyo os.WIFSTOPPED(status):
                 endelea
             isipokua:
                 ikiwa sio DEBUG:
                     cmd = executable
-                 ashiria DistutilsExecError(
+                ashiria DistutilsExecError(
                       "unknown error executing %r: termination status %d"
                       % (cmd, status))
 
@@ -184,7 +184,7 @@ eleza find_executable(executable, path=Tupu):
         ikiwa path ni Tupu:
             jaribu:
                 path = os.confstr("CS_PATH")
-            except (AttributeError, ValueError):
+            tatizo (AttributeError, ValueError):
                 # os.confstr() ama CS_PATH ni sio available
                 path = os.defpath
         # bpo-35755: Don't use os.defpath ikiwa the PATH environment variable is

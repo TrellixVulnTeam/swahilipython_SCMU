@@ -7,14 +7,14 @@ agiza unittest
 kutoka test agiza support
 jaribu:
     agiza gc
-except ImportError:
+tatizo ImportError:
     gc = Tupu
 
 
 eleza setup_tests(ns):
     jaribu:
         stderr_fd = sys.__stderr__.fileno()
-    except (ValueError, AttributeError):
+    tatizo (ValueError, AttributeError):
         # Catch ValueError to catch io.UnsupportedOperation on TextIOBase
         # na ValueError on a closed stream.
         #
@@ -74,14 +74,14 @@ eleza setup_tests(ns):
     ikiwa hasattr(sys, 'addaudithook'):
         # Add an auditing hook kila all tests to ensure PySys_Audit ni tested
         eleza _test_audit_hook(name, args):
-            pass
+            pita
         sys.addaudithook(_test_audit_hook)
 
 
 eleza suppress_msvcrt_asserts(verbose):
     jaribu:
         agiza msvcrt
-    except ImportError:
+    tatizo ImportError:
         return
 
     msvcrt.SetErrorMode(msvcrt.SEM_FAILCRITICALERRORS|
@@ -90,7 +90,7 @@ eleza suppress_msvcrt_asserts(verbose):
                         msvcrt.SEM_NOOPENFILEERRORBOX)
     jaribu:
         msvcrt.CrtSetReportMode
-    except AttributeError:
+    tatizo AttributeError:
         # release build
         return
 
@@ -109,7 +109,7 @@ eleza replace_stdout():
     stdout = sys.stdout
     jaribu:
         fd = stdout.fileno()
-    except ValueError:
+    tatizo ValueError:
         # On IDLE, sys.stdout has no file descriptor na ni sio a TextIOWrapper
         # object. Leaving sys.stdout unchanged.
         #

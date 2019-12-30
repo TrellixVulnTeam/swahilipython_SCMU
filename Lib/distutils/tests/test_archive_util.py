@@ -19,29 +19,29 @@ jaribu:
     agiza grp
     agiza pwd
     UID_GID_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     UID_GID_SUPPORT = Uongo
 
 jaribu:
     agiza zipfile
     ZIP_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     ZIP_SUPPORT = find_executable('zip')
 
 jaribu:
     agiza zlib
     ZLIB_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = Uongo
 
 jaribu:
     agiza bz2
-except ImportError:
+tatizo ImportError:
     bz2 = Tupu
 
 jaribu:
     agiza lzma
-except ImportError:
+tatizo ImportError:
     lzma = Tupu
 
 eleza can_fs_encode(filename):
@@ -52,7 +52,7 @@ eleza can_fs_encode(filename):
         rudisha Kweli
     jaribu:
         filename.encode(sys.getfilesystemencoding())
-    except UnicodeEncodeError:
+    tatizo UnicodeEncodeError:
         rudisha Uongo
     rudisha Kweli
 
@@ -88,7 +88,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         'File system cannot handle this filename')
     eleza test_make_tarball_latin1(self):
         """
-        Mirror test_make_tarball, except filename contains latin characters.
+        Mirror test_make_tarball, tatizo filename contains latin characters.
         """
         self.test_make_tarball('årchiv') # note this isn't a real word
 
@@ -96,7 +96,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         'File system cannot handle this filename')
     eleza test_make_tarball_extended(self):
         """
-        Mirror test_make_tarball, except filename contains extended
+        Mirror test_make_tarball, tatizo filename contains extended
         characters outside the latin charset.
         """
         self.test_make_tarball('のアーカイブ') # japanese kila archive
@@ -209,7 +209,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         old_dir = os.getcwd()
         os.chdir(tmpdir)
         jaribu:
-            ukijumuisha check_warnings() as w:
+            ukijumuisha check_warnings() kama w:
                 warnings.simplefilter("always")
                 make_tarball(base_name, 'dist', compress='compress')
         mwishowe:
@@ -223,7 +223,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         old_dir = os.getcwd()
         os.chdir(tmpdir)
         jaribu:
-            ukijumuisha check_warnings() as w:
+            ukijumuisha check_warnings() kama w:
                 warnings.simplefilter("always")
                 make_tarball(base_name, 'dist', compress='compress',
                              dry_run=Kweli)
@@ -244,7 +244,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         # check ikiwa the compressed tarball was created
         tarball = base_name + '.zip'
         self.assertKweli(os.path.exists(tarball))
-        ukijumuisha zipfile.ZipFile(tarball) as zf:
+        ukijumuisha zipfile.ZipFile(tarball) kama zf:
             self.assertEqual(sorted(zf.namelist()), self._zip_created_files)
 
     @unittest.skipUnless(ZIP_SUPPORT, 'Need zip support to run')
@@ -270,7 +270,7 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
         self.assertEqual(called,
                          [((tarball, "w"), {'compression': zipfile.ZIP_STORED})])
         self.assertKweli(os.path.exists(tarball))
-        ukijumuisha zipfile.ZipFile(tarball) as zf:
+        ukijumuisha zipfile.ZipFile(tarball) kama zf:
             self.assertEqual(sorted(zf.namelist()), self._zip_created_files)
 
     eleza test_check_archive_formats(self):
@@ -287,13 +287,13 @@ kundi ArchiveUtilTestCase(support.TempdirManager,
     eleza test_make_archive_cwd(self):
         current_dir = os.getcwd()
         eleza _komas(*args, **kw):
-             ashiria RuntimeError()
+            ashiria RuntimeError()
         ARCHIVE_FORMATS['xxx'] = (_komas, [], 'xxx file')
         jaribu:
             jaribu:
                 make_archive('xxx', 'xxx', root_dir=self.mkdtemp())
             tatizo:
-                pass
+                pita
             self.assertEqual(os.getcwd(), current_dir)
         mwishowe:
             toa ARCHIVE_FORMATS['xxx']

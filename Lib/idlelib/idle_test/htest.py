@@ -4,19 +4,19 @@ run(*tests)
 Create a master Tk window.  Within that, run each callable kwenye tests
 after finding the matching test spec kwenye this file.  If tests ni empty,
 run an htest kila each spec dict kwenye this file after finding the matching
-callable kwenye the module named kwenye the spec.  Close the window to skip or
+callable kwenye the module named kwenye the spec.  Close the window to skip ama
 end the test.
 
 In a tested module, let X be a global name bound to a callable (class
 or function) whose .__name__ attribute ni also X (the usual situation).
 The first parameter of X must be 'parent'.  When called, the parent
 argument will be the root window.  X must create a child Toplevel
-window (or subkundi thereof).  The Toplevel may be a test widget or
+window (or subkundi thereof).  The Toplevel may be a test widget ama
 dialog, kwenye which case the callable ni the corresponding class.  Or the
 Toplevel may contain the widget to be tested ama set up a context in
 which a test widget ni invoked.  In this latter case, the callable ni a
 wrapper function that sets up the Toplevel na other objects.  Wrapper
-function names, such as _editor_window', should start ukijumuisha '_'.
+function names, such kama _editor_window', should start ukijumuisha '_'.
 
 
 End the module with
@@ -53,7 +53,7 @@ _spec = {
     }
 
 file (no .py): run() imports file.py.
-kwds: augmented ukijumuisha {'parent':root} na passed to X as **kwds.
+kwds: augmented ukijumuisha {'parent':root} na pitaed to X kama **kwds.
 title: an example kwd; some widgets need this, delete ikiwa not.
 msg: master window hints about testing the widget.
 
@@ -68,7 +68,7 @@ outwin.OutputWindow (indirectly being tested ukijumuisha grep test)
 agiza idlelib.pyshell  # Set Windows DPI awareness before Tk().
 kutoka importlib agiza import_module
 agiza textwrap
-agiza tkinter as tk
+agiza tkinter kama tk
 kutoka tkinter.ttk agiza Scrollbar
 tk.NoDefaultRoot()
 
@@ -188,7 +188,7 @@ HelpSource_spec = {
            "'', > than 30 chars, na 'abc' are invalid menu item names.\n"
            "'' na file does sio exist are invalid path items.\n"
            "Any url ('www...', 'http...') ni accepted.\n"
-           "Test Browse ukijumuisha na without path, as cannot unittest.\n"
+           "Test Browse ukijumuisha na without path, kama cannot unittest.\n"
            "[Ok] ama <Return> prints valid entry to shell\n"
            "[Cancel] ama <Escape> prints Tupu to shell"
     }
@@ -423,8 +423,8 @@ eleza run(*tests):
         widget = callable_object(**test_kwds)
         jaribu:
             andika(widget.result)
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza close(_=Tupu):
         root.destroy()

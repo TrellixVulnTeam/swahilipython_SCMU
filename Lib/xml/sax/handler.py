@@ -3,7 +3,7 @@ This module contains the core classes of version 2.0 of SAX kila Python.
 This file provides only default classes ukijumuisha absolutely minimum
 functionality, kutoka which drivers na applications can be subclassed.
 
-Many of these classes are empty na are included only as documentation
+Many of these classes are empty na are included only kama documentation
 of the interfaces.
 
 $Id$
@@ -27,15 +27,15 @@ kundi ErrorHandler:
     methods kwenye your object to report all warnings na errors. There
     are three levels of errors available: warnings, (possibly)
     recoverable errors, na unrecoverable errors. All methods take a
-    SAXParseException as the only parameter."""
+    SAXParseException kama the only parameter."""
 
     eleza error(self, exception):
         "Handle a recoverable error."
-         ashiria exception
+        ashiria exception
 
     eleza fatalError(self, exception):
         "Handle a non-recoverable error."
-         ashiria exception
+        ashiria exception
 
     eleza warning(self, exception):
         "Handle a warning."
@@ -81,7 +81,7 @@ kundi ContentHandler:
         """Receive notification of the beginning of a document.
 
         The SAX parser will invoke this method only once, before any
-        other methods kwenye this interface ama kwenye DTDHandler (except for
+        other methods kwenye this interface ama kwenye DTDHandler (tatizo for
         setDocumentLocator)."""
 
     eleza endDocument(self):
@@ -127,7 +127,7 @@ kundi ContentHandler:
         """Signals the start of an element kwenye non-namespace mode.
 
         The name parameter contains the raw XML 1.0 name of the
-        element type as a string na the attrs parameter holds an
+        element type kama a string na the attrs parameter holds an
         instance of the Attributes kundi containing the attributes of
         the element."""
 
@@ -135,12 +135,12 @@ kundi ContentHandler:
         """Signals the end of an element kwenye non-namespace mode.
 
         The name parameter contains the name of the element type, just
-        as ukijumuisha the startElement event."""
+        kama ukijumuisha the startElement event."""
 
     eleza startElementNS(self, name, qname, attrs):
         """Signals the start of an element kwenye namespace mode.
 
-        The name parameter contains the name of the element type as a
+        The name parameter contains the name of the element type kama a
         (uri, localname) tuple, the qname parameter the raw XML 1.0
         name used kwenye the source document, na the attrs parameter
         holds an instance of the Attributes kundi containing the
@@ -153,7 +153,7 @@ kundi ContentHandler:
         """Signals the end of an element kwenye namespace mode.
 
         The name parameter contains the name of the element type, just
-        as ukijumuisha the startElementNS event."""
+        kama ukijumuisha the startElementNS event."""
 
     eleza characters(self, content):
         """Receive notification of character data.
@@ -229,7 +229,7 @@ kundi EntityResolver:
 
     eleza resolveEntity(self, publicId, systemId):
         """Resolve the system identifier of an entity na rudisha either
-        the system identifier to read kutoka as a string, ama an InputSource
+        the system identifier to read kutoka kama a string, ama an InputSource
         to read from."""
         rudisha systemId
 
@@ -244,38 +244,38 @@ feature_namespaces = "http://xml.org/sax/features/namespaces"
 # true: Perform Namespace processing (default).
 # false: Optionally do sio perform Namespace processing
 #        (implies namespace-prefixes).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_namespace_prefixes = "http://xml.org/sax/features/namespace-prefixes"
 # true: Report the original prefixed names na attributes used kila Namespace
 #       declarations.
-# false: Do sio report attributes used kila Namespace declarations, and
+# false: Do sio report attributes used kila Namespace declarations, na
 #        optionally do sio report original prefixed names (default).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_string_interning = "http://xml.org/sax/features/string-interning"
-# true: All element names, prefixes, attribute names, Namespace URIs, and
+# true: All element names, prefixes, attribute names, Namespace URIs, na
 #       local names are interned using the built-in intern function.
 # false: Names are sio necessarily interned, although they may be (default).
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_validation = "http://xml.org/sax/features/validation"
-# true: Report all validation errors (implies external-general-entities and
+# true: Report all validation errors (implies external-general-entities na
 #       external-parameter-entities).
 # false: Do sio report validation errors.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_external_ges = "http://xml.org/sax/features/external-general-entities"
 # true: Include all external general (text) entities.
 # false: Do sio include external general entities.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 feature_external_pes = "http://xml.org/sax/features/external-parameter-entities"
 # true: Include all external parameter entities, including the external
 #       DTD subset.
 # false: Do sio include any external parameter entities, even the external
 #        DTD subset.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 all_features = [feature_namespaces,
                 feature_namespace_prefixes,
@@ -307,7 +307,7 @@ property_dom_node = "http://xml.org/sax/properties/dom-node"
 # description: When parsing, the current DOM node being visited ikiwa this is
 #              a DOM iterator; when sio parsing, the root DOM node for
 #              iteration.
-# access: (parsing) read-only; (not parsing) read/write
+# access: (parsing) read-only; (sio parsing) read/write
 
 property_xml_string = "http://xml.org/sax/properties/xml-string"
 # data type: String

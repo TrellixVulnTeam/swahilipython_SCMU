@@ -24,7 +24,7 @@ kundi CalltipWindow(TooltipBase):
 
         text_widget: a Text widget ukijumuisha code kila which call-tips are desired
         """
-        # Note: The Text widget will be accessible as self.anchor_widget
+        # Note: The Text widget will be accessible kama self.anchor_widget
         super(CalltipWindow, self).__init__(text_widget)
 
         self.label = self.text = Tupu
@@ -127,21 +127,21 @@ kundi CalltipWindow(TooltipBase):
 
         jaribu:
             self.label.destroy()
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
         self.label = Tupu
 
         self.parenline = self.parencol = self.lastline = Tupu
         jaribu:
             self.anchor_widget.mark_unset(MARK_RIGHT)
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
 
         jaribu:
             self._unbind_events()
-        except (TclError, ValueError):
+        tatizo (TclError, ValueError):
             # ValueError may be raised by MultiCall
-            pass
+            pita
 
         super(CalltipWindow, self).hidetip()
 

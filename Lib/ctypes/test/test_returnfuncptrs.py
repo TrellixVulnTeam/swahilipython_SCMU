@@ -51,7 +51,7 @@ kundi ReturnFuncPtrTestCase(unittest.TestCase):
                     rudisha "my_strchr"
                 ikiwa key == 1:
                     rudisha CDLL(_ctypes_test.__file__)
-                 ashiria IndexError
+                ashiria IndexError
 
         # _CFuncPtr instances are now callable ukijumuisha a tuple argument
         # which denotes a function name na a dll:

@@ -12,7 +12,7 @@ agiza hashlib
 kutoka test.support agiza script_helper
 
 encoding = 'utf-8'
-errors = 'surrogatepass'
+errors = 'surrogatepita'
 
 
 ### Run tests
@@ -68,7 +68,7 @@ kundi UnicodeMethodsTest(unittest.TestCase):
 kundi UnicodeDatabaseTest(unittest.TestCase):
 
     eleza setUp(self):
-        # In case unicodedata ni sio available, this will  ashiria an ImportError,
+        # In case unicodedata ni sio available, this will ashiria an ImportError,
         # but the other test cases will still be run
         agiza unicodedata
         self.db = unicodedata
@@ -248,7 +248,7 @@ kundi UnicodeMiscTest(UnicodeDatabaseTest):
         # Decoding \N escapes requires the unicodedata module. If it can't be
         # imported, we shouldn't segfault.
 
-        # This program should  ashiria a SyntaxError kwenye the eval.
+        # This program should ashiria a SyntaxError kwenye the eval.
         code = "agiza sys;" \
             "sys.modules['unicodedata'] = Tupu;" \
             """eval("'\\\\N{SOFT HYPHEN}'")"""
@@ -292,16 +292,16 @@ kundi UnicodeMiscTest(UnicodeDatabaseTest):
         agiza unicodedata
         # In UCD 5.1.0, a mirrored property changed wrt. UCD 3.2.0
         self.assertKweli(unicodedata.mirrored("\u0f3a"))
-        self.assertKweli(not unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
+        self.assertKweli(sio unicodedata.ucd_3_2_0.mirrored("\u0f3a"))
         # Also, we now have two ways of representing
-        # the upper-case mapping: as delta, ama as absolute value
+        # the upper-case mapping: kama delta, ama kama absolute value
         self.assertKweli("a".upper()=='A')
         self.assertKweli("\u1d79".upper()=='\ua77d')
         self.assertKweli(".".upper()=='.')
 
     eleza test_bug_5828(self):
         self.assertEqual("\u1d79".lower(), "\u1d79")
-        # Only U+0000 should have U+0000 as its upper/lower/titlecase variant
+        # Only U+0000 should have U+0000 kama its upper/lower/titlecase variant
         self.assertEqual(
             [
                 c kila c kwenye range(sys.maxunicode+1)

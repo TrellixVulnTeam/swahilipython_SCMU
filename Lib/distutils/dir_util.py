@@ -11,7 +11,7 @@ kutoka distutils agiza log
 # eliminates redundant "creating /foo/bar/baz" messages kwenye dry-run mode
 _path_created = {}
 
-# I don't use os.makedirs because a) it's new to Python 1.5.2, and
+# I don't use os.makedirs because a) it's new to Python 1.5.2, na
 # b) it blows up ikiwa the directory already exists (I want to silently
 # succeed kwenye that case).
 eleza mkpath(name, mode=0o777, verbose=1, dry_run=0):
@@ -29,10 +29,10 @@ eleza mkpath(name, mode=0o777, verbose=1, dry_run=0):
 
     # Detect a common bug -- name ni Tupu
     ikiwa sio isinstance(name, str):
-         ashiria DistutilsInternalError(
+        ashiria DistutilsInternalError(
               "mkpath: 'name' must be a string (got %r)" % (name,))
 
-    # XXX what's the better way to handle verbosity? print as we create
+    # XXX what's the better way to handle verbosity? print kama we create
     # each directory kwenye the path (the current behaviour), ama only announce
     # the creation of the whole path? (quite easy to do the latter since
     # we're sio using a recursive algorithm)
@@ -68,9 +68,9 @@ eleza mkpath(name, mode=0o777, verbose=1, dry_run=0):
         ikiwa sio dry_run:
             jaribu:
                 os.mkdir(head, mode)
-            except OSError as exc:
+            tatizo OSError kama exc:
                 ikiwa sio (exc.errno == errno.EEXIST na os.path.isdir(head)):
-                     ashiria DistutilsFileError(
+                    ashiria DistutilsFileError(
                           "could sio create '%s': %s" % (head, exc.args[-1]))
             created_dirs.append(head)
 
@@ -84,8 +84,8 @@ eleza create_tree(base_dir, files, mode=0o777, verbose=1, dry_run=0):
     'base_dir' ni just the name of a directory which doesn't necessarily
     exist yet; 'files' ni a list of filenames to be interpreted relative to
     'base_dir'.  'base_dir' + the directory portion of every file kwenye 'files'
-    will be created ikiwa it doesn't already exist.  'mode', 'verbose' and
-    'dry_run' flags are as kila 'mkpath()'.
+    will be created ikiwa it doesn't already exist.  'mode', 'verbose' na
+    'dry_run' flags are kama kila 'mkpath()'.
     """
     # First get the list of directories to create
     need_dir = set()
@@ -101,7 +101,7 @@ eleza copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     """Copy an entire directory tree 'src' to a new location 'dst'.
 
     Both 'src' na 'dst' must be directory names.  If 'src' ni sio a
-    directory,  ashiria DistutilsFileError.  If 'dst' does sio exist, it is
+    directory, ashiria DistutilsFileError.  If 'dst' does sio exist, it is
     created ukijumuisha 'mkpath()'.  The end result of the copy ni that every
     file kwenye 'src' ni copied to 'dst', na directories under 'src' are
     recursively copied to 'dst'.  Return the list of files that were
@@ -110,25 +110,25 @@ eleza copy_tree(src, dst, preserve_mode=1, preserve_times=1,
     the list of all files under 'src', ukijumuisha the names changed to be
     under 'dst'.
 
-    'preserve_mode' na 'preserve_times' are the same as for
+    'preserve_mode' na 'preserve_times' are the same kama for
     'copy_file'; note that they only apply to regular files, sio to
     directories.  If 'preserve_symlinks' ni true, symlinks will be
-    copied as symlinks (on platforms that support them!); otherwise
+    copied kama symlinks (on platforms that support them!); otherwise
     (the default), the destination of the symlink will be copied.
-    'update' na 'verbose' are the same as kila 'copy_file'.
+    'update' na 'verbose' are the same kama kila 'copy_file'.
     """
     kutoka distutils.file_util agiza copy_file
 
     ikiwa sio dry_run na sio os.path.isdir(src):
-         ashiria DistutilsFileError(
+        ashiria DistutilsFileError(
               "cannot copy tree '%s': sio a directory" % src)
     jaribu:
         names = os.listdir(src)
-    except OSError as e:
+    tatizo OSError kama e:
         ikiwa dry_run:
             names = []
         isipokua:
-             ashiria DistutilsFileError(
+            ashiria DistutilsFileError(
                   "error listing files kwenye '%s': %s" % (src, e.strerror))
 
     ikiwa sio dry_run:
@@ -152,7 +152,7 @@ eleza copy_tree(src, dst, preserve_mode=1, preserve_times=1,
                 os.symlink(link_dest, dst_name)
             outputs.append(dst_name)
 
-        elikiwa os.path.isdir(src_name):
+        lasivyo os.path.isdir(src_name):
             outputs.extend(
                 copy_tree(src_name, dst_name, preserve_mode,
                           preserve_times, preserve_symlinks, update,
@@ -196,7 +196,7 @@ eleza remove_tree(directory, verbose=1, dry_run=0):
             abspath = os.path.abspath(cmd[1])
             ikiwa abspath kwenye _path_created:
                 toa _path_created[abspath]
-        except OSError as exc:
+        tatizo OSError kama exc:
             log.warn("error removing %s: %s", directory, exc)
 
 eleza ensure_relative(path):

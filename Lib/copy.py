@@ -10,7 +10,7 @@ Interface summary:
 For module specific errors, copy.Error ni raised.
 
 The difference between shallow na deep copying ni only relevant for
-compound objects (objects that contain other objects, like lists or
+compound objects (objects that contain other objects, like lists ama
 kundi instances).
 
 - A shallow copy constructs a new compound object na then (to the
@@ -33,7 +33,7 @@ ukijumuisha shallow copy operations:
 Python's deep copy operation avoids these problems by:
 
  a) keeping a table of objects already copied during the current
-    copying pass
+    copying pita
 
  b) letting user-defined classes override the copying operation ama the
     set of components copied
@@ -53,12 +53,12 @@ agiza weakref
 kutoka copyreg agiza dispatch_table
 
 kundi Error(Exception):
-    pass
+    pita
 error = Error   # backward compatibility
 
 jaribu:
     kutoka org.python.core agiza PyStringMap
-except ImportError:
+tatizo ImportError:
     PyStringMap = Tupu
 
 __all__ = ["Error", "copy", "deepcopy"]
@@ -76,7 +76,7 @@ eleza copy(x):
         rudisha copier(x)
 
     ikiwa issubclass(cls, type):
-        # treat it as a regular class:
+        # treat it kama a regular class:
         rudisha _copy_immutable(x)
 
     copier = getattr(cls, "__copy__", Tupu)
@@ -95,7 +95,7 @@ eleza copy(x):
             ikiwa reductor:
                 rv = reductor()
             isipokua:
-                 ashiria Error("un(shallow)copyable object of type %s" % cls)
+                ashiria Error("un(shallow)copyable object of type %s" % cls)
 
     ikiwa isinstance(rv, str):
         rudisha x
@@ -164,7 +164,7 @@ eleza deepcopy(x, memo=Tupu, _nil=[]):
                         ikiwa reductor:
                             rv = reductor()
                         isipokua:
-                             ashiria Error(
+                            ashiria Error(
                                 "un(deep)copyable object of type %s" % cls)
                 ikiwa isinstance(rv, str):
                     y = x
@@ -174,7 +174,7 @@ eleza deepcopy(x, memo=Tupu, _nil=[]):
     # If ni its own copy, don't memoize.
     ikiwa y ni sio x:
         memo[d] = y
-        _keep_alive(x, memo) # Make sure x lives at least as long as d
+        _keep_alive(x, memo) # Make sure x lives at least kama long kama d
     rudisha y
 
 _deepcopy_dispatch = d = {}
@@ -211,8 +211,8 @@ eleza _deepcopy_tuple(x, memo, deepcopy=deepcopy):
     # check kila it, kwenye case the tuple contains recursive mutable structures.
     jaribu:
         rudisha memo[id(x)]
-    except KeyError:
-        pass
+    tatizo KeyError:
+        pita
     kila k, j kwenye zip(x, y):
         ikiwa k ni sio j:
             y = tuple(y)
@@ -250,7 +250,7 @@ eleza _keep_alive(x, memo):
     """
     jaribu:
         memo[id(memo)].append(x)
-    except KeyError:
+    tatizo KeyError:
         # aha, this ni the first one :-)
         memo[id(memo)]=[x]
 

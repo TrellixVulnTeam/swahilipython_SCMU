@@ -12,7 +12,7 @@ __all__ = [
     'framework_info', 'dylib_info',
 ]
 
-# These are the defaults as per man dyld(1)
+# These are the defaults kama per man dyld(1)
 #
 DEFAULT_FRAMEWORK_FALLBACK = [
     os.path.expanduser("~/Library/Frameworks"),
@@ -124,7 +124,7 @@ eleza dyld_find(name, executable_path=Tupu, env=Tupu):
             ), env):
         ikiwa os.path.isfile(path):
             rudisha path
-     ashiria ValueError("dylib %s could sio be found" % (name,))
+    ashiria ValueError("dylib %s could sio be found" % (name,))
 
 eleza framework_find(fn, executable_path=Tupu, env=Tupu):
     """
@@ -138,7 +138,7 @@ eleza framework_find(fn, executable_path=Tupu, env=Tupu):
     error = Tupu
     jaribu:
         rudisha dyld_find(fn, executable_path=executable_path, env=env)
-    except ValueError as e:
+    tatizo ValueError kama e:
         error = e
     fmwk_index = fn.rfind('.framework')
     ikiwa fmwk_index == -1:
@@ -147,8 +147,8 @@ eleza framework_find(fn, executable_path=Tupu, env=Tupu):
     fn = os.path.join(fn, os.path.basename(fn[:fmwk_index]))
     jaribu:
         rudisha dyld_find(fn, executable_path=executable_path, env=env)
-    except ValueError:
-         ashiria error
+    tatizo ValueError:
+        ashiria error
 
 eleza test_dyld_find():
     env = {}

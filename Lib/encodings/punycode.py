@@ -1,4 +1,4 @@
-""" Codec kila the Punicode encoding, as specified kwenye RFC 3492
+""" Codec kila the Punicode encoding, kama specified kwenye RFC 3492
 
 Written by Martin v. Löwis.
 """
@@ -42,7 +42,7 @@ eleza selective_find(str, char, index, pos):
         c = str[pos]
         ikiwa c == char:
             rudisha index+1, pos
-        elikiwa c < char:
+        lasivyo c < char:
             index += 1
 
 eleza insertion_unsort(str, extended):
@@ -132,17 +132,17 @@ eleza decode_generalized_number(extended, extpos, bias, errors):
     wakati 1:
         jaribu:
             char = ord(extended[extpos])
-        except IndexError:
+        tatizo IndexError:
             ikiwa errors == "strict":
-                 ashiria UnicodeError("incomplete punicode string")
+                ashiria UnicodeError("incomplete punicode string")
             rudisha extpos + 1, Tupu
         extpos += 1
         ikiwa 0x41 <= char <= 0x5A: # A-Z
             digit = char - 0x41
-        elikiwa 0x30 <= char <= 0x39:
+        lasivyo 0x30 <= char <= 0x39:
             digit = char - 22 # 0x30-26
-        elikiwa errors == "strict":
-             ashiria UnicodeError("Invalid extended code point '%s'"
+        lasivyo errors == "strict":
+            ashiria UnicodeError("Invalid extended code point '%s'"
                                % extended[extpos])
         isipokua:
             rudisha extpos, Tupu
@@ -171,7 +171,7 @@ eleza insertion_sort(base, extended, errors):
         char += pos // (len(base) + 1)
         ikiwa char > 0x10FFFF:
             ikiwa errors == "strict":
-                 ashiria UnicodeError("Invalid character U+%x" % char)
+                ashiria UnicodeError("Invalid character U+%x" % char)
             char = ord('?')
         pos = pos % (len(base) + 1)
         base = base[:pos] + chr(char) + base[pos:]
@@ -202,8 +202,8 @@ kundi Codec(codecs.Codec):
         rudisha res, len(input)
 
     eleza decode(self, input, errors='strict'):
-        ikiwa errors sio kwenye ('strict', 'replace', 'ignore'):
-             ashiria UnicodeError("Unsupported error handling "+errors)
+        ikiwa errors haiko kwenye ('strict', 'replace', 'ignore'):
+            ashiria UnicodeError("Unsupported error handling "+errors)
         res = punycode_decode(input, errors)
         rudisha res, len(input)
 
@@ -213,15 +213,15 @@ kundi IncrementalEncoder(codecs.IncrementalEncoder):
 
 kundi IncrementalDecoder(codecs.IncrementalDecoder):
     eleza decode(self, input, final=Uongo):
-        ikiwa self.errors sio kwenye ('strict', 'replace', 'ignore'):
-             ashiria UnicodeError("Unsupported error handling "+self.errors)
+        ikiwa self.errors haiko kwenye ('strict', 'replace', 'ignore'):
+            ashiria UnicodeError("Unsupported error handling "+self.errors)
         rudisha punycode_decode(input, self.errors)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

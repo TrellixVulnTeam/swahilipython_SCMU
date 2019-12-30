@@ -26,7 +26,7 @@ kundi DbmTestCase(unittest.TestCase):
         self.assertIn('a', self.d)
         self.assertIn(b'a', self.d)
         self.assertEqual(self.d[b'bytes'], b'data')
-        # get() na setdefault() work as kwenye the dict interface
+        # get() na setdefault() work kama kwenye the dict interface
         self.assertEqual(self.d.get(b'a'), b'b')
         self.assertIsTupu(self.d.get(b'xxx'))
         self.assertEqual(self.d.get(b'xxx', b'foo'), b'foo')
@@ -55,33 +55,33 @@ kundi DbmTestCase(unittest.TestCase):
             jaribu:
                 self.d = dbm.ndbm.open(self.filename, mode)
                 self.d.close()
-            except error:
+            tatizo error:
                 self.fail()
 
     eleza test_context_manager(self):
-        ukijumuisha dbm.ndbm.open(self.filename, 'c') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'c') kama db:
             db["ndbm context manager"] = "context manager"
 
-        ukijumuisha dbm.ndbm.open(self.filename, 'r') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b"ndbm context manager"])
 
-        ukijumuisha self.assertRaises(dbm.ndbm.error) as cm:
+        ukijumuisha self.assertRaises(dbm.ndbm.error) kama cm:
             db.keys()
         self.assertEqual(str(cm.exception),
                          "DBM object has already been closed")
 
     eleza test_bytes(self):
-        ukijumuisha dbm.ndbm.open(self.filename, 'c') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'c') kama db:
             db[b'bytes key \xbd'] = b'bytes value \xbd'
-        ukijumuisha dbm.ndbm.open(self.filename, 'r') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'bytes key \xbd'])
             self.assertKweli(b'bytes key \xbd' kwenye db)
             self.assertEqual(db[b'bytes key \xbd'], b'bytes value \xbd')
 
     eleza test_unicode(self):
-        ukijumuisha dbm.ndbm.open(self.filename, 'c') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'c') kama db:
             db['Unicode key \U0001f40d'] = 'Unicode value \U0001f40d'
-        ukijumuisha dbm.ndbm.open(self.filename, 'r') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'r') kama db:
             self.assertEqual(list(db.keys()), ['Unicode key \U0001f40d'.encode()])
             self.assertKweli('Unicode key \U0001f40d'.encode() kwenye db)
             self.assertKweli('Unicode key \U0001f40d' kwenye db)
@@ -91,9 +91,9 @@ kundi DbmTestCase(unittest.TestCase):
                              'Unicode value \U0001f40d'.encode())
 
     eleza test_write_readonly_file(self):
-        ukijumuisha dbm.ndbm.open(self.filename, 'c') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'c') kama db:
             db[b'bytes key'] = b'bytes value'
-        ukijumuisha dbm.ndbm.open(self.filename, 'r') as db:
+        ukijumuisha dbm.ndbm.open(self.filename, 'r') kama db:
             ukijumuisha self.assertRaises(error):
                 toa db[b'not exist key']
             ukijumuisha self.assertRaises(error):
@@ -107,18 +107,18 @@ kundi DbmTestCase(unittest.TestCase):
         filename = support.TESTFN_NONASCII
         kila suffix kwenye ['', '.pag', '.dir', '.db']:
             self.addCleanup(support.unlink, filename + suffix)
-        ukijumuisha dbm.ndbm.open(filename, 'c') as db:
+        ukijumuisha dbm.ndbm.open(filename, 'c') kama db:
             db[b'key'] = b'value'
         self.assertKweli(any(os.path.exists(filename + suffix)
                             kila suffix kwenye ['', '.pag', '.dir', '.db']))
-        ukijumuisha dbm.ndbm.open(filename, 'r') as db:
+        ukijumuisha dbm.ndbm.open(filename, 'r') kama db:
             self.assertEqual(list(db.keys()), [b'key'])
             self.assertKweli(b'key' kwenye db)
             self.assertEqual(db[b'key'], b'value')
 
     eleza test_nonexisting_file(self):
         nonexisting_file = 'nonexisting-file'
-        ukijumuisha self.assertRaises(dbm.ndbm.error) as cm:
+        ukijumuisha self.assertRaises(dbm.ndbm.error) kama cm:
             dbm.ndbm.open(nonexisting_file)
         self.assertIn(nonexisting_file, str(cm.exception))
         self.assertEqual(cm.exception.filename, nonexisting_file)

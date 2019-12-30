@@ -101,7 +101,7 @@ kundi bdist_wininst(Command):
         ikiwa sio self.skip_build na self.distribution.has_ext_modules():
             short_version = get_python_version()
             ikiwa self.target_version na self.target_version != short_version:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "target version can only be %s, ama the '--skip-build'" \
                       " option must be specified" % (short_version,))
             self.target_version = short_version
@@ -116,15 +116,15 @@ kundi bdist_wininst(Command):
                 ikiwa self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install_script '%s' sio found kwenye scripts"
                       % self.install_script)
 
     eleza run(self):
-        ikiwa (sys.platform != "win32" and
-            (self.distribution.has_ext_modules() or
+        ikiwa (sys.platform != "win32" na
+            (self.distribution.has_ext_modules() ama
              self.distribution.has_c_libraries())):
-             ashiria DistutilsPlatformError \
+            ashiria DistutilsPlatformError \
                   ("distribution contains extensions and/or C libraries; "
                    "must be compiled on a Windows 32 platform")
 
@@ -172,7 +172,7 @@ kundi bdist_wininst(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory sio kwenye sys.path
+        # into a directory haiko kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
@@ -231,8 +231,8 @@ kundi bdist_wininst(Command):
         ikiwa self.install_script:
             lines.append("install_script=%s" % self.install_script)
         lines.append("info=%s" % escape(info))
-        lines.append("target_compile=%d" % (not self.no_target_compile))
-        lines.append("target_optimize=%d" % (not self.no_target_optimize))
+        lines.append("target_compile=%d" % (sio self.no_target_compile))
+        lines.append("target_optimize=%d" % (sio self.no_target_optimize))
         ikiwa self.target_version:
             lines.append("target_version=%s" % self.target_version)
         ikiwa self.user_access_control:
@@ -258,13 +258,13 @@ kundi bdist_wininst(Command):
         self.announce("creating %s" % installer_name)
 
         ikiwa bitmap:
-            ukijumuisha open(bitmap, "rb") as f:
+            ukijumuisha open(bitmap, "rb") kama f:
                 bitmapdata = f.read()
             bitmaplen = len(bitmapdata)
         isipokua:
             bitmaplen = 0
 
-        ukijumuisha open(installer_name, "wb") as file:
+        ukijumuisha open(installer_name, "wb") kama file:
             file.write(self.get_exe_bytes())
             ikiwa bitmap:
                 file.write(bitmapdata)
@@ -276,11 +276,11 @@ kundi bdist_wininst(Command):
             # Append the pre-install script
             cfgdata = cfgdata + b"\0"
             ikiwa self.pre_install_script:
-                # We need to normalize newlines, so we open kwenye text mode and
+                # We need to normalize newlines, so we open kwenye text mode na
                 # convert back to bytes. "latin-1" simply avoids any possible
                 # failures.
                 ukijumuisha open(self.pre_install_script, "r",
-                          encoding="latin-1") as script:
+                          encoding="latin-1") kama script:
                     script_data = script.read().encode("latin-1")
                 cfgdata = cfgdata + script_data + b"\n\0"
             isipokua:
@@ -291,7 +291,7 @@ kundi bdist_wininst(Command):
             # The 'magic number' 0x1234567B ni used to make sure that the
             # binary layout of 'cfgdata' ni what the wininst.exe binary
             # expects.  If the layout changes, increment that number, make
-            # the corresponding changes to the wininst.exe sources, and
+            # the corresponding changes to the wininst.exe sources, na
             # recompile them.
             header = struct.pack("<iii",
                                 0x1234567B,       # tag
@@ -299,7 +299,7 @@ kundi bdist_wininst(Command):
                                 bitmaplen,        # number of bytes kwenye bitmap
                                 )
             file.write(header)
-            ukijumuisha open(arcname, "rb") as f:
+            ukijumuisha open(arcname, "rb") kama f:
                 file.write(f.read())
 
     eleza get_installer_filename(self, fullname):
@@ -323,7 +323,7 @@ kundi bdist_wininst(Command):
         # NOTE: Possible alternative ni to allow "--target-version" to
         # specify a Python executable rather than a simple version string.
         # We can then execute this program to obtain any info we need, such
-        # as the real sys.version string kila the build.
+        # kama the real sys.version string kila the build.
         cur_version = get_python_version()
 
         # If the target version ni *later* than us, then we assume they
@@ -332,13 +332,13 @@ kundi bdist_wininst(Command):
         ikiwa self.target_version na self.target_version < cur_version:
             ikiwa self.target_version < "2.4":
                 bv = '6.0'
-            elikiwa self.target_version == "2.4":
+            lasivyo self.target_version == "2.4":
                 bv = '7.1'
-            elikiwa self.target_version == "2.5":
+            lasivyo self.target_version == "2.5":
                 bv = '8.0'
-            elikiwa self.target_version <= "3.2":
+            lasivyo self.target_version <= "3.2":
                 bv = '9.0'
-            elikiwa self.target_version <= "3.4":
+            lasivyo self.target_version <= "3.4":
                 bv = '10.0'
             isipokua:
                 bv = '14.0'
@@ -346,17 +346,17 @@ kundi bdist_wininst(Command):
             # kila current version - use authoritative check.
             jaribu:
                 kutoka msvcrt agiza CRT_ASSEMBLY_VERSION
-            except ImportError:
+            tatizo ImportError:
                 # cross-building, so assume the latest version
                 bv = '14.0'
             isipokua:
-                # as far as we know, CRT ni binary compatible based on
+                # kama far kama we know, CRT ni binary compatible based on
                 # the first field, so assume 'x.0' until proven otherwise
                 major = CRT_ASSEMBLY_VERSION.partition('.')[0]
                 bv = major + '.0'
 
 
-        # wininst-x.y.exe ni kwenye the same directory as this file
+        # wininst-x.y.exe ni kwenye the same directory kama this file
         directory = os.path.dirname(__file__)
         # we must use a wininst-x.y.exe built ukijumuisha the same C compiler
         # used kila python.  XXX What about mingw, borland, na so on?

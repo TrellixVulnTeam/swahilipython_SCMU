@@ -5,7 +5,7 @@
 This module provides socket operations na some related functions.
 On Unix, it supports IP (Internet Protocol) na Unix domain sockets.
 On other systems, it only supports IP. Functions specific kila a
-socket are available as methods of the socket object.
+socket are available kama methods of the socket object.
 
 Functions:
 
@@ -24,7 +24,7 @@ inet_aton() -- convert IP addr string (123.45.67.89) to 32-bit packed format
 inet_ntoa() -- convert 32-bit packed format IP to string (123.45.67.89)
 socket.getdefaulttimeout() -- get the default timeout value
 socket.setdefaulttimeout() -- set the default timeout value
-create_connection() -- connects to an address, ukijumuisha an optional timeout and
+create_connection() -- connects to an address, ukijumuisha an optional timeout na
                        optional source address.
 
  [*] sio available on all platforms!
@@ -54,7 +54,7 @@ kutoka enum agiza IntEnum, IntFlag
 
 jaribu:
     agiza errno
-except ImportError:
+tatizo ImportError:
     errno = Tupu
 EBADF = getattr(errno, 'EBADF', 9)
 EAGAIN = getattr(errno, 'EAGAIN', 11)
@@ -64,7 +64,7 @@ __all__ = ["fromfd", "getfqdn", "create_connection", "create_server",
            "has_dualstack_ipv6", "AddressFamily", "SocketKind"]
 __all__.extend(os._get_exports_list(_socket))
 
-# Set up the socket.AF_* socket.SOCK_* constants as members of IntEnums for
+# Set up the socket.AF_* socket.SOCK_* constants kama members of IntEnums for
 # nicer string representations.
 # Note that _socket only knows about the integer values. The public interface
 # kwenye this module understands the enums na translates them back kutoka integers
@@ -101,7 +101,7 @@ eleza _intenum_converter(value, enum_klass):
     """
     jaribu:
         rudisha enum_klass(value)
-    except ValueError:
+    tatizo ValueError:
         rudisha value
 
 _realsocket = socket
@@ -113,10 +113,10 @@ ikiwa sys.platform.lower().startswith("win"):
     errorTab[8] = "Insufficient memory available."
     errorTab[87] = "One ama more parameters are invalid."
     errorTab[995] = "Overlapped operation aborted."
-    errorTab[996] = "Overlapped I/O event object sio kwenye signaled state."
+    errorTab[996] = "Overlapped I/O event object haiko kwenye signaled state."
     errorTab[997] = "Overlapped operation will complete later."
     errorTab[10004] = "The operation was interrupted."
-    errorTab[10009] = "A bad file handle was passed."
+    errorTab[10009] = "A bad file handle was pitaed."
     errorTab[10013] = "Permission denied."
     errorTab[10014] = "A fault occurred on the network??"  # WSAEFAULT
     errorTab[10022] = "An invalid operation was attempted."
@@ -207,7 +207,7 @@ ikiwa sys.platform.lower().startswith("win"):
     __all__.append("errorTab")
 
 
-kundi _GiveupOnSendfile(Exception): pass
+kundi _GiveupOnSendfile(Exception): pita
 
 
 kundi socket(_socket.socket):
@@ -257,19 +257,19 @@ kundi socket(_socket.socket):
                 laddr = self.getsockname()
                 ikiwa laddr:
                     s += ", laddr=%s" % str(laddr)
-            except error:
-                pass
+            tatizo error:
+                pita
             jaribu:
                 raddr = self.getpeername()
                 ikiwa raddr:
                     s += ", raddr=%s" % str(raddr)
-            except error:
-                pass
+            tatizo error:
+                pita
         s += '>'
         rudisha s
 
     eleza __getstate__(self):
-         ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
+        ashiria TypeError(f"cannot pickle {self.__class__.__name__!r} object")
 
     eleza dup(self):
         """dup() -> socket object
@@ -302,12 +302,12 @@ kundi socket(_socket.socket):
                  encoding=Tupu, errors=Tupu, newline=Tupu):
         """makefile(...) -> an I/O stream connected to the socket
 
-        The arguments are as kila io.open() after the filename, except the only
+        The arguments are kama kila io.open() after the filename, tatizo the only
         supported mode values are 'r' (default), 'w' na 'b'.
         """
         # XXX refactor to share code?
         ikiwa sio set(mode) <= {"r", "w", "b"}:
-             ashiria ValueError("invalid mode %r (only r, w, b allowed)" % (mode,))
+            ashiria ValueError("invalid mode %r (only r, w, b allowed)" % (mode,))
         writing = "w" kwenye mode
         reading = "r" kwenye mode ama sio writing
         assert reading ama writing
@@ -325,11 +325,11 @@ kundi socket(_socket.socket):
             buffering = io.DEFAULT_BUFFER_SIZE
         ikiwa buffering == 0:
             ikiwa sio binary:
-                 ashiria ValueError("unbuffered streams must be binary")
+                ashiria ValueError("unbuffered streams must be binary")
             rudisha raw
         ikiwa reading na writing:
             buffer = io.BufferedRWPair(raw, raw, buffering)
-        elikiwa reading:
+        lasivyo reading:
             buffer = io.BufferedReader(raw, buffering)
         isipokua:
             assert writing
@@ -347,19 +347,19 @@ kundi socket(_socket.socket):
             sockno = self.fileno()
             jaribu:
                 fileno = file.fileno()
-            except (AttributeError, io.UnsupportedOperation) as err:
-                 ashiria _GiveupOnSendfile(err)  # sio a regular file
+            tatizo (AttributeError, io.UnsupportedOperation) kama err:
+                ashiria _GiveupOnSendfile(err)  # sio a regular file
             jaribu:
                 fsize = os.fstat(fileno).st_size
-            except OSError as err:
-                 ashiria _GiveupOnSendfile(err)  # sio a regular file
+            tatizo OSError kama err:
+                ashiria _GiveupOnSendfile(err)  # sio a regular file
             ikiwa sio fsize:
                 rudisha 0  # empty file
             # Truncate to 1GiB to avoid OverflowError, see bpo-38319.
             blocksize = min(count ama fsize, 2 ** 30)
             timeout = self.gettimeout()
             ikiwa timeout == 0:
-                 ashiria ValueError("non-blocking sockets are sio supported")
+                ashiria ValueError("non-blocking sockets are sio supported")
             # poll/select have the advantage of sio requiring any
             # extra file descriptor, contrarily to epoll/kqueue
             # (also, they require a single syscall).
@@ -376,27 +376,27 @@ kundi socket(_socket.socket):
             jaribu:
                 wakati Kweli:
                     ikiwa timeout na sio selector_select(timeout):
-                         ashiria _socket.timeout('timed out')
+                        ashiria _socket.timeout('timed out')
                     ikiwa count:
                         blocksize = count - total_sent
                         ikiwa blocksize <= 0:
                             koma
                     jaribu:
                         sent = os_sendfile(sockno, fileno, offset, blocksize)
-                    except BlockingIOError:
+                    tatizo BlockingIOError:
                         ikiwa sio timeout:
                             # Block until the socket ni ready to send some
                             # data; avoids hogging CPU resources.
                             selector_select()
                         endelea
-                    except OSError as err:
+                    tatizo OSError kama err:
                         ikiwa total_sent == 0:
                             # We can get here kila different reasons, the main
                             # one being 'file' ni sio a regular mmap(2)-like
                             # file, kwenye which case we'll fall back on using
                             # plain send().
-                             ashiria _GiveupOnSendfile(err)
-                         ashiria err kutoka Tupu
+                            ashiria _GiveupOnSendfile(err)
+                        ashiria err kutoka Tupu
                     isipokua:
                         ikiwa sent == 0:
                             koma  # EOF
@@ -408,13 +408,13 @@ kundi socket(_socket.socket):
                     file.seek(offset)
     isipokua:
         eleza _sendfile_use_sendfile(self, file, offset=0, count=Tupu):
-             ashiria _GiveupOnSendfile(
+            ashiria _GiveupOnSendfile(
                 "os.sendfile() sio available on this platform")
 
     eleza _sendfile_use_send(self, file, offset=0, count=Tupu):
         self._check_sendfile_params(file, offset, count)
         ikiwa self.gettimeout() == 0:
-             ashiria ValueError("non-blocking sockets are sio supported")
+            ashiria ValueError("non-blocking sockets are sio supported")
         ikiwa offset:
             file.seek(offset)
         blocksize = min(count, 8192) ikiwa count isipokua 8192
@@ -434,7 +434,7 @@ kundi socket(_socket.socket):
                 wakati Kweli:
                     jaribu:
                         sent = sock_send(data)
-                    except BlockingIOError:
+                    tatizo BlockingIOError:
                         endelea
                     isipokua:
                         total_sent += sent
@@ -448,16 +448,16 @@ kundi socket(_socket.socket):
                 file.seek(offset + total_sent)
 
     eleza _check_sendfile_params(self, file, offset, count):
-        ikiwa 'b' sio kwenye getattr(file, 'mode', 'b'):
-             ashiria ValueError("file should be opened kwenye binary mode")
+        ikiwa 'b' haiko kwenye getattr(file, 'mode', 'b'):
+            ashiria ValueError("file should be opened kwenye binary mode")
         ikiwa sio self.type & SOCK_STREAM:
-             ashiria ValueError("only SOCK_STREAM type sockets are supported")
+            ashiria ValueError("only SOCK_STREAM type sockets are supported")
         ikiwa count ni sio Tupu:
             ikiwa sio isinstance(count, int):
-                 ashiria TypeError(
+                ashiria TypeError(
                     "count must be a positive integer (got {!r})".format(count))
             ikiwa count <= 0:
-                 ashiria ValueError(
+                ashiria ValueError(
                     "count must be a positive integer (got {!r})".format(count))
 
     eleza sendfile(self, file, offset=0, count=Tupu):
@@ -471,7 +471,7 @@ kundi socket(_socket.socket):
         sio a regular file socket.send() will be used instead.
         *offset* tells kutoka where to start reading the file.
         If specified, *count* ni the total number of bytes to transmit
-        as opposed to sending the file until EOF ni reached.
+        kama opposed to sending the file until EOF ni reached.
         File position ni updated on rudisha ama also kwenye case of error in
         which case file.tell() can be used to figure out the number of
         bytes which were sent.
@@ -480,7 +480,7 @@ kundi socket(_socket.socket):
         """
         jaribu:
             rudisha self._sendfile_use_sendfile(file, offset, count)
-        except _GiveupOnSendfile:
+        tatizo _GiveupOnSendfile:
             rudisha self._sendfile_use_send(file, offset, count)
 
     eleza _decref_socketios(self):
@@ -538,7 +538,7 @@ eleza fromfd(fd, family, type, proto=0):
     """ fromfd(fd, family, type[, proto]) -> socket object
 
     Create a socket object kutoka a duplicate of the given file
-    descriptor.  The remaining arguments are the same as kila socket().
+    descriptor.  The remaining arguments are the same kama kila socket().
     """
     nfd = dup(fd)
     rudisha socket(family, type, proto, nfd)
@@ -560,13 +560,13 @@ ikiwa hasattr(_socket, "socketpair"):
 
         Create a pair of socket objects kutoka the sockets returned by the platform
         socketpair() function.
-        The arguments are the same as kila socket() except the default family is
+        The arguments are the same kama kila socket() tatizo the default family is
         AF_UNIX ikiwa defined on the platform; otherwise, the default ni AF_INET.
         """
         ikiwa family ni Tupu:
             jaribu:
                 family = AF_UNIX
-            except NameError:
+            tatizo NameError:
                 family = AF_INET
         a, b = _socket.socketpair(family, type, proto)
         a = socket(family, type, proto, a.detach())
@@ -579,15 +579,15 @@ isipokua:
     eleza socketpair(family=AF_INET, type=SOCK_STREAM, proto=0):
         ikiwa family == AF_INET:
             host = _LOCALHOST
-        elikiwa family == AF_INET6:
+        lasivyo family == AF_INET6:
             host = _LOCALHOST_V6
         isipokua:
-             ashiria ValueError("Only AF_INET na AF_INET6 socket address families "
+            ashiria ValueError("Only AF_INET na AF_INET6 socket address families "
                              "are supported")
         ikiwa type != SOCK_STREAM:
-             ashiria ValueError("Only SOCK_STREAM socket type ni supported")
+            ashiria ValueError("Only SOCK_STREAM socket type ni supported")
         ikiwa proto != 0:
-             ashiria ValueError("Only protocol zero ni supported")
+            ashiria ValueError("Only protocol zero ni supported")
 
         # We create a connected TCP socket. Note the trick with
         # setblocking(Uongo) that prevents us kutoka having to create a thread.
@@ -602,8 +602,8 @@ isipokua:
                 csock.setblocking(Uongo)
                 jaribu:
                     csock.connect((addr, port))
-                except (BlockingIOError, InterruptedError):
-                    pass
+                tatizo (BlockingIOError, InterruptedError):
+                    pita
                 csock.setblocking(Kweli)
                 ssock, _ = lsock.accept()
             tatizo:
@@ -617,7 +617,7 @@ isipokua:
 socketpair.__doc__ = """socketpair([family[, type[, proto]]]) -> (socket object, socket object)
 Create a pair of socket objects kutoka the sockets returned by the platform
 socketpair() function.
-The arguments are the same as kila socket() except the default family ni AF_UNIX
+The arguments are the same kama kila socket() tatizo the default family ni AF_UNIX
 ikiwa defined on the platform; otherwise, the default ni AF_INET.
 """
 
@@ -633,7 +633,7 @@ kundi SocketIO(io.RawIOBase):
 
     # One might wonder why sio let FileIO do the job instead.  There are two
     # main reasons why FileIO ni sio adapted:
-    # - it wouldn't work under Windows (where you can't used read() and
+    # - it wouldn't work under Windows (where you can't used read() na
     #   write() on a socket handle)
     # - it wouldn't work ukijumuisha socket timeouts (FileIO would ignore the
     #   timeout na consider the socket non-blocking)
@@ -641,11 +641,11 @@ kundi SocketIO(io.RawIOBase):
     # XXX More docs
 
     eleza __init__(self, sock, mode):
-        ikiwa mode sio kwenye ("r", "w", "rw", "rb", "wb", "rwb"):
-             ashiria ValueError("invalid mode: %r" % mode)
+        ikiwa mode haiko kwenye ("r", "w", "rw", "rb", "wb", "rwb"):
+            ashiria ValueError("invalid mode: %r" % mode)
         io.RawIOBase.__init__(self)
         self._sock = sock
-        ikiwa "b" sio kwenye mode:
+        ikiwa "b" haiko kwenye mode:
             mode += "b"
         self._mode = mode
         self._reading = "r" kwenye mode
@@ -663,14 +663,14 @@ kundi SocketIO(io.RawIOBase):
         self._checkClosed()
         self._checkReadable()
         ikiwa self._timeout_occurred:
-             ashiria OSError("cannot read kutoka timed out object")
+            ashiria OSError("cannot read kutoka timed out object")
         wakati Kweli:
             jaribu:
                 rudisha self._sock.recv_into(b)
-            except timeout:
+            tatizo timeout:
                 self._timeout_occurred = Kweli
                 raise
-            except error as e:
+            tatizo error kama e:
                 ikiwa e.args[0] kwenye _blocking_errnos:
                     rudisha Tupu
                 raise
@@ -685,7 +685,7 @@ kundi SocketIO(io.RawIOBase):
         self._checkWritable()
         jaribu:
             rudisha self._sock.send(b)
-        except error as e:
+        tatizo error kama e:
             # XXX what about EINTR?
             ikiwa e.args[0] kwenye _blocking_errnos:
                 rudisha Tupu
@@ -695,21 +695,21 @@ kundi SocketIO(io.RawIOBase):
         """Kweli ikiwa the SocketIO ni open kila reading.
         """
         ikiwa self.closed:
-             ashiria ValueError("I/O operation on closed socket.")
+            ashiria ValueError("I/O operation on closed socket.")
         rudisha self._reading
 
     eleza writable(self):
         """Kweli ikiwa the SocketIO ni open kila writing.
         """
         ikiwa self.closed:
-             ashiria ValueError("I/O operation on closed socket.")
+            ashiria ValueError("I/O operation on closed socket.")
         rudisha self._writing
 
     eleza seekable(self):
         """Kweli ikiwa the SocketIO ni open kila seeking.
         """
         ikiwa self.closed:
-             ashiria ValueError("I/O operation on closed socket.")
+            ashiria ValueError("I/O operation on closed socket.")
         rudisha super().seekable()
 
     eleza fileno(self):
@@ -731,7 +731,7 @@ kundi SocketIO(io.RawIOBase):
 
     eleza close(self):
         """Close the SocketIO object.  This doesn't close the underlying
-        socket, except ikiwa all references to it have disappeared.
+        socket, tatizo ikiwa all references to it have disappeared.
         """
         ikiwa self.closed:
             return
@@ -743,7 +743,7 @@ kundi SocketIO(io.RawIOBase):
 eleza getfqdn(name=''):
     """Get fully qualified domain name kutoka name.
 
-    An empty argument ni interpreted as meaning the local host.
+    An empty argument ni interpreted kama meaning the local host.
 
     First the hostname returned by gethostbyaddr() ni checked, then
     possibly existing aliases. In case no FQDN ni available, hostname
@@ -754,8 +754,8 @@ eleza getfqdn(name=''):
         name = gethostname()
     jaribu:
         hostname, aliases, ipaddrs = gethostbyaddr(name)
-    except error:
-        pass
+    tatizo error:
+        pita
     isipokua:
         aliases.insert(0, hostname)
         kila name kwenye aliases:
@@ -778,7 +778,7 @@ eleza create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
     before attempting to connect.  If no *timeout* ni supplied, the
     global default timeout setting returned by :func:`getdefaulttimeout`
     ni used.  If *source_address* ni set it must be a tuple of (host, port)
-    kila the socket to bind as a source address before making the connection.
+    kila the socket to bind kama a source address before making the connection.
     A host of '' ama port 0 tells the OS to use the default.
     """
 
@@ -798,15 +798,15 @@ eleza create_connection(address, timeout=_GLOBAL_DEFAULT_TIMEOUT,
             err = Tupu
             rudisha sock
 
-        except error as _:
+        tatizo error kama _:
             err = _
             ikiwa sock ni sio Tupu:
                 sock.close()
 
     ikiwa err ni sio Tupu:
-         ashiria err
+        ashiria err
     isipokua:
-         ashiria error("getaddrinfo returns an empty list")
+        ashiria error("getaddrinfo returns an empty list")
 
 
 eleza has_dualstack_ipv6():
@@ -818,10 +818,10 @@ eleza has_dualstack_ipv6():
             ama sio hasattr(_socket, 'IPV6_V6ONLY'):
         rudisha Uongo
     jaribu:
-        ukijumuisha socket(AF_INET6, SOCK_STREAM) as sock:
+        ukijumuisha socket(AF_INET6, SOCK_STREAM) kama sock:
             sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
             rudisha Kweli
-    except error:
+    tatizo error:
         rudisha Uongo
 
 
@@ -832,25 +832,25 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
     object.
 
     *family* should be either AF_INET ama AF_INET6.
-    *backlog* ni the queue size passed to socket.listen().
+    *backlog* ni the queue size pitaed to socket.listen().
     *reuse_port* dictates whether to use the SO_REUSEPORT socket option.
     *dualstack_ipv6*: ikiwa true na the platform supports it, it will
     create an AF_INET6 socket able to accept both IPv4 ama IPv6
     connections. When false it will explicitly disable this option on
     platforms that enable it by default (e.g. Linux).
 
-    >>> ukijumuisha create_server((Tupu, 8000)) as server:
+    >>> ukijumuisha create_server((Tupu, 8000)) kama server:
     ...     wakati Kweli:
     ...         conn, addr = server.accept()
     ...         # handle new connection
     """
     ikiwa reuse_port na sio hasattr(_socket, "SO_REUSEPORT"):
-         ashiria ValueError("SO_REUSEPORT sio supported on this platform")
+        ashiria ValueError("SO_REUSEPORT sio supported on this platform")
     ikiwa dualstack_ipv6:
         ikiwa sio has_dualstack_ipv6():
-             ashiria ValueError("dualstack_ipv6 sio supported on this platform")
+            ashiria ValueError("dualstack_ipv6 sio supported on this platform")
         ikiwa family != AF_INET6:
-             ashiria ValueError("dualstack_ipv6 requires AF_INET6 family")
+            ashiria ValueError("dualstack_ipv6 requires AF_INET6 family")
     sock = socket(family, SOCK_STREAM)
     jaribu:
         # Note about Windows. We don't set SO_REUSEADDR because:
@@ -862,34 +862,34 @@ eleza create_server(address, *, family=AF_INET, backlog=Tupu, reuse_port=Uongo,
         # connections. Also, it may set the process kwenye a state where
         # it'll no longer respond to any signals ama graceful kills.
         # See: msdn2.microsoft.com/en-us/library/ms740621(VS.85).aspx
-        ikiwa os.name sio kwenye ('nt', 'cygwin') na \
+        ikiwa os.name haiko kwenye ('nt', 'cygwin') na \
                 hasattr(_socket, 'SO_REUSEADDR'):
             jaribu:
                 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-            except error:
+            tatizo error:
                 # Fail later on bind(), kila platforms which may not
                 # support this option.
-                pass
+                pita
         ikiwa reuse_port:
             sock.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
         ikiwa has_ipv6 na family == AF_INET6:
             ikiwa dualstack_ipv6:
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 0)
-            elikiwa hasattr(_socket, "IPV6_V6ONLY") na \
+            lasivyo hasattr(_socket, "IPV6_V6ONLY") na \
                     hasattr(_socket, "IPPROTO_IPV6"):
                 sock.setsockopt(IPPROTO_IPV6, IPV6_V6ONLY, 1)
         jaribu:
             sock.bind(address)
-        except error as err:
+        tatizo error kama err:
             msg = '%s (wakati attempting to bind on address %r)' % \
                 (err.strerror, address)
-             ashiria error(err.errno, msg) kutoka Tupu
+            ashiria error(err.errno, msg) kutoka Tupu
         ikiwa backlog ni Tupu:
             sock.listen()
         isipokua:
             sock.listen(backlog)
         rudisha sock
-    except error:
+    tatizo error:
         sock.close()
         raise
 
@@ -899,13 +899,13 @@ eleza getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
 
     Translate the host/port argument into a sequence of 5-tuples that contain
     all the necessary arguments kila creating a socket connected to that service.
-    host ni a domain name, a string representation of an IPv4/v6 address or
-    Tupu. port ni a string service name such as 'http', a numeric port number or
-    Tupu. By passing Tupu as the value of host na port, you can pass NULL to
+    host ni a domain name, a string representation of an IPv4/v6 address ama
+    Tupu. port ni a string service name such kama 'http', a numeric port number ama
+    Tupu. By pitaing Tupu kama the value of host na port, you can pita NULL to
     the underlying C API.
 
     The family, type na proto arguments can be optionally specified kwenye order to
-    narrow the list of addresses returned. Passing zero as a value kila each of
+    narrow the list of addresses returned. Passing zero kama a value kila each of
     these arguments selects the full range of results.
     """
     # We override this function since we want to translate the numeric family

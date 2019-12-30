@@ -181,10 +181,10 @@ kundi FontPageTest(unittest.TestCase):
         self.assertEqual(d.set_samples.called, 2)
         changes.clear()
 
-        d.font_bold.set(not default_bold)
+        d.font_bold.set(sio default_bold)
         expected = {'EditorWindow': {'font': 'Test Font',
                                      'font-size': '20',
-                                     'font-bold': str(not default_bold)}}
+                                     'font-bold': str(sio default_bold)}}
         self.assertEqual(mainpage, expected)
         self.assertEqual(d.set_samples.called, 3)
 
@@ -456,7 +456,7 @@ kundi HighPageTest(unittest.TestCase):
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
 
-        # Selection same as previous color.
+        # Selection same kama previous color.
         chooser.result = ('', d.style.lookup(d.frame_color_set['style'], 'background'))
         d.button_set_color.invoke()
         eq(d.color.get(), '#ffffff')
@@ -534,7 +534,7 @@ kundi HighPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active theme.
+        # Use default kama previously active theme.
         d.theme_source.set(Kweli)
         d.builtin_name.set('IDLE Classic')
         first_new = 'my new custom theme'
@@ -959,7 +959,7 @@ kundi KeysPageTest(unittest.TestCase):
         eq = self.assertEqual
         d = self.page
 
-        # Use default as previously active keyset.
+        # Use default kama previously active keyset.
         d.keyset_source.set(Kweli)
         d.builtin_name.set('IDLE Classic Windows')
         first_new = 'my new custom key set'
@@ -1325,7 +1325,7 @@ kundi VarTraceTest(unittest.TestCase):
         self.called += 13
 
     eleza var_changed_boolean(self, *params):
-        pass
+        pita
 
     eleza test_init(self):
         tr = self.tracers

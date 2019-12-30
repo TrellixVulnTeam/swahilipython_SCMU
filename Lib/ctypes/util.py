@@ -39,7 +39,7 @@ ikiwa os.name == "nt":
             rudisha Tupu
         ikiwa version <= 6:
             clibname = 'msvcrt'
-        elikiwa version <= 13:
+        lasivyo version <= 13:
             clibname = 'msvcr%d' % (version * 10)
         isipokua:
             # CRT ni no longer directly loadable. See issue23606 kila the
@@ -67,8 +67,8 @@ ikiwa os.name == "nt":
                 rudisha fname
         rudisha Tupu
 
-elikiwa os.name == "posix" na sys.platform == "darwin":
-    kutoka ctypes.macholib.dyld agiza dyld_find as _dyld_find
+lasivyo os.name == "posix" na sys.platform == "darwin":
+    kutoka ctypes.macholib.dyld agiza dyld_find kama _dyld_find
     eleza find_library(name):
         possible = ['lib%s.dylib' % name,
                     '%s.dylib' % name,
@@ -76,20 +76,20 @@ elikiwa os.name == "posix" na sys.platform == "darwin":
         kila name kwenye possible:
             jaribu:
                 rudisha _dyld_find(name)
-            except ValueError:
+            tatizo ValueError:
                 endelea
         rudisha Tupu
 
-elikiwa sys.platform.startswith("aix"):
+lasivyo sys.platform.startswith("aix"):
     # AIX has two styles of storing shared libraries
-    # GNU auto_tools refer to these as svr4 na aix
-    # svr4 (System V Release 4) ni a regular file, often ukijumuisha .so as suffix
+    # GNU auto_tools refer to these kama svr4 na aix
+    # svr4 (System V Release 4) ni a regular file, often ukijumuisha .so kama suffix
     # AIX style uses an archive (suffix .a) ukijumuisha members (e.g., shr.o, libssl.so)
     # see issue#26439 na _aix.py kila more details
 
     kutoka ctypes._aix agiza find_library
 
-elikiwa os.name == "posix":
+lasivyo os.name == "posix":
     # Andreas Degert's find functions, using gcc, /sbin/ldconfig, objdump
     agiza re, tempfile
 
@@ -119,17 +119,17 @@ elikiwa os.name == "posix":
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.STDOUT,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 rudisha Tupu
             ukijumuisha proc:
                 trace = proc.stdout.read()
         mwishowe:
             jaribu:
                 temp.close()
-            except FileNotFoundError:
+            tatizo FileNotFoundError:
                 # Raised ikiwa the file was already removed, which ni the normal
                 # behaviour of GCC ikiwa linking fails
-                pass
+                pita
         res = re.search(expr, trace)
         ikiwa sio res:
             rudisha Tupu
@@ -146,7 +146,7 @@ elikiwa os.name == "posix":
                 proc = subprocess.Popen(("/usr/ccs/bin/dump", "-Lpv", f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command sio found
+            tatizo OSError:  # E.g. command sio found
                 rudisha Tupu
             ukijumuisha proc:
                 data = proc.stdout.read()
@@ -168,7 +168,7 @@ elikiwa os.name == "posix":
                 proc = subprocess.Popen((objdump, '-p', '-j', '.dynamic', f),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 rudisha Tupu
             ukijumuisha proc:
                 dump = proc.stdout.read()
@@ -186,8 +186,8 @@ elikiwa os.name == "posix":
             jaribu:
                 wakati parts:
                     nums.insert(0, int(parts.pop()))
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             rudisha nums ama [sys.maxsize]
 
         eleza find_library(name):
@@ -199,7 +199,7 @@ elikiwa os.name == "posix":
                 proc = subprocess.Popen(('/sbin/ldconfig', '-r'),
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL)
-            except OSError:  # E.g. command sio found
+            tatizo OSError:  # E.g. command sio found
                 data = b''
             isipokua:
                 ukijumuisha proc:
@@ -211,7 +211,7 @@ elikiwa os.name == "posix":
             res.sort(key=_num_version)
             rudisha os.fsdecode(res[-1])
 
-    elikiwa sys.platform == "sunos5":
+    lasivyo sys.platform == "sunos5":
 
         eleza _findLib_crle(name, is64):
             ikiwa sio os.path.exists('/usr/bin/crle'):
@@ -231,7 +231,7 @@ elikiwa os.name == "posix":
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.DEVNULL,
                                         env=env)
-            except OSError:  # E.g. bad executable
+            tatizo OSError:  # E.g. bad executable
                 rudisha Tupu
             ukijumuisha proc:
                 kila line kwenye proc.stdout:
@@ -277,12 +277,12 @@ elikiwa os.name == "posix":
                                       stdin=subprocess.DEVNULL,
                                       stderr=subprocess.DEVNULL,
                                       stdout=subprocess.PIPE,
-                                      env={'LC_ALL': 'C', 'LANG': 'C'}) as p:
+                                      env={'LC_ALL': 'C', 'LANG': 'C'}) kama p:
                     res = re.search(regex, p.stdout.read())
                     ikiwa res:
                         rudisha os.fsdecode(res.group(1))
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         eleza _findLib_ld(name):
             # See issue #9998 kila why this ni needed
@@ -302,8 +302,8 @@ elikiwa os.name == "posix":
                 res = re.search(expr, os.fsdecode(out))
                 ikiwa res:
                     result = res.group(0)
-            except Exception as e:
-                pass  # result will be Tupu
+            tatizo Exception kama e:
+                pita  # result will be Tupu
             rudisha result
 
         eleza find_library(name):
@@ -334,12 +334,12 @@ eleza test():
             andika(cdll.LoadLibrary("libSystem.dylib"))
             andika(cdll.LoadLibrary("System.framework/System"))
         # issue-26439 - fix broken test call kila AIX
-        elikiwa sys.platform.startswith("aix"):
+        lasivyo sys.platform.startswith("aix"):
             kutoka ctypes agiza CDLL
             ikiwa sys.maxsize < 2**32:
                 andika(f"Using CDLL(name, os.RTLD_MEMBER): {CDLL('libc.a(shr.o)', os.RTLD_MEMBER)}")
                 andika(f"Using cdll.LoadLibrary(): {cdll.LoadLibrary('libc.a(shr.o)')}")
-                # librpm.so ni only available as 32-bit shared library
+                # librpm.so ni only available kama 32-bit shared library
                 andika(find_library("rpm"))
                 andika(cdll.LoadLibrary("librpm.so"))
             isipokua:

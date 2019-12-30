@@ -45,7 +45,7 @@ kundi ResourceDiskTests(ResourceTests, unittest.TestCase):
 
 
 kundi ResourceZipTests(ResourceTests, util.ZipSetup, unittest.TestCase):
-    pass
+    pita
 
 
 kundi ResourceLoaderTests(unittest.TestCase):
@@ -78,9 +78,9 @@ kundi ResourceLoaderTests(unittest.TestCase):
 kundi ResourceCornerCaseTests(unittest.TestCase):
     eleza test_package_has_no_reader_fallback(self):
         # Test odd ball packages which:
-        # 1. Do sio have a ResourceReader as a loader
+        # 1. Do sio have a ResourceReader kama a loader
         # 2. Are sio on the file system
-        # 3. Are sio kwenye a zip file
+        # 3. Are haiko kwenye a zip file
         module = util.create_package(
             file=data01, path=data01.__file__, contents=['A', 'B', 'C'])
         # Give the module a dummy loader.

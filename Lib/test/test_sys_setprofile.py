@@ -16,7 +16,7 @@ kundi TestGetProfile(unittest.TestCase):
 
     eleza test_setget(self):
         eleza fn(*args):
-            pass
+            pita
 
         sys.setprofile(fn)
         self.assertIs(sys.getprofile(), fn)
@@ -39,7 +39,7 @@ kundi HookWatcher:
 
         jaribu:
             frameno = self.frames.index(frame)
-        except ValueError:
+        tatizo ValueError:
             frameno = len(self.frames)
             self.frames.append(frame)
 
@@ -50,7 +50,7 @@ kundi HookWatcher:
         disallowed = [ident(self.add_event.__func__), ident(ident)]
         self.frames = Tupu
 
-        rudisha [item kila item kwenye self.events ikiwa item[2] sio kwenye disallowed]
+        rudisha [item kila item kwenye self.events ikiwa item[2] haiko kwenye disallowed]
 
 
 kundi ProfileSimulator(HookWatcher):
@@ -75,16 +75,16 @@ kundi ProfileSimulator(HookWatcher):
         self.testcase.fail(
             "the profiler should never receive exception events")
 
-    eleza trace_pass(self, frame):
-        pass
+    eleza trace_pita(self, frame):
+        pita
 
     dispatch = {
         'call': trace_call,
         'exception': trace_exception,
         'return': trace_return,
-        'c_call': trace_pass,
-        'c_return': trace_pass,
-        'c_exception': trace_pass,
+        'c_call': trace_pita,
+        'c_return': trace_pita,
+        'c_exception': trace_pita,
         }
 
 
@@ -102,7 +102,7 @@ kundi ProfileHookTestCase(TestCaseBase):
 
     eleza test_simple(self):
         eleza f(p):
-            pass
+            pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -119,7 +119,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_caught_exception(self):
         eleza f(p):
             jaribu: 1/0
-            tatizo: pass
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -128,7 +128,7 @@ kundi ProfileHookTestCase(TestCaseBase):
     eleza test_caught_nested_exception(self):
         eleza f(p):
             jaribu: 1/0
-            tatizo: pass
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -153,7 +153,7 @@ kundi ProfileHookTestCase(TestCaseBase):
                 f(p)
             tatizo:
                 jaribu: f(p)
-                tatizo: pass
+                tatizo: pita
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -199,7 +199,7 @@ kundi ProfileHookTestCase(TestCaseBase):
 
     eleza test_raise(self):
         eleza f(p):
-             ashiria Exception()
+            ashiria Exception()
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -239,7 +239,7 @@ kundi ProfileHookTestCase(TestCaseBase):
                 tuma i
         eleza g(p):
             kila i kwenye f():
-                pass
+                pita
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -261,7 +261,7 @@ kundi ProfileHookTestCase(TestCaseBase):
                 tuma i
         eleza g(p):
             kila i kwenye f():
-                pass
+                pita
         f_ident = ident(f)
         g_ident = ident(g)
         self.check_events(g, [(1, 'call', g_ident),
@@ -283,7 +283,7 @@ kundi ProfileSimulatorTestCase(TestCaseBase):
 
     eleza test_simple(self):
         eleza f(p):
-            pass
+            pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -300,7 +300,7 @@ kundi ProfileSimulatorTestCase(TestCaseBase):
     eleza test_caught_exception(self):
         eleza f(p):
             jaribu: 1/0
-            tatizo: pass
+            tatizo: pita
         f_ident = ident(f)
         self.check_events(f, [(1, 'call', f_ident),
                               (1, 'return', f_ident),
@@ -388,7 +388,7 @@ eleza ident(function):
 
 eleza protect(f, p):
     jaribu: f(p)
-    tatizo: pass
+    tatizo: pita
 
 protect_ident = ident(protect)
 

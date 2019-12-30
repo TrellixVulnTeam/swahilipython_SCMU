@@ -58,7 +58,7 @@ kundi ModuleBrowserTest(unittest.TestCase):
         toa mb.top.destroy, mb.node.destroy
 
 
-# Nested tree same as kwenye test_pyclbr.py except kila supers on C0. C1.
+# Nested tree same kama kwenye test_pyclbr.py tatizo kila supers on C0. C1.
 mb = pyclbr
 module, fname = 'test', 'test.py'
 C0 = mb.Class(module, 'C0', ['base'], fname, 1)
@@ -93,7 +93,7 @@ kundi TransformChildrenTest(unittest.TestCase):
         # Check that second call does sio change suffix.
         tcl = list(transform(mock_pyclbr_tree, 'test'))
         eq(tcl[0].name, 'C0(base)')
-        # Nothing to traverse ikiwa parameter name isn't same as tree module.
+        # Nothing to traverse ikiwa parameter name isn't same kama tree module.
         tcl = list(transform(mock_pyclbr_tree, 'different name'))
         eq(tcl, [])
 
@@ -215,7 +215,7 @@ kundi ChildBrowserTreeItemTest(unittest.TestCase):
         fopen.assert_called()
         goto.assert_called()
         goto.assert_called_with(self.cbt_F1.obj.lineno)
-        # Failure test would have to  ashiria OSError ama AttributeError.
+        # Failure test would have to ashiria OSError ama AttributeError.
 
 
 kundi NestedChildrenTest(unittest.TestCase):
@@ -225,7 +225,7 @@ kundi NestedChildrenTest(unittest.TestCase):
         queue = deque()
         actual_names = []
         # The tree items are processed kwenye breadth first order.
-        # Verify that processing each sublist hits every node and
+        # Verify that processing each sublist hits every node na
         # kwenye the right order.
         expected_names = ['f0', 'C0(base)',
                           'f1', 'c1', 'F1', 'C1()',

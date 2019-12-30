@@ -2,7 +2,7 @@ agiza asyncio
 agiza unittest
 
 kutoka unittest agiza mock
-kutoka . agiza utils as test_utils
+kutoka . agiza utils kama test_utils
 
 
 kundi TestPolicy(asyncio.AbstractEventLoopPolicy):
@@ -13,7 +13,7 @@ kundi TestPolicy(asyncio.AbstractEventLoopPolicy):
 
     eleza get_event_loop(self):
         # shouldn't ever be called by asyncio.run()
-         ashiria RuntimeError
+        ashiria RuntimeError
 
     eleza new_event_loop(self):
         rudisha self.loop_factory()
@@ -68,7 +68,7 @@ kundi RunTests(BaseTest):
     eleza test_asyncio_run_raises(self):
         async eleza main():
             await asyncio.sleep(0)
-             ashiria ValueError('spam')
+            ashiria ValueError('spam')
 
         ukijumuisha self.assertRaisesRegex(ValueError, 'spam'):
             asyncio.run(main())
@@ -121,7 +121,7 @@ kundi RunTests(BaseTest):
         async eleza leftover():
             jaribu:
                 await asyncio.sleep(0.1)
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 1 / 0
 
         async eleza main():
@@ -146,7 +146,7 @@ kundi RunTests(BaseTest):
         lazyboy = Tupu
 
         kundi FancyExit(Exception):
-            pass
+            pita
 
         async eleza fidget():
             wakati Kweli:
@@ -158,8 +158,8 @@ kundi RunTests(BaseTest):
             spinner = fidget()
             jaribu:
                 async kila the_meaning_of_life kwenye spinner:  # NoQA
-                    pass
-            except asyncio.CancelledError:
+                    pita
+            tatizo asyncio.CancelledError:
                 1 / 0
 
         async eleza main():
@@ -168,7 +168,7 @@ kundi RunTests(BaseTest):
 
             nonlocal lazyboy
             lazyboy = asyncio.create_task(spin())
-             ashiria FancyExit
+            ashiria FancyExit
 
         ukijumuisha self.assertRaises(FancyExit):
             asyncio.run(main())

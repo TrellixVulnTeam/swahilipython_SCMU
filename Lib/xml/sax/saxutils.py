@@ -18,7 +18,7 @@ eleza __dict_replace(s, d):
 eleza escape(data, entities={}):
     """Escape &, <, na > kwenye a string of data.
 
-    You can escape other strings of data by passing a dictionary as
+    You can escape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced ukijumuisha its corresponding value.
     """
@@ -34,7 +34,7 @@ eleza escape(data, entities={}):
 eleza unescape(data, entities={}):
     """Unescape &amp;, &lt;, na &gt; kwenye a string of data.
 
-    You can unescape other strings of data by passing a dictionary as
+    You can unescape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced ukijumuisha its corresponding value.
     """
@@ -49,10 +49,10 @@ eleza quoteattr(data, entities={}):
     """Escape na quote an attribute value.
 
     Escape &, <, na > kwenye a string of data, then quote it kila use as
-    an attribute value.  The \" character will be escaped as well, if
+    an attribute value.  The \" character will be escaped kama well, if
     necessary.
 
-    You can escape other strings of data by passing a dictionary as
+    You can escape other strings of data by pitaing a dictionary as
     the optional entities parameter.  The keys na values must all be
     strings; each key will be replaced ukijumuisha its corresponding value.
     """
@@ -74,11 +74,11 @@ eleza _gettextwriter(out, encoding):
         rudisha sys.stdout
 
     ikiwa isinstance(out, io.TextIOBase):
-        # use a text writer as is
+        # use a text writer kama is
         rudisha out
 
     ikiwa isinstance(out, (codecs.StreamWriter, codecs.StreamReaderWriter)):
-        # use a codecs stream writer as is
+        # use a codecs stream writer kama is
         rudisha out
 
     # wrap a binary writer ukijumuisha TextIOWrapper
@@ -92,7 +92,7 @@ eleza _gettextwriter(out, encoding):
         buffer = _wrapper()
         buffer.close = lambda: Tupu
     isipokua:
-        # This ni to handle passed objects that aren't kwenye the
+        # This ni to handle pitaed objects that aren't kwenye the
         # IOBase hierarchy, but just have a write method
         buffer = io.BufferedIOBase()
         buffer.writable = lambda: Kweli
@@ -102,8 +102,8 @@ eleza _gettextwriter(out, encoding):
             # ikiwa BOM (kila UTF-16, etc) should be added
             buffer.seekable = out.seekable
             buffer.tell = out.tell
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     rudisha io.TextIOWrapper(buffer, encoding=encoding,
                             errors='xmlcharrefreplace',
                             newline='\n',
@@ -227,9 +227,9 @@ kundi XMLGenerator(handler.ContentHandler):
 kundi XMLFilterBase(xmlreader.XMLReader):
     """This kundi ni designed to sit between an XMLReader na the
     client application's event handlers.  By default, it does nothing
-    but pass requests up to the reader na events on to the handlers
+    but pita requests up to the reader na events on to the handlers
     unmodified, but subclasses can override specific methods to modify
-    the event stream ama the configuration requests as they pass
+    the event stream ama the configuration requests kama they pita
     through."""
 
     eleza __init__(self, parent = Tupu):
@@ -336,14 +336,14 @@ kundi XMLFilterBase(xmlreader.XMLReader):
 # --- Utility functions
 
 eleza prepare_input_source(source, base=""):
-    """This function takes an InputSource na an optional base URL and
+    """This function takes an InputSource na an optional base URL na
     returns a fully resolved InputSource object ready kila reading."""
 
     ikiwa isinstance(source, os.PathLike):
         source = os.fspath(source)
     ikiwa isinstance(source, str):
         source = xmlreader.InputSource(source)
-    elikiwa hasattr(source, "read"):
+    lasivyo hasattr(source, "read"):
         f = source
         source = xmlreader.InputSource()
         ikiwa isinstance(f.read(0), str):

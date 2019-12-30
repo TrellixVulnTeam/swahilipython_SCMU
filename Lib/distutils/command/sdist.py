@@ -63,7 +63,7 @@ kundi sdist(Command):
          "just regenerate the manifest na then stop "
          "(implies --force-manifest)"),
         ('force-manifest', 'f',
-         "forcibly regenerate the manifest na carry on as usual. "
+         "forcibly regenerate the manifest na carry on kama usual. "
          "Deprecated: now the manifest ni always regenerated."),
         ('formats=', Tupu,
          "formats kila source distribution (comma-separated list)"),
@@ -131,7 +131,7 @@ kundi sdist(Command):
 
         bad_format = archive_util.check_archive_formats(self.formats)
         ikiwa bad_format:
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "unknown archive format '%s'" % bad_format)
 
         ikiwa self.dist_dir ni Tupu:
@@ -215,8 +215,8 @@ kundi sdist(Command):
           - all pure Python modules mentioned kwenye setup script
           - all files pointed by package_data (build_py)
           - all files defined kwenye data_files.
-          - all files defined as scripts.
-          - all C sources listed as part of extensions ama C libraries
+          - all files defined kama scripts.
+          - all C sources listed kama part of extensions ama C libraries
             kwenye the setup script (doesn't catch C headers!)
         Warns ikiwa (README ama README.txt) ama setup.py are missing; everything
         isipokua ni optional.
@@ -340,10 +340,10 @@ kundi sdist(Command):
 
                 jaribu:
                     self.filelist.process_template_line(line)
-                # the call above can  ashiria a DistutilsTemplateError for
+                # the call above can ashiria a DistutilsTemplateError for
                 # malformed lines, ama a ValueError kutoka the lower-level
                 # convert_path function
-                except (DistutilsTemplateError, ValueError) as msg:
+                tatizo (DistutilsTemplateError, ValueError) kama msg:
                     self.warn("%s, line %d: %s" % (template.filename,
                                                    template.current_line,
                                                    msg))
@@ -351,7 +351,7 @@ kundi sdist(Command):
             template.close()
 
     eleza prune_file_list(self):
-        """Prune off branches that might slip into the file list as created
+        """Prune off branches that might slip into the file list kama created
         by 'read_template()', but really don't belong there:
           * the build tree (typically "build")
           * the release tree itself (only an issue ikiwa we ran "sdist"
@@ -375,7 +375,7 @@ kundi sdist(Command):
         self.filelist.exclude_pattern(vcs_ptrn, is_regex=1)
 
     eleza write_manifest(self):
-        """Write the file list kwenye 'self.filelist' (presumably as filled in
+        """Write the file list kwenye 'self.filelist' (presumably kama filled in
         by 'add_defaults()' na 'read_template()') to the manifest file
         named by 'self.manifest'.
         """
@@ -407,7 +407,7 @@ kundi sdist(Command):
         distribution.
         """
         log.info("reading manifest file '%s'", self.manifest)
-        ukijumuisha open(self.manifest) as manifest:
+        ukijumuisha open(self.manifest) kama manifest:
             kila line kwenye manifest:
                 # ignore comments na blank lines
                 line = line.strip()

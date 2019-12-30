@@ -1,1 +1,1 @@
-agiza test.test_import.data.circular_imports.binding as binding
+agiza test.test_import.data.circular_imports.binding kama binding

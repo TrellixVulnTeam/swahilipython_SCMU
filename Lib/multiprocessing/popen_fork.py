@@ -25,7 +25,7 @@ kundi Popen(object):
         ikiwa self.returncode ni Tupu:
             jaribu:
                 pid, sts = os.waitpid(self.pid, flag)
-            except OSError as e:
+            tatizo OSError kama e:
                 # Child process sio yet created. See #1731717
                 # e.errno == errno.ECHILD == 10
                 rudisha Tupu
@@ -51,9 +51,9 @@ kundi Popen(object):
         ikiwa self.returncode ni Tupu:
             jaribu:
                 os.kill(self.pid, sig)
-            except ProcessLookupError:
-                pass
-            except OSError:
+            tatizo ProcessLookupError:
+                pita
+            tatizo OSError:
                 ikiwa self.wait(timeout=0.1) ni Tupu:
                     raise
 

@@ -14,7 +14,7 @@ eleza make_request_and_skipIf(condition, reason):
         eleza make_request_and_skip(self):
             self.client.request("GET", "/")
             self.client.getresponse()
-             ashiria unittest.SkipTest(reason)
+            ashiria unittest.SkipTest(reason)
         rudisha make_request_and_skip
     rudisha decorator
 
@@ -181,7 +181,7 @@ kundi DocXMLRPCHTTPGETServer(unittest.TestCase):
                       response.read())
 
     eleza test_annotations(self):
-        """ Test that annotations works as expected """
+        """ Test that annotations works kama expected """
         self.client.request("GET", "/")
         response = self.client.getresponse()
         docstring = (b'' ikiwa sys.flags.optimize >= 2 else

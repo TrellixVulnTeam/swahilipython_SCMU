@@ -3,7 +3,7 @@
 # Module na documentation by Eric S. Raymond, 21 Dec 1998
 # Input stacking na error message cleanup added by ESR, March 2000
 # push_source() na pop_source() made explicit by ESR, January 2001.
-# Posix compliance, split(), string arguments, and
+# Posix compliance, split(), string arguments, na
 # iterator interface by Gustavo Niemeyer, April 2003.
 # changes to tokenize more like Posix shells by Vinay Sajip, July 2016.
 
@@ -53,7 +53,7 @@ kundi shlex:
         self.source = Tupu
         ikiwa sio punctuation_chars:
             punctuation_chars = ''
-        elikiwa punctuation_chars ni Kweli:
+        lasivyo punctuation_chars ni Kweli:
             punctuation_chars = '();<>|&'
         self._punctuation_chars = punctuation_chars
         ikiwa punctuation_chars:
@@ -146,34 +146,34 @@ kundi shlex:
             ikiwa self.state ni Tupu:
                 self.token = ''        # past end of file
                 koma
-            elikiwa self.state == ' ':
+            lasivyo self.state == ' ':
                 ikiwa sio nextchar:
                     self.state = Tupu  # end of file
                     koma
-                elikiwa nextchar kwenye self.whitespace:
+                lasivyo nextchar kwenye self.whitespace:
                     ikiwa self.debug >= 2:
                         andika("shlex: I see whitespace kwenye whitespace state")
                     ikiwa self.token ama (self.posix na quoted):
                         koma   # emit current token
                     isipokua:
                         endelea
-                elikiwa nextchar kwenye self.commenters:
+                lasivyo nextchar kwenye self.commenters:
                     self.instream.readline()
                     self.lineno += 1
-                elikiwa self.posix na nextchar kwenye self.escape:
+                lasivyo self.posix na nextchar kwenye self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
-                elikiwa nextchar kwenye self.wordchars:
+                lasivyo nextchar kwenye self.wordchars:
                     self.token = nextchar
                     self.state = 'a'
-                elikiwa nextchar kwenye self.punctuation_chars:
+                lasivyo nextchar kwenye self.punctuation_chars:
                     self.token = nextchar
                     self.state = 'c'
-                elikiwa nextchar kwenye self.quotes:
+                lasivyo nextchar kwenye self.quotes:
                     ikiwa sio self.posix:
                         self.token = nextchar
                     self.state = nextchar
-                elikiwa self.whitespace_split:
+                lasivyo self.whitespace_split:
                     self.token = nextchar
                     self.state = 'a'
                 isipokua:
@@ -182,13 +182,13 @@ kundi shlex:
                         koma   # emit current token
                     isipokua:
                         endelea
-            elikiwa self.state kwenye self.quotes:
+            lasivyo self.state kwenye self.quotes:
                 quoted = Kweli
                 ikiwa sio nextchar:      # end of file
                     ikiwa self.debug >= 2:
                         andika("shlex: I see EOF kwenye quotes state")
                     # XXX what error should be raised here?
-                     ashiria ValueError("No closing quotation")
+                    ashiria ValueError("No closing quotation")
                 ikiwa nextchar == self.state:
                     ikiwa sio self.posix:
                         self.token += nextchar
@@ -196,30 +196,30 @@ kundi shlex:
                         koma
                     isipokua:
                         self.state = 'a'
-                elikiwa (self.posix na nextchar kwenye self.escape na self.state
+                lasivyo (self.posix na nextchar kwenye self.escape na self.state
                       kwenye self.escapedquotes):
                     escapedstate = self.state
                     self.state = nextchar
                 isipokua:
                     self.token += nextchar
-            elikiwa self.state kwenye self.escape:
+            lasivyo self.state kwenye self.escape:
                 ikiwa sio nextchar:      # end of file
                     ikiwa self.debug >= 2:
                         andika("shlex: I see EOF kwenye escape state")
                     # XXX what error should be raised here?
-                     ashiria ValueError("No escaped character")
+                    ashiria ValueError("No escaped character")
                 # In posix shells, only the quote itself ama the escape
                 # character may be escaped within quotes.
-                ikiwa (escapedstate kwenye self.quotes and
+                ikiwa (escapedstate kwenye self.quotes na
                         nextchar != self.state na nextchar != escapedstate):
                     self.token += self.state
                 self.token += nextchar
                 self.state = escapedstate
-            elikiwa self.state kwenye ('a', 'c'):
+            lasivyo self.state kwenye ('a', 'c'):
                 ikiwa sio nextchar:
                     self.state = Tupu   # end of file
                     koma
-                elikiwa nextchar kwenye self.whitespace:
+                lasivyo nextchar kwenye self.whitespace:
                     ikiwa self.debug >= 2:
                         andika("shlex: I see whitespace kwenye word state")
                     self.state = ' '
@@ -227,7 +227,7 @@ kundi shlex:
                         koma   # emit current token
                     isipokua:
                         endelea
-                elikiwa nextchar kwenye self.commenters:
+                lasivyo nextchar kwenye self.commenters:
                     self.instream.readline()
                     self.lineno += 1
                     ikiwa self.posix:
@@ -236,22 +236,22 @@ kundi shlex:
                             koma   # emit current token
                         isipokua:
                             endelea
-                elikiwa self.state == 'c':
+                lasivyo self.state == 'c':
                     ikiwa nextchar kwenye self.punctuation_chars:
                         self.token += nextchar
                     isipokua:
-                        ikiwa nextchar sio kwenye self.whitespace:
+                        ikiwa nextchar haiko kwenye self.whitespace:
                             self._pushback_chars.append(nextchar)
                         self.state = ' '
                         koma
-                elikiwa self.posix na nextchar kwenye self.quotes:
+                lasivyo self.posix na nextchar kwenye self.quotes:
                     self.state = nextchar
-                elikiwa self.posix na nextchar kwenye self.escape:
+                lasivyo self.posix na nextchar kwenye self.escape:
                     escapedstate = 'a'
                     self.state = nextchar
-                elikiwa (nextchar kwenye self.wordchars ama nextchar kwenye self.quotes
-                      ama (self.whitespace_split and
-                          nextchar sio kwenye self.punctuation_chars)):
+                lasivyo (nextchar kwenye self.wordchars ama nextchar kwenye self.quotes
+                      ama (self.whitespace_split na
+                          nextchar haiko kwenye self.punctuation_chars)):
                     self.token += nextchar
                 isipokua:
                     ikiwa self.punctuation_chars:
@@ -299,7 +299,7 @@ kundi shlex:
     eleza __next__(self):
         token = self.get_token()
         ikiwa token == self.eof:
-             ashiria StopIteration
+            ashiria StopIteration
         rudisha token
 
 eleza split(s, comments=Uongo, posix=Kweli):
@@ -325,7 +325,7 @@ eleza quote(s):
         rudisha s
 
     # use single quotes, na put single quotes into double quotes
-    # the string $'b ni then quoted as '$'"'"'b'
+    # the string $'b ni then quoted kama '$'"'"'b'
     rudisha "'" + s.replace("'", "'\"'\"'") + "'"
 
 
@@ -341,5 +341,5 @@ ikiwa __name__ == '__main__':
         _print_tokens(shlex())
     isipokua:
         fn = sys.argv[1]
-        ukijumuisha open(fn) as f:
+        ukijumuisha open(fn) kama f:
             _print_tokens(shlex(f, fn))

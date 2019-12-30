@@ -13,7 +13,7 @@ kutoka test.support agiza FakePath
 
 
 eleza create_file(filename, data=b'foo'):
-    ukijumuisha open(filename, 'xb', 0) as fp:
+    ukijumuisha open(filename, 'xb', 0) kama fp:
         fp.write(data)
 
 
@@ -26,7 +26,7 @@ kundi GenericTest:
         kila attr kwenye self.common_attributes + self.attributes:
             ukijumuisha self.assertRaises(TypeError):
                 getattr(self.pathmodule, attr)()
-                 ashiria self.fail("{}.{}() did sio  ashiria a TypeError"
+                ashiria self.fail("{}.{}() did sio ashiria a TypeError"
                                 .format(self.pathmodule.__name__, attr))
 
     eleza test_commonprefix(self):
@@ -113,10 +113,10 @@ kundi GenericTest:
 
         create_file(filename, b'foo')
 
-        ukijumuisha open(filename, "ab", 0) as f:
+        ukijumuisha open(filename, "ab", 0) kama f:
             f.write(b"bar")
 
-        ukijumuisha open(filename, "rb", 0) as f:
+        ukijumuisha open(filename, "rb", 0) kama f:
             data = f.read()
         self.assertEqual(data, b"foobar")
 
@@ -248,7 +248,7 @@ kundi GenericTest:
     eleza test_samefile_on_link(self):
         jaribu:
             self._test_samefile_on_link_func(os.link)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_samestat(self):
@@ -290,7 +290,7 @@ kundi GenericTest:
     eleza test_samestat_on_link(self):
         jaribu:
             self._test_samestat_on_link_func(os.link)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.link(): %s' % e)
 
     eleza test_sameopenfile(self):
@@ -298,9 +298,9 @@ kundi GenericTest:
         self.addCleanup(support.unlink, filename)
         create_file(filename)
 
-        ukijumuisha open(filename, "rb", 0) as fp1:
+        ukijumuisha open(filename, "rb", 0) kama fp1:
             fd1 = fp1.fileno()
-            ukijumuisha open(filename, "rb", 0) as fp2:
+            ukijumuisha open(filename, "rb", 0) kama fp2:
                 fd2 = fp2.fileno()
                 self.assertKweli(self.pathmodule.sameopenfile(fd1, fd2))
 
@@ -313,7 +313,7 @@ kundi TestGenericTest(GenericTest, unittest.TestCase):
 
     eleza test_invalid_paths(self):
         kila attr kwenye GenericTest.common_attributes:
-            # os.path.commonprefix doesn't  ashiria ValueError
+            # os.path.commonprefix doesn't ashiria ValueError
             ikiwa attr == 'commonprefix':
                 endelea
             func = getattr(self.pathmodule, attr)
@@ -374,7 +374,7 @@ kundi CommonTest(GenericTest):
 
     eleza test_expandvars(self):
         expandvars = self.pathmodule.expandvars
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             env["foo"] = "bar"
             env["{foo"] = "baz1"
@@ -408,7 +408,7 @@ kundi CommonTest(GenericTest):
         expandvars = self.pathmodule.expandvars
         eleza check(value, expected):
             self.assertEqual(expandvars(value), expected)
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env.clear()
             nonascii = support.FS_NONASCII
             env['spam'] = nonascii
@@ -465,9 +465,9 @@ kundi CommonTest(GenericTest):
         unicwd = '\xe7w\xf0'
         jaribu:
             os.fsencode(unicwd)
-        except (AttributeError, UnicodeEncodeError):
+        tatizo (AttributeError, UnicodeEncodeError):
             # FS encoding ni probably ASCII
-            pass
+            pita
         isipokua:
             ukijumuisha support.temp_cwd(unicwd):
                 kila path kwenye ('', 'fuu', 'f\xf9\xf9', '/fuu', 'U:\\'):
@@ -479,9 +479,9 @@ kundi CommonTest(GenericTest):
         # UTF-8 name. Windows allows creating a directory ukijumuisha an
         # arbitrary bytes name, but fails to enter this directory
         # (when the bytes name ni used).
-        na sys.platform sio kwenye ('win32', 'darwin')):
+        na sys.platform haiko kwenye ('win32', 'darwin')):
             name = support.TESTFN_UNDECODABLE
-        elikiwa support.TESTFN_NONASCII:
+        lasivyo support.TESTFN_NONASCII:
             name = support.TESTFN_NONASCII
         isipokua:
             self.skipTest("need support.TESTFN_NONASCII")

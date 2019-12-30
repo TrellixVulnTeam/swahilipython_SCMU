@@ -1,7 +1,7 @@
 """Stuff to parse Sun na NeXT audio files.
 
 An audio file consists of a header followed by the data.  The structure
-of the header ni as follows.
+of the header ni kama follows.
 
         +---------------+
         | magic word    |
@@ -71,7 +71,7 @@ is destroyed.
 Writing audio files:
         f = sunau.open(file, 'w')
 where file ni either the name of a file ama an open file pointer.
-The open file pointer must have methods write(), tell(), seek(), and
+The open file pointer must have methods write(), tell(), seek(), na
 close().
 
 This returns an instance of a kundi ukijumuisha the following public methods:
@@ -91,13 +91,13 @@ This returns an instance of a kundi ukijumuisha the following public methods:
                         -- write audio frames na patch up the file header
         close()         -- patch up the file header na close the
                            output file
-You should set the parameters before the first writeframesraw or
+You should set the parameters before the first writeframesraw ama
 writeframes.  The total number of frames does sio need to be set,
 but when it ni set to the correct value, the header does sio have to
 be patched up.
 It ni best to first set all parameters, perhaps possibly the
 compression type, na then write audio frames using writeframesraw.
-When all frames have been written, either call writeframes(b'') or
+When all frames have been written, either call writeframes(b'') ama
 close() to patch up the sizes kwenye the header.
 The close() method ni called automatically when the kundi instance
 is destroyed.
@@ -135,14 +135,14 @@ _simple_encodings = [AUDIO_FILE_ENCODING_MULAW_8,
                      AUDIO_FILE_ENCODING_ALAW_8]
 
 kundi Error(Exception):
-    pass
+    pita
 
 eleza _read_u32(file):
     x = 0
     kila i kwenye range(4):
         byte = file.read(1)
         ikiwa sio byte:
-             ashiria EOFError
+            ashiria EOFError
         x = x*256 + ord(byte)
     rudisha x
 
@@ -180,36 +180,36 @@ kundi Au_read:
         self._soundpos = 0
         magic = int(_read_u32(file))
         ikiwa magic != AUDIO_FILE_MAGIC:
-             ashiria Error('bad magic number')
+            ashiria Error('bad magic number')
         self._hdr_size = int(_read_u32(file))
         ikiwa self._hdr_size < 24:
-             ashiria Error('header size too small')
+            ashiria Error('header size too small')
         ikiwa self._hdr_size > 100:
-             ashiria Error('header size ridiculously large')
+            ashiria Error('header size ridiculously large')
         self._data_size = _read_u32(file)
         ikiwa self._data_size != AUDIO_UNKNOWN_SIZE:
             self._data_size = int(self._data_size)
         self._encoding = int(_read_u32(file))
-        ikiwa self._encoding sio kwenye _simple_encodings:
-             ashiria Error('encoding sio (yet) supported')
+        ikiwa self._encoding haiko kwenye _simple_encodings:
+            ashiria Error('encoding sio (yet) supported')
         ikiwa self._encoding kwenye (AUDIO_FILE_ENCODING_MULAW_8,
                   AUDIO_FILE_ENCODING_ALAW_8):
             self._sampwidth = 2
             self._framesize = 1
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_8:
             self._framesize = self._sampwidth = 1
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_16:
             self._framesize = self._sampwidth = 2
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_24:
             self._framesize = self._sampwidth = 3
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_LINEAR_32:
             self._framesize = self._sampwidth = 4
         isipokua:
-             ashiria Error('unknown encoding')
+            ashiria Error('unknown encoding')
         self._framerate = int(_read_u32(file))
         self._nchannels = int(_read_u32(file))
         ikiwa sio self._nchannels:
-             ashiria Error('bad # of channels')
+            ashiria Error('bad # of channels')
         self._framesize = self._framesize * self._nchannels
         ikiwa self._hdr_size > 24:
             self._info = file.read(self._hdr_size - 24)
@@ -218,7 +218,7 @@ kundi Au_read:
             self._info = b''
         jaribu:
             self._data_pos = file.tell()
-        except (AttributeError, OSError):
+        tatizo (AttributeError, OSError):
             self._data_pos = Tupu
 
     eleza getfp(self):
@@ -243,7 +243,7 @@ kundi Au_read:
     eleza getcomptype(self):
         ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
             rudisha 'ULAW'
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'ALAW'
         isipokua:
             rudisha 'NONE'
@@ -251,7 +251,7 @@ kundi Au_read:
     eleza getcompname(self):
         ikiwa self._encoding == AUDIO_FILE_ENCODING_MULAW_8:
             rudisha 'CCITT G.711 u-law'
-        elikiwa self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
+        lasivyo self._encoding == AUDIO_FILE_ENCODING_ALAW_8:
             rudisha 'CCITT G.711 A-law'
         isipokua:
             rudisha 'not compressed'
@@ -265,7 +265,7 @@ kundi Au_read:
         rudisha Tupu
 
     eleza getmark(self, id):
-         ashiria Error('no marks')
+        ashiria Error('no marks')
 
     eleza readframes(self, nframes):
         ikiwa self._encoding kwenye _simple_encodings:
@@ -282,7 +282,7 @@ kundi Au_read:
 
     eleza rewind(self):
         ikiwa self._data_pos ni Tupu:
-             ashiria OSError('cannot seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos)
         self._soundpos = 0
 
@@ -291,9 +291,9 @@ kundi Au_read:
 
     eleza setpos(self, pos):
         ikiwa pos < 0 ama pos > self.getnframes():
-             ashiria Error('position sio kwenye range')
+            ashiria Error('position haiko kwenye range')
         ikiwa self._data_pos ni Tupu:
-             ashiria OSError('cannot seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._data_pos + pos * self._framesize)
         self._soundpos = pos
 
@@ -341,43 +341,43 @@ kundi Au_write:
 
     eleza setnchannels(self, nchannels):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
-        ikiwa nchannels sio kwenye (1, 2, 4):
-             ashiria Error('only 1, 2, ama 4 channels supported')
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa nchannels haiko kwenye (1, 2, 4):
+            ashiria Error('only 1, 2, ama 4 channels supported')
         self._nchannels = nchannels
 
     eleza getnchannels(self):
         ikiwa sio self._nchannels:
-             ashiria Error('number of channels sio set')
+            ashiria Error('number of channels sio set')
         rudisha self._nchannels
 
     eleza setsampwidth(self, sampwidth):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
-        ikiwa sampwidth sio kwenye (1, 2, 3, 4):
-             ashiria Error('bad sample width')
+            ashiria Error('cannot change parameters after starting to write')
+        ikiwa sampwidth haiko kwenye (1, 2, 3, 4):
+            ashiria Error('bad sample width')
         self._sampwidth = sampwidth
 
     eleza getsampwidth(self):
         ikiwa sio self._framerate:
-             ashiria Error('sample width sio specified')
+            ashiria Error('sample width sio specified')
         rudisha self._sampwidth
 
     eleza setframerate(self, framerate):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         self._framerate = framerate
 
     eleza getframerate(self):
         ikiwa sio self._framerate:
-             ashiria Error('frame rate sio set')
+            ashiria Error('frame rate sio set')
         rudisha self._framerate
 
     eleza setnframes(self, nframes):
         ikiwa self._nframeswritten:
-             ashiria Error('cannot change parameters after starting to write')
+            ashiria Error('cannot change parameters after starting to write')
         ikiwa nframes < 0:
-             ashiria Error('# of frames cannot be negative')
+            ashiria Error('# of frames cannot be negative')
         self._nframes = nframes
 
     eleza getnframes(self):
@@ -387,7 +387,7 @@ kundi Au_write:
         ikiwa type kwenye ('NONE', 'ULAW'):
             self._comptype = type
         isipokua:
-             ashiria Error('unknown compression type')
+            ashiria Error('unknown compression type')
 
     eleza getcomptype(self):
         rudisha self._comptype
@@ -395,7 +395,7 @@ kundi Au_write:
     eleza getcompname(self):
         ikiwa self._comptype == 'ULAW':
             rudisha 'CCITT G.711 u-law'
-        elikiwa self._comptype == 'ALAW':
+        lasivyo self._comptype == 'ALAW':
             rudisha 'CCITT G.711 A-law'
         isipokua:
             rudisha 'not compressed'
@@ -455,11 +455,11 @@ kundi Au_write:
     eleza _ensure_header_written(self):
         ikiwa sio self._nframeswritten:
             ikiwa sio self._nchannels:
-                 ashiria Error('# of channels sio specified')
+                ashiria Error('# of channels sio specified')
             ikiwa sio self._sampwidth:
-                 ashiria Error('sample width sio specified')
+                ashiria Error('sample width sio specified')
             ikiwa sio self._framerate:
-                 ashiria Error('frame rate sio specified')
+                ashiria Error('frame rate sio specified')
             self._write_header()
 
     eleza _write_header(self):
@@ -467,22 +467,22 @@ kundi Au_write:
             ikiwa self._sampwidth == 1:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_8
                 self._framesize = 1
-            elikiwa self._sampwidth == 2:
+            lasivyo self._sampwidth == 2:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_16
                 self._framesize = 2
-            elikiwa self._sampwidth == 3:
+            lasivyo self._sampwidth == 3:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_24
                 self._framesize = 3
-            elikiwa self._sampwidth == 4:
+            lasivyo self._sampwidth == 4:
                 encoding = AUDIO_FILE_ENCODING_LINEAR_32
                 self._framesize = 4
             isipokua:
-                 ashiria Error('internal error')
-        elikiwa self._comptype == 'ULAW':
+                ashiria Error('internal error')
+        lasivyo self._comptype == 'ULAW':
             encoding = AUDIO_FILE_ENCODING_MULAW_8
             self._framesize = 1
         isipokua:
-             ashiria Error('internal error')
+            ashiria Error('internal error')
         self._framesize = self._framesize * self._nchannels
         _write_u32(self._file, AUDIO_FILE_MAGIC)
         header_size = 25 + len(self._info)
@@ -494,7 +494,7 @@ kundi Au_write:
             length = self._nframes * self._framesize
         jaribu:
             self._form_length_pos = self._file.tell()
-        except (AttributeError, OSError):
+        tatizo (AttributeError, OSError):
             self._form_length_pos = Tupu
         _write_u32(self._file, length)
         self._datalength = length
@@ -506,7 +506,7 @@ kundi Au_write:
 
     eleza _patchheader(self):
         ikiwa self._form_length_pos ni Tupu:
-             ashiria OSError('cannot seek')
+            ashiria OSError('cannot seek')
         self._file.seek(self._form_length_pos)
         _write_u32(self._file, self._datawritten)
         self._datalength = self._datawritten
@@ -520,10 +520,10 @@ eleza open(f, mode=Tupu):
             mode = 'rb'
     ikiwa mode kwenye ('r', 'rb'):
         rudisha Au_read(f)
-    elikiwa mode kwenye ('w', 'wb'):
+    lasivyo mode kwenye ('w', 'wb'):
         rudisha Au_write(f)
     isipokua:
-         ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
+        ashiria Error("mode must be 'r', 'rb', 'w', ama 'wb'")
 
 eleza openfp(f, mode=Tupu):
     warnings.warn("sunau.openfp ni deprecated since Python 3.7. "

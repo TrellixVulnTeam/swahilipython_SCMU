@@ -17,8 +17,8 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 
@@ -29,10 +29,10 @@ by Wally Feurzig na Seymour Papert kwenye 1966.
 
 Imagine a robotic turtle starting at (0, 0) kwenye the x-y plane. After an ``agiza turtle``, give it
 the command turtle.forward(15), na it moves (on-screen!) 15 pixels in
-the direction it ni facing, drawing a line as it moves. Give it the
+the direction it ni facing, drawing a line kama it moves. Give it the
 command turtle.right(25), na it rotates in-place 25 degrees clockwise.
 
-By combining together these na similar commands, intricate shapes and
+By combining together these na similar commands, intricate shapes na
 pictures can easily be drawn.
 
 ----- turtle.py
@@ -49,10 +49,10 @@ the -n switch.
 Roughly it has the following features added:
 
 - Better animation of the turtle movements, especially of turning the
-  turtle. So the turtles can more easily be used as a visual feedback
+  turtle. So the turtles can more easily be used kama a visual feedback
   instrument by the (beginning) programmer.
 
-- Different turtle shapes, gif-images as turtle shapes, user defined
+- Different turtle shapes, gif-images kama turtle shapes, user defined
   na user controllable turtle shapes, among them compound
   (multicolored) shapes. Turtle shapes can be stretched na tilted, which
   makes turtles very versatile geometrical objects.
@@ -72,9 +72,9 @@ Roughly it has the following features added:
   (mouse-, key-, timer-events). Especially useful kila programming games.
 
 - A scrollable Canvas class. The default scrollable Canvas can be
-  extended interactively as needed wakati playing around ukijumuisha the turtle(s).
+  extended interactively kama needed wakati playing around ukijumuisha the turtle(s).
 
-- A TurtleScreen kundi ukijumuisha methods controlling background color or
+- A TurtleScreen kundi ukijumuisha methods controlling background color ama
   background image, window na canvas size na other properties of the
   TurtleScreen.
 
@@ -93,7 +93,7 @@ Roughly it has the following features added:
   dictionary kwenye some different language, supplied separately  na replaces
   the English ones by those read in. There ni a utility function
   write_docstringdict() to write a dictionary ukijumuisha the original (English)
-  docstrings to disc, so it can serve as a template kila translations.
+  docstrings to disc, so it can serve kama a template kila translations.
 
 Behind the scenes there are some features included ukijumuisha possible
 extensions kwenye mind. These will be commented na documented elsewhere.
@@ -104,7 +104,7 @@ _ver = "turtle 1.1b- - kila Python 3.1   -  4. 5. 2009"
 
 # andika(_ver)
 
-agiza tkinter as TK
+agiza tkinter kama TK
 agiza types
 agiza math
 agiza time
@@ -170,7 +170,7 @@ _CFG = {"width" : 0.5,               # Screen
 
 eleza config_dict(filename):
     """Convert content of config-file into dictionary."""
-    ukijumuisha open(filename, "r") as f:
+    ukijumuisha open(filename, "r") kama f:
         cfglines = f.readlines()
     cfgdict = {}
     kila line kwenye cfglines:
@@ -179,7 +179,7 @@ eleza config_dict(filename):
             endelea
         jaribu:
             key, value = line.split("=")
-        except ValueError:
+        tatizo ValueError:
             andika("Bad line kwenye config-file %s:\n%s" % (filename,line))
             endelea
         key = key.strip()
@@ -192,8 +192,8 @@ eleza config_dict(filename):
                     value = float(value)
                 isipokua:
                     value = int(value)
-            except ValueError:
-                pass # value need sio be converted
+            tatizo ValueError:
+                pita # value need sio be converted
         cfgdict[key] = value
     rudisha cfgdict
 
@@ -220,7 +220,7 @@ eleza readconfig(cfgdict):
     jaribu:
         head, tail = split(__file__)
         cfg_file2 = join(head, default_cfg)
-    except Exception:
+    tatizo Exception:
         cfg_file2 = ""
     ikiwa isfile(cfg_file2):
         cfgdict2 = config_dict(cfg_file2)
@@ -229,12 +229,12 @@ eleza readconfig(cfgdict):
 
 jaribu:
     readconfig(_CFG)
-except Exception:
+tatizo Exception:
     print ("No configfile read, reason unknown")
 
 
 kundi Vec2D(tuple):
-    """A 2 dimensional vector class, used as a helper class
+    """A 2 dimensional vector class, used kama a helper class
     kila implementing turtle graphics.
     May be useful kila turtle graphics programs also.
     Derived kutoka tuple, so a vector ni a tuple!
@@ -313,7 +313,7 @@ eleza __forwardmethods(fromClass, toClass, toPart, exclude = ()):
     mfc = __methods(fromClass)
     kila ex kwenye _dict_1.keys():
         ikiwa ex[:1] == '_' ama ex[-1:] == '_' ama ex kwenye exclude ama ex kwenye mfc:
-            pass
+            pita
         isipokua:
             _dict[ex] = _dict_1[ex]
 
@@ -329,7 +329,7 @@ eleza __forwardmethods(fromClass, toClass, toPart, exclude = ()):
 kundi ScrolledCanvas(TK.Frame):
     """Modeled after the scrolled canvas kundi kutoka Grayons's Tkinter book.
 
-    Used as the default canvas, which pops up automatically when
+    Used kama the default canvas, which pops up automatically when
     using turtle graphics functions ama the Turtle class.
     """
     eleza __init__(self, master, width=500, height=350,
@@ -571,7 +571,7 @@ kundi TurtleScreenBase(object):
         jaribu:
             rgb = self.cv.winfo_rgb(color)
             ok = Kweli
-        except TK.TclError:
+        tatizo TK.TclError:
             ok = Uongo
         rudisha ok
 
@@ -653,8 +653,8 @@ kundi TurtleScreenBase(object):
                     x, y = (self.cv.canvasx(event.x)/self.xscale,
                            -self.cv.canvasy(event.y)/self.yscale)
                     fun(x, y)
-                except Exception:
-                    pass
+                tatizo Exception:
+                    pita
             self.cv.tag_bind(item, "<Button%s-Motion>" % num, eventfun, add)
 
     eleza _onscreenclick(self, fun, num=1, add=Tupu):
@@ -723,7 +723,7 @@ kundi TurtleScreenBase(object):
         rudisha self.cv.create_image(0, 0, image=image)
 
     eleza _drawimage(self, item, pos, image):
-        """Configure image item as to draw image object
+        """Configure image item kama to draw image object
         at position (x,y) on canvas)
         """
         x, y = pos
@@ -731,7 +731,7 @@ kundi TurtleScreenBase(object):
         self.cv.itemconfig(item, image=image)
 
     eleza _setbgpic(self, item, image):
-        """Configure image item as to draw image object
+        """Configure image item kama to draw image object
         at center of canvas. Set item to the first item
         kwenye the displaylist, so it will be drawn below
         any other item ."""
@@ -860,7 +860,7 @@ kundi Terminator (Exception):
     This stops execution of a turtle graphics script.
     Main purpose: use kwenye the Demo-Viewer turtle.Demo.py.
     """
-    pass
+    pita
 
 
 kundi TurtleGraphicsError(Exception):
@@ -880,15 +880,15 @@ kundi Shape(object):
         ikiwa type_ == "polygon":
             ikiwa isinstance(data, list):
                 data = tuple(data)
-        elikiwa type_ == "image":
+        lasivyo type_ == "image":
             ikiwa isinstance(data, str):
                 ikiwa data.lower().endswith(".gif") na isfile(data):
                     data = TurtleScreen._image(data)
                 # isipokua data assumed to be Photoimage
-        elikiwa type_ == "compound":
+        lasivyo type_ == "compound":
             data = []
         isipokua:
-             ashiria TurtleGraphicsError("There ni no shape type %s" % type_)
+            ashiria TurtleGraphicsError("There ni no shape type %s" % type_)
         self._data = data
 
     eleza addcomponent(self, poly, fill, outline=Tupu):
@@ -908,7 +908,7 @@ kundi Shape(object):
         >>> # .. add more components na then use register_shape()
         """
         ikiwa self._type != "compound":
-             ashiria TurtleGraphicsError("Cannot add component to %s Shape"
+            ashiria TurtleGraphicsError("Cannot add component to %s Shape"
                                                                 % self._type)
         ikiwa outline ni Tupu:
             outline = fill
@@ -916,7 +916,7 @@ kundi Shape(object):
 
 
 kundi Tbuffer(object):
-    """Ring buffer used as undobuffer kila RawTurtle objects."""
+    """Ring buffer used kama undobuffer kila RawTurtle objects."""
     eleza __init__(self, bufsize=10):
         self.bufsize = bufsize
         self.buffer = [[Tupu]] * bufsize
@@ -1012,7 +1012,7 @@ kundi TurtleScreen(TurtleScreenBase):
         Example (kila a TurtleScreen instance named screen):
         >>> screen.clear()
 
-        Note: this method ni sio available as function.
+        Note: this method ni sio available kama function.
         """
         self._delayvalue = _CFG["delay"]
         self._colormode = _CFG["colormode"]
@@ -1056,8 +1056,8 @@ kundi TurtleScreen(TurtleScreenBase):
         ikiwa mode ni Tupu:
             rudisha self._mode
         mode = mode.lower()
-        ikiwa mode sio kwenye ["standard", "logo", "world"]:
-             ashiria TurtleGraphicsError("No turtle-graphics-mode %s" % mode)
+        ikiwa mode haiko kwenye ["standard", "logo", "world"]:
+            ashiria TurtleGraphicsError("No turtle-graphics-mode %s" % mode)
         self._mode = mode
         ikiwa mode kwenye ["standard", "logo"]:
             self._setscrollregion(-self.canvwidth//2, -self.canvheight//2,
@@ -1132,9 +1132,9 @@ kundi TurtleScreen(TurtleScreenBase):
             ikiwa name.lower().endswith(".gif"):
                 shape = Shape("image", self._image(name))
             isipokua:
-                 ashiria TurtleGraphicsError("Bad arguments kila register_shape.\n"
+                ashiria TurtleGraphicsError("Bad arguments kila register_shape.\n"
                                           + "Use  help(register_shape)" )
-        elikiwa isinstance(shape, tuple):
+        lasivyo isinstance(shape, tuple):
             shape = Shape("polygon", shape)
         ## isipokua shape assumed to be Shape-instance
         self._shapes[name] = shape
@@ -1155,15 +1155,15 @@ kundi TurtleScreen(TurtleScreenBase):
             ikiwa self._iscolorstring(color) ama color == "":
                 rudisha color
             isipokua:
-                 ashiria TurtleGraphicsError("bad color string: %s" % str(color))
+                ashiria TurtleGraphicsError("bad color string: %s" % str(color))
         jaribu:
             r, g, b = color
-        except (TypeError, ValueError):
-             ashiria TurtleGraphicsError("bad color arguments: %s" % str(color))
+        tatizo (TypeError, ValueError):
+            ashiria TurtleGraphicsError("bad color arguments: %s" % str(color))
         ikiwa self._colormode == 1.0:
             r, g, b = [round(255.0*x) kila x kwenye (r, g, b)]
         ikiwa sio ((0 <= r <= 255) na (0 <= g <= 255) na (0 <= b <= 255)):
-             ashiria TurtleGraphicsError("bad color sequence: %s" % str(color))
+            ashiria TurtleGraphicsError("bad color sequence: %s" % str(color))
         rudisha "#%02x%02x%02x" % (r, g, b)
 
     eleza _color(self, cstr):
@@ -1171,10 +1171,10 @@ kundi TurtleScreen(TurtleScreenBase):
             rudisha cstr
         ikiwa len(cstr) == 7:
             cl = [int(cstr[i:i+2], 16) kila i kwenye (1, 3, 5)]
-        elikiwa len(cstr) == 4:
+        lasivyo len(cstr) == 4:
             cl = [16*int(cstr[h], 16) kila h kwenye cstr[1:]]
         isipokua:
-             ashiria TurtleGraphicsError("bad colorstring: %s" % cstr)
+            ashiria TurtleGraphicsError("bad colorstring: %s" % cstr)
         rudisha tuple(c * self._colormode/255 kila c kwenye cl)
 
     eleza colormode(self, cmode=Tupu):
@@ -1195,7 +1195,7 @@ kundi TurtleScreen(TurtleScreenBase):
             rudisha self._colormode
         ikiwa cmode == 1.0:
             self._colormode = float(cmode)
-        elikiwa cmode == 255:
+        lasivyo cmode == 255:
             self._colormode = int(cmode)
 
     eleza reset(self):
@@ -1289,7 +1289,7 @@ kundi TurtleScreen(TurtleScreenBase):
         """Increment update counter."""
         ikiwa sio TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Kweli
-             ashiria Terminator
+            ashiria Terminator
         ikiwa self._tracing > 0:
             self._updatecounter += 1
             self._updatecounter %= self._tracing
@@ -1389,7 +1389,7 @@ kundi TurtleScreen(TurtleScreenBase):
         ikiwa fun ni Tupu:
             ikiwa key kwenye self._keys:
                 self._keys.remove(key)
-        elikiwa key sio kwenye self._keys:
+        lasivyo key haiko kwenye self._keys:
             self._keys.append(key)
         self._onkeyrelease(fun, key)
 
@@ -1421,7 +1421,7 @@ kundi TurtleScreen(TurtleScreenBase):
         ikiwa fun ni Tupu:
             ikiwa key kwenye self._keys:
                 self._keys.remove(key)
-        elikiwa key ni sio Tupu na key sio kwenye self._keys:
+        lasivyo key ni sio Tupu na key haiko kwenye self._keys:
             self._keys.append(key)
         self._onkeypress(fun, key)
 
@@ -1430,7 +1430,7 @@ kundi TurtleScreen(TurtleScreenBase):
 
         No arguments.
         Dummy arguments are provided kwenye order
-        to be able to pass listen to the onclick method.
+        to be able to pita listen to the onclick method.
 
         Example (kila a TurtleScreen instance named screen):
         >>> screen.listen()
@@ -1464,7 +1464,7 @@ kundi TurtleScreen(TurtleScreenBase):
         Optional argument:
         picname -- a string, name of a gif-file ama "nopic".
 
-        If picname ni a filename, set the corresponding image as background.
+        If picname ni a filename, set the corresponding image kama background.
         If picname ni "nopic", delete backgroundimage, ikiwa present.
         If picname ni Tupu, rudisha the filename of the current backgroundimage.
 
@@ -1477,7 +1477,7 @@ kundi TurtleScreen(TurtleScreenBase):
         """
         ikiwa picname ni Tupu:
             rudisha self._bgpicname
-        ikiwa picname sio kwenye self._bgpics:
+        ikiwa picname haiko kwenye self._bgpics:
             self._bgpics[picname] = self._image(picname)
         self._setbgpic(self._bgpic, self._bgpics[picname])
         self._bgpicname = picname
@@ -1542,7 +1542,7 @@ kundi TNavigator(object):
         """
         ikiwa mode ni Tupu:
             rudisha self._mode
-        ikiwa mode sio kwenye ["standard", "logo", "world"]:
+        ikiwa mode haiko kwenye ["standard", "logo", "world"]:
             return
         self._mode = mode
         ikiwa mode kwenye ["standard", "world"]:
@@ -1576,7 +1576,7 @@ kundi TNavigator(object):
         >>> turtle.heading()
         90
 
-        Change angle measurement unit to grad (also known as gon,
+        Change angle measurement unit to grad (also known kama gon,
         grade, ama gradian na equals 1/100-th of the right angle.)
         >>> turtle.degrees(400.0)
         >>> turtle.heading()
@@ -1699,7 +1699,7 @@ kundi TNavigator(object):
         self._rotate(angle)
 
     eleza pos(self):
-        """Return the turtle's current location (x,y), as a Vec2D-vector.
+        """Return the turtle's current location (x,y), kama a Vec2D-vector.
 
         Aliases: pos | position
 
@@ -1751,7 +1751,7 @@ kundi TNavigator(object):
 
         call: goto(x, y)         # two coordinates
         --or: goto((x, y))       # a pair (tuple) of coordinates
-        --or: goto(vec)          # e.g. as returned by pos()
+        --or: goto(vec)          # e.g. kama returned by pos()
 
         Move turtle to an absolute position. If the pen ni down,
         a line will be drawn. The turtle's orientation does sio change.
@@ -1834,7 +1834,7 @@ kundi TNavigator(object):
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
-        --or: distance(vec)          # e.g. as returned by pos()
+        --or: distance(vec)          # e.g. kama returned by pos()
         --or: distance(mypen)        # where mypen ni another turtle
 
         Example (kila a Turtle instance named turtle):
@@ -1851,9 +1851,9 @@ kundi TNavigator(object):
             pos = Vec2D(x, y)
         ikiwa isinstance(x, Vec2D):
             pos = x
-        elikiwa isinstance(x, tuple):
+        lasivyo isinstance(x, tuple):
             pos = Vec2D(*x)
-        elikiwa isinstance(x, TNavigator):
+        lasivyo isinstance(x, TNavigator):
             pos = x._position
         rudisha abs(pos - self._position)
 
@@ -1866,7 +1866,7 @@ kundi TNavigator(object):
 
         call: distance(x, y)         # two coordinates
         --or: distance((x, y))       # a pair (tuple) of coordinates
-        --or: distance(vec)          # e.g. as returned by pos()
+        --or: distance(vec)          # e.g. kama returned by pos()
         --or: distance(mypen)        # where mypen ni another turtle
 
         Return the angle, between the line kutoka turtle-position to position
@@ -1883,9 +1883,9 @@ kundi TNavigator(object):
             pos = Vec2D(x, y)
         ikiwa isinstance(x, Vec2D):
             pos = x
-        elikiwa isinstance(x, tuple):
+        lasivyo isinstance(x, tuple):
             pos = Vec2D(*x)
-        elikiwa isinstance(x, TNavigator):
+        lasivyo isinstance(x, TNavigator):
             pos = x._position
         x, y = pos - self._position
         result = round(math.atan2(y, x)*180.0/math.pi, 10) % 360.0
@@ -2167,7 +2167,7 @@ kundi TPen(object):
             rudisha self._speed
         ikiwa speed kwenye speeds:
             speed = speeds[speed]
-        elikiwa 0.5 < speed < 10.5:
+        lasivyo 0.5 < speed < 10.5:
             speed = int(round(speed))
         isipokua:
             speed = 0
@@ -2178,14 +2178,14 @@ kundi TPen(object):
 
         Arguments:
         Several input formats are allowed.
-        They use 0, 1, 2, ama 3 arguments as follows:
+        They use 0, 1, 2, ama 3 arguments kama follows:
 
         color()
             Return the current pencolor na the current fillcolor
-            as a pair of color specification strings as are returned
+            kama a pair of color specification strings kama are returned
             by pencolor na fillcolor.
         color(colorstring), color((r,g,b)), color(r,g,b)
-            inputs as kwenye pencolor, set both, fillcolor na pencolor,
+            inputs kama kwenye pencolor, set both, fillcolor na pencolor,
             to the given value.
         color(colorstring1, colorstring2),
         color((r1,g1,b1), (r2,g2,b2))
@@ -2209,9 +2209,9 @@ kundi TPen(object):
             l = len(args)
             ikiwa l == 1:
                 pcolor = fcolor = args[0]
-            elikiwa l == 2:
+            lasivyo l == 2:
                 pcolor, fcolor = args
-            elikiwa l == 3:
+            lasivyo l == 3:
                 pcolor = fcolor = args
             pcolor = self._colorstr(pcolor)
             fcolor = self._colorstr(fcolor)
@@ -2225,11 +2225,11 @@ kundi TPen(object):
         Arguments:
         Four input formats are allowed:
           - pencolor()
-            Return the current pencolor as color specification string,
+            Return the current pencolor kama color specification string,
             possibly kwenye hex-number format (see example).
-            May be used as input to another color/pencolor/fillcolor call.
+            May be used kama input to another color/pencolor/fillcolor call.
           - pencolor(colorstring)
-            s ni a Tk color specification string, such as "red" ama "yellow"
+            s ni a Tk color specification string, such kama "red" ama "yellow"
           - pencolor((r, g, b))
             *a tuple* of r, g, na b, which represent, an RGB color,
             na each of r, g, na b are kwenye the range 0..colormode,
@@ -2262,11 +2262,11 @@ kundi TPen(object):
         Arguments:
         Four input formats are allowed:
           - fillcolor()
-            Return the current fillcolor as color specification string,
+            Return the current fillcolor kama color specification string,
             possibly kwenye hex-number format (see example).
-            May be used as input to another color/pencolor/fillcolor call.
+            May be used kama input to another color/pencolor/fillcolor call.
           - fillcolor(colorstring)
-            s ni a Tk color specification string, such as "red" ama "yellow"
+            s ni a Tk color specification string, such kama "red" ama "yellow"
           - fillcolor((r, g, b))
             *a tuple* of r, g, na b, which represent, an RGB color,
             na each of r, g, na b are kwenye the range 0..colormode,
@@ -2339,7 +2339,7 @@ kundi TPen(object):
         Arguments:
             pen -- a dictionary ukijumuisha some ama all of the below listed keys.
             **pendict -- one ama more keyword-arguments ukijumuisha the below
-                         listed keys as keywords.
+                         listed keys kama keywords.
 
         Return ama set the pen's attributes kwenye a 'pen-dictionary'
         ukijumuisha the following key/value pairs:
@@ -2355,9 +2355,9 @@ kundi TPen(object):
            "outline"    :   positive number
            "tilt"       :   number
 
-        This dictionary can be used as argument kila a subsequent
+        This dictionary can be used kama argument kila a subsequent
         pen()-call to restore the former pen-state. Moreover one
-        ama more of these attributes can be provided as keyword-arguments.
+        ama more of these attributes can be provided kama keyword-arguments.
         This can be used to set several pen attributes kwenye one statement.
 
 
@@ -2496,15 +2496,15 @@ kundi _TurtleImage(object):
             return
         ikiwa self._type kwenye ["image", "polygon"]:
             screen._delete(self._item)
-        elikiwa self._type == "compound":
+        lasivyo self._type == "compound":
             kila item kwenye self._item:
                 screen._delete(item)
         self._type = screen._shapes[shapeIndex]._type
         ikiwa self._type == "polygon":
             self._item = screen._createpoly()
-        elikiwa self._type == "image":
+        lasivyo self._type == "image":
             self._item = screen._createimage(screen._shapes["blank"]._data)
-        elikiwa self._type == "compound":
+        lasivyo self._type == "compound":
             self._item = [screen._createpoly() kila item in
                                           screen._shapes[shapeIndex]._data]
 
@@ -2522,11 +2522,11 @@ kundi RawTurtle(TPen, TNavigator):
                  visible=_CFG["visible"]):
         ikiwa isinstance(canvas, _Screen):
             self.screen = canvas
-        elikiwa isinstance(canvas, TurtleScreen):
-            ikiwa canvas sio kwenye RawTurtle.screens:
+        lasivyo isinstance(canvas, TurtleScreen):
+            ikiwa canvas haiko kwenye RawTurtle.screens:
                 RawTurtle.screens.append(canvas)
             self.screen = canvas
-        elikiwa isinstance(canvas, (ScrolledCanvas, Canvas)):
+        lasivyo isinstance(canvas, (ScrolledCanvas, Canvas)):
             kila screen kwenye RawTurtle.screens:
                 ikiwa screen.cv == canvas:
                     self.screen = screen
@@ -2535,7 +2535,7 @@ kundi RawTurtle(TPen, TNavigator):
                 self.screen = TurtleScreen(canvas)
                 RawTurtle.screens.append(self.screen)
         isipokua:
-             ashiria TurtleGraphicsError("bad canvas argument %s" % canvas)
+            ashiria TurtleGraphicsError("bad canvas argument %s" % canvas)
 
         screen = self.screen
         TNavigator.__init__(self, screen.mode())
@@ -2633,7 +2633,7 @@ kundi RawTurtle(TPen, TNavigator):
         No arguments.
 
         Delete the turtle's drawings kutoka the screen. Do sio move turtle.
-        State na position of the turtle as well as drawings of other
+        State na position of the turtle kama well kama drawings of other
         turtles are sio affected.
 
         Examples (kila a Turtle instance named turtle):
@@ -2656,7 +2656,7 @@ kundi RawTurtle(TPen, TNavigator):
         screen = self.screen
         ikiwa screen._tracing == 0:
             return
-        elikiwa screen._tracing == 1:
+        lasivyo screen._tracing == 1:
             self._update_data()
             self._drawturtle()
             screen._update()                  # TurtleScreenBase
@@ -2702,12 +2702,12 @@ kundi RawTurtle(TPen, TNavigator):
             rudisha args
         jaribu:
             r, g, b = args
-        except (TypeError, ValueError):
-             ashiria TurtleGraphicsError("bad color arguments: %s" % str(args))
+        tatizo (TypeError, ValueError):
+            ashiria TurtleGraphicsError("bad color arguments: %s" % str(args))
         ikiwa self.screen._colormode == 1.0:
             r, g, b = [round(255.0*x) kila x kwenye (r, g, b)]
         ikiwa sio ((0 <= r <= 255) na (0 <= g <= 255) na (0 <= b <= 255)):
-             ashiria TurtleGraphicsError("bad color sequence: %s" % str(args))
+            ashiria TurtleGraphicsError("bad color sequence: %s" % str(args))
         rudisha "#%02x%02x%02x" % (r, g, b)
 
     eleza clone(self):
@@ -2741,9 +2741,9 @@ kundi RawTurtle(TPen, TNavigator):
         ttype = screen._shapes[self.turtle.shapeIndex]._type
         ikiwa ttype == "polygon":
             q.turtle._item = screen._createpoly()
-        elikiwa ttype == "image":
+        lasivyo ttype == "image":
             q.turtle._item = screen._createimage(screen._shapes["blank"]._data)
-        elikiwa ttype == "compound":
+        lasivyo ttype == "compound":
             q.turtle._item = [screen._createpoly() kila item in
                               screen._shapes[self.turtle.shapeIndex]._data]
         q.currentLineItem = screen._createline()
@@ -2773,7 +2773,7 @@ kundi RawTurtle(TPen, TNavigator):
         ikiwa name ni Tupu:
             rudisha self.turtle.shapeIndex
         ikiwa sio name kwenye self.screen.getshapes():
-             ashiria TurtleGraphicsError("There ni no shape named %s" % name)
+            ashiria TurtleGraphicsError("There ni no shape named %s" % name)
         self.turtle._setshape(name)
         self._update()
 
@@ -2802,13 +2802,13 @@ kundi RawTurtle(TPen, TNavigator):
             stretch_wid, stretch_len = self._stretchfactor
             rudisha stretch_wid, stretch_len, self._outlinewidth
         ikiwa stretch_wid == 0 ama stretch_len == 0:
-             ashiria TurtleGraphicsError("stretch_wid/stretch_len must sio be zero")
+            ashiria TurtleGraphicsError("stretch_wid/stretch_len must sio be zero")
         ikiwa stretch_wid ni sio Tupu:
             ikiwa stretch_len ni Tupu:
                 stretchfactor = stretch_wid, stretch_wid
             isipokua:
                 stretchfactor = stretch_wid, stretch_len
-        elikiwa stretch_len ni sio Tupu:
+        lasivyo stretch_len ni sio Tupu:
             stretchfactor = self._stretchfactor[0], stretch_len
         isipokua:
             stretchfactor = self._stretchfactor
@@ -2917,7 +2917,7 @@ kundi RawTurtle(TPen, TNavigator):
         If none of the matrix elements are given, rudisha the transformation
         matrix.
         Otherwise set the given elements na transform the turtleshape
-        according to the matrix consisting of first row t11, t12 and
+        according to the matrix consisting of first row t11, t12 na
         second row t21, 22.
         Modify stretchfactor, shearfactor na tiltangle according to the
         given matrix.
@@ -2937,7 +2937,7 @@ kundi RawTurtle(TPen, TNavigator):
         ikiwa t21 ni sio Tupu: m21 = t21
         ikiwa t22 ni sio Tupu: m22 = t22
         ikiwa t11 * t22 - t12 * t21 == 0:
-             ashiria TurtleGraphicsError("Bad shape transform matrix: must sio be singular")
+            ashiria TurtleGraphicsError("Bad shape transform matrix: must sio be singular")
         self._shapetrafo = (m11, m12, m21, m22)
         alfa = math.atan2(-m21, m11) % (2 * math.pi)
         sa, ca = math.sin(alfa), math.cos(alfa)
@@ -2962,7 +2962,7 @@ kundi RawTurtle(TPen, TNavigator):
                                                            kila (x, y) kwenye poly]
 
     eleza get_shapepoly(self):
-        """Return the current shape polygon as tuple of coordinate pairs.
+        """Return the current shape polygon kama tuple of coordinate pairs.
 
         No argument.
 
@@ -2984,10 +2984,10 @@ kundi RawTurtle(TPen, TNavigator):
         """
         ikiwa self._resizemode == "user" ama compound:
             t11, t12, t21, t22 = self._shapetrafo
-        elikiwa self._resizemode == "auto":
+        lasivyo self._resizemode == "auto":
             l = max(1, self._pensize/5.0)
             t11, t12, t21, t22 = l, 0, 0, l
-        elikiwa self._resizemode == "noresize":
+        lasivyo self._resizemode == "noresize":
             rudisha polygon
         rudisha tuple((t11*x + t12*y, t21*x + t22*y) kila (x, y) kwenye polygon)
 
@@ -3003,15 +3003,15 @@ kundi RawTurtle(TPen, TNavigator):
             tshape = shape._data
             ikiwa ttype == "polygon":
                 ikiwa self._resizemode == "noresize": w = 1
-                elikiwa self._resizemode == "auto": w = self._pensize
+                lasivyo self._resizemode == "auto": w = self._pensize
                 isipokua: w =self._outlinewidth
                 shape = self._polytrafo(self._getshapepoly(tshape))
                 fc, oc = self._fillcolor, self._pencolor
                 screen._drawpoly(titem, shape, fill=fc, outline=oc,
                                                       width=w, top=Kweli)
-            elikiwa ttype == "image":
+            lasivyo ttype == "image":
                 screen._drawimage(titem, self._position, tshape)
-            elikiwa ttype == "compound":
+            lasivyo ttype == "compound":
                 kila item, (poly, fc, oc) kwenye zip(titem, tshape):
                     poly = self._polytrafo(self._getshapepoly(poly, Kweli))
                     screen._drawpoly(item, poly, fill=self._cc(fc),
@@ -3021,10 +3021,10 @@ kundi RawTurtle(TPen, TNavigator):
                 return
             ikiwa ttype == "polygon":
                 screen._drawpoly(titem, ((0, 0), (0, 0), (0, 0)), "", "")
-            elikiwa ttype == "image":
+            lasivyo ttype == "image":
                 screen._drawimage(titem, self._position,
                                           screen._shapes["blank"]._data)
-            elikiwa ttype == "compound":
+            lasivyo ttype == "compound":
                 kila item kwenye titem:
                     screen._drawpoly(item, ((0, 0), (0, 0), (0, 0)), "", "")
             self._hidden_from_screen = Kweli
@@ -3053,16 +3053,16 @@ kundi RawTurtle(TPen, TNavigator):
         ikiwa ttype == "polygon":
             stitem = screen._createpoly()
             ikiwa self._resizemode == "noresize": w = 1
-            elikiwa self._resizemode == "auto": w = self._pensize
+            lasivyo self._resizemode == "auto": w = self._pensize
             isipokua: w =self._outlinewidth
             shape = self._polytrafo(self._getshapepoly(tshape))
             fc, oc = self._fillcolor, self._pencolor
             screen._drawpoly(stitem, shape, fill=fc, outline=oc,
                                                   width=w, top=Kweli)
-        elikiwa ttype == "image":
+        lasivyo ttype == "image":
             stitem = screen._createimage("")
             screen._drawimage(stitem, self._position, tshape)
-        elikiwa ttype == "compound":
+        lasivyo ttype == "compound":
             stitem = []
             kila element kwenye tshape:
                 item = screen._createpoly()
@@ -3090,7 +3090,7 @@ kundi RawTurtle(TPen, TNavigator):
         # ikiwa clearstamp ni called directly.
         item = ("stamp", stampid)
         buf = self.undobuffer
-        ikiwa item sio kwenye buf.buffer:
+        ikiwa item haiko kwenye buf.buffer:
             return
         index = buf.buffer.index(item)
         buf.buffer.remove(item)
@@ -3133,7 +3133,7 @@ kundi RawTurtle(TPen, TNavigator):
         """
         ikiwa n ni Tupu:
             toDelete = self.stampItems[:]
-        elikiwa n >= 0:
+        lasivyo n >= 0:
             toDelete = self.stampItems[:n]
         isipokua:
             toDelete = self.stampItems[n:]
@@ -3213,7 +3213,7 @@ kundi RawTurtle(TPen, TNavigator):
             usepc = pc
         screen._drawline(cLI, pl, fill=usepc, width=ps)
 
-        todelete = [i kila i kwenye self.items ikiwa (i sio kwenye items) and
+        todelete = [i kila i kwenye self.items ikiwa (i haiko kwenye items) na
                                        (screen._type(i) == "line")]
         kila i kwenye todelete:
             screen._delete(i)
@@ -3255,7 +3255,7 @@ kundi RawTurtle(TPen, TNavigator):
             ikiwa self._fillpath == []:
                 self._fillpath = Tupu
                 andika("Unwahrscheinlich kwenye _undogoto!")
-            elikiwa self._fillpath ni sio Tupu:
+            lasivyo self._fillpath ni sio Tupu:
                 self._fillpath.pop()
         self._update() #count=Kweli)
 
@@ -3496,7 +3496,7 @@ kundi RawTurtle(TPen, TNavigator):
 
         No argument.
 
-        Only reasonable use: as a function to rudisha the 'anonymous turtle':
+        Only reasonable use: kama a function to rudisha the 'anonymous turtle':
 
         Example:
         >>> pet = getturtle()
@@ -3596,26 +3596,26 @@ kundi RawTurtle(TPen, TNavigator):
             angle, degPAU = data
             self._rotate(-angle*degPAU/self._degreesPerAU)
             dummy = self.undobuffer.pop()
-        elikiwa action == "stamp":
+        lasivyo action == "stamp":
             stitem = data[0]
             self.clearstamp(stitem)
-        elikiwa action == "go":
+        lasivyo action == "go":
             self._undogoto(data)
-        elikiwa action kwenye ["wri", "dot"]:
+        lasivyo action kwenye ["wri", "dot"]:
             item = data[0]
             self.screen._delete(item)
             self.items.remove(item)
-        elikiwa action == "dofill":
+        lasivyo action == "dofill":
             item = data[0]
             self.screen._drawpoly(item, ((0, 0),(0, 0),(0, 0)),
                                   fill="", outline="")
-        elikiwa action == "beginfill":
+        lasivyo action == "beginfill":
             item = data[0]
             self._fillitem = self._fillpath = Tupu
             ikiwa item kwenye self.items:
                 self.screen._delete(item)
                 self.items.remove(item)
-        elikiwa action == "pen":
+        lasivyo action == "pen":
             TPen.pen(self, data[0])
             self.undobuffer.pop()
 
@@ -3670,10 +3670,10 @@ kundi _Screen(TurtleScreen):
 
     eleza __init__(self):
         # XXX there ni no need kila this code to be conditional,
-        # as there will be only a single _Screen instance, anyway
+        # kama there will be only a single _Screen instance, anyway
         # XXX actually, the turtle demo ni injecting root window,
         # so perhaps the conditional creation of a root should be
-        # preserved (perhaps by passing it as an optional parameter)
+        # preserved (perhaps by pitaing it kama an optional parameter)
         ikiwa _Screen._root ni Tupu:
             _Screen._root = self._root = _Root()
             self._root.title(_Screen._title)
@@ -3695,9 +3695,9 @@ kundi _Screen(TurtleScreen):
         """ Set the size na position of the main window.
 
         Arguments:
-        width: as integer a size kwenye pixels, as float a fraction of the screen.
+        width: kama integer a size kwenye pixels, kama float a fraction of the screen.
           Default ni 50% of screen.
-        height: as integer the height kwenye pixels, as float a fraction of the
+        height: kama integer the height kwenye pixels, kama float a fraction of the
           screen. Default ni 75% of screen.
         startx: ikiwa positive, starting position kwenye pixels kutoka the left
           edge of the screen, ikiwa negative kutoka the right edge
@@ -3792,7 +3792,7 @@ kundi _Screen(TurtleScreen):
             return
         jaribu:
             mainloop()
-        except AttributeError:
+        tatizo AttributeError:
             exit(0)
 
 kundi Turtle(RawTurtle):
@@ -3821,12 +3821,12 @@ eleza write_docstringdict(filename="turtle_docstringdict"):
     """Create na write docstring-dictionary to file.
 
     Optional argument:
-    filename -- a string, used as filename
+    filename -- a string, used kama filename
                 default value ni turtle_docstringdict
 
-    Has to be called explicitly, (not used by the turtle-graphics classes)
+    Has to be called explicitly, (sio used by the turtle-graphics classes)
     The docstring dictionary will be written to the Python script <filname>.py
-    It ni intended to serve as a template kila translation of the docstrings
+    It ni intended to serve kama a template kila translation of the docstrings
     into different languages.
     """
     docsdict = {}
@@ -3838,9 +3838,9 @@ eleza write_docstringdict(filename="turtle_docstringdict"):
         key = "Turtle."+methodname
         docsdict[key] = eval(key).__doc__
 
-    ukijumuisha open("%s.py" % filename,"w") as f:
+    ukijumuisha open("%s.py" % filename,"w") kama f:
         keys = sorted(x kila x kwenye docsdict
-                      ikiwa x.split('.')[1] sio kwenye _alias_list)
+                      ikiwa x.split('.')[1] haiko kwenye _alias_list)
         f.write('docsdict = {\n\n')
         kila key kwenye keys[:-1]:
             f.write('%s :\n' % repr(key))
@@ -3865,7 +3865,7 @@ eleza read_docstrings(lang):
         jaribu:
 #            eval(key).im_func.__doc__ = docsdict[key]
             eval(key).__doc__ = docsdict[key]
-        except Exception:
+        tatizo Exception:
             andika("Bad docstring-enjaribu: %s" % key)
 
 _LANGUAGE = _CFG["language"]
@@ -3873,9 +3873,9 @@ _LANGUAGE = _CFG["language"]
 jaribu:
     ikiwa _LANGUAGE != "english":
         read_docstrings(_LANGUAGE)
-except ImportError:
+tatizo ImportError:
     andika("Cannot find docsdict for", _LANGUAGE)
-except Exception:
+tatizo Exception:
     print ("Unknown Error when trying to agiza %s-docstring-dictionary" %
                                                                   _LANGUAGE)
 
@@ -3936,7 +3936,7 @@ eleza _screen_docrevise(docstr):
     rudisha newdocstr
 
 ## The following mechanism makes all methods of RawTurtle na Turtle available
-## as functions. So we can enhance, change, add, delete methods to these
+## kama functions. So we can enhance, change, add, delete methods to these
 ## classes na do sio need to change anything here.
 
 __func_body = """\
@@ -3944,14 +3944,14 @@ eleza {name}{paramslist}:
     ikiwa {obj} ni Tupu:
         ikiwa sio TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Kweli
-             ashiria Terminator
+            ashiria Terminator
         {obj} = {init}
     jaribu:
         rudisha {obj}.{name}{argslist}
-    except TK.TclError:
+    tatizo TK.TclError:
         ikiwa sio TurtleScreen._RUNNING:
             TurtleScreen._RUNNING = Kweli
-             ashiria Terminator
+            ashiria Terminator
         raise
 """
 

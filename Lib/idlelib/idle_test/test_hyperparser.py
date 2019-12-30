@@ -65,7 +65,7 @@ kundi HyperParserTest(unittest.TestCase):
         """
         test corner cases kwenye the init method
         """
-        ukijumuisha self.assertRaises(ValueError) as ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             self.text.tag_add('console', '1.0', '1.end')
             p = self.get_parser('1.5')
         self.assertIn('precedes', str(ve.exception))
@@ -155,7 +155,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), 'y ')
 
         p = get('4.7')
-        ukijumuisha self.assertRaises(ValueError) as ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -178,7 +178,7 @@ kundi HyperParserTest(unittest.TestCase):
         self.assertEqual(p.get_expression(), "r'asdf'")
 
         p = get('9.17')
-        ukijumuisha self.assertRaises(ValueError) as ve:
+        ukijumuisha self.assertRaises(ValueError) kama ve:
             p.get_expression()
         self.assertIn('is inside a code', str(ve.exception))
 
@@ -205,13 +205,13 @@ kundi HyperParserTest(unittest.TestCase):
             result = HyperParser._eat_identifier(candidate, 0, len(candidate))
             ikiwa result == len(candidate):
                 rudisha Kweli
-            elikiwa result == 0:
+            lasivyo result == 0:
                 rudisha Uongo
             isipokua:
                 err_msg = "Unexpected result: {} (expected 0 ama {}".format(
                     result, len(candidate)
                 )
-                 ashiria Exception(err_msg)
+                ashiria Exception(err_msg)
 
         # invalid first character which ni valid elsewhere kwenye an identifier
         self.assertUongo(is_valid_id('2notid'))

@@ -85,7 +85,7 @@ kundi BuildPyTestCase(support.TempdirManager,
 
         jaribu:
             dist.run_commands()
-        except DistutilsFileError:
+        tatizo DistutilsFileError:
             self.fail("failed package_data test when package_dir ni ''")
 
     @unittest.skipIf(sys.dont_write_bytecode, 'byte-compile disabled')
@@ -138,7 +138,7 @@ kundi BuildPyTestCase(support.TempdirManager,
         os.mkdir(docdir)
         open(os.path.join(docdir, "testfile"), "w").close()
 
-        # create the directory that could be incorrectly detected as a file
+        # create the directory that could be incorrectly detected kama a file
         os.mkdir(os.path.join(docdir, 'otherdir'))
 
         os.chdir(sources)
@@ -151,7 +151,7 @@ kundi BuildPyTestCase(support.TempdirManager,
 
         jaribu:
             dist.run_commands()
-        except DistutilsFileError:
+        tatizo DistutilsFileError:
             self.fail("failed package_data when data dir includes a dir")
 
     eleza test_dont_write_bytecode(self):

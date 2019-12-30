@@ -102,40 +102,40 @@ kundi Regrtest:
         test_name = result.test_name
         ok = result.result
 
-        ikiwa ok sio kwenye (CHILD_ERROR, INTERRUPTED) na sio rerun:
+        ikiwa ok haiko kwenye (CHILD_ERROR, INTERRUPTED) na sio rerun:
             self.test_times.append((result.test_time, test_name))
 
         ikiwa ok == PASSED:
             self.good.append(test_name)
-        elikiwa ok kwenye (FAILED, CHILD_ERROR):
+        lasivyo ok kwenye (FAILED, CHILD_ERROR):
             ikiwa sio rerun:
                 self.bad.append(test_name)
-        elikiwa ok == ENV_CHANGED:
+        lasivyo ok == ENV_CHANGED:
             self.environment_changed.append(test_name)
-        elikiwa ok == SKIPPED:
+        lasivyo ok == SKIPPED:
             self.skipped.append(test_name)
-        elikiwa ok == RESOURCE_DENIED:
+        lasivyo ok == RESOURCE_DENIED:
             self.skipped.append(test_name)
             self.resource_denieds.append(test_name)
-        elikiwa ok == TEST_DID_NOT_RUN:
+        lasivyo ok == TEST_DID_NOT_RUN:
             self.run_no_tests.append(test_name)
-        elikiwa ok == INTERRUPTED:
+        lasivyo ok == INTERRUPTED:
             self.interrupted = Kweli
-        elikiwa ok == TIMEOUT:
+        lasivyo ok == TIMEOUT:
             self.bad.append(test_name)
         isipokua:
-             ashiria ValueError("invalid test result: %r" % ok)
+            ashiria ValueError("invalid test result: %r" % ok)
 
-        ikiwa rerun na ok sio kwenye {FAILED, CHILD_ERROR, INTERRUPTED}:
+        ikiwa rerun na ok haiko kwenye {FAILED, CHILD_ERROR, INTERRUPTED}:
             self.bad.remove(test_name)
 
         xml_data = result.xml_data
         ikiwa xml_data:
-            agiza xml.etree.ElementTree as ET
+            agiza xml.etree.ElementTree kama ET
             kila e kwenye xml_data:
                 jaribu:
                     self.testsuite_xml.append(ET.fromstring(e))
-                except ET.ParseError:
+                tatizo ET.ParseError:
                     andika(xml_data, file=sys.__stderr__)
                     raise
 
@@ -161,7 +161,7 @@ kundi Regrtest:
         ikiwa self.ns.quiet:
             return
 
-        # "[ 51/405/1] test_tcl passed"
+        # "[ 51/405/1] test_tcl pitaed"
         line = f"{test_index:{self.test_count_width}}{self.test_count}"
         fails = len(self.bad) + len(self.environment_changed)
         ikiwa fails na sio self.ns.pgo:
@@ -204,18 +204,18 @@ kundi Regrtest:
         ikiwa self.ns.single:
             self.next_single_filename = os.path.join(self.tmp_dir, 'pynexttest')
             jaribu:
-                ukijumuisha open(self.next_single_filename, 'r') as fp:
+                ukijumuisha open(self.next_single_filename, 'r') kama fp:
                     next_test = fp.read().strip()
                     self.tests = [next_test]
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
         ikiwa self.ns.fromfile:
             self.tests = []
             # regex to match 'test_builtin' kwenye line:
             # '0:00:00 [  4/400] test_builtin -- test_dict took 1 sec'
             regex = re.compile(r'\btest_[a-zA-Z0-9_]+\b')
-            ukijumuisha open(os.path.join(support.SAVEDCWD, self.ns.fromfile)) as fp:
+            ukijumuisha open(os.path.join(support.SAVEDCWD, self.ns.fromfile)) kama fp:
                 kila line kwenye fp:
                     line = line.split('#', 1)[0]
                     line = line.strip()
@@ -239,7 +239,7 @@ kundi Regrtest:
             self.ns.args = []
 
         # ikiwa testdir ni set, then we are sio running the python tests suite, so
-        # don't add default tests to be executed ama skipped (pass empty values)
+        # don't add default tests to be executed ama skipped (pita empty values)
         ikiwa self.ns.testdir:
             alltests = findtests(self.ns.testdir, list(), set())
         isipokua:
@@ -254,14 +254,14 @@ kundi Regrtest:
             jaribu:
                 pos = alltests.index(self.selected[0])
                 self.next_single_test = alltests[pos + 1]
-            except IndexError:
-                pass
+            tatizo IndexError:
+                pita
 
         # Remove all the selected tests that precede start ikiwa it's set.
         ikiwa self.ns.start:
             jaribu:
                 toa self.selected[:self.selected.index(self.ns.start)]
-            except ValueError:
+            tatizo ValueError:
                 andika("Couldn't find starting test (%s), using all tests"
                       % self.ns.start, file=sys.stderr)
 
@@ -281,7 +281,7 @@ kundi Regrtest:
                 endelea
             ikiwa isinstance(test, unittest.TestSuite):
                 self._list_cases(test)
-            elikiwa isinstance(test, unittest.TestCase):
+            lasivyo isinstance(test, unittest.TestCase):
                 ikiwa support.match_test(test):
                     andika(test.id())
 
@@ -294,7 +294,7 @@ kundi Regrtest:
             jaribu:
                 suite = unittest.defaultTestLoader.loadTestsFromName(abstest)
                 self._list_cases(suite)
-            except unittest.SkipTest:
+            tatizo unittest.SkipTest:
                 self.skipped.append(test_name)
 
         ikiwa self.skipped:
@@ -347,7 +347,7 @@ kundi Regrtest:
 
         ikiwa self.good na sio self.ns.quiet:
             andika()
-            ikiwa (not self.bad
+            ikiwa (sio self.bad
                 na sio self.skipped
                 na sio self.interrupted
                 na len(self.good) > 1):
@@ -424,13 +424,13 @@ kundi Regrtest:
             test_time = time.monotonic() - start_time
             ikiwa test_time >= PROGRESS_MIN_TIME:
                 previous_test = "%s kwenye %s" % (previous_test, format_duration(test_time))
-            elikiwa result.result == PASSED:
-                # be quiet: say nothing ikiwa the test passed shortly
+            lasivyo result.result == PASSED:
+                # be quiet: say nothing ikiwa the test pitaed shortly
                 previous_test = Tupu
 
             # Unload the newly imported modules (best effort finalization)
             kila module kwenye sys.modules.keys():
-                ikiwa module sio kwenye save_modules na module.startswith("test."):
+                ikiwa module haiko kwenye save_modules na module.startswith("test."):
                     support.unload(module)
 
             ikiwa self.ns.failfast na is_failed(result, self.ns):
@@ -465,9 +465,9 @@ kundi Regrtest:
         result = []
         ikiwa self.bad:
             result.append("FAILURE")
-        elikiwa self.ns.fail_env_changed na self.environment_changed:
+        lasivyo self.ns.fail_env_changed na self.environment_changed:
             result.append("ENV CHANGED")
-        elikiwa sio any((self.good, self.bad, self.skipped, self.interrupted,
+        lasivyo sio any((self.good, self.bad, self.skipped, self.interrupted,
             self.environment_changed)):
             result.append("NO TEST RUN")
 
@@ -517,7 +517,7 @@ kundi Regrtest:
     eleza finalize(self):
         ikiwa self.next_single_filename:
             ikiwa self.next_single_test:
-                ukijumuisha open(self.next_single_filename, 'w') as fp:
+                ukijumuisha open(self.next_single_filename, 'w') kama fp:
                     fp.write(self.next_single_test + '\n')
             isipokua:
                 os.unlink(self.next_single_filename)
@@ -539,7 +539,7 @@ kundi Regrtest:
         ikiwa sio self.ns.xmlpath na sio self.testsuite_xml:
             return
 
-        agiza xml.etree.ElementTree as ET
+        agiza xml.etree.ElementTree kama ET
         root = ET.Element("testsuites")
 
         # Manually count the totals kila the overall summary
@@ -549,14 +549,14 @@ kundi Regrtest:
             kila k kwenye totals:
                 jaribu:
                     totals[k] += int(suite.get(k, 0))
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
 
         kila k, v kwenye totals.items():
             root.set(k, str(v))
 
         xmlpath = os.path.join(support.SAVEDCWD, self.ns.xmlpath)
-        ukijumuisha open(xmlpath, 'wb') as f:
+        ukijumuisha open(xmlpath, 'wb') kama f:
             kila s kwenye ET.tostringlist(root):
                 f.write(s)
 
@@ -585,7 +585,7 @@ kundi Regrtest:
     eleza create_temp_dir(self):
         os.makedirs(self.tmp_dir, exist_ok=Kweli)
 
-        # Define a writable temp dir that will be used as cwd wakati running
+        # Define a writable temp dir that will be used kama cwd wakati running
         # the tests. The name of the dir includes the pid to allow parallel
         # testing (see the -j option).
         pid = os.getpid()
@@ -627,12 +627,12 @@ kundi Regrtest:
             # The original CWD ni available kutoka support.SAVEDCWD.
             ukijumuisha support.temp_cwd(test_cwd, quiet=Kweli):
                 # When using multiprocessing, worker processes will use test_cwd
-                # as their parent temporary directory. So when the main process
+                # kama their parent temporary directory. So when the main process
                 # exit, it removes also subdirectories of worker processes.
                 self.ns.tempdir = test_cwd
 
                 self._main(tests, kwargs)
-        except SystemExit as exc:
+        tatizo SystemExit kama exc:
             # bpo-38203: Python can hang at exit kwenye Py_Finalize(), especially
             # on threading._shutdown() call: put a timeout
             faulthandler.dump_traceback_later(EXIT_TIMEOUT, exit=Kweli)
@@ -671,14 +671,14 @@ kundi Regrtest:
             self.list_cases()
             sys.exit(0)
 
-        # If we're on windows na this ni the parent runner (not a worker),
+        # If we're on windows na this ni the parent runner (sio a worker),
         # track the load average.
         ikiwa sys.platform == 'win32' na self.worker_test_name ni Tupu:
             kutoka test.libregrtest.win_utils agiza WindowsLoadTracker
 
             jaribu:
                 self.win_load_tracker = WindowsLoadTracker()
-            except FileNotFoundError as error:
+            tatizo FileNotFoundError kama error:
                 # Windows IoT Core na Windows Nano Server do sio provide
                 # typeperf.exe kila x64, x86 ama ARM
                 andika(f'Failed to create WindowsLoadTracker: {error}')

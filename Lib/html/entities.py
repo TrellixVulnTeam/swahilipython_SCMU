@@ -164,7 +164,7 @@ name2codepoint = {
     'nbsp':     0x00a0, # no-koma space = non-komaing space, U+00A0 ISOnum
     'ndash':    0x2013, # en dash, U+2013 ISOpub
     'ne':       0x2260, # sio equal to, U+2260 ISOtech
-    'ni':       0x220b, # contains as member, U+220B ISOtech
+    'ni':       0x220b, # contains kama member, U+220B ISOtech
     'not':      0x00ac, # sio sign, U+00AC ISOnum
     'notin':    0x2209, # sio an element of, U+2209 ISOtech
     'nsub':     0x2284, # sio a subset of, U+2284 ISOamsn

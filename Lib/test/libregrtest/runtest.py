@@ -28,7 +28,7 @@ TEST_DID_NOT_RUN = -6
 TIMEOUT = -7
 
 _FORMAT_TEST_RESULT = {
-    PASSED: '%s passed',
+    PASSED: '%s pitaed',
     FAILED: '%s failed',
     ENV_CHANGED: '%s failed (env changed)',
     SKIPPED: '%s skipped',
@@ -95,7 +95,7 @@ eleza findtests(testdir=Tupu, stdtests=STDTESTS, nottests=NOTTESTS):
     others = set(stdtests) | nottests
     kila name kwenye names:
         mod, ext = os.path.splitext(name)
-        ikiwa mod[:5] == "test_" na ext kwenye (".py", "") na mod sio kwenye others:
+        ikiwa mod[:5] == "test_" na ext kwenye (".py", "") na mod haiko kwenye others:
             tests.append(mod)
     rudisha stdtests + sorted(tests)
 
@@ -154,7 +154,7 @@ eleza _runtest(ns, test_name):
                                     display_failure=not ns.verbose)
 
         ikiwa xml_list:
-            agiza xml.etree.ElementTree as ET
+            agiza xml.etree.ElementTree kama ET
             xml_data = [ET.tostring(x).decode('us-ascii') kila x kwenye xml_list]
         isipokua:
             xml_data = Tupu
@@ -182,7 +182,7 @@ eleza runtest(ns, test_name):
         SKIPPED          test skipped kila some other reason
         ENV_CHANGED      test failed because it changed the execution environment
         FAILED           test failed
-        PASSED           test passed
+        PASSED           test pitaed
         EMPTY_TEST_SUITE test ran no subtests.
         TIMEOUT          test timed out.
 
@@ -205,7 +205,7 @@ eleza _test_module(the_module):
     kila error kwenye loader.errors:
         andika(error, file=sys.stderr)
     ikiwa loader.errors:
-         ashiria Exception("errors wakati loading tests")
+        ashiria Exception("errors wakati loading tests")
     support.run_unittest(tests)
 
 
@@ -266,25 +266,25 @@ eleza _runtest_inner(ns, test_name, display_failure=Kweli):
     jaribu:
         clear_caches()
 
-        ukijumuisha saved_test_environment(test_name, ns.verbose, ns.quiet, pgo=ns.pgo) as environment:
+        ukijumuisha saved_test_environment(test_name, ns.verbose, ns.quiet, pgo=ns.pgo) kama environment:
             refleak = _runtest_inner2(ns, test_name)
-    except support.ResourceDenied as msg:
+    tatizo support.ResourceDenied kama msg:
         ikiwa sio ns.quiet na sio ns.pgo:
             andika(f"{test_name} skipped -- {msg}", flush=Kweli)
         rudisha RESOURCE_DENIED
-    except unittest.SkipTest as msg:
+    tatizo unittest.SkipTest kama msg:
         ikiwa sio ns.quiet na sio ns.pgo:
             andika(f"{test_name} skipped -- {msg}", flush=Kweli)
         rudisha SKIPPED
-    except support.TestFailed as exc:
+    tatizo support.TestFailed kama exc:
         msg = f"test {test_name} failed"
         ikiwa display_failure:
             msg = f"{msg} -- {exc}"
         andika(msg, file=sys.stderr, flush=Kweli)
         rudisha FAILED
-    except support.TestDidNotRun:
+    tatizo support.TestDidNotRun:
         rudisha TEST_DID_NOT_RUN
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         andika()
         rudisha INTERRUPTED
     tatizo:
@@ -320,10 +320,10 @@ eleza cleanup_test_droppings(test_name, verbose):
         ikiwa os.path.isdir(name):
             agiza shutil
             kind, nuker = "directory", shutil.rmtree
-        elikiwa os.path.isfile(name):
+        lasivyo os.path.isfile(name):
             kind, nuker = "file", os.unlink
         isipokua:
-             ashiria RuntimeError(f"os.path says {name!r} exists but ni neither "
+            ashiria RuntimeError(f"os.path says {name!r} exists but ni neither "
                                f"directory nor file")
 
         ikiwa verbose:
@@ -335,6 +335,6 @@ eleza cleanup_test_droppings(test_name, verbose):
             # fix possible permissions problems that might prevent cleanup
             os.chmod(name, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
             nuker(name)
-        except Exception as exc:
+        tatizo Exception kama exc:
             print_warning(f"{test_name} left behind {kind} {name!r} "
                           f"and it couldn't be removed: {exc}")

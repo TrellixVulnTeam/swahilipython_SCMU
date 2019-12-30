@@ -6,7 +6,7 @@ distutils.tests package.  Each test module has a name starting with
 to rudisha an initialized unittest.TestSuite instance.
 
 Tests kila the command classes kwenye the distutils.command package are
-included kwenye distutils.tests as well, instead of using a separate
+included kwenye distutils.tests kama well, instead of using a separate
 distutils.command.tests package, since command identification ni done
 by agiza rather than matching pre-defined names.
 

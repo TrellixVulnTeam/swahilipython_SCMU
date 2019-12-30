@@ -15,7 +15,7 @@ kundi FontTest(AbstractTkTest, unittest.TestCase):
         AbstractTkTest.setUpClass.__func__(cls)
         jaribu:
             cls.font = font.Font(root=cls.root, name=fontname, exists=Kweli)
-        except tkinter.TclError:
+        tatizo tkinter.TclError:
             cls.font = font.Font(root=cls.root, name=fontname, exists=Uongo)
 
     eleza test_configure(self):
@@ -39,7 +39,7 @@ kundi FontTest(AbstractTkTest, unittest.TestCase):
         family = 'MS \u30b4\u30b7\u30c3\u30af'
         jaribu:
             f = font.Font(root=self.root, family=family, exists=Kweli)
-        except tkinter.TclError:
+        tatizo tkinter.TclError:
             f = font.Font(root=self.root, family=family, exists=Uongo)
         self.assertEqual(f.cget('family'), family)
         toa f

@@ -17,7 +17,7 @@ kundi StringPtrTestCase(unittest.TestCase):
         # NULL pointer access
         self.assertRaises(ValueError, getattr, x.str, "contents")
         b = c_buffer(b"Hello, World")
-        kutoka sys agiza getrefcount as grc
+        kutoka sys agiza getrefcount kama grc
         self.assertEqual(grc(b), 2)
         x.str = b
         self.assertEqual(grc(b), 3)
@@ -70,7 +70,7 @@ kundi StringPtrTestCase(unittest.TestCase):
         x = r[0], r[1], r[2], r[3], r[4]
         self.assertEqual(x, (b"c", b"d", b"e", b"f", b"\000"))
         toa buf
-        # x1 will NOT be the same as x, usually:
+        # x1 will NOT be the same kama x, usually:
         x1 = r[0], r[1], r[2], r[3], r[4]
 
 ikiwa __name__ == '__main__':

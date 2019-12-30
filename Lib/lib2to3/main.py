@@ -28,7 +28,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
     A refactoring tool that can avoid overwriting its input files.
     Prints output to stdout.
 
-    Output files can optionally be written to a different directory na or
+    Output files can optionally be written to a different directory na ama
     have an extra file suffix appended to their name kila use kwenye situations
     where you do sio want to replace the input files.
     """
@@ -51,7 +51,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                 this directory tree instead of input_base_dir.
             append_suffix: If supplied, all files output by this tool will have
                 this appended to their filename.  Useful kila changing .py to
-                .py3 kila example by passing append_suffix='3'.
+                .py3 kila example by pitaing append_suffix='3'.
         """
         self.nobackups = nobackups
         self.show_diffs = show_diffs
@@ -73,7 +73,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                 filename = os.path.join(self._output_dir,
                                         filename[len(self._input_base_dir):])
             isipokua:
-                 ashiria ValueError('filename %s does sio start ukijumuisha the '
+                ashiria ValueError('filename %s does sio start ukijumuisha the '
                                  'input_base_dir %s' % (
                                          filename, self._input_base_dir))
         ikiwa self._append_suffix:
@@ -90,11 +90,11 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
             ikiwa os.path.lexists(backup):
                 jaribu:
                     os.remove(backup)
-                except OSError as err:
+                tatizo OSError kama err:
                     self.log_message("Can't remove backup %s", backup)
             jaribu:
                 os.rename(filename, backup)
-            except OSError as err:
+            tatizo OSError kama err:
                 self.log_message("Can't rename %s to %s", filename, backup)
         # Actually write the new file
         write = super(StdoutRefactoringTool, self).write_file
@@ -121,7 +121,7 @@ kundi StdoutRefactoringTool(refactor.MultiprocessRefactoringTool):
                     isipokua:
                         kila line kwenye diff_lines:
                             andika(line)
-                except UnicodeEncodeError:
+                tatizo UnicodeEncodeError:
                     warn("couldn't encode %s's diff kila your terminal" %
                          (filename,))
                     return
@@ -234,7 +234,7 @@ eleza main(fixer_pkg, args=Tupu):
     input_base_dir = os.path.commonprefix(args)
     ikiwa (input_base_dir na sio input_base_dir.endswith(os.sep)
         na sio os.path.isdir(input_base_dir)):
-        # One ama more similar names were passed, their directory ni the base.
+        # One ama more similar names were pitaed, their directory ni the base.
         # os.path.commonprefix() ni ignorant of path elements, this corrects
         # kila that weird API.
         input_base_dir = os.path.dirname(input_base_dir)
@@ -249,7 +249,7 @@ eleza main(fixer_pkg, args=Tupu):
             output_dir=options.output_dir,
             append_suffix=options.add_suffix)
 
-    # Refactor all files na directories passed as arguments
+    # Refactor all files na directories pitaed kama arguments
     ikiwa sio rt.errors:
         ikiwa refactor_stdin:
             rt.refactor_stdin()
@@ -257,7 +257,7 @@ eleza main(fixer_pkg, args=Tupu):
             jaribu:
                 rt.refactor(args, options.write, options.doctests_only,
                             options.processes)
-            except refactor.MultiprocessingUnsupported:
+            tatizo refactor.MultiprocessingUnsupported:
                 assert options.processes > 1
                 andika("Sorry, -j isn't supported on this platform.",
                       file=sys.stderr)

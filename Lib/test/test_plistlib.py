@@ -112,7 +112,7 @@ kundi TestPlistlib(unittest.TestCase):
         jaribu:
             os.unlink(support.TESTFN)
         tatizo:
-            pass
+            pita
 
     eleza _create(self, fmt=Tupu):
         pl = dict(
@@ -148,10 +148,10 @@ kundi TestPlistlib(unittest.TestCase):
 
     eleza test_io(self):
         pl = self._create()
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             plistlib.dump(pl, fp)
 
-        ukijumuisha open(support.TESTFN, 'rb') as fp:
+        ukijumuisha open(support.TESTFN, 'rb') kama fp:
             pl2 = plistlib.load(fp)
 
         self.assertEqual(dict(pl), dict(pl2))
@@ -651,11 +651,11 @@ kundi TestPlistlibDeprecated(unittest.TestCase):
 
         os.unlink(support.TESTFN)
 
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 plistlib.writePlist(pl_in, fp)
 
-        ukijumuisha open(support.TESTFN, 'rb') as fp:
+        ukijumuisha open(support.TESTFN, 'rb') kama fp:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 pl2 = plistlib.readPlist(fp)
 

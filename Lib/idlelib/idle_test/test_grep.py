@@ -15,7 +15,7 @@ agiza re
 
 kundi Dummy_searchengine:
     '''GrepDialog.__init__ calls parent SearchDiabolBase which attaches the
-    passed kwenye SearchEngine instance as attribute 'engine'. Only a few of the
+    pitaed kwenye SearchEngine instance kama attribute 'engine'. Only a few of the
     many possible self.engine.x attributes are needed here.
     '''
     eleza getpat(self):
@@ -32,7 +32,7 @@ kundi Dummy_grep:
     recvar = Var(Uongo)
     engine = searchengine
     eleza close(self):  # gui method
-        pass
+        pita
 
 _grep = Dummy_grep()
 
@@ -49,7 +49,7 @@ kundi FindfilesTest(unittest.TestCase):
         toa cls.realpath, cls.path
 
     eleza test_invaliddir(self):
-        ukijumuisha captured_stdout() as s:
+        ukijumuisha captured_stdout() kama s:
             filelist = list(grep.findfiles('invaliddir', '*.*', Uongo))
         self.assertEqual(filelist, [])
         self.assertIn('invalid', s.getvalue())
@@ -122,7 +122,7 @@ kundi Grep_itTest(unittest.TestCase):
 
     eleza report(self, pat):
         _grep.engine._pat = pat
-        ukijumuisha captured_stdout() as s:
+        ukijumuisha captured_stdout() kama s:
             _grep.grep_it(re.compile(pat), __file__)
         lines = s.getvalue().split('\n')
         lines.pop()  # remove bogus '' after last \n
@@ -149,7 +149,7 @@ kundi Grep_itTest(unittest.TestCase):
 kundi Default_commandTest(unittest.TestCase):
     # To write this, move outwin agiza to top of GrepDialog
     # so it can be replaced by captured_stdout kwenye kundi setup/teardown.
-    pass
+    pita
 
 
 ikiwa __name__ == '__main__':

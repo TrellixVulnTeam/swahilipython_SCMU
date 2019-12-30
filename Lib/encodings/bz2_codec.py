@@ -51,7 +51,7 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
     eleza decode(self, input, final=Uongo):
         jaribu:
             rudisha self.decompressobj.decompress(input)
-        except EOFError:
+        tatizo EOFError:
             rudisha ''
 
     eleza reset(self):

@@ -19,7 +19,7 @@ agiza warnings
 kundi Extension:
     """Just a collection of attributes that describes an extension
     module na everything needed to build it (hopefully kwenye a portable
-    way, but there are hooks that let you be as unportable as you need).
+    way, but there are hooks that let you be kama unportable kama you need).
 
     Instance attributes:
       name : string
@@ -30,7 +30,7 @@ kundi Extension:
         (where the setup script lives), kwenye Unix form (slash-separated)
         kila portability.  Source files may be C, C++, SWIG (.i),
         platform-specific resource files, ama whatever isipokua ni recognized
-        by the "build_ext" command as source kila a Python extension.
+        by the "build_ext" command kama source kila a Python extension.
       include_dirs : [string]
         list of directories to search kila C/C++ header files (in Unix
         form kila portability)
@@ -44,7 +44,7 @@ kundi Extension:
       library_dirs : [string]
         list of directories to search kila C/C++ libraries at link time
       libraries : [string]
-        list of library names (not filenames ama paths) to link against
+        list of library names (sio filenames ama paths) to link against
       runtime_library_dirs : [string]
         list of directories to search kila C/C++ libraries at run time
         (kila shared extensions, this ni when the extension ni loaded)
@@ -54,7 +54,7 @@ kundi Extension:
         binary resource files, etc.)
       extra_compile_args : [string]
         any extra platform- na compiler-specific information to use
-        when compiling the source files kwenye 'sources'.  For platforms and
+        when compiling the source files kwenye 'sources'.  For platforms na
         compilers where "command line" makes sense, this ni typically a
         list of command-line arguments, but kila other platforms it could
         be anything.
@@ -62,14 +62,14 @@ kundi Extension:
         any extra platform- na compiler-specific information to use
         when linking object files together to create the extension (or
         to create a new static Python interpreter).  Similar
-        interpretation as kila 'extra_compile_args'.
+        interpretation kama kila 'extra_compile_args'.
       export_symbols : [string]
         list of symbols to be exported kutoka a shared extension.  Not
         used on all platforms, na sio generally necessary kila Python
         extensions, which typically export exactly one symbol: "init" +
         extension_name.
       swig_opts : [string]
-        any extra options to pass to SWIG ikiwa a source file has the .i
+        any extra options to pita to SWIG ikiwa a source file has the .i
         extension.
       depends : [string]
         list of files that the extension depends on
@@ -101,10 +101,10 @@ kundi Extension:
                   **kw                      # To catch unknown keywords
                  ):
         ikiwa sio isinstance(name, str):
-             ashiria AssertionError("'name' must be a string")
-        ikiwa sio (isinstance(sources, list) and
+            ashiria AssertionError("'name' must be a string")
+        ikiwa sio (isinstance(sources, list) na
                 all(isinstance(v, str) kila v kwenye sources)):
-             ashiria AssertionError("'sources' must be a list of strings")
+            ashiria AssertionError("'sources' must be a list of strings")
 
         self.name = name
         self.sources = sources
@@ -146,10 +146,10 @@ eleza read_setup_file(filename):
     kutoka distutils.text_file agiza TextFile
     kutoka distutils.util agiza split_quoted
 
-    # First pass over the file to gather "VAR = VALUE" assignments.
+    # First pita over the file to gather "VAR = VALUE" assignments.
     vars = parse_makefile(filename)
 
-    # Second pass to gobble up the real content: lines of the form
+    # Second pita to gobble up the real content: lines of the form
     #   <module> ... [<sourcefile> ...] [<cpparg> ...] [<library> ...]
     file = TextFile(filename,
                     strip_comments=1, skip_blanks=1, join_lines=1,
@@ -161,7 +161,7 @@ eleza read_setup_file(filename):
             line = file.readline()
             ikiwa line ni Tupu:                # eof
                 koma
-            ikiwa _variable_rx.match(line):    # VAR=VALUE, handled kwenye first pass
+            ikiwa _variable_rx.match(line):    # VAR=VALUE, handled kwenye first pita
                 endelea
 
             ikiwa line[0] == line[-1] == "*":
@@ -195,36 +195,36 @@ eleza read_setup_file(filename):
                     # ama leave it up to the CCompiler implementation to
                     # worry about?
                     ext.sources.append(word)
-                elikiwa switch == "-I":
+                lasivyo switch == "-I":
                     ext.include_dirs.append(value)
-                elikiwa switch == "-D":
+                lasivyo switch == "-D":
                     equals = value.find("=")
                     ikiwa equals == -1:        # bare "-DFOO" -- no value
                         ext.define_macros.append((value, Tupu))
                     isipokua:                   # "-DFOO=blah"
                         ext.define_macros.append((value[0:equals],
                                                   value[equals+2:]))
-                elikiwa switch == "-U":
+                lasivyo switch == "-U":
                     ext.undef_macros.append(value)
-                elikiwa switch == "-C":        # only here 'cause makesetup has it!
+                lasivyo switch == "-C":        # only here 'cause makesetup has it!
                     ext.extra_compile_args.append(word)
-                elikiwa switch == "-l":
+                lasivyo switch == "-l":
                     ext.libraries.append(value)
-                elikiwa switch == "-L":
+                lasivyo switch == "-L":
                     ext.library_dirs.append(value)
-                elikiwa switch == "-R":
+                lasivyo switch == "-R":
                     ext.runtime_library_dirs.append(value)
-                elikiwa word == "-rpath":
+                lasivyo word == "-rpath":
                     append_next_word = ext.runtime_library_dirs
-                elikiwa word == "-Xlinker":
+                lasivyo word == "-Xlinker":
                     append_next_word = ext.extra_link_args
-                elikiwa word == "-Xcompiler":
+                lasivyo word == "-Xcompiler":
                     append_next_word = ext.extra_compile_args
-                elikiwa switch == "-u":
+                lasivyo switch == "-u":
                     ext.extra_link_args.append(word)
                     ikiwa sio value:
                         append_next_word = ext.extra_link_args
-                elikiwa suffix kwenye (".a", ".so", ".sl", ".o", ".dylib"):
+                lasivyo suffix kwenye (".a", ".so", ".sl", ".o", ".dylib"):
                     # NB. a really faithful emulation of makesetup would
                     # append a .o file to extra_objects only ikiwa it
                     # had a slash kwenye it; otherwise, it would s/.o/.c/

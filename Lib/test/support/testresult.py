@@ -9,7 +9,7 @@ agiza time
 agiza traceback
 agiza unittest
 
-agiza xml.etree.ElementTree as ET
+agiza xml.etree.ElementTree kama ET
 
 kutoka datetime agiza datetime
 
@@ -32,11 +32,11 @@ kundi RegressionTestResult(unittest.TextTestResult):
     eleza __getId(cls, test):
         jaribu:
             test_id = test.id
-        except AttributeError:
+        tatizo AttributeError:
             rudisha str(test)
         jaribu:
             rudisha test_id()
-        except TypeError:
+        tatizo TypeError:
             rudisha str(test_id)
         rudisha repr(test)
 
@@ -175,10 +175,10 @@ eleza get_test_runner(stream, verbosity, capture_output=Uongo):
 
 ikiwa __name__ == '__main__':
     kundi TestTests(unittest.TestCase):
-        eleza test_pass(self):
-            pass
+        eleza test_pita(self):
+            pita
 
-        eleza test_pass_slow(self):
+        eleza test_pita_slow(self):
             time.sleep(1.0)
 
         eleza test_fail(self):
@@ -189,7 +189,7 @@ ikiwa __name__ == '__main__':
         eleza test_error(self):
             andika('stdout', file=sys.stdout)
             andika('stderr', file=sys.stderr)
-             ashiria RuntimeError('error message')
+            ashiria RuntimeError('error message')
 
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestTests))

@@ -192,12 +192,12 @@ kundi install(Command):
         # handy ikiwa you know it's sio necessary.  'warn_dir' (which ni *not*
         # a user option, it's just there so the bdist_* commands can turn
         # it off) determines whether we warn about installing to a
-        # directory sio kwenye sys.path.
+        # directory haiko kwenye sys.path.
         self.force = 0
         self.skip_build = 0
         self.warn_dir = 1
 
-        # These are only here as a conduit kutoka the 'build' command to the
+        # These are only here kama a conduit kutoka the 'build' command to the
         # 'install_*' commands that do the real work.  ('build_base' isn't
         # actually used anywhere, but it might be useful kwenye future.)  They
         # are sio user options, because ikiwa the user told the install
@@ -225,7 +225,7 @@ kundi install(Command):
         """Finalizes options."""
         # This method (and its helpers, like 'finalize_unix()',
         # 'finalize_other()', na 'select_scheme()') ni where the default
-        # installation directories kila modules, extension modules, and
+        # installation directories kila modules, extension modules, na
         # anything isipokua we care to install kutoka a Python module
         # distribution.  Thus, this code makes a pretty important policy
         # statement about how third-party stuff ni added to a Python
@@ -237,19 +237,19 @@ kundi install(Command):
         # Check kila errors/inconsistencies kwenye the options; first, stuff
         # that's wrong on any platform.
 
-        ikiwa ((self.prefix ama self.exec_prefix ama self.home) and
+        ikiwa ((self.prefix ama self.exec_prefix ama self.home) na
             (self.install_base ama self.install_platbase)):
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                    "must supply either prefix/exec-prefix/home ama " +
                    "install-base/install-platbase -- sio both")
 
         ikiwa self.home na (self.prefix ama self.exec_prefix):
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "must supply either home ama prefix/exec-prefix -- sio both")
 
-        ikiwa self.user na (self.prefix ama self.exec_prefix ama self.home or
+        ikiwa self.user na (self.prefix ama self.exec_prefix ama self.home ama
                 self.install_base ama self.install_platbase):
-             ashiria DistutilsOptionError("can't combine user ukijumuisha prefix, "
+            ashiria DistutilsOptionError("can't combine user ukijumuisha prefix, "
                                        "exec_prefix/home, ama install_(plat)base")
 
         # Next, stuff that's wrong (or dubious) only on certain platforms.
@@ -276,7 +276,7 @@ kundi install(Command):
         self.dump_dirs("post-finalize_{unix,other}()")
 
         # Expand configuration variables, tilde, etc. kwenye self.install_base
-        # na self.install_platbase -- that way, we can use $base or
+        # na self.install_platbase -- that way, we can use $base ama
         # $platbase kwenye the other installation directories na sio worry
         # about needing recursive variable expansion (shudder).
 
@@ -284,7 +284,7 @@ kundi install(Command):
         (prefix, exec_prefix) = get_config_vars('prefix', 'exec_prefix')
         jaribu:
             abiflags = sys.abiflags
-        except AttributeError:
+        tatizo AttributeError:
             # sys.abiflags may sio be defined on all platforms.
             abiflags = ''
         self.config_vars = {'dist_name': self.distribution.get_name(),
@@ -392,30 +392,30 @@ kundi install(Command):
     eleza finalize_unix(self):
         """Finalizes options kila posix platforms."""
         ikiwa self.install_base ni sio Tupu ama self.install_platbase ni sio Tupu:
-            ikiwa ((self.install_lib ni Tupu and
-                 self.install_purelib ni Tupu and
-                 self.install_platlib ni Tupu) or
-                self.install_headers ni Tupu or
-                self.install_scripts ni Tupu or
+            ikiwa ((self.install_lib ni Tupu na
+                 self.install_purelib ni Tupu na
+                 self.install_platlib ni Tupu) ama
+                self.install_headers ni Tupu ama
+                self.install_scripts ni Tupu ama
                 self.install_data ni Tupu):
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install-base ama install-platbase supplied, but "
                       "installation scheme ni incomplete")
             return
 
         ikiwa self.user:
             ikiwa self.install_userbase ni Tupu:
-                 ashiria DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                     "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme("unix_user")
-        elikiwa self.home ni sio Tupu:
+        lasivyo self.home ni sio Tupu:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
         isipokua:
             ikiwa self.prefix ni Tupu:
                 ikiwa self.exec_prefix ni sio Tupu:
-                     ashiria DistutilsOptionError(
+                    ashiria DistutilsOptionError(
                           "must sio supply exec-prefix without prefix")
 
                 self.prefix = os.path.normpath(sys.prefix)
@@ -433,11 +433,11 @@ kundi install(Command):
         """Finalizes options kila non-posix platforms"""
         ikiwa self.user:
             ikiwa self.install_userbase ni Tupu:
-                 ashiria DistutilsPlatformError(
+                ashiria DistutilsPlatformError(
                     "User base directory ni sio specified")
             self.install_base = self.install_platbase = self.install_userbase
             self.select_scheme(os.name + "_user")
-        elikiwa self.home ni sio Tupu:
+        lasivyo self.home ni sio Tupu:
             self.install_base = self.install_platbase = self.home
             self.select_scheme("unix_home")
         isipokua:
@@ -447,8 +447,8 @@ kundi install(Command):
             self.install_base = self.install_platbase = self.prefix
             jaribu:
                 self.select_scheme(os.name)
-            except KeyError:
-                 ashiria DistutilsPlatformError(
+            tatizo KeyError:
+                ashiria DistutilsPlatformError(
                       "I don't know how to install stuff on '%s'" % os.name)
 
     eleza select_scheme(self, name):
@@ -470,7 +470,7 @@ kundi install(Command):
                 setattr(self, attr, val)
 
     eleza expand_basedirs(self):
-        """Calls `os.path.expanduser` on install_base, install_platbase and
+        """Calls `os.path.expanduser` on install_base, install_platbase na
         root."""
         self._expand_attrs(['install_base', 'install_platbase', 'root'])
 
@@ -501,10 +501,10 @@ kundi install(Command):
 
             ikiwa len(self.extra_path) == 1:
                 path_file = extra_dirs = self.extra_path[0]
-            elikiwa len(self.extra_path) == 2:
+            lasivyo len(self.extra_path) == 2:
                 path_file, extra_dirs = self.extra_path
             isipokua:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "'extra_path' option must be a list, tuple, ama "
                       "comma-separated string ukijumuisha 1 ama 2 elements")
 
@@ -549,7 +549,7 @@ kundi install(Command):
             # internally, na sio to sys.path, so we don't check the platform
             # matches what we are running.
             ikiwa self.warn_dir na build_plat != get_platform():
-                 ashiria DistutilsPlatformError("Can't install when "
+                ashiria DistutilsPlatformError("Can't install when "
                                              "cross-compiling")
 
         # Run all sub-commands (at least those that need to be run)
@@ -574,10 +574,10 @@ kundi install(Command):
         sys_path = map(os.path.normpath, sys.path)
         sys_path = map(os.path.normcase, sys_path)
         install_lib = os.path.normcase(os.path.normpath(self.install_lib))
-        ikiwa (self.warn_dir and
-            sio (self.path_file na self.install_path_file) and
-            install_lib sio kwenye sys_path):
-            log.debug(("modules installed to '%s', which ni sio kwenye "
+        ikiwa (self.warn_dir na
+            sio (self.path_file na self.install_path_file) na
+            install_lib haiko kwenye sys_path):
+            log.debug(("modules installed to '%s', which ni haiko kwenye "
                        "Python's module search path (sys.path) -- "
                        "you'll have to change the search path yourself"),
                        self.install_lib)
@@ -604,7 +604,7 @@ kundi install(Command):
             # Add the contents of cmd.get_outputs(), ensuring
             # that outputs doesn't contain duplicate entries
             kila filename kwenye cmd.get_outputs():
-                ikiwa filename sio kwenye outputs:
+                ikiwa filename haiko kwenye outputs:
                     outputs.append(filename)
 
         ikiwa self.path_file na self.install_path_file:
@@ -628,7 +628,7 @@ kundi install(Command):
     eleza has_lib(self):
         """Returns true ikiwa the current distribution has any Python
         modules to install."""
-        rudisha (self.distribution.has_pure_modules() or
+        rudisha (self.distribution.has_pure_modules() ama
                 self.distribution.has_ext_modules())
 
     eleza has_headers(self):

@@ -14,7 +14,7 @@ scriptsdir = os.path.join(toolsdir, 'scripts')
 
 eleza skip_if_missing():
     ikiwa sio os.path.isdir(scriptsdir):
-         ashiria unittest.SkipTest('scripts directory could sio be found')
+        ashiria unittest.SkipTest('scripts directory could sio be found')
 
 eleza import_tool(toolname):
     ukijumuisha support.DirsOnSysPath(scriptsdir):

@@ -13,7 +13,7 @@ parser.  It returns when there's nothing more it can do ukijumuisha the availabl
 data.  When you have no more data to push into the parser, call .close().
 This completes the parsing na returns the root message object.
 
-The other advantage of this parser ni that it will never  ashiria a parsing
+The other advantage of this parser ni that it will never ashiria a parsing
 exception.  Instead, when it finds something unexpected, it adds a 'defect' to
 the current message.  Defects are just instances that live on the message
 object's .defects attribute.
@@ -33,7 +33,7 @@ NLCRE_bol = re.compile(r'(\r\n|\r|\n)')
 NLCRE_eol = re.compile(r'(\r\n|\r|\n)\Z')
 NLCRE_crack = re.compile(r'(\r\n|\r|\n)')
 # RFC 2822 $3.6.8 Optional fields.  ftext ni %d33-57 / %d59-126, Any character
-# except controls, SP, na ":".
+# tatizo controls, SP, na ":".
 headerRE = re.compile(r'^(From |[\041-\071\073-\176]*:|[\t ])')
 EMPTYSTRING = ''
 NL = '\n'
@@ -101,7 +101,7 @@ kundi BufferedSubFile(object):
     eleza push(self, data):
         """Push some new data into this object."""
         self._partial.write(data)
-        ikiwa '\n' sio kwenye data na '\r' sio kwenye data:
+        ikiwa '\n' haiko kwenye data na '\r' haiko kwenye data:
             # No new complete lines, wait kila more.
             return
 
@@ -112,7 +112,7 @@ kundi BufferedSubFile(object):
         self._partial.truncate()
 
         # If the last element of the list does sio end kwenye a newline, then treat
-        # it as a partial line.  We only check kila '\n' here because a line
+        # it kama a partial line.  We only check kila '\n' here because a line
         # ending ukijumuisha '\r' might be a line that was split kwenye the middle of a
         # '\r\n' sequence (see bugs 1555570 na 1721862).
         ikiwa sio parts[-1].endswith('\n'):
@@ -128,7 +128,7 @@ kundi BufferedSubFile(object):
     eleza __next__(self):
         line = self.readline()
         ikiwa line == '':
-             ashiria StopIteration
+            ashiria StopIteration
         rudisha line
 
 
@@ -156,7 +156,7 @@ kundi FeedParser:
             self._factory = _factory
             jaribu:
                 _factory(policy=self.policy)
-            except TypeError:
+            tatizo TypeError:
                 # Assume this ni an old-style factory
                 self._old_style_factory = Kweli
         self._input = BufferedSubFile()
@@ -178,8 +178,8 @@ kundi FeedParser:
     eleza _call_parse(self):
         jaribu:
             self._parse()
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
 
     eleza close(self):
         """Parse all remaining data na rudisha the root message object."""
@@ -239,7 +239,7 @@ kundi FeedParser:
         # supposed to see kwenye the body of the message.
         self._parse_headers(headers)
         # Headers-only parsing ni a backwards compatibility hack, which was
-        # necessary kwenye the older parser, which could  ashiria errors.  All
+        # necessary kwenye the older parser, which could ashiria errors.  All
         # remaining lines kwenye the input are thrown into the message body.
         ikiwa self._headersonly:
             lines = []
@@ -255,7 +255,7 @@ kundi FeedParser:
             return
         ikiwa self._cur.get_content_type() == 'message/delivery-status':
             # message/delivery-status contains blocks of headers separated by
-            # a blank line.  We'll represent each header block as a separate
+            # a blank line.  We'll represent each header block kama a separate
             # nested message object, but the processing ni a bit different
             # than standard message/* types because there ni no body kila the
             # nested messages.  A blank line separates the subparts.
@@ -321,11 +321,11 @@ kundi FeedParser:
                 return
             # Make sure a valid content type was specified per RFC 2045:6.4.
             ikiwa (str(self._cur.get('content-transfer-encoding', '8bit')).lower()
-                    sio kwenye ('7bit', '8bit', 'binary')):
+                    haiko kwenye ('7bit', '8bit', 'binary')):
                 defect = errors.InvalidMultipartContentTransferEncodingDefect()
                 self.policy.handle_defect(self._cur, defect)
             # Create a line match predicate which matches the inter-part
-            # boundary as well as the end-of-multipart boundary.  Don't push
+            # boundary kama well kama the end-of-multipart boundary.  Don't push
             # this onto the input stream until we've scanned past the
             # preamble.
             separator = '--' + boundary
@@ -395,7 +395,7 @@ kundi FeedParser:
                         epilogue = self._last.epilogue
                         ikiwa epilogue == '':
                             self._last.epilogue = Tupu
-                        elikiwa epilogue ni sio Tupu:
+                        lasivyo epilogue ni sio Tupu:
                             mo = NLCRE_eol.search(epilogue)
                             ikiwa mo:
                                 end = len(mo.group(0))
@@ -418,7 +418,7 @@ kundi FeedParser:
                     preamble.append(line)
             # We've seen either the EOF ama the end boundary.  If we're still
             # capturing the preamble, we never saw the start boundary.  Note
-            # that as a defect na store the captured text as the payload.
+            # that kama a defect na store the captured text kama the payload.
             ikiwa capturing_preamble:
                 defect = errors.StartBoundaryNotFoundDefect()
                 self.policy.handle_defect(self._cur, defect)
@@ -496,14 +496,14 @@ kundi FeedParser:
                         line = line[:-len(mo.group(0))]
                     self._cur.set_unixfrom(line)
                     endelea
-                elikiwa lineno == len(lines) - 1:
+                lasivyo lineno == len(lines) - 1:
                     # Something looking like a unix-kutoka at the end - it's
                     # probably the first line of the body, so push back the
                     # line na stop.
                     self._input.unreadline(line)
                     return
                 isipokua:
-                    # Weirdly placed unix-kutoka line.  Note this as a defect
+                    # Weirdly placed unix-kutoka line.  Note this kama a defect
                     # na ignore it.
                     defect = errors.MisplacedEnvelopeHeaderDefect(line)
                     self._cur.defects.append(defect)

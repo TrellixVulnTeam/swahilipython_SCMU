@@ -142,7 +142,7 @@ eleza _run_after_forkers():
     kila (index, ident, func), obj kwenye items:
         jaribu:
             func(obj)
-        except Exception as e:
+        tatizo Exception kama e:
             info('after forker raised exception %s', e)
 
 eleza register_after_fork(obj, func):
@@ -162,14 +162,14 @@ kundi Finalize(object):
     '''
     eleza __init__(self, obj, callback, args=(), kwargs=Tupu, exitpriority=Tupu):
         ikiwa (exitpriority ni sio Tupu) na sio isinstance(exitpriority,int):
-             ashiria TypeError(
+            ashiria TypeError(
                 "Exitpriority ({0!r}) must be Tupu ama int, sio {1!s}".format(
                     exitpriority, type(exitpriority)))
 
         ikiwa obj ni sio Tupu:
             self._weakref = weakref.ref(obj, self)
-        elikiwa exitpriority ni Tupu:
-             ashiria ValueError("Without object, exitpriority cannot be Tupu")
+        lasivyo exitpriority ni Tupu:
+            ashiria ValueError("Without object, exitpriority cannot be Tupu")
 
         self._callback = callback
         self._args = args
@@ -189,7 +189,7 @@ kundi Finalize(object):
         '''
         jaribu:
             toa _finalizer_registry[self._key]
-        except KeyError:
+        tatizo KeyError:
             sub_debug('finalizer no longer registered')
         isipokua:
             ikiwa self._pid != getpid():
@@ -209,8 +209,8 @@ kundi Finalize(object):
         '''
         jaribu:
             toa _finalizer_registry[self._key]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         isipokua:
             self._weakref = self._callback = self._args = \
                             self._kwargs = self._key = Tupu
@@ -224,7 +224,7 @@ kundi Finalize(object):
     eleza __repr__(self):
         jaribu:
             obj = self._weakref()
-        except (AttributeError, TypeError):
+        tatizo (AttributeError, TypeError):
             obj = Tupu
 
         ikiwa obj ni Tupu:
@@ -275,7 +275,7 @@ eleza _run_finalizers(minpriority=Tupu):
             sub_debug('calling %s', finalizer)
             jaribu:
                 finalizer()
-            except Exception:
+            tatizo Exception:
                 agiza traceback
                 traceback.print_exc()
 
@@ -321,7 +321,7 @@ eleza _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
             # then replaces all values kwenye the module dict ukijumuisha Tupu.
             # For instance, after setuptools runs a test it replaces
             # sys.modules ukijumuisha a copy created earlier.  See issues
-            # #9775 na #15881.  Also related: #4106, #9205, and
+            # #9775 na #15881.  Also related: #4106, #9205, na
             # #9207.
 
             kila p kwenye active_children():
@@ -366,12 +366,12 @@ kundi ForkAwareLocal(threading.local):
         rudisha type(self), ()
 
 #
-# Close fds except those specified
+# Close fds tatizo those specified
 #
 
 jaribu:
     MAXFD = os.sysconf("SC_OPEN_MAX")
-except Exception:
+tatizo Exception:
     MAXFD = 256
 
 eleza close_all_fds_except(fds):
@@ -390,8 +390,8 @@ eleza _close_stdin():
 
     jaribu:
         sys.stdin.close()
-    except (OSError, ValueError):
-        pass
+    tatizo (OSError, ValueError):
+        pita
 
     jaribu:
         fd = os.open(os.devnull, os.O_RDONLY)
@@ -400,8 +400,8 @@ eleza _close_stdin():
         tatizo:
             os.close(fd)
             raise
-    except (OSError, ValueError):
-        pass
+    tatizo (OSError, ValueError):
+        pita
 
 #
 # Flush standard streams, ikiwa any
@@ -410,24 +410,24 @@ eleza _close_stdin():
 eleza _flush_std_streams():
     jaribu:
         sys.stdout.flush()
-    except (AttributeError, ValueError):
-        pass
+    tatizo (AttributeError, ValueError):
+        pita
     jaribu:
         sys.stderr.flush()
-    except (AttributeError, ValueError):
-        pass
+    tatizo (AttributeError, ValueError):
+        pita
 
 #
 # Start a program ukijumuisha only specified fds kept open
 #
 
-eleza spawnv_passfds(path, args, passfds):
+eleza spawnv_pitafds(path, args, pitafds):
     agiza _posixsubprocess
-    passfds = tuple(sorted(map(int, passfds)))
+    pitafds = tuple(sorted(map(int, pitafds)))
     errpipe_read, errpipe_write = os.pipe()
     jaribu:
         rudisha _posixsubprocess.fork_exec(
-            args, [os.fsencode(path)], Kweli, passfds, Tupu, Tupu,
+            args, [os.fsencode(path)], Kweli, pitafds, Tupu, Tupu,
             -1, -1, -1, -1, -1, -1, errpipe_read, errpipe_write,
             Uongo, Uongo, Tupu)
     mwishowe:
@@ -436,6 +436,6 @@ eleza spawnv_passfds(path, args, passfds):
 
 
 eleza close_fds(*fds):
-    """Close each file descriptor given as an argument"""
+    """Close each file descriptor given kama an argument"""
     kila fd kwenye fds:
         os.close(fd)

@@ -23,7 +23,7 @@ kundi PythonInfo:
 
     eleza add(self, key, value):
         ikiwa key kwenye self.info:
-             ashiria ValueError("duplicate key: %r" % key)
+            ashiria ValueError("duplicate key: %r" % key)
 
         ikiwa value ni Tupu:
             return
@@ -41,7 +41,7 @@ kundi PythonInfo:
 
     eleza get_infos(self):
         """
-        Get information as a key:value dictionary where values are strings.
+        Get information kama a key:value dictionary where values are strings.
         """
         rudisha {key: str(value) kila key, value kwenye self.info.items()}
 
@@ -60,7 +60,7 @@ eleza copy_attributes(info_add, obj, name_fmt, attributes, *, formatter=Tupu):
 eleza copy_attr(info_add, name, mod, attr_name):
     jaribu:
         value = getattr(mod, attr_name)
-    except AttributeError:
+    tatizo AttributeError:
         return
     info_add(name, value)
 
@@ -68,7 +68,7 @@ eleza copy_attr(info_add, name, mod, attr_name):
 eleza call_func(info_add, name, mod, func_name, *, formatter=Tupu):
     jaribu:
         func = getattr(mod, func_name)
-    except AttributeError:
+    tatizo AttributeError:
         return
     value = func()
     ikiwa formatter ni sio Tupu:
@@ -170,10 +170,10 @@ eleza collect_urandom(info_add):
             jaribu:
                 os.getrandom(1, os.GRND_NONBLOCK)
                 state = 'ready (initialized)'
-            except BlockingIOError as exc:
+            tatizo BlockingIOError kama exc:
                 state = 'not seeded yet (%s)' % exc
             info_add('os.getrandom', state)
-        except OSError as exc:
+        tatizo OSError kama exc:
             # Python was compiled on a more recent Linux version
             # than the current Linux kernel: ignore OSError(ENOSYS)
             ikiwa exc.errno != errno.ENOSYS:
@@ -213,10 +213,10 @@ eleza collect_os(info_add):
     ikiwa hasattr(os, 'getlogin'):
         jaribu:
             login = os.getlogin()
-        except OSError:
+        tatizo OSError:
             # getlogin() fails ukijumuisha "OSError: [Errno 25] Inappropriate ioctl
             # kila device" on Travis CI
-            pass
+            pita
         isipokua:
             info_add("os.login", login)
 
@@ -226,7 +226,7 @@ eleza collect_os(info_add):
     # Environment variables used by the stdlib na tests. Don't log the full
     # environment: filter to list to sio leak sensitive information.
     #
-    # HTTP_PROXY ni sio logged because it can contain a password.
+    # HTTP_PROXY ni sio logged because it can contain a pitaword.
     ENV_VARS = frozenset((
         "APPDATA",
         "AR",
@@ -309,14 +309,14 @@ eleza collect_os(info_add):
 eleza collect_pwd(info_add):
     jaribu:
         agiza pwd
-    except ImportError:
+    tatizo ImportError:
         return
     agiza os
 
     uid = os.getuid()
     jaribu:
         entry = pwd.getpwuid(uid)
-    except KeyError:
+    tatizo KeyError:
         entry = Tupu
 
     info_add('pwd.getpwuid(%s)'% uid,
@@ -324,7 +324,7 @@ eleza collect_pwd(info_add):
 
     ikiwa entry ni Tupu:
         # there ni nothing interesting to read ikiwa the current user identifier
-        # ni sio the password database
+        # ni sio the pitaword database
         return
 
     ikiwa hasattr(os, 'getgrouplist'):
@@ -336,7 +336,7 @@ eleza collect_pwd(info_add):
 eleza collect_readline(info_add):
     jaribu:
         agiza readline
-    except ImportError:
+    tatizo ImportError:
         return
 
     eleza format_attr(attr, value):
@@ -358,7 +358,7 @@ eleza collect_readline(info_add):
         doc = getattr(readline, '__doc__', '')
         ikiwa 'libedit readline' kwenye doc:
             info_add('readline.library', 'libedit readline')
-        elikiwa 'GNU readline' kwenye doc:
+        lasivyo 'GNU readline' kwenye doc:
             info_add('readline.library', 'GNU readline')
 
 
@@ -371,7 +371,7 @@ eleza collect_gdb(info_add):
                                 stderr=subprocess.PIPE,
                                 universal_newlines=Kweli)
         version = proc.communicate()[0]
-    except OSError:
+    tatizo OSError:
         return
 
     # Only keep the first line
@@ -382,16 +382,16 @@ eleza collect_gdb(info_add):
 eleza collect_tkinter(info_add):
     jaribu:
         agiza _tkinter
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
     isipokua:
         attributes = ('TK_VERSION', 'TCL_VERSION')
         copy_attributes(info_add, _tkinter, 'tkinter.%s', attributes)
 
     jaribu:
         agiza tkinter
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
     isipokua:
         tcl = tkinter.Tcl()
         patchlevel = tcl.call('info', 'patchlevel')
@@ -418,9 +418,9 @@ eleza collect_time(info_add):
                 # prevent DeprecatingWarning on get_clock_info('clock')
                 ukijumuisha warnings.catch_warnings(record=Kweli):
                     clock_info = time.get_clock_info(clock)
-            except ValueError:
+            tatizo ValueError:
                 # missing clock like time.thread_time()
-                pass
+                pita
             isipokua:
                 info_add('time.get_clock_info(%s)' % clock, clock_info)
 
@@ -428,7 +428,7 @@ eleza collect_time(info_add):
 eleza collect_datetime(info_add):
     jaribu:
         agiza datetime
-    except ImportError:
+    tatizo ImportError:
         return
 
     info_add('datetime.datetime.now', datetime.datetime.now())
@@ -473,11 +473,11 @@ eleza collect_ssl(info_add):
     agiza os
     jaribu:
         agiza ssl
-    except ImportError:
+    tatizo ImportError:
         return
     jaribu:
         agiza _ssl
-    except ImportError:
+    tatizo ImportError:
         _ssl = Tupu
 
     eleza format_attr(attr, value):
@@ -517,7 +517,7 @@ eleza collect_ssl(info_add):
     kila name kwenye env_names:
         jaribu:
             value = os.environ[name]
-        except KeyError:
+        tatizo KeyError:
             endelea
         info_add('ssl.environ[%s]' % name, value)
 
@@ -532,7 +532,7 @@ eleza collect_socket(info_add):
 eleza collect_sqlite(info_add):
     jaribu:
         agiza sqlite3
-    except ImportError:
+    tatizo ImportError:
         return
 
     attributes = ('version', 'sqlite_version')
@@ -542,7 +542,7 @@ eleza collect_sqlite(info_add):
 eleza collect_zlib(info_add):
     jaribu:
         agiza zlib
-    except ImportError:
+    tatizo ImportError:
         return
 
     attributes = ('ZLIB_VERSION', 'ZLIB_RUNTIME_VERSION')
@@ -552,7 +552,7 @@ eleza collect_zlib(info_add):
 eleza collect_expat(info_add):
     jaribu:
         kutoka xml.parsers agiza expat
-    except ImportError:
+    tatizo ImportError:
         return
 
     attributes = ('EXPAT_VERSION',)
@@ -562,7 +562,7 @@ eleza collect_expat(info_add):
 eleza collect_decimal(info_add):
     jaribu:
         agiza _decimal
-    except ImportError:
+    tatizo ImportError:
         return
 
     attributes = ('__libmpdec_version__',)
@@ -572,7 +572,7 @@ eleza collect_decimal(info_add):
 eleza collect_testcapi(info_add):
     jaribu:
         agiza _testcapi
-    except ImportError:
+    tatizo ImportError:
         return
 
     call_func(info_add, 'pymem.allocator', _testcapi, 'pymem_getallocatorsname')
@@ -582,7 +582,7 @@ eleza collect_testcapi(info_add):
 eleza collect_resource(info_add):
     jaribu:
         agiza resource
-    except ImportError:
+    tatizo ImportError:
         return
 
     limits = [attr kila attr kwenye dir(resource) ikiwa attr.startswith('RLIMIT_')]
@@ -597,7 +597,7 @@ eleza collect_resource(info_add):
 eleza collect_test_socket(info_add):
     jaribu:
         kutoka test agiza test_socket
-    except ImportError:
+    tatizo ImportError:
         return
 
     # all check attributes like HAVE_SOCKET_CAN
@@ -609,7 +609,7 @@ eleza collect_test_socket(info_add):
 eleza collect_test_support(info_add):
     jaribu:
         kutoka test agiza support
-    except ImportError:
+    tatizo ImportError:
         return
 
     attributes = ('IPV6_ENABLED',)
@@ -630,7 +630,7 @@ eleza collect_cc(info_add):
     jaribu:
         agiza shlex
         args = shlex.split(CC)
-    except ImportError:
+    tatizo ImportError:
         args = CC.split()
     args.append('--version')
     jaribu:
@@ -638,7 +638,7 @@ eleza collect_cc(info_add):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=Kweli)
-    except OSError:
+    tatizo OSError:
         # Cannot run the compiler, kila example when Python has been
         # cross-compiled na installed on the target platform where the
         # compiler ni missing.
@@ -657,7 +657,7 @@ eleza collect_cc(info_add):
 eleza collect_gdbm(info_add):
     jaribu:
         kutoka _gdbm agiza _GDBM_VERSION
-    except ImportError:
+    tatizo ImportError:
         return
 
     info_add('gdbm.GDBM_VERSION', '.'.join(map(str, _GDBM_VERSION)))
@@ -667,7 +667,7 @@ eleza collect_get_config(info_add):
     # Get global configuration variables, _PyPreConfig na _PyCoreConfig
     jaribu:
         kutoka _testinternalcapi agiza get_configs
-    except ImportError:
+    tatizo ImportError:
         return
 
     all_configs = get_configs()
@@ -685,7 +685,7 @@ eleza collect_subprocess(info_add):
 eleza collect_windows(info_add):
     jaribu:
         agiza ctypes
-    except ImportError:
+    tatizo ImportError:
         return
 
     ikiwa sio hasattr(ctypes, 'WinDLL'):
@@ -696,7 +696,7 @@ eleza collect_windows(info_add):
 
     jaribu:
         RtlAreLongPathsEnabled = ntdll.RtlAreLongPathsEnabled
-    except AttributeError:
+    tatizo AttributeError:
         res = '<function sio available>'
     isipokua:
         RtlAreLongPathsEnabled.restype = BOOLEAN
@@ -708,8 +708,8 @@ eleza collect_windows(info_add):
         agiza _winapi
         dll_path = _winapi.GetModuleFileName(sys.dllhandle)
         info_add('windows.dll_path', dll_path)
-    except (ImportError, AttributeError):
-        pass
+    tatizo (ImportError, AttributeError):
+        pita
 
 
 eleza collect_info(info):
@@ -748,13 +748,13 @@ eleza collect_info(info):
         collect_windows,
         collect_zlib,
 
-        # Collecting kutoka tests should be last as they have side effects.
+        # Collecting kutoka tests should be last kama they have side effects.
         collect_test_socket,
         collect_test_support,
     ):
         jaribu:
             collect_func(info_add)
-        except Exception as exc:
+        tatizo Exception kama exc:
             error = Kweli
             andika("ERROR: %s() failed" % (collect_func.__name__),
                   file=sys.stderr)

@@ -6,7 +6,7 @@ attributes.  GUI tests create an instance of each kundi na simulate
 entries na button clicks.  Subkundi tests only target the new code in
 the subkundi definition.
 
-The appearance of the widgets ni checked by the Query and
+The appearance of the widgets ni checked by the Query na
 HelpSource htests.  These are run by running query.py.
 """
 kutoka idlelib agiza query

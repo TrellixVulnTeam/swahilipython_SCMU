@@ -48,7 +48,7 @@ kundi CloseBoundaryNotFoundDefect(MessageDefect):
     """A start boundary was found, but sio the corresponding close boundary."""
 
 kundi FirstHeaderLineIsContinuationDefect(MessageDefect):
-    """A message had a continuation line as its first header line."""
+    """A message had a continuation line kama its first header line."""
 
 kundi MisplacedEnvelopeHeaderDefect(MessageDefect):
     """A 'Unix-from' header was found kwenye the middle of a header block."""
@@ -71,7 +71,7 @@ kundi InvalidBase64PaddingDefect(MessageDefect):
     """base64 encoded sequence had an incorrect length"""
 
 kundi InvalidBase64CharactersDefect(MessageDefect):
-    """base64 encoded sequence had characters sio kwenye base64 alphabet"""
+    """base64 encoded sequence had characters haiko kwenye base64 alphabet"""
 
 kundi InvalidBase64LengthDefect(MessageDefect):
     """base64 encoded sequence had invalid length (1 mod 4)"""

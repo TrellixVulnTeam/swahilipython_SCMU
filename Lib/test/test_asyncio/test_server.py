@@ -4,8 +4,8 @@ agiza threading
 agiza unittest
 
 kutoka test agiza support
-kutoka test.test_asyncio agiza utils as test_utils
-kutoka test.test_asyncio agiza functional as func_tests
+kutoka test.test_asyncio agiza utils kama test_utils
+kutoka test.test_asyncio agiza functional kama func_tests
 
 
 eleza tearDownModule():
@@ -15,7 +15,7 @@ eleza tearDownModule():
 kundi BaseStartServer(func_tests.FunctionalTestCaseMixin):
 
     eleza new_loop(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza test_start_server_1(self):
         HELLO_MSG = b'1' * 1024 * 5 + b'\n'
@@ -26,7 +26,7 @@ kundi BaseStartServer(func_tests.FunctionalTestCaseMixin):
                 ikiwa srv.is_serving():
                     koma
             isipokua:
-                 ashiria RuntimeError
+                ashiria RuntimeError
 
             sock.settimeout(2)
             sock.connect(addr)
@@ -101,7 +101,7 @@ kundi SelectorStartServerTests(BaseStartServer, unittest.TestCase):
                 started.set()
                 await srv.serve_forever()
 
-        ukijumuisha test_utils.unix_socket_path() as addr:
+        ukijumuisha test_utils.unix_socket_path() kama addr:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 srv = self.loop.run_until_complete(asyncio.start_unix_server(
                     serve, addr, loop=self.loop, start_serving=Uongo))

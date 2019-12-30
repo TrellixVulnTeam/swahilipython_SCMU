@@ -6,7 +6,7 @@ agiza tkinter
 
 
 kundi WmInfoGatheringError(Exception):
-    pass
+    pita
 
 
 kundi ZoomHeight:
@@ -36,13 +36,13 @@ kundi ZoomHeight:
         width, height, x, y = get_window_geometry(top)
 
         ikiwa top.wm_state() != 'normal':
-            # Can't zoom/restore window height kila windows sio kwenye the 'normal'
+            # Can't zoom/restore window height kila windows haiko kwenye the 'normal'
             # state, e.g. maximized na full-screen windows.
             rudisha Tupu
 
         jaribu:
             maxheight, maxy = self.get_max_height_and_y_coord()
-        except WmInfoGatheringError:
+        tatizo WmInfoGatheringError:
             rudisha Tupu
 
         ikiwa height != maxheight:
@@ -62,16 +62,16 @@ kundi ZoomHeight:
 
         screen_dimensions = (top.winfo_screenwidth(),
                              top.winfo_screenheight())
-        ikiwa screen_dimensions sio kwenye self._max_height_and_y_coords:
+        ikiwa screen_dimensions haiko kwenye self._max_height_and_y_coords:
             orig_state = top.wm_state()
 
             # Get window geometry info kila maximized windows.
             jaribu:
                 top.wm_state('zoomed')
-            except tkinter.TclError:
+            tatizo tkinter.TclError:
                 # The 'zoomed' state ni sio supported by some esoteric WMs,
-                # such as Xvfb.
-                 ashiria WmInfoGatheringError(
+                # such kama Xvfb.
+                ashiria WmInfoGatheringError(
                     'Failed getting geometry of maximized windows, because ' +
                     'the "zoomed" window state ni unavailable.')
             top.update()
@@ -86,7 +86,7 @@ kundi ZoomHeight:
             # Get the "root y" coordinate kila non-maximized windows ukijumuisha their
             # y coordinate set to that of maximized windows.  This ni needed
             # to properly handle different title bar heights kila non-maximized
-            # vs. maximized windows, as seen e.g. kwenye Windows 10.
+            # vs. maximized windows, kama seen e.g. kwenye Windows 10.
             top.wm_state('normal')
             top.update()
             orig_geom = get_window_geometry(top)

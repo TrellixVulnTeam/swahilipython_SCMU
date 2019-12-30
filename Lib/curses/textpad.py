@@ -62,7 +62,7 @@ kundi Textbox:
             ikiwa curses.ascii.ascii(self.win.inch(y, last)) != curses.ascii.SP:
                 last = min(self.maxx, last+1)
                 koma
-            elikiwa last == 0:
+            lasivyo last == 0:
                 koma
             last = last - 1
         rudisha last
@@ -79,8 +79,8 @@ kundi Textbox:
             # kwenye the window.
             jaribu:
                 self.win.addch(ch)
-            except curses.error:
-                pass
+            tatizo curses.error:
+                pita
             ikiwa sio self.insert_mode ama sio curses.ascii.isandika(oldch):
                 koma
             ch = oldch
@@ -100,57 +100,57 @@ kundi Textbox:
         ikiwa curses.ascii.isandika(ch):
             ikiwa y < self.maxy ama x < self.maxx:
                 self._insert_printable_char(ch)
-        elikiwa ch == curses.ascii.SOH:                           # ^a
+        lasivyo ch == curses.ascii.SOH:                           # ^a
             self.win.move(y, 0)
-        elikiwa ch kwenye (curses.ascii.STX,curses.KEY_LEFT, curses.ascii.BS,curses.KEY_BACKSPACE):
+        lasivyo ch kwenye (curses.ascii.STX,curses.KEY_LEFT, curses.ascii.BS,curses.KEY_BACKSPACE):
             ikiwa x > 0:
                 self.win.move(y, x-1)
-            elikiwa y == 0:
-                pass
-            elikiwa self.stripspaces:
+            lasivyo y == 0:
+                pita
+            lasivyo self.stripspaces:
                 self.win.move(y-1, self._end_of_line(y-1))
             isipokua:
                 self.win.move(y-1, self.maxx)
             ikiwa ch kwenye (curses.ascii.BS, curses.KEY_BACKSPACE):
                 self.win.delch()
-        elikiwa ch == curses.ascii.EOT:                           # ^d
+        lasivyo ch == curses.ascii.EOT:                           # ^d
             self.win.delch()
-        elikiwa ch == curses.ascii.ENQ:                           # ^e
+        lasivyo ch == curses.ascii.ENQ:                           # ^e
             ikiwa self.stripspaces:
                 self.win.move(y, self._end_of_line(y))
             isipokua:
                 self.win.move(y, self.maxx)
-        elikiwa ch kwenye (curses.ascii.ACK, curses.KEY_RIGHT):       # ^f
+        lasivyo ch kwenye (curses.ascii.ACK, curses.KEY_RIGHT):       # ^f
             ikiwa x < self.maxx:
                 self.win.move(y, x+1)
-            elikiwa y == self.maxy:
-                pass
+            lasivyo y == self.maxy:
+                pita
             isipokua:
                 self.win.move(y+1, 0)
-        elikiwa ch == curses.ascii.BEL:                           # ^g
+        lasivyo ch == curses.ascii.BEL:                           # ^g
             rudisha 0
-        elikiwa ch == curses.ascii.NL:                            # ^j
+        lasivyo ch == curses.ascii.NL:                            # ^j
             ikiwa self.maxy == 0:
                 rudisha 0
-            elikiwa y < self.maxy:
+            lasivyo y < self.maxy:
                 self.win.move(y+1, 0)
-        elikiwa ch == curses.ascii.VT:                            # ^k
+        lasivyo ch == curses.ascii.VT:                            # ^k
             ikiwa x == 0 na self._end_of_line(y) == 0:
                 self.win.deleteln()
             isipokua:
                 # first undo the effect of self._end_of_line
                 self.win.move(y, x)
                 self.win.clrtoeol()
-        elikiwa ch == curses.ascii.FF:                            # ^l
+        lasivyo ch == curses.ascii.FF:                            # ^l
             self.win.refresh()
-        elikiwa ch kwenye (curses.ascii.SO, curses.KEY_DOWN):         # ^n
+        lasivyo ch kwenye (curses.ascii.SO, curses.KEY_DOWN):         # ^n
             ikiwa y < self.maxy:
                 self.win.move(y+1, x)
                 ikiwa x > self._end_of_line(y+1):
                     self.win.move(y+1, self._end_of_line(y+1))
-        elikiwa ch == curses.ascii.SI:                            # ^o
+        lasivyo ch == curses.ascii.SI:                            # ^o
             self.win.insertln()
-        elikiwa ch kwenye (curses.ascii.DLE, curses.KEY_UP):          # ^p
+        lasivyo ch kwenye (curses.ascii.DLE, curses.KEY_UP):          # ^p
             ikiwa y > 0:
                 self.win.move(y-1, x)
                 ikiwa x > self._end_of_line(y-1):

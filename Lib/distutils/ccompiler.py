@@ -19,7 +19,7 @@ kundi CCompiler:
 
     The basic idea behind a compiler abstraction kundi ni that each
     instance can be used kila all the compile/link steps kwenye building a
-    single project.  Thus, attributes common to all of those compile and
+    single project.  Thus, attributes common to all of those compile na
     link steps -- include directories, macros to define, libraries to link
     against, etc. -- are attributes of the compiler instance.  To allow for
     variability kwenye how individual files are treated, most of those
@@ -65,7 +65,7 @@ kundi CCompiler:
     static_lib_extension = Tupu
     shared_lib_extension = Tupu         # string
     static_lib_format = Tupu            # format string
-    shared_lib_format = Tupu            # prob. same as static_lib_format
+    shared_lib_format = Tupu            # prob. same kama static_lib_format
     exe_extension = Tupu                # string
 
     # Default language settings. language_map ni used to detect a source
@@ -73,7 +73,7 @@ kundi CCompiler:
     # language_order ni used to detect the language precedence, when deciding
     # what language to use when mixing source types. For example, ikiwa some
     # extension has two files ukijumuisha ".c" extension, na one ukijumuisha ".cpp", it
-    # ni still linked as c++.
+    # ni still linked kama c++.
     language_map = {".c"   : "c",
                     ".cc"  : "c++",
                     ".cpp" : "c++",
@@ -111,7 +111,7 @@ kundi CCompiler:
         # shared libraries/objects at runtime
         self.runtime_library_dirs = []
 
-        # 'objects': a list of object files (or similar, such as explicitly
+        # 'objects': a list of object files (or similar, such kama explicitly
         # named library files) to include on any link
         self.objects = []
 
@@ -131,7 +131,7 @@ kundi CCompiler:
         On platforms ukijumuisha a command-line (Unix, DOS/Windows), each of these
         ni a string that will be split into executable name na (optional)
         list of arguments.  (Splitting the string ni done similarly to how
-        Unix shells operate: words are delimited by spaces, but quotes and
+        Unix shells operate: words are delimited by spaces, but quotes na
         backslashes can override this.  See
         'distutils.util.split_quoted()'.)
         """
@@ -145,8 +145,8 @@ kundi CCompiler:
         # basically the same things ukijumuisha Unix C compilers.
 
         kila key kwenye kwargs:
-            ikiwa key sio kwenye self.executables:
-                 ashiria ValueError("unknown executable '%s' kila kundi %s" %
+            ikiwa key haiko kwenye self.executables:
+                ashiria ValueError("unknown executable '%s' kila kundi %s" %
                       (key, self.__class__.__name__))
             self.set_executable(key, kwargs[key])
 
@@ -167,14 +167,14 @@ kundi CCompiler:
     eleza _check_macro_definitions(self, definitions):
         """Ensures that every element of 'definitions' ni a valid macro
         definition, ie. either (name,value) 2-tuple ama a (name,) tuple.  Do
-        nothing ikiwa all definitions are OK,  ashiria TypeError otherwise.
+        nothing ikiwa all definitions are OK, ashiria TypeError otherwise.
         """
         kila defn kwenye definitions:
-            ikiwa sio (isinstance(defn, tuple) and
-                    (len(defn) kwenye (1, 2) and
-                      (isinstance (defn[1], str) ama defn[1] ni Tupu)) and
+            ikiwa sio (isinstance(defn, tuple) na
+                    (len(defn) kwenye (1, 2) na
+                      (isinstance (defn[1], str) ama defn[1] ni Tupu)) na
                     isinstance (defn[0], str)):
-                 ashiria TypeError(("invalid macro definition '%s': " % defn) + \
+                ashiria TypeError(("invalid macro definition '%s': " % defn) + \
                       "must be tuple (string,), (string, string), ama " + \
                       "(string, Tupu)")
 
@@ -200,7 +200,7 @@ kundi CCompiler:
         """Undefine a preprocessor macro kila all compilations driven by
         this compiler object.  If the same macro ni defined by
         'define_macro()' na undefined by 'undefine_macro()' the last call
-        takes precedence (including multiple redefinitions or
+        takes precedence (including multiple redefinitions ama
         undefinitions).  If the macro ni redefined/undefined on a
         per-compilation basis (ie. kwenye the call to 'compile()'), then that
         takes precedence.
@@ -226,7 +226,7 @@ kundi CCompiler:
         """Set the list of directories that will be searched to 'dirs' (a
         list of strings).  Overrides any preceding calls to
         'add_include_dir()'; subsequence calls to 'add_include_dir()' add
-        to the list passed to 'set_include_dirs()'.  This does sio affect
+        to the list pitaed to 'set_include_dirs()'.  This does sio affect
         any list of standard include directories that the compiler may
         search by default.
         """
@@ -244,7 +244,7 @@ kundi CCompiler:
         order they were supplied to 'add_library()' and/or
         'set_libraries()'.  It ni perfectly valid to duplicate library
         names; the linker will be instructed to link against libraries as
-        many times as they are mentioned.
+        many times kama they are mentioned.
         """
         self.libraries.append(libname)
 
@@ -296,7 +296,7 @@ kundi CCompiler:
     eleza set_link_objects(self, objects):
         """Set the list of object files (or analogues) to be included in
         every link to 'objects'.  This does sio affect any standard object
-        files that the linker may include by default (such as system
+        files that the linker may include by default (such kama system
         libraries).
         """
         self.objects = objects[:]
@@ -312,22 +312,22 @@ kundi CCompiler:
         """Process arguments na decide which source files to compile."""
         ikiwa outdir ni Tupu:
             outdir = self.output_dir
-        elikiwa sio isinstance(outdir, str):
-             ashiria TypeError("'output_dir' must be a string ama Tupu")
+        lasivyo sio isinstance(outdir, str):
+            ashiria TypeError("'output_dir' must be a string ama Tupu")
 
         ikiwa macros ni Tupu:
             macros = self.macros
-        elikiwa isinstance(macros, list):
+        lasivyo isinstance(macros, list):
             macros = macros + (self.macros ama [])
         isipokua:
-             ashiria TypeError("'macros' (ikiwa supplied) must be a list of tuples")
+            ashiria TypeError("'macros' (ikiwa supplied) must be a list of tuples")
 
         ikiwa incdirs ni Tupu:
             incdirs = self.include_dirs
-        elikiwa isinstance(incdirs, (list, tuple)):
+        lasivyo isinstance(incdirs, (list, tuple)):
             incdirs = list(incdirs) + (self.include_dirs ama [])
         isipokua:
-             ashiria TypeError(
+            ashiria TypeError(
                   "'include_dirs' (ikiwa supplied) must be a list of strings")
 
         ikiwa extra ni Tupu:
@@ -366,27 +366,27 @@ kundi CCompiler:
         ni a list, na augments it ukijumuisha 'self.macros'; ensures that
         'include_dirs' ni a list, na augments it ukijumuisha 'self.include_dirs'.
         Guarantees that the returned values are of the correct type,
-        i.e. kila 'output_dir' either string ama Tupu, na kila 'macros' and
+        i.e. kila 'output_dir' either string ama Tupu, na kila 'macros' na
         'include_dirs' either list ama Tupu.
         """
         ikiwa output_dir ni Tupu:
             output_dir = self.output_dir
-        elikiwa sio isinstance(output_dir, str):
-             ashiria TypeError("'output_dir' must be a string ama Tupu")
+        lasivyo sio isinstance(output_dir, str):
+            ashiria TypeError("'output_dir' must be a string ama Tupu")
 
         ikiwa macros ni Tupu:
             macros = self.macros
-        elikiwa isinstance(macros, list):
+        lasivyo isinstance(macros, list):
             macros = macros + (self.macros ama [])
         isipokua:
-             ashiria TypeError("'macros' (ikiwa supplied) must be a list of tuples")
+            ashiria TypeError("'macros' (ikiwa supplied) must be a list of tuples")
 
         ikiwa include_dirs ni Tupu:
             include_dirs = self.include_dirs
-        elikiwa isinstance(include_dirs, (list, tuple)):
+        lasivyo isinstance(include_dirs, (list, tuple)):
             include_dirs = list(include_dirs) + (self.include_dirs ama [])
         isipokua:
-             ashiria TypeError(
+            ashiria TypeError(
                   "'include_dirs' (ikiwa supplied) must be a list of strings")
 
         rudisha output_dir, macros, include_dirs
@@ -414,13 +414,13 @@ kundi CCompiler:
         'objects' na 'output_dir'.
         """
         ikiwa sio isinstance(objects, (list, tuple)):
-             ashiria TypeError("'objects' must be a list ama tuple of strings")
+            ashiria TypeError("'objects' must be a list ama tuple of strings")
         objects = list(objects)
 
         ikiwa output_dir ni Tupu:
             output_dir = self.output_dir
-        elikiwa sio isinstance(output_dir, str):
-             ashiria TypeError("'output_dir' must be a string ama Tupu")
+        lasivyo sio isinstance(output_dir, str):
+            ashiria TypeError("'output_dir' must be a string ama Tupu")
 
         rudisha (objects, output_dir)
 
@@ -433,27 +433,27 @@ kundi CCompiler:
         """
         ikiwa libraries ni Tupu:
             libraries = self.libraries
-        elikiwa isinstance(libraries, (list, tuple)):
+        lasivyo isinstance(libraries, (list, tuple)):
             libraries = list (libraries) + (self.libraries ama [])
         isipokua:
-             ashiria TypeError(
+            ashiria TypeError(
                   "'libraries' (ikiwa supplied) must be a list of strings")
 
         ikiwa library_dirs ni Tupu:
             library_dirs = self.library_dirs
-        elikiwa isinstance(library_dirs, (list, tuple)):
+        lasivyo isinstance(library_dirs, (list, tuple)):
             library_dirs = list (library_dirs) + (self.library_dirs ama [])
         isipokua:
-             ashiria TypeError(
+            ashiria TypeError(
                   "'library_dirs' (ikiwa supplied) must be a list of strings")
 
         ikiwa runtime_library_dirs ni Tupu:
             runtime_library_dirs = self.runtime_library_dirs
-        elikiwa isinstance(runtime_library_dirs, (list, tuple)):
+        lasivyo isinstance(runtime_library_dirs, (list, tuple)):
             runtime_library_dirs = (list(runtime_library_dirs) +
                                     (self.runtime_library_dirs ama []))
         isipokua:
-             ashiria TypeError("'runtime_library_dirs' (ikiwa supplied) "
+            ashiria TypeError("'runtime_library_dirs' (ikiwa supplied) "
                             "must be a list of strings")
 
         rudisha (libraries, library_dirs, runtime_library_dirs)
@@ -487,8 +487,8 @@ kundi CCompiler:
                 ikiwa extindex < index:
                     lang = extlang
                     index = extindex
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
         rudisha lang
 
 
@@ -500,13 +500,13 @@ kundi CCompiler:
         """Preprocess a single C/C++ source file, named kwenye 'source'.
         Output will be written to file named 'output_file', ama stdout if
         'output_file' sio supplied.  'macros' ni a list of macro
-        definitions as kila 'compile()', which will augment the macros set
+        definitions kama kila 'compile()', which will augment the macros set
         ukijumuisha 'define_macro()' na 'undefine_macro()'.  'include_dirs' ni a
         list of directory names that will be added to the default list.
 
         Raises PreprocessError on failure.
         """
-        pass
+        pita
 
     eleza compile(self, sources, output_dir=Tupu, macros=Tupu,
                 include_dirs=Tupu, debug=0, extra_preargs=Tupu,
@@ -547,7 +547,7 @@ kundi CCompiler:
         DOS/Windows), they are most likely lists of strings: extra
         command-line arguments to prepend/append to the compiler command
         line.  On other platforms, consult the implementation class
-        documentation.  In any event, they are intended as an escape hatch
+        documentation.  In any event, they are intended kama an escape hatch
         kila those occasions when the abstract compiler framework doesn't
         cut the mustard.
 
@@ -569,7 +569,7 @@ kundi CCompiler:
         kila obj kwenye objects:
             jaribu:
                 src, ext = build[obj]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             self._compile(obj, src, ext, cc_args, extra_postargs, pp_opts)
 
@@ -580,16 +580,16 @@ kundi CCompiler:
         """Compile 'src' to product 'obj'."""
         # A concrete compiler kundi that does sio override compile()
         # should implement _compile().
-        pass
+        pita
 
     eleza create_static_lib(self, objects, output_libname, output_dir=Tupu,
                           debug=0, target_lang=Tupu):
         """Link a bunch of stuff together to create a static library file.
         The "bunch of stuff" consists of the list of object files supplied
-        as 'objects', the extra object files supplied to
+        kama 'objects', the extra object files supplied to
         'add_link_object()' and/or 'set_link_objects()', the libraries
         supplied to 'add_library()' and/or 'set_libraries()', na the
-        libraries supplied as 'libraries' (ikiwa any).
+        libraries supplied kama 'libraries' (ikiwa any).
 
         'output_libname' should be a library name, sio a filename; the
         filename will be inferred kutoka the library name.  'output_dir' is
@@ -606,7 +606,7 @@ kundi CCompiler:
 
         Raises LibError on failure.
         """
-        pass
+        pita
 
 
     # values kila target_desc parameter kwenye link()
@@ -628,11 +628,11 @@ kundi CCompiler:
              extra_postargs=Tupu,
              build_temp=Tupu,
              target_lang=Tupu):
-        """Link a bunch of stuff together to create an executable or
+        """Link a bunch of stuff together to create an executable ama
         shared library file.
 
         The "bunch of stuff" consists of the list of object files supplied
-        as 'objects'.  'output_filename' should be a filename.  If
+        kama 'objects'.  'output_filename' should be a filename.  If
         'output_dir' ni supplied, 'output_filename' ni relative to it
         (i.e. 'output_filename' can provide directory components if
         needed).
@@ -645,7 +645,7 @@ kundi CCompiler:
         specific directory rather than searching all the normal locations.
 
         'library_dirs', ikiwa supplied, should be a list of directories to
-        search kila libraries that were specified as bare library names
+        search kila libraries that were specified kama bare library names
         (ie. no directory component).  These are on top of the system
         default na those supplied to 'add_library_dir()' and/or
         'set_library_dirs()'.  'runtime_library_dirs' ni a list of
@@ -656,12 +656,12 @@ kundi CCompiler:
         'export_symbols' ni a list of symbols that the shared library will
         export.  (This appears to be relevant only on Windows.)
 
-        'debug' ni as kila 'compile()' na 'create_static_lib()', ukijumuisha the
+        'debug' ni kama kila 'compile()' na 'create_static_lib()', ukijumuisha the
         slight distinction that it actually matters on most platforms (as
         opposed to 'create_static_lib()', which includes a 'debug' flag
         mostly kila form's sake).
 
-        'extra_preargs' na 'extra_postargs' are as kila 'compile()' (except
+        'extra_preargs' na 'extra_postargs' are kama kila 'compile()' (except
         of course that they supply command-line arguments kila the
         particular linker being used).
 
@@ -671,7 +671,7 @@ kundi CCompiler:
 
         Raises LinkError on failure.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
     # Old 'link_*()' methods, rewritten to use the new 'link()' method.
@@ -743,19 +743,19 @@ kundi CCompiler:
         """Return the compiler option to add 'dir' to the list of
         directories searched kila libraries.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza runtime_library_dir_option(self, dir):
         """Return the compiler option to add 'dir' to the list of
         directories searched kila runtime libraries.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza library_option(self, lib):
         """Return the compiler option to add 'lib' to the list of libraries
         linked into the shared library ama executable.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza has_function(self, funcname, includes=Tupu, include_dirs=Tupu,
                      libraries=Tupu, library_dirs=Tupu):
@@ -790,14 +790,14 @@ int main (int argc, char **argv) {
             f.close()
         jaribu:
             objects = self.compile([fname], include_dirs=include_dirs)
-        except CompileError:
+        tatizo CompileError:
             rudisha Uongo
 
         jaribu:
             self.link_executable(objects, "a.out",
                                  libraries=libraries,
                                  library_dirs=library_dirs)
-        except (LinkError, TypeError):
+        tatizo (LinkError, TypeError):
             rudisha Uongo
         rudisha Kweli
 
@@ -808,7 +808,7 @@ int main (int argc, char **argv) {
         the current platform).  Return Tupu ikiwa 'lib' wasn't found kwenye any of
         the specified directories.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # -- Filename generation methods -----------------------------------
 
@@ -825,7 +825,7 @@ int main (int argc, char **argv) {
     #
     # To reduce redundant code, these methods expect to find
     # several attributes kwenye the current object (presumably defined
-    # as kundi attributes):
+    # kama kundi attributes):
     #   * src_extensions -
     #     list of C/C++ source file extensions, eg. ['.c', '.cpp']
     #   * obj_extension -
@@ -839,7 +839,7 @@ int main (int argc, char **argv) {
     #     eg. 'lib%s.%s' ama '%s.%s'
     #   * shared_lib_format
     #     format string kila generating shared library filenames
-    #     (probably same as static_lib_format, since the extension
+    #     (probably same kama static_lib_format, since the extension
     #     ni one of the intended parameters to the format string)
     #   * exe_extension -
     #     extension kila executable files, eg. '' ama '.exe'
@@ -852,8 +852,8 @@ int main (int argc, char **argv) {
             base, ext = os.path.splitext(src_name)
             base = os.path.splitdrive(base)[1] # Chop off the drive
             base = base[os.path.isabs(base):]  # If abs, chop off leading /
-            ikiwa ext sio kwenye self.src_extensions:
-                 ashiria UnknownFileError(
+            ikiwa ext haiko kwenye self.src_extensions:
+                ashiria UnknownFileError(
                       "unknown file type '%s' (kutoka '%s')" % (ext, src_name))
             ikiwa strip_dir:
                 base = os.path.basename(base)
@@ -876,8 +876,8 @@ int main (int argc, char **argv) {
     eleza library_filename(self, libname, lib_type='static',     # ama 'shared'
                          strip_dir=0, output_dir=''):
         assert output_dir ni sio Tupu
-        ikiwa lib_type sio kwenye ("static", "shared", "dylib", "xcode_stub"):
-             ashiria ValueError(
+        ikiwa lib_type haiko kwenye ("static", "shared", "dylib", "xcode_stub"):
+            ashiria ValueError(
                   "'lib_type' must be \"static\", \"shared\", \"dylib\", ama \"xcode_stub\"")
         fmt = getattr(self, lib_type + "_lib_format")
         ext = getattr(self, lib_type + "_lib_extension")
@@ -917,7 +917,7 @@ int main (int argc, char **argv) {
 
 
 # Map a sys.platform/os.name ('posix', 'nt') to the default compiler
-# type kila that platform. Keys are interpreted as re match
+# type kila that platform. Keys are interpreted kama re match
 # patterns. Order ni important; platform mappings are preferred over
 # OS names.
 _default_compilers = (
@@ -991,7 +991,7 @@ eleza new_compiler(plat=Tupu, compiler=Tupu, verbose=0, dry_run=0, force=0):
     """Generate an instance of some CCompiler subkundi kila the supplied
     platform/compiler combination.  'plat' defaults to 'os.name'
     (eg. 'posix', 'nt'), na 'compiler' defaults to the default compiler
-    kila that platform.  Currently only 'posix' na 'nt' are supported, and
+    kila that platform.  Currently only 'posix' na 'nt' are supported, na
     the default compilers are "traditional Unix interface" (UnixCCompiler
     class) na Visual C++ (MSVCCompiler class).  Note that it's perfectly
     possible to ask kila a Unix compiler object under Windows, na a
@@ -1006,23 +1006,23 @@ eleza new_compiler(plat=Tupu, compiler=Tupu, verbose=0, dry_run=0, force=0):
             compiler = get_default_compiler(plat)
 
         (module_name, class_name, long_description) = compiler_class[compiler]
-    except KeyError:
+    tatizo KeyError:
         msg = "don't know how to compile C/C++ code on platform '%s'" % plat
         ikiwa compiler ni sio Tupu:
             msg = msg + " ukijumuisha '%s' compiler" % compiler
-         ashiria DistutilsPlatformError(msg)
+        ashiria DistutilsPlatformError(msg)
 
     jaribu:
         module_name = "distutils." + module_name
         __import__ (module_name)
         module = sys.modules[module_name]
         klass = vars(module)[class_name]
-    except ImportError:
-         ashiria DistutilsModuleError(
+    tatizo ImportError:
+        ashiria DistutilsModuleError(
               "can't compile C/C++ code: unable to load module '%s'" % \
               module_name)
-    except KeyError:
-         ashiria DistutilsModuleError(
+    tatizo KeyError:
+        ashiria DistutilsModuleError(
                "can't compile C/C++ code: unable to find kundi '%s' "
                "in module '%s'" % (class_name, module_name))
 
@@ -1033,7 +1033,7 @@ eleza new_compiler(plat=Tupu, compiler=Tupu, verbose=0, dry_run=0, force=0):
 
 
 eleza gen_preprocess_options(macros, include_dirs):
-    """Generate C pre-processor options (-D, -U, -I) as used by at least
+    """Generate C pre-processor options (-D, -U, -I) kama used by at least
     two types of compilers: the typical Unix compiler na Visual C++.
     'macros' ni the usual thing, a list of 1- ama 2-tuples, where (name,)
     means undefine (-U) macro 'name', na (name,value) means define (-D)
@@ -1056,14 +1056,14 @@ eleza gen_preprocess_options(macros, include_dirs):
     pp_opts = []
     kila macro kwenye macros:
         ikiwa sio (isinstance(macro, tuple) na 1 <= len(macro) <= 2):
-             ashiria TypeError(
+            ashiria TypeError(
                   "bad macro definition '%s': "
                   "each element of 'macros' list must be a 1- ama 2-tuple"
                   % macro)
 
         ikiwa len(macro) == 1:        # undefine this macro
             pp_opts.append("-U%s" % macro[0])
-        elikiwa len(macro) == 2:
+        lasivyo len(macro) == 2:
             ikiwa macro[1] ni Tupu:    # define ukijumuisha no explicit value
                 pp_opts.append("-D%s" % macro[0])
             isipokua:
@@ -1078,11 +1078,11 @@ eleza gen_preprocess_options(macros, include_dirs):
 
 
 eleza gen_lib_options (compiler, library_dirs, runtime_library_dirs, libraries):
-    """Generate linker options kila searching library directories and
+    """Generate linker options kila searching library directories na
     linking ukijumuisha specific libraries.  'libraries' na 'library_dirs' are,
-    respectively, lists of library names (not filenames!) na search
+    respectively, lists of library names (sio filenames!) na search
     directories.  Returns a list of command-line options suitable kila use
-    ukijumuisha some compiler (depending on the two format strings passed in).
+    ukijumuisha some compiler (depending on the two format strings pitaed in).
     """
     lib_opts = []
 

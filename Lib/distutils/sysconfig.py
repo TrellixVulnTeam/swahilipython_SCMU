@@ -1,5 +1,5 @@
 """Provide access to Python's configuration information.  The specific
-configuration variables available depend heavily on the platform and
+configuration variables available depend heavily on the platform na
 configuration.  The values may be retrieved using
 get_config_var(name), na the list of variables ni available via
 get_config_vars().keys().  Additional convenience functions are also
@@ -37,7 +37,7 @@ isipokua:
         project_base = os.getcwd()
 
 
-# python_build: (Boolean) ikiwa true, we're either building Python or
+# python_build: (Boolean) ikiwa true, we're either building Python ama
 # building an extension ukijumuisha an un-installed Python, so we use
 # different (hard-wired) directories.
 eleza _is_python_source_dir(d):
@@ -72,10 +72,10 @@ build_flags = ''
 jaribu:
     ikiwa sio python_build:
         build_flags = sys.abiflags
-except AttributeError:
+tatizo AttributeError:
     # It's sio a configure-based build, so the sys module doesn't have
     # this attribute, which ni fine.
-    pass
+    pita
 
 eleza get_python_version():
     """Return a string containing the major na minor Python version,
@@ -93,7 +93,7 @@ eleza get_python_inc(plat_specific=0, prefix=Tupu):
     otherwise, this ni the path to platform-specific header files
     (namely pyconfig.h).
 
-    If 'prefix' ni supplied, use it instead of sys.base_prefix or
+    If 'prefix' ni supplied, use it instead of sys.base_prefix ama
     sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
     """
     ikiwa prefix ni Tupu:
@@ -112,7 +112,7 @@ eleza get_python_inc(plat_specific=0, prefix=Tupu):
                 rudisha os.path.normpath(incdir)
         python_dir = 'python' + get_python_version() + build_flags
         rudisha os.path.join(prefix, "include", python_dir)
-    elikiwa os.name == "nt":
+    lasivyo os.name == "nt":
         ikiwa python_build:
             # Include both the include na PC dir to ensure we can find
             # pyconfig.h
@@ -120,13 +120,13 @@ eleza get_python_inc(plat_specific=0, prefix=Tupu):
                     os.path.join(prefix, "PC"))
         rudisha os.path.join(prefix, "include")
     isipokua:
-         ashiria DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
             "I don't know where Python installs its C header files "
             "on platform '%s'" % os.name)
 
 
 eleza get_python_lib(plat_specific=0, standard_lib=0, prefix=Tupu):
-    """Return the directory containing the Python library (standard or
+    """Return the directory containing the Python library (standard ama
     site additions).
 
     If 'plat_specific' ni true, rudisha the directory containing
@@ -136,7 +136,7 @@ eleza get_python_lib(plat_specific=0, standard_lib=0, prefix=Tupu):
     containing standard Python library modules; otherwise, rudisha the
     directory kila site-specific modules.
 
-    If 'prefix' ni supplied, use it instead of sys.base_prefix or
+    If 'prefix' ni supplied, use it instead of sys.base_prefix ama
     sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
     """
     ikiwa prefix ni Tupu:
@@ -152,13 +152,13 @@ eleza get_python_lib(plat_specific=0, standard_lib=0, prefix=Tupu):
             rudisha libpython
         isipokua:
             rudisha os.path.join(libpython, "site-packages")
-    elikiwa os.name == "nt":
+    lasivyo os.name == "nt":
         ikiwa standard_lib:
             rudisha os.path.join(prefix, "Lib")
         isipokua:
             rudisha os.path.join(prefix, "Lib", "site-packages")
     isipokua:
-         ashiria DistutilsPlatformError(
+        ashiria DistutilsPlatformError(
             "I don't know where Python installs its library "
             "on platform '%s'" % os.name)
 
@@ -194,10 +194,10 @@ eleza customize_compiler(compiler):
         ikiwa 'CC' kwenye os.environ:
             newcc = os.environ['CC']
             ikiwa (sys.platform == 'darwin'
-                    na 'LDSHARED' sio kwenye os.environ
+                    na 'LDSHARED' haiko kwenye os.environ
                     na ldshared.startswith(cc)):
-                # On OS X, ikiwa CC ni overridden, use that as the default
-                #       command kila LDSHARED as well
+                # On OS X, ikiwa CC ni overridden, use that kama the default
+                #       command kila LDSHARED kama well
                 ldshared = newcc + ldshared[len(cc):]
             cc = newcc
         ikiwa 'CXX' kwenye os.environ:
@@ -265,7 +265,7 @@ eleza parse_config_h(fp, g=Tupu):
     """Parse a config.h-style file.
 
     A dictionary containing name/value pairs ni returned.  If an
-    optional dictionary ni passed kwenye as the second argument, it is
+    optional dictionary ni pitaed kwenye kama the second argument, it is
     used instead of a new dictionary.
     """
     ikiwa g ni Tupu:
@@ -281,7 +281,7 @@ eleza parse_config_h(fp, g=Tupu):
         ikiwa m:
             n, v = m.group(1, 2)
             jaribu: v = int(v)
-            except ValueError: pass
+            tatizo ValueError: pita
             g[n] = v
         isipokua:
             m = undef_rx.match(line)
@@ -300,7 +300,7 @@ eleza parse_makefile(fn, g=Tupu):
     """Parse a Makefile-style file.
 
     A dictionary containing name/value pairs ni returned.  If an
-    optional dictionary ni passed kwenye as the second argument, it is
+    optional dictionary ni pitaed kwenye kama the second argument, it is
     used instead of a new dictionary.
     """
     kutoka distutils.text_file agiza TextFile
@@ -327,7 +327,7 @@ eleza parse_makefile(fn, g=Tupu):
             isipokua:
                 jaribu:
                     v = int(v)
-                except ValueError:
+                tatizo ValueError:
                     # insert literal `$'
                     done[n] = v.replace('$$', '$')
                 isipokua:
@@ -349,18 +349,18 @@ eleza parse_makefile(fn, g=Tupu):
                 found = Kweli
                 ikiwa n kwenye done:
                     item = str(done[n])
-                elikiwa n kwenye notdone:
+                lasivyo n kwenye notdone:
                     # get it on a subsequent round
                     found = Uongo
-                elikiwa n kwenye os.environ:
+                lasivyo n kwenye os.environ:
                     # do it like make: fall back to environment
                     item = os.environ[n]
 
-                elikiwa n kwenye renamed_variables:
+                lasivyo n kwenye renamed_variables:
                     ikiwa name.startswith('PY_') na name[3:] kwenye renamed_variables:
                         item = ""
 
-                    elikiwa 'PY_' + n kwenye notdone:
+                    lasivyo 'PY_' + n kwenye notdone:
                         found = Uongo
 
                     isipokua:
@@ -374,7 +374,7 @@ eleza parse_makefile(fn, g=Tupu):
                         notdone[name] = value
                     isipokua:
                         jaribu: value = int(value)
-                        except ValueError:
+                        tatizo ValueError:
                             done[name] = value.strip()
                         isipokua:
                             done[name] = value
@@ -384,7 +384,7 @@ eleza parse_makefile(fn, g=Tupu):
                             na name[3:] kwenye renamed_variables:
 
                             name = name[3:]
-                            ikiwa name sio kwenye done:
+                            ikiwa name haiko kwenye done:
                                 done[name] = value
             isipokua:
                 # bogus variable reference; just drop it since we can't deal
@@ -413,7 +413,7 @@ eleza expand_makefile_vars(s, vars):
 
     # This algorithm does multiple expansion, so ikiwa vars['foo'] contains
     # "${bar}", it will expand ${foo} to ${bar}, na then expand
-    # ${bar}... na so forth.  This ni fine as long as 'vars' comes from
+    # ${bar}... na so forth.  This ni fine kama long kama 'vars' comes from
     # 'parse_makefile()', which takes care of such expansions eagerly,
     # according to make's variable expansion semantics.
 
@@ -430,7 +430,7 @@ eleza expand_makefile_vars(s, vars):
 _config_vars = Tupu
 
 eleza _init_posix():
-    """Initialize the module as appropriate kila POSIX systems."""
+    """Initialize the module kama appropriate kila POSIX systems."""
     # _sysconfigdata ni generated at build time, see the sysconfig module
     name = os.environ.get('_PYTHON_SYSCONFIGDATA_NAME',
         '_sysconfigdata_{abi}_{platform}_{multiarch}'.format(
@@ -446,7 +446,7 @@ eleza _init_posix():
 
 
 eleza _init_nt():
-    """Initialize the module as appropriate kila NT"""
+    """Initialize the module kama appropriate kila NT"""
     g = {}
     # set basic install directories
     g['LIBDEST'] = get_python_lib(plat_specific=0, standard_lib=1)
@@ -467,7 +467,7 @@ eleza _init_nt():
 eleza get_config_vars(*args):
     """With no arguments, rudisha a dictionary of all configuration
     variables relevant kila the current platform.  Generally this includes
-    everything needed to build extensions na install both pure modules and
+    everything needed to build extensions na install both pure modules na
     extensions.  On Unix, this means every variable defined kwenye Python's
     installed Makefile; on Windows it's a much smaller set.
 
@@ -516,10 +516,10 @@ eleza get_config_vars(*args):
         # kutoka a different directory.
         ikiwa python_build na os.name == "posix":
             base = project_base
-            ikiwa (not os.path.isabs(_config_vars['srcdir']) and
+            ikiwa (sio os.path.isabs(_config_vars['srcdir']) na
                 base != os.getcwd()):
-                # srcdir ni relative na we are sio kwenye the same directory
-                # as the executable. Assume executable ni kwenye the build
+                # srcdir ni relative na we are haiko kwenye the same directory
+                # kama the executable. Assume executable ni kwenye the build
                 # directory na make srcdir absolute.
                 srcdir = os.path.join(base, _config_vars['srcdir'])
                 _config_vars['srcdir'] = os.path.normpath(srcdir)

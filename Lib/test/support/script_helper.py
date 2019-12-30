@@ -45,7 +45,7 @@ eleza interpreter_requires_environment():
         jaribu:
             subprocess.check_call([sys.executable, '-E',
                                    '-c', 'agiza sys; sys.exit(0)'])
-        except subprocess.CalledProcessError:
+        tatizo subprocess.CalledProcessError:
             __cached_interp_requires_environment = Kweli
         isipokua:
             __cached_interp_requires_environment = Uongo
@@ -67,7 +67,7 @@ kundi _PythonRunResult(collections.namedtuple("_PythonRunResult",
             err = b'(... truncated stderr ...)' + err[-maxlen:]
         out = out.decode('ascii', 'replace').rstrip()
         err = err.decode('ascii', 'replace').rstrip()
-         ashiria AssertionError("Process rudisha code ni %d\n"
+        ashiria AssertionError("Process rudisha code ni %d\n"
                              "command line: %r\n"
                              "\n"
                              "stdout:\n"
@@ -97,12 +97,12 @@ eleza run_python_until_end(*args, **env_vars):
         # isolated mode: ignore Python environment variables, ignore user
         # site-packages, na don't add the current directory to sys.path
         cmd_line.append('-I')
-    elikiwa sio env_vars na sio env_required:
+    lasivyo sio env_vars na sio env_required:
         # ignore Python environment variables
         cmd_line.append('-E')
 
     # But a special flag that can be set to override -- kwenye this case, the
-    # caller ni responsible to pass the full environment.
+    # caller ni responsible to pita the full environment.
     ikiwa env_vars.pop('__cleanenv', Tupu):
         env = {}
         ikiwa sys.platform == 'win32':
@@ -117,9 +117,9 @@ eleza run_python_until_end(*args, **env_vars):
         # shared library builds.
         env = os.environ.copy()
 
-    # set TERM='' unless the TERM environment variable ni passed explicitly
+    # set TERM='' unless the TERM environment variable ni pitaed explicitly
     # see issues #11390 na #18300
-    ikiwa 'TERM' sio kwenye env_vars:
+    ikiwa 'TERM' haiko kwenye env_vars:
         env['TERM'] = ''
 
     env.update(env_vars)
@@ -139,7 +139,7 @@ eleza run_python_until_end(*args, **env_vars):
 
 eleza _assert_python(expected_success, /, *args, **env_vars):
     res, cmd_line = run_python_until_end(*args, **env_vars)
-    ikiwa (res.rc na expected_success) ama (not res.rc na sio expected_success):
+    ikiwa (res.rc na expected_success) ama (sio res.rc na sio expected_success):
         res.fail(cmd_line)
     rudisha res
 
@@ -149,10 +149,10 @@ eleza assert_python_ok(*args, **env_vars):
     variables `env_vars` succeeds (rc == 0) na rudisha a (rudisha code, stdout,
     stderr) tuple.
 
-    If the __cleanenv keyword ni set, env_vars ni used as a fresh environment.
+    If the __cleanenv keyword ni set, env_vars ni used kama a fresh environment.
 
     Python ni started kwenye isolated mode (command line option -I),
-    except ikiwa the __isolated keyword ni set to Uongo.
+    tatizo ikiwa the __isolated keyword ni set to Uongo.
     """
     rudisha _assert_python(Kweli, *args, **env_vars)
 
@@ -169,7 +169,7 @@ eleza assert_python_failure(*args, **env_vars):
 eleza spawn_python(*args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kw):
     """Run a Python subprocess ukijumuisha the given arguments.
 
-    kw ni extra keyword args to pass to subprocess.Popen. Returns a Popen
+    kw ni extra keyword args to pita to subprocess.Popen. Returns a Popen
     object.
     """
     cmd_line = [sys.executable]
@@ -205,7 +205,7 @@ eleza make_script(script_dir, script_basename, source, omit_suffix=Uongo):
         script_filename += os.extsep + 'py'
     script_name = os.path.join(script_dir, script_filename)
     # The script should be encoded to UTF-8, the default string encoding
-    ukijumuisha open(script_name, 'w', encoding='utf-8') as script_file:
+    ukijumuisha open(script_name, 'w', encoding='utf-8') kama script_file:
         script_file.write(source)
     importlib.invalidate_caches()
     rudisha script_name
@@ -213,7 +213,7 @@ eleza make_script(script_dir, script_basename, source, omit_suffix=Uongo):
 eleza make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Tupu):
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
-    ukijumuisha zipfile.ZipFile(zip_name, 'w') as zip_file:
+    ukijumuisha zipfile.ZipFile(zip_name, 'w') kama zip_file:
         ikiwa name_in_zip ni Tupu:
             parts = script_name.split(os.sep)
             ikiwa len(parts) >= 2 na parts[-2] == '__pycache__':
@@ -224,7 +224,7 @@ eleza make_zip_script(zip_dir, zip_basename, script_name, name_in_zip=Tupu):
                 name_in_zip = os.path.basename(script_name)
         zip_file.write(script_name, name_in_zip)
     #ikiwa test.support.verbose:
-    #    ukijumuisha zipfile.ZipFile(zip_name, 'r') as zip_file:
+    #    ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     rudisha zip_name, os.path.join(zip_name, name_in_zip)
@@ -249,7 +249,7 @@ eleza make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     script_name_in_zip = os.path.join(pkg_names[-1], os.path.basename(script_name))
     zip_filename = zip_basename+os.extsep+'zip'
     zip_name = os.path.join(zip_dir, zip_filename)
-    ukijumuisha zipfile.ZipFile(zip_name, 'w') as zip_file:
+    ukijumuisha zipfile.ZipFile(zip_name, 'w') kama zip_file:
         kila name kwenye pkg_names:
             init_name_in_zip = os.path.join(name, init_basename)
             zip_file.write(init_name, init_name_in_zip)
@@ -257,7 +257,7 @@ eleza make_zip_pkg(zip_dir, zip_basename, pkg_name, script_basename,
     kila name kwenye unlink:
         os.unlink(name)
     #ikiwa test.support.verbose:
-    #    ukijumuisha zipfile.ZipFile(zip_name, 'r') as zip_file:
+    #    ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
     #        print 'Contents of %r:' % zip_name
     #        zip_file.printdir()
     rudisha zip_name, os.path.join(zip_name, script_name_in_zip)

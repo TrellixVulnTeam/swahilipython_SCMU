@@ -12,7 +12,7 @@ kutoka _imp agiza (lock_held, acquire_lock, release_lock,
                   _fix_co_filename)
 jaribu:
     kutoka _imp agiza create_dynamic
-except ImportError:
+tatizo ImportError:
     # Platform doesn't support dynamic loading.
     create_dynamic = Tupu
 
@@ -75,7 +75,7 @@ eleza cache_from_source(path, debug_override=Tupu):
     Given the path to a .py file, rudisha the path to its .pyc file.
 
     The .py file does sio need to exist; this simply returns the path to the
-    .pyc file calculated as ikiwa the .py file were imported.
+    .pyc file calculated kama ikiwa the .py file were imported.
 
     If debug_override ni sio Tupu, then it must be a boolean na ni used in
     place of sys.flags.optimize.
@@ -121,9 +121,9 @@ kundi NullImporter:
 
     eleza __init__(self, path):
         ikiwa path == '':
-             ashiria ImportError('empty pathname', path='')
-        elikiwa os.path.isdir(path):
-             ashiria ImportError('existing directory', path=path)
+            ashiria ImportError('empty pathname', path='')
+        lasivyo os.path.isdir(path):
+            ashiria ImportError('existing directory', path=path)
 
     eleza find_module(self, fullname):
         """Always returns Tupu."""
@@ -146,7 +146,7 @@ kundi _HackedGetData:
             # file kwenye binary mode ikiwa needed.
             ikiwa sio self.file.closed:
                 file = self.file
-                ikiwa 'b' sio kwenye file.mode:
+                ikiwa 'b' haiko kwenye file.mode:
                     file.close()
             ikiwa self.file.closed:
                 self.file = file = open(self.path, 'rb')
@@ -207,7 +207,7 @@ eleza load_package(name, path):
                 path = init_path
                 koma
         isipokua:
-             ashiria ValueError('{!r} ni sio a package'.format(path))
+            ashiria ValueError('{!r} ni sio a package'.format(path))
     spec = util.spec_from_file_location(name, path,
                                         submodule_search_locations=[])
     ikiwa name kwenye sys.modules:
@@ -225,30 +225,30 @@ eleza load_module(name, file, filename, details):
 
     """
     suffix, mode, type_ = details
-    ikiwa mode na (not mode.startswith(('r', 'U')) ama '+' kwenye mode):
-         ashiria ValueError('invalid file open mode {!r}'.format(mode))
-    elikiwa file ni Tupu na type_ kwenye {PY_SOURCE, PY_COMPILED}:
+    ikiwa mode na (sio mode.startswith(('r', 'U')) ama '+' kwenye mode):
+        ashiria ValueError('invalid file open mode {!r}'.format(mode))
+    lasivyo file ni Tupu na type_ kwenye {PY_SOURCE, PY_COMPILED}:
         msg = 'file object required kila agiza (type code {})'.format(type_)
-         ashiria ValueError(msg)
-    elikiwa type_ == PY_SOURCE:
+        ashiria ValueError(msg)
+    lasivyo type_ == PY_SOURCE:
         rudisha load_source(name, filename, file)
-    elikiwa type_ == PY_COMPILED:
+    lasivyo type_ == PY_COMPILED:
         rudisha load_compiled(name, filename, file)
-    elikiwa type_ == C_EXTENSION na load_dynamic ni sio Tupu:
+    lasivyo type_ == C_EXTENSION na load_dynamic ni sio Tupu:
         ikiwa file ni Tupu:
-            ukijumuisha open(filename, 'rb') as opened_file:
+            ukijumuisha open(filename, 'rb') kama opened_file:
                 rudisha load_dynamic(name, filename, opened_file)
         isipokua:
             rudisha load_dynamic(name, filename, file)
-    elikiwa type_ == PKG_DIRECTORY:
+    lasivyo type_ == PKG_DIRECTORY:
         rudisha load_package(name, filename)
-    elikiwa type_ == C_BUILTIN:
+    lasivyo type_ == C_BUILTIN:
         rudisha init_builtin(name)
-    elikiwa type_ == PY_FROZEN:
+    lasivyo type_ == PY_FROZEN:
         rudisha init_frozen(name)
     isipokua:
         msg =  "Don't know how to agiza {} (type code {})".format(name, type_)
-         ashiria ImportError(msg, name=name)
+        ashiria ImportError(msg, name=name)
 
 
 eleza find_module(name, path=Tupu):
@@ -258,21 +258,21 @@ eleza find_module(name, path=Tupu):
 
     If path ni omitted ama Tupu, search kila a built-in, frozen ama special
     module na endelea search kwenye sys.path. The module name cannot
-    contain '.'; to search kila a submodule of a package, pass the
+    contain '.'; to search kila a submodule of a package, pita the
     submodule name na the package's __path__.
 
     """
     ikiwa sio isinstance(name, str):
-         ashiria TypeError("'name' must be a str, sio {}".format(type(name)))
-    elikiwa sio isinstance(path, (type(Tupu), list)):
+        ashiria TypeError("'name' must be a str, sio {}".format(type(name)))
+    lasivyo sio isinstance(path, (type(Tupu), list)):
         # Backwards-compatibility
-         ashiria RuntimeError("'path' must be Tupu ama a list, "
+        ashiria RuntimeError("'path' must be Tupu ama a list, "
                            "not {}".format(type(path)))
 
     ikiwa path ni Tupu:
         ikiwa is_builtin(name):
             rudisha Tupu, Tupu, ('', '', C_BUILTIN)
-        elikiwa is_frozen(name):
+        lasivyo is_frozen(name):
             rudisha Tupu, Tupu, ('', '', PY_FROZEN)
         isipokua:
             path = sys.path
@@ -293,11 +293,11 @@ eleza find_module(name, path=Tupu):
             endelea
         koma  # Break out of outer loop when komaing out of inner loop.
     isipokua:
-         ashiria ImportError(_ERR_MSG.format(name), name=name)
+        ashiria ImportError(_ERR_MSG.format(name), name=name)
 
     encoding = Tupu
-    ikiwa 'b' sio kwenye mode:
-        ukijumuisha open(file_path, 'rb') as file:
+    ikiwa 'b' haiko kwenye mode:
+        ukijumuisha open(file_path, 'rb') kama file:
             encoding = tokenize.detect_encoding(file.readline)[0]
     file = open(file_path, mode, encoding=encoding)
     rudisha file, file_path, (suffix, mode, type_)
@@ -322,7 +322,7 @@ eleza init_builtin(name):
     """
     jaribu:
         rudisha _builtin_from_name(name)
-    except ImportError:
+    tatizo ImportError:
         rudisha Tupu
 
 

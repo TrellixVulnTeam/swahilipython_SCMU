@@ -12,8 +12,8 @@ __all__ = [
     ]
 
 
-kutoka base64 agiza encodebytes as _bencode
-kutoka quopri agiza encodestring as _encodestring
+kutoka base64 agiza encodebytes kama _bencode
+kutoka quopri agiza encodestring kama _encodestring
 
 
 
@@ -55,10 +55,10 @@ eleza encode_7or8bit(msg):
         msg['Content-Transfer-Encoding'] = '7bit'
         return
     # We play a trick to make this go fast.  If decoding kutoka ASCII succeeds,
-    # we know the data must be 7bit, otherwise treat it as 8bit.
+    # we know the data must be 7bit, otherwise treat it kama 8bit.
     jaribu:
         orig.decode('ascii')
-    except UnicodeError:
+    tatizo UnicodeError:
         msg['Content-Transfer-Encoding'] = '8bit'
     isipokua:
         msg['Content-Transfer-Encoding'] = '7bit'

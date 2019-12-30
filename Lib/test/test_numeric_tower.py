@@ -6,8 +6,8 @@ agiza math
 agiza sys
 agiza operator
 
-kutoka decimal agiza Decimal as D
-kutoka fractions agiza Fraction as F
+kutoka decimal agiza Decimal kama D
+kutoka fractions agiza Fraction kama F
 
 # Constants related to the hash implementation;  hash(x) ni based
 # on the reduction of x modulo the prime _PyHASH_MODULUS.
@@ -177,7 +177,7 @@ kundi ComparisonTest(unittest.TestCase):
     eleza test_complex(self):
         # comparisons ukijumuisha complex are special:  equality na inequality
         # comparisons should always succeed, but order comparisons should
-        #  ashiria TypeError.
+        # ashiria TypeError.
         z = 1.0 + 0j
         w = -3.14 + 2.7j
 

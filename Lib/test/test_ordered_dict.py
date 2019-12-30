@@ -21,7 +21,7 @@ eleza replaced_module(name, replacement):
     original_module = sys.modules[name]
     sys.modules[name] = replacement
     jaribu:
-        yield
+        tuma
     mwishowe:
         sys.modules[name] = original_module
 
@@ -360,7 +360,7 @@ kundi OrderedDictTests:
         od = OrderedDict()
         od[42] = od.values()
         r = repr(od)
-        # Cannot perform a stronger test, as the contents of the repr
+        # Cannot perform a stronger test, kama the contents of the repr
         # are implementation-dependent.  All we can say ni that we
         # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)
@@ -454,7 +454,7 @@ kundi OrderedDictTests:
         # Verify that subclasses can override update() without komaing __init__()
         kundi MyOD(OrderedDict):
             eleza update(self, *args, **kwds):
-                 ashiria Exception()
+                ashiria Exception()
         items = [('a', 1), ('c', 3), ('b', 2)]
         self.assertEqual(list(MyOD(items).items()), items)
 
@@ -498,7 +498,7 @@ kundi OrderedDictTests:
             eleza __eq__(self, other):
                 jaribu:
                     rudisha self.value == other.value
-                except AttributeError:
+                tatizo AttributeError:
                     rudisha Uongo
             eleza __repr__(self):
                 rudisha self.value
@@ -565,7 +565,7 @@ kundi OrderedDictTests:
         whether ama sio there were deletions that freed up slots kwenye the
         hash table.  During fast node lookup, OrderedDict must correctly
         respond to all resizes, even ikiwa the current "size" ni the same
-        as the old one.  We verify that here by forcing a dict resize
+        kama the old one.  We verify that here by forcing a dict resize
         on a sparse odict na then perform an operation that should
         trigger an odict resize (e.g. popitem).  One key aspect here is
         that we will keep the size of the odict the same at each popitem
@@ -577,7 +577,7 @@ kundi OrderedDictTests:
         kila c0 kwenye '0123456789ABCDEF':
             kila c1 kwenye '0123456789ABCDEF':
                 ikiwa len(od) == 4:
-                    # This should sio  ashiria a KeyError.
+                    # This should sio ashiria a KeyError.
                     od.popitem(last=Uongo)
                 key = c0 + c1
                 od[key] = key
@@ -758,14 +758,14 @@ kundi PurePythonOrderedDictSubclassTests(PurePythonOrderedDictTests):
 
     module = py_coll
     kundi OrderedDict(py_coll.OrderedDict):
-        pass
+        pita
 
 
 kundi CPythonOrderedDictSubclassTests(CPythonOrderedDictTests):
 
     module = c_coll
     kundi OrderedDict(c_coll.OrderedDict):
-        pass
+        pita
 
 
 kundi PurePythonGeneralMappingTests(mapping_tests.BasicTestMappingProtocol):
@@ -796,7 +796,7 @@ kundi PurePythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     @classmethod
     eleza setUpClass(cls):
         kundi MyOrderedDict(py_coll.OrderedDict):
-            pass
+            pita
         cls.type2test = MyOrderedDict
 
     eleza test_popitem(self):
@@ -810,7 +810,7 @@ kundi CPythonSubclassMappingTests(mapping_tests.BasicTestMappingProtocol):
     @classmethod
     eleza setUpClass(cls):
         kundi MyOrderedDict(c_coll.OrderedDict):
-            pass
+            pita
         cls.type2test = MyOrderedDict
 
     eleza test_popitem(self):

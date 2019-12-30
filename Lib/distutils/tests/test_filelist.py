@@ -104,13 +104,13 @@ kundi FileListTestCase(support.LoggingSilencer,
 
     eleza test_debug_andika(self):
         file_list = FileList()
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             file_list.debug_andika('xxx')
         self.assertEqual(stdout.getvalue(), '')
 
         debug.DEBUG = Kweli
         jaribu:
-            ukijumuisha captured_stdout() as stdout:
+            ukijumuisha captured_stdout() kama stdout:
                 file_list.debug_andika('xxx')
             self.assertEqual(stdout.getvalue(), 'xxx\n')
         mwishowe:
@@ -142,7 +142,7 @@ kundi FileListTestCase(support.LoggingSilencer,
             translate_pattern(regex, anchor=Kweli, is_regex=Kweli),
             regex)
 
-        # plain string flagged as regex
+        # plain string flagged kama regex
         self.assertKweli(hasattr(
             translate_pattern('a', anchor=Kweli, is_regex=Kweli),
             'search'))
@@ -304,7 +304,7 @@ kundi FindAllTestCase(unittest.TestCase):
     eleza test_basic_discovery(self):
         """
         When findall ni called ukijumuisha no parameters ama with
-        '.' as the parameter, the dot should be omitted from
+        '.' kama the parameter, the dot should be omitted from
         the results.
         """
         ukijumuisha test.support.temp_cwd():
@@ -322,7 +322,7 @@ kundi FindAllTestCase(unittest.TestCase):
         When findall ni called ukijumuisha another path, the full
         path name should be returned.
         """
-        ukijumuisha test.support.temp_dir() as temp_dir:
+        ukijumuisha test.support.temp_dir() kama temp_dir:
             file1 = os.path.join(temp_dir, 'file1.txt')
             test.support.create_empty_file(file1)
             expected = [file1]

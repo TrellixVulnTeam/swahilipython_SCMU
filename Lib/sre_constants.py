@@ -17,7 +17,7 @@ MAGIC = 20171005
 
 kutoka _sre agiza MAXREPEAT, MAXGROUPS
 
-# SRE standard exception (access as sre.error)
+# SRE standard exception (access kama sre.error)
 # should this really be here?
 
 kundi error(Exception):
@@ -202,8 +202,8 @@ CH_UNICODE = {
 SRE_FLAG_TEMPLATE = 1 # template mode (disable backtracking)
 SRE_FLAG_IGNORECASE = 2 # case insensitive
 SRE_FLAG_LOCALE = 4 # honour system locale
-SRE_FLAG_MULTILINE = 8 # treat target as multiline string
-SRE_FLAG_DOTALL = 16 # treat target as a single string
+SRE_FLAG_MULTILINE = 8 # treat target kama multiline string
+SRE_FLAG_DOTALL = 16 # treat target kama a single string
 SRE_FLAG_UNICODE = 32 # use unicode "locale"
 SRE_FLAG_VERBOSE = 64 # ignore whitespace na comments
 SRE_FLAG_DEBUG = 128 # debugging
@@ -219,7 +219,7 @@ ikiwa __name__ == "__main__":
         items = sorted(d)
         kila item kwenye items:
             f.write("#define %s_%s %d\n" % (prefix, item, item))
-    ukijumuisha open("sre_constants.h", "w") as f:
+    ukijumuisha open("sre_constants.h", "w") kama f:
         f.write("""\
 /*
  * Secret Labs' Regular Expression Engine

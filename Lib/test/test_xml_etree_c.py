@@ -76,8 +76,8 @@ kundi MiscTests(unittest.TestCase):
             # Create a reference cycle using an exception to keep the frame
             # alive, so the parser will be destroyed by the garbage collector
             jaribu:
-                 ashiria ValueError
-            except ValueError as exc:
+                ashiria ValueError
+            tatizo ValueError kama exc:
                 err = exc
 
         # Create a parser part of reference cycle
@@ -166,9 +166,9 @@ kundi TestAliasWorking(unittest.TestCase):
 @unittest.skipUnless(cET, 'requires _elementtree')
 @support.cpython_only
 kundi TestAcceleratorImported(unittest.TestCase):
-    # Test that the C accelerator was imported, as expected
+    # Test that the C accelerator was imported, kama expected
     eleza test_correct_import_cET(self):
-        # SubElement ni a function so it retains _elementtree as its module.
+        # SubElement ni a function so it retains _elementtree kama its module.
         self.assertEqual(cET.SubElement.__module__, '_elementtree')
 
     eleza test_correct_import_cET_alias(self):
@@ -218,7 +218,7 @@ eleza test_main():
         SizeofTest,
         )
 
-    # Run the same test suite as the Python module
+    # Run the same test suite kama the Python module
     test_xml_etree.test_main(module=cET)
 
 

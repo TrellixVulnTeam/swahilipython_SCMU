@@ -57,7 +57,7 @@ eleza capture(*args, **kwargs):
 
 eleza sleep_and_raise(t):
     time.sleep(t)
-     ashiria Exception('this ni an exception')
+    ashiria Exception('this ni an exception')
 
 eleza sleep_and_andika(t, msg):
     time.sleep(t)
@@ -78,12 +78,12 @@ eleza init_fail(log_queue=Tupu):
         logger.setLevel('CRITICAL')
         logger.propagate = Uongo
     time.sleep(0.1)  # let some futures be scheduled
-     ashiria ValueError('error kwenye initializer')
+    ashiria ValueError('error kwenye initializer')
 
 
 kundi MyObject(object):
     eleza my_method(self):
-        pass
+        pita
 
 
 kundi EventfulGCObj():
@@ -187,7 +187,7 @@ eleza create_executor_tests(mixin, bases=(BaseTestCase,),
     eleza strip_mixin(name):
         ikiwa name.endswith(('Mixin', 'Tests')):
             rudisha name[:-5]
-        elikiwa name.endswith('Test'):
+        lasivyo name.endswith('Test'):
             rudisha name[:-4]
         isipokua:
             rudisha name
@@ -239,9 +239,9 @@ kundi FailingInitializerMixin(ExecutorMixin):
         ukijumuisha self._assert_logged('ValueError: error kwenye initializer'):
             jaribu:
                 future = self.executor.submit(get_init_status)
-            except BrokenExecutor:
+            tatizo BrokenExecutor:
                 # Perhaps the executor ni already broken
-                pass
+                pita
             isipokua:
                 ukijumuisha self.assertRaises(BrokenExecutor):
                     future.result()
@@ -256,21 +256,21 @@ kundi FailingInitializerMixin(ExecutorMixin):
                 self.executor.submit(get_init_status)
 
     eleza _prime_executor(self):
-        pass
+        pita
 
     @contextlib.contextmanager
     eleza _assert_logged(self, msg):
         ikiwa self.log_queue ni sio Tupu:
-            yield
+            tuma
             output = []
             jaribu:
                 wakati Kweli:
                     output.append(self.log_queue.get_nowait().getMessage())
-            except queue.Empty:
-                pass
+            tatizo queue.Empty:
+                pita
         isipokua:
-            ukijumuisha self.assertLogs('concurrent.futures', 'CRITICAL') as cm:
-                yield
+            ukijumuisha self.assertLogs('concurrent.futures', 'CRITICAL') kama cm:
+                tuma
             output = cm.output
         self.assertKweli(any(msg kwenye line kila line kwenye output),
                         output)
@@ -317,7 +317,7 @@ kundi ExecutorShutdownTest:
             eleza run_last():
                 jaribu:
                     t.submit(id, Tupu)
-                except RuntimeError:
+                tatizo RuntimeError:
                     andika("runtime-error")
                     raise
             kutoka concurrent.futures agiza {executor_type}
@@ -346,7 +346,7 @@ kundi ExecutorShutdownTest:
 
 kundi ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase):
     eleza _prime_executor(self):
-        pass
+        pita
 
     eleza test_threads_terminate(self):
         eleza acquire_lock(lock):
@@ -363,7 +363,7 @@ kundi ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase
             t.join()
 
     eleza test_context_manager_shutdown(self):
-        ukijumuisha futures.ThreadPoolExecutor(max_workers=5) as e:
+        ukijumuisha futures.ThreadPoolExecutor(max_workers=5) kama e:
             executor = e
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
@@ -406,7 +406,7 @@ kundi ThreadPoolShutdownTest(ThreadPoolMixin, ExecutorShutdownTest, BaseTestCase
 
 kundi ProcessPoolShutdownTest(ExecutorShutdownTest):
     eleza _prime_executor(self):
-        pass
+        pita
 
     eleza test_processes_terminate(self):
         self.executor.submit(mul, 21, 2)
@@ -420,7 +420,7 @@ kundi ProcessPoolShutdownTest(ExecutorShutdownTest):
             p.join()
 
     eleza test_context_manager_shutdown(self):
-        ukijumuisha futures.ProcessPoolExecutor(max_workers=5) as e:
+        ukijumuisha futures.ProcessPoolExecutor(max_workers=5) kama e:
             processes = e._processes
             self.assertEqual(list(e.map(abs, range(-5, 5))),
                              [5, 4, 3, 2, 1, 0, 1, 2, 3, 4])
@@ -605,8 +605,8 @@ kundi AsCompletedTests:
                      future1],
                     timeout=0):
                 completed_futures.add(future)
-        except futures.TimeoutError:
-            pass
+        tatizo futures.TimeoutError:
+            pita
 
         self.assertEqual(set([CANCELLED_AND_NOTIFIED_FUTURE,
                               EXCEPTION_FUTURE,
@@ -614,7 +614,7 @@ kundi AsCompletedTests:
                          completed_futures)
 
     eleza test_duplicate_futures(self):
-        # Issue 20367. Duplicate futures should sio  ashiria exceptions ama give
+        # Issue 20367. Duplicate futures should sio ashiria exceptions ama give
         # duplicate responses.
         # Issue #31641: accept arbitrary iterables.
         future1 = self.executor.submit(time.sleep, 2)
@@ -623,7 +623,7 @@ kundi AsCompletedTests:
         ]
         self.assertEqual(len(completed), 1)
 
-    eleza test_free_reference_yielded_future(self):
+    eleza test_free_reference_tumaed_future(self):
         # Issue #14406: Generator should sio keep references
         # to finished futures.
         futures_list = [Future() kila _ kwenye range(8)]
@@ -650,7 +650,7 @@ kundi AsCompletedTests:
         futures_list = [CANCELLED_AND_NOTIFIED_FUTURE, PENDING_FUTURE,
                         RUNNING_FUTURE, SUCCESSFUL_FUTURE]
 
-        ukijumuisha self.assertRaises(futures.TimeoutError) as cm:
+        ukijumuisha self.assertRaises(futures.TimeoutError) kama cm:
             list(futures.as_completed(futures_list, timeout=0))
 
         self.assertEqual(str(cm.exception), '2 (of 4) futures unfinished')
@@ -699,8 +699,8 @@ kundi ExecutorTest:
                                        [0, 0, 6],
                                        timeout=5):
                 results.append(i)
-        except futures.TimeoutError:
-            pass
+        tatizo futures.TimeoutError:
+            pita
         isipokua:
             self.fail('expected TimeoutError')
 
@@ -800,7 +800,7 @@ kundi ProcessPoolExecutorTest(ExecutorTest):
         p.terminate()
         kila fut kwenye futures:
             self.assertRaises(BrokenProcessPool, fut.result)
-        # Submitting other jobs fails as well.
+        # Submitting other jobs fails kama well.
         self.assertRaises(BrokenProcessPool, self.executor.submit, pow, 2, 8)
 
     eleza test_map_chunksize(self):
@@ -821,13 +821,13 @@ kundi ProcessPoolExecutorTest(ExecutorTest):
 
     @classmethod
     eleza _test_traceback(cls):
-         ashiria RuntimeError(123) # some comment
+        ashiria RuntimeError(123) # some comment
 
     eleza test_traceback(self):
         # We want ensure that the traceback kutoka the child process is
         # contained kwenye the traceback raised kwenye the main process.
         future = self.executor.submit(self._test_traceback)
-        ukijumuisha self.assertRaises(Exception) as cm:
+        ukijumuisha self.assertRaises(Exception) kama cm:
             future.result()
 
         exc = cm.exception
@@ -835,14 +835,14 @@ kundi ProcessPoolExecutorTest(ExecutorTest):
         self.assertEqual(exc.args, (123,))
         cause = exc.__cause__
         self.assertIs(type(cause), futures.process._RemoteTraceback)
-        self.assertIn(' ashiria RuntimeError(123) # some comment', cause.tb)
+        self.assertIn('ashiria RuntimeError(123) # some comment', cause.tb)
 
-        ukijumuisha test.support.captured_stderr() as f1:
+        ukijumuisha test.support.captured_stderr() kama f1:
             jaribu:
-                 ashiria exc
-            except RuntimeError:
+                ashiria exc
+            tatizo RuntimeError:
                 sys.excepthook(*sys.exc_info())
-        self.assertIn(' ashiria RuntimeError(123) # some comment',
+        self.assertIn('ashiria RuntimeError(123) # some comment',
                       f1.getvalue())
 
     eleza test_ressources_gced_in_workers(self):
@@ -882,7 +882,7 @@ eleza _exit():
 eleza _raise_error(Err):
     """Function that raises an Exception kwenye process."""
     hide_process_stderr()
-     ashiria Err()
+    ashiria Err()
 
 
 eleza _return_instance(cls):
@@ -919,7 +919,7 @@ kundi ErrorAtPickle(object):
     """Bad object that triggers an error at pickling time."""
     eleza __reduce__(self):
         kutoka pickle agiza PicklingError
-         ashiria PicklingError("Error kwenye pickle")
+        ashiria PicklingError("Error kwenye pickle")
 
 
 kundi ErrorAtUnpickle(object):
@@ -943,13 +943,13 @@ kundi ExecutorDeadlockTest:
         # composants.
         agiza faulthandler
         kutoka tempfile agiza TemporaryFile
-        ukijumuisha TemporaryFile(mode="w+") as f:
+        ukijumuisha TemporaryFile(mode="w+") kama f:
             faulthandler.dump_traceback(file=f)
             f.seek(0)
             tb = f.read()
         kila p kwenye executor._processes.values():
             p.terminate()
-        # This should be safe to call executor.shutdown here as all possible
+        # This should be safe to call executor.shutdown here kama all possible
         # deadlocks should have been broken.
         executor.shutdown(wait=Kweli)
         andika(f"\nTraceback:\n {tb}", file=sys.__stderr__)
@@ -1002,7 +1002,7 @@ kundi ExecutorDeadlockTest:
                     ukijumuisha self.assertRaises(error):
                         jaribu:
                             res.result(timeout=self.TIMEOUT)
-                        except futures.TimeoutError:
+                        tatizo futures.TimeoutError:
                             # If we did sio recover before TIMEOUT seconds,
                             # consider that the executor ni kwenye a deadlock state
                             self._fail_on_deadlock(executor)
@@ -1013,7 +1013,7 @@ kundi ExecutorDeadlockTest:
         # ikiwa a worker fails after the shutdown call.
         self.executor.shutdown(wait=Kweli)
         ukijumuisha self.executor_type(max_workers=2,
-                                mp_context=get_context(self.ctx)) as executor:
+                                mp_context=get_context(self.ctx)) kama executor:
             self.executor = executor  # Allow clean up kwenye fail_on_deadlock
             f = executor.submit(_crash, delay=.1)
             executor.shutdown(wait=Kweli)
@@ -1062,14 +1062,14 @@ kundi FutureTests(BaseTestCase):
         self.assertKweli(was_cancelled)
 
     eleza test_done_callback_raises(self):
-        ukijumuisha test.support.captured_stderr() as stderr:
+        ukijumuisha test.support.captured_stderr() kama stderr:
             raising_was_called = Uongo
             fn_was_called = Uongo
 
             eleza raising_fn(callback_future):
                 nonlocal raising_was_called
                 raising_was_called = Kweli
-                 ashiria Exception('doh!')
+                ashiria Exception('doh!')
 
             eleza fn(callback_future):
                 nonlocal fn_was_called
@@ -1117,9 +1117,9 @@ kundi FutureTests(BaseTestCase):
         self.assertKweli(was_cancelled)
 
     eleza test_done_callback_raises_already_succeeded(self):
-        ukijumuisha test.support.captured_stderr() as stderr:
+        ukijumuisha test.support.captured_stderr() kama stderr:
             eleza raising_fn(callback_future):
-                 ashiria Exception('doh!')
+                ashiria Exception('doh!')
 
             f = Future()
 

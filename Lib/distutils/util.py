@@ -68,7 +68,7 @@ eleza get_host_platform():
         # i386, etc.
         # XXX what about Alpha, SPARC, etc?
         rudisha  "%s-%s" % (osname, machine)
-    elikiwa osname[:5] == "sunos":
+    lasivyo osname[:5] == "sunos":
         ikiwa release[0] >= "5":           # SunOS 5 == Solaris 2
             osname = "solaris"
             release = "%d.%s" % (int(release[0]) - 3, release[2:])
@@ -78,15 +78,15 @@ eleza get_host_platform():
             bitness = {2147483647:"32bit", 9223372036854775807:"64bit"}
             machine += ".%s" % bitness[sys.maxsize]
         # fall through to standard osname-release-machine representation
-    elikiwa osname[:3] == "aix":
+    lasivyo osname[:3] == "aix":
         rudisha "%s-%s.%s" % (osname, version, release)
-    elikiwa osname[:6] == "cygwin":
+    lasivyo osname[:6] == "cygwin":
         osname = "cygwin"
         rel_re = re.compile (r'[\d.]+', re.ASCII)
         m = rel_re.match(release)
         ikiwa m:
             release = m.group()
-    elikiwa osname[:6] == "darwin":
+    lasivyo osname[:6] == "darwin":
         agiza _osx_support, distutils.sysconfig
         osname, release, machine = _osx_support.get_platform_osx(
                                         distutils.sysconfig.get_config_vars(),
@@ -106,12 +106,12 @@ eleza get_platform():
         rudisha get_host_platform()
 
 eleza convert_path (pathname):
-    """Return 'pathname' as a name that will work on the native filesystem,
+    """Return 'pathname' kama a name that will work on the native filesystem,
     i.e. split it on '/' na put it back together again using the current
     directory separator.  Needed because filenames kwenye the setup script are
     always supplied kwenye Unix style, na have to be converted to the local
     convention before we can actually use them kwenye the filesystem.  Raises
-    ValueError on non-Unix-ish systems ikiwa 'pathname' either starts or
+    ValueError on non-Unix-ish systems ikiwa 'pathname' either starts ama
     ends ukijumuisha a slash.
     """
     ikiwa os.sep == '/':
@@ -119,9 +119,9 @@ eleza convert_path (pathname):
     ikiwa sio pathname:
         rudisha pathname
     ikiwa pathname[0] == '/':
-         ashiria ValueError("path '%s' cannot be absolute" % pathname)
+        ashiria ValueError("path '%s' cannot be absolute" % pathname)
     ikiwa pathname[-1] == '/':
-         ashiria ValueError("path '%s' cannot end ukijumuisha '/'" % pathname)
+        ashiria ValueError("path '%s' cannot end ukijumuisha '/'" % pathname)
 
     paths = pathname.split('/')
     wakati '.' kwenye paths:
@@ -145,14 +145,14 @@ eleza change_root (new_root, pathname):
         isipokua:
             rudisha os.path.join(new_root, pathname[1:])
 
-    elikiwa os.name == 'nt':
+    lasivyo os.name == 'nt':
         (drive, path) = os.path.splitdrive(pathname)
         ikiwa path[0] == '\\':
             path = path[1:]
         rudisha os.path.join(new_root, path)
 
     isipokua:
-         ashiria DistutilsPlatformError("nothing known about platform '%s'" % os.name)
+        ashiria DistutilsPlatformError("nothing known about platform '%s'" % os.name)
 
 
 _environ_checked = 0
@@ -168,16 +168,16 @@ eleza check_environ ():
     ikiwa _environ_checked:
         return
 
-    ikiwa os.name == 'posix' na 'HOME' sio kwenye os.environ:
+    ikiwa os.name == 'posix' na 'HOME' haiko kwenye os.environ:
         jaribu:
             agiza pwd
             os.environ['HOME'] = pwd.getpwuid(os.getuid())[5]
-        except (ImportError, KeyError):
+        tatizo (ImportError, KeyError):
             # bpo-10496: ikiwa the current user identifier doesn't exist kwenye the
-            # password database, do nothing
-            pass
+            # pitaword database, do nothing
+            pita
 
-    ikiwa 'PLAT' sio kwenye os.environ:
+    ikiwa 'PLAT' haiko kwenye os.environ:
         os.environ['PLAT'] = get_platform()
 
     _environ_checked = 1
@@ -185,9 +185,9 @@ eleza check_environ ():
 
 eleza subst_vars (s, local_vars):
     """Perform shell/Perl-style variable substitution on 'string'.  Every
-    occurrence of '$' followed by a name ni considered a variable, and
+    occurrence of '$' followed by a name ni considered a variable, na
     variable ni substituted by the value found kwenye the 'local_vars'
-    dictionary, ama kwenye 'os.environ' ikiwa it's sio kwenye 'local_vars'.
+    dictionary, ama kwenye 'os.environ' ikiwa it's haiko kwenye 'local_vars'.
     'os.environ' ni first checked/augmented to guarantee that it contains
     certain values: see 'check_environ()'.  Raise ValueError kila any
     variables sio found kwenye either 'local_vars' ama 'os.environ'.
@@ -202,8 +202,8 @@ eleza subst_vars (s, local_vars):
 
     jaribu:
         rudisha re.sub(r'\$([a-zA-Z_][a-zA-Z_0-9]*)', _subst, s)
-    except KeyError as var:
-         ashiria ValueError("invalid variable '$%s'" % var)
+    tatizo KeyError kama var:
+        ashiria ValueError("invalid variable '$%s'" % var)
 
 # subst_vars ()
 
@@ -224,8 +224,8 @@ eleza _init_regex():
     _dquote_re = re.compile(r'"(?:[^"\\]|\\.)*"')
 
 eleza split_quoted (s):
-    """Split a string up according to Unix shell-like rules kila quotes and
-    backslashes.  In short: words are delimited by spaces, as long as those
+    """Split a string up according to Unix shell-like rules kila quotes na
+    backslashes.  In short: words are delimited by spaces, kama long kama those
     spaces are sio escaped by a backslash, ama inside a quoted string.
     Single na double quotes are equivalent, na the quote characters can
     be backslash-escaped.  The backslash ni stripped kutoka any two-character
@@ -255,7 +255,7 @@ eleza split_quoted (s):
             s = s[end:].lstrip()
             pos = 0
 
-        elikiwa s[end] == '\\':            # preserve whatever ni being escaped;
+        lasivyo s[end] == '\\':            # preserve whatever ni being escaped;
                                         # will become part of the current word
             s = s[:end] + s[end+1:]
             pos = end+1
@@ -263,13 +263,13 @@ eleza split_quoted (s):
         isipokua:
             ikiwa s[end] == "'":           # slurp singly-quoted string
                 m = _squote_re.match(s, end)
-            elikiwa s[end] == '"':         # slurp doubly-quoted string
+            lasivyo s[end] == '"':         # slurp doubly-quoted string
                 m = _dquote_re.match(s, end)
             isipokua:
-                 ashiria RuntimeError("this can't happen (bad char '%c')" % s[end])
+                ashiria RuntimeError("this can't happen (bad char '%c')" % s[end])
 
             ikiwa m ni Tupu:
-                 ashiria ValueError("bad string (mismatched %s quotes?)" % s[end])
+                ashiria ValueError("bad string (mismatched %s quotes?)" % s[end])
 
             (beg, end) = m.span()
             s = s[:beg] + s[beg+1:end-1] + s[end:]
@@ -313,10 +313,10 @@ eleza strtobool (val):
     val = val.lower()
     ikiwa val kwenye ('y', 'yes', 't', 'true', 'on', '1'):
         rudisha 1
-    elikiwa val kwenye ('n', 'no', 'f', 'false', 'off', '0'):
+    lasivyo val kwenye ('n', 'no', 'f', 'false', 'off', '0'):
         rudisha 0
     isipokua:
-         ashiria ValueError("invalid truth value %r" % (val,))
+        ashiria ValueError("invalid truth value %r" % (val,))
 
 
 eleza byte_compile (py_files,
@@ -335,11 +335,11 @@ eleza byte_compile (py_files,
     timestamps.
 
     The source filename encoded kwenye each bytecode file defaults to the
-    filenames listed kwenye 'py_files'; you can modify these ukijumuisha 'prefix' and
+    filenames listed kwenye 'py_files'; you can modify these ukijumuisha 'prefix' na
     'basedir'.  'prefix' ni a string that will be stripped off of each
     source filename, na 'base_dir' ni a directory name that will be
     prepended (after 'prefix' ni stripped).  You can supply either ama both
-    (or neither) of 'prefix' na 'base_dir', as you wish.
+    (or neither) of 'prefix' na 'base_dir', kama you wish.
 
     If 'dry_run' ni true, doesn't actually do anything that would
     affect the filesystem.
@@ -359,12 +359,12 @@ eleza byte_compile (py_files,
 
     # nothing ni done ikiwa sys.dont_write_bytecode ni Kweli
     ikiwa sys.dont_write_bytecode:
-         ashiria DistutilsByteCompileError('byte-compiling ni disabled.')
+        ashiria DistutilsByteCompileError('byte-compiling ni disabled.')
 
     # First, ikiwa the caller didn't force us into direct ama indirect mode,
     # figure out which mode we should be in.  We take a conservative
     # approach: choose direct mode *only* ikiwa the current interpreter is
-    # kwenye debug mode na optimize ni 0.  If we're sio kwenye debug mode (-O
+    # kwenye debug mode na optimize ni 0.  If we're haiko kwenye debug mode (-O
     # ama -OO), we don't know which level of optimization this
     # interpreter ni running with, so we can't do direct
     # byte-compilation na be certain that it's the right thing.  Thus,
@@ -380,7 +380,7 @@ eleza byte_compile (py_files,
         jaribu:
             kutoka tempfile agiza mkstemp
             (script_fd, script_name) = mkstemp(".py")
-        except ImportError:
+        tatizo ImportError:
             kutoka tempfile agiza mktemp
             (script_fd, script_name) = Tupu, mktemp(".py")
         log.info("writing byte-compilation script '%s'", script_name)
@@ -399,12 +399,12 @@ files = [
                 # XXX would be nice to write absolute filenames, just for
                 # safety's sake (script should be more robust kwenye the face of
                 # chdir'ing before running it).  But this requires abspath'ing
-                # 'prefix' as well, na that komas the hack kwenye build_lib's
+                # 'prefix' kama well, na that komas the hack kwenye build_lib's
                 # 'byte_compile()' method that carefully tacks on a trailing
                 # slash (os.sep really) to make sure the prefix here ni "just
                 # right".  This whole prefix business ni rather delicate -- the
                 # problem ni that it's really a directory, but I'm treating it
-                # as a dumb string, so trailing slashes na so forth matter.
+                # kama a dumb string, so trailing slashes na so forth matter.
 
                 #py_files = map(os.path.abspath, py_files)
                 #ikiwa prefix:
@@ -440,7 +440,7 @@ byte_compile(files, optimize=%r, force=%r,
 
             # Terminology kutoka the py_compile module:
             #   cfile - byte-compiled file
-            #   dfile - purported source filename (same as 'file' by default)
+            #   dfile - purported source filename (same kama 'file' by default)
             ikiwa optimize >= 0:
                 opt = '' ikiwa optimize == 0 isipokua optimize
                 cfile = importlib.util.cache_from_source(
@@ -450,7 +450,7 @@ byte_compile(files, optimize=%r, force=%r,
             dfile = file
             ikiwa prefix:
                 ikiwa file[:len(prefix)] != prefix:
-                     ashiria ValueError("invalid prefix: filename %r doesn't start ukijumuisha %r"
+                    ashiria ValueError("invalid prefix: filename %r doesn't start ukijumuisha %r"
                            % (file, prefix))
                 dfile = dfile[len(prefix):]
             ikiwa base_dir:
@@ -480,10 +480,10 @@ eleza rfc822_escape (header):
 
 eleza run_2to3(files, fixer_names=Tupu, options=Tupu, explicit=Tupu):
     """Invoke 2to3 on a list of Python files.
-    The files should all come kutoka the build area, as the
+    The files should all come kutoka the build area, kama the
     modification ni done in-place. To reduce the build time,
     only files modified since the last invocation of this
-    function should be passed kwenye the files argument."""
+    function should be pitaed kwenye the files argument."""
 
     ikiwa sio files:
         return
@@ -551,7 +551,7 @@ kundi Mixin2to3:
     # options dictionary
     options = Tupu
 
-    # list of fixers to invoke even though they are marked as explicit
+    # list of fixers to invoke even though they are marked kama explicit
     explicit = Tupu
 
     eleza run_2to3(self, files):

@@ -271,8 +271,8 @@ kundi IBMTestCases(unittest.TestCase):
     eleza read_unlimited(self, v, context):
         """Work around the limitations of the 32-bit _decimal version. The
            guaranteed maximum values kila prec, Emax etc. are 425000000,
-           but higher values usually work, except kila rare corner cases.
-           In particular, all of the IBM tests pass ukijumuisha maximum values
+           but higher values usually work, tatizo kila rare corner cases.
+           In particular, all of the IBM tests pita ukijumuisha maximum values
            of 1070000000."""
         ikiwa self.decimal == C na self.decimal.MAX_EMAX == 425000000:
             self.readcontext._unsafe_setprec(1070000000)
@@ -285,14 +285,14 @@ kundi IBMTestCases(unittest.TestCase):
     eleza eval_file(self, file):
         global skip_expected
         ikiwa skip_expected:
-             ashiria unittest.SkipTest
-        ukijumuisha open(file) as f:
+            ashiria unittest.SkipTest
+        ukijumuisha open(file) kama f:
             kila line kwenye f:
                 line = line.replace('\r\n', '').replace('\n', '')
                 #print line
                 jaribu:
                     t = self.eval_line(line)
-                except self.decimal.DecimalException as exception:
+                tatizo self.decimal.DecimalException kama exception:
                     #Exception raised where there shouldn't have been one.
                     self.fail('Exception "'+exception.__class__.__name__ + '" raised on line '+line)
 
@@ -310,7 +310,7 @@ kundi IBMTestCases(unittest.TestCase):
                 return
         ikiwa sio s:
             return
-        elikiwa ':' kwenye s:
+        lasivyo ':' kwenye s:
             rudisha self.eval_directive(s)
         isipokua:
             rudisha self.eval_equation(s)
@@ -322,8 +322,8 @@ kundi IBMTestCases(unittest.TestCase):
         isipokua:
             jaribu:
                 value = int(value)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
         funct = self.ChangeDict.get(funct, (lambda *args: Tupu))
         funct(value)
@@ -346,8 +346,8 @@ kundi IBMTestCases(unittest.TestCase):
             L = Sides[1].strip().split()
             ans = L[0]
             exceptions = L[1:]
-        except (TypeError, AttributeError, IndexError):
-             ashiria self.decimal.InvalidOperation
+        tatizo (TypeError, AttributeError, IndexError):
+            ashiria self.decimal.InvalidOperation
         eleza FixQuotes(val):
             val = val.replace("''", 'SingleQuote').replace('""', 'DoubleQuote')
             val = val.replace("'", '').replace('"', '')
@@ -386,13 +386,13 @@ kundi IBMTestCases(unittest.TestCase):
                         self.context.traps[error] = 1
                         jaribu:
                             funct(self.context.create_decimal(v))
-                        except error:
-                            pass
-                        except Signals[self.decimal] as e:
+                        tatizo error:
+                            pita
+                        tatizo Signals[self.decimal] kama e:
                             self.fail("Raised %s kwenye %s when %s disabled" % \
                                       (e, s, error))
                         isipokua:
-                            self.fail("Did sio  ashiria %s kwenye %s" % (error, s))
+                            self.fail("Did sio ashiria %s kwenye %s" % (error, s))
                         self.context.traps[error] = 0
                 v = self.context.create_decimal(v)
             isipokua:
@@ -401,33 +401,33 @@ kundi IBMTestCases(unittest.TestCase):
 
         ans = FixQuotes(ans)
 
-        ikiwa EXTENDEDERRORTEST na fname sio kwenye ('to_sci_string', 'to_eng_string'):
+        ikiwa EXTENDEDERRORTEST na fname haiko kwenye ('to_sci_string', 'to_eng_string'):
             kila error kwenye theirexceptions:
                 self.context.traps[error] = 1
                 jaribu:
                     funct(*vals)
-                except error:
-                    pass
-                except Signals[self.decimal] as e:
+                tatizo error:
+                    pita
+                tatizo Signals[self.decimal] kama e:
                     self.fail("Raised %s kwenye %s when %s disabled" % \
                               (e, s, error))
                 isipokua:
-                    self.fail("Did sio  ashiria %s kwenye %s" % (error, s))
+                    self.fail("Did sio ashiria %s kwenye %s" % (error, s))
                 self.context.traps[error] = 0
 
-            # as above, but add traps cumulatively, to check precedence
+            # kama above, but add traps cumulatively, to check precedence
             ordered_errors = [e kila e kwenye OrderedSignals[self.decimal] ikiwa e kwenye theirexceptions]
             kila error kwenye ordered_errors:
                 self.context.traps[error] = 1
                 jaribu:
                     funct(*vals)
-                except error:
-                    pass
-                except Signals[self.decimal] as e:
+                tatizo error:
+                    pita
+                tatizo Signals[self.decimal] kama e:
                     self.fail("Raised %s kwenye %s; expected %s" %
                               (type(e), s, error))
                 isipokua:
-                    self.fail("Did sio  ashiria %s kwenye %s" % (error, s))
+                    self.fail("Did sio ashiria %s kwenye %s" % (error, s))
             # reset traps
             kila error kwenye ordered_errors:
                 self.context.traps[error] = 0
@@ -439,7 +439,7 @@ kundi IBMTestCases(unittest.TestCase):
             result = str(funct(*vals))
             ikiwa fname kwenye self.LogicalFunctions:
                 result = str(int(eval(result))) # 'Kweli', 'Uongo' -> '1', '0'
-        except Signals[self.decimal] as error:
+        tatizo Signals[self.decimal] kama error:
             self.fail("Raised %s kwenye %s" % (error, s))
         tatizo: #Catch any error long enough to state the test case.
             andika("ERROR:", s)
@@ -559,7 +559,7 @@ kundi ExplicitConstructionTest(unittest.TestCase):
                 self.assertEqual(str(Decimal(lead + '9.311E+28' + trail)),
                                  '9.311E+28')
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.traps[InvalidOperation] = Kweli
             # Invalid string
             self.assertRaises(InvalidOperation, Decimal, "xyz")
@@ -1080,7 +1080,7 @@ kundi FormatTest(unittest.TestCase):
 
         jaribu:
             kutoka locale agiza CHAR_MAX
-        except ImportError:
+        tatizo ImportError:
             self.skipTest('locale.CHAR_MAX sio available')
 
         eleza make_grouping(lst):
@@ -1462,7 +1462,7 @@ kundi ArithmeticOperatorsTest(unittest.TestCase):
                         expected, op.__name__, x, y, got))
 
         # repeat the above, but this time trap the InvalidOperation
-        ukijumuisha localcontext() as ctx:
+        ukijumuisha localcontext() kama ctx:
             ctx.traps[InvalidOperation] = 1
 
             kila x, y kwenye qnan_pairs:
@@ -1516,11 +1516,11 @@ eleza thfunc1(cls):
     cls.synchro.wait()
 
     test2 = d1/d3
-    ukijumuisha localcontext() as c2:
+    ukijumuisha localcontext() kama c2:
         cls.assertKweli(c2.flags[Inexact])
         cls.assertRaises(DivisionByZero, c2.divide, d1, 0)
         cls.assertKweli(c2.flags[DivisionByZero])
-        ukijumuisha localcontext() as c3:
+        ukijumuisha localcontext() kama c3:
             cls.assertKweli(c3.flags[Inexact])
             cls.assertKweli(c3.flags[DivisionByZero])
             cls.assertRaises(InvalidOperation, c3.compare, d1, Decimal('sNaN'))
@@ -1555,11 +1555,11 @@ eleza thfunc2(cls):
     thiscontext.prec = 18
     test2 = d1/d3
 
-    ukijumuisha localcontext() as c2:
+    ukijumuisha localcontext() kama c2:
         cls.assertKweli(c2.flags[Inexact])
         cls.assertRaises(Overflow, c2.multiply, Decimal('1e425000000'), 999)
         cls.assertKweli(c2.flags[Overflow])
-        ukijumuisha localcontext(thiscontext) as c3:
+        ukijumuisha localcontext(thiscontext) kama c3:
             cls.assertKweli(c3.flags[Inexact])
             cls.assertUongo(c3.flags[Overflow])
             c3.traps[Underflow] = Kweli
@@ -1593,7 +1593,7 @@ kundi ThreadingTest(unittest.TestCase):
         ikiwa self.decimal == C na sio self.decimal.HAVE_THREADS:
             self.skipTest("compiled without threading")
         # Test the "threading isolation" of a Context. Also test changing
-        # the DefaultContext, which acts as a template kila the thread-local
+        # the DefaultContext, which acts kama a template kila the thread-local
         # contexts.
         save_prec = DefaultContext.prec
         save_emax = DefaultContext.Emax
@@ -1826,7 +1826,7 @@ kundi UsabilityTest(unittest.TestCase):
             d = Decimal(s)
             self.assertEqual(hashit(f), hashit(d))
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             # check that the value of the hash doesn't depend on the
             # current context (issue #1757)
             x = Decimal("123456789.1")
@@ -2166,7 +2166,7 @@ kundi UsabilityTest(unittest.TestCase):
         Rounded = self.decimal.Rounded
         Clamped = self.decimal.Clamped
 
-        ukijumuisha localcontext(Context()) as c:
+        ukijumuisha localcontext(Context()) kama c:
             c.prec = 7
             c.Emax = 999
             c.Emin = -999
@@ -2383,11 +2383,11 @@ kundi UsabilityTest(unittest.TestCase):
             self.assertRaises(InvalidOperation, y.quantize, Decimal('1e-10'), rounding=ROUND_UP, context=Tupu)
             self.assertKweli(c.flags[InvalidOperation])
 
-        ukijumuisha localcontext(Context()) as context:
+        ukijumuisha localcontext(Context()) kama context:
             context.prec = 7
             context.Emax = 999
             context.Emin = -999
-            ukijumuisha localcontext(ctx=Tupu) as c:
+            ukijumuisha localcontext(ctx=Tupu) kama c:
                 self.assertEqual(c.prec, 7)
                 self.assertEqual(c.Emax, 999)
                 self.assertEqual(c.Emin, -999)
@@ -2512,9 +2512,9 @@ kundi PythonAPItests(unittest.TestCase):
 
         kila x kwenye range(-250, 250):
             s = '%0.2f' % (x / 100.0)
-            # should work the same as kila floats
+            # should work the same kama kila floats
             self.assertEqual(int(Decimal(s)), int(float(s)))
-            # should work the same as to_integral kwenye the ROUND_DOWN mode
+            # should work the same kama to_integral kwenye the ROUND_DOWN mode
             d = Decimal(s)
             r = d.to_integral(ROUND_DOWN)
             self.assertEqual(Decimal(int(d)), r)
@@ -2529,9 +2529,9 @@ kundi PythonAPItests(unittest.TestCase):
 
         kila x kwenye range(-250, 250):
             s = '%0.2f' % (x / 100.0)
-            # should work the same as kila floats
+            # should work the same kama kila floats
             self.assertEqual(int(Decimal(s)), int(float(s)))
-            # should work the same as to_integral kwenye the ROUND_DOWN mode
+            # should work the same kama to_integral kwenye the ROUND_DOWN mode
             d = Decimal(s)
             r = d.to_integral(ROUND_DOWN)
             self.assertEqual(Decimal(math.trunc(d)), r)
@@ -2648,7 +2648,7 @@ kundi PythonAPItests(unittest.TestCase):
         xc.Emax = 1
         xc.Emin = -1
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.clear_flags()
 
             self.assertEqual(D(9, xc), 9)
@@ -3543,8 +3543,8 @@ kundi PyContextAPItests(ContextAPItests):
     decimal = P
 
 kundi ContextWithStatement(unittest.TestCase):
-    # Can't do these as docstrings until Python 2.6
-    # as doctest can't handle __future__ statements
+    # Can't do these kama docstrings until Python 2.6
+    # kama doctest can't handle __future__ statements
 
     eleza test_localcontext(self):
         # Use a copy of the current context kwenye the block
@@ -3552,7 +3552,7 @@ kundi ContextWithStatement(unittest.TestCase):
         localcontext = self.decimal.localcontext
 
         orig_ctx = getcontext()
-        ukijumuisha localcontext() as enter_ctx:
+        ukijumuisha localcontext() kama enter_ctx:
             set_ctx = getcontext()
         final_ctx = getcontext()
         self.assertIs(orig_ctx, final_ctx, 'did sio restore context correctly')
@@ -3568,7 +3568,7 @@ kundi ContextWithStatement(unittest.TestCase):
         localcontext = self.decimal.localcontext
         orig_ctx = getcontext()
         new_ctx = Context(prec=42)
-        ukijumuisha localcontext(new_ctx) as enter_ctx:
+        ukijumuisha localcontext(new_ctx) kama enter_ctx:
             set_ctx = getcontext()
         final_ctx = getcontext()
         self.assertIs(orig_ctx, final_ctx, 'did sio restore context correctly')
@@ -3588,7 +3588,7 @@ kundi ContextWithStatement(unittest.TestCase):
         orig_ctx = getcontext()
         orig_ctx.clear_flags()
         new_ctx = Context(Emax=384)
-        ukijumuisha localcontext() as c1:
+        ukijumuisha localcontext() kama c1:
             self.assertEqual(c1.flags, orig_ctx.flags)
             self.assertEqual(c1.traps, orig_ctx.traps)
             c1.traps[Clamped] = Kweli
@@ -3596,7 +3596,7 @@ kundi ContextWithStatement(unittest.TestCase):
             self.assertNotEqual(orig_ctx.Emin, -383)
             self.assertRaises(Clamped, c1.create_decimal, '0e-999')
             self.assertKweli(c1.flags[Clamped])
-            ukijumuisha localcontext(new_ctx) as c2:
+            ukijumuisha localcontext(new_ctx) kama c2:
                 self.assertEqual(c2.flags, new_ctx.flags)
                 self.assertEqual(c2.traps, new_ctx.traps)
                 self.assertRaises(Overflow, c2.power, Decimal('3.4e200'), 2)
@@ -3614,24 +3614,24 @@ kundi ContextWithStatement(unittest.TestCase):
     eleza test_with_statements_gc1(self):
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c1:
+        ukijumuisha localcontext() kama c1:
             toa c1
-            ukijumuisha localcontext() as c2:
+            ukijumuisha localcontext() kama c2:
                 toa c2
-                ukijumuisha localcontext() as c3:
+                ukijumuisha localcontext() kama c3:
                     toa c3
-                    ukijumuisha localcontext() as c4:
+                    ukijumuisha localcontext() kama c4:
                         toa c4
 
     eleza test_with_statements_gc2(self):
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c1:
-            ukijumuisha localcontext(c1) as c2:
+        ukijumuisha localcontext() kama c1:
+            ukijumuisha localcontext(c1) kama c2:
                 toa c1
-                ukijumuisha localcontext(c2) as c3:
+                ukijumuisha localcontext(c2) kama c3:
                     toa c2
-                    ukijumuisha localcontext(c3) as c4:
+                    ukijumuisha localcontext(c3) kama c4:
                         toa c3
                         toa c4
 
@@ -3641,11 +3641,11 @@ kundi ContextWithStatement(unittest.TestCase):
         getcontext = self.decimal.getcontext
         setcontext = self.decimal.setcontext
 
-        ukijumuisha localcontext() as c1:
+        ukijumuisha localcontext() kama c1:
             toa c1
             n1 = Context(prec=1)
             setcontext(n1)
-            ukijumuisha localcontext(n1) as c2:
+            ukijumuisha localcontext(n1) kama c2:
                 toa n1
                 self.assertEqual(c2.prec, 1)
                 toa c2
@@ -3656,7 +3656,7 @@ kundi ContextWithStatement(unittest.TestCase):
                 n3 = Context(prec=3)
                 setcontext(n3)
                 self.assertEqual(getcontext().prec, 3)
-                ukijumuisha localcontext(n3) as c3:
+                ukijumuisha localcontext(n3) kama c3:
                     toa n3
                     self.assertEqual(c3.prec, 3)
                     toa c3
@@ -3664,7 +3664,7 @@ kundi ContextWithStatement(unittest.TestCase):
                     setcontext(n4)
                     toa n4
                     self.assertEqual(getcontext().prec, 4)
-                    ukijumuisha localcontext() as c4:
+                    ukijumuisha localcontext() kama c4:
                         self.assertEqual(c4.prec, 4)
                         toa c4
 
@@ -3690,14 +3690,14 @@ kundi ContextFlags(unittest.TestCase):
             ikiwa self.decimal == C:
                 context.flags[flag] = Kweli
                 ikiwa context.traps[flag]:
-                     ashiria flag
+                    ashiria flag
             isipokua:
                 context._raise_error(flag)
 
         context = Context(prec=9, Emin = -425000000, Emax = 425000000,
                           rounding=ROUND_HALF_EVEN, traps=[], flags=[])
 
-        # operations that  ashiria various flags, kwenye the form (function, arglist)
+        # operations that ashiria various flags, kwenye the form (function, arglist)
         operations = [
             (context._apply, [Decimal("100E-425000010")]),
             (context.sqrt, [Decimal(2)]),
@@ -3726,7 +3726,7 @@ kundi ContextFlags(unittest.TestCase):
                 # flags that we expect to be set after the operation
                 expected_flags = list(flags)
                 kila flag kwenye extra_flags:
-                    ikiwa flag sio kwenye expected_flags:
+                    ikiwa flag haiko kwenye expected_flags:
                         expected_flags.append(flag)
                 expected_flags.sort(key=id)
 
@@ -3785,7 +3785,7 @@ kundi ContextFlags(unittest.TestCase):
         FloatOperation = self.decimal.FloatOperation
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             ##### trap ni off by default
             self.assertUongo(c.traps[FloatOperation])
 
@@ -3915,7 +3915,7 @@ kundi ContextFlags(unittest.TestCase):
             self.assertKweli(c.flags[FloatOperation])
 
         nc = Context()
-        ukijumuisha localcontext(nc) as c:
+        ukijumuisha localcontext(nc) kama c:
             self.assertUongo(c.traps[FloatOperation])
             doit(c, signal=Tupu)
             test_containers(c, signal=Tupu)
@@ -3975,14 +3975,14 @@ kundi SpecialContexts(unittest.TestCase):
                 c = getcontext()
                 self.assertIsNot(c, template)
                 self.assertEqual(c.prec, 441)
-        except Exception as e:
+        tatizo Exception kama e:
             ex = e.__class__
         mwishowe:
             BasicContext.prec = basic_context_prec
             ExtendedContext.prec = extended_context_prec
             setcontext(savecontext)
             ikiwa ex:
-                 ashiria ex
+                ashiria ex
 
     eleza test_default_context(self):
         DefaultContext = self.decimal.DefaultContext
@@ -4017,13 +4017,13 @@ kundi SpecialContexts(unittest.TestCase):
             c = getcontext()
             self.assertIsNot(c, DefaultContext)
             self.assertEqual(c.prec, 961)
-        except Exception as e:
+        tatizo Exception kama e:
             ex = e.__class__
         mwishowe:
             DefaultContext.prec = default_context_prec
             setcontext(savecontext)
             ikiwa ex:
-                 ashiria ex
+                ashiria ex
 
 kundi CSpecialContexts(SpecialContexts):
     decimal = C
@@ -4285,7 +4285,7 @@ kundi Coverage(unittest.TestCase):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 1
             c.Emax = 1
             c.Emin = -1
@@ -4348,7 +4348,7 @@ kundi Coverage(unittest.TestCase):
             self.assertKweli(Decimal("0").is_zero())
 
         # Copy
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 10000
             x = 1228 ** 1523
             y = -Decimal(x)
@@ -4368,7 +4368,7 @@ kundi Coverage(unittest.TestCase):
         InvalidOperation = self.decimal.InvalidOperation
         DivisionByZero = self.decimal.DivisionByZero
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             q, r = divmod(Decimal("10912837129"), 1001)
             self.assertEqual(q, Decimal('10901935'))
             self.assertEqual(r, Decimal('194'))
@@ -4400,7 +4400,7 @@ kundi Coverage(unittest.TestCase):
             c.clear_flags()
             q, r = divmod(Decimal(11), 0)
             self.assertKweli(q.is_infinite() na r.is_nan())
-            self.assertKweli(c.flags[InvalidOperation] and
+            self.assertKweli(c.flags[InvalidOperation] na
                             c.flags[DivisionByZero])
 
     eleza test_power(self):
@@ -4409,7 +4409,7 @@ kundi Coverage(unittest.TestCase):
         Overflow = self.decimal.Overflow
         Rounded = self.decimal.Rounded
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 3
             c.clear_flags()
             self.assertEqual(Decimal("1.0") ** 100, Decimal('1.00'))
@@ -4428,7 +4428,7 @@ kundi Coverage(unittest.TestCase):
         localcontext = self.decimal.localcontext
         InvalidOperation = self.decimal.InvalidOperation
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 1
             c.Emax = 1
             c.Emin = -1
@@ -4456,7 +4456,7 @@ kundi Coverage(unittest.TestCase):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 28
 
             self.assertEqual(str(Decimal("9.99").__round__()), "10")
@@ -4476,7 +4476,7 @@ kundi Coverage(unittest.TestCase):
         Decimal = self.decimal.Decimal
         localcontext = self.decimal.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 9999
             x = Decimal(1221**1271) / 10**3923
             self.assertEqual(int(x), 1)
@@ -4535,7 +4535,7 @@ kundi PyWhitebox(unittest.TestCase):
         Decimal = P.Decimal
         localcontext = P.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 8
             x = Decimal(2**16) ** Decimal("-0.5")
             self.assertEqual(x, Decimal('0.00390625'))
@@ -4649,7 +4649,7 @@ kundi PyWhitebox(unittest.TestCase):
         Decimal = P.Decimal
         localcontext = P.localcontext
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             x = Decimal("NaN")._rescale(3, ROUND_UP)
             self.assertKweli(x.is_nan())
 
@@ -4755,7 +4755,7 @@ kundi CWhitebox(unittest.TestCase):
 
         b1 = 10**35
         b2 = 10**36
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.prec = 1000000
             kila i kwenye range(5):
                 a = random.randrange(b1, b2)
@@ -4897,10 +4897,10 @@ kundi CWhitebox(unittest.TestCase):
                 self.assertRaises(ValueError, setattr, c, attr, 2**32+1)
 
         # Invalid local context
-        self.assertRaises(TypeError, exec, 'ukijumuisha localcontext("xyz"): pass',
+        self.assertRaises(TypeError, exec, 'ukijumuisha localcontext("xyz"): pita',
                           locals())
         self.assertRaises(TypeError, exec,
-                          'ukijumuisha localcontext(context=getcontext()): pass',
+                          'ukijumuisha localcontext(context=getcontext()): pita',
                           locals())
 
         # setcontext
@@ -5018,7 +5018,7 @@ kundi CWhitebox(unittest.TestCase):
         MIN_ETINY = C.MIN_ETINY
         int_max = 2**63-1 ikiwa C.MAX_PREC > 425000000 isipokua 2**31-1
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.traps[InvalidOperation] = Kweli
             self.assertRaises(InvalidOperation, Decimal("1.23").__round__,
                               -int_max-1)
@@ -5068,7 +5068,7 @@ kundi CWhitebox(unittest.TestCase):
         self.assertRaises(TypeError, x.to_integral_exact, 10, 'x')
         self.assertRaises(TypeError, x.to_integral_exact, 10)
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             x = Decimal("99999999999999999999999999.9").to_integral_value(ROUND_UP)
             self.assertEqual(x, Decimal('100000000000000000000000000'))
 
@@ -5109,7 +5109,7 @@ kundi CWhitebox(unittest.TestCase):
             Decimal("1.23456789").quantize, Decimal('1e-100000'), ROUND_UP, 1000
         )
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
             c.clear_traps()
 
             # Invalid arguments
@@ -5330,7 +5330,7 @@ kundi CWhitebox(unittest.TestCase):
 
         jaribu:
             kutoka locale agiza CHAR_MAX
-        except ImportError:
+        tatizo ImportError:
             self.skipTest('locale.CHAR_MAX sio available')
 
         eleza make_grouping(lst):
@@ -5367,7 +5367,7 @@ kundi CWhitebox(unittest.TestCase):
         localcontext = C.localcontext
         InvalidOperation = C.InvalidOperation
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
 
             c.traps[InvalidOperation] = Kweli
 
@@ -5393,7 +5393,7 @@ kundi CWhitebox(unittest.TestCase):
         Overflow = C.Overflow
         Underflow = C.Underflow
 
-        ukijumuisha localcontext() as c:
+        ukijumuisha localcontext() kama c:
 
             c.traps[InvalidOperation] = Kweli
             c.traps[Overflow] = Kweli
@@ -5487,7 +5487,7 @@ kundi SignatureTest(unittest.TestCase):
                 endelea
             p_func = getattr(P, attr)
             c_func = getattr(C, attr)
-            ikiwa (attr == 'Decimal' ama attr == 'Context' or
+            ikiwa (attr == 'Decimal' ama attr == 'Context' ama
                 inspect.isfunction(p_func)):
                 p_sig = inspect.signature(p_func)
                 c_sig = inspect.signature(c_func)
@@ -5548,10 +5548,10 @@ kundi SignatureTest(unittest.TestCase):
                 ikiwa name == 'self': endelea
                 ikiwa param.kind == POS:
                     args.append(pdict[module][name])
-                elikiwa param.kind == POS_KWD:
+                lasivyo param.kind == POS_KWD:
                     kwargs[name] = pdict[module][name]
                 isipokua:
-                     ashiria TestFailed("unexpected parameter kind")
+                    ashiria TestFailed("unexpected parameter kind")
             rudisha args, kwargs
 
         eleza tr(s):
@@ -5600,14 +5600,14 @@ kundi SignatureTest(unittest.TestCase):
                     args, kwds = mkargs(C, c_sig)
                     jaribu:
                         getattr(c_type(9), attr)(*args, **kwds)
-                    except Exception as err:
-                         ashiria TestFailed("invalid signature kila %s: %s %s" % (c_func, args, kwds))
+                    tatizo Exception kama err:
+                        ashiria TestFailed("invalid signature kila %s: %s %s" % (c_func, args, kwds))
 
                     args, kwds = mkargs(P, p_sig)
                     jaribu:
                         getattr(p_type(9), attr)(*args, **kwds)
-                    except Exception as err:
-                         ashiria TestFailed("invalid signature kila %s: %s %s" % (p_func, args, kwds))
+                    tatizo Exception kama err:
+                        ashiria TestFailed("invalid signature kila %s: %s %s" % (p_func, args, kwds))
 
         doit('Decimal')
         doit('Context')
@@ -5663,10 +5663,10 @@ eleza test_main(arith=Tupu, verbose=Tupu, todo_tests=Tupu, debug=Tupu):
     # directory na add the definitions to the DecimalTest class.  This
     # procedure insures that new files do sio get skipped.
     kila filename kwenye os.listdir(directory):
-        ikiwa '.decTest' sio kwenye filename ama filename.startswith("."):
+        ikiwa '.decTest' haiko kwenye filename ama filename.startswith("."):
             endelea
         head, tail = filename.split('.')
-        ikiwa todo_tests ni sio Tupu na head sio kwenye todo_tests:
+        ikiwa todo_tests ni sio Tupu na head haiko kwenye todo_tests:
             endelea
         tester = lambda self, f=filename: self.eval_file(directory + f)
         setattr(CIBMTestCases, 'test_' + head, tester)
@@ -5692,7 +5692,7 @@ eleza test_main(arith=Tupu, verbose=Tupu, todo_tests=Tupu, debug=Tupu):
             warnings.warn('C tests skipped: no module named _decimal.',
                           UserWarning)
         ikiwa sio orig_sys_decimal ni sys.modules['decimal']:
-             ashiria TestFailed("Internal error: unbalanced number of changes to "
+            ashiria TestFailed("Internal error: unbalanced number of changes to "
                              "sys.modules['decimal'].")
 
 
@@ -5705,7 +5705,7 @@ ikiwa __name__ == '__main__':
 
     ikiwa opt.skip:
         test_main(arith=Uongo, verbose=Kweli)
-    elikiwa args:
+    lasivyo args:
         test_main(arith=Kweli, verbose=Kweli, todo_tests=args, debug=opt.debug)
     isipokua:
         test_main(arith=Kweli, verbose=Kweli)

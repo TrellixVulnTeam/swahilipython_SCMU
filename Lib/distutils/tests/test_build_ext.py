@@ -169,13 +169,13 @@ kundi BuildExtTestCase(TempdirManager,
         cmd = self.build_ext(dist)
         cmd.ensure_finalized()
         self.assertRaises((UnknownFileError, CompileError),
-                          cmd.run)  # should  ashiria an error
+                          cmd.run)  # should ashiria an error
 
         modules = [Extension('foo', ['xxx'], optional=Kweli)]
         dist = Distribution({'name': 'xx', 'ext_modules': modules})
         cmd = self.build_ext(dist)
         cmd.ensure_finalized()
-        cmd.run()  # should pass
+        cmd.run()  # should pita
 
     eleza test_finalize_options(self):
         # Make sure Python's include directories (kila Python.h, pyconfig.h,
@@ -274,14 +274,14 @@ kundi BuildExtTestCase(TempdirManager,
         exts = [('foo.bar', '')]
         self.assertRaises(DistutilsSetupError, cmd.check_extensions_list, exts)
 
-        # ok this one should pass
+        # ok this one should pita
         exts = [('foo.bar', {'sources': [''], 'libraries': 'foo',
                              'some': 'bar'})]
         cmd.check_extensions_list(exts)
         ext = exts[0]
         self.assertIsInstance(ext, Extension)
 
-        # check_extensions_list adds kwenye ext the values passed
+        # check_extensions_list adds kwenye ext the values pitaed
         # when they are kwenye ('include_dirs', 'library_dirs', 'libraries'
         # 'extra_objects', 'extra_compile_args', 'extra_link_args')
         self.assertEqual(ext.libraries, 'foo')
@@ -305,7 +305,7 @@ kundi BuildExtTestCase(TempdirManager,
         self.assertEqual(cmd.get_source_files(), ['xxx'])
 
     eleza test_compiler_option(self):
-        # cmd.compiler ni an option and
+        # cmd.compiler ni an option na
         # should sio be overridden by a compiler instance
         # when the command ni run
         dist = Distribution()
@@ -460,7 +460,7 @@ kundi BuildExtTestCase(TempdirManager,
 
         deptarget_c = os.path.join(self.tmp_dir, 'deptargetmodule.c')
 
-        ukijumuisha open(deptarget_c, 'w') as fp:
+        ukijumuisha open(deptarget_c, 'w') kama fp:
             fp.write(textwrap.dedent('''\
                 #include <AvailabilityMacros.h>
 
@@ -476,7 +476,7 @@ kundi BuildExtTestCase(TempdirManager,
         # get the deployment target that the interpreter was built with
         target = sysconfig.get_config_var('MACOSX_DEPLOYMENT_TARGET')
         target = tuple(map(int, target.split('.')[0:2]))
-        # format the target value as defined kwenye the Apple
+        # format the target value kama defined kwenye the Apple
         # Availability Macros.  We can't use the macro names since
         # at least one value we test ukijumuisha will sio exist yet.
         ikiwa target[1] < 10:
@@ -510,7 +510,7 @@ kundi BuildExtTestCase(TempdirManager,
             mwishowe:
                 sys.stdout = old_stdout
 
-        except CompileError:
+        tatizo CompileError:
             self.fail("Wrong deployment target during compilation")
 
 

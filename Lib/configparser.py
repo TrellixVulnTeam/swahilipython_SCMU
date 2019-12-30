@@ -4,8 +4,8 @@ A configuration file consists of sections, lead by a "[section]" header,
 and followed by "name: value" entries, ukijumuisha continuations na such in
 the style of RFC 822.
 
-Intrinsic defaults can be specified by passing them into the
-ConfigParser constructor as a dictionary.
+Intrinsic defaults can be specified by pitaing them into the
+ConfigParser constructor kama a dictionary.
 
 class:
 
@@ -24,26 +24,26 @@ ConfigParser -- responsible kila parsing a list of
         must be appropriate kila %()s string interpolation.
 
         When `dict_type' ni given, it will be used to create the dictionary
-        objects kila the list of sections, kila the options within a section, and
+        objects kila the list of sections, kila the options within a section, na
         kila the default values.
 
-        When `delimiters' ni given, it will be used as the set of substrings
+        When `delimiters' ni given, it will be used kama the set of substrings
         that divide keys kutoka values.
 
-        When `comment_prefixes' ni given, it will be used as the set of
+        When `comment_prefixes' ni given, it will be used kama the set of
         substrings that prefix comments kwenye empty lines. Comments can be
         indented.
 
-        When `inline_comment_prefixes' ni given, it will be used as the set of
+        When `inline_comment_prefixes' ni given, it will be used kama the set of
         substrings that prefix comments kwenye non-empty lines.
 
         When `strict` ni Kweli, the parser won't allow kila any section ama option
-        duplicates wakati reading kutoka a single source (file, string or
+        duplicates wakati reading kutoka a single source (file, string ama
         dictionary). Default ni Kweli.
 
         When `empty_lines_in_values' ni Uongo (default: Kweli), each empty line
         marks the end of an option. Otherwise, internal empty lines of
-        a multiline option are kept as part of the value.
+        a multiline option are kept kama part of the value.
 
         When `allow_no_value' ni Kweli (default: Uongo), options without
         values are accepted; the value presented kila these ni Tupu.
@@ -55,7 +55,7 @@ ConfigParser -- responsible kila parsing a list of
         attribute na may be modified at runtime.
 
         When `interpolation` ni given, it should be an Interpolation subclass
-        instance. It will be used as the handler kila option value
+        instance. It will be used kama the handler kila option value
         pre-processing when using getters. RawConfigParser objects don't do
         any sort of interpolation, whereas ConfigParser uses an instance of
         BasicInterpolation. The library also provides a ``zc.buildbot``
@@ -64,7 +64,7 @@ ConfigParser -- responsible kila parsing a list of
         When `converters` ni given, it should be a dictionary where each key
         represents the name of a type converter na each value ni a callable
         implementing the conversion kutoka string to the desired datatype. Every
-        converter gets its corresponding get*() method on the parser object and
+        converter gets its corresponding get*() method on the parser object na
         section proxies.
 
     sections()
@@ -85,7 +85,7 @@ ConfigParser -- responsible kila parsing a list of
         are ignored.  Return list of successfully read files.
 
     read_file(f, filename=Tupu)
-        Read na parse one configuration file, given as a file object.
+        Read na parse one configuration file, given kama a file object.
         The filename defaults to f.name; it ni only used kwenye error
         messages (ikiwa f has no `name' attribute, the string `<???>' ni used).
 
@@ -101,7 +101,7 @@ ConfigParser -- responsible kila parsing a list of
 
     get(section, option, raw=Uongo, vars=Tupu, fallback=_UNSET)
         Return a string value kila the named option.  All % interpolations are
-        expanded kwenye the rudisha values, based on the defaults passed into the
+        expanded kwenye the rudisha values, based on the defaults pitaed into the
         constructor na the DEFAULT section.  Additional substitutions may be
         provided using the `vars' argument, which must be a dictionary whose
         contents override any pre-existing defaults. If `option' ni a key in
@@ -115,7 +115,7 @@ ConfigParser -- responsible kila parsing a list of
 
     getboolean(section, options, raw=Uongo, vars=Tupu, fallback=_UNSET)
         Like get(), but convert value to a boolean (currently case
-        insensitively defined as 0, false, no, off kila Uongo, na 1, true,
+        insensitively defined kama 0, false, no, off kila Uongo, na 1, true,
         yes, on kila Kweli).  Returns Uongo ama Kweli.
 
     items(section=_UNSET, raw=Uongo, vars=Tupu)
@@ -139,7 +139,7 @@ ConfigParser -- responsible kila parsing a list of
 """
 
 kutoka collections.abc agiza MutableMapping
-kutoka collections agiza ChainMap as _ChainMap
+kutoka collections agiza ChainMap kama _ChainMap
 agiza functools
 agiza io
 agiza itertools
@@ -190,7 +190,7 @@ kundi NoSectionError(Error):
 kundi DuplicateSectionError(Error):
     """Raised when a section ni repeated kwenye an input source.
 
-    Possible repetitions that  ashiria this exception are: multiple creation
+    Possible repetitions that ashiria this exception are: multiple creation
     using the API ama kwenye strict parsers when a section ni found more than once
     kwenye a single input file, string ama dictionary.
     """
@@ -301,11 +301,11 @@ kundi ParsingError(Error):
         # Exactly one of `source'/`filename' arguments has to be given.
         # `filename' kept kila compatibility.
         ikiwa filename na source:
-             ashiria ValueError("Cannot specify both `filename' na `source'. "
+            ashiria ValueError("Cannot specify both `filename' na `source'. "
                              "Use `source'.")
-        elikiwa sio filename na sio source:
-             ashiria ValueError("Required argument `source' sio given.")
-        elikiwa filename:
+        lasivyo sio filename na sio source:
+            ashiria ValueError("Required argument `source' sio given.")
+        lasivyo filename:
             source = filename
         Error.__init__(self, 'Source contains parsing errors: %r' % source)
         self.source = source
@@ -352,13 +352,13 @@ kundi MissingSectionHeaderError(ParsingError):
 
 
 # Used kwenye parser getters to indicate the default behaviour when a specific
-# option ni sio found it to  ashiria an exception. Created to enable `Tupu' as
+# option ni sio found it to ashiria an exception. Created to enable `Tupu' as
 # a valid fallback value.
 _UNSET = object()
 
 
 kundi Interpolation:
-    """Dummy interpolation that passes the value through ukijumuisha no changes."""
+    """Dummy interpolation that pitaes the value through ukijumuisha no changes."""
 
     eleza before_get(self, parser, section, option, value, defaults):
         rudisha value
@@ -374,7 +374,7 @@ kundi Interpolation:
 
 
 kundi BasicInterpolation(Interpolation):
-    """Interpolation as implemented kwenye the classic ConfigParser.
+    """Interpolation kama implemented kwenye the classic ConfigParser.
 
     The option values can contain format strings which refer to other values in
     the same section, ama values kwenye the special default section.
@@ -399,7 +399,7 @@ kundi BasicInterpolation(Interpolation):
         tmp_value = value.replace('%%', '') # escaped percent signs
         tmp_value = self._KEYCRE.sub('', tmp_value) # valid syntax
         ikiwa '%' kwenye tmp_value:
-             ashiria ValueError("invalid interpolation syntax kwenye %r at "
+            ashiria ValueError("invalid interpolation syntax kwenye %r at "
                              "position %d" % (value, tmp_value.find('%')))
         rudisha value
 
@@ -407,7 +407,7 @@ kundi BasicInterpolation(Interpolation):
                           depth):
         rawval = parser.get(section, option, raw=Kweli, fallback=rest)
         ikiwa depth > MAX_INTERPOLATION_DEPTH:
-             ashiria InterpolationDepthError(option, section, rawval)
+            ashiria InterpolationDepthError(option, section, rawval)
         wakati rest:
             p = rest.find("%")
             ikiwa p < 0:
@@ -421,17 +421,17 @@ kundi BasicInterpolation(Interpolation):
             ikiwa c == "%":
                 accum.append("%")
                 rest = rest[2:]
-            elikiwa c == "(":
+            lasivyo c == "(":
                 m = self._KEYCRE.match(rest)
                 ikiwa m ni Tupu:
-                     ashiria InterpolationSyntaxError(option, section,
+                    ashiria InterpolationSyntaxError(option, section,
                         "bad interpolation variable reference %r" % rest)
                 var = parser.optionxform(m.group(1))
                 rest = rest[m.end():]
                 jaribu:
                     v = map[var]
-                except KeyError:
-                     ashiria InterpolationMissingOptionError(
+                tatizo KeyError:
+                    ashiria InterpolationMissingOptionError(
                         option, section, rawval, var) kutoka Tupu
                 ikiwa "%" kwenye v:
                     self._interpolate_some(parser, option, accum, v,
@@ -439,7 +439,7 @@ kundi BasicInterpolation(Interpolation):
                 isipokua:
                     accum.append(v)
             isipokua:
-                 ashiria InterpolationSyntaxError(
+                ashiria InterpolationSyntaxError(
                     option, section,
                     "'%%' must be followed by '%%' ama '(', "
                     "found: %r" % (rest,))
@@ -460,7 +460,7 @@ kundi ExtendedInterpolation(Interpolation):
         tmp_value = value.replace('$$', '') # escaped dollar signs
         tmp_value = self._KEYCRE.sub('', tmp_value) # valid syntax
         ikiwa '$' kwenye tmp_value:
-             ashiria ValueError("invalid interpolation syntax kwenye %r at "
+            ashiria ValueError("invalid interpolation syntax kwenye %r at "
                              "position %d" % (value, tmp_value.find('$')))
         rudisha value
 
@@ -468,7 +468,7 @@ kundi ExtendedInterpolation(Interpolation):
                           depth):
         rawval = parser.get(section, option, raw=Kweli, fallback=rest)
         ikiwa depth > MAX_INTERPOLATION_DEPTH:
-             ashiria InterpolationDepthError(option, section, rawval)
+            ashiria InterpolationDepthError(option, section, rawval)
         wakati rest:
             p = rest.find("$")
             ikiwa p < 0:
@@ -482,10 +482,10 @@ kundi ExtendedInterpolation(Interpolation):
             ikiwa c == "$":
                 accum.append("$")
                 rest = rest[2:]
-            elikiwa c == "{":
+            lasivyo c == "{":
                 m = self._KEYCRE.match(rest)
                 ikiwa m ni Tupu:
-                     ashiria InterpolationSyntaxError(option, section,
+                    ashiria InterpolationSyntaxError(option, section,
                         "bad interpolation variable reference %r" % rest)
                 path = m.group(1).split(':')
                 rest = rest[m.end():]
@@ -495,16 +495,16 @@ kundi ExtendedInterpolation(Interpolation):
                     ikiwa len(path) == 1:
                         opt = parser.optionxform(path[0])
                         v = map[opt]
-                    elikiwa len(path) == 2:
+                    lasivyo len(path) == 2:
                         sect = path[0]
                         opt = parser.optionxform(path[1])
                         v = parser.get(sect, opt, raw=Kweli)
                     isipokua:
-                         ashiria InterpolationSyntaxError(
+                        ashiria InterpolationSyntaxError(
                             option, section,
                             "More than one ':' found: %r" % (rest,))
-                except (KeyError, NoSectionError, NoOptionError):
-                     ashiria InterpolationMissingOptionError(
+                tatizo (KeyError, NoSectionError, NoOptionError):
+                    ashiria InterpolationMissingOptionError(
                         option, section, rawval, ":".join(path)) kutoka Tupu
                 ikiwa "$" kwenye v:
                     self._interpolate_some(parser, opt, accum, v, sect,
@@ -513,7 +513,7 @@ kundi ExtendedInterpolation(Interpolation):
                 isipokua:
                     accum.append(v)
             isipokua:
-                 ashiria InterpolationSyntaxError(
+                ashiria InterpolationSyntaxError(
                     option, section,
                     "'$' must be followed by '$' ama '{', "
                     "found: %r" % (rest,))
@@ -536,13 +536,13 @@ kundi LegacyInterpolation(Interpolation):
                 value = self._KEYCRE.sub(replace, value)
                 jaribu:
                     value = value % vars
-                except KeyError as e:
-                     ashiria InterpolationMissingOptionError(
+                tatizo KeyError kama e:
+                    ashiria InterpolationMissingOptionError(
                         option, section, rawval, e.args[0]) kutoka Tupu
             isipokua:
                 koma
         ikiwa value na "%(" kwenye value:
-             ashiria InterpolationDepthError(option, section, rawval)
+            ashiria InterpolationDepthError(option, section, rawval)
         rudisha value
 
     eleza before_set(self, parser, section, option, value):
@@ -653,10 +653,10 @@ kundi RawConfigParser(MutableMapping):
         already exists. Raise ValueError ikiwa name ni DEFAULT.
         """
         ikiwa section == self.default_section:
-             ashiria ValueError('Invalid section name: %r' % section)
+            ashiria ValueError('Invalid section name: %r' % section)
 
         ikiwa section kwenye self._sections:
-             ashiria DuplicateSectionError(section)
+            ashiria DuplicateSectionError(section)
         self._sections[section] = self._dict()
         self._proxies[section] = SectionProxy(self, section)
 
@@ -671,8 +671,8 @@ kundi RawConfigParser(MutableMapping):
         """Return a list of option names kila the given section name."""
         jaribu:
             opts = self._sections[section].copy()
-        except KeyError:
-             ashiria NoSectionError(section) kutoka Tupu
+        tatizo KeyError:
+            ashiria NoSectionError(section) kutoka Tupu
         opts.update(self._defaults)
         rudisha list(opts.keys())
 
@@ -693,9 +693,9 @@ kundi RawConfigParser(MutableMapping):
         read_ok = []
         kila filename kwenye filenames:
             jaribu:
-                ukijumuisha open(filename, encoding=encoding) as fp:
+                ukijumuisha open(filename, encoding=encoding) kama fp:
                     self._read(fp, filename)
-            except OSError:
+            tatizo OSError:
                 endelea
             ikiwa isinstance(filename, os.PathLike):
                 filename = os.fspath(filename)
@@ -713,7 +713,7 @@ kundi RawConfigParser(MutableMapping):
         ikiwa source ni Tupu:
             jaribu:
                 source = f.name
-            except AttributeError:
+            tatizo AttributeError:
                 source = '<???>'
         self._read(f, source)
 
@@ -740,7 +740,7 @@ kundi RawConfigParser(MutableMapping):
             section = str(section)
             jaribu:
                 self.add_section(section)
-            except (DuplicateSectionError, ValueError):
+            tatizo (DuplicateSectionError, ValueError):
                 ikiwa self._strict na section kwenye elements_added:
                     raise
             elements_added.add(section)
@@ -749,7 +749,7 @@ kundi RawConfigParser(MutableMapping):
                 ikiwa value ni sio Tupu:
                     value = str(value)
                 ikiwa self._strict na (section, key) kwenye elements_added:
-                     ashiria DuplicateOptionError(section, key, source)
+                    ashiria DuplicateOptionError(section, key, source)
                 elements_added.add((section, key))
                 self.set(section, key, value)
 
@@ -768,7 +768,7 @@ kundi RawConfigParser(MutableMapping):
         If `vars' ni provided, it must be a dictionary. The option ni looked up
         kwenye `vars' (ikiwa provided), `section', na kwenye `DEFAULTSECT' kwenye that order.
         If the key ni sio found na `fallback' ni provided, it ni used as
-        a fallback value. `Tupu' can be provided as a `fallback' value.
+        a fallback value. `Tupu' can be provided kama a `fallback' value.
 
         If interpolation ni enabled na the optional argument `raw' ni Uongo,
         all interpolations are expanded kwenye the rudisha values.
@@ -779,7 +779,7 @@ kundi RawConfigParser(MutableMapping):
         """
         jaribu:
             d = self._unify_values(section, vars)
-        except NoSectionError:
+        tatizo NoSectionError:
             ikiwa fallback ni _UNSET:
                 raise
             isipokua:
@@ -787,9 +787,9 @@ kundi RawConfigParser(MutableMapping):
         option = self.optionxform(option)
         jaribu:
             value = d[option]
-        except KeyError:
+        tatizo KeyError:
             ikiwa fallback ni _UNSET:
-                 ashiria NoOptionError(option, section)
+                ashiria NoOptionError(option, section)
             isipokua:
                 rudisha fallback
 
@@ -807,7 +807,7 @@ kundi RawConfigParser(MutableMapping):
         jaribu:
             rudisha self._get(section, conv, option, raw=raw, vars=vars,
                              **kwargs)
-        except (NoSectionError, NoOptionError):
+        tatizo (NoSectionError, NoOptionError):
             ikiwa fallback ni _UNSET:
                 raise
             rudisha fallback
@@ -832,7 +832,7 @@ kundi RawConfigParser(MutableMapping):
         """Return a list of (name, value) tuples kila each option kwenye a section.
 
         All % interpolations are expanded kwenye the rudisha values, based on the
-        defaults passed into the constructor, unless the optional argument
+        defaults pitaed into the constructor, unless the optional argument
         `raw' ni true.  Additional substitutions may be provided using the
         `vars' argument, which must be a dictionary whose contents overrides
         any pre-existing defaults.
@@ -844,9 +844,9 @@ kundi RawConfigParser(MutableMapping):
         d = self._defaults.copy()
         jaribu:
             d.update(self._sections[section])
-        except KeyError:
+        tatizo KeyError:
             ikiwa section != self.default_section:
-                 ashiria NoSectionError(section)
+                ashiria NoSectionError(section)
         orig_keys = list(d.keys())
         # Update ukijumuisha the entry specific variables
         ikiwa vars:
@@ -869,7 +869,7 @@ kundi RawConfigParser(MutableMapping):
             value = self[key]
             toa self[key]
             rudisha key, value
-         ashiria KeyError
+        ashiria KeyError
 
     eleza optionxform(self, optionstr):
         rudisha optionstr.lower()
@@ -881,7 +881,7 @@ kundi RawConfigParser(MutableMapping):
         ikiwa sio section ama section == self.default_section:
             option = self.optionxform(option)
             rudisha option kwenye self._defaults
-        elikiwa section sio kwenye self._sections:
+        lasivyo section haiko kwenye self._sections:
             rudisha Uongo
         isipokua:
             option = self.optionxform(option)
@@ -898,8 +898,8 @@ kundi RawConfigParser(MutableMapping):
         isipokua:
             jaribu:
                 sectdict = self._sections[section]
-            except KeyError:
-                 ashiria NoSectionError(section) kutoka Tupu
+            tatizo KeyError:
+                ashiria NoSectionError(section) kutoka Tupu
         sectdict[self.optionxform(option)] = value
 
     eleza write(self, fp, space_around_delimiters=Kweli):
@@ -939,8 +939,8 @@ kundi RawConfigParser(MutableMapping):
         isipokua:
             jaribu:
                 sectdict = self._sections[section]
-            except KeyError:
-                 ashiria NoSectionError(section) kutoka Tupu
+            tatizo KeyError:
+                ashiria NoSectionError(section) kutoka Tupu
         option = self.optionxform(option)
         existed = option kwenye sectdict
         ikiwa existed:
@@ -957,7 +957,7 @@ kundi RawConfigParser(MutableMapping):
 
     eleza __getitem__(self, key):
         ikiwa key != self.default_section na sio self.has_section(key):
-             ashiria KeyError(key)
+            ashiria KeyError(key)
         rudisha self._proxies[key]
 
     eleza __setitem__(self, key, value):
@@ -969,15 +969,15 @@ kundi RawConfigParser(MutableMapping):
         # no update method kwenye configparser ni atomic kwenye this implementation.
         ikiwa key == self.default_section:
             self._defaults.clear()
-        elikiwa key kwenye self._sections:
+        lasivyo key kwenye self._sections:
             self._sections[key].clear()
         self.read_dict({key: value})
 
     eleza __delitem__(self, key):
         ikiwa key == self.default_section:
-             ashiria ValueError("Cannot remove the default section.")
+            ashiria ValueError("Cannot remove the default section.")
         ikiwa sio self.has_section(key):
-             ashiria KeyError(key)
+            ashiria KeyError(key)
         self.remove_section(key)
 
     eleza __contains__(self, key):
@@ -998,13 +998,13 @@ kundi RawConfigParser(MutableMapping):
         `name' na `value' delimited ukijumuisha a specific substring (`=' ama `:' by
         default).
 
-        Values can span multiple lines, as long as they are indented deeper
+        Values can span multiple lines, kama long kama they are indented deeper
         than the first line of the value. Depending on the parser's mode, blank
-        lines may be treated as parts of multiline values ama ignored.
+        lines may be treated kama parts of multiline values ama ignored.
 
         Configuration files may include comments, prefixed by specific
         characters (`#' na `;' by default). Comments may appear on their own
-        kwenye an otherwise empty line ama may be entered kwenye lines holding values or
+        kwenye an otherwise empty line ama may be entered kwenye lines holding values ama
         section names.
         """
         elements_added = set()
@@ -1040,9 +1040,9 @@ kundi RawConfigParser(MutableMapping):
                 ikiwa self._empty_lines_in_values:
                     # add empty line to the value, but only ikiwa there was no
                     # comment on the line
-                    ikiwa (comment_start ni Tupu and
-                        cursect ni sio Tupu and
-                        optname and
+                    ikiwa (comment_start ni Tupu na
+                        cursect ni sio Tupu na
+                        optname na
                         cursect[optname] ni sio Tupu):
                         cursect[optname].append('') # newlines added at join
                 isipokua:
@@ -1052,7 +1052,7 @@ kundi RawConfigParser(MutableMapping):
             # continuation line?
             first_nonspace = self.NONSPACECRE.search(line)
             cur_indent_level = first_nonspace.start() ikiwa first_nonspace isipokua 0
-            ikiwa (cursect ni sio Tupu na optname and
+            ikiwa (cursect ni sio Tupu na optname na
                 cur_indent_level > indent_level):
                 cursect[optname].append(value)
             # a section header ama option header?
@@ -1064,11 +1064,11 @@ kundi RawConfigParser(MutableMapping):
                     sectname = mo.group('header')
                     ikiwa sectname kwenye self._sections:
                         ikiwa self._strict na sectname kwenye elements_added:
-                             ashiria DuplicateSectionError(sectname, fpname,
+                            ashiria DuplicateSectionError(sectname, fpname,
                                                         lineno)
                         cursect = self._sections[sectname]
                         elements_added.add(sectname)
-                    elikiwa sectname == self.default_section:
+                    lasivyo sectname == self.default_section:
                         cursect = self._defaults
                     isipokua:
                         cursect = self._dict()
@@ -1078,8 +1078,8 @@ kundi RawConfigParser(MutableMapping):
                     # So sections can't start ukijumuisha a continuation line
                     optname = Tupu
                 # no section header kwenye the file?
-                elikiwa cursect ni Tupu:
-                     ashiria MissingSectionHeaderError(fpname, lineno, line)
+                lasivyo cursect ni Tupu:
+                    ashiria MissingSectionHeaderError(fpname, lineno, line)
                 # an option line?
                 isipokua:
                     mo = self._optcre.match(value)
@@ -1088,9 +1088,9 @@ kundi RawConfigParser(MutableMapping):
                         ikiwa sio optname:
                             e = self._handle_error(e, fpname, lineno, line)
                         optname = self.optionxform(optname.rstrip())
-                        ikiwa (self._strict and
+                        ikiwa (self._strict na
                             (sectname, optname) kwenye elements_added):
-                             ashiria DuplicateOptionError(sectname, optname,
+                            ashiria DuplicateOptionError(sectname, optname,
                                                        fpname, lineno)
                         elements_added.add((sectname, optname))
                         # This check ni fine because the OPTCRE cannot
@@ -1108,9 +1108,9 @@ kundi RawConfigParser(MutableMapping):
                         # list of all bogus lines
                         e = self._handle_error(e, fpname, lineno, line)
         self._join_multiline_values()
-        # ikiwa any parsing errors occurred,  ashiria an exception
+        # ikiwa any parsing errors occurred, ashiria an exception
         ikiwa e:
-             ashiria e
+            ashiria e
 
     eleza _join_multiline_values(self):
         defaults = self.default_section, self._defaults
@@ -1125,7 +1125,7 @@ kundi RawConfigParser(MutableMapping):
                                                                 name, val)
 
     eleza _read_defaults(self, defaults):
-        """Read the defaults passed kwenye the initializer.
+        """Read the defaults pitaed kwenye the initializer.
         Note: values can be non-string."""
         kila key, value kwenye defaults.items():
             self._defaults[self.optionxform(key)] = value
@@ -1144,9 +1144,9 @@ kundi RawConfigParser(MutableMapping):
         sectiondict = {}
         jaribu:
             sectiondict = self._sections[section]
-        except KeyError:
+        tatizo KeyError:
             ikiwa section != self.default_section:
-                 ashiria NoSectionError(section) kutoka Tupu
+                ashiria NoSectionError(section) kutoka Tupu
         # Update ukijumuisha the entry specific variables
         vardict = {}
         ikiwa vars:
@@ -1159,8 +1159,8 @@ kundi RawConfigParser(MutableMapping):
     eleza _convert_to_boolean(self, value):
         """Return a boolean value translating kutoka other types ikiwa necessary.
         """
-        ikiwa value.lower() sio kwenye self.BOOLEAN_STATES:
-             ashiria ValueError('Not a boolean: %s' % value)
+        ikiwa value.lower() haiko kwenye self.BOOLEAN_STATES:
+            ashiria ValueError('Not a boolean: %s' % value)
         rudisha self.BOOLEAN_STATES[value.lower()]
 
     eleza _validate_value_types(self, *, section="", option="", value=""):
@@ -1169,7 +1169,7 @@ kundi RawConfigParser(MutableMapping):
         The only legal non-string value ikiwa we allow valueless
         options ni Tupu, so we need to check ikiwa the value ni a
         string if:
-        - we do sio allow valueless options, or
+        - we do sio allow valueless options, ama
         - we allow valueless options but the value ni sio Tupu
 
         For compatibility reasons this method ni sio used kwenye classic set()
@@ -1177,12 +1177,12 @@ kundi RawConfigParser(MutableMapping):
         access na kwenye ConfigParser.set().
         """
         ikiwa sio isinstance(section, str):
-             ashiria TypeError("section names must be strings")
+            ashiria TypeError("section names must be strings")
         ikiwa sio isinstance(option, str):
-             ashiria TypeError("option keys must be strings")
+            ashiria TypeError("option keys must be strings")
         ikiwa sio self._allow_no_value ama value:
             ikiwa sio isinstance(value, str):
-                 ashiria TypeError("option values must be strings")
+                ashiria TypeError("option values must be strings")
 
     @property
     eleza converters(self):
@@ -1195,7 +1195,7 @@ kundi ConfigParser(RawConfigParser):
     _DEFAULT_INTERPOLATION = BasicInterpolation()
 
     eleza set(self, section, option, value=Tupu):
-        """Set an option.  Extends RawConfigParser.set by validating type and
+        """Set an option.  Extends RawConfigParser.set by validating type na
         interpolation syntax on the value."""
         self._validate_value_types(option=option, value=value)
         super().set(section, option, value)
@@ -1208,7 +1208,7 @@ kundi ConfigParser(RawConfigParser):
         super().add_section(section)
 
     eleza _read_defaults(self, defaults):
-        """Reads the defaults passed kwenye the initializer, implicitly converting
+        """Reads the defaults pitaed kwenye the initializer, implicitly converting
         values to strings like the rest of the API.
 
         Does sio perform interpolation kila backwards compatibility.
@@ -1251,7 +1251,7 @@ kundi SectionProxy(MutableMapping):
 
     eleza __getitem__(self, key):
         ikiwa sio self._parser.has_option(self._name, key):
-             ashiria KeyError(key)
+            ashiria KeyError(key)
         rudisha self._parser.get(self._name, key)
 
     eleza __setitem__(self, key, value):
@@ -1259,9 +1259,9 @@ kundi SectionProxy(MutableMapping):
         rudisha self._parser.set(self._name, key, value)
 
     eleza __delitem__(self, key):
-        ikiwa sio (self._parser.has_option(self._name, key) and
+        ikiwa sio (self._parser.has_option(self._name, key) na
                 self._parser.remove_option(self._name, key)):
-             ashiria KeyError(key)
+            ashiria KeyError(key)
 
     eleza __contains__(self, key):
         rudisha self._parser.has_option(self._name, key)
@@ -1329,11 +1329,11 @@ kundi ConverterMapping(MutableMapping):
     eleza __setitem__(self, key, value):
         jaribu:
             k = 'get' + key
-        except TypeError:
-             ashiria ValueError('Incompatible key: {} (type: {})'
+        tatizo TypeError:
+            ashiria ValueError('Incompatible key: {} (type: {})'
                              ''.format(key, type(key)))
         ikiwa k == 'get':
-             ashiria ValueError('Incompatible key: cannot use "" as a name')
+            ashiria ValueError('Incompatible key: cannot use "" kama a name')
         self._data[key] = value
         func = functools.partial(self._parser._get_conv, conv=value)
         func.converter = value
@@ -1345,14 +1345,14 @@ kundi ConverterMapping(MutableMapping):
     eleza __delitem__(self, key):
         jaribu:
             k = 'get' + (key ama Tupu)
-        except TypeError:
-             ashiria KeyError(key)
+        tatizo TypeError:
+            ashiria KeyError(key)
         toa self._data[key]
         kila inst kwenye itertools.chain((self._parser,), self._parser.values()):
             jaribu:
                 delattr(inst, k)
-            except AttributeError:
-                # don't  ashiria since the entry was present kwenye _data, silently
+            tatizo AttributeError:
+                # don't ashiria since the entry was present kwenye _data, silently
                 # clean up
                 endelea
 

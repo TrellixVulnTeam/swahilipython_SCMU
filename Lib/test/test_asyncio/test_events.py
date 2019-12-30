@@ -11,7 +11,7 @@ agiza signal
 agiza socket
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 agiza subprocess
 agiza sys
@@ -30,7 +30,7 @@ kutoka asyncio agiza coroutines
 kutoka asyncio agiza events
 kutoka asyncio agiza proactor_events
 kutoka asyncio agiza selector_events
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 
 
@@ -42,7 +42,7 @@ eleza broken_unix_getsockname():
     """Return Kweli ikiwa the platform ni Mac OS 10.4 ama older."""
     ikiwa sys.platform.startswith("aix"):
         rudisha Kweli
-    elikiwa sys.platform != 'darwin':
+    lasivyo sys.platform != 'darwin':
         rudisha Uongo
     version = platform.mac_ver()[0]
     version = tuple(map(int, version.split('.')))
@@ -60,16 +60,16 @@ eleza _test_get_event_loop_new_process__sub_proc():
 
 kundi CoroLike:
     eleza send(self, v):
-        pass
+        pita
 
     eleza throw(self, *exc):
-        pass
+        pita
 
     eleza close(self):
-        pass
+        pita
 
     eleza __await__(self):
-        pass
+        pita
 
 
 kundi MyBaseProto(asyncio.Protocol):
@@ -164,7 +164,7 @@ kundi MyReadPipeProto(asyncio.Protocol):
         self.state.append('EOF')
 
     eleza connection_lost(self, exc):
-        ikiwa 'EOF' sio kwenye self.state:
+        ikiwa 'EOF' haiko kwenye self.state:
             self.state.append('EOF')  # It ni okay ikiwa EOF ni missed.
         assert self.state == ['INITIAL', 'CONNECTED', 'EOF'], self.state
         self.state.append('CLOSED')
@@ -374,7 +374,7 @@ kundi EventLoopTestsMixin:
         eleza reader():
             jaribu:
                 data = r.recv(1024)
-            except BlockingIOError:
+            tatizo BlockingIOError:
                 # Spurious readiness notifications are possible
                 # at least on Linux -- see man select.
                 return
@@ -505,7 +505,7 @@ kundi EventLoopTestsMixin:
         tr.close()
 
     eleza test_create_connection(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             conn_fut = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop), *httpd.address)
             self._basetest_create_connection(conn_fut)
@@ -516,7 +516,7 @@ kundi EventLoopTestsMixin:
         # zero-length address kila UNIX socket.
         check_sockname = sio broken_unix_getsockname()
 
-        ukijumuisha test_utils.run_test_unix_server() as httpd:
+        ukijumuisha test_utils.run_test_unix_server() kama httpd:
             conn_fut = self.loop.create_unix_connection(
                 lambda: MyProto(loop=self.loop), httpd.address)
             self._basetest_create_connection(conn_fut, check_sockname)
@@ -585,7 +585,7 @@ kundi EventLoopTestsMixin:
 
             # With ssl=Kweli, ssl.create_default_context() should be called
             ukijumuisha mock.patch('ssl.create_default_context',
-                            side_effect=_dummy_ssl_create_context) as m:
+                            side_effect=_dummy_ssl_create_context) kama m:
                 conn_fut = create_connection(ssl=Kweli)
                 self._basetest_create_ssl_connection(conn_fut, check_sockname,
                                                      peername)
@@ -593,7 +593,7 @@ kundi EventLoopTestsMixin:
 
         # With the real ssl.create_default_context(), certificate
         # validation will fail
-        ukijumuisha self.assertRaises(ssl.SSLError) as cm:
+        ukijumuisha self.assertRaises(ssl.SSLError) kama cm:
             conn_fut = create_connection(ssl=Kweli)
             # Ignore the "SSL handshake failed" log kwenye debug mode
             ukijumuisha test_utils.disable_logger():
@@ -604,7 +604,7 @@ kundi EventLoopTestsMixin:
 
     @unittest.skipIf(ssl ni Tupu, 'No ssl module')
     eleza test_create_ssl_connection(self):
-        ukijumuisha test_utils.run_test_server(use_ssl=Kweli) as httpd:
+        ukijumuisha test_utils.run_test_server(use_ssl=Kweli) kama httpd:
             create_connection = functools.partial(
                 self.loop.create_connection,
                 lambda: MyProto(loop=self.loop),
@@ -619,7 +619,7 @@ kundi EventLoopTestsMixin:
         # zero-length address kila UNIX socket.
         check_sockname = sio broken_unix_getsockname()
 
-        ukijumuisha test_utils.run_test_unix_server(use_ssl=Kweli) as httpd:
+        ukijumuisha test_utils.run_test_unix_server(use_ssl=Kweli) kama httpd:
             create_connection = functools.partial(
                 self.loop.create_unix_connection,
                 lambda: MyProto(loop=self.loop), httpd.address,
@@ -630,7 +630,7 @@ kundi EventLoopTestsMixin:
                                              peername=httpd.address)
 
     eleza test_create_connection_local_addr(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             port = support.find_unused_port()
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
@@ -641,11 +641,11 @@ kundi EventLoopTestsMixin:
             tr.close()
 
     eleza test_create_connection_local_addr_in_use(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             f = self.loop.create_connection(
                 lambda: MyProto(loop=self.loop),
                 *httpd.address, local_addr=httpd.address)
-            ukijumuisha self.assertRaises(OSError) as cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 self.loop.run_until_complete(f)
             self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
             self.assertIn(str(httpd.address), cm.exception.strerror)
@@ -680,7 +680,7 @@ kundi EventLoopTestsMixin:
                 csock.sendall(message)
                 response = csock.recv(99)
                 csock.close()
-            except Exception as exc:
+            tatizo Exception kama exc:
                 andika(
                     "Failure kwenye client thread kwenye test_connect_accepted_socket",
                     exc)
@@ -706,11 +706,11 @@ kundi EventLoopTestsMixin:
 
     @unittest.skipIf(ssl ni Tupu, 'No ssl module')
     eleza test_ssl_connect_accepted_socket(self):
-        ikiwa (sys.platform == 'win32' and
-            sys.version_info < (3, 5) and
+        ikiwa (sys.platform == 'win32' na
+            sys.version_info < (3, 5) na
             isinstance(self.loop, proactor_events.BaseProactorEventLoop)
             ):
-             ashiria unittest.SkipTest(
+            ashiria unittest.SkipTest(
                 'SSL sio supported ukijumuisha proactor event loops before Python 3.5'
                 )
 
@@ -1135,7 +1135,7 @@ kundi EventLoopTestsMixin:
         host, port = sock.getsockname()
 
         f = self.loop.create_server(MyProto, host=host, port=port)
-        ukijumuisha self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             self.loop.run_until_complete(f)
         self.assertEqual(cm.exception.errno, errno.EADDRINUSE)
 
@@ -1156,7 +1156,7 @@ kundi EventLoopTestsMixin:
                 port = support.find_unused_port()
                 f = self.loop.create_server(TestMyProto, host=Tupu, port=port)
                 server = self.loop.run_until_complete(f)
-            except OSError as ex:
+            tatizo OSError kama ex:
                 ikiwa ex.errno == errno.EADDRINUSE:
                     try_count += 1
                     self.assertGreaterEqual(5, try_count)
@@ -1258,7 +1258,7 @@ kundi EventLoopTestsMixin:
                 sock.setblocking(Uongo)
                 sock.bind(address)
             tatizo:
-                pass
+                pita
             isipokua:
                 koma
         isipokua:
@@ -1341,7 +1341,7 @@ kundi EventLoopTestsMixin:
         read_transport, write_transport = loop.run_until_complete(connect())
         loop.close()
 
-        # These 'repr' calls used to  ashiria an AttributeError
+        # These 'repr' calls used to ashiria an AttributeError
         # See Issue #314 on GitHub
         self.assertIn('open', repr(read_transport))
         self.assertIn('open', repr(write_transport))
@@ -1578,7 +1578,7 @@ kundi EventLoopTestsMixin:
             jaribu:
                 self.loop.call_soon(f.cancel)
                 await f
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 res = 'cancelled'
             isipokua:
                 res = Tupu
@@ -1663,7 +1663,7 @@ kundi EventLoopTestsMixin:
         self.loop.close()
 
         async eleza test():
-            pass
+            pita
 
         func = lambda: Uongo
         coro = test()
@@ -1935,9 +1935,9 @@ kundi SubprocessTestsMixin:
                 self.assertEqual(b'ERR:BrokenPipeError', proto.data[2])
             isipokua:
                 # After closing the read-end of a pipe, writing to the
-                # write-end using os.write() fails ukijumuisha errno==EINVAL and
+                # write-end using os.write() fails ukijumuisha errno==EINVAL na
                 # GetLastError()==ERROR_INVALID_NAME on Windows!?!  (Using
-                # WriteFile() we get ERROR_BROKEN_PIPE as expected.)
+                # WriteFile() we get ERROR_BROKEN_PIPE kama expected.)
                 self.assertEqual(b'ERR:OSError', proto.data[2])
             ukijumuisha test_utils.disable_logger():
                 transp.close()
@@ -2003,19 +2003,19 @@ ikiwa sys.platform == 'win32':
             rudisha asyncio.ProactorEventLoop()
 
         eleza test_reader_callback(self):
-             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         eleza test_reader_callback_cancel(self):
-             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 
         eleza test_writer_callback(self):
-             ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         eleza test_writer_callback_cancel(self):
-             ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_writer()")
 
         eleza test_remove_fds_after_closing(self):
-             ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
+            ashiria unittest.SkipTest("IocpEventLoop does sio have add_reader()")
 isipokua:
     agiza selectors
 
@@ -2082,7 +2082,7 @@ isipokua:
 
 
 eleza noop(*args, **kwargs):
-    pass
+    pita
 
 
 kundi HandleTests(test_utils.TestCase):
@@ -2107,7 +2107,7 @@ kundi HandleTests(test_utils.TestCase):
 
     eleza test_callback_with_exception(self):
         eleza callback():
-             ashiria ValueError()
+            ashiria ValueError()
 
         self.loop = mock.Mock()
         self.loop.call_exception_handler = mock.Mock()
@@ -2237,7 +2237,7 @@ kundi HandleTests(test_utils.TestCase):
     eleza test_coroutine_like_object_debug_formatting(self):
         # Test that asyncio can format coroutines that are instances of
         # collections.abc.Coroutine, but lack cr_core ama gi_code attributes
-        # (such as ones compiled ukijumuisha Cython).
+        # (such kama ones compiled ukijumuisha Cython).
 
         coro = CoroLike()
         coro.__name__ = 'AAA'
@@ -2511,7 +2511,7 @@ kundi PolicyTests(unittest.TestCase):
 
         ukijumuisha mock.patch.object(
                 policy, "set_event_loop",
-                wraps=policy.set_event_loop) as m_set_event_loop:
+                wraps=policy.set_event_loop) kama m_set_event_loop:
 
             loop = policy.get_event_loop()
 
@@ -2649,11 +2649,11 @@ kundi GetEventLoopTestsMixin:
 
     eleza test_get_event_loop_returns_running_loop(self):
         kundi TestError(Exception):
-            pass
+            pita
 
         kundi Policy(asyncio.DefaultEventLoopPolicy):
             eleza get_event_loop(self):
-                 ashiria TestError
+                ashiria TestError
 
         old_policy = asyncio.get_event_loop_policy()
         jaribu:
@@ -2706,8 +2706,8 @@ kundi TestPyGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):
 
 jaribu:
     agiza _asyncio  # NoQA
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
 
     kundi TestCGetEventLoop(GetEventLoopTestsMixin, unittest.TestCase):

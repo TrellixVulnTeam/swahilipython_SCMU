@@ -9,7 +9,7 @@ kutoka _csv agiza Error, __version__, writer, reader, register_dialect, \
                  field_size_limit, \
                  QUOTE_MINIMAL, QUOTE_ALL, QUOTE_NONNUMERIC, QUOTE_NONE, \
                  __doc__
-kutoka _csv agiza Dialect as _Dialect
+kutoka _csv agiza Dialect kama _Dialect
 
 kutoka io agiza StringIO
 
@@ -47,9 +47,9 @@ kundi Dialect:
     eleza _validate(self):
         jaribu:
             _Dialect(self)
-        except TypeError as e:
+        tatizo TypeError kama e:
             # We do this kila compatibility ukijumuisha py2.3
-             ashiria Error(str(e))
+            ashiria Error(str(e))
 
 kundi excel(Dialect):
     """Describe the usual properties of Excel-generated CSV files."""
@@ -95,8 +95,8 @@ kundi DictReader:
         ikiwa self._fieldnames ni Tupu:
             jaribu:
                 self._fieldnames = next(self.reader)
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
         self.line_num = self.reader.line_num
         rudisha self._fieldnames
 
@@ -121,7 +121,7 @@ kundi DictReader:
         lr = len(row)
         ikiwa lf < lr:
             d[self.restkey] = row[lf:]
-        elikiwa lf > lr:
+        lasivyo lf > lr:
             kila key kwenye self.fieldnames[lr:]:
                 d[key] = self.restval
         rudisha d
@@ -132,8 +132,8 @@ kundi DictWriter:
                  dialect="excel", *args, **kwds):
         self.fieldnames = fieldnames    # list of keys kila the dict
         self.restval = restval          # kila writing short dicts
-        ikiwa extrasaction.lower() sio kwenye ("raise", "ignore"):
-             ashiria ValueError("extrasaction (%s) must be 'raise' ama 'ignore'"
+        ikiwa extrasaction.lower() haiko kwenye ("raise", "ignore"):
+            ashiria ValueError("extrasaction (%s) must be 'raise' ama 'ignore'"
                              % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
@@ -146,7 +146,7 @@ kundi DictWriter:
         ikiwa self.extrasaction == "raise":
             wrong_fields = rowdict.keys() - self.fieldnames
             ikiwa wrong_fields:
-                 ashiria ValueError("dict contains fields sio kwenye fieldnames: "
+                ashiria ValueError("dict contains fields haiko kwenye fieldnames: "
                                  + ", ".join([repr(x) kila x kwenye wrong_fields]))
         rudisha (rowdict.get(key, self.restval) kila key kwenye self.fieldnames)
 
@@ -159,7 +159,7 @@ kundi DictWriter:
 # Guard Sniffer's type checking against builds that exclude complex()
 jaribu:
     complex
-except NameError:
+tatizo NameError:
     complex = float
 
 kundi Sniffer:
@@ -184,7 +184,7 @@ kundi Sniffer:
                                                                 delimiters)
 
         ikiwa sio delimiter:
-             ashiria Error("Could sio determine delimiter")
+            ashiria Error("Could sio determine delimiter")
 
         kundi dialect(Dialect):
             _name = "sniffed"
@@ -238,13 +238,13 @@ kundi Sniffer:
             jaribu:
                 n = groupindex['delim'] - 1
                 key = m[n]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             ikiwa key na (delimiters ni Tupu ama key kwenye delimiters):
                 delims[key] = delims.get(key, 0) + 1
             jaribu:
                 n = groupindex['space'] - 1
-            except KeyError:
+            tatizo KeyError:
                 endelea
             ikiwa m[n]:
                 spaces += 1
@@ -293,7 +293,7 @@ kundi Sniffer:
           5) the character that best meets its goal ni the delimiter
         For performance reasons, the data ni evaluated kwenye chunks, so it can
         try na evaluate the smallest portion of the data possible, evaluating
-        additional chunks as necessary.
+        additional chunks kama necessary.
         """
 
         data = list(filter(Tupu, data.split('\n')))
@@ -343,7 +343,7 @@ kundi Sniffer:
             wakati len(delims) == 0 na consistency >= threshold:
                 kila k, v kwenye modeList:
                     ikiwa v[0] > 0 na v[1] > 0:
-                        ikiwa ((v[1]/total) >= consistency and
+                        ikiwa ((v[1]/total) >= consistency na
                             (delimiters ni Tupu ama k kwenye delimiters)):
                             delims[k] = v
                 consistency -= 0.01
@@ -386,8 +386,8 @@ kundi Sniffer:
         # row, then the first row ni presumed to be labels. If the type
         # can't be determined, it ni assumed to be a string kwenye which case
         # the length of the string ni the determining factor: ikiwa all of the
-        # rows except kila the first are the same length, it's a header.
-        # Finally, a 'vote' ni taken at the end kila each column, adding or
+        # rows tatizo kila the first are the same length, it's a header.
+        # Finally, a 'vote' ni taken at the end kila each column, adding ama
         # subtracting kutoka the likelihood of the first row being a header.
 
         rdr = reader(StringIO(sample), self.sniff(sample))
@@ -414,8 +414,8 @@ kundi Sniffer:
                     jaribu:
                         thisType(row[col])
                         koma
-                    except (ValueError, OverflowError):
-                        pass
+                    tatizo (ValueError, OverflowError):
+                        pita
                 isipokua:
                     # fallback to length of string
                     thisType = len(row[col])
@@ -440,7 +440,7 @@ kundi Sniffer:
             isipokua: # attempt typecast
                 jaribu:
                     colType(header[col])
-                except (ValueError, TypeError):
+                tatizo (ValueError, TypeError):
                     hasHeader += 1
                 isipokua:
                     hasHeader -= 1

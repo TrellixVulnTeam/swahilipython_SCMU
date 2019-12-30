@@ -65,7 +65,7 @@ eleza setup (**attrs):
     The Distribution instance might be an instance of a kundi supplied via
     the 'distclass' keyword argument to 'setup'; ikiwa no such kundi is
     supplied, then the Distribution kundi (in dist.py) ni instantiated.
-    All other arguments to 'setup' (except kila 'cmdclass') are used to set
+    All other arguments to 'setup' (tatizo kila 'cmdclass') are used to set
     attributes of the Distribution instance.
 
     The 'cmdclass' argument, ikiwa supplied, ni a dictionary mapping command
@@ -89,7 +89,7 @@ eleza setup (**attrs):
 
     global _setup_stop_after, _setup_distribution
 
-    # Determine the distribution kundi -- either caller-supplied or
+    # Determine the distribution kundi -- either caller-supplied ama
     # our Distribution (see below).
     klass = attrs.get('distclass')
     ikiwa klass:
@@ -97,20 +97,20 @@ eleza setup (**attrs):
     isipokua:
         klass = Distribution
 
-    ikiwa 'script_name' sio kwenye attrs:
+    ikiwa 'script_name' haiko kwenye attrs:
         attrs['script_name'] = os.path.basename(sys.argv[0])
-    ikiwa 'script_args'  sio kwenye attrs:
+    ikiwa 'script_args'  haiko kwenye attrs:
         attrs['script_args'] = sys.argv[1:]
 
     # Create the Distribution instance, using the remaining arguments
-    # (ie. everything except distclass) to initialize it
+    # (ie. everything tatizo distclass) to initialize it
     jaribu:
         _setup_distribution = dist = klass(attrs)
-    except DistutilsSetupError as msg:
-        ikiwa 'name' sio kwenye attrs:
-             ashiria SystemExit("error kwenye setup command: %s" % msg)
+    tatizo DistutilsSetupError kama msg:
+        ikiwa 'name' haiko kwenye attrs:
+            ashiria SystemExit("error kwenye setup command: %s" % msg)
         isipokua:
-             ashiria SystemExit("error kwenye %s setup command: %s" % \
+            ashiria SystemExit("error kwenye %s setup command: %s" % \
                   (attrs['name'], msg))
 
     ikiwa _setup_stop_after == "init":
@@ -132,8 +132,8 @@ eleza setup (**attrs):
     # SystemExit to suppress tracebacks.
     jaribu:
         ok = dist.parse_command_line()
-    except DistutilsArgError as msg:
-         ashiria SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
+    tatizo DistutilsArgError kama msg:
+        ashiria SystemExit(gen_usage(dist.script_name) + "\nerror: %s" % msg)
 
     ikiwa DEBUG:
         andika("options (after parsing command line):")
@@ -146,21 +146,21 @@ eleza setup (**attrs):
     ikiwa ok:
         jaribu:
             dist.run_commands()
-        except KeyboardInterrupt:
-             ashiria SystemExit("interrupted")
-        except OSError as exc:
+        tatizo KeyboardInterrupt:
+            ashiria SystemExit("interrupted")
+        tatizo OSError kama exc:
             ikiwa DEBUG:
                 sys.stderr.write("error: %s\n" % (exc,))
                 raise
             isipokua:
-                 ashiria SystemExit("error: %s" % (exc,))
+                ashiria SystemExit("error: %s" % (exc,))
 
-        except (DistutilsError,
-                CCompilerError) as msg:
+        tatizo (DistutilsError,
+                CCompilerError) kama msg:
             ikiwa DEBUG:
                 raise
             isipokua:
-                 ashiria SystemExit("error: " + str(msg))
+                ashiria SystemExit("error: " + str(msg))
 
     rudisha dist
 
@@ -168,9 +168,9 @@ eleza setup (**attrs):
 
 
 eleza run_setup (script_name, script_args=Tupu, stop_after="run"):
-    """Run a setup script kwenye a somewhat controlled environment, and
+    """Run a setup script kwenye a somewhat controlled environment, na
     rudisha the Distribution instance that drives things.  This ni useful
-    ikiwa you need to find out the distribution meta-data (passed as
+    ikiwa you need to find out the distribution meta-data (pitaed as
     keyword args kutoka 'script' to 'setup()', ama the contents of the
     config files ama command-line.
 
@@ -183,7 +183,7 @@ eleza run_setup (script_name, script_args=Tupu, stop_after="run"):
     'stop_after' tells 'setup()' when to stop processing; possible
     values:
       init
-        stop after the Distribution instance has been created and
+        stop after the Distribution instance has been created na
         populated ukijumuisha the keyword arguments to 'setup()'
       config
         stop after config files have been parsed (and their data
@@ -192,14 +192,14 @@ eleza run_setup (script_name, script_args=Tupu, stop_after="run"):
         stop after the command-line ('sys.argv[1:]' ama 'script_args')
         have been parsed (and the data stored kwenye the Distribution)
       run [default]
-        stop after all commands have been run (the same as ikiwa 'setup()'
+        stop after all commands have been run (the same kama ikiwa 'setup()'
         had been called kwenye the usual way
 
     Returns the Distribution instance, which provides all information
     used to drive the Distutils.
     """
-    ikiwa stop_after sio kwenye ('init', 'config', 'commandline', 'run'):
-         ashiria ValueError("invalid value kila 'stop_after': %r" % (stop_after,))
+    ikiwa stop_after haiko kwenye ('init', 'config', 'commandline', 'run'):
+        ashiria ValueError("invalid value kila 'stop_after': %r" % (stop_after,))
 
     global _setup_stop_after, _setup_distribution
     _setup_stop_after = stop_after
@@ -211,18 +211,18 @@ eleza run_setup (script_name, script_args=Tupu, stop_after="run"):
             sys.argv[0] = script_name
             ikiwa script_args ni sio Tupu:
                 sys.argv[1:] = script_args
-            ukijumuisha open(script_name, 'rb') as f:
+            ukijumuisha open(script_name, 'rb') kama f:
                 exec(f.read(), g)
         mwishowe:
             sys.argv = save_argv
             _setup_stop_after = Tupu
-    except SystemExit:
+    tatizo SystemExit:
         # Hmm, should we do something ikiwa exiting ukijumuisha a non-zero code
         # (ie. error)?
-        pass
+        pita
 
     ikiwa _setup_distribution ni Tupu:
-         ashiria RuntimeError(("'distutils.core.setup()' was never called -- "
+        ashiria RuntimeError(("'distutils.core.setup()' was never called -- "
                "perhaps '%s' ni sio a Distutils setup script?") % \
               script_name)
 

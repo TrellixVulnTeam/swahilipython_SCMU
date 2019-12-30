@@ -1,27 +1,27 @@
 """create na manipulate C data types kwenye Python"""
 
-agiza os as _os, sys as _sys
+agiza os kama _os, sys kama _sys
 
 __version__ = "1.1.0"
 
 kutoka _ctypes agiza Union, Structure, Array
 kutoka _ctypes agiza _Pointer
-kutoka _ctypes agiza CFuncPtr as _CFuncPtr
-kutoka _ctypes agiza __version__ as _ctypes_version
+kutoka _ctypes agiza CFuncPtr kama _CFuncPtr
+kutoka _ctypes agiza __version__ kama _ctypes_version
 kutoka _ctypes agiza RTLD_LOCAL, RTLD_GLOBAL
 kutoka _ctypes agiza ArgumentError
 
-kutoka struct agiza calcsize as _calcsize
+kutoka struct agiza calcsize kama _calcsize
 
 ikiwa __version__ != _ctypes_version:
-     ashiria Exception("Version number mismatch", __version__, _ctypes_version)
+    ashiria Exception("Version number mismatch", __version__, _ctypes_version)
 
 ikiwa _os.name == "nt":
     kutoka _ctypes agiza FormatError
 
 DEFAULT_MODE = RTLD_LOCAL
 ikiwa _os.name == "posix" na _sys.platform == "darwin":
-    # On OS X 10.3, we use RTLD_GLOBAL as default mode
+    # On OS X 10.3, we use RTLD_GLOBAL kama default mode
     # because RTLD_LOCAL does sio work at least on some
     # libraries.  OS X 10.3 ni Darwin 7, so we check for
     # that.
@@ -29,10 +29,10 @@ ikiwa _os.name == "posix" na _sys.platform == "darwin":
     ikiwa int(_os.uname().release.split('.')[0]) < 8:
         DEFAULT_MODE = RTLD_GLOBAL
 
-kutoka _ctypes agiza FUNCFLAG_CDECL as _FUNCFLAG_CDECL, \
-     FUNCFLAG_PYTHONAPI as _FUNCFLAG_PYTHONAPI, \
-     FUNCFLAG_USE_ERRNO as _FUNCFLAG_USE_ERRNO, \
-     FUNCFLAG_USE_LASTERROR as _FUNCFLAG_USE_LASTERROR
+kutoka _ctypes agiza FUNCFLAG_CDECL kama _FUNCFLAG_CDECL, \
+     FUNCFLAG_PYTHONAPI kama _FUNCFLAG_PYTHONAPI, \
+     FUNCFLAG_USE_ERRNO kama _FUNCFLAG_USE_ERRNO, \
+     FUNCFLAG_USE_LASTERROR kama _FUNCFLAG_USE_LASTERROR
 
 # WINOLEAPI -> HRESULT
 # WINOLEAPI_(type)
@@ -56,11 +56,11 @@ eleza create_string_buffer(init, size=Tupu):
         buf = buftype()
         buf.value = init
         rudisha buf
-    elikiwa isinstance(init, int):
+    lasivyo isinstance(init, int):
         buftype = c_char * init
         buf = buftype()
         rudisha buf
-     ashiria TypeError(init)
+    ashiria TypeError(init)
 
 eleza c_buffer(init, size=Tupu):
 ##    "deprecated, use create_string_buffer instead"
@@ -92,10 +92,10 @@ eleza CFUNCTYPE(restype, *argtypes, **kw):
     ikiwa kw.pop("use_last_error", Uongo):
         flags |= _FUNCFLAG_USE_LASTERROR
     ikiwa kw:
-         ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
+        ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
     jaribu:
         rudisha _c_functype_cache[(restype, argtypes, flags)]
-    except KeyError:
+    tatizo KeyError:
         kundi CFunctionType(_CFuncPtr):
             _argtypes_ = argtypes
             _restype_ = restype
@@ -104,8 +104,8 @@ eleza CFUNCTYPE(restype, *argtypes, **kw):
         rudisha CFunctionType
 
 ikiwa _os.name == "nt":
-    kutoka _ctypes agiza LoadLibrary as _dlopen
-    kutoka _ctypes agiza FUNCFLAG_STDCALL as _FUNCFLAG_STDCALL
+    kutoka _ctypes agiza LoadLibrary kama _dlopen
+    kutoka _ctypes agiza FUNCFLAG_STDCALL kama _FUNCFLAG_STDCALL
 
     _win_functype_cache = {}
     eleza WINFUNCTYPE(restype, *argtypes, **kw):
@@ -116,10 +116,10 @@ ikiwa _os.name == "nt":
         ikiwa kw.pop("use_last_error", Uongo):
             flags |= _FUNCFLAG_USE_LASTERROR
         ikiwa kw:
-             ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
+            ashiria ValueError("unexpected keyword argument(s) %s" % kw.keys())
         jaribu:
             rudisha _win_functype_cache[(restype, argtypes, flags)]
-        except KeyError:
+        tatizo KeyError:
             kundi WinFunctionType(_CFuncPtr):
                 _argtypes_ = argtypes
                 _restype_ = restype
@@ -129,8 +129,8 @@ ikiwa _os.name == "nt":
     ikiwa WINFUNCTYPE.__doc__:
         WINFUNCTYPE.__doc__ = CFUNCTYPE.__doc__.replace("CFUNCTYPE", "WINFUNCTYPE")
 
-elikiwa _os.name == "posix":
-    kutoka _ctypes agiza dlopen as _dlopen
+lasivyo _os.name == "posix":
+    kutoka _ctypes agiza dlopen kama _dlopen
 
 kutoka _ctypes agiza sizeof, byref, addressof, alignment, resize
 kutoka _ctypes agiza get_errno, set_errno
@@ -141,11 +141,11 @@ eleza _check_size(typ, typecode=Tupu):
     # should protect somewhat against a misconfigured libffi.
     kutoka struct agiza calcsize
     ikiwa typecode ni Tupu:
-        # Most _type_ codes are the same as used kwenye struct
+        # Most _type_ codes are the same kama used kwenye struct
         typecode = typ._type_
     actual, required = sizeof(typ), calcsize(typecode)
     ikiwa actual != required:
-         ashiria SystemError("sizeof(%s) wrong: %d instead of %d" % \
+        ashiria SystemError("sizeof(%s) wrong: %d instead of %d" % \
                           (typ, actual, required))
 
 kundi py_object(_SimpleCData):
@@ -153,7 +153,7 @@ kundi py_object(_SimpleCData):
     eleza __repr__(self):
         jaribu:
             rudisha super().__repr__()
-        except ValueError:
+        tatizo ValueError:
             rudisha "%s(<NULL>)" % type(self).__name__
 _check_size(py_object, "P")
 
@@ -287,19 +287,19 @@ eleza create_unicode_buffer(init, size=Tupu):
         buf = buftype()
         buf.value = init
         rudisha buf
-    elikiwa isinstance(init, int):
+    lasivyo isinstance(init, int):
         buftype = c_wchar * init
         buf = buftype()
         rudisha buf
-     ashiria TypeError(init)
+    ashiria TypeError(init)
 
 
 # XXX Deprecated
 eleza SetPointerType(pointer, cls):
     ikiwa _pointer_type_cache.get(cls, Tupu) ni sio Tupu:
-         ashiria RuntimeError("This type already exists kwenye the cache")
-    ikiwa id(pointer) sio kwenye _pointer_type_cache:
-         ashiria RuntimeError("What's this???")
+        ashiria RuntimeError("This type already exists kwenye the cache")
+    ikiwa id(pointer) haiko kwenye _pointer_type_cache:
+        ashiria RuntimeError("What's this???")
     pointer.set_type(cls)
     _pointer_type_cache[cls] = pointer
     toa _pointer_type_cache[id(pointer)]
@@ -316,13 +316,13 @@ kundi CDLL(object):
     library, exporting functions using the standard C calling
     convention (named 'cdecl' on Windows).
 
-    The exported functions can be accessed as attributes, ama by
+    The exported functions can be accessed kama attributes, ama by
     indexing ukijumuisha the function name.  Examples:
 
     <obj>.qsort -> callable object
     <obj>['qsort'] -> callable object
 
-    Calling the functions releases the Python GIL during the call and
+    Calling the functions releases the Python GIL during the call na
     reacquires it afterwards.
     """
     _func_flags_ = _FUNCFLAG_CDECL
@@ -346,7 +346,7 @@ kundi CDLL(object):
             """When the name contains ".a(" na ends ukijumuisha ")",
                e.g., "libFOO.a(libFOO.so)" - this ni taken to be an
                archive(member) syntax kila dlopen(), na the mode ni adjusted.
-               Otherwise, name ni presented to dlopen() as a file argument.
+               Otherwise, name ni presented to dlopen() kama a file argument.
             """
             ikiwa name na name.endswith(")") na ".a(" kwenye name:
                 mode |= ( _os.RTLD_MEMBER | _os.RTLD_NOW )
@@ -378,7 +378,7 @@ kundi CDLL(object):
 
     eleza __getattr__(self, name):
         ikiwa name.startswith('__') na name.endswith('__'):
-             ashiria AttributeError(name)
+            ashiria AttributeError(name)
         func = self.__getitem__(name)
         setattr(self, name, func)
         rudisha func
@@ -391,7 +391,7 @@ kundi CDLL(object):
 
 kundi PyDLL(CDLL):
     """This kundi represents the Python library itself.  It allows
-    accessing Python API functions.  The GIL ni sio released, and
+    accessing Python API functions.  The GIL ni sio released, na
     Python exceptions are handled correctly.
     """
     _func_flags_ = _FUNCFLAG_CDECL | _FUNCFLAG_PYTHONAPI
@@ -404,26 +404,26 @@ ikiwa _os.name == "nt":
         """
         _func_flags_ = _FUNCFLAG_STDCALL
 
-    # XXX Hm, what about HRESULT as normal parameter?
+    # XXX Hm, what about HRESULT kama normal parameter?
     # Mustn't it derive kutoka c_long then?
     kutoka _ctypes agiza _check_HRESULT, _SimpleCData
     kundi HRESULT(_SimpleCData):
         _type_ = "l"
         # _check_retval_ ni called ukijumuisha the function's result when it
-        # ni used as restype.  It checks kila the FAILED bit, and
+        # ni used kama restype.  It checks kila the FAILED bit, na
         # raises an OSError ikiwa it ni set.
         #
         # The _check_retval_ method ni implemented kwenye C, so that the
         # method definition itself ni sio included kwenye the traceback
         # when it raises an error - that ni what we want (and Python
-        # doesn't have a way to  ashiria an exception kwenye the caller's
+        # doesn't have a way to ashiria an exception kwenye the caller's
         # frame).
         _check_retval_ = _check_HRESULT
 
     kundi OleDLL(CDLL):
         """This kundi represents a dll exporting functions using the
         Windows stdcall calling convention, na returning HRESULT.
-        HRESULT error values are automatically raised as OSError
+        HRESULT error values are automatically raised kama OSError
         exceptions.
         """
         _func_flags_ = _FUNCFLAG_STDCALL
@@ -435,7 +435,7 @@ kundi LibraryLoader(object):
 
     eleza __getattr__(self, name):
         ikiwa name[0] == '_':
-             ashiria AttributeError(name)
+            ashiria AttributeError(name)
         dll = self._dlltype(name)
         setattr(self, name, dll)
         rudisha dll
@@ -451,7 +451,7 @@ pydll = LibraryLoader(PyDLL)
 
 ikiwa _os.name == "nt":
     pythonapi = PyDLL("python dll", Tupu, _sys.dllhandle)
-elikiwa _sys.platform == "cygwin":
+lasivyo _sys.platform == "cygwin":
     pythonapi = PyDLL("libpython%d.%d.dll" % _sys.version_info[:2])
 isipokua:
     pythonapi = PyDLL(Tupu)
@@ -474,10 +474,10 @@ ikiwa _os.name == "nt":
 ikiwa sizeof(c_uint) == sizeof(c_void_p):
     c_size_t = c_uint
     c_ssize_t = c_int
-elikiwa sizeof(c_ulong) == sizeof(c_void_p):
+lasivyo sizeof(c_ulong) == sizeof(c_void_p):
     c_size_t = c_ulong
     c_ssize_t = c_long
-elikiwa sizeof(c_ulonglong) == sizeof(c_void_p):
+lasivyo sizeof(c_ulonglong) == sizeof(c_void_p):
     c_size_t = c_ulonglong
     c_ssize_t = c_longlong
 
@@ -511,8 +511,8 @@ eleza string_at(ptr, size=-1):
 
 jaribu:
     kutoka _ctypes agiza _wstring_at_addr
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     _wstring_at = PYFUNCTYPE(py_object, c_void_p, c_int)(_wstring_at_addr)
     eleza wstring_at(ptr, size=-1):
@@ -526,7 +526,7 @@ ikiwa _os.name == "nt": # COM stuff
     eleza DllGetClassObject(rclsid, riid, ppv):
         jaribu:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        tatizo ImportError:
             rudisha -2147221231 # CLASS_E_CLASSNOTAVAILABLE
         isipokua:
             rudisha ccom.DllGetClassObject(rclsid, riid, ppv)
@@ -534,7 +534,7 @@ ikiwa _os.name == "nt": # COM stuff
     eleza DllCanUnloadNow():
         jaribu:
             ccom = __import__("comtypes.server.inprocserver", globals(), locals(), ['*'])
-        except ImportError:
+        tatizo ImportError:
             rudisha 0 # S_OK
         rudisha ccom.DllCanUnloadNow()
 
@@ -545,12 +545,12 @@ c_int8 = c_byte
 c_uint8 = c_ubyte
 kila kind kwenye [c_short, c_int, c_long, c_longlong]:
     ikiwa sizeof(kind) == 2: c_int16 = kind
-    elikiwa sizeof(kind) == 4: c_int32 = kind
-    elikiwa sizeof(kind) == 8: c_int64 = kind
+    lasivyo sizeof(kind) == 4: c_int32 = kind
+    lasivyo sizeof(kind) == 8: c_int64 = kind
 kila kind kwenye [c_ushort, c_uint, c_ulong, c_ulonglong]:
     ikiwa sizeof(kind) == 2: c_uint16 = kind
-    elikiwa sizeof(kind) == 4: c_uint32 = kind
-    elikiwa sizeof(kind) == 8: c_uint64 = kind
+    lasivyo sizeof(kind) == 4: c_uint32 = kind
+    lasivyo sizeof(kind) == 8: c_uint64 = kind
 del(kind)
 
 _reset_cache()

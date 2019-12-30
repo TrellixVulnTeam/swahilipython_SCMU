@@ -24,15 +24,15 @@ kutoka idlelib agiza zoomheight
 
 ICONDIR = "Icons"
 
-# Look kila Icons subdirectory kwenye the same directory as this module
+# Look kila Icons subdirectory kwenye the same directory kama this module
 jaribu:
     _icondir = os.path.join(os.path.dirname(__file__), ICONDIR)
-except NameError:
+tatizo NameError:
     _icondir = ICONDIR
 ikiwa os.path.isdir(_icondir):
     ICONDIR = _icondir
-elikiwa sio os.path.isdir(ICONDIR):
-     ashiria RuntimeError("can't find icon directory (%r)" % (ICONDIR,))
+lasivyo sio os.path.isdir(ICONDIR):
+    ashiria RuntimeError("can't find icon directory (%r)" % (ICONDIR,))
 
 eleza listicons(icondir=ICONDIR):
     """Utility to display the available icons."""
@@ -67,7 +67,7 @@ eleza wheel_event(event, widget=Tupu):
 
     X-11 sends Control-Button-4,5 events instead.
 
-    The widget parameter ni needed so browser label bindings can pass
+    The widget parameter ni needed so browser label bindings can pita
     the underlying canvas.
 
     This function depends on widget.yview to sio be overridden by
@@ -102,8 +102,8 @@ kundi TreeNode:
     eleza geticonimage(self, name):
         jaribu:
             rudisha self.iconimages[name]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         file, ext = os.path.splitext(name)
         ext = ext ama ".gif"
         fullname = os.path.join(ICONDIR, file + ext)
@@ -241,8 +241,8 @@ kundi TreeNode:
 
     eleza drawicon(self):
         ikiwa self.selected:
-            imagename = (self.item.GetSelectedIconName() or
-                         self.item.GetIconName() or
+            imagename = (self.item.GetSelectedIconName() ama
+                         self.item.GetIconName() ama
                          "openfolder")
         isipokua:
             imagename = self.item.GetIconName() ama "folder"
@@ -266,13 +266,13 @@ kundi TreeNode:
         text = self.item.GetText() ama "<no text>"
         jaribu:
             self.entry
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
             self.edit_finish()
         jaribu:
             self.label
-        except AttributeError:
+        tatizo AttributeError:
             # padding carefully selected (on Windows) to match Entry widget:
             self.label = Label(self.canvas, text=text, bd=0, padx=2, pady=2)
         theme = idleConf.CurrentTheme()
@@ -308,7 +308,7 @@ kundi TreeNode:
         jaribu:
             entry = self.entry
             toa self.entry
-        except AttributeError:
+        tatizo AttributeError:
             return
         text = entry.get()
         entry.destroy()
@@ -323,7 +323,7 @@ kundi TreeNode:
         jaribu:
             entry = self.entry
             toa self.entry
-        except AttributeError:
+        tatizo AttributeError:
             return
         entry.destroy()
         self.drawtext()
@@ -411,8 +411,8 @@ kundi FileTreeItem(TreeItem):
         jaribu:
             os.rename(self.path, newpath)
             self.path = newpath
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     eleza GetIconName(self):
         ikiwa sio self.IsExpandable():
@@ -424,7 +424,7 @@ kundi FileTreeItem(TreeItem):
     eleza GetSubList(self):
         jaribu:
             names = os.listdir(self.path)
-        except OSError:
+        tatizo OSError:
             rudisha []
         names.sort(key = os.path.normcase)
         sublist = []
@@ -439,7 +439,7 @@ kundi FileTreeItem(TreeItem):
 kundi ScrolledCanvas:
 
     eleza __init__(self, master, **opts):
-        ikiwa 'yscrollincrement' sio kwenye opts:
+        ikiwa 'yscrollincrement' haiko kwenye opts:
             opts['yscrollincrement'] = 17
         self.master = master
         self.frame = Frame(master)

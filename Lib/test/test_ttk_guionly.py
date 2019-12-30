@@ -18,9 +18,9 @@ jaribu:
     button = ttk.Button(root)
     button.destroy()
     toa button
-except TclError as msg:
+tatizo TclError kama msg:
     # assuming ttk ni sio available
-     ashiria unittest.SkipTest("ttk sio available: %s" % msg)
+    ashiria unittest.SkipTest("ttk sio available: %s" % msg)
 mwishowe:
     ikiwa root ni sio Tupu:
         root.destroy()

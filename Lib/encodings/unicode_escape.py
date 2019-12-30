@@ -12,7 +12,7 @@ agiza codecs
 
 kundi Codec(codecs.Codec):
 
-    # Note: Binding these as C functions will result kwenye the kundi not
+    # Note: Binding these kama C functions will result kwenye the kundi not
     # converting them to methods. This ni intended.
     encode = codecs.unicode_escape_encode
     decode = codecs.unicode_escape_decode
@@ -26,10 +26,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha codecs.unicode_escape_decode(input, self.errors)[0]
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

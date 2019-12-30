@@ -128,14 +128,14 @@ kundi Test_does_tree_import(support.TestCase):
             n = self.does_tree_import(package, name, string + "\n" + import_)
             self.assertUongo(n)
 
-        passing_tests = (("a", "a", "kutoka a agiza a"),
+        pitaing_tests = (("a", "a", "kutoka a agiza a"),
                          ("x", "a", "kutoka x agiza a"),
                          ("x", "a", "kutoka x agiza b, c, a, d"),
                          ("x.b", "a", "kutoka x.b agiza a"),
                          ("x.b", "a", "kutoka x.b agiza b, c, a, d"),
                          (Tupu, "a", "agiza a"),
                          (Tupu, "a", "agiza b, c, a, d"))
-        kila package, name, import_ kwenye passing_tests:
+        kila package, name, import_ kwenye pitaing_tests:
             n = self.does_tree_import(package, name, import_ + "\n" + string)
             self.assertKweli(n)
             n = self.does_tree_import(package, name, string + "\n" + import_)
@@ -195,19 +195,19 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("a", "kutoka d.a agiza b"))
 
     eleza test_import_as(self):
-        self.assertKweli(self.find_binding("a", "agiza b as a"))
-        self.assertKweli(self.find_binding("a", "agiza b as a, c, a as f, d"))
-        self.assertUongo(self.find_binding("a", "agiza a as f"))
-        self.assertUongo(self.find_binding("a", "agiza b, c as f, d as e"))
+        self.assertKweli(self.find_binding("a", "agiza b kama a"))
+        self.assertKweli(self.find_binding("a", "agiza b kama a, c, a kama f, d"))
+        self.assertUongo(self.find_binding("a", "agiza a kama f"))
+        self.assertUongo(self.find_binding("a", "agiza b, c kama f, d kama e"))
 
     eleza test_from_import_as(self):
-        self.assertKweli(self.find_binding("a", "kutoka x agiza b as a"))
-        self.assertKweli(self.find_binding("a", "kutoka x agiza g as a, d as b"))
-        self.assertKweli(self.find_binding("a", "kutoka x.b agiza t as a"))
-        self.assertKweli(self.find_binding("a", "kutoka x.b agiza g as a, d"))
-        self.assertUongo(self.find_binding("a", "kutoka a agiza b as t"))
-        self.assertUongo(self.find_binding("a", "kutoka a.d agiza b as t"))
-        self.assertUongo(self.find_binding("a", "kutoka d.a agiza b as t"))
+        self.assertKweli(self.find_binding("a", "kutoka x agiza b kama a"))
+        self.assertKweli(self.find_binding("a", "kutoka x agiza g kama a, d kama b"))
+        self.assertKweli(self.find_binding("a", "kutoka x.b agiza t kama a"))
+        self.assertKweli(self.find_binding("a", "kutoka x.b agiza g kama a, d"))
+        self.assertUongo(self.find_binding("a", "kutoka a agiza b kama t"))
+        self.assertUongo(self.find_binding("a", "kutoka a.d agiza b kama t"))
+        self.assertUongo(self.find_binding("a", "kutoka d.a agiza b kama t"))
 
     eleza test_simple_import_with_package(self):
         self.assertKweli(self.find_binding("b", "agiza b"))
@@ -229,93 +229,93 @@ kundi Test_find_binding(support.TestCase):
         self.assertUongo(self.find_binding("a", "kutoka x.y agiza *", "a.b"))
 
     eleza test_import_as_with_package(self):
-        self.assertUongo(self.find_binding("a", "agiza b.c as a", "b.c"))
-        self.assertUongo(self.find_binding("a", "agiza a as f", "f"))
-        self.assertUongo(self.find_binding("a", "agiza a as f", "a"))
+        self.assertUongo(self.find_binding("a", "agiza b.c kama a", "b.c"))
+        self.assertUongo(self.find_binding("a", "agiza a kama f", "f"))
+        self.assertUongo(self.find_binding("a", "agiza a kama f", "a"))
 
     eleza test_from_import_as_with_package(self):
         # Because it would take a lot of special-case code kwenye the fixers
-        # to deal ukijumuisha kutoka foo agiza bar as baz, we'll simply always
-        # fail ikiwa there ni an "kutoka ... agiza ... as ..."
-        self.assertUongo(self.find_binding("a", "kutoka x agiza b as a", "x"))
-        self.assertUongo(self.find_binding("a", "kutoka x agiza g as a, d as b", "x"))
-        self.assertUongo(self.find_binding("a", "kutoka x.b agiza t as a", "x.b"))
-        self.assertUongo(self.find_binding("a", "kutoka x.b agiza g as a, d", "x.b"))
-        self.assertUongo(self.find_binding("a", "kutoka a agiza b as t", "a"))
-        self.assertUongo(self.find_binding("a", "kutoka a agiza b as t", "b"))
-        self.assertUongo(self.find_binding("a", "kutoka a agiza b as t", "t"))
+        # to deal ukijumuisha kutoka foo agiza bar kama baz, we'll simply always
+        # fail ikiwa there ni an "kutoka ... agiza ... kama ..."
+        self.assertUongo(self.find_binding("a", "kutoka x agiza b kama a", "x"))
+        self.assertUongo(self.find_binding("a", "kutoka x agiza g kama a, d kama b", "x"))
+        self.assertUongo(self.find_binding("a", "kutoka x.b agiza t kama a", "x.b"))
+        self.assertUongo(self.find_binding("a", "kutoka x.b agiza g kama a, d", "x.b"))
+        self.assertUongo(self.find_binding("a", "kutoka a agiza b kama t", "a"))
+        self.assertUongo(self.find_binding("a", "kutoka a agiza b kama t", "b"))
+        self.assertUongo(self.find_binding("a", "kutoka a agiza b kama t", "t"))
 
     eleza test_function_def(self):
-        self.assertKweli(self.find_binding("a", "eleza a(): pass"))
-        self.assertKweli(self.find_binding("a", "eleza a(b, c, d): pass"))
+        self.assertKweli(self.find_binding("a", "eleza a(): pita"))
+        self.assertKweli(self.find_binding("a", "eleza a(b, c, d): pita"))
         self.assertKweli(self.find_binding("a", "eleza a(): b = 7"))
-        self.assertUongo(self.find_binding("a", "eleza d(b, (c, a), e): pass"))
-        self.assertUongo(self.find_binding("a", "eleza d(a=7): pass"))
-        self.assertUongo(self.find_binding("a", "eleza d(a): pass"))
+        self.assertUongo(self.find_binding("a", "eleza d(b, (c, a), e): pita"))
+        self.assertUongo(self.find_binding("a", "eleza d(a=7): pita"))
+        self.assertUongo(self.find_binding("a", "eleza d(a): pita"))
         self.assertUongo(self.find_binding("a", "eleza d(): a = 7"))
 
         s = """
             eleza d():
                 eleza a():
-                    pass"""
+                    pita"""
         self.assertUongo(self.find_binding("a", s))
 
     eleza test_class_def(self):
-        self.assertKweli(self.find_binding("a", "kundi a: pass"))
-        self.assertKweli(self.find_binding("a", "kundi a(): pass"))
-        self.assertKweli(self.find_binding("a", "kundi a(b): pass"))
-        self.assertKweli(self.find_binding("a", "kundi a(b, c=8): pass"))
-        self.assertUongo(self.find_binding("a", "kundi d: pass"))
-        self.assertUongo(self.find_binding("a", "kundi d(a): pass"))
-        self.assertUongo(self.find_binding("a", "kundi d(b, a=7): pass"))
-        self.assertUongo(self.find_binding("a", "kundi d(b, *a): pass"))
-        self.assertUongo(self.find_binding("a", "kundi d(b, **a): pass"))
+        self.assertKweli(self.find_binding("a", "kundi a: pita"))
+        self.assertKweli(self.find_binding("a", "kundi a(): pita"))
+        self.assertKweli(self.find_binding("a", "kundi a(b): pita"))
+        self.assertKweli(self.find_binding("a", "kundi a(b, c=8): pita"))
+        self.assertUongo(self.find_binding("a", "kundi d: pita"))
+        self.assertUongo(self.find_binding("a", "kundi d(a): pita"))
+        self.assertUongo(self.find_binding("a", "kundi d(b, a=7): pita"))
+        self.assertUongo(self.find_binding("a", "kundi d(b, *a): pita"))
+        self.assertUongo(self.find_binding("a", "kundi d(b, **a): pita"))
         self.assertUongo(self.find_binding("a", "kundi d: a = 7"))
 
         s = """
             kundi d():
                 kundi a():
-                    pass"""
+                    pita"""
         self.assertUongo(self.find_binding("a", s))
 
     eleza test_for(self):
-        self.assertKweli(self.find_binding("a", "kila a kwenye r: pass"))
-        self.assertKweli(self.find_binding("a", "kila a, b kwenye r: pass"))
-        self.assertKweli(self.find_binding("a", "kila (a, b) kwenye r: pass"))
-        self.assertKweli(self.find_binding("a", "kila c, (a,) kwenye r: pass"))
-        self.assertKweli(self.find_binding("a", "kila c, (a, b) kwenye r: pass"))
+        self.assertKweli(self.find_binding("a", "kila a kwenye r: pita"))
+        self.assertKweli(self.find_binding("a", "kila a, b kwenye r: pita"))
+        self.assertKweli(self.find_binding("a", "kila (a, b) kwenye r: pita"))
+        self.assertKweli(self.find_binding("a", "kila c, (a,) kwenye r: pita"))
+        self.assertKweli(self.find_binding("a", "kila c, (a, b) kwenye r: pita"))
         self.assertKweli(self.find_binding("a", "kila c kwenye r: a = c"))
-        self.assertUongo(self.find_binding("a", "kila c kwenye a: pass"))
+        self.assertUongo(self.find_binding("a", "kila c kwenye a: pita"))
 
     eleza test_for_nested(self):
         s = """
             kila b kwenye r:
                 kila a kwenye b:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             kila b kwenye r:
                 kila a, c kwenye b:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             kila b kwenye r:
                 kila (a, c) kwenye b:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             kila b kwenye r:
                 kila (a,) kwenye b:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             kila b kwenye r:
                 kila c, (a, d) kwenye b:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
@@ -388,8 +388,8 @@ kundi Test_find_binding(support.TestCase):
         s = """
             jaribu:
                 b = 8
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
             tatizo:
                 a = 6"""
         self.assertKweli(self.find_binding("a", s))
@@ -407,7 +407,7 @@ kundi Test_find_binding(support.TestCase):
                 jaribu:
                     a = 6
                 tatizo:
-                    pass
+                    pita
             tatizo:
                 b = 8"""
         self.assertKweli(self.find_binding("a", s))
@@ -419,7 +419,7 @@ kundi Test_find_binding(support.TestCase):
                 jaribu:
                     a = 6
                 tatizo:
-                    pass"""
+                    pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
@@ -427,7 +427,7 @@ kundi Test_find_binding(support.TestCase):
                 b = 8
             tatizo:
                 jaribu:
-                    pass
+                    pita
                 tatizo:
                     a = 6"""
         self.assertKweli(self.find_binding("a", s))
@@ -436,22 +436,22 @@ kundi Test_find_binding(support.TestCase):
             jaribu:
                 jaribu:
                     b = 8
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
                 tatizo:
                     a = 6
             tatizo:
-                pass"""
+                pita"""
         self.assertKweli(self.find_binding("a", s))
 
         s = """
             jaribu:
-                pass
+                pita
             tatizo:
                 jaribu:
                     b = 8
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
                 tatizo:
                     a = 6"""
         self.assertKweli(self.find_binding("a", s))
@@ -531,7 +531,7 @@ kundi Test_find_binding(support.TestCase):
                 b = 8
             mwishowe:
                 jaribu:
-                    pass
+                    pita
                 mwishowe:
                     a = 6"""
         self.assertKweli(self.find_binding("a", s))

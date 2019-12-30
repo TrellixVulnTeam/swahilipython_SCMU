@@ -1,4 +1,4 @@
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 machinery = test_util.import_importlib('importlib.machinery')
@@ -27,7 +27,7 @@ kundi TestLoader:
             rudisha self._get_filename
         ikiwa name == 'is_package':
             rudisha self._is_package
-         ashiria AttributeError(name)
+        ashiria AttributeError(name)
 
     eleza _get_filename(self, name):
         rudisha self.path
@@ -284,7 +284,7 @@ kundi ModuleSpecMethodsTests:
     eleza test_load_failed(self):
         kundi FailedLoader(TestLoader):
             eleza exec_module(self, module):
-                 ashiria RuntimeError
+                ashiria RuntimeError
         self.spec.loader = FailedLoader()
         ukijumuisha CleanImport(self.spec.name):
             ukijumuisha self.assertRaises(RuntimeError):
@@ -295,7 +295,7 @@ kundi ModuleSpecMethodsTests:
         kundi FailedLoader(TestLoader):
             eleza exec_module(self, module):
                 toa sys.modules[module.__name__]
-                 ashiria RuntimeError
+                ashiria RuntimeError
         self.spec.loader = FailedLoader()
         ukijumuisha CleanImport(self.spec.name):
             ukijumuisha self.assertRaises(RuntimeError):
@@ -421,7 +421,7 @@ kundi ModuleReprTests:
     eleza test_module___loader___module_repr_bad(self):
         kundi Loader(TestLoader):
             eleza module_repr(self, module):
-                 ashiria Exception
+                ashiria Exception
         self.module.__loader__ = Loader()
         modrepr = self.bootstrap._module_repr(self.module)
 
@@ -520,7 +520,7 @@ kundi FactoryTests:
     eleza test_spec_from_loader_default_with_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
-                 ashiria ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_from_loader(self.name, loader)
 
@@ -702,7 +702,7 @@ kundi FactoryTests:
     eleza test_spec_from_file_location_loader_no_location_bad_get_filename(self):
         kundi Loader:
             eleza get_filename(self, name):
-                 ashiria ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, loader=loader)
 
@@ -796,7 +796,7 @@ kundi FactoryTests:
     eleza test_spec_from_file_location_smsl_default_bad_is_package(self):
         kundi Loader:
             eleza is_package(self, name):
-                 ashiria ImportError
+                ashiria ImportError
         loader = Loader()
         spec = self.util.spec_from_file_location(self.name, self.path,
                                                  loader=loader)

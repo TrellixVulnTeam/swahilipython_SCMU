@@ -11,10 +11,10 @@ kutoka unittest.test.support agiza LoggingResult, TestEquality
 
 kundi Test(object):
     kundi Foo(unittest.TestCase):
-        eleza test_1(self): pass
-        eleza test_2(self): pass
-        eleza test_3(self): pass
-        eleza runTest(self): pass
+        eleza test_1(self): pita
+        eleza test_2(self): pita
+        eleza test_3(self): pita
+        eleza runTest(self): pita
 
 eleza _mk_TestSuite(*names):
     rudisha unittest.TestSuite(Test.Foo(n) kila n kwenye names)
@@ -147,7 +147,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     eleza test_countTestCases_zero_nested(self):
         kundi Test1(unittest.TestCase):
             eleza test(self):
-                pass
+                pita
 
         suite = unittest.TestSuite([unittest.TestSuite()])
 
@@ -173,8 +173,8 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # Make sure this holds kila nested TestSuite instances, too
     eleza test_countTestCases_nested(self):
         kundi Test1(unittest.TestCase):
-            eleza test1(self): pass
-            eleza test2(self): pass
+            eleza test1(self): pita
+            eleza test2(self): pita
 
         test2 = unittest.FunctionTestCase(lambda: Tupu)
         test3 = unittest.FunctionTestCase(lambda: Tupu)
@@ -188,7 +188,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(child.countTestCases(), 2)
 
     # "Run the tests associated ukijumuisha this suite, collecting the result into
-    # the test result object passed as result."
+    # the test result object pitaed kama result."
     #
     # And ikiwa there are no tests? What then?
     eleza test_run__empty_suite(self):
@@ -202,19 +202,19 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
         self.assertEqual(events, [])
 
     # "Note that unlike TestCase.run(), TestSuite.run() requires the
-    # "result object to be passed in."
+    # "result object to be pitaed in."
     eleza test_run__requires_result(self):
         suite = unittest.TestSuite()
 
         jaribu:
             suite.run()
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-            self.fail("Failed to  ashiria TypeError")
+            self.fail("Failed to ashiria TypeError")
 
     # "Run the tests associated ukijumuisha this suite, collecting the result into
-    # the test result object passed as result."
+    # the test result object pitaed kama result."
     eleza test_run(self):
         events = []
         result = LoggingResult(events)
@@ -223,8 +223,8 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
             eleza run(self, result):
                 events.append('run %s' % self._testMethodName)
 
-            eleza test1(self): pass
-            eleza test2(self): pass
+            eleza test1(self): pita
+            eleza test2(self): pita
 
         tests = [LoggingCase('test1'), LoggingCase('test2')]
 
@@ -235,7 +235,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # "Add a TestCase ... to the suite"
     eleza test_addTest__TestCase(self):
         kundi Foo(unittest.TestCase):
-            eleza test(self): pass
+            eleza test(self): pita
 
         test = Foo('test')
         suite = unittest.TestSuite()
@@ -251,7 +251,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # "Add a ... TestSuite to the suite"
     eleza test_addTest__TestSuite(self):
         kundi Foo(unittest.TestCase):
-            eleza test(self): pass
+            eleza test(self): pita
 
         suite_2 = unittest.TestSuite([Foo('test')])
 
@@ -271,8 +271,8 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
     # each element"
     eleza test_addTests(self):
         kundi Foo(unittest.TestCase):
-            eleza test_1(self): pass
-            eleza test_2(self): pass
+            eleza test_1(self): pita
+            eleza test_2(self): pita
 
         test_1 = Foo('test_1')
         test_2 = Foo('test_2')
@@ -305,10 +305,10 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
         jaribu:
             suite.addTests(5)
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-            self.fail("Failed to  ashiria TypeError")
+            self.fail("Failed to ashiria TypeError")
 
     eleza test_addTest__noncallable(self):
         suite = unittest.TestSuite()
@@ -325,7 +325,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_function_in_suite(self):
         eleza f(_):
-            pass
+            pita
         suite = unittest.TestSuite()
         suite.addTest(f)
 
@@ -334,7 +334,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_remove_test_at_index(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-             ashiria unittest.SkipTest("Suite cleanup ni disabled")
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         suite = unittest.TestSuite()
 
@@ -345,7 +345,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza test_remove_test_at_index_not_indexable(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-             ashiria unittest.SkipTest("Suite cleanup ni disabled")
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         suite = unittest.TestSuite()
         suite._tests = Tupu
@@ -355,11 +355,11 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
 
     eleza assert_garbage_collect_test_after_run(self, TestSuiteClass):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-             ashiria unittest.SkipTest("Suite cleanup ni disabled")
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         kundi Foo(unittest.TestCase):
             eleza test_nothing(self):
-                pass
+                pita
 
         test = Foo('test_nothing')
         wref = weakref.ref(test)
@@ -392,7 +392,7 @@ kundi Test_TestSuite(unittest.TestCase, TestEquality):
             eleza tearDownClass(cls):
                 cls.wasTornDown = Kweli
             eleza testPass(self):
-                pass
+                pita
             eleza testFail(self):
                 fail
         kundi Module(object):

@@ -1,5 +1,5 @@
 eleza __getattr__(name):
     ikiwa name != 'delgetattr':
-         ashiria AttributeError
+        ashiria AttributeError
     toa globals()['__getattr__']
-     ashiria AttributeError
+    ashiria AttributeError

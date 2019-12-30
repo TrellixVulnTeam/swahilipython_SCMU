@@ -5,7 +5,7 @@
 
 Each morning women kwenye Tamil Nadu, kwenye southern
 India, place designs, created by using rice
-flour na known as kolam on the thresholds of
+flour na known kama kolam on the thresholds of
 their homes.
 
 These can be described by Lindenmayer systems,
@@ -39,11 +39,11 @@ eleza draw( commands, rules ):
     kila b kwenye commands:
         jaribu:
             rules[b]()
-        except TypeError:
+        tatizo TypeError:
             jaribu:
                 draw(rules[b], rules)
             tatizo:
-                pass
+                pita
 
 
 eleza main():

@@ -17,7 +17,7 @@ agiza unittest
 #
 # If the arglist would be destroyed BEFORE the result has been built,
 # the c_char_p("123") object would already have a zero refcount,
-# na the pointer passed to (and returned by) the function would
+# na the pointer pitaed to (and returned by) the function would
 # probably point to deallocated space.
 #
 # In this case, there would have to be an additional reference to the argument...
@@ -25,13 +25,13 @@ agiza unittest
 agiza _ctypes_test
 testdll = CDLL(_ctypes_test.__file__)
 
-# Return machine address `a` as a (possibly long) non-negative integer.
-# Starting ukijumuisha Python 2.5, id(anything) ni always non-negative, and
+# Return machine address `a` kama a (possibly long) non-negative integer.
+# Starting ukijumuisha Python 2.5, id(anything) ni always non-negative, na
 # the ctypes addressof() inherits that via PyLong_FromVoidPtr().
 eleza positive_address(a):
     ikiwa a >= 0:
         rudisha a
-    # View the bits kwenye `a` as unsigned instead.
+    # View the bits kwenye `a` kama unsigned instead.
     agiza struct
     num_bits = struct.calcsize("P") * 8 # num bits kwenye native machine address
     a += 1 << num_bits
@@ -58,7 +58,7 @@ kundi CharPointersTestCase(unittest.TestCase):
 
         jaribu:
             func()
-        except TypeError as details:
+        tatizo TypeError kama details:
             self.assertEqual(str(details), "required argument 'input' missing")
         isipokua:
             self.fail("TypeError sio raised")
@@ -197,7 +197,7 @@ kundi WCharPointersTestCase(unittest.TestCase):
         self.assertEqual(Tupu, func(c_wchar_p(Tupu)))
         self.assertEqual("123", func(c_wchar_p("123")))
 
-        # XXX Currently, these  ashiria TypeErrors, although they shouldn't:
+        # XXX Currently, these ashiria TypeErrors, although they shouldn't:
         self.assertEqual("123", func(c_wbuffer("123")))
         ca = c_wchar("a")
         self.assertEqual("a", func(pointer(ca))[0])
@@ -213,7 +213,7 @@ kundi ArrayTest(unittest.TestCase):
 
         # This did crash before:
 
-        eleza func(): pass
+        eleza func(): pita
         CFUNCTYPE(Tupu, c_int * 3)(func)
 
 ################################################################

@@ -1,4 +1,4 @@
-agiza _dummy_thread as _thread
+agiza _dummy_thread kama _thread
 agiza time
 agiza queue
 agiza random
@@ -30,7 +30,7 @@ kundi LockTests(unittest.TestCase):
 
     eleza test_LockType_context_manager(self):
         ukijumuisha _thread.LockType():
-            pass
+            pita
         self.assertUongo(self.lock.locked(),
                          "Acquired Lock was sio released")
 
@@ -143,7 +143,7 @@ kundi MiscTests(unittest.TestCase):
 
     eleza test_interrupt_main(self):
         #Calling start_new_thread ukijumuisha a function that executes interrupt_main
-        # should  ashiria KeyboardInterrupt upon completion.
+        # should ashiria KeyboardInterrupt upon completion.
         eleza call_interrupt():
             _thread.interrupt_main()
 
@@ -160,7 +160,7 @@ kundi MiscTests(unittest.TestCase):
         self.assertEqual(retval, 0)
 
     eleza test_stack_size_not_Tupu(self):
-        ukijumuisha self.assertRaises(_thread.error) as cm:
+        ukijumuisha self.assertRaises(_thread.error) kama cm:
             _thread.stack_size("")
         self.assertEqual(cm.exception.args[0],
                          "setting thread stack size sio supported")
@@ -169,17 +169,17 @@ kundi MiscTests(unittest.TestCase):
 kundi ThreadTests(unittest.TestCase):
     """Test thread creation."""
 
-    eleza test_arg_passing(self):
-        #Make sure that parameter passing works.
+    eleza test_arg_pitaing(self):
+        #Make sure that parameter pitaing works.
         eleza arg_tester(queue, arg1=Uongo, arg2=Uongo):
-            """Use to test _thread.start_new_thread() passes args properly."""
+            """Use to test _thread.start_new_thread() pitaes args properly."""
             queue.put((arg1, arg2))
 
         testing_queue = queue.Queue(1)
         _thread.start_new_thread(arg_tester, (testing_queue, Kweli, Kweli))
         result = testing_queue.get()
         self.assertKweli(result[0] na result[1],
-                        "Argument passing kila thread creation "
+                        "Argument pitaing kila thread creation "
                         "using tuple failed")
 
         _thread.start_new_thread(
@@ -189,7 +189,7 @@ kundi ThreadTests(unittest.TestCase):
 
         result = testing_queue.get()
         self.assertKweli(result[0] na result[1],
-                        "Argument passing kila thread creation "
+                        "Argument pitaing kila thread creation "
                         "using kwargs failed")
 
         _thread.start_new_thread(
@@ -199,7 +199,7 @@ kundi ThreadTests(unittest.TestCase):
 
         result = testing_queue.get()
         self.assertKweli(result[0] na result[1],
-                        "Argument passing kila thread creation using both tuple"
+                        "Argument pitaing kila thread creation using both tuple"
                         " na kwargs failed")
 
     eleza test_multi_thread_creation(self):
@@ -235,7 +235,7 @@ kundi ThreadTests(unittest.TestCase):
         Test invoking start_new_thread() ukijumuisha a non-tuple value kila "args".
         Expect TypeError ukijumuisha a meaningful error message to be raised.
         """
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             _thread.start_new_thread(mock.Mock(), [])
         self.assertEqual(cm.exception.args[0], "2nd arg must be a tuple")
 
@@ -244,7 +244,7 @@ kundi ThreadTests(unittest.TestCase):
         Test invoking start_new_thread() ukijumuisha a non-dict value kila "kwargs".
         Expect TypeError ukijumuisha a meaningful error message to be raised.
         """
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             _thread.start_new_thread(mock.Mock(), tuple(), kwargs=[])
         self.assertEqual(cm.exception.args[0], "3rd arg must be a dict")
 
@@ -257,7 +257,7 @@ kundi ThreadTests(unittest.TestCase):
         func = mock.Mock(side_effect=SystemExit())
         jaribu:
             _thread.start_new_thread(func, tuple())
-        except SystemExit:
+        tatizo SystemExit:
             self.fail("start_new_thread raised SystemExit.")
 
     @mock.patch('traceback.print_exc')

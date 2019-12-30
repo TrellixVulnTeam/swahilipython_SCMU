@@ -68,7 +68,7 @@ kundi TestParserBase:
                 self.assertEqual(msg.get_payload(), "")
 
     kundi MyMessage(EmailMessage):
-        pass
+        pita
 
     eleza test_custom_message_factory_on_policy(self):
         kila parser kwenye self.parsers:

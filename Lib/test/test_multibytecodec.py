@@ -67,7 +67,7 @@ kundi Test_MultibyteCodec(unittest.TestCase):
                           _multibytecodec.MultibyteStreamWriter, Tupu)
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should  ashiria a TypeError
+        # Trying to decode a unicode string should ashiria a TypeError
         kila enc kwenye ALL_CJKENCODINGS:
             self.assertRaises(TypeError, codecs.getdecoder(enc), "")
 
@@ -118,7 +118,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         self.assertEqual(encoder.encode('', Kweli), b'\xa9\xdc')
 
     eleza test_state_methods_with_buffer_state(self):
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state kama a buffer of pending bytes
         encoder = codecs.getincrementalencoder('euc_jis_2004')()
 
         initial_state = encoder.getstate()
@@ -154,7 +154,7 @@ kundi Test_IncrementalEncoder(unittest.TestCase):
         # are expected to be the same across all builds of Python,
         # regardless of x32/64 bit, endianness na compiler.
 
-        # euc_jis_2004 stores state as a buffer of pending bytes
+        # euc_jis_2004 stores state kama a buffer of pending bytes
         buffer_state_encoder = codecs.getincrementalencoder('euc_jis_2004')()
         self.assertEqual(buffer_state_encoder.getstate(), 0)
         buffer_state_encoder.encode('\u00e6')
@@ -242,7 +242,7 @@ kundi Test_IncrementalDecoder(unittest.TestCase):
         self.assertEqual(decoder.decode(b'B@$'), '\u4e16')
 
     eleza test_decode_unicode(self):
-        # Trying to decode a unicode string should  ashiria a TypeError
+        # Trying to decode a unicode string should ashiria a TypeError
         kila enc kwenye ALL_CJKENCODINGS:
             decoder = codecs.getincrementaldecoder(enc)()
             self.assertRaises(TypeError, decoder.decode, "")

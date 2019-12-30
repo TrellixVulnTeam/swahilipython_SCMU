@@ -26,7 +26,7 @@ kundi MIMEMessage(MIMENonMultipart):
         """
         MIMENonMultipart.__init__(self, 'message', _subtype, policy=policy)
         ikiwa sio isinstance(_msg, message.Message):
-             ashiria TypeError('Argument ni sio an instance of Message')
+            ashiria TypeError('Argument ni sio an instance of Message')
         # It's convenient to use this base kundi method.  We need to do it
         # this way ama we'll get an exception
         message.Message.attach(self, _msg)

@@ -14,7 +14,7 @@ eleza setUpModule():
     global libc_name
     ikiwa os.name == "nt":
         libc_name = find_library("c")
-    elikiwa sys.platform == "cygwin":
+    lasivyo sys.platform == "cygwin":
         libc_name = "cygwin1.dll"
     isipokua:
         libc_name = find_library("c")
@@ -125,7 +125,7 @@ kundi LoaderTest(unittest.TestCase):
         isipokua:
             ext = ".dll"
 
-        ukijumuisha test.support.temp_dir() as tmp:
+        ukijumuisha test.support.temp_dir() kama tmp:
             # We copy two files na load _sqlite3.dll (formerly .pyd),
             # which has a dependency on sqlite3.dll. Then we test
             # loading it kwenye subprocesses to avoid it starting kwenye memory
@@ -135,7 +135,7 @@ kundi LoaderTest(unittest.TestCase):
             shutil.copy(os.path.join(os.path.dirname(src), "sqlite3" + ext),
                         os.path.join(tmp, "sqlite3" + ext))
 
-            eleza should_pass(command):
+            eleza should_pita(command):
                 ukijumuisha self.subTest(command):
                     subprocess.check_output(
                         [sys.executable, "-c",
@@ -156,22 +156,22 @@ kundi LoaderTest(unittest.TestCase):
             should_fail("WinDLL('_sqlite3.dll')")
 
             # Relative path (but sio just filename) should succeed
-            should_pass("WinDLL('./_sqlite3.dll')")
+            should_pita("WinDLL('./_sqlite3.dll')")
 
             # Insecure load flags should succeed
-            should_pass("WinDLL('_sqlite3.dll', winmode=0)")
+            should_pita("WinDLL('_sqlite3.dll', winmode=0)")
 
             # Full path load without DLL_LOAD_DIR shouldn't find dependency
             should_fail("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +
                         "winmode=nt._LOAD_LIBRARY_SEARCH_SYSTEM32)")
 
             # Full path load ukijumuisha DLL_LOAD_DIR should succeed
-            should_pass("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +
+            should_pita("WinDLL(nt._getfullpathname('_sqlite3.dll'), " +
                         "winmode=nt._LOAD_LIBRARY_SEARCH_SYSTEM32|" +
                         "nt._LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR)")
 
             # User-specified directory should succeed
-            should_pass("agiza os; p = os.add_dll_directory(os.getcwd());" +
+            should_pita("agiza os; p = os.add_dll_directory(os.getcwd());" +
                         "WinDLL('_sqlite3.dll'); p.close()")
 
 

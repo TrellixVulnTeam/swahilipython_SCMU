@@ -6,8 +6,8 @@ agiza shlex
 agiza sys
 agiza tempfile
 
-agiza tkinter.filedialog as tkFileDialog
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.filedialog kama tkFileDialog
+agiza tkinter.messagebox kama tkMessageBox
 kutoka tkinter.simpledialog agiza askstring
 
 agiza idlelib
@@ -22,8 +22,8 @@ isipokua:
     jaribu:
         agiza locale
         locale.setlocale(locale.LC_CTYPE, "")
-    except (ImportError, locale.Error):
-        pass
+    tatizo (ImportError, locale.Error):
+        pita
 
     ikiwa sys.platform == 'win32':
         encoding = 'utf-8'
@@ -37,7 +37,7 @@ isipokua:
             locale_encoding = locale.nl_langinfo(locale.CODESET)
             ikiwa locale_encoding:
                 codecs.lookup(locale_encoding)
-        except (NameError, AttributeError, LookupError):
+        tatizo (NameError, AttributeError, LookupError):
             # Try getdefaultlocale: it parses environment variables,
             # which may give a clue. Unfortunately, getdefaultlocale has
             # bugs that can cause ValueError.
@@ -45,8 +45,8 @@ isipokua:
                 locale_encoding = locale.getdefaultlocale()[1]
                 ikiwa locale_encoding:
                     codecs.lookup(locale_encoding)
-            except (ValueError, LookupError):
-                pass
+            tatizo (ValueError, LookupError):
+                pita
 
         ikiwa locale_encoding:
             encoding = locale_encoding.lower()
@@ -56,7 +56,7 @@ isipokua:
             encoding = 'ascii'
             errors = 'surrogateescape'
         # Encoding ni used kwenye multiple files; locale_encoding nowhere.
-        # The only use of 'encoding' below ni kwenye _decode as initial value
+        # The only use of 'encoding' below ni kwenye _decode kama initial value
         # of deprecated block asking user kila encoding.
         # Perhaps use elsewhere should be reviewed.
 
@@ -66,7 +66,7 @@ blank_re = re.compile(r'^[ \t\f]*(?:[#\r\n]|$)', re.ASCII)
 eleza coding_spec(data):
     """Return the encoding declaration according to PEP 263.
 
-    When checking encoded data, only the first two lines should be passed
+    When checking encoded data, only the first two lines should be pitaed
     kwenye to avoid a UnicodeDecodeError ikiwa the rest of the data ni sio unicode.
     The first two lines would contain the encoding specification.
 
@@ -76,14 +76,14 @@ eleza coding_spec(data):
         # This encoding might be wrong. However, the coding
         # spec must be ASCII-only, so any non-ASCII characters
         # around here will be ignored. Decoding to Latin-1 should
-        # never fail (except kila memory outage)
+        # never fail (tatizo kila memory outage)
         lines = data.decode('iso-8859-1')
     isipokua:
         lines = data
     # consider only the first two lines
     ikiwa '\n' kwenye lines:
         lst = lines.split('\n', 2)[:2]
-    elikiwa '\r' kwenye lines:
+    lasivyo '\r' kwenye lines:
         lst = lines.split('\r', 2)[:2]
     isipokua:
         lst = [lines]
@@ -98,9 +98,9 @@ eleza coding_spec(data):
     name = match.group(1)
     jaribu:
         codecs.lookup(name)
-    except LookupError:
+    tatizo LookupError:
         # The standard encoding error does sio indicate the encoding
-         ashiria LookupError("Unknown encoding: "+name)
+        ashiria LookupError("Unknown encoding: "+name)
     rudisha name
 
 
@@ -173,13 +173,13 @@ kundi IOBinding:
                 # If editFile ni valid na already open, flist.open will
                 # shift focus to its existing window.
                 # If the current window exists na ni a fresh unnamed,
-                # unmodified editor window (not an interpreter shell),
-                # pass self.loadfile to flist.open so it will load the file
+                # unmodified editor window (sio an interpreter shell),
+                # pita self.loadfile to flist.open so it will load the file
                 # kwenye the current window (ikiwa the file ni sio already open)
                 # instead of a new window.
-                ikiwa (self.editwin and
-                        sio getattr(self.editwin, 'interp', Tupu) and
-                        sio self.filename and
+                ikiwa (self.editwin na
+                        sio getattr(self.editwin, 'interp', Tupu) na
+                        sio self.filename na
                         self.get_saved()):
                     flist.open(filename, self.loadfile)
                 isipokua:
@@ -213,11 +213,11 @@ kundi IOBinding:
         jaribu:
             # open the file kwenye binary mode so that we can handle
             # end-of-line convention ourselves.
-            ukijumuisha open(filename, 'rb') as f:
+            ukijumuisha open(filename, 'rb') kama f:
                 two_lines = f.readline() + f.readline()
                 f.seek(0)
                 bytes = f.read()
-        except OSError as msg:
+        tatizo OSError kama msg:
             tkMessageBox.showerror("I/O Error", str(msg), parent=self.text)
             rudisha Uongo
         chars, converted = self._decode(two_lines, bytes)
@@ -252,7 +252,7 @@ kundi IOBinding:
         ikiwa bytes.startswith(BOM_UTF8):
             jaribu:
                 chars = bytes[3:].decode("utf-8")
-            except UnicodeDecodeError:
+            tatizo UnicodeDecodeError:
                 # has UTF-8 signature, but fails to decode...
                 rudisha Tupu, Uongo
             isipokua:
@@ -262,36 +262,36 @@ kundi IOBinding:
         # Next look kila coding specification
         jaribu:
             enc = coding_spec(two_lines)
-        except LookupError as name:
+        tatizo LookupError kama name:
             tkMessageBox.showerror(
                 title="Error loading the file",
                 message="The encoding '%s' ni sio known to this Python "\
                 "installation. The file may sio display correctly" % name,
                 parent = self.text)
             enc = Tupu
-        except UnicodeDecodeError:
+        tatizo UnicodeDecodeError:
             rudisha Tupu, Uongo
         ikiwa enc:
             jaribu:
                 chars = str(bytes, enc)
                 self.fileencoding = enc
                 rudisha chars, Uongo
-            except UnicodeDecodeError:
-                pass
+            tatizo UnicodeDecodeError:
+                pita
         # Try ascii:
         jaribu:
             chars = str(bytes, 'ascii')
             self.fileencoding = Tupu
             rudisha chars, Uongo
-        except UnicodeDecodeError:
-            pass
+        tatizo UnicodeDecodeError:
+            pita
         # Try utf-8:
         jaribu:
             chars = str(bytes, 'utf-8')
             self.fileencoding = 'utf-8'
             rudisha chars, Uongo
-        except UnicodeDecodeError:
-            pass
+        tatizo UnicodeDecodeError:
+            pita
         # Finally, try the locale's encoding. This ni deprecated;
         # the user should declare a non-ASCII encoding
         jaribu:
@@ -309,8 +309,8 @@ kundi IOBinding:
                 chars = str(bytes, enc)
                 self.fileencoding = Tupu
             rudisha chars, Kweli
-        except (UnicodeDecodeError, LookupError):
-            pass
+        tatizo (UnicodeDecodeError, LookupError):
+            pita
         rudisha Tupu, Uongo  # Tupu on failure
 
     eleza maybesave(self):
@@ -328,7 +328,7 @@ kundi IOBinding:
             self.save(Tupu)
             ikiwa sio self.get_saved():
                 reply = "cancel"
-        elikiwa confirm ni Tupu:
+        lasivyo confirm ni Tupu:
             reply = "cancel"
         isipokua:
             reply = "no"
@@ -343,8 +343,8 @@ kundi IOBinding:
                 self.set_saved(Kweli)
                 jaribu:
                     self.editwin.store_file_komas()
-                except AttributeError:  # may be a PyShell
-                    pass
+                tatizo AttributeError:  # may be a PyShell
+                    pita
         self.text.focus_set()
         rudisha "koma"
 
@@ -356,8 +356,8 @@ kundi IOBinding:
                 self.set_saved(1)
                 jaribu:
                     self.editwin.store_file_komas()
-                except AttributeError:
-                    pass
+                tatizo AttributeError:
+                    pita
         self.text.focus_set()
         self.updaterecentfileslist(filename)
         rudisha "koma"
@@ -377,12 +377,12 @@ kundi IOBinding:
             text = text.replace("\n", self.eol_convention)
         chars = self.encode(text)
         jaribu:
-            ukijumuisha open(filename, "wb") as f:
+            ukijumuisha open(filename, "wb") kama f:
                 f.write(chars)
                 f.flush()
                 os.fsync(f.fileno())
             rudisha Kweli
-        except OSError as msg:
+        tatizo OSError kama msg:
             tkMessageBox.showerror("I/O Error", str(msg),
                                    parent=self.text)
             rudisha Uongo
@@ -399,14 +399,14 @@ kundi IOBinding:
         # If not, no need to figure out the encoding.
         jaribu:
             rudisha chars.encode('ascii')
-        except UnicodeError:
-            pass
+        tatizo UnicodeError:
+            pita
         # Check ikiwa there ni an encoding declared
         jaribu:
             # a string, let coding_spec slice it to the first two lines
             enc = coding_spec(chars)
             failed = Tupu
-        except LookupError as msg:
+        tatizo LookupError kama msg:
             failed = msg
             enc = Tupu
         isipokua:
@@ -416,13 +416,13 @@ kundi IOBinding:
         ikiwa enc:
             jaribu:
                 rudisha chars.encode(enc)
-            except UnicodeError:
+            tatizo UnicodeError:
                 failed = "Invalid encoding '%s'" % enc
         tkMessageBox.showerror(
             "I/O Error",
-            "%s.\nSaving as UTF-8" % failed,
+            "%s.\nSaving kama UTF-8" % failed,
             parent = self.text)
-        # Fallback: save as UTF-8, ukijumuisha BOM - ignoring the incorrect
+        # Fallback: save kama UTF-8, ukijumuisha BOM - ignoring the incorrect
         # declared encoding
         rudisha BOM_UTF8 + chars.encode("utf-8")
 
@@ -458,7 +458,7 @@ kundi IOBinding:
             command = idleConf.GetOption('main','General',
                                          'print-command-posix')
             command = command + " 2>&1"
-        elikiwa platform == 'nt': #win32 platform
+        lasivyo platform == 'nt': #win32 platform
             command = idleConf.GetOption('main','General','print-command-win')
         isipokua: #no printing kila this platform
             printPlatform = Uongo
@@ -503,12 +503,12 @@ kundi IOBinding:
     eleza defaultfilename(self, mode="open"):
         ikiwa self.filename:
             rudisha os.path.split(self.filename)
-        elikiwa self.dirname:
+        lasivyo self.dirname:
             rudisha self.dirname, ""
         isipokua:
             jaribu:
                 pwd = os.getcwd()
-            except OSError:
+            tatizo OSError:
                 pwd = ""
             rudisha pwd, ""
 
@@ -544,8 +544,8 @@ eleza _io_binding(parent):  # htest #
             self.text.bind("<Alt-s>", self.saveas)
             self.text.bind('<Control-c>', self.savecopy)
         eleza get_saved(self): rudisha 0
-        eleza set_saved(self, flag): pass
-        eleza reset_undo(self): pass
+        eleza set_saved(self, flag): pita
+        eleza reset_undo(self): pita
         eleza open(self, event):
             self.text.event_generate("<<open-window-from-file>>")
         eleza andika(self, event):

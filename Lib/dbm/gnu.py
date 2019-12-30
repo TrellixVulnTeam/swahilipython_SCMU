@@ -1,3 +1,3 @@
-"""Provide the _gdbm module as a dbm submodule."""
+"""Provide the _gdbm module kama a dbm submodule."""
 
 kutoka _gdbm agiza *

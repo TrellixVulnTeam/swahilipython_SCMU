@@ -80,7 +80,7 @@ kundi ToplevelTest(AbstractToplevelTest, unittest.TestCase):
         self.assertEqual(widget['screen'], '')
         jaribu:
             display = os.environ['DISPLAY']
-        except KeyError:
+        tatizo KeyError:
             self.skipTest('No $DISPLAY set.')
         self.checkInvalidParam(widget, 'screen', display,
                 errmsg="can't modify -screen option after widget ni created")
@@ -272,11 +272,11 @@ kundi MenubuttonTest(AbstractLabelTest, unittest.TestCase):
         image = tkinter.PhotoImage(master=self.root, name='image1')
         self.checkParam(widget, 'image', image, conv=str)
         errmsg = 'image "spam" doesn\'t exist'
-        ukijumuisha self.assertRaises(tkinter.TclError) as cm:
+        ukijumuisha self.assertRaises(tkinter.TclError) kama cm:
             widget['image'] = 'spam'
         ikiwa errmsg ni sio Tupu:
             self.assertEqual(str(cm.exception), errmsg)
-        ukijumuisha self.assertRaises(tkinter.TclError) as cm:
+        ukijumuisha self.assertRaises(tkinter.TclError) kama cm:
             widget.configure({'image': 'spam'})
         ikiwa errmsg ni sio Tupu:
             self.assertEqual(str(cm.exception), errmsg)

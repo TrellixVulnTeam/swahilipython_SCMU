@@ -62,7 +62,7 @@ kundi FakeSocket:
 
     eleza makefile(self, mode, bufsize=Tupu):
         ikiwa mode != 'r' na mode != 'rb':
-             ashiria client.UnimplementedFileMode()
+            ashiria client.UnimplementedFileMode()
         # keep the file around so we can check how much was read kutoka it
         self.file = self.fileclass(self.text)
         self.file.close = self.file_close #nerf close ()
@@ -72,25 +72,25 @@ kundi FakeSocket:
         self.file_closed = Kweli
 
     eleza close(self):
-        pass
+        pita
 
     eleza setsockopt(self, level, optname, value):
-        pass
+        pita
 
 kundi EPipeSocket(FakeSocket):
 
     eleza __init__(self, text, pipe_trigger):
-        # When sendall() ni called ukijumuisha pipe_trigger,  ashiria EPIPE.
+        # When sendall() ni called ukijumuisha pipe_trigger, ashiria EPIPE.
         FakeSocket.__init__(self, text)
         self.pipe_trigger = pipe_trigger
 
     eleza sendall(self, data):
         ikiwa self.pipe_trigger kwenye data:
-             ashiria OSError(errno.EPIPE, "gotcha")
+            ashiria OSError(errno.EPIPE, "gotcha")
         self.data += data
 
     eleza close(self):
-        pass
+        pita
 
 kundi NoEOFBytesIO(io.BytesIO):
     """Like BytesIO, but raises AssertionError on EOF.
@@ -101,13 +101,13 @@ kundi NoEOFBytesIO(io.BytesIO):
     eleza read(self, n=-1):
         data = io.BytesIO.read(self, n)
         ikiwa data == b'':
-             ashiria AssertionError('caller tried to read past EOF')
+            ashiria AssertionError('caller tried to read past EOF')
         rudisha data
 
     eleza readline(self, length=Tupu):
         data = io.BytesIO.readline(self, length)
         ikiwa data == b'':
-             ashiria AssertionError('caller tried to read past EOF')
+            ashiria AssertionError('caller tried to read past EOF')
         rudisha data
 
 kundi FakeSocketHTTPConnection(client.HTTPConnection):
@@ -355,7 +355,7 @@ kundi HeaderTests(TestCase):
         )
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock, debuglevel=1)
-        ukijumuisha support.captured_stdout() as output:
+        ukijumuisha support.captured_stdout() kama output:
             resp.begin()
         lines = output.getvalue().splitlines()
         self.assertEqual(lines[0], "reply: 'HTTP/1.1 200 OK\\r\\n'")
@@ -520,7 +520,7 @@ kundi BasicTest(TestCase):
 
     eleza test_partial_reads(self):
         # ikiwa we have Content-Length, HTTPResponse knows when to close itself,
-        # the same behaviour as when we read the whole thing ukijumuisha read()
+        # the same behaviour kama when we read the whole thing ukijumuisha read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -535,7 +535,7 @@ kundi BasicTest(TestCase):
 
     eleza test_mixed_reads(self):
         # readline() should update the remaining length, so that read() knows
-        # how much data ni left na does sio  ashiria IncompleteRead
+        # how much data ni left na does sio ashiria IncompleteRead
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 13\r\n\r\nText\r\nAnother"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -550,7 +550,7 @@ kundi BasicTest(TestCase):
 
     eleza test_partial_readintos(self):
         # ikiwa we have Content-Length, HTTPResponse knows when to close itself,
-        # the same behaviour as when we read the whole thing ukijumuisha read()
+        # the same behaviour kama when we read the whole thing ukijumuisha read()
         body = "HTTP/1.1 200 Ok\r\nContent-Length: 4\r\n\r\nText"
         sock = FakeSocket(body)
         resp = client.HTTPResponse(sock)
@@ -641,7 +641,7 @@ kundi BasicTest(TestCase):
     eleza test_host_port(self):
         # Check invalid host_port
 
-        kila hp kwenye ("www.python.org:abc", "user:password@www.python.org"):
+        kila hp kwenye ("www.python.org:abc", "user:pitaword@www.python.org"):
             self.assertRaises(client.InvalidURL, client.HTTPConnection, hp)
 
         kila hp, h, p kwenye (("[fe80::207:e9ff:fe9b]:8000",
@@ -716,7 +716,7 @@ kundi BasicTest(TestCase):
                     b'Transfer-Encoding: chunked\r\n'
                     b'\r\n')
 
-        ukijumuisha open(__file__, 'rb') as body:
+        ukijumuisha open(__file__, 'rb') kama body:
             conn = client.HTTPConnection('example.com')
             sock = FakeSocket(body)
             conn.sock = sock
@@ -827,7 +827,7 @@ kundi BasicTest(TestCase):
             resp.begin()
             jaribu:
                 resp.read()
-            except client.IncompleteRead as i:
+            tatizo client.IncompleteRead kama i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
@@ -870,7 +870,7 @@ kundi BasicTest(TestCase):
             resp.begin()
             jaribu:
                 n = resp.readinto(b)
-            except client.IncompleteRead as i:
+            tatizo client.IncompleteRead kama i:
                 self.assertEqual(i.partial, expected)
                 expected_message = 'IncompleteRead(%d bytes read)' % len(expected)
                 self.assertEqual(repr(i), expected_message)
@@ -937,7 +937,7 @@ kundi BasicTest(TestCase):
         resp.begin()
         jaribu:
             resp.read()
-        except client.IncompleteRead as i:
+        tatizo client.IncompleteRead kama i:
             self.assertEqual(i.partial, b'Hello\r\n')
             self.assertEqual(repr(i),
                              "IncompleteRead(7 bytes read, 3 more expected)")
@@ -1126,7 +1126,7 @@ kundi BasicTest(TestCase):
         result = Tupu
         eleza run_server():
             [conn, address] = serv.accept()
-            ukijumuisha conn, conn.makefile("rb") as reader:
+            ukijumuisha conn, conn.makefile("rb") kama reader:
                 # Read the request header until a blank line
                 wakati Kweli:
                     line = reader.readline()
@@ -1162,7 +1162,7 @@ kundi BasicTest(TestCase):
         """
         kundi UnsafeHTTPConnection(client.HTTPConnection):
             eleza _validate_path(self, url):
-                pass
+                pita
 
         conn = UnsafeHTTPConnection('example.com')
         conn.sock = FakeSocket('')
@@ -1467,7 +1467,7 @@ kundi SourceAddressTest(TestCase):
         self.conn.connect()
         self.assertEqual(self.conn.sock.getsockname()[1], self.source_port)
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
+    @unittest.skipIf(sio hasattr(client, 'HTTPSConnection'),
                      'http.client.HTTPSConnection sio defined')
     eleza testHTTPSConnectionSourceAddress(self):
         self.conn = client.HTTPSConnection(HOST, self.port,
@@ -1547,7 +1547,7 @@ kundi PersistenceTest(TestCase):
                 conn = FakeSocketHTTPConnection(msg)
                 self.assertIsTupu(conn.sock)
                 conn.request('GET', '/open-connection')
-                ukijumuisha conn.getresponse() as response:
+                ukijumuisha conn.getresponse() kama response:
                     self.assertEqual(conn.sock ni Tupu, sio reuse)
                     response.read()
                 self.assertEqual(conn.sock ni Tupu, sio reuse)
@@ -1563,7 +1563,7 @@ kundi PersistenceTest(TestCase):
             eleza readinto(buffer):
                 size = io.BytesIO.readinto(stream, buffer)
                 ikiwa size == 0:
-                     ashiria ConnectionResetError()
+                    ashiria ConnectionResetError()
                 rudisha size
             stream.readinto = readinto
             rudisha io.BufferedReader(stream)
@@ -1616,7 +1616,7 @@ kundi HTTPSTest(TestCase):
         support.requires('network')
         ukijumuisha support.transient_internet('self-signed.pythontest.net'):
             h = client.HTTPSConnection('self-signed.pythontest.net', 443)
-            ukijumuisha self.assertRaises(ssl.SSLError) as exc_info:
+            ukijumuisha self.assertRaises(ssl.SSLError) kama exc_info:
                 h.request('GET', '/')
             self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -1648,7 +1648,7 @@ kundi HTTPSTest(TestCase):
             self.assertIn('text/html', content_type)
 
     eleza test_networked_good_cert(self):
-        # We feed the server's cert as a validating cert
+        # We feed the server's cert kama a validating cert
         agiza ssl
         support.requires('network')
         selfsigned_pythontestdotnet = 'self-signed.pythontest.net'
@@ -1662,7 +1662,7 @@ kundi HTTPSTest(TestCase):
                                            context=context)
                 h.request('GET', '/')
                 resp = h.getresponse()
-            except ssl.SSLError as ssl_err:
+            tatizo ssl.SSLError kama ssl_err:
                 ssl_err_str = str(ssl_err)
                 # In the error message of [SSL: CERTIFICATE_VERIFY_FAILED] on
                 # modern Linux distros (Debian Buster, etc) default OpenSSL
@@ -1670,7 +1670,7 @@ kundi HTTPSTest(TestCase):
                 # address https://bugs.python.org/issue36816 to use a proper
                 # key size on self-signed.pythontest.net.
                 ikiwa re.search(r'(?i)key.too.weak', ssl_err_str):
-                     ashiria unittest.SkipTest(
+                    ashiria unittest.SkipTest(
                         f'Got {ssl_err_str} trying to connect '
                         f'to {selfsigned_pythontestdotnet}. '
                         'See https://bugs.python.org/issue36816.')
@@ -1688,7 +1688,7 @@ kundi HTTPSTest(TestCase):
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             context.load_verify_locations(CERT_localhost)
             h = client.HTTPSConnection('self-signed.pythontest.net', 443, context=context)
-            ukijumuisha self.assertRaises(ssl.SSLError) as exc_info:
+            ukijumuisha self.assertRaises(ssl.SSLError) kama exc_info:
                 h.request('GET', '/')
             self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -1697,7 +1697,7 @@ kundi HTTPSTest(TestCase):
         agiza ssl
         server = self.make_server(CERT_localhost)
         h = client.HTTPSConnection('localhost', server.port)
-        ukijumuisha self.assertRaises(ssl.SSLError) as exc_info:
+        ukijumuisha self.assertRaises(ssl.SSLError) kama exc_info:
             h.request('GET', '/')
         self.assertEqual(exc_info.exception.reason, 'CERTIFICATE_VERIFY_FAILED')
 
@@ -1739,7 +1739,7 @@ kundi HTTPSTest(TestCase):
         resp.close()
         h.close()
         self.assertEqual(resp.status, 404)
-        # The context's check_hostname setting ni used ikiwa one isn't passed to
+        # The context's check_hostname setting ni used ikiwa one isn't pitaed to
         # HTTPSConnection.
         context.check_hostname = Uongo
         h = client.HTTPSConnection('localhost', server.port, context=context)
@@ -1756,12 +1756,12 @@ kundi HTTPSTest(TestCase):
         ukijumuisha self.assertRaises(ssl.CertificateError):
             h.request('GET', '/')
 
-    @unittest.skipIf(not hasattr(client, 'HTTPSConnection'),
+    @unittest.skipIf(sio hasattr(client, 'HTTPSConnection'),
                      'http.client.HTTPSConnection sio available')
     eleza test_host_port(self):
         # Check invalid host_port
 
-        kila hp kwenye ("www.python.org:abc", "user:password@www.python.org"):
+        kila hp kwenye ("www.python.org:abc", "user:pitaword@www.python.org"):
             self.assertRaises(client.InvalidURL, client.HTTPSConnection, hp)
 
         kila hp, h, p kwenye (("[fe80::207:e9ff:fe9b]:8000",
@@ -1867,9 +1867,9 @@ kundi RequestBodyTest(TestCase):
 
     eleza test_text_file_body(self):
         self.addCleanup(support.unlink, support.TESTFN)
-        ukijumuisha open(support.TESTFN, "w") as f:
+        ukijumuisha open(support.TESTFN, "w") kama f:
             f.write("body")
-        ukijumuisha open(support.TESTFN) as f:
+        ukijumuisha open(support.TESTFN) kama f:
             self.conn.request("PUT", "/url", f)
             message, f = self.get_headers_and_fp()
             self.assertEqual("text/plain", message.get_content_type())
@@ -1882,9 +1882,9 @@ kundi RequestBodyTest(TestCase):
 
     eleza test_binary_file_body(self):
         self.addCleanup(support.unlink, support.TESTFN)
-        ukijumuisha open(support.TESTFN, "wb") as f:
+        ukijumuisha open(support.TESTFN, "wb") kama f:
             f.write(b"body\xc1")
-        ukijumuisha open(support.TESTFN, "rb") as f:
+        ukijumuisha open(support.TESTFN, "rb") kama f:
             self.conn.request("PUT", "/url", f)
             message, f = self.get_headers_and_fp()
             self.assertEqual("text/plain", message.get_content_type())
@@ -1996,7 +1996,7 @@ kundi TunnelTests(TestCase):
         self.conn._create_connection = self._create_connection(response_text)
         self.conn.set_tunnel('destination.com')
 
-        ukijumuisha support.captured_stdout() as output:
+        ukijumuisha support.captured_stdout() kama output:
             self.conn.request('PUT', '/', '')
         lines = output.getvalue().splitlines()
         self.assertIn('header: {}'.format(expected_header), lines)

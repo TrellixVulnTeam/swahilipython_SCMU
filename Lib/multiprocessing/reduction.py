@@ -21,9 +21,9 @@ kutoka . agiza context
 __all__ = ['send_handle', 'recv_handle', 'ForkingPickler', 'register', 'dump']
 
 
-HAVE_SEND_HANDLE = (sys.platform == 'win32' or
-                    (hasattr(socket, 'CMSG_LEN') and
-                     hasattr(socket, 'SCM_RIGHTS') and
+HAVE_SEND_HANDLE = (sys.platform == 'win32' ama
+                    (hasattr(socket, 'CMSG_LEN') na
+                     hasattr(socket, 'SCM_RIGHTS') na
                      hasattr(socket.socket, 'sendmsg')))
 
 #
@@ -105,7 +105,7 @@ ikiwa sys.platform == 'win32':
         '''Picklable wrapper kila a handle.'''
         eleza __init__(self, handle, access, pid=Tupu):
             ikiwa pid ni Tupu:
-                # We just duplicate the handle kwenye the current process and
+                # We just duplicate the handle kwenye the current process na
                 # let the receiving process steal the handle.
                 pid = os.getpid()
             proc = _winapi.OpenProcess(_winapi.PROCESS_DUP_HANDLE, Uongo, pid)
@@ -148,7 +148,7 @@ isipokua:
         msg = bytes([len(fds) % 256])
         sock.sendmsg([msg], [(socket.SOL_SOCKET, socket.SCM_RIGHTS, fds)])
         ikiwa ACKNOWLEDGE na sock.recv(1) != b'A':
-             ashiria RuntimeError('did sio receive acknowledgement of fd')
+            ashiria RuntimeError('did sio receive acknowledgement of fd')
 
     eleza recvfds(sock, size):
         '''Receive an array of fds over an AF_UNIX socket.'''
@@ -156,36 +156,36 @@ isipokua:
         bytes_size = a.itemsize * size
         msg, ancdata, flags, addr = sock.recvmsg(1, socket.CMSG_SPACE(bytes_size))
         ikiwa sio msg na sio ancdata:
-             ashiria EOFError
+            ashiria EOFError
         jaribu:
             ikiwa ACKNOWLEDGE:
                 sock.send(b'A')
             ikiwa len(ancdata) != 1:
-                 ashiria RuntimeError('received %d items of ancdata' %
+                ashiria RuntimeError('received %d items of ancdata' %
                                    len(ancdata))
             cmsg_level, cmsg_type, cmsg_data = ancdata[0]
-            ikiwa (cmsg_level == socket.SOL_SOCKET and
+            ikiwa (cmsg_level == socket.SOL_SOCKET na
                 cmsg_type == socket.SCM_RIGHTS):
                 ikiwa len(cmsg_data) % a.itemsize != 0:
-                     ashiria ValueError
+                    ashiria ValueError
                 a.frombytes(cmsg_data)
                 ikiwa len(a) % 256 != msg[0]:
-                     ashiria AssertionError(
+                    ashiria AssertionError(
                         "Len ni {0:n} but msg[0] ni {1!r}".format(
                             len(a), msg[0]))
                 rudisha list(a)
-        except (ValueError, IndexError):
-            pass
-         ashiria RuntimeError('Invalid data received')
+        tatizo (ValueError, IndexError):
+            pita
+        ashiria RuntimeError('Invalid data received')
 
     eleza send_handle(conn, handle, destination_pid):
         '''Send a handle over a local connection.'''
-        ukijumuisha socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+        ukijumuisha socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             sendfds(s, [handle])
 
     eleza recv_handle(conn):
         '''Receive a handle over a local connection.'''
-        ukijumuisha socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) as s:
+        ukijumuisha socket.fromfd(conn.fileno(), socket.AF_UNIX, socket.SOCK_STREAM) kama s:
             rudisha recvfds(s, 1)[0]
 
     eleza DupFd(fd):
@@ -193,11 +193,11 @@ isipokua:
         popen_obj = context.get_spawning_popen()
         ikiwa popen_obj ni sio Tupu:
             rudisha popen_obj.DupFd(popen_obj.duplicate_for_child(fd))
-        elikiwa HAVE_SEND_HANDLE:
+        lasivyo HAVE_SEND_HANDLE:
             kutoka . agiza resource_sharer
             rudisha resource_sharer.DupFd(fd)
         isipokua:
-             ashiria ValueError('SCM_RIGHTS appears sio to be available')
+            ashiria ValueError('SCM_RIGHTS appears sio to be available')
 
 #
 # Try making some callable types picklable
@@ -210,7 +210,7 @@ eleza _reduce_method(m):
         rudisha getattr, (m.__self__, m.__func__.__name__)
 kundi _C:
     eleza f(self):
-        pass
+        pita
 register(type(_C().f), _reduce_method)
 
 

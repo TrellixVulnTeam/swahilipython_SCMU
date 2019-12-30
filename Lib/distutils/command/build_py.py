@@ -61,8 +61,8 @@ kundi build_py (Command):
             jaribu:
                 self.optimize = int(self.optimize)
                 assert 0 <= self.optimize <= 2
-            except (ValueError, AssertionError):
-                 ashiria DistutilsOptionError("optimize must be 0, 1, ama 2")
+            tatizo (ValueError, AssertionError):
+                ashiria DistutilsOptionError("optimize must be 0, 1, ama 2")
 
     eleza run(self):
         # XXX copy_file by default preserves atime na mtime.  IMHO this is
@@ -127,7 +127,7 @@ kundi build_py (Command):
             # Each pattern has to be converted to a platform-specific path
             filelist = glob(os.path.join(src_dir, convert_path(pattern)))
             # Files that match more than one pattern are only added once
-            files.extend([fn kila fn kwenye filelist ikiwa fn sio kwenye files
+            files.extend([fn kila fn kwenye filelist ikiwa fn haiko kwenye files
                 na os.path.isfile(fn)])
         rudisha files
 
@@ -157,7 +157,7 @@ kundi build_py (Command):
             wakati path:
                 jaribu:
                     pdir = self.package_dir['.'.join(path)]
-                except KeyError:
+                tatizo KeyError:
                     tail.insert(0, path[-1])
                     toa path[-1]
                 isipokua:
@@ -167,9 +167,9 @@ kundi build_py (Command):
                 # Oops, got all the way through 'path' without finding a
                 # match kwenye package_dir.  If package_dir defines a directory
                 # kila the root (nameless) package, then fallback on it;
-                # otherwise, we might as well have sio consulted
-                # package_dir at all, as we just use the directory implied
-                # by 'tail' (which should be the same as the original value
+                # otherwise, we might kama well have sio consulted
+                # package_dir at all, kama we just use the directory implied
+                # by 'tail' (which should be the same kama the original value
                 # of 'path' at this point).
                 pdir = self.package_dir.get('')
                 ikiwa pdir ni sio Tupu:
@@ -187,10 +187,10 @@ kundi build_py (Command):
         # circumvent them.
         ikiwa package_dir != "":
             ikiwa sio os.path.exists(package_dir):
-                 ashiria DistutilsFileError(
+                ashiria DistutilsFileError(
                       "package directory '%s' does sio exist" % package_dir)
             ikiwa sio os.path.isdir(package_dir):
-                 ashiria DistutilsFileError(
+                ashiria DistutilsFileError(
                        "supposed package directory '%s' exists, "
                        "but ni sio a directory" % package_dir)
 
@@ -203,7 +203,7 @@ kundi build_py (Command):
                 log.warn(("package init file '%s' sio found " +
                           "(or sio a regular file)"), init_py)
 
-        # Either sio kwenye a package at all (__init__.py sio expected), or
+        # Either haiko kwenye a package at all (__init__.py sio expected), ama
         # __init__.py doesn't exist -- so don't rudisha the filename.
         rudisha Tupu
 
@@ -249,7 +249,7 @@ kundi build_py (Command):
         # List of (package, module, filename) tuples to return
         modules = []
 
-        # We treat modules-in-packages almost the same as toplevel modules,
+        # We treat modules-in-packages almost the same kama toplevel modules,
         # just the "package" kila a toplevel ni empty (either an empty
         # string ama empty list, depending on context).  Differences:
         #   - don't check kila __init__.py kwenye directory kila empty package
@@ -260,7 +260,7 @@ kundi build_py (Command):
 
             jaribu:
                 (package_dir, checked) = packages[package]
-            except KeyError:
+            tatizo KeyError:
                 package_dir = self.get_package_dir(package)
                 checked = 0
 
@@ -283,9 +283,9 @@ kundi build_py (Command):
 
     eleza find_all_modules(self):
         """Compute the list of all modules that will be built, whether
-        they are specified one-module-at-a-time ('self.py_modules') or
+        they are specified one-module-at-a-time ('self.py_modules') ama
         by whole packages ('self.packages').  Return a list of tuples
-        (package, module, module_file), just like 'find_modules()' and
+        (package, module, module_file), just like 'find_modules()' na
         'find_package_modules()' do."""
         modules = []
         ikiwa self.py_modules:
@@ -330,8 +330,8 @@ kundi build_py (Command):
     eleza build_module(self, module, module_file, package):
         ikiwa isinstance(package, str):
             package = package.split('.')
-        elikiwa sio isinstance(package, (list, tuple)):
-             ashiria TypeError(
+        lasivyo sio isinstance(package, (list, tuple)):
+            ashiria TypeError(
                   "'package' must be a string (dot-separated), list, ama tuple")
 
         # Now put the module source file into the "build" area -- this is
@@ -355,7 +355,7 @@ kundi build_py (Command):
         kila package kwenye self.packages:
             # Get list of (package, module, module_file) tuples based on
             # scanning the package directory.  'package' ni only included
-            # kwenye the tuple so that 'find_modules()' and
+            # kwenye the tuple so that 'find_modules()' na
             # 'find_package_tuples()' have a consistent interface; it's
             # ignored here (apart kutoka a sanity check).  Also, 'module' is
             # the *unqualified* module name (ie. no dots, no package -- we
@@ -381,8 +381,8 @@ kundi build_py (Command):
         ikiwa prefix[-1] != os.sep:
             prefix = prefix + os.sep
 
-        # XXX this code ni essentially the same as the 'byte_compile()
-        # method of the "install_lib" command, except kila the determination
+        # XXX this code ni essentially the same kama the 'byte_compile()
+        # method of the "install_lib" command, tatizo kila the determination
         # of the 'prefix' string.  Hmmm.
         ikiwa self.compile:
             byte_compile(files, optimize=0,

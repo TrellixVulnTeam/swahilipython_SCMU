@@ -60,9 +60,9 @@ kundi Test(unittest.TestCase):
         os.mkdir(support.TESTFN)
         self.addCleanup(support.rmtree, support.TESTFN)
         c_filename = os.path.join(support.TESTFN, "file.c")
-        ukijumuisha open(c_filename, "w") as file:
+        ukijumuisha open(c_filename, "w") kama file:
             file.write("int xx;\n")
-        ukijumuisha open(os.path.join(support.TESTFN, "file.py"), "w") as file:
+        ukijumuisha open(os.path.join(support.TESTFN, "file.py"), "w") kama file:
             file.write("xx = 'unaltered'\n")
         script = os.path.join(scriptsdir, "fixcid.py")
         output = self.run_script(args=(support.TESTFN,))
@@ -75,7 +75,7 @@ kundi Test(unittest.TestCase):
 
     eleza run_script(self, input="", *, args=("-",), substfile="xx yy\n"):
         substfilename = support.TESTFN + ".subst"
-        ukijumuisha open(substfilename, "w") as file:
+        ukijumuisha open(substfilename, "w") kama file:
             file.write(substfile)
         self.addCleanup(support.unlink, substfilename)
 
@@ -83,10 +83,10 @@ kundi Test(unittest.TestCase):
         script = os.path.join(scriptsdir, "fixcid.py")
         ukijumuisha support.swap_attr(sys, "argv", argv), \
                 support.swap_attr(sys, "stdin", StringIO(input)), \
-                support.captured_stdout() as output, \
+                support.captured_stdout() kama output, \
                 support.captured_stderr():
             jaribu:
                 runpy.run_path(script, run_name="__main__")
-            except SystemExit as exit:
+            tatizo SystemExit kama exit:
                 self.assertEqual(exit.code, 0)
         rudisha output.getvalue()

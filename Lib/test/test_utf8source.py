@@ -1,4 +1,4 @@
-# This file ni marked as binary kwenye the CVS, to prevent MacCVS kutoka recoding it.
+# This file ni marked kama binary kwenye the CVS, to prevent MacCVS kutoka recoding it.
 
 agiza unittest
 
@@ -17,7 +17,7 @@ kundi PEP3120Test(unittest.TestCase):
     eleza test_badsyntax(self):
         jaribu:
             agiza test.badsyntax_pep3120
-        except SyntaxError as msg:
+        tatizo SyntaxError kama msg:
             msg = str(msg).lower()
             self.assertKweli('utf-8' kwenye msg)
         isipokua:
@@ -32,7 +32,7 @@ kundi BuiltinCompileTests(unittest.TestCase):
         source_code = '# coding: Latin-1\nu = "Ç"\n'.encode("Latin-1")
         jaribu:
             code = compile(source_code, '<dummy>', 'exec')
-        except SyntaxError:
+        tatizo SyntaxError:
             self.fail("compile() cannot handle Latin-1 source")
         ns = {}
         exec(code, ns)

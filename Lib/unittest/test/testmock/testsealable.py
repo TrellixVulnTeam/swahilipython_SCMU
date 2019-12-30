@@ -4,9 +4,9 @@ kutoka unittest agiza mock
 
 kundi SampleObject:
 
-    eleza method_sample1(self): pass
+    eleza method_sample1(self): pita
 
-    eleza method_sample2(self): pass
+    eleza method_sample2(self): pita
 
 
 kundi TestSealable(unittest.TestCase):
@@ -149,7 +149,7 @@ kundi TestSealable(unittest.TestCase):
         m = mock.Mock()
 
         mock.seal(m)
-        ukijumuisha self.assertRaises(AttributeError) as cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             m.SECRETE_name
         self.assertIn("SECRETE_name", str(cm.exception))
 
@@ -158,7 +158,7 @@ kundi TestSealable(unittest.TestCase):
         m.test1.test2.test3.test4
 
         mock.seal(m)
-        ukijumuisha self.assertRaises(AttributeError) as cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             m.test1.test2.test3.test4.boom
         self.assertIn("mock_name.test1.test2.test3.test4.boom", str(cm.exception))
 
@@ -167,7 +167,7 @@ kundi TestSealable(unittest.TestCase):
         m.test1().test2.test3().test4
 
         mock.seal(m)
-        ukijumuisha self.assertRaises(AttributeError) as cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             m.test1().test2.test3().test4()
         self.assertIn("mock.test1().test2.test3().test4", str(cm.exception))
 

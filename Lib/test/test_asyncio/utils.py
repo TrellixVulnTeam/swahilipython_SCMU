@@ -24,7 +24,7 @@ kutoka wsgiref.simple_server agiza WSGIRequestHandler, WSGIServer
 
 jaribu:
     agiza ssl
-except ImportError:  # pragma: no cover
+tatizo ImportError:  # pragma: no cover
     ssl = Tupu
 
 kutoka asyncio agiza base_events
@@ -44,7 +44,7 @@ eleza data_file(filename):
     fullname = os.path.join(os.path.dirname(__file__), '..', filename)
     ikiwa os.path.isfile(fullname):
         rudisha fullname
-     ashiria FileNotFoundError(filename)
+    ashiria FileNotFoundError(filename)
 
 
 ONLYCERT = data_file('ssl_cert.pem')
@@ -95,7 +95,7 @@ eleza dummy_ssl_context():
 
 eleza run_briefly(loop):
     async eleza once():
-        pass
+        pita
     gen = once()
     t = loop.create_task(gen)
     # Don't log a warning ikiwa the task ni sio done after run_until_complete().
@@ -113,7 +113,7 @@ eleza run_until(loop, pred, timeout=30):
         ikiwa timeout ni sio Tupu:
             timeout = deadline - time.monotonic()
             ikiwa timeout <= 0:
-                 ashiria futures.TimeoutError()
+                ashiria futures.TimeoutError()
         loop.run_until_complete(tasks.sleep(0.001))
 
 
@@ -134,7 +134,7 @@ kundi SilentWSGIRequestHandler(WSGIRequestHandler):
         rudisha io.StringIO()
 
     eleza log_message(self, format, *args):
-        pass
+        pita
 
 
 kundi SilentWSGIServer(WSGIServer):
@@ -147,7 +147,7 @@ kundi SilentWSGIServer(WSGIServer):
         rudisha request, client_addr
 
     eleza handle_error(self, request, client_address):
-        pass
+        pita
 
 
 kundi SSLWSGIServerMixin:
@@ -164,13 +164,13 @@ kundi SSLWSGIServerMixin:
         jaribu:
             self.RequestHandlerClass(ssock, client_address, self)
             ssock.close()
-        except OSError:
+        tatizo OSError:
             # maybe socket has been closed by peer
-            pass
+            pita
 
 
 kundi SSLWSGIServer(SSLWSGIServerMixin, SilentWSGIServer):
-    pass
+    pita
 
 
 eleza _run_test_server(*, address, use_ssl=Uongo, server_cls, server_ssl_cls):
@@ -232,7 +232,7 @@ ikiwa hasattr(socket, 'AF_UNIX'):
             # Code kwenye the stdlib expects that get_request
             # will rudisha a socket na a tuple (host, port).
             # However, this isn't true kila UNIX sockets,
-            # as the second rudisha value will be a path;
+            # kama the second rudisha value will be a path;
             # hence we rudisha some fake data sufficient
             # to get the tests going
             rudisha request, ('127.0.0.1', '')
@@ -241,15 +241,15 @@ ikiwa hasattr(socket, 'AF_UNIX'):
     kundi SilentUnixWSGIServer(UnixWSGIServer):
 
         eleza handle_error(self, request, client_address):
-            pass
+            pita
 
 
     kundi UnixSSLWSGIServer(SSLWSGIServerMixin, SilentUnixWSGIServer):
-        pass
+        pita
 
 
     eleza gen_unix_socket_path():
-        ukijumuisha tempfile.NamedTemporaryFile() as file:
+        ukijumuisha tempfile.NamedTemporaryFile() kama file:
             rudisha file.name
 
 
@@ -261,13 +261,13 @@ ikiwa hasattr(socket, 'AF_UNIX'):
         mwishowe:
             jaribu:
                 os.unlink(path)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
 
     @contextlib.contextmanager
     eleza run_test_unix_server(*, use_ssl=Uongo):
-        ukijumuisha unix_socket_path() as path:
+        ukijumuisha unix_socket_path() kama path:
             tuma kutoka _run_test_server(address=path, use_ssl=use_ssl,
                                         server_cls=SilentUnixWSGIServer,
                                         server_ssl_cls=UnixSSLWSGIServer)
@@ -316,7 +316,7 @@ kundi TestLoop(base_events.BaseEventLoop):
     It manages self time directly.
     If something scheduled to be executed later then
     on next loop iteration after all ready handlers done
-    generator passed to __init__ ni calling.
+    generator pitaed to __init__ ni calling.
 
     Generator should be like this:
 
@@ -326,7 +326,7 @@ kundi TestLoop(base_events.BaseEventLoop):
             ... = tuma time_advance
 
     Value returned by tuma ni absolute time of next scheduled handler.
-    Value passed to tuma ni time advance to move loop's time forward.
+    Value pitaed to tuma ni time advance to move loop's time forward.
     """
 
     eleza __init__(self, gen=Tupu):
@@ -334,7 +334,7 @@ kundi TestLoop(base_events.BaseEventLoop):
 
         ikiwa gen ni Tupu:
             eleza gen():
-                yield
+                tuma
             self._check_on_close = Uongo
         isipokua:
             self._check_on_close = Kweli
@@ -365,10 +365,10 @@ kundi TestLoop(base_events.BaseEventLoop):
         ikiwa self._check_on_close:
             jaribu:
                 self._gen.send(0)
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
             isipokua:  # pragma: no cover
-                 ashiria AssertionError("Time generator ni sio finished")
+                ashiria AssertionError("Time generator ni sio finished")
 
     eleza _add_reader(self, fd, callback, *args):
         self.readers[fd] = events.Handle(callback, args, self, Tupu)
@@ -382,19 +382,19 @@ kundi TestLoop(base_events.BaseEventLoop):
             rudisha Uongo
 
     eleza assert_reader(self, fd, callback, *args):
-        ikiwa fd sio kwenye self.readers:
-             ashiria AssertionError(f'fd {fd} ni sio registered')
+        ikiwa fd haiko kwenye self.readers:
+            ashiria AssertionError(f'fd {fd} ni sio registered')
         handle = self.readers[fd]
         ikiwa handle._callback != callback:
-             ashiria AssertionError(
+            ashiria AssertionError(
                 f'unexpected callback: {handle._callback} != {callback}')
         ikiwa handle._args != args:
-             ashiria AssertionError(
+            ashiria AssertionError(
                 f'unexpected callback args: {handle._args} != {args}')
 
     eleza assert_no_reader(self, fd):
         ikiwa fd kwenye self.readers:
-             ashiria AssertionError(f'fd {fd} ni registered')
+            ashiria AssertionError(f'fd {fd} ni registered')
 
     eleza _add_writer(self, fd, callback, *args):
         self.writers[fd] = events.Handle(callback, args, self, Tupu)
@@ -419,16 +419,16 @@ kundi TestLoop(base_events.BaseEventLoop):
         ikiwa sio isinstance(fd, int):
             jaribu:
                 fd = int(fd.fileno())
-            except (AttributeError, TypeError, ValueError):
+            tatizo (AttributeError, TypeError, ValueError):
                 # This code matches selectors._fileobj_to_fd function.
-                 ashiria ValueError("Invalid file object: "
+                ashiria ValueError("Invalid file object: "
                                  "{!r}".format(fd)) kutoka Tupu
         jaribu:
             transport = self._transports[fd]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         isipokua:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                 'File descriptor {!r} ni used by transport {!r}'.format(
                     fd, transport))
 
@@ -471,7 +471,7 @@ kundi TestLoop(base_events.BaseEventLoop):
         return
 
     eleza _write_to_self(self):
-        pass
+        pita
 
 
 eleza MockCallback(**kwargs):
@@ -502,7 +502,7 @@ kundi MockInstanceOf:
 eleza get_function_source(func):
     source = format_helpers._get_function_source(func)
     ikiwa source ni Tupu:
-         ashiria ValueError("unable to get the source of %r" % (func,))
+        ashiria ValueError("unable to get the source of %r" % (func,))
     rudisha source
 
 
@@ -517,9 +517,9 @@ kundi TestCase(unittest.TestCase):
         ikiwa policy ni sio Tupu:
             jaribu:
                 watcher = policy.get_child_watcher()
-            except NotImplementedError:
+            tatizo NotImplementedError:
                 # watcher ni sio implemented by EventLoopPolicy, e.g. Windows
-                pass
+                pita
             isipokua:
                 ikiwa isinstance(watcher, asyncio.ThreadedChildWatcher):
                     threads = list(watcher._threads.values())
@@ -528,7 +528,7 @@ kundi TestCase(unittest.TestCase):
 
     eleza set_event_loop(self, loop, *, cleanup=Kweli):
         assert loop ni sio Tupu
-        # ensure that the event loop ni passed explicitly kwenye asyncio
+        # ensure that the event loop ni pitaed explicitly kwenye asyncio
         events.set_event_loop(Tupu)
         ikiwa cleanup:
             self.addCleanup(self.close_loop, loop)
@@ -551,8 +551,8 @@ kundi TestCase(unittest.TestCase):
 
         events.set_event_loop(Tupu)
 
-        # Detect CPython bug #23353: ensure that yield/yield-kutoka ni sio used
-        # kwenye an except block of a generator
+        # Detect CPython bug #23353: ensure that tuma/tuma-kutoka ni sio used
+        # kwenye an tatizo block of a generator
         self.assertEqual(sys.exc_info(), (Tupu, Tupu, Tupu))
 
         self.doCleanups()
@@ -569,7 +569,7 @@ eleza disable_logger():
     old_level = logger.level
     jaribu:
         logger.setLevel(logging.CRITICAL+1)
-        yield
+        tuma
     mwishowe:
         logger.setLevel(old_level)
 

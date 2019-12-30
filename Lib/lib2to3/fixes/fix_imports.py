@@ -109,7 +109,7 @@ kundi FixImports(fixer_base.BaseFix):
         ikiwa results:
             # Module usage could be kwenye the trailer of an attribute lookup, so we
             # might have nested matches when "bare_with_attr" ni present.
-            ikiwa "bare_with_attr" sio kwenye results na \
+            ikiwa "bare_with_attr" haiko kwenye results na \
                     any(match(obj) kila obj kwenye attr_chain(node, "parent")):
                 rudisha Uongo
             rudisha results
@@ -126,7 +126,7 @@ kundi FixImports(fixer_base.BaseFix):
             new_name = self.mapping[mod_name]
             import_mod.replace(Name(new_name, prefix=import_mod.prefix))
             ikiwa "name_import" kwenye results:
-                # If it's sio a "kutoka x agiza x, y" ama "agiza x as y" import,
+                # If it's sio a "kutoka x agiza x, y" ama "agiza x kama y" import,
                 # marked its usage to be replaced.
                 self.replace[mod_name] = new_name
             ikiwa "multiple_imports" kwenye results:

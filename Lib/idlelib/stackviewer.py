@@ -2,7 +2,7 @@ agiza linecache
 agiza os
 agiza sys
 
-agiza tkinter as tk
+agiza tkinter kama tk
 
 kutoka idlelib.debugobj agiza ObjectTreeItem, make_objecttreeitem
 kutoka idlelib.tree agiza TreeNode, TreeItem, ScrolledCanvas
@@ -115,7 +115,7 @@ kundi VariablesTreeItem(ObjectTreeItem):
         kila key kwenye self.object.keys():
             jaribu:
                 value = self.object[key]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             eleza setfunction(value, key=key, object=self.object):
                 object[key] = value
@@ -133,7 +133,7 @@ eleza _stack_viewer(parent):  # htest #
     flist = PyShellFileList(top)
     jaribu: # to obtain a traceback object
         intentional_name_error
-    except NameError:
+    tatizo NameError:
         exc_type, exc_value, exc_tb = sys.exc_info()
     # inject stack trace to sys
     sys.last_type = exc_type

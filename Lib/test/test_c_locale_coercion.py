@@ -37,14 +37,14 @@ ikiwa sys.platform.startswith("linux"):
         # TODO: Once https://bugs.python.org/issue30672 ni addressed, we'll be
         #       able to check this case unconditionally
         EXPECTED_C_LOCALE_EQUIVALENTS.append("POSIX")
-elikiwa sys.platform.startswith("aix"):
+lasivyo sys.platform.startswith("aix"):
     # AIX uses iso8859-1 kwenye the C locale, other *nix platforms use ASCII
     EXPECTED_C_LOCALE_STREAM_ENCODING = "iso8859-1"
     EXPECTED_C_LOCALE_FS_ENCODING = "iso8859-1"
-elikiwa sys.platform == "darwin":
+lasivyo sys.platform == "darwin":
     # FS encoding ni UTF-8 on macOS
     EXPECTED_C_LOCALE_FS_ENCODING = "utf-8"
-elikiwa sys.platform == "cygwin":
+lasivyo sys.platform == "cygwin":
     # Cygwin defaults to using C.UTF-8
     # TODO: Work out a robust dynamic test kila this that doesn't rely on
     #       CPython's own locale handling machinery
@@ -61,7 +61,7 @@ elikiwa sys.platform == "cygwin":
 #   such platforms (e.g. it isn't set on Windows)
 # * Fix the test expectations to match the actual platform behaviour
 
-# In order to get the warning messages to match up as expected, the candidate
+# In order to get the warning messages to match up kama expected, the candidate
 # order here must much the target locale order kwenye Python/pylifecycle.c
 _C_UTF8_LOCALES = ("C.UTF-8", "C.utf8", "UTF-8")
 
@@ -72,11 +72,11 @@ _C_UTF8_LOCALES = ("C.UTF-8", "C.utf8", "UTF-8")
 #
 # If the relevant locale module attributes exist, na we're sio on a platform
 # where we expect it to always succeed, we also check that
-# `locale.nl_langinfo(locale.CODESET)` works, as ikiwa it fails, the interpreter
+# `locale.nl_langinfo(locale.CODESET)` works, kama ikiwa it fails, the interpreter
 # will skip locale coercion kila that particular target locale
 _check_nl_langinfo_CODESET = bool(
-    sys.platform sio kwenye ("darwin", "linux") and
-    hasattr(locale, "nl_langinfo") and
+    sys.platform haiko kwenye ("darwin", "linux") na
+    hasattr(locale, "nl_langinfo") na
     hasattr(locale, "CODESET")
 )
 
@@ -84,7 +84,7 @@ eleza _set_locale_in_subprocess(locale_name):
     cmd_fmt = "agiza locale; andika(locale.setlocale(locale.LC_CTYPE, '{}'))"
     ikiwa _check_nl_langinfo_CODESET:
         # If there's no valid CODESET, we expect coercion to be skipped
-        cmd_fmt += "; agiza sys; sys.exit(not locale.nl_langinfo(locale.CODESET))"
+        cmd_fmt += "; agiza sys; sys.exit(sio locale.nl_langinfo(locale.CODESET))"
     cmd = cmd_fmt.format(locale_name)
     result, py_cmd = run_python_until_end("-c", cmd, PYTHONCOERCECLOCALE='')
     rudisha result.rc == 0
@@ -154,7 +154,7 @@ kundi EncodingDetails(_EncodingDetails):
 LEGACY_LOCALE_WARNING = (
     "Python runtime initialized ukijumuisha LC_CTYPE=C (a locale ukijumuisha default ASCII "
     "encoding), which may cause Unicode compatibility problems. Using C.UTF-8, "
-    "C.utf8, ama UTF-8 (ikiwa available) as alternative Unicode-compatible "
+    "C.utf8, ama UTF-8 (ikiwa available) kama alternative Unicode-compatible "
     "locales ni recommended."
 )
 
@@ -237,7 +237,7 @@ kundi LocaleConfigurationTests(_LocaleHandlingTestCase):
         # This relies on setUpModule() having been run, so it can't be
         # handled via the @unittest.skipUnless decorator
         ikiwa sio AVAILABLE_TARGETS:
-             ashiria unittest.SkipTest("No C-with-UTF-8 locale available")
+            ashiria unittest.SkipTest("No C-with-UTF-8 locale available")
 
     eleza test_external_target_locale_configuration(self):
 
@@ -330,7 +330,7 @@ kundi LocaleCoercionTests(_LocaleHandlingTestCase):
             # locale environment variables are undefined ama empty. When
             # this code path ni run ukijumuisha environ['LC_ALL'] == 'C', then
             # LEGACY_LOCALE_WARNING ni printed.
-            ikiwa (support.is_android and
+            ikiwa (support.is_android na
                     _expected_warnings == [CLI_COERCION_WARNING]):
                 _expected_warnings = Tupu
             self._check_child_encoding_details(base_var_dict,

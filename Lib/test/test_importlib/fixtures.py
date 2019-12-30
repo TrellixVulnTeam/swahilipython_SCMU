@@ -9,13 +9,13 @@ agiza contextlib
 
 jaribu:
     kutoka contextlib agiza ExitStack
-except ImportError:
+tatizo ImportError:
     kutoka contextlib2 agiza ExitStack
 
 jaribu:
     agiza pathlib
-except ImportError:
-    agiza pathlib2 as pathlib
+tatizo ImportError:
+    agiza pathlib2 kama pathlib
 
 
 __metaclass__ = type
@@ -34,14 +34,14 @@ eleza tempdir():
 eleza save_cwd():
     orig = os.getcwd()
     jaribu:
-        yield
+        tuma
     mwishowe:
         os.chdir(orig)
 
 
 @contextlib.contextmanager
 eleza tempdir_as_cwd():
-    ukijumuisha tempdir() as tmp:
+    ukijumuisha tempdir() kama tmp:
         ukijumuisha save_cwd():
             os.chdir(str(tmp))
             tuma tmp
@@ -60,7 +60,7 @@ kundi OnSysPath:
     eleza add_sys_path(dir):
         sys.path[:0] = [str(dir)]
         jaribu:
-            yield
+            tuma
         mwishowe:
             sys.path.remove(str(dir))
 
@@ -162,12 +162,12 @@ kundi EggInfoFile(OnSysPath, SiteDir):
 
 
 eleza build_files(file_defs, prefix=pathlib.Path()):
-    """Build a set of files/directories, as described by the
+    """Build a set of files/directories, kama described by the
 
     file_defs dictionary.  Each key/value pair kwenye the dictionary is
-    interpreted as a filename/contents pair.  If the contents value ni a
+    interpreted kama a filename/contents pair.  If the contents value ni a
     dictionary, a directory ni created, na the dictionary interpreted
-    as the files within it, recursively.
+    kama the files within it, recursively.
 
     For example:
 
@@ -188,10 +188,10 @@ eleza build_files(file_defs, prefix=pathlib.Path()):
             build_files(contents, prefix=full_name)
         isipokua:
             ikiwa isinstance(contents, bytes):
-                ukijumuisha full_name.open('wb') as f:
+                ukijumuisha full_name.open('wb') kama f:
                     f.write(contents)
             isipokua:
-                ukijumuisha full_name.open('w') as f:
+                ukijumuisha full_name.open('w') kama f:
                     f.write(DALS(contents))
 
 

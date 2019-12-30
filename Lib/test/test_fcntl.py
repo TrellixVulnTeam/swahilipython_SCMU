@@ -17,7 +17,7 @@ fcntl = import_module('fcntl')
 eleza get_lockdata():
     jaribu:
         os.O_LARGEFILE
-    except AttributeError:
+    tatizo AttributeError:
         start_len = "ll"
     isipokua:
         start_len = "qq"
@@ -32,9 +32,9 @@ eleza get_lockdata():
             pid_t = 'l'
         lockdata = struct.pack(off_t + off_t + pid_t + 'hh', 0, 0, 0,
                                fcntl.F_WRLCK, 0)
-    elikiwa sys.platform.startswith('gnukfreebsd'):
+    lasivyo sys.platform.startswith('gnukfreebsd'):
         lockdata = struct.pack('qqihhi', 0, 0, 0, fcntl.F_WRLCK, 0, 0)
-    elikiwa sys.platform kwenye ['hp-uxB', 'unixware7']:
+    lasivyo sys.platform kwenye ['hp-uxB', 'unixware7']:
         lockdata = struct.pack('hhlllii', fcntl.F_WRLCK, 0, 0, 0, 0, 0, 0)
     isipokua:
         lockdata = struct.pack('hh'+start_len+'hh', fcntl.F_WRLCK, 0, 0, 0, 0, 0)
@@ -73,7 +73,7 @@ kundi TestFcntl(unittest.TestCase):
         self.f.close()
 
     eleza test_fcntl_file_descriptor(self):
-        # again, but pass the file rather than numeric descriptor
+        # again, but pita the file rather than numeric descriptor
         self.f = open(TESTFN, 'wb')
         rv = fcntl.fcntl(self.f, fcntl.F_SETFL, os.O_NONBLOCK)
         ikiwa verbose:
@@ -111,12 +111,12 @@ kundi TestFcntl(unittest.TestCase):
         "ARM Linux returns EINVAL kila F_NOTIFY DN_MULTISHOT")
     eleza test_fcntl_64_bit(self):
         # Issue #1309352: fcntl shouldn't fail when the third arg fits kwenye a
-        # C 'long' but sio kwenye a C 'int'.
+        # C 'long' but haiko kwenye a C 'int'.
         jaribu:
             cmd = fcntl.F_NOTIFY
             # This flag ni larger than 2**31 kwenye 64-bit builds
             flags = fcntl.DN_MULTISHOT
-        except AttributeError:
+        tatizo AttributeError:
             self.skipTest("F_NOTIFY ama DN_MULTISHOT unavailable")
         fd = os.open(os.path.dirname(os.path.abspath(TESTFN)), os.O_RDONLY)
         jaribu:

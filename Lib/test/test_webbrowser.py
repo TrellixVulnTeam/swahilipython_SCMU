@@ -23,11 +23,11 @@ kundi PopenMock(mock.MagicMock):
 kundi CommandTestMixin:
 
     eleza _test(self, meth, *, args=[URL], kw={}, options, arguments):
-        """Given a web browser instance method name along ukijumuisha arguments and
+        """Given a web browser instance method name along ukijumuisha arguments na
         keywords kila same (which defaults to the single argument URL), creates
         a browser instance kutoka the kundi pointed to by self.browser, calls the
         indicated instance method ukijumuisha the indicated arguments, na compares
-        the resulting options na arguments passed to Popen by the browser
+        the resulting options na arguments pitaed to Popen by the browser
         instance against the 'options' na 'args' lists.  Options are compared
         kwenye a position independent fashion, na the arguments are compared in
         sequence order to whatever ni left over after removing the options.
@@ -230,7 +230,7 @@ kundi BrowserRegistrationTest(unittest.TestCase):
 
     eleza _check_registration(self, preferred):
         kundi ExampleBrowser:
-            pass
+            pita
 
         expected_tryorder = []
         expected_browsers = {}
@@ -275,7 +275,7 @@ kundi ImportTest(unittest.TestCase):
         self.assertUongo(webbrowser._browsers)
 
         kundi ExampleBrowser:
-            pass
+            pita
         webbrowser.register('Example1', ExampleBrowser)
         self.assertKweli(webbrowser._tryorder)
         self.assertEqual(webbrowser._tryorder[-1], 'Example1')
@@ -302,9 +302,9 @@ kundi ImportTest(unittest.TestCase):
         webbrowser = support.import_fresh_module('webbrowser')
         jaribu:
             browser = webbrowser.get().name
-        except (webbrowser.Error, AttributeError) as err:
+        tatizo (webbrowser.Error, AttributeError) kama err:
             self.skipTest(str(err))
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = browser
             webbrowser = support.import_fresh_module('webbrowser')
             webbrowser.get()
@@ -314,15 +314,15 @@ kundi ImportTest(unittest.TestCase):
         jaribu:
             webbrowser.get()
             least_preferred_browser = webbrowser.get(webbrowser._tryorder[-1]).name
-        except (webbrowser.Error, AttributeError, IndexError) as err:
+        tatizo (webbrowser.Error, AttributeError, IndexError) kama err:
             self.skipTest(str(err))
 
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = least_preferred_browser
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, least_preferred_browser)
 
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env["BROWSER"] = sys.executable
             webbrowser = support.import_fresh_module('webbrowser')
             self.assertEqual(webbrowser.get().name, sys.executable)

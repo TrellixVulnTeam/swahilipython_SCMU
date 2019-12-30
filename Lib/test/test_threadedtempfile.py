@@ -1,6 +1,6 @@
 """
 Create na delete FILES_PER_THREAD temp files (via tempfile.TemporaryFile)
-in each of NUM_THREADS threads, recording the number of successes and
+in each of NUM_THREADS threads, recording the number of successes na
 failures.  A failure ni a bug kwenye tempfile, na may be due to:
 
 + Trying to create more than one tempfile ukijumuisha the same name.
@@ -51,7 +51,7 @@ kundi ThreadedTempFileTest(unittest.TestCase):
     eleza test_main(self):
         threads = [TempFileGreedy() kila i kwenye range(NUM_THREADS)]
         ukijumuisha start_threads(threads, startEvent.set):
-            pass
+            pita
         ok = sum(t.ok_count kila t kwenye threads)
         errors = [str(t.name) + str(t.errors.getvalue())
                   kila t kwenye threads ikiwa t.error_count]

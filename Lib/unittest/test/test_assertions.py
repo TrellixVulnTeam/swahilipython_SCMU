@@ -58,51 +58,51 @@ kundi Test_Assertions(unittest.TestCase):
 
     eleza test_assertRaises(self):
         eleza _raise(e):
-             ashiria e
+            ashiria e
         self.assertRaises(KeyError, _raise, KeyError)
         self.assertRaises(KeyError, _raise, KeyError("key"))
         jaribu:
             self.assertRaises(KeyError, lambda: Tupu)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             self.assertIn("KeyError sio raised", str(e))
         isipokua:
             self.fail("assertRaises() didn't fail")
         jaribu:
             self.assertRaises(KeyError, _raise, ValueError)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("assertRaises() didn't let exception pass through")
-        ukijumuisha self.assertRaises(KeyError) as cm:
+            self.fail("assertRaises() didn't let exception pita through")
+        ukijumuisha self.assertRaises(KeyError) kama cm:
             jaribu:
-                 ashiria KeyError
-            except Exception as e:
+                ashiria KeyError
+            tatizo Exception kama e:
                 exc = e
                 raise
         self.assertIs(cm.exception, exc)
 
         ukijumuisha self.assertRaises(KeyError):
-             ashiria KeyError("key")
+            ashiria KeyError("key")
         jaribu:
             ukijumuisha self.assertRaises(KeyError):
-                pass
-        except self.failureException as e:
+                pita
+        tatizo self.failureException kama e:
             self.assertIn("KeyError sio raised", str(e))
         isipokua:
             self.fail("assertRaises() didn't fail")
         jaribu:
             ukijumuisha self.assertRaises(KeyError):
-                 ashiria ValueError
-        except ValueError:
-            pass
+                ashiria ValueError
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("assertRaises() didn't let exception pass through")
+            self.fail("assertRaises() didn't let exception pita through")
 
     eleza test_assertRaises_frames_survival(self):
         # Issue #9815: assertRaises should avoid keeping local variables
         # kwenye a traceback alive.
         kundi A:
-            pass
+            pita
         wr = Tupu
 
         kundi Foo(unittest.TestCase):
@@ -112,9 +112,9 @@ kundi Test_Assertions(unittest.TestCase):
                 a = A()
                 wr = weakref.ref(a)
                 jaribu:
-                     ashiria OSError
-                except OSError:
-                     ashiria ValueError
+                    ashiria OSError
+                tatizo OSError:
+                    ashiria ValueError
 
             eleza test_functional(self):
                 self.assertRaises(ValueError, self.foo)
@@ -132,7 +132,7 @@ kundi Test_Assertions(unittest.TestCase):
         self.assertNotRegex('Ala ma kota', r'r+')
         jaribu:
             self.assertNotRegex('Ala ma kota', r'k.t', 'Message')
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             self.assertIn('Message', e.args[0])
         isipokua:
             self.fail('assertNotRegex should have failed.')
@@ -149,14 +149,14 @@ kundi TestLongMessage(unittest.TestCase):
             failureException = self.failureException
 
             eleza testTest(self):
-                pass
+                pita
 
         kundi TestableTestKweli(unittest.TestCase):
             longMessage = Kweli
             failureException = self.failureException
 
             eleza testTest(self):
-                pass
+                pita
 
         self.testableKweli = TestableTestKweli('testTest')
         self.testableUongo = TestableTestUongo('testTest')
@@ -183,10 +183,10 @@ kundi TestLongMessage(unittest.TestCase):
         """
         Check that methodName(*args) raises the correct error messages.
         errors should be a list of 4 regex that match the error when:
-          1) longMessage = Uongo na no msg passed;
-          2) longMessage = Uongo na msg passed;
-          3) longMessage = Kweli na no msg passed;
-          4) longMessage = Kweli na msg passed;
+          1) longMessage = Uongo na no msg pitaed;
+          2) longMessage = Uongo na msg pitaed;
+          3) longMessage = Kweli na no msg pitaed;
+          4) longMessage = Kweli na msg pitaed;
         """
         eleza getMethod(i):
             useTestableUongo  = i < 2
@@ -351,17 +351,17 @@ kundi TestLongMessage(unittest.TestCase):
           ukijumuisha method(*args):
               func()
         *errors* should be a list of 4 regex that match the error when:
-          1) longMessage = Uongo na no msg passed;
-          2) longMessage = Uongo na msg passed;
-          3) longMessage = Kweli na no msg passed;
-          4) longMessage = Kweli na msg passed;
+          1) longMessage = Uongo na no msg pitaed;
+          2) longMessage = Uongo na msg pitaed;
+          3) longMessage = Kweli na no msg pitaed;
+          4) longMessage = Kweli na msg pitaed;
         """
         p = product((self.testableUongo, self.testableKweli),
                     ({}, {"msg": "oops"}))
         kila (cls, kwargs), err kwenye zip(p, errors):
             method = getattr(cls, methodName)
             ukijumuisha self.assertRaisesRegex(cls.failureException, err):
-                ukijumuisha method(*args, **kwargs) as cm:
+                ukijumuisha method(*args, **kwargs) kama cm:
                     func()
 
     eleza testAssertRaises(self):
@@ -379,7 +379,7 @@ kundi TestLongMessage(unittest.TestCase):
                                '^TypeError sio raised : oops$'])
         # test error raised but ukijumuisha wrong message
         eleza raise_wrong_message():
-             ashiria TypeError('foo')
+            ashiria TypeError('foo')
         self.assertMessagesCM('assertRaisesRegex', (TypeError, 'regex'),
                               raise_wrong_message,
                               ['^"regex" does sio match "foo"$', '^oops$',

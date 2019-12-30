@@ -45,7 +45,7 @@ Unpack generic sequence
     >>> kundi Seq:
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3: rudisha i
-    ...          ashiria IndexError
+    ...         ashiria IndexError
     ...
     >>> a, *b = Seq()
     >>> a == 0 na b == [1, 2]
@@ -179,7 +179,7 @@ Iterable argument unpacking
     >>> andika(*[1], *[2], 3)
     1 2 3
 
-Make sure that they don't corrupt the passed-in dicts.
+Make sure that they don't corrupt the pitaed-in dicts.
 
     >>> eleza f(x, y):
     ...     andika(x, y)
@@ -283,16 +283,16 @@ Unpacking a sequence where the test kila too long raises a different kind of
 error
 
     >>> kundi BozoError(Exception):
-    ...     pass
+    ...     pita
     ...
     >>> kundi BadSeq:
     ...     eleza __getitem__(self, i):
     ...         ikiwa i >= 0 na i < 3:
     ...             rudisha i
-    ...         elikiwa i == 3:
-    ...              ashiria BozoError
+    ...         lasivyo i == 3:
+    ...             ashiria BozoError
     ...         isipokua:
-    ...              ashiria IndexError
+    ...             ashiria IndexError
     ...
 
 Trigger code wakati sio expecting an IndexError (unpack sequence too long, wrong

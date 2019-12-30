@@ -27,8 +27,8 @@ kundi BuildRpmTestCase(support.TempdirManager,
     eleza setUp(self):
         jaribu:
             sys.executable.encode("UTF-8")
-        except UnicodeEncodeError:
-             ashiria unittest.SkipTest("sys.executable ni sio encodable to UTF-8")
+        tatizo UnicodeEncodeError:
+            ashiria unittest.SkipTest("sys.executable ni sio encodable to UTF-8")
 
         super(BuildRpmTestCase, self).setUp()
         self.old_location = os.getcwd()

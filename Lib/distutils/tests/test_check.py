@@ -10,7 +10,7 @@ kutoka distutils.errors agiza DistutilsSetupError
 
 jaribu:
     agiza pygments
-except ImportError:
+tatizo ImportError:
     pygments = Tupu
 
 
@@ -124,7 +124,7 @@ kundi CheckTestCase(support.LoggingSilencer,
             .. code:: python
 
                 eleza foo():
-                    pass
+                    pita
             """))
         example_rst_docs.append(textwrap.dedent("""\
             Here's some code:
@@ -132,7 +132,7 @@ kundi CheckTestCase(support.LoggingSilencer,
             .. code-block:: python
 
                 eleza foo():
-                    pass
+                    pita
             """))
 
         kila rest_with_code kwenye example_rst_docs:

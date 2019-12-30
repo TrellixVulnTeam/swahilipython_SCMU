@@ -45,7 +45,7 @@ kundi FixHasKey(fixer_base.BaseFix):
         trailer<
             '('
             ( not(arglist | argument<any '=' any>) arg=any
-            | arglist<(not argument<any '=' any>) arg=any ','>
+            | arglist<(sio argument<any '=' any>) arg=any ','>
             )
             ')'
         >
@@ -60,7 +60,7 @@ kundi FixHasKey(fixer_base.BaseFix):
             trailer<
                 '('
                 ( not(arglist | argument<any '=' any>) arg=any
-                | arglist<(not argument<any '=' any>) arg=any ','>
+                | arglist<(sio argument<any '=' any>) arg=any ','>
                 )
                 ')'
             >
@@ -71,7 +71,7 @@ kundi FixHasKey(fixer_base.BaseFix):
     eleza transform(self, node, results):
         assert results
         syms = self.syms
-        ikiwa (node.parent.type == syms.not_test and
+        ikiwa (node.parent.type == syms.not_test na
             self.pattern.match(node.parent)):
             # Don't transform a node matching the first alternative of the
             # pattern when its parent matches the second alternative

@@ -8,5 +8,5 @@ kundi TestDefault:
             self.dumps(repr(type)))
 
 
-kundi TestPyDefault(TestDefault, PyTest): pass
-kundi TestCDefault(TestDefault, CTest): pass
+kundi TestPyDefault(TestDefault, PyTest): pita
+kundi TestCDefault(TestDefault, CTest): pita

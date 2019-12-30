@@ -373,7 +373,7 @@ kundi OutputTestCase(unittest.TestCase):
 
         lines = []
         kila line kwenye s.splitlines(keepends=Uongo):
-            # Drop texts, as they are locale dependent
+            # Drop texts, kama they are locale dependent
             ikiwa line na sio filter(neitherspacenordigit, line):
                 lines.append(line)
         rudisha lines
@@ -469,30 +469,30 @@ kundi OutputTestCase(unittest.TestCase):
         )
 
     eleza test_prweek(self):
-        ukijumuisha support.captured_stdout() as out:
+        ukijumuisha support.captured_stdout() kama out:
             week = [(1,0), (2,1), (3,2), (4,3), (5,4), (6,5), (7,6)]
             calendar.TextCalendar().prweek(week, 1)
             self.assertEqual(out.getvalue(), " 1  2  3  4  5  6  7")
 
     eleza test_prmonth(self):
-        ukijumuisha support.captured_stdout() as out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.TextCalendar().prmonth(2004, 1)
             self.assertEqual(out.getvalue(), result_2004_01_text)
 
     eleza test_pryear(self):
-        ukijumuisha support.captured_stdout() as out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.TextCalendar().pryear(2004)
             self.assertEqual(out.getvalue(), result_2004_text)
 
     eleza test_format(self):
-        ukijumuisha support.captured_stdout() as out:
+        ukijumuisha support.captured_stdout() kama out:
             calendar.format(["1", "2", "3"], colwidth=3, spacing=1)
             self.assertEqual(out.getvalue().strip(), "1   2   3")
 
 kundi CalendarTestCase(unittest.TestCase):
     eleza test_isleap(self):
-        # Make sure that the rudisha ni right kila a few years, and
-        # ensure that the rudisha values are 1 ama 0, sio just true or
+        # Make sure that the rudisha ni right kila a few years, na
+        # ensure that the rudisha values are 1 ama 0, sio just true ama
         # false (see SF bug #485794).  Specific additional tests may
         # be appropriate; this tests a single "cycle".
         self.assertEqual(calendar.isleap(2000), 1)
@@ -549,9 +549,9 @@ kundi CalendarTestCase(unittest.TestCase):
             cal = calendar.LocaleTextCalendar(locale='')
             local_weekday = cal.formatweekday(1, 10)
             local_month = cal.formatmonthname(2010, 10, 10)
-        except locale.Error:
+        tatizo locale.Error:
             # cannot set the system default locale -- skip rest of test
-             ashiria unittest.SkipTest('cannot set the system default locale')
+            ashiria unittest.SkipTest('cannot set the system default locale')
         self.assertIsInstance(local_weekday, str)
         self.assertIsInstance(local_month, str)
         self.assertEqual(len(local_weekday), 10)
@@ -767,7 +767,7 @@ kundi MonthRangeTestCase(unittest.TestCase):
 
 kundi LeapdaysTestCase(unittest.TestCase):
     eleza test_no_range(self):
-        # test when no range i.e. two identical years as args
+        # test when no range i.e. two identical years kama args
         self.assertEqual(calendar.leapdays(2010,2010), 0)
 
     eleza test_no_leapdays(self):
@@ -844,7 +844,7 @@ kundi CommandLineTestCase(unittest.TestCase):
                 locale.setlocale(locale.LC_TIME, (lang, enc))
             mwishowe:
                 locale.setlocale(locale.LC_TIME, oldlocale)
-        except (locale.Error, ValueError):
+        tatizo (locale.Error, ValueError):
             self.skipTest('cannot set the system default locale')
         stdout = self.run_ok('--locale', lang, '--encoding', enc, '2004')
         self.assertIn('2004'.encode(enc), stdout)

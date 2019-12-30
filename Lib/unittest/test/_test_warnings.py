@@ -1,9 +1,9 @@
 # helper module kila test_runner.Test_TextTestRunner.test_warnings
 
 """
-This module has a number of tests that  ashiria different kinds of warnings.
+This module has a number of tests that ashiria different kinds of warnings.
 When the tests are run, the warnings are caught na their messages are printed
-to stdout.  This module also accepts an arg that ni then passed to
+to stdout.  This module also accepts an arg that ni then pitaed to
 unittest.main to affect the behavior of warnings.
 Test_TextTestRunner.test_warnings executes this script ukijumuisha different
 combinations of warnings args na -W flags na check that the output ni correct.
@@ -61,8 +61,8 @@ kundi TestWarnings(unittest.TestCase):
 
 
 ikiwa __name__ == '__main__':
-    ukijumuisha warnings.catch_warnings(record=Kweli) as ws:
-        # ikiwa an arg ni provided pass it to unittest.main as 'warnings'
+    ukijumuisha warnings.catch_warnings(record=Kweli) kama ws:
+        # ikiwa an arg ni provided pita it to unittest.main kama 'warnings'
         ikiwa len(sys.argv) == 2:
             unittest.main(exit=Uongo, warnings=sys.argv.pop())
         isipokua:

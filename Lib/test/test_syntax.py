@@ -7,9 +7,9 @@ Here's an example of the sort of thing that ni tested.
 Traceback (most recent call last):
 SyntaxError: name 'x' ni parameter na global
 
-The tests are all  ashiria SyntaxErrors.  They were created by checking
+The tests are all ashiria SyntaxErrors.  They were created by checking
 each C call that raises SyntaxError.  There are several modules that
- ashiria these exceptions-- ast.c, compile.c, future.c, pythonrun.c, and
+ashiria these exceptions-- ast.c, compile.c, future.c, pythonrun.c, na
 symtable.c.
 
 The parser itself outlaws a lot of invalid syntax.  Tupu of these
@@ -131,7 +131,7 @@ SyntaxError: cannot assign to conditional expression
 From compiler_complex_args():
 
 >>> eleza f(Tupu=1):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -139,22 +139,22 @@ SyntaxError: invalid syntax
 From ast_for_arguments():
 
 >>> eleza f(x, y=1, z):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: non-default argument follows default argument
 
 >>> eleza f(x, Tupu):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 >>> eleza f(*Tupu):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
 >>> eleza f(**Tupu):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -162,7 +162,7 @@ SyntaxError: invalid syntax
 From ast_for_funcdef():
 
 >>> eleza Tupu(x):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -198,7 +198,7 @@ SyntaxError: Generator expression must be parenthesized
 >>> f((x kila x kwenye L), 1)
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 >>> kundi C(x kila x kwenye L):
-...     pass
+...     pita
 Traceback (most recent call last):
 SyntaxError: invalid syntax
 
@@ -346,7 +346,7 @@ endelea kwenye kila loop under finally should be ok.
 
     >>> eleza test():
     ...     jaribu:
-    ...         pass
+    ...         pita
     ...     mwishowe:
     ...         kila abc kwenye range(10):
     ...             endelea
@@ -359,7 +359,7 @@ endelea kwenye a finally should be ok.
     >>> eleza test():
     ...    kila abc kwenye range(10):
     ...        jaribu:
-    ...            pass
+    ...            pita
     ...        mwishowe:
     ...            endelea
     ...    andika(abc)
@@ -369,12 +369,12 @@ endelea kwenye a finally should be ok.
     >>> eleza test():
     ...    kila abc kwenye range(10):
     ...        jaribu:
-    ...            pass
+    ...            pita
     ...        mwishowe:
     ...            jaribu:
     ...                endelea
     ...            tatizo:
-    ...                pass
+    ...                pita
     ...    andika(abc)
     >>> test()
     9
@@ -382,10 +382,10 @@ endelea kwenye a finally should be ok.
     >>> eleza test():
     ...    kila abc kwenye range(10):
     ...        jaribu:
-    ...            pass
+    ...            pita
     ...        mwishowe:
     ...            jaribu:
-    ...                pass
+    ...                pita
     ...            tatizo:
     ...                endelea
     ...    andika(abc)
@@ -396,14 +396,14 @@ A endelea outside loop should sio be allowed.
 
     >>> eleza foo():
     ...     jaribu:
-    ...         pass
+    ...         pita
     ...     mwishowe:
     ...         endelea
     Traceback (most recent call last):
       ...
     SyntaxError: 'endelea' sio properly kwenye loop
 
-There ni one test kila a koma that ni sio kwenye a loop.  The compiler
+There ni one test kila a koma that ni haiko kwenye a loop.  The compiler
 uses a single data structure to keep track of try-finally na loops,
 so we need to be sure that a koma ni actually inside a loop.  If it
 isn't, there should be a syntax error.
@@ -418,7 +418,7 @@ isn't, there should be a syntax error.
      ...
    SyntaxError: 'koma' outside loop
 
-This raises a SyntaxError, it used to  ashiria a SystemError.
+This raises a SyntaxError, it used to ashiria a SystemError.
 Context kila this change can be found on issue #27514
 
 In 2.5 there was a missing exception na an assert was triggered kwenye a debug
@@ -530,15 +530,15 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   x() = 1
-   ... elikiwa 1:
-   ...   pass
+   ... lasivyo 1:
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
-   ... elikiwa 1:
+   ...   pita
+   ... lasivyo 1:
    ...   x() = 1
    Traceback (most recent call last):
      ...
@@ -546,40 +546,40 @@ leading to spurious errors.
 
    >>> ikiwa 1:
    ...   x() = 1
-   ... elikiwa 1:
-   ...   pass
+   ... lasivyo 1:
+   ...   pita
    ... isipokua:
-   ...   pass
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
-   ... elikiwa 1:
+   ...   pita
+   ... lasivyo 1:
    ...   x() = 1
    ... isipokua:
-   ...   pass
+   ...   pita
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
    >>> ikiwa 1:
-   ...   pass
-   ... elikiwa 1:
-   ...   pass
+   ...   pita
+   ... lasivyo 1:
+   ...   pita
    ... isipokua:
    ...   x() = 1
    Traceback (most recent call last):
      ...
    SyntaxError: cannot assign to function call
 
-Make sure that the old " ashiria X, Y[, Z]" form ni gone:
-   >>>  ashiria X, Y
+Make sure that the old "ashiria X, Y[, Z]" form ni gone:
+   >>> ashiria X, Y
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
-   >>>  ashiria X, Y, Z
+   >>> ashiria X, Y, Z
    Traceback (most recent call last):
      ...
    SyntaxError: invalid syntax
@@ -606,31 +606,31 @@ SyntaxError: cannot assign to f-string expression
 Traceback (most recent call last):
 SyntaxError: cannot assign to f-string expression
 
-Corner-cases that used to fail to  ashiria the correct error:
+Corner-cases that used to fail to ashiria the correct error:
 
-    >>> eleza f(*, x=lambda __debug__:0): pass
+    >>> eleza f(*, x=lambda __debug__:0): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(*args:(lambda __debug__:0)): pass
+    >>> eleza f(*args:(lambda __debug__:0)): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(**kwargs:(lambda __debug__:0)): pass
+    >>> eleza f(**kwargs:(lambda __debug__:0)): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> ukijumuisha (lambda *:0): pass
+    >>> ukijumuisha (lambda *:0): pita
     Traceback (most recent call last):
     SyntaxError: named arguments must follow bare *
 
 Corner-cases that used to crash:
 
-    >>> eleza f(**__debug__): pass
+    >>> eleza f(**__debug__): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
-    >>> eleza f(*xx, __debug__): pass
+    >>> eleza f(*xx, __debug__): pita
     Traceback (most recent call last):
     SyntaxError: cannot assign to __debug__
 
@@ -653,7 +653,7 @@ kundi SyntaxTestCase(unittest.TestCase):
         """
         jaribu:
             compile(code, filename, mode)
-        except SyntaxError as err:
+        tatizo SyntaxError kama err:
             ikiwa subkundi na sio isinstance(err, subclass):
                 self.fail("SyntaxError ni sio a %s" % subclass.__name__)
             mo = re.search(errtext, str(err))
@@ -665,7 +665,7 @@ kundi SyntaxTestCase(unittest.TestCase):
             ikiwa offset ni sio Tupu:
                 self.assertEqual(err.offset, offset)
         isipokua:
-            self.fail("compile() did sio  ashiria SyntaxError")
+            self.fail("compile() did sio ashiria SyntaxError")
 
     eleza test_assign_call(self):
         self._check_error("f() = 1", "assign")
@@ -696,23 +696,23 @@ kundi SyntaxTestCase(unittest.TestCase):
     eleza test_koma_outside_loop(self):
         self._check_error("koma", "outside loop")
 
-    eleza test_yield_outside_function(self):
-        self._check_error("ikiwa 0: yield",                "outside function")
-        self._check_error("ikiwa 0: yield\nisipokua:  x=1",    "outside function")
-        self._check_error("ikiwa 1: pass\nisipokua: yield",    "outside function")
-        self._check_error("wakati 0: yield",             "outside function")
-        self._check_error("wakati 0: yield\nisipokua:  x=1", "outside function")
-        self._check_error("kundi C:\n  ikiwa 0: yield",    "outside function")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  isipokua: yield",
+    eleza test_tuma_outside_function(self):
+        self._check_error("ikiwa 0: tuma",                "outside function")
+        self._check_error("ikiwa 0: tuma\nisipokua:  x=1",    "outside function")
+        self._check_error("ikiwa 1: pita\nisipokua: tuma",    "outside function")
+        self._check_error("wakati 0: tuma",             "outside function")
+        self._check_error("wakati 0: tuma\nisipokua:  x=1", "outside function")
+        self._check_error("kundi C:\n  ikiwa 0: tuma",    "outside function")
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: tuma",
                           "outside function")
-        self._check_error("kundi C:\n  wakati 0: yield", "outside function")
-        self._check_error("kundi C:\n  wakati 0: yield\n  isipokua:  x = 1",
+        self._check_error("kundi C:\n  wakati 0: tuma", "outside function")
+        self._check_error("kundi C:\n  wakati 0: tuma\n  isipokua:  x = 1",
                           "outside function")
 
     eleza test_return_outside_function(self):
         self._check_error("ikiwa 0: return",                "outside function")
         self._check_error("ikiwa 0: return\nisipokua:  x=1",    "outside function")
-        self._check_error("ikiwa 1: pass\nisipokua: return",    "outside function")
+        self._check_error("ikiwa 1: pita\nisipokua: return",    "outside function")
         self._check_error("wakati 0: return",             "outside function")
         self._check_error("kundi C:\n  ikiwa 0: return",    "outside function")
         self._check_error("kundi C:\n  wakati 0: return", "outside function")
@@ -720,23 +720,23 @@ kundi SyntaxTestCase(unittest.TestCase):
                           "outside function")
         self._check_error("kundi C:\n  ikiwa 0: return\n  isipokua: x= 1",
                           "outside function")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  isipokua: return",
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: return",
                           "outside function")
 
     eleza test_koma_outside_loop(self):
         self._check_error("ikiwa 0: koma",             "outside loop")
         self._check_error("ikiwa 0: koma\nisipokua:  x=1",  "outside loop")
-        self._check_error("ikiwa 1: pass\nisipokua: koma", "outside loop")
+        self._check_error("ikiwa 1: pita\nisipokua: koma", "outside loop")
         self._check_error("kundi C:\n  ikiwa 0: koma", "outside loop")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  isipokua: koma",
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: koma",
                           "outside loop")
 
     eleza test_endelea_outside_loop(self):
         self._check_error("ikiwa 0: endelea",             "not properly kwenye loop")
         self._check_error("ikiwa 0: endelea\nisipokua:  x=1", "not properly kwenye loop")
-        self._check_error("ikiwa 1: pass\nisipokua: endelea", "not properly kwenye loop")
+        self._check_error("ikiwa 1: pita\nisipokua: endelea", "not properly kwenye loop")
         self._check_error("kundi C:\n  ikiwa 0: endelea", "not properly kwenye loop")
-        self._check_error("kundi C:\n  ikiwa 1: pass\n  isipokua: endelea",
+        self._check_error("kundi C:\n  ikiwa 1: pita\n  isipokua: endelea",
                           "not properly kwenye loop")
 
     eleza test_unexpected_indent(self):

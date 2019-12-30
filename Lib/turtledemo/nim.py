@@ -55,7 +55,7 @@ kundi NimModel(object):
         self.game = game
 
     eleza setup(self):
-        ikiwa self.game.state sio kwenye [Nim.CREATED, Nim.OVER]:
+        ikiwa self.game.state haiko kwenye [Nim.CREATED, Nim.OVER]:
             return
         self.sticks = [randomrow(), randomrow(), randomrow()]
         self.player = 0
@@ -71,7 +71,7 @@ kundi NimModel(object):
             self.game.state = Nim.OVER
             self.winner = self.player
             self.game.view.notify_over()
-        elikiwa self.player == 0:
+        lasivyo self.player == 0:
             self.player = 1
             row, col = computerzug(self.sticks)
             self.move(row, col)

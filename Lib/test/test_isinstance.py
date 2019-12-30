@@ -9,7 +9,7 @@ agiza sys
 
 kundi TestIsInstanceExceptions(unittest.TestCase):
     # Test to make sure that an AttributeError when accessing the instance's
-    # class's bases ni masked.  This was actually a bug kwenye Python 2.2 and
+    # class's bases ni masked.  This was actually a bug kwenye Python 2.2 na
     # 2.2.1 where the exception wasn't caught but it also wasn't being cleared
     # (leading to an "undetected error" kwenye the debug build).  Set up is,
     # isinstance(inst, cls) where:
@@ -17,7 +17,7 @@ kundi TestIsInstanceExceptions(unittest.TestCase):
     # - cls isn't a type, ama a tuple
     # - cls has a __bases__ attribute
     # - inst has a __class__ attribute
-    # - inst.__class__ as no __bases__ attribute
+    # - inst.__class__ kama no __bases__ attribute
     #
     # Sounds complicated, I know, but this mimics a situation where an
     # extension type raises an AttributeError when its __bases__ attribute is
@@ -36,12 +36,12 @@ kundi TestIsInstanceExceptions(unittest.TestCase):
 
         self.assertEqual(Uongo, isinstance(I(), C()))
 
-    # Like above except that inst.__class__.__bases__ raises an exception
+    # Like above tatizo that inst.__class__.__bases__ raises an exception
     # other than AttributeError
     eleza test_bases_raises_other_than_attribute_error(self):
         kundi E(object):
             eleza getbases(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
             __bases__ = property(getbases)
 
         kundi I(object):
@@ -59,23 +59,23 @@ kundi TestIsInstanceExceptions(unittest.TestCase):
     # Here's a situation where getattr(cls, '__bases__') raises an exception.
     # If that exception ni sio AttributeError, it should sio get masked
     eleza test_dont_mask_non_attribute_error(self):
-        kundi I: pass
+        kundi I: pita
 
         kundi C(object):
             eleza getbases(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, isinstance, I(), C())
 
-    # Like above, except that getattr(cls, '__bases__') raises an
-    # AttributeError, which /should/ get masked as a TypeError
+    # Like above, tatizo that getattr(cls, '__bases__') raises an
+    # AttributeError, which /should/ get masked kama a TypeError
     eleza test_mask_attribute_error(self):
-        kundi I: pass
+        kundi I: pita
 
         kundi C(object):
             eleza getbases(self):
-                 ashiria AttributeError
+                ashiria AttributeError
             __bases__ = property(getbases)
 
         self.assertRaises(TypeError, isinstance, I(), C())
@@ -85,14 +85,14 @@ kundi TestIsInstanceExceptions(unittest.TestCase):
     eleza test_isinstance_dont_mask_non_attribute_error(self):
         kundi C(object):
             eleza getclass(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
             __class__ = property(getclass)
 
         c = C()
         self.assertRaises(RuntimeError, isinstance, c, bool)
 
         # test another code path
-        kundi D: pass
+        kundi D: pita
         self.assertRaises(RuntimeError, isinstance, c, D)
 
 
@@ -103,20 +103,20 @@ kundi TestIsSubclassExceptions(unittest.TestCase):
     eleza test_dont_mask_non_attribute_error(self):
         kundi C(object):
             eleza getbases(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
             __bases__ = property(getbases)
 
-        kundi S(C): pass
+        kundi S(C): pita
 
         self.assertRaises(RuntimeError, issubclass, C(), S())
 
     eleza test_mask_attribute_error(self):
         kundi C(object):
             eleza getbases(self):
-                 ashiria AttributeError
+                ashiria AttributeError
             __bases__ = property(getbases)
 
-        kundi S(C): pass
+        kundi S(C): pita
 
         self.assertRaises(TypeError, issubclass, C(), S())
 
@@ -125,21 +125,21 @@ kundi TestIsSubclassExceptions(unittest.TestCase):
     # rudisha a valid __bases__, na it's okay kila it to be a normal --
     # unrelated by inheritance -- class.
     eleza test_dont_mask_non_attribute_error_in_cls_arg(self):
-        kundi B: pass
+        kundi B: pita
 
         kundi C(object):
             eleza getbases(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
             __bases__ = property(getbases)
 
         self.assertRaises(RuntimeError, issubclass, B, C())
 
     eleza test_mask_attribute_error_in_cls_arg(self):
-        kundi B: pass
+        kundi B: pita
 
         kundi C(object):
             eleza getbases(self):
-                 ashiria AttributeError
+                ashiria AttributeError
             __bases__ = property(getbases)
 
         self.assertRaises(TypeError, issubclass, B, C())
@@ -173,10 +173,10 @@ AbstractChild = AbstractClass(bases=(AbstractSuper,))
 
 # normal classes
 kundi Super:
-    pass
+    pita
 
 kundi Child(Super):
-    pass
+    pita
 
 kundi TestIsInstanceIsSubclass(unittest.TestCase):
     # Tests to ensure that isinstance na issubkundi work on abstract
@@ -230,7 +230,7 @@ kundi TestIsInstanceIsSubclass(unittest.TestCase):
         self.assertEqual(Uongo, issubclass(AbstractChild, Child))
 
     eleza test_subclass_tuple(self):
-        # test ukijumuisha a tuple as the second argument classes
+        # test ukijumuisha a tuple kama the second argument classes
         self.assertEqual(Kweli, issubclass(Child, (Child,)))
         self.assertEqual(Kweli, issubclass(Child, (Super,)))
         self.assertEqual(Uongo, issubclass(Super, (Child,)))
@@ -253,7 +253,7 @@ kundi TestIsInstanceIsSubclass(unittest.TestCase):
 
 eleza blowstack(fxn, arg, compare_to):
     # Make sure that calling isinstance ukijumuisha a deeply nested tuple kila its
-    # argument will  ashiria RecursionError eventually.
+    # argument will ashiria RecursionError eventually.
     tuple_arg = (compare_to,)
     kila cnt kwenye range(sys.getrecursionlimit()+5):
         tuple_arg = (tuple_arg,)

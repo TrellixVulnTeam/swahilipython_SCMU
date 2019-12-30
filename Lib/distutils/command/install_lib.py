@@ -29,7 +29,7 @@ kundi install_lib(Command):
     #
     # The UI kila this ni two options, 'compile' na 'optimize'.
     # 'compile' ni strictly boolean, na only decides whether to
-    # generate .pyc files.  'optimize' ni three-way (0, 1, ama 2), and
+    # generate .pyc files.  'optimize' ni three-way (0, 1, ama 2), na
     # decides both whether to generate .pyc files na what level of
     # optimization to use.
 
@@ -78,10 +78,10 @@ kundi install_lib(Command):
         ikiwa sio isinstance(self.optimize, int):
             jaribu:
                 self.optimize = int(self.optimize)
-                ikiwa self.optimize sio kwenye (0, 1, 2):
-                     ashiria AssertionError
-            except (ValueError, AssertionError):
-                 ashiria DistutilsOptionError("optimize must be 0, 1, ama 2")
+                ikiwa self.optimize haiko kwenye (0, 1, 2):
+                    ashiria AssertionError
+            tatizo (ValueError, AssertionError):
+                ashiria DistutilsOptionError("optimize must be 0, 1, ama 2")
 
     eleza run(self):
         # Make sure we have built everything we need first
@@ -123,7 +123,7 @@ kundi install_lib(Command):
         kutoka distutils.util agiza byte_compile
 
         # Get the "--root" directory supplied to the "install" command,
-        # na use it as a prefix to strip off the purported filename
+        # na use it kama a prefix to strip off the purported filename
         # encoded kwenye bytecode files.  This ni far kutoka complete, but it
         # should at least generate usable bytecode kwenye RPM distributions.
         install_root = self.get_finalized_command('install').root
@@ -200,7 +200,7 @@ kundi install_lib(Command):
 
     eleza get_inputs(self):
         """Get the list of files that are input to this command, ie. the
-        files that get installed as they are named kwenye the build tree.
+        files that get installed kama they are named kwenye the build tree.
         The files kwenye this list correspond one-to-one to the output
         filenames returned by 'get_outputs()'.
         """

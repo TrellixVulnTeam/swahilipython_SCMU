@@ -150,7 +150,7 @@ text
             ("data", "&#bad;"),
             ("endtag", "p"),
         ])
-        # add the [] as a workaround to avoid buffering (see #20288)
+        # add the [] kama a workaround to avoid buffering (see #20288)
         self._run_check(["<div>&#bad;</div>"], [
             ("starttag", "div", []),
             ("data", "&#bad;"),
@@ -489,7 +489,7 @@ text
                                 [('action', 'bogus|&#()value')])])
 
     eleza test_invalid_end_tags(self):
-        # A collection of broken end tags. <br> ni used as separator.
+        # A collection of broken end tags. <br> ni used kama separator.
         # see http://www.w3.org/TR/html5/tokenization.html#end-tag-open-state
         # na #13993
         html = ('<br></label</p><br></div end tmAd-leaderBoard><br></<h4><br>'

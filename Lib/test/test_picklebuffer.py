@@ -12,14 +12,14 @@ kutoka test agiza support
 
 
 kundi B(bytes):
-    pass
+    pita
 
 
 kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_memoryview(self, pb, equiv):
-        ukijumuisha memoryview(pb) as m:
-            ukijumuisha memoryview(equiv) as expected:
+        ukijumuisha memoryview(pb) kama m:
+            ukijumuisha memoryview(equiv) kama expected:
                 self.assertEqual(m.nbytes, expected.nbytes)
                 self.assertEqual(m.readonly, expected.readonly)
                 self.assertEqual(m.itemsize, expected.itemsize)
@@ -44,12 +44,12 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_basics(self):
         pb = PickleBuffer(b"foo")
         self.assertEqual(b"foo", bytes(pb))
-        ukijumuisha memoryview(pb) as m:
+        ukijumuisha memoryview(pb) kama m:
             self.assertKweli(m.readonly)
 
         pb = PickleBuffer(bytearray(b"foo"))
         self.assertEqual(b"foo", bytes(pb))
-        ukijumuisha memoryview(pb) as m:
+        ukijumuisha memoryview(pb) kama m:
             self.assertUongo(m.readonly)
             m[0] = 48
         self.assertEqual(b"0oo", bytes(pb))
@@ -57,7 +57,7 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_release(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        ukijumuisha self.assertRaises(ValueError) as raises:
+        ukijumuisha self.assertRaises(ValueError) kama raises:
             memoryview(pb)
         self.assertIn("operation forbidden on released PickleBuffer object",
                       str(raises.exception))
@@ -98,7 +98,7 @@ kundi PickleBufferTest(unittest.TestCase):
 
     eleza check_raw(self, obj, equiv):
         pb = PickleBuffer(obj)
-        ukijumuisha pb.raw() as m:
+        ukijumuisha pb.raw() kama m:
             self.assertIsInstance(m, memoryview)
             self.check_memoryview(m, equiv)
 
@@ -145,7 +145,7 @@ kundi PickleBufferTest(unittest.TestCase):
     eleza test_raw_released(self):
         pb = PickleBuffer(b"foo")
         pb.release()
-        ukijumuisha self.assertRaises(ValueError) as raises:
+        ukijumuisha self.assertRaises(ValueError) kama raises:
             pb.raw()
 
 

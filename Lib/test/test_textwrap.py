@@ -22,7 +22,7 @@ kundi BaseTestCase(unittest.TestCase):
             kila i kwenye range(len(textin)):
                 result.append("  %d: %r" % (i, textin[i]))
             result = "\n".join(result) ikiwa result isipokua "  no lines"
-        elikiwa isinstance(textin, str):
+        lasivyo isinstance(textin, str):
             result = "  %s\n" % repr(textin)
         rudisha result
 
@@ -325,7 +325,7 @@ What a mess!
         # Oh bother, SF #965425 found another problem ukijumuisha hyphens --
         # hyphenated words kwenye single quotes weren't handled correctly.
         # In fact, the bug ni that *any* punctuation around a hyphenated
-        # word was handled incorrectly, except kila a leading "--", which
+        # word was handled incorrectly, tatizo kila a leading "--", which
         # was special-cased kila Optik na Docutils.  So test a variety
         # of styles of punctuation around a hyphenated word.
         # (Actually this ni based on an Optik bug report, #813077).
@@ -412,7 +412,7 @@ What a mess!
                         initial_indent="  ", subsequent_indent="  ")
 
     eleza test_split(self):
-        # Ensure that the standard _split() method works as advertised
+        # Ensure that the standard _split() method works kama advertised
         # kwenye the comments
 
         text = "Hello there -- you goof-ball, use the -b option!"
@@ -592,7 +592,7 @@ How *do* you spell that odd word, anyways?
                          'How *do* you spell that odd word, anyways?'])
 
         # SF bug 797650.  Prevent an infinite loop by making sure that at
-        # least one character gets split off on every pass.
+        # least one character gets split off on every pita.
         self.check_wrap('-'*10+'hello', 10,
                         ['----------',
                          '               h',
@@ -627,7 +627,7 @@ How *do* you spell that odd word, anyways?
         result = self.wrapper.wrap(self.text)
         self.check(result, expect)
 
-        # Same thing ukijumuisha kwargs passed to standalone wrap() function.
+        # Same thing ukijumuisha kwargs pitaed to standalone wrap() function.
         result = wrap(self.text, width=30, koma_long_words=0)
         self.check(result, expect)
 
@@ -781,7 +781,7 @@ eleza foo():
         self.assertEqual(expect, dedent(expect))
 
     # dedent() should sio mangle tabs kwenye the margin (i.e.
-    # tabs na spaces both count as margin, but are *not*
+    # tabs na spaces both count kama margin, but are *not*
     # considered equivalent)
     eleza test_dedent_preserve_margin_tabs(self):
         text = "  hello there\n\thow are you?"
@@ -839,13 +839,13 @@ kundi IndentTestCase(unittest.TestCase):
             self.assertEqual(indent(text, ''), text)
 
     eleza test_indent_nomargin_explicit_default(self):
-        # The same as test_indent_nomargin, but explicitly requesting
-        # the default behaviour by passing Tupu as the predicate
+        # The same kama test_indent_nomargin, but explicitly requesting
+        # the default behaviour by pitaing Tupu kama the predicate
         kila text kwenye self.CASES:
             self.assertEqual(indent(text, '', Tupu), text)
 
     eleza test_indent_nomargin_all_lines(self):
-        # The same as test_indent_nomargin, but using the optional
+        # The same kama test_indent_nomargin, but using the optional
         # predicate argument
         predicate = lambda line: Kweli
         kila text kwenye self.CASES:

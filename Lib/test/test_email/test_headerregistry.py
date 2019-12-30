@@ -30,7 +30,7 @@ kundi TestHeaderRegistry(TestEmailBase):
 
     kundi FooBase:
         eleza __init__(self, *args, **kw):
-            pass
+            pita
 
     eleza test_override_default_base_class(self):
         factory = headerregistry.HeaderRegistry(base_class=self.FooBase)
@@ -732,7 +732,7 @@ kundi TestContentTypeHeader(TestHeaderBase):
         # old parser decodes this just like the previous case, which may be the
         # better Postel rule, but could equally result kwenye borking headers that
         # intentionally have quoted quotes kwenye them.  We could get this 98%
-        # right ikiwa we treat it as a quoted string *unless* it matches the
+        # right ikiwa we treat it kama a quoted string *unless* it matches the
         # charset'lang'value pattern exactly *and* there ni at least one
         # encoded segment.  Implementing that algorithm will require some
         # refactoring, so I haven't done it (yet).

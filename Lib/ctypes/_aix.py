@@ -1,7 +1,7 @@
 """
 Lib/ctypes.util.find_library() support kila AIX
-Similar approach as done kila Darwin support by using separate files
-but unlike Darwin - no extension such as ctypes.macholib.*
+Similar approach kama done kila Darwin support by using separate files
+but unlike Darwin - no extension such kama ctypes.macholib.*
 
 dlopen() ni an interface to AIX initAndLoad() - primary documentation at:
 https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.basetrf1/dlopen.htm
@@ -18,9 +18,9 @@ Object File Format) was the base of SVR3 na BSD 4.2 systems.
 ELF:   Executable na Linking Format that was developed by AT&T na ni a
 base kila SVR4 UNIX.
 
-While the shared library content ni identical on AIX - one ni located as a filepath name
-(svr4 style) na the other ni located as a member of an archive (and the archive
-is located as a filepath name).
+While the shared library content ni identical on AIX - one ni located kama a filepath name
+(svr4 style) na the other ni located kama a member of an archive (and the archive
+is located kama a filepath name).
 
 The key difference arises when supporting multiple abi formats (i.e., 32 na 64 bit).
 For svr4 either only one ABI ni supported, ama there are two directories, ama there
@@ -29,15 +29,15 @@ directories.
 
 For the XCOFF (aka AIX) style - one directory (one archive file) ni sufficient
 as multiple shared libraries can be kwenye the archive - even sharing the same name.
-In documentation the archive ni also referred to as the "base" na the shared
-library object ni referred to as the "member".
+In documentation the archive ni also referred to kama the "base" na the shared
+library object ni referred to kama the "member".
 
 For dlopen() on AIX (read initAndLoad()) the calls are similar.
 Default activity occurs when no path information ni provided. When path
 information ni provided dlopen() does sio search any other directories.
 
 For SVR4 - the shared library name ni the name of the file expected: libFOO.so
-For AIX - the shared library ni expressed as base(member). The search ni kila the
+For AIX - the shared library ni expressed kama base(member). The search ni kila the
 base (e.g., libFOO.a) na once the base ni found the shared library - identified by
 member (e.g., libFOO.so, ama shr.o) ni located na loaded.
 
@@ -66,8 +66,8 @@ eleza _last_version(libnames, sep):
         jaribu:
             wakati parts:
                 nums.insert(0, int(parts.pop()))
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         rudisha nums ama [maxsize]
     rudisha max(reversed(libnames), key=_num_version)
 
@@ -77,13 +77,13 @@ eleza get_ld_header(p):
     kila line kwenye p.stdout:
         ikiwa line.startswith(('/', './', '../')):
             ld_header = line
-        elikiwa "INDEX" kwenye line:
+        lasivyo "INDEX" kwenye line:
             rudisha ld_header.rstrip('\n')
     rudisha Tupu
 
 eleza get_ld_header_info(p):
     # "nested-function, but placed at module level
-    # as an ld_header was found, rudisha known paths, archives na members
+    # kama an ld_header was found, rudisha known paths, archives na members
     # these lines start ukijumuisha a digit
     info = []
     kila line kwenye p.stdout:
@@ -97,11 +97,11 @@ eleza get_ld_header_info(p):
 eleza get_ld_headers(file):
     """
     Parse the header of the loader section of executable na archives
-    This function calls /usr/bin/dump -H as a subprocess
+    This function calls /usr/bin/dump -H kama a subprocess
     na returns a list of (ld_header, ld_header_info) tuples.
     """
     # get_ld_headers parsing:
-    # 1. Find a line that starts ukijumuisha /, ./, ama ../ - set as ld_header
+    # 1. Find a line that starts ukijumuisha /, ./, ama ../ - set kama ld_header
     # 2. If "INDEX" kwenye occurs kwenye a following line - rudisha ld_header
     # 3. get info (lines starting ukijumuisha [0-9])
     ldr_headers = []
@@ -152,7 +152,7 @@ eleza get_legacy(members):
     """
     This routine provides historical aka legacy naming schemes started
     kwenye AIX4 shared library support kila library members names.
-    e.g., kwenye /usr/lib/libc.a the member name shr.o kila 32-bit binary and
+    e.g., kwenye /usr/lib/libc.a the member name shr.o kila 32-bit binary na
     shr_64.o kila 64-bit binary.
     """
     ikiwa AIX_ABI == 64:
@@ -196,7 +196,7 @@ eleza get_version(name, members):
     # after the first required 'dot' digit
     # any combination of additional 'dot' digits pairs are accepted
     # anything more than libFOO.so.digits.digits.digits
-    # should be seen as a member name outside normal expectations
+    # should be seen kama a member name outside normal expectations
     exprs = [rf'lib{name}\.so\.[0-9]+[0-9.]*',
         rf'lib{name}_?64\.so\.[0-9]+[0-9.]*']
     kila expr kwenye exprs:
@@ -223,12 +223,12 @@ eleza get_member(name, members):
     member = get_one_match(expr, members)
     ikiwa member:
         rudisha member
-    elikiwa AIX_ABI == 64:
+    lasivyo AIX_ABI == 64:
         expr = rf'lib{name}64\.so'
         member = get_one_match(expr, members)
     ikiwa member:
         rudisha member
-    # since an exact match ukijumuisha .so as suffix was sio found
+    # since an exact match ukijumuisha .so kama suffix was sio found
     # look kila a versioned name
     # If a versioned name ni sio found, look kila AIX legacy member name
     member = get_version(name, members)
@@ -240,7 +240,7 @@ eleza get_member(name, members):
 eleza get_libpaths():
     """
     On AIX, the buildtime searchpath ni stored kwenye the executable.
-    as "loader header information".
+    kama "loader header information".
     The command /usr/bin/dump -H extracts this info.
     Prefix searched libraries ukijumuisha LD_LIBRARY_PATH (preferred),
     ama LIBPATH ikiwa defined. These paths are appended to the paths
@@ -298,7 +298,7 @@ eleza find_library(name):
     ukijumuisha .so wakati the (default) AIX scheme has the library (archive)
     ending ukijumuisha the suffix .a
     As an archive has multiple members (e.g., 32-bit na 64-bit) kwenye one file
-    the argument passed to dlopen must include both the library and
+    the argument pitaed to dlopen must include both the library na
     the member names kwenye a single string.
 
     find_library() looks first kila an archive (.a) ukijumuisha a suitable member.

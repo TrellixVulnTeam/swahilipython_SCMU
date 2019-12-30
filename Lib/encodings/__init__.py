@@ -4,7 +4,7 @@
     directory.
 
     Codec modules must have names corresponding to normalized encoding
-    names as defined kwenye the normalize_encoding() function below, e.g.
+    names kama defined kwenye the normalize_encoding() function below, e.g.
     'utf-8' must be implemented by the module 'utf_8.py'.
 
     Each codec module must export the following interface:
@@ -17,10 +17,10 @@
     In addition, a module may optionally also define the following
     APIs which are then used by the package's codec search function:
 
-    * getaliases() -> sequence of encoding name strings to use as aliases
+    * getaliases() -> sequence of encoding name strings to use kama aliases
 
     Alias names returned by getaliases() must be normalized encoding
-    names as defined by normalize_encoding().
+    names kama defined by normalize_encoding().
 
 Written by Marc-Andre Lemburg (mal@lemburg.com).
 
@@ -38,14 +38,14 @@ _import_tail = ['*']
 _aliases = aliases.aliases
 
 kundi CodecRegistryError(LookupError, SystemError):
-    pass
+    pita
 
 eleza normalize_encoding(encoding):
 
     """ Normalize an encoding name.
 
-        Normalization works as follows: all non-alphanumeric
-        characters except the dot used kila Python package names are
+        Normalization works kama follows: all non-alphanumeric
+        characters tatizo the dot used kila Python package names are
         collapsed na replaced ukijumuisha a single underscore, e.g. '  -;#'
         becomes '_'. Leading na trailing underscores are removed.
 
@@ -94,13 +94,13 @@ eleza search_function(encoding):
             endelea
         jaribu:
             # Import ni absolute to prevent the possibly malicious agiza of a
-            # module ukijumuisha side-effects that ni sio kwenye the 'encodings' package.
+            # module ukijumuisha side-effects that ni haiko kwenye the 'encodings' package.
             mod = __import__('encodings.' + modname, fromlist=_import_tail,
                              level=0)
-        except ImportError:
+        tatizo ImportError:
             # ImportError may occur because 'encodings.(modname)' does sio exist,
             # ama because it imports a name that does sio exist (see mbcs na oem)
-            pass
+            pita
         isipokua:
             koma
     isipokua:
@@ -108,7 +108,7 @@ eleza search_function(encoding):
 
     jaribu:
         getregentry = mod.getregentry
-    except AttributeError:
+    tatizo AttributeError:
         # Not a codec module
         mod = Tupu
 
@@ -121,14 +121,14 @@ eleza search_function(encoding):
     entry = getregentry()
     ikiwa sio isinstance(entry, codecs.CodecInfo):
         ikiwa sio 4 <= len(entry) <= 7:
-             ashiria CodecRegistryError('module "%s" (%s) failed to register'
+            ashiria CodecRegistryError('module "%s" (%s) failed to register'
                                      % (mod.__name__, mod.__file__))
         ikiwa sio callable(entry[0]) ama sio callable(entry[1]) ama \
            (entry[2] ni sio Tupu na sio callable(entry[2])) ama \
            (entry[3] ni sio Tupu na sio callable(entry[3])) ama \
            (len(entry) > 4 na entry[4] ni sio Tupu na sio callable(entry[4])) ama \
            (len(entry) > 5 na entry[5] ni sio Tupu na sio callable(entry[5])):
-             ashiria CodecRegistryError('incompatible codecs kwenye module "%s" (%s)'
+            ashiria CodecRegistryError('incompatible codecs kwenye module "%s" (%s)'
                                      % (mod.__name__, mod.__file__))
         ikiwa len(entry)<7 ama entry[6] ni Tupu:
             entry += (Tupu,)*(6-len(entry)) + (mod.__name__.split(".", 1)[1],)
@@ -141,11 +141,11 @@ eleza search_function(encoding):
     # aliases)
     jaribu:
         codecaliases = mod.getaliases()
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         kila alias kwenye codecaliases:
-            ikiwa alias sio kwenye _aliases:
+            ikiwa alias haiko kwenye _aliases:
                 _aliases[alias] = modname
 
     # Return the registry entry
@@ -162,8 +162,8 @@ ikiwa sys.platform == 'win32':
             ikiwa encoding == ansi_code_page:
                 agiza encodings.mbcs
                 rudisha encodings.mbcs.getregentry()
-        except ImportError:
+        tatizo ImportError:
             # Imports may fail wakati we are shutting down
-            pass
+            pita
 
     codecs.register(_alias_mbcs)

@@ -8,7 +8,7 @@ agiza unittest
 kutoka unittest agiza mock
 agiza warnings
 
-kutoka . agiza util as test_util
+kutoka . agiza util kama test_util
 
 init = test_util.import_importlib('importlib')
 abc = test_util.import_importlib('importlib.abc')
@@ -32,7 +32,7 @@ kundi InheritanceTests:
             # Because test.support.import_fresh_module() creates a new
             # importlib._bootstrap per module, inheritance checks fail when
             # checking across module boundaries (i.e. the _bootstrap kwenye abc is
-            # sio the same as the one kwenye machinery). That means stealing one of
+            # sio the same kama the one kwenye machinery). That means stealing one of
             # the modules kutoka the other to make sure the same instance ni used.
             machinery = self.abc.machinery
             self.subclasses = [getattr(machinery, class_name)
@@ -514,7 +514,7 @@ kundi InspectLoaderSourceToCodeTests:
 
     eleza test_source_to_code_no_path(self):
         # Not setting a path should still work na be set to <string> since that
-        # ni a pre-existing practice as a default to compile().
+        # ni a pre-existing practice kama a default to compile().
         loader = self.InspectLoaderSubclass()
         code = loader.source_to_code('')
         self.assertEqual(code.co_filename, '<string>')
@@ -531,7 +531,7 @@ kundi InspectLoaderGetCodeTests:
     eleza test_get_code(self):
         # Test success.
         module = types.ModuleType('blah')
-        ukijumuisha mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
+        ukijumuisha mock.patch.object(self.InspectLoaderSubclass, 'get_source') kama mocked:
             mocked.return_value = 'attr = 42'
             loader = self.InspectLoaderSubclass()
             code = loader.get_code('blah')
@@ -540,7 +540,7 @@ kundi InspectLoaderGetCodeTests:
 
     eleza test_get_code_source_is_Tupu(self):
         # If get_source() ni Tupu then this should be Tupu.
-        ukijumuisha mock.patch.object(self.InspectLoaderSubclass, 'get_source') as mocked:
+        ukijumuisha mock.patch.object(self.InspectLoaderSubclass, 'get_source') kama mocked:
             mocked.return_value = Tupu
             loader = self.InspectLoaderSubclass()
             code = loader.get_code('blah')
@@ -580,15 +580,15 @@ kundi InspectLoaderLoadModuleTests:
 
     eleza test_get_code_ImportError(self):
         # If get_code() raises ImportError, it should propagate.
-        ukijumuisha self.mock_get_code() as mocked_get_code:
+        ukijumuisha self.mock_get_code() kama mocked_get_code:
             mocked_get_code.side_effect = ImportError
             ukijumuisha self.assertRaises(ImportError):
                 loader = self.InspectLoaderSubclass()
                 self.load(loader)
 
     eleza test_get_code_Tupu(self):
-        # If get_code() returns Tupu,  ashiria ImportError.
-        ukijumuisha self.mock_get_code() as mocked_get_code:
+        # If get_code() returns Tupu, ashiria ImportError.
+        ukijumuisha self.mock_get_code() kama mocked_get_code:
             mocked_get_code.return_value = Tupu
             ukijumuisha self.assertRaises(ImportError):
                 loader = self.InspectLoaderSubclass()
@@ -597,7 +597,7 @@ kundi InspectLoaderLoadModuleTests:
     eleza test_module_returned(self):
         # The loaded module should be returned.
         code = compile('attr = 42', '<string>', 'exec')
-        ukijumuisha self.mock_get_code() as mocked_get_code:
+        ukijumuisha self.mock_get_code() kama mocked_get_code:
             mocked_get_code.return_value = code
             loader = self.InspectLoaderSubclass()
             module = self.load(loader)
@@ -629,7 +629,7 @@ kundi ExecutionLoaderGetCodeTests:
         path = 'blah.py'
         source_mock_context, filename_mock_context = self.mock_methods(
                 get_source=Kweli, get_filename=Kweli)
-        ukijumuisha source_mock_context as source_mock, filename_mock_context as name_mock:
+        ukijumuisha source_mock_context kama source_mock, filename_mock_context kama name_mock:
             source_mock.return_value = 'attr = 42'
             name_mock.return_value = path
             loader = self.ExecutionLoaderSubclass()
@@ -642,7 +642,7 @@ kundi ExecutionLoaderGetCodeTests:
     eleza test_get_code_source_is_Tupu(self):
         # If get_source() ni Tupu then this should be Tupu.
         source_mock_context, _ = self.mock_methods(get_source=Kweli)
-        ukijumuisha source_mock_context as mocked:
+        ukijumuisha source_mock_context kama mocked:
             mocked.return_value = Tupu
             loader = self.ExecutionLoaderSubclass()
             code = loader.get_code('blah')
@@ -659,7 +659,7 @@ kundi ExecutionLoaderGetCodeTests:
         # on the code object.
         source_mock_context, filename_mock_context = self.mock_methods(
                 get_source=Kweli, get_filename=Kweli)
-        ukijumuisha source_mock_context as source_mock, filename_mock_context as name_mock:
+        ukijumuisha source_mock_context kama source_mock, filename_mock_context kama name_mock:
             source_mock.return_value = 'attr = 42'
             name_mock.side_effect = ImportError
             loader = self.ExecutionLoaderSubclass()
@@ -688,7 +688,7 @@ kundi SourceOnlyLoader:
 
     eleza get_data(self, path):
         ikiwa path != self.path:
-             ashiria IOError
+            ashiria IOError
         rudisha self.source
 
     eleza get_filename(self, fullname):
@@ -724,14 +724,14 @@ kundi SourceLoader(SourceOnlyLoader):
     eleza get_data(self, path):
         ikiwa path == self.path:
             rudisha super().get_data(path)
-        elikiwa path == self.bytecode_path:
+        lasivyo path == self.bytecode_path:
             rudisha self.bytecode
         isipokua:
-             ashiria OSError
+            ashiria OSError
 
     eleza path_stats(self, path):
         ikiwa path != self.path:
-             ashiria IOError
+            ashiria IOError
         rudisha {'mtime': self.source_mtime, 'size': self.source_size}
 
     eleza set_data(self, path, data):
@@ -790,14 +790,14 @@ kundi SourceOnlyLoaderTests(SourceLoaderTestHarness):
     """
 
     eleza test_get_source(self):
-        # Verify the source code ni returned as a string.
-        # If an OSError ni raised by get_data then  ashiria ImportError.
+        # Verify the source code ni returned kama a string.
+        # If an OSError ni raised by get_data then ashiria ImportError.
         expected_source = self.loader.source.decode('utf-8')
         self.assertEqual(self.loader.get_source(self.name), expected_source)
         eleza raise_OSError(path):
-             ashiria OSError
+            ashiria OSError
         self.loader.get_data = raise_OSError
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.loader.get_source(self.name)
         self.assertEqual(cm.exception.name, self.name)
 
@@ -943,7 +943,7 @@ kundi SourceLoaderBytecodeTests(SourceLoaderTestHarness):
         # Raising NotImplementedError ama OSError ni okay kila set_data.
         eleza raise_exception(exc):
             eleza closure(*args, **kwargs):
-                 ashiria exc
+                ashiria exc
             rudisha closure
 
         self.setUp(magic=b'0000')

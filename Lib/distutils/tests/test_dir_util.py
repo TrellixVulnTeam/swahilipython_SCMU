@@ -89,7 +89,7 @@ kundi DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
         mkpath(self.target, verbose=0)
         a_file = os.path.join(self.target, 'ok.txt')
-        ukijumuisha open(a_file, 'w') as f:
+        ukijumuisha open(a_file, 'w') kama f:
             f.write('some content')
 
         wanted = ['copying %s -> %s' % (a_file, self.target2)]
@@ -105,7 +105,7 @@ kundi DirUtilTestCase(support.TempdirManager, unittest.TestCase):
         a_file = os.path.join(self.target, 'ok.txt')
         nfs_file = os.path.join(self.target, '.nfs123abc')
         kila f kwenye a_file, nfs_file:
-            ukijumuisha open(f, 'w') as fh:
+            ukijumuisha open(f, 'w') kama fh:
                 fh.write('some content')
 
         copy_tree(self.target, self.target2)
@@ -124,7 +124,7 @@ kundi DirUtilTestCase(support.TempdirManager, unittest.TestCase):
 
     eleza test_copy_tree_exception_in_listdir(self):
         """
-        An exception kwenye listdir should  ashiria a DistutilsFileError
+        An exception kwenye listdir should ashiria a DistutilsFileError
         """
         ukijumuisha patch("os.listdir", side_effect=OSError()), \
              self.assertRaises(errors.DistutilsFileError):

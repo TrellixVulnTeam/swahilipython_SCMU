@@ -66,7 +66,7 @@ kundi Connection(object):
         rudisha self._in.qsize() > 0
 
     eleza close(self):
-        pass
+        pita
 
     eleza __enter__(self):
         rudisha self

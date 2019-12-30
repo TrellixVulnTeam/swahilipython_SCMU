@@ -16,7 +16,7 @@ kutoka idlelib.config agiza idleConf
 #   after it ni determined that an OS X Aqua Tk ni kwenye use,
 #   which cannot be done until after Tk() ni first called.
 #   Do sio alter the 'file', 'options', ama 'help' cascades here
-#   without altering overrideRootMenu() as well.
+#   without altering overrideRootMenu() kama well.
 #       TODO: Make this more robust
 
 menudefs = [

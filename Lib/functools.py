@@ -48,8 +48,8 @@ eleza update_wrapper(wrapper,
     kila attr kwenye assigned:
         jaribu:
             value = getattr(wrapped, attr)
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
             setattr(wrapper, attr, value)
     kila attr kwenye updated:
@@ -57,7 +57,7 @@ eleza update_wrapper(wrapper,
     # Issue #17482: set __wrapped__ last so we don't inadvertently copy it
     # kutoka the wrapped function when updating __dict__
     wrapper.__wrapped__ = wrapped
-    # Return the wrapper so this can be used as a decorator via partial()
+    # Return the wrapper so this can be used kama a decorator via partial()
     rudisha wrapper
 
 eleza wraps(wrapped,
@@ -66,8 +66,8 @@ eleza wraps(wrapped,
     """Decorator factory to apply update_wrapper() to a wrapper function
 
        Returns a decorator that invokes update_wrapper() ukijumuisha the decorated
-       function as the wrapper argument na the arguments to wraps() as the
-       remaining arguments. Default arguments are as kila update_wrapper().
+       function kama the wrapper argument na the arguments to wraps() kama the
+       remaining arguments. Default arguments are kama kila update_wrapper().
        This ni a convenience function to simplify applying partial() to
        update_wrapper().
     """
@@ -85,7 +85,7 @@ eleza wraps(wrapped,
 # detects a NotImplemented result na then calls a reflected method.
 
 eleza _gt_from_lt(self, other, NotImplemented=NotImplemented):
-    'Return a > b.  Computed by @total_ordering kutoka (not a < b) na (a != b).'
+    'Return a > b.  Computed by @total_ordering kutoka (sio a < b) na (a != b).'
     op_result = self.__lt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
@@ -97,14 +97,14 @@ eleza _le_from_lt(self, other, NotImplemented=NotImplemented):
     rudisha op_result ama self == other
 
 eleza _ge_from_lt(self, other, NotImplemented=NotImplemented):
-    'Return a >= b.  Computed by @total_ordering kutoka (not a < b).'
+    'Return a >= b.  Computed by @total_ordering kutoka (sio a < b).'
     op_result = self.__lt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
 eleza _ge_from_le(self, other, NotImplemented=NotImplemented):
-    'Return a >= b.  Computed by @total_ordering kutoka (not a <= b) ama (a == b).'
+    'Return a >= b.  Computed by @total_ordering kutoka (sio a <= b) ama (a == b).'
     op_result = self.__le__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
@@ -118,14 +118,14 @@ eleza _lt_from_le(self, other, NotImplemented=NotImplemented):
     rudisha op_result na self != other
 
 eleza _gt_from_le(self, other, NotImplemented=NotImplemented):
-    'Return a > b.  Computed by @total_ordering kutoka (not a <= b).'
+    'Return a > b.  Computed by @total_ordering kutoka (sio a <= b).'
     op_result = self.__le__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
 eleza _lt_from_gt(self, other, NotImplemented=NotImplemented):
-    'Return a < b.  Computed by @total_ordering kutoka (not a > b) na (a != b).'
+    'Return a < b.  Computed by @total_ordering kutoka (sio a > b) na (a != b).'
     op_result = self.__gt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
@@ -137,14 +137,14 @@ eleza _ge_from_gt(self, other, NotImplemented=NotImplemented):
     rudisha op_result ama self == other
 
 eleza _le_from_gt(self, other, NotImplemented=NotImplemented):
-    'Return a <= b.  Computed by @total_ordering kutoka (not a > b).'
+    'Return a <= b.  Computed by @total_ordering kutoka (sio a > b).'
     op_result = self.__gt__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
     rudisha sio op_result
 
 eleza _le_from_ge(self, other, NotImplemented=NotImplemented):
-    'Return a <= b.  Computed by @total_ordering kutoka (not a >= b) ama (a == b).'
+    'Return a <= b.  Computed by @total_ordering kutoka (sio a >= b) ama (a == b).'
     op_result = self.__ge__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
@@ -158,7 +158,7 @@ eleza _gt_from_ge(self, other, NotImplemented=NotImplemented):
     rudisha op_result na self != other
 
 eleza _lt_from_ge(self, other, NotImplemented=NotImplemented):
-    'Return a < b.  Computed by @total_ordering kutoka (not a >= b).'
+    'Return a < b.  Computed by @total_ordering kutoka (sio a >= b).'
     op_result = self.__ge__(other)
     ikiwa op_result ni NotImplemented:
         rudisha op_result
@@ -181,13 +181,13 @@ _convert = {
 
 eleza total_ordering(cls):
     """Class decorator that fills kwenye missing ordering methods"""
-    # Find user-defined comparisons (not those inherited kutoka object).
+    # Find user-defined comparisons (sio those inherited kutoka object).
     roots = {op kila op kwenye _convert ikiwa getattr(cls, op, Tupu) ni sio getattr(object, op, Tupu)}
     ikiwa sio roots:
-         ashiria ValueError('must define at least one ordering operation: < > <= >=')
+        ashiria ValueError('must define at least one ordering operation: < > <= >=')
     root = max(roots)       # prefer __lt__ to __le__ to __gt__ to __ge__
     kila opname, opfunc kwenye _convert[root]:
-        ikiwa opname sio kwenye roots:
+        ikiwa opname haiko kwenye roots:
             opfunc.__name__ = opname
             setattr(cls, opname, opfunc)
     rudisha cls
@@ -218,8 +218,8 @@ eleza cmp_to_key(mycmp):
 
 jaribu:
     kutoka _functools agiza cmp_to_key
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 ################################################################################
@@ -233,10 +233,10 @@ eleza reduce(function, sequence, initial=_initial_missing):
     reduce(function, sequence[, initial]) -> value
 
     Apply a function of two arguments cumulatively to the items of a sequence,
-    kutoka left to right, so as to reduce the sequence to a single value.
+    kutoka left to right, so kama to reduce the sequence to a single value.
     For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates
     ((((1+2)+3)+4)+5).  If initial ni present, it ni placed before the items
-    of the sequence kwenye the calculation, na serves as a default when the
+    of the sequence kwenye the calculation, na serves kama a default when the
     sequence ni empty.
     """
 
@@ -245,8 +245,8 @@ eleza reduce(function, sequence, initial=_initial_missing):
     ikiwa initial ni _initial_missing:
         jaribu:
             value = next(it)
-        except StopIteration:
-             ashiria TypeError("reduce() of empty sequence ukijumuisha no initial value") kutoka Tupu
+        tatizo StopIteration:
+            ashiria TypeError("reduce() of empty sequence ukijumuisha no initial value") kutoka Tupu
     isipokua:
         value = initial
 
@@ -257,8 +257,8 @@ eleza reduce(function, sequence, initial=_initial_missing):
 
 jaribu:
     kutoka _functools agiza reduce
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 ################################################################################
@@ -275,7 +275,7 @@ kundi partial:
 
     eleza __new__(cls, func, /, *args, **keywords):
         ikiwa sio callable(func):
-             ashiria TypeError("the first argument must be callable")
+            ashiria TypeError("the first argument must be callable")
 
         ikiwa hasattr(func, "func"):
             args = func.args + args
@@ -309,19 +309,19 @@ kundi partial:
 
     eleza __setstate__(self, state):
         ikiwa sio isinstance(state, tuple):
-             ashiria TypeError("argument to __setstate__ must be a tuple")
+            ashiria TypeError("argument to __setstate__ must be a tuple")
         ikiwa len(state) != 4:
-             ashiria TypeError(f"expected 4 items kwenye state, got {len(state)}")
+            ashiria TypeError(f"expected 4 items kwenye state, got {len(state)}")
         func, args, kwds, namespace = state
-        ikiwa (not callable(func) ama sio isinstance(args, tuple) or
-           (kwds ni sio Tupu na sio isinstance(kwds, dict)) or
+        ikiwa (sio callable(func) ama sio isinstance(args, tuple) ama
+           (kwds ni sio Tupu na sio isinstance(kwds, dict)) ama
            (namespace ni sio Tupu na sio isinstance(namespace, dict))):
-             ashiria TypeError("invalid partial state")
+            ashiria TypeError("invalid partial state")
 
         args = tuple(args) # just kwenye case it's a subclass
         ikiwa kwds ni Tupu:
             kwds = {}
-        elikiwa type(kwds) ni sio dict: # XXX does it need to be *exactly* dict?
+        lasivyo type(kwds) ni sio dict: # XXX does it need to be *exactly* dict?
             kwds = dict(kwds)
         ikiwa namespace ni Tupu:
             namespace = {}
@@ -333,8 +333,8 @@ kundi partial:
 
 jaribu:
     kutoka _functools agiza partial
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 # Descriptor version
 kundi partialmethod(object):
@@ -342,28 +342,28 @@ kundi partialmethod(object):
     na keywords.
 
     Supports wrapping existing descriptors na handles non-descriptor
-    callables as instance methods.
+    callables kama instance methods.
     """
 
     eleza __init__(*args, **keywords):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor '__init__' of partialmethod "
+        lasivyo sio args:
+            ashiria TypeError("descriptor '__init__' of partialmethod "
                             "needs an argument")
-        elikiwa 'func' kwenye keywords:
+        lasivyo 'func' kwenye keywords:
             func = keywords.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument ni deprecated",
+            warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError("type 'partialmethod' takes at least one argument, "
+            ashiria TypeError("type 'partialmethod' takes at least one argument, "
                             "got %d" % (len(args)-1))
         args = tuple(args)
 
         ikiwa sio callable(func) na sio hasattr(func, "__get__"):
-             ashiria TypeError("{!r} ni sio callable ama a descriptor"
+            ashiria TypeError("{!r} ni sio callable ama a descriptor"
                                  .format(func))
 
         # func could be a descriptor like classmethod which isn't callable,
@@ -411,8 +411,8 @@ kundi partialmethod(object):
                 result = partial(new_func, *self.args, **self.keywords)
                 jaribu:
                     result.__self__ = new_func.__self__
-                except AttributeError:
-                    pass
+                tatizo AttributeError:
+                    pita
         ikiwa result ni Tupu:
             # If the underlying descriptor didn't do anything, treat this
             # like an instance method
@@ -458,8 +458,8 @@ eleza _make_key(args, kwds, typed,
              tuple=tuple, type=type, len=len):
     """Make a cache key kutoka optionally typed positional na keyword arguments
 
-    The key ni constructed kwenye a way that ni flat as possible rather than
-    as a nested structure that would take more memory.
+    The key ni constructed kwenye a way that ni flat kama possible rather than
+    kama a nested structure that would take more memory.
 
     If there ni only a single argument na its data type ni known to cache
     its hash value, then that argument ni returned without a wrapper.  This
@@ -468,7 +468,7 @@ eleza _make_key(args, kwds, typed,
     """
     # All of code below relies on kwds preserving the order input by the user.
     # Formerly, we sorted() the kwds before looping.  The new way ni *much*
-    # faster; however, it means that f(x=1, y=2) will now be treated as a
+    # faster; however, it means that f(x=1, y=2) will now be treated kama a
     # distinct call kutoka f(y=2, x=1) which will be cached separately.
     key = args
     ikiwa kwds:
@@ -479,7 +479,7 @@ eleza _make_key(args, kwds, typed,
         key += tuple(type(v) kila v kwenye args)
         ikiwa kwds:
             key += tuple(type(v) kila v kwenye kwds.values())
-    elikiwa len(key) == 1 na type(key[0]) kwenye fasttypes:
+    lasivyo len(key) == 1 na type(key[0]) kwenye fasttypes:
         rudisha key[0]
     rudisha _HashedSeq(key)
 
@@ -490,7 +490,7 @@ eleza lru_cache(maxsize=128, typed=Uongo):
     can grow without bound.
 
     If *typed* ni Kweli, arguments of different types will be cached separately.
-    For example, f(3.0) na f(3) will be treated as distinct calls with
+    For example, f(3.0) na f(3) will be treated kama distinct calls with
     distinct results.
 
     Arguments to the cached function must be hashable.
@@ -505,20 +505,20 @@ eleza lru_cache(maxsize=128, typed=Uongo):
 
     # Users should only access the lru_cache through its public API:
     #       cache_info, cache_clear, na f.__wrapped__
-    # The internals of the lru_cache are encapsulated kila thread safety and
+    # The internals of the lru_cache are encapsulated kila thread safety na
     # to allow the implementation to change (including a possible C version).
 
     ikiwa isinstance(maxsize, int):
-        # Negative maxsize ni treated as 0
+        # Negative maxsize ni treated kama 0
         ikiwa maxsize < 0:
             maxsize = 0
-    elikiwa callable(maxsize) na isinstance(typed, bool):
-        # The user_function was passed kwenye directly via the maxsize argument
+    lasivyo callable(maxsize) na isinstance(typed, bool):
+        # The user_function was pitaed kwenye directly via the maxsize argument
         user_function, maxsize = maxsize, 128
         wrapper = _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo)
         rudisha update_wrapper(wrapper, user_function)
-    elikiwa maxsize ni sio Tupu:
-         ashiria TypeError(
+    lasivyo maxsize ni sio Tupu:
+        ashiria TypeError(
             'Expected first argument to be an integer, a callable, ama Tupu')
 
     eleza decorating_function(user_function):
@@ -551,7 +551,7 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
             result = user_function(*args, **kwds)
             rudisha result
 
-    elikiwa maxsize ni Tupu:
+    lasivyo maxsize ni Tupu:
 
         eleza wrapper(*args, **kwds):
             # Simple caching without ordering ama size limit
@@ -593,8 +593,8 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
                     # cache wakati the lock was released.  Since the link
                     # update ni already done, we need only rudisha the
                     # computed result na update the count of misses.
-                    pass
-                elikiwa full:
+                    pita
+                lasivyo full:
                     # Use the old root to store the new key na result.
                     oldroot = root
                     oldroot[KEY] = key
@@ -645,8 +645,8 @@ eleza _lru_cache_wrapper(user_function, maxsize, typed, _CacheInfo):
 
 jaribu:
     kutoka _functools agiza _lru_cache_wrapper
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 ################################################################################
@@ -673,7 +673,7 @@ eleza _c3_merge(sequences):
             isipokua:
                 koma
         ikiwa candidate ni Tupu:
-             ashiria RuntimeError("Inconsistent hierarchy")
+            ashiria RuntimeError("Inconsistent hierarchy")
         result.append(candidate)
         # remove the chosen candidate
         kila seq kwenye sequences:
@@ -735,7 +735,7 @@ eleza _compose_mro(cls, types):
     bases = set(cls.__mro__)
     # Remove entries which are already present kwenye the __mro__ ama unrelated.
     eleza is_related(typ):
-        rudisha (typ sio kwenye bases na hasattr(typ, '__mro__')
+        rudisha (typ haiko kwenye bases na hasattr(typ, '__mro__')
                                  na issubclass(cls, typ))
     types = [n kila n kwenye types ikiwa is_related(n)]
     # Remove entries which are strict bases of other entries (they will end up
@@ -753,7 +753,7 @@ eleza _compose_mro(cls, types):
     kila typ kwenye types:
         found = []
         kila sub kwenye typ.__subclasses__():
-            ikiwa sub sio kwenye bases na issubclass(cls, sub):
+            ikiwa sub haiko kwenye bases na issubclass(cls, sub):
                 found.append([s kila s kwenye sub.__mro__ ikiwa s kwenye type_set])
         ikiwa sio found:
             mro.append(typ)
@@ -762,7 +762,7 @@ eleza _compose_mro(cls, types):
         found.sort(key=len, reverse=Kweli)
         kila sub kwenye found:
             kila subcls kwenye sub:
-                ikiwa subcls sio kwenye mro:
+                ikiwa subcls haiko kwenye mro:
                     mro.append(subcls)
     rudisha _c3_mro(cls, abcs=mro)
 
@@ -782,10 +782,10 @@ eleza _find_impl(cls, registry):
         ikiwa match ni sio Tupu:
             # If *match* ni an implicit ABC but there ni another unrelated,
             # equally matching implicit ABC, refuse the temptation to guess.
-            ikiwa (t kwenye registry na t sio kwenye cls.__mro__
-                              na match sio kwenye cls.__mro__
+            ikiwa (t kwenye registry na t haiko kwenye cls.__mro__
+                              na match haiko kwenye cls.__mro__
                               na sio issubclass(match, t)):
-                 ashiria RuntimeError("Ambiguous dispatch: {} ama {}".format(
+                ashiria RuntimeError("Ambiguous dispatch: {} ama {}".format(
                     match, t))
             koma
         ikiwa t kwenye regisjaribu:
@@ -797,7 +797,7 @@ eleza singledispatch(func):
 
     Transforms a function into a generic function, which can have different
     behaviours depending upon the type of its first argument. The decorated
-    function acts as the default implementation, na additional
+    function acts kama the default implementation, na additional
     implementations can be registered using the register() attribute of the
     generic function.
     """
@@ -825,10 +825,10 @@ eleza singledispatch(func):
                 cache_token = current_token
         jaribu:
             impl = dispatch_cache[cls]
-        except KeyError:
+        tatizo KeyError:
             jaribu:
                 impl = registry[cls]
-            except KeyError:
+            tatizo KeyError:
                 impl = _find_impl(cls, registry)
             dispatch_cache[cls] = impl
         rudisha impl
@@ -845,7 +845,7 @@ eleza singledispatch(func):
                 rudisha lambda f: register(cls, f)
             ann = getattr(cls, '__annotations__', {})
             ikiwa sio ann:
-                 ashiria TypeError(
+                ashiria TypeError(
                     f"Invalid first argument to `register()`: {cls!r}. "
                     f"Use either `@register(some_class)` ama plain `@register` "
                     f"on an annotated function."
@@ -856,7 +856,7 @@ eleza singledispatch(func):
             kutoka typing agiza get_type_hints
             argname, cls = next(iter(get_type_hints(func).items()))
             ikiwa sio isinstance(cls, type):
-                 ashiria TypeError(
+                ashiria TypeError(
                     f"Invalid annotation kila {argname!r}. "
                     f"{cls!r} ni sio a class."
                 )
@@ -868,7 +868,7 @@ eleza singledispatch(func):
 
     eleza wrapper(*args, **kw):
         ikiwa sio args:
-             ashiria TypeError(f'{funcname} requires at least '
+            ashiria TypeError(f'{funcname} requires at least '
                             '1 positional argument')
 
         rudisha dispatch(args[0].__class__)(*args, **kw)
@@ -888,12 +888,12 @@ kundi singledispatchmethod:
     """Single-dispatch generic method descriptor.
 
     Supports wrapping existing descriptors na handles non-descriptor
-    callables as instance methods.
+    callables kama instance methods.
     """
 
     eleza __init__(self, func):
         ikiwa sio callable(func) na sio hasattr(func, "__get__"):
-             ashiria TypeError(f"{func!r} ni sio callable ama a descriptor")
+            ashiria TypeError(f"{func!r} ni sio callable ama a descriptor")
 
         self.dispatcher = singledispatch(func)
         self.func = func
@@ -921,7 +921,7 @@ kundi singledispatchmethod:
 
 
 ################################################################################
-### cached_property() - computed once per instance, cached as attribute
+### cached_property() - computed once per instance, cached kama attribute
 ################################################################################
 
 _NOT_FOUND = object()
@@ -937,8 +937,8 @@ kundi cached_property:
     eleza __set_name__(self, owner, name):
         ikiwa self.attrname ni Tupu:
             self.attrname = name
-        elikiwa name != self.attrname:
-             ashiria TypeError(
+        lasivyo name != self.attrname:
+            ashiria TypeError(
                 "Cannot assign the same cached_property to two different names "
                 f"({self.attrname!r} na {name!r})."
             )
@@ -947,16 +947,16 @@ kundi cached_property:
         ikiwa instance ni Tupu:
             rudisha self
         ikiwa self.attrname ni Tupu:
-             ashiria TypeError(
+            ashiria TypeError(
                 "Cannot use cached_property instance without calling __set_name__ on it.")
         jaribu:
             cache = instance.__dict__
-        except AttributeError:  # sio all objects have __dict__ (e.g. kundi defines slots)
+        tatizo AttributeError:  # sio all objects have __dict__ (e.g. kundi defines slots)
             msg = (
                 f"No '__dict__' attribute on {type(instance).__name__!r} "
                 f"instance to cache {self.attrname!r} property."
             )
-             ashiria TypeError(msg) kutoka Tupu
+            ashiria TypeError(msg) kutoka Tupu
         val = cache.get(self.attrname, _NOT_FOUND)
         ikiwa val ni _NOT_FOUND:
             ukijumuisha self.lock:
@@ -966,10 +966,10 @@ kundi cached_property:
                     val = self.func(instance)
                     jaribu:
                         cache[self.attrname] = val
-                    except TypeError:
+                    tatizo TypeError:
                         msg = (
                             f"The '__dict__' attribute on {type(instance).__name__!r} instance "
                             f"does sio support item assignment kila caching {self.attrname!r} property."
                         )
-                         ashiria TypeError(msg) kutoka Tupu
+                        ashiria TypeError(msg) kutoka Tupu
         rudisha val

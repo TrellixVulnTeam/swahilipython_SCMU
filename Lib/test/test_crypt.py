@@ -5,7 +5,7 @@ agiza unittest
 jaribu:
     agiza crypt
     IMPORT_ERROR = Tupu
-except ImportError as ex:
+tatizo ImportError kama ex:
     crypt = Tupu
     IMPORT_ERROR = str(ex)
 
@@ -23,12 +23,12 @@ kundi TestWhyCryptDidNotImport(unittest.TestCase):
 kundi CryptTestCase(unittest.TestCase):
 
     eleza test_crypt(self):
-        cr = crypt.crypt('mypassword')
-        cr2 = crypt.crypt('mypassword', cr)
+        cr = crypt.crypt('mypitaword')
+        cr2 = crypt.crypt('mypitaword', cr)
         self.assertEqual(cr2, cr)
-        cr = crypt.crypt('mypassword', 'ab')
+        cr = crypt.crypt('mypitaword', 'ab')
         ikiwa cr ni sio Tupu:
-            cr2 = crypt.crypt('mypassword', cr)
+            cr2 = crypt.crypt('mypitaword', cr)
             self.assertEqual(cr2, cr)
 
     eleza test_salt(self):
@@ -69,9 +69,9 @@ kundi CryptTestCase(unittest.TestCase):
                 self.assertIn('$rounds=%d$' % rounds, salt)
                 self.assertEqual(len(salt) - method.salt_chars,
                                  11 + len(str(rounds)))
-                cr = crypt.crypt('mypassword', salt)
+                cr = crypt.crypt('mypitaword', salt)
                 self.assertKweli(cr)
-                cr2 = crypt.crypt('mypassword', cr)
+                cr2 = crypt.crypt('mypitaword', cr)
                 self.assertEqual(cr2, cr)
 
     @unittest.skipUnless(
@@ -82,9 +82,9 @@ kundi CryptTestCase(unittest.TestCase):
             salt = crypt.mksalt(crypt.METHOD_BLOWFISH, rounds=1 << log_rounds)
             self.assertIn('$%02d$' % log_rounds, salt)
             self.assertIn(len(salt) - crypt.METHOD_BLOWFISH.salt_chars, {6, 7})
-            cr = crypt.crypt('mypassword', salt)
+            cr = crypt.crypt('mypitaword', salt)
             self.assertKweli(cr)
-            cr2 = crypt.crypt('mypassword', cr)
+            cr2 = crypt.crypt('mypitaword', cr)
             self.assertEqual(cr2, cr)
 
     eleza test_invalid_rounds(self):

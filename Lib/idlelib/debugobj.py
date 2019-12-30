@@ -35,7 +35,7 @@ kundi ObjectTreeItem(TreeItem):
             value = eval(text)
             self.setfunction(value)
         tatizo:
-            pass
+            pita
         isipokua:
             self.object = value
     eleza IsExpandable(self):
@@ -46,7 +46,7 @@ kundi ObjectTreeItem(TreeItem):
         kila key kwenye keys:
             jaribu:
                 value = getattr(self.object, key)
-            except AttributeError:
+            tatizo AttributeError:
                 endelea
             item = make_objecttreeitem(
                 str(key) + " =",
@@ -83,7 +83,7 @@ kundi SequenceTreeItem(ObjectTreeItem):
         kila key kwenye self.keys():
             jaribu:
                 value = self.object[key]
-            except KeyError:
+            tatizo KeyError:
                 endelea
             eleza setfunction(value, key=key, object=self.object):
                 object[key] = value
@@ -97,7 +97,7 @@ kundi DictTreeItem(SequenceTreeItem):
         jaribu:
             keys.sort()
         tatizo:
-            pass
+            pita
         rudisha keys
 
 dispatch = {

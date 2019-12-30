@@ -18,8 +18,8 @@ __all__ = ["cmp_op", "hasconst", "hasname", "hasjrel", "hasjabs",
 jaribu:
     kutoka _opcode agiza stack_effect
     __all__.append('stack_effect')
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 cmp_op = ('<', '<=', '==', '!=', '>', '>=', 'in', 'not in', 'is',
         'is not', 'exception match', 'BAD')
@@ -167,7 +167,7 @@ haslocal.append(125)
 def_op('DELETE_FAST', 126)      # Local variable number
 haslocal.append(126)
 
-def_op('RAISE_VARARGS', 130)    # Number of  ashiria arguments (1, 2, ama 3)
+def_op('RAISE_VARARGS', 130)    # Number of ashiria arguments (1, 2, ama 3)
 def_op('CALL_FUNCTION', 131)    # #args
 def_op('MAKE_FUNCTION', 132)    # Flags
 def_op('BUILD_SLICE', 133)      # Number of items

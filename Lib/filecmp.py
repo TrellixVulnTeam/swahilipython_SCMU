@@ -72,7 +72,7 @@ eleza _sig(st):
 
 eleza _do_cmp(f1, f2):
     bufsize = BUFSIZE
-    ukijumuisha open(f1, 'rb') as fp1, open(f2, 'rb') as fp2:
+    ukijumuisha open(f1, 'rb') kama fp1, open(f2, 'rb') kama fp2:
         wakati Kweli:
             b1 = fp1.read(bufsize)
             b2 = fp2.read(bufsize)
@@ -96,7 +96,7 @@ kundi dircmp:
     High level usage:
       x = dircmp(dir1, dir2)
       x.report() -> prints a report on the differences between dir1 na dir2
-       or
+       ama
       x.report_partial_closure() -> prints report on differences between dir1
             na dir2, na reports on common immediate subdirectories.
       x.report_full_closure() -> like report_partial_closure,
@@ -129,7 +129,7 @@ kundi dircmp:
         isipokua:
             self.ignore = ignore
 
-    eleza phase0(self): # Compare everything except common subdirectories
+    eleza phase0(self): # Compare everything tatizo common subdirectories
         self.left_list = _filter(os.listdir(self.left),
                                  self.hide+self.ignore)
         self.right_list = _filter(os.listdir(self.right),
@@ -156,12 +156,12 @@ kundi dircmp:
             ok = 1
             jaribu:
                 a_stat = os.stat(a_path)
-            except OSError as why:
+            tatizo OSError kama why:
                 # andika('Can\'t stat', a_path, ':', why.args[1])
                 ok = 0
             jaribu:
                 b_stat = os.stat(b_path)
-            except OSError as why:
+            tatizo OSError kama why:
                 # andika('Can\'t stat', b_path, ':', why.args[1])
                 ok = 0
 
@@ -170,9 +170,9 @@ kundi dircmp:
                 b_type = stat.S_IFMT(b_stat.st_mode)
                 ikiwa a_type != b_type:
                     self.common_funny.append(x)
-                elikiwa stat.S_ISDIR(a_type):
+                lasivyo stat.S_ISDIR(a_type):
                     self.common_dirs.append(x)
-                elikiwa stat.S_ISREG(a_type):
+                lasivyo stat.S_ISREG(a_type):
                     self.common_files.append(x)
                 isipokua:
                     self.common_funny.append(x)
@@ -242,8 +242,8 @@ kundi dircmp:
                      left_list=phase0, right_list=phase0)
 
     eleza __getattr__(self, attr):
-        ikiwa attr sio kwenye self.methodmap:
-             ashiria AttributeError(attr)
+        ikiwa attr haiko kwenye self.methodmap:
+            ashiria AttributeError(attr)
         self.methodmap[attr](self)
         rudisha getattr(self, attr)
 
@@ -277,7 +277,7 @@ eleza cmpfiles(a, b, common, shallow=Kweli):
 eleza _cmp(a, b, sh, abs=abs, cmp=cmp):
     jaribu:
         rudisha sio abs(cmp(a, b, sh))
-    except OSError:
+    tatizo OSError:
         rudisha 2
 
 
@@ -294,7 +294,7 @@ eleza demo():
     agiza getopt
     options, args = getopt.getopt(sys.argv[1:], 'r')
     ikiwa len(args) != 2:
-         ashiria getopt.GetoptError('need exactly two args', Tupu)
+        ashiria getopt.GetoptError('need exactly two args', Tupu)
     dd = dircmp(args[0], args[1])
     ikiwa ('-r', '') kwenye options:
         dd.report_full_closure()

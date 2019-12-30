@@ -64,22 +64,22 @@ kundi PyParseTest(unittest.TestCase):
                'kundi C():\n'
                '    eleza __init__(self, a,\n'
                '                 b=Kweli):\n'
-               '        pass\n'
+               '        pita\n'
                )
 
         # No value sent kila is_char_in_string().
         self.assertIsTupu(start())
 
-        # Make text look like a string.  This returns pos as the start
+        # Make text look like a string.  This returns pos kama the start
         # position, but it's set to Tupu.
         self.assertIsTupu(start(is_char_in_string=lambda index: Kweli))
 
-        # Make all text look like it's sio kwenye a string.  This means that it
+        # Make all text look like it's haiko kwenye a string.  This means that it
         # found a good start position.
         eq(start(is_char_in_string=lambda index: Uongo), 44)
 
-        # If the beginning of the eleza line ni sio kwenye a string, then it
-        # returns that as the index.
+        # If the beginning of the eleza line ni haiko kwenye a string, then it
+        # returns that kama the index.
         eq(start(is_char_in_string=lambda index: index > 44), 44)
         # If the beginning of the eleza line ni kwenye a string, then it
         # looks kila a previous index.
@@ -93,7 +93,7 @@ kundi PyParseTest(unittest.TestCase):
         setcode('"""This ni a module docstring"""\n'
                'kundi C():\n'
                '    eleza __init__(self, a, b=Kweli):\n'
-               '        pass\n'
+               '        pita\n'
                )
         eq(start(is_char_in_string=lambda index: Uongo), 44)
         eq(start(is_char_in_string=lambda index: index > 44), 44)
@@ -108,7 +108,7 @@ kundi PyParseTest(unittest.TestCase):
                 'kundi C():\n'
                 '    eleza __init__(self, a,\n'
                 '                 b=Kweli):\n'
-                '        pass\n'
+                '        pita\n'
                 )
         p = self.parser
         p.set_code(code)
@@ -394,7 +394,7 @@ kundi PyParseTest(unittest.TestCase):
             TestInfo('(:\n', yes),
             TestInfo('":\n', no),
             TestInfo('\n   eleza function1(self, a,\n', no),
-            TestInfo('eleza function1(self, a):\n    pass\n', no),
+            TestInfo('eleza function1(self, a):\n    pita\n', no),
             TestInfo('# A comment:\n', no),
             TestInfo('"""A docstring:\n', no),
             TestInfo('"""A docstring:\n', no),
@@ -418,15 +418,15 @@ kundi PyParseTest(unittest.TestCase):
             TestInfo('\tkoma\n', yes),
             TestInfo('  endelea\n', yes),
             TestInfo('     raise\n', yes),
-            TestInfo('pass    \n', yes),
-            TestInfo('pass\t\n', yes),
+            TestInfo('pita    \n', yes),
+            TestInfo('pita\t\n', yes),
             TestInfo('rudisha #\n', yes),
             TestInfo('raised\n', no),
             TestInfo('returning\n', no),
             TestInfo('# return\n', no),
             TestInfo('"""koma\n', no),
             TestInfo('"endelea\n', no),
-            TestInfo('eleza function1(self, a):\n    pass\n', yes),
+            TestInfo('eleza function1(self, a):\n    pita\n', yes),
             )
 
         kila test kwenye tests:
@@ -450,7 +450,7 @@ kundi PyParseTest(unittest.TestCase):
             TestInfo('()(\n)\n', ((0, 0), (0, 1), (2, 0), (2, 1), (5, 0))),
             TestInfo('(())\n', ((0, 0), (0, 1), (1, 2), (3, 1), (4, 0))),
             TestInfo('(\n())\n', ((0, 0), (0, 1), (2, 2), (4, 1), (5, 0))),
-            # Same as matched test.
+            # Same kama matched test.
             TestInfo('{)(]\n', ((0, 0), (0, 1), (2, 0), (2, 1), (4, 0))),
             TestInfo('(((())\n',
                      ((0, 0), (0, 1), (1, 2), (2, 3), (3, 4), (5, 3), (6, 2))),

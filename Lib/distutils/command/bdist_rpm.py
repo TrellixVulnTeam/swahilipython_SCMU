@@ -87,7 +87,7 @@ kundi bdist_rpm(Command):
         ('use-rpm-opt-flags', Tupu,
          "compile ukijumuisha RPM_OPT_FLAGS when building kutoka source RPM"),
         ('no-rpm-opt-flags', Tupu,
-         "do sio pass any RPM CFLAGS to compiler"),
+         "do sio pita any RPM CFLAGS to compiler"),
         ('rpm3-mode', Tupu,
          "RPM 3 compatibility mode (default)"),
         ('rpm2-mode', Tupu,
@@ -182,7 +182,7 @@ kundi bdist_rpm(Command):
         self.set_undefined_options('bdist', ('bdist_base', 'bdist_base'))
         ikiwa self.rpm_base ni Tupu:
             ikiwa sio self.rpm3_mode:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "you must specify --rpm-base kwenye RPM 2 mode")
             self.rpm_base = os.path.join(self.bdist_base, "rpm")
 
@@ -191,18 +191,18 @@ kundi bdist_rpm(Command):
                 self.python = sys.executable
             isipokua:
                 self.python = "python3"
-        elikiwa self.fix_python:
-             ashiria DistutilsOptionError(
+        lasivyo self.fix_python:
+            ashiria DistutilsOptionError(
                   "--python na --fix-python are mutually exclusive options")
 
         ikiwa os.name != 'posix':
-             ashiria DistutilsPlatformError("don't know how to create RPM "
+            ashiria DistutilsPlatformError("don't know how to create RPM "
                    "distributions on platform %s" % os.name)
         ikiwa self.binary_only na self.source_only:
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "cannot supply both '--source-only' na '--binary-only'")
 
-        # don't pass CFLAGS to pure python distributions
+        # don't pita CFLAGS to pure python distributions
         ikiwa sio self.distribution.has_ext_modules():
             self.use_rpm_opt_flags = 0
 
@@ -218,7 +218,7 @@ kundi bdist_rpm(Command):
         self.ensure_string_list('doc_files')
         ikiwa isinstance(self.doc_files, list):
             kila readme kwenye ('README', 'README.txt'):
-                ikiwa os.path.exists(readme) na readme sio kwenye self.doc_files:
+                ikiwa os.path.exists(readme) na readme haiko kwenye self.doc_files:
                     self.doc_files.append(readme)
 
         self.ensure_string('release', "1")
@@ -304,7 +304,7 @@ kundi bdist_rpm(Command):
             ikiwa os.path.exists(self.icon):
                 self.copy_file(self.icon, source_dir)
             isipokua:
-                 ashiria DistutilsFileError(
+                ashiria DistutilsFileError(
                       "icon file '%s' does sio exist" % self.icon)
 
         # build package
@@ -313,7 +313,7 @@ kundi bdist_rpm(Command):
 
         ikiwa self.source_only: # what kind of RPMs?
             rpm_cmd.append('-bs')
-        elikiwa self.binary_only:
+        lasivyo self.binary_only:
             rpm_cmd.append('-bb')
         isipokua:
             rpm_cmd.append('-ba')
@@ -355,7 +355,7 @@ kundi bdist_rpm(Command):
 
             status = out.close()
             ikiwa status:
-                 ashiria DistutilsExecError("Failed to execute: %s" % repr(q_cmd))
+                ashiria DistutilsExecError("Failed to execute: %s" % repr(q_cmd))
 
         mwishowe:
             out.close()
@@ -390,7 +390,7 @@ kundi bdist_rpm(Command):
         rudisha os.path.join(self.dist_dir, os.path.basename(path))
 
     eleza _make_spec_file(self):
-        """Generate the text of an RPM spec file na rudisha it as a
+        """Generate the text of an RPM spec file na rudisha it kama a
         list of strings (one per line).
         """
         # definitions na headers
@@ -408,7 +408,7 @@ kundi bdist_rpm(Command):
         vendor_hook = subprocess.getoutput('rpm --eval %{__os_install_post}')
         # Generate a potential replacement value kila __os_install_post (whilst
         # normalizing the whitespace to simplify the test kila whether the
-        # invocation of brp-python-bytecompile passes kwenye __python):
+        # invocation of brp-python-bytecompile pitaes kwenye __python):
         vendor_hook = '\n'.join(['  %s \\' % line.strip()
                                  kila line kwenye vendor_hook.splitlines()])
         problem = "brp-python-bytecompile \\\n"
@@ -461,7 +461,7 @@ kundi bdist_rpm(Command):
             val = getattr(self, field.lower())
             ikiwa isinstance(val, list):
                 spec_file.append('%s: %s' % (field, ' '.join(val)))
-            elikiwa val ni sio Tupu:
+            lasivyo val ni sio Tupu:
                 spec_file.append('%s: %s' % (field, val))
 
 
@@ -527,14 +527,14 @@ kundi bdist_rpm(Command):
 
         kila (rpm_opt, attr, default) kwenye script_options:
             # Insert contents of file referred to, ikiwa no file ni referred to
-            # use 'default' as contents of script
+            # use 'default' kama contents of script
             val = getattr(self, attr)
             ikiwa val ama default:
                 spec_file.extend([
                     '',
                     '%' + rpm_opt,])
                 ikiwa val:
-                    ukijumuisha open(val) as f:
+                    ukijumuisha open(val) kama f:
                         spec_file.extend(f.read().split('\n'))
                 isipokua:
                     spec_file.append(default)
@@ -568,7 +568,7 @@ kundi bdist_rpm(Command):
             line = line.strip()
             ikiwa line[0] == '*':
                 new_changelog.extend(['', line])
-            elikiwa line[0] == '-':
+            lasivyo line[0] == '-':
                 new_changelog.append(line)
             isipokua:
                 new_changelog.append('  ' + line)

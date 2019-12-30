@@ -15,7 +15,7 @@ ikiwa sys.platform.startswith("win"):
 isipokua:
     jaribu:
         _locale.CODESET
-    except AttributeError:
+    tatizo AttributeError:
         ikiwa hasattr(sys, 'getandroidapilevel'):
             # On Android langinfo.h na CODESET are missing, na UTF-8 is
             # always used kwenye mbstowcs() na wcstombs().
@@ -39,7 +39,7 @@ isipokua:
                 # nl_langinfo can rudisha an empty string
                 # when the setting has an invalid value.
                 # Default to UTF-8 kwenye that case because
-                # UTF-8 ni the default charset on OSX and
+                # UTF-8 ni the default charset on OSX na
                 # returning nothing will crash the
                 # interpreter.
                 result = 'UTF-8'

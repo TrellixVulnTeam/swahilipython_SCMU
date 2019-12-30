@@ -36,13 +36,13 @@ kundi NamedExpressionInvalidTest(unittest.TestCase):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_07(self):
-        code = """eleza spam(a = b := 42): pass"""
+        code = """eleza spam(a = b := 42): pita"""
 
         ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
 
     eleza test_named_expression_invalid_08(self):
-        code = """eleza spam(a: b := 42 = 5): pass"""
+        code = """eleza spam(a: b := 42 = 5): pita"""
 
         ukijumuisha self.assertRaisesRegex(SyntaxError, "invalid syntax"):
             exec(code, {}, {})
@@ -221,7 +221,7 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
 
     eleza test_named_expression_assignment_10(self):
         ikiwa (match := 10) == 10:
-            pass
+            pita
         isipokua: self.fail("variable was sio assigned using named expression")
 
     eleza test_named_expression_assignment_11(self):
@@ -247,8 +247,8 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
 
     eleza test_named_expression_assignment_14(self):
         """
-        Where all variables are positive integers, na a ni at least as large
-        as the n'th root of x, this algorithm returns the floor of the n'th
+        Where all variables are positive integers, na a ni at least kama large
+        kama the n'th root of x, this algorithm returns the floor of the n'th
         root of x (and roughly doubling the number of accurate bits per
         iteration):
         """
@@ -263,7 +263,7 @@ kundi NamedExpressionAssignmentTest(unittest.TestCase):
 
     eleza test_named_expression_assignment_15(self):
         wakati a := Uongo:
-            pass  # This will sio run
+            pita  # This will sio run
 
         self.assertEqual(a, Uongo)
 
@@ -444,7 +444,7 @@ spam()"""
         self.assertEqual(ns["a"], 20)
 
     eleza test_named_expression_variable_reuse_in_comprehensions(self):
-        # The compiler ni expected to  ashiria syntax error kila comprehension
+        # The compiler ni expected to ashiria syntax error kila comprehension
         # iteration variables, but should be fine ukijumuisha rebinding of other
         # names (e.g. globals, nonlocals, other assignment expressions)
 

@@ -32,13 +32,13 @@ kundi AsyncIOInteractiveConsole(code.InteractiveConsole):
             func = types.FunctionType(code, self.locals)
             jaribu:
                 coro = func()
-            except SystemExit:
+            tatizo SystemExit:
                 raise
-            except KeyboardInterrupt as ex:
+            tatizo KeyboardInterrupt kama ex:
                 repl_future_interrupted = Kweli
                 future.set_exception(ex)
                 return
-            except BaseException as ex:
+            tatizo BaseException kama ex:
                 future.set_exception(ex)
                 return
 
@@ -49,16 +49,16 @@ kundi AsyncIOInteractiveConsole(code.InteractiveConsole):
             jaribu:
                 repl_future = self.loop.create_task(coro)
                 futures._chain_future(repl_future, future)
-            except BaseException as exc:
+            tatizo BaseException kama exc:
                 future.set_exception(exc)
 
         loop.call_soon_threadsafe(callback)
 
         jaribu:
             rudisha future.result()
-        except SystemExit:
+        tatizo SystemExit:
             raise
-        except BaseException:
+        tatizo BaseException:
             ikiwa repl_future_interrupted:
                 self.write("\nKeyboardInterrupt\n")
             isipokua:
@@ -106,8 +106,8 @@ ikiwa __name__ == '__main__':
 
     jaribu:
         agiza readline  # NoQA
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
 
     repl_thread = REPLThread()
     repl_thread.daemon = Kweli
@@ -116,7 +116,7 @@ ikiwa __name__ == '__main__':
     wakati Kweli:
         jaribu:
             loop.run_forever()
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             ikiwa repl_future na sio repl_future.done():
                 repl_future.cancel()
                 repl_future_interrupted = Kweli

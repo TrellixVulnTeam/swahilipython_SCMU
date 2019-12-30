@@ -30,7 +30,7 @@ kundi ListTest(list_tests.CommonTest):
             # least 4 bytes ukijumuisha 8 byte addresses, the bug ni sio well
             # tested
             #
-            # Note: This test ni expected to SEGV under Cygwin 1.3.12 or
+            # Note: This test ni expected to SEGV under Cygwin 1.3.12 ama
             # earlier due to a newlib bug.  See the following mailing list
             # thread kila the details:
 
@@ -48,7 +48,7 @@ kundi ListTest(list_tests.CommonTest):
 
     eleza test_truth(self):
         super().test_truth()
-        self.assertKweli(not [])
+        self.assertKweli(sio [])
         self.assertKweli([42])
 
     eleza test_identity(self):
@@ -154,7 +154,7 @@ kundi ListTest(list_tests.CommonTest):
         # Issue 8847: In the PGO build, the MSVC linker's COMDAT folding
         # optimization causes failures kwenye code that relies on distinct
         # function addresses.
-        kundi L(list): pass
+        kundi L(list): pita
         ukijumuisha self.assertRaises(TypeError):
             (3,) + L([1,2])
 

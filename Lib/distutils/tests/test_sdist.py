@@ -11,14 +11,14 @@ kutoka test.support agiza captured_stdout, check_warnings, run_unittest
 jaribu:
     agiza zlib
     ZLIB_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = Uongo
 
 jaribu:
     agiza grp
     agiza pwd
     UID_GID_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     UID_GID_SUPPORT = Uongo
 
 kutoka distutils.command.sdist agiza sdist, show_formats
@@ -249,7 +249,7 @@ kundi SDistTestCase(BasePyPIRCCommandTestCase):
         # testing the `medata-check` option
         dist, cmd = self.get_cmd(metadata={})
 
-        # this should  ashiria some warnings !
+        # this should ashiria some warnings !
         # ukijumuisha the `check` subcommand
         cmd.ensure_finalized()
         cmd.run()
@@ -270,13 +270,13 @@ kundi SDistTestCase(BasePyPIRCCommandTestCase):
     eleza test_check_metadata_deprecated(self):
         # makes sure make_metadata ni deprecated
         dist, cmd = self.get_cmd()
-        ukijumuisha check_warnings() as w:
+        ukijumuisha check_warnings() kama w:
             warnings.simplefilter("always")
             cmd.check_metadata()
             self.assertEqual(len(w.warnings), 1)
 
     eleza test_show_formats(self):
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             show_formats()
 
         # the output should be a header line + one line per format
@@ -294,7 +294,7 @@ kundi SDistTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(cmd.template, 'MANIFEST.in')
         self.assertEqual(cmd.dist_dir, 'dist')
 
-        # formats has to be a string splitable on (' ', ',') or
+        # formats has to be a string splitable on (' ', ',') ama
         # a stringlist
         cmd.formats = 1
         self.assertRaises(DistutilsOptionError, cmd.finalize_options)

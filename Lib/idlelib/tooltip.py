@@ -36,8 +36,8 @@ kundi TooltipBase(object):
             # the focus.
             tw.tk.call("::tk::unsupported::MacWindowStyle", "style", tw._w,
                        "help", "noActivates")
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
 
         self.position_window()
         self.showcontents()
@@ -65,7 +65,7 @@ kundi TooltipBase(object):
     eleza showcontents(self):
         """content display hook kila sub-classes"""
         # See ToolTip kila an example
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza hidetip(self):
         """hide the tooltip"""
@@ -75,8 +75,8 @@ kundi TooltipBase(object):
         ikiwa tw:
             jaribu:
                 tw.destroy()
-            except TclError:  # pragma: no cover
-                pass
+            tatizo TclError:  # pragma: no cover
+                pita
 
 
 kundi OnHoverTooltipBase(TooltipBase):
@@ -105,8 +105,8 @@ kundi OnHoverTooltipBase(TooltipBase):
             self.anchor_widget.unbind("<Enter>", self._id1)
             self.anchor_widget.unbind("<Leave>", self._id2)  # pragma: no cover
             self.anchor_widget.unbind("<Button>", self._id3) # pragma: no cover
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
         super(OnHoverTooltipBase, self).__del__()
 
     eleza _show_event(self, event=Tupu):
@@ -137,8 +137,8 @@ kundi OnHoverTooltipBase(TooltipBase):
         """hide the tooltip"""
         jaribu:
             self.unschedule()
-        except TclError:  # pragma: no cover
-            pass
+        tatizo TclError:  # pragma: no cover
+            pita
         super(OnHoverTooltipBase, self).hidetip()
 
 

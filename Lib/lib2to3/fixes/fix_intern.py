@@ -18,7 +18,7 @@ kundi FixIntern(fixer_base.BaseFix):
     power< 'intern'
            trailer< lpar='('
                     ( not(arglist | argument<any '=' any>) obj=any
-                      | obj=arglist<(not argument<any '=' any>) any ','> )
+                      | obj=arglist<(sio argument<any '=' any>) any ','> )
                     rpar=')' >
            after=any*
     >
@@ -32,7 +32,7 @@ kundi FixIntern(fixer_base.BaseFix):
             ikiwa obj:
                 ikiwa obj.type == self.syms.star_expr:
                     rudisha  # Make no change.
-                ikiwa (obj.type == self.syms.argument and
+                ikiwa (obj.type == self.syms.argument na
                     obj.children[0].value == '**'):
                     rudisha  # Make no change.
         names = ('sys', 'intern')

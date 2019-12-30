@@ -56,7 +56,7 @@ kundi install_data(Command):
                 dir = convert_path(f[0])
                 ikiwa sio os.path.isabs(dir):
                     dir = os.path.join(self.install_dir, dir)
-                elikiwa self.root:
+                lasivyo self.root:
                     dir = change_root(self.root, dir)
                 self.mkpath(dir)
 

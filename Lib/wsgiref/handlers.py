@@ -37,7 +37,7 @@ eleza read_environ():
     esc = 'surrogateescape'
     jaribu:
         ''.encode('utf-8', esc)
-    except LookupError:
+    tatizo LookupError:
         esc = 'replace'
     environ = {}
 
@@ -52,25 +52,25 @@ eleza read_environ():
             ikiwa sys.platform == 'win32':
                 software = os.environ.get('SERVER_SOFTWARE', '').lower()
 
-                # On IIS, the HTTP request will be decoded as UTF-8 as long
-                # as the input ni a valid UTF-8 sequence. Otherwise it is
+                # On IIS, the HTTP request will be decoded kama UTF-8 kama long
+                # kama the input ni a valid UTF-8 sequence. Otherwise it is
                 # decoded using the system code page (mbcs), ukijumuisha no way to
                 # detect this has happened. Because UTF-8 ni the more likely
                 # encoding, na mbcs ni inherently unreliable (an mbcs string
-                # that happens to be valid UTF-8 will sio be decoded as mbcs)
-                # always recreate the original bytes as UTF-8.
+                # that happens to be valid UTF-8 will sio be decoded kama mbcs)
+                # always recreate the original bytes kama UTF-8.
                 ikiwa software.startswith('microsoft-iis/'):
                     v = v.encode('utf-8').decode('iso-8859-1')
 
                 # Apache mod_cgi writes bytes-as-unicode (as ikiwa ISO-8859-1) direct
                 # to the Unicode environ. No modification needed.
-                elikiwa software.startswith('apache/'):
-                    pass
+                lasivyo software.startswith('apache/'):
+                    pita
 
                 # Python 3's http.server.CGIHTTPRequestHandler decodes
                 # using the urllib.unquote default of UTF-8, amongst other
                 # issues.
-                elikiwa (
+                lasivyo (
                     software.startswith('simplehttp/')
                     na 'python/3' kwenye software
                 ):
@@ -105,7 +105,7 @@ kundi BaseHandler:
     server_software = Tupu  # String name of server software, ikiwa any
 
     # os_environ ni used to supply configuration kutoka the OS environment:
-    # by default it's a copy of 'os.environ' as of agiza time, but you can
+    # by default it's a copy of 'os.environ' kama of agiza time, but you can
     # override this kwenye e.g. your __init__ method.
     os_environ= read_environ()
 
@@ -136,7 +136,7 @@ kundi BaseHandler:
             self.setup_environ()
             self.result = application(self.environ, self.start_response)
             self.finish_response()
-        except (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
+        tatizo (ConnectionAbortedError, BrokenPipeError, ConnectionResetError):
             # We expect the client to close the connection abruptly kutoka time
             # to time.
             return
@@ -146,7 +146,7 @@ kundi BaseHandler:
             tatizo:
                 # If we get an error handling an error, just give up already!
                 self.close()
-                 ashiria   # ...and let the actual server figure it out.
+                ashiria   # ...and let the actual server figure it out.
 
 
     eleza setup_environ(self):
@@ -205,8 +205,8 @@ kundi BaseHandler:
         """Compute Content-Length ama switch to chunked encoding ikiwa possible"""
         jaribu:
             blocks = len(self.result)
-        except (TypeError,AttributeError,NotImplementedError):
-            pass
+        tatizo (TypeError,AttributeError,NotImplementedError):
+            pita
         isipokua:
             ikiwa blocks==1:
                 self.headers['Content-Length'] = str(self.bytes_sent)
@@ -219,21 +219,21 @@ kundi BaseHandler:
 
         Subclasses can extend this to add other defaults.
         """
-        ikiwa 'Content-Length' sio kwenye self.headers:
+        ikiwa 'Content-Length' haiko kwenye self.headers:
             self.set_content_length()
 
     eleza start_response(self, status, headers,exc_info=Tupu):
-        """'start_response()' callable as specified by PEP 3333"""
+        """'start_response()' callable kama specified by PEP 3333"""
 
         ikiwa exc_info:
             jaribu:
                 ikiwa self.headers_sent:
-                    # Re- ashiria original exception ikiwa headers sent
-                     ashiria exc_info[0](exc_info[1]).with_traceback(exc_info[2])
+                    # Re-ashiria original exception ikiwa headers sent
+                    ashiria exc_info[0](exc_info[1]).with_traceback(exc_info[2])
             mwishowe:
                 exc_info = Tupu        # avoid dangling circular ref
-        elikiwa self.headers ni sio Tupu:
-             ashiria AssertionError("Headers already set!")
+        lasivyo self.headers ni sio Tupu:
+            ashiria AssertionError("Headers already set!")
 
         self.status = status
         self.headers = self.headers_class(headers)
@@ -255,7 +255,7 @@ kundi BaseHandler:
         """Convert/check value type."""
         ikiwa type(value) ni str:
             rudisha value
-         ashiria AssertionError(
+        ashiria AssertionError(
             "{0} must be of type str (got {1})".format(title, repr(value))
         )
 
@@ -264,25 +264,25 @@ kundi BaseHandler:
         ikiwa self.origin_server:
             ikiwa self.client_is_modern():
                 self._write(('HTTP/%s %s\r\n' % (self.http_version,self.status)).encode('iso-8859-1'))
-                ikiwa 'Date' sio kwenye self.headers:
+                ikiwa 'Date' haiko kwenye self.headers:
                     self._write(
                         ('Date: %s\r\n' % format_date_time(time.time())).encode('iso-8859-1')
                     )
-                ikiwa self.server_software na 'Server' sio kwenye self.headers:
+                ikiwa self.server_software na 'Server' haiko kwenye self.headers:
                     self._write(('Server: %s\r\n' % self.server_software).encode('iso-8859-1'))
         isipokua:
             self._write(('Status: %s\r\n' % self.status).encode('iso-8859-1'))
 
     eleza write(self, data):
-        """'write()' callable as specified by PEP 3333"""
+        """'write()' callable kama specified by PEP 3333"""
 
         assert type(data) ni bytes, \
             "write() argument must be a bytes instance"
 
         ikiwa sio self.status:
-             ashiria AssertionError("write() before start_response()")
+            ashiria AssertionError("write() before start_response()")
 
-        elikiwa sio self.headers_sent:
+        lasivyo sio self.headers_sent:
             # Before the first output, send the stored headers
             self.bytes_sent = len(data)    # make sure we know content-length
             self.send_headers()
@@ -323,7 +323,7 @@ kundi BaseHandler:
             self.headers.setdefault('Content-Length', "0")
             self.send_headers()
         isipokua:
-            pass # XXX check ikiwa content-length was too short?
+            pita # XXX check ikiwa content-length was too short?
 
     eleza close(self):
         """Close the iterable (ikiwa needed) na reset all instance vars
@@ -408,7 +408,7 @@ kundi BaseHandler:
         just separates write na flush operations kila greater efficiency
         when the underlying system actually has such a distinction.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza _flush(self):
         """Override kwenye subkundi to force sending of recent '_write()' calls
@@ -416,19 +416,19 @@ kundi BaseHandler:
         It's okay ikiwa this method ni a no-op (i.e., ikiwa '_write()' actually
         sends the data.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_stdin(self):
         """Override kwenye subkundi to rudisha suitable 'wsgi.input'"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_stderr(self):
         """Override kwenye subkundi to rudisha suitable 'wsgi.errors'"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza add_cgi_vars(self):
         """Override kwenye subkundi to insert CGI variables kwenye 'self.environ'"""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi SimpleHandler(BaseHandler):
@@ -490,12 +490,12 @@ kundi BaseCGIHandler(SimpleHandler):
         handler = BaseCGIHandler(inp,out,err,env)
         handler.run(app)
 
-    This handler kundi ni useful kila gateway protocols like ReadyExec and
+    This handler kundi ni useful kila gateway protocols like ReadyExec na
     FastCGI, that have usable input/output/error streams na an environment
     mapping.  It's also the base kundi kila CGIHandler, which just uses
     sys.stdin, os.environ, na so on.
 
-    The constructor also takes keyword arguments 'multithread' and
+    The constructor also takes keyword arguments 'multithread' na
     'multiprocess' (defaulting to 'Kweli' na 'Uongo' respectively) to control
     the configuration sent to the application.  It sets 'origin_server' to
     Uongo (to enable CGI-like output), na assumes that 'wsgi.run_once' is
@@ -514,7 +514,7 @@ kundi CGIHandler(BaseCGIHandler):
         CGIHandler().run(app)
 
     The difference between this kundi na BaseCGIHandler ni that it always
-    uses 'wsgi.run_once' of 'Kweli', 'wsgi.multithread' of 'Uongo', and
+    uses 'wsgi.run_once' of 'Kweli', 'wsgi.multithread' of 'Uongo', na
     'wsgi.multiprocess' of 'Kweli'.  It does sio take any initialization
     parameters, but always uses 'sys.stdin', 'os.environ', na friends.
 
@@ -549,7 +549,7 @@ kundi IISCGIHandler(BaseCGIHandler):
     # the front, causing problems kila WSGI applications that wish to implement
     # routing. This handler strips any such duplicated path.
 
-    # IIS can be configured to pass the correct PATH_INFO, but this causes
+    # IIS can be configured to pita the correct PATH_INFO, but this causes
     # another bug where PATH_TRANSLATED ni wrong. Luckily this variable is
     # rarely used na ni sio guaranteed by WSGI. On IIS<7, though, the
     # setting can only be made on a vhost level, affecting all other script

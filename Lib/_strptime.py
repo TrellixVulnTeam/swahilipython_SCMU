@@ -7,19 +7,19 @@ CLASSES:
 
 FUNCTIONS:
     _getlang -- Figure out what language ni being used kila the locale
-    strptime -- Calculates the time struct represented by the passed-in string
+    strptime -- Calculates the time struct represented by the pitaed-in string
 
 """
 agiza time
 agiza locale
 agiza calendar
-kutoka re agiza compile as re_compile
+kutoka re agiza compile kama re_compile
 kutoka re agiza IGNORECASE
-kutoka re agiza escape as re_escape
-kutoka datetime agiza (date as datetime_date,
-                      timedelta as datetime_timedelta,
-                      timezone as datetime_timezone)
-kutoka _thread agiza allocate_lock as _thread_allocate_lock
+kutoka re agiza escape kama re_escape
+kutoka datetime agiza (date kama datetime_date,
+                      timedelta kama datetime_timedelta,
+                      timezone kama datetime_timezone)
+kutoka _thread agiza allocate_lock kama _thread_allocate_lock
 
 __all__ = []
 
@@ -73,9 +73,9 @@ kundi LocaleTime(object):
         self.__calc_timezone()
         self.__calc_date_time()
         ikiwa _getlang() != self.lang:
-             ashiria ValueError("locale changed during initialization")
+            ashiria ValueError("locale changed during initialization")
         ikiwa time.tzname != self.tzname ama time.daylight != self.daylight:
-             ashiria ValueError("timezone changed during initialization")
+            ashiria ValueError("timezone changed during initialization")
 
     eleza __calc_weekday(self):
         # Set self.a_weekday na self.f_weekday using the calendar
@@ -131,9 +131,9 @@ kundi LocaleTime(object):
             current_format = date_time[offset]
             kila old, new kwenye replacement_pairs:
                 # Must deal ukijumuisha possible lack of locale info
-                # manifesting itself as the empty string (e.g., Swedish's
+                # manifesting itself kama the empty string (e.g., Swedish's
                 # lack of AM/PM info) ama a platform returning a tuple of empty
-                # strings (e.g., MacOS 9 having timezone as ('','')).
+                # strings (e.g., MacOS 9 having timezone kama ('','')).
                 ikiwa old:
                     current_format = current_format.replace(old, new)
             # If %W ni used, then Sunday, 2005-01-03 will fall on week 0 since
@@ -155,8 +155,8 @@ kundi LocaleTime(object):
         # na time.daylight; handle that kwenye strptime.
         jaribu:
             time.tzset()
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self.tzname = time.tzname
         self.daylight = time.daylight
         no_saving = frozenset({"utc", "gmt", self.tzname[0].lower()})
@@ -244,7 +244,7 @@ kundi TimeRE(dict):
         """
         processed_format = ''
         # The sub() call escapes all characters that might be misconstrued
-        # as regex syntax.  Cannot use re.escape since we have to deal with
+        # kama regex syntax.  Cannot use re.escape since we have to deal with
         # format directives (%m, etc.).
         regex_chars = re_compile(r"([\\.^$*+?\(\){}\[\]|])")
         format = regex_chars.sub(r"\\\1", format)
@@ -281,7 +281,7 @@ eleza _calc_julian_from_U_or_W(year, week_of_year, day_of_week, week_starts_Mon)
         first_weekday = (first_weekday + 1) % 7
         day_of_week = (day_of_week + 1) % 7
     # Need to watch out kila a week 0 (when the first day of the year ni not
-    # the same as that specified by %U ama %W).
+    # the same kama that specified by %U ama %W).
     week_0_length = (7 - first_weekday) % 7
     ikiwa week_of_year == 0:
         rudisha 1 + day_of_week - first_weekday
@@ -314,13 +314,13 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     kila index, arg kwenye enumerate([data_string, format]):
         ikiwa sio isinstance(arg, str):
             msg = "strptime() argument {} must be str, sio {}"
-             ashiria TypeError(msg.format(index, type(arg)))
+            ashiria TypeError(msg.format(index, type(arg)))
 
     global _TimeRE_cache, _regex_cache
     ukijumuisha _cache_lock:
         locale_time = _TimeRE_cache.locale_time
-        ikiwa (_getlang() != locale_time.lang or
-            time.tzname != locale_time.tzname or
+        ikiwa (_getlang() != locale_time.lang ama
+            time.tzname != locale_time.tzname ama
             time.daylight != locale_time.daylight):
             _TimeRE_cache = TimeRE()
             _regex_cache.clear()
@@ -333,23 +333,23 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 format_regex = _TimeRE_cache.compile(format)
             # KeyError raised when a bad format ni found; can be specified as
             # \\, kwenye which case it was a stray % but ukijumuisha a space after it
-            except KeyError as err:
+            tatizo KeyError kama err:
                 bad_directive = err.args[0]
                 ikiwa bad_directive == "\\":
                     bad_directive = "%"
                 toa err
-                 ashiria ValueError("'%s' ni a bad directive kwenye format '%s'" %
+                ashiria ValueError("'%s' ni a bad directive kwenye format '%s'" %
                                     (bad_directive, format)) kutoka Tupu
             # IndexError only occurs when the format string ni "%"
-            except IndexError:
-                 ashiria ValueError("stray %% kwenye format '%s'" % format) kutoka Tupu
+            tatizo IndexError:
+                ashiria ValueError("stray %% kwenye format '%s'" % format) kutoka Tupu
             _regex_cache[format] = format_regex
     found = format_regex.match(data_string)
     ikiwa sio found:
-         ashiria ValueError("time data %r does sio match format %r" %
+        ashiria ValueError("time data %r does sio match format %r" %
                          (data_string, format))
     ikiwa len(data_string) != found.end():
-         ashiria ValueError("unconverted data remains: %s" %
+        ashiria ValueError("unconverted data remains: %s" %
                           data_string[found.end():])
 
     iso_year = year = Tupu
@@ -362,7 +362,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     # though
     iso_week = week_of_year = Tupu
     week_of_year_start = Tupu
-    # weekday na julian defaulted to Tupu so as to signal need to calculate
+    # weekday na julian defaulted to Tupu so kama to signal need to calculate
     # values
     weekday = julian = Tupu
     found_dict = found.groupdict()
@@ -381,21 +381,21 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 year += 2000
             isipokua:
                 year += 1900
-        elikiwa group_key == 'Y':
+        lasivyo group_key == 'Y':
             year = int(found_dict['Y'])
-        elikiwa group_key == 'G':
+        lasivyo group_key == 'G':
             iso_year = int(found_dict['G'])
-        elikiwa group_key == 'm':
+        lasivyo group_key == 'm':
             month = int(found_dict['m'])
-        elikiwa group_key == 'B':
+        lasivyo group_key == 'B':
             month = locale_time.f_month.index(found_dict['B'].lower())
-        elikiwa group_key == 'b':
+        lasivyo group_key == 'b':
             month = locale_time.a_month.index(found_dict['b'].lower())
-        elikiwa group_key == 'd':
+        lasivyo group_key == 'd':
             day = int(found_dict['d'])
-        elikiwa group_key == 'H':
+        lasivyo group_key == 'H':
             hour = int(found_dict['H'])
-        elikiwa group_key == 'I':
+        lasivyo group_key == 'I':
             hour = int(found_dict['I'])
             ampm = found_dict.get('p', '').lower()
             # If there was no AM/PM indicator, we'll treat this like AM
@@ -405,37 +405,37 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 # 12 midnight == 12 AM == hour 0
                 ikiwa hour == 12:
                     hour = 0
-            elikiwa ampm == locale_time.am_pm[1]:
+            lasivyo ampm == locale_time.am_pm[1]:
                 # We're kwenye PM so we need to add 12 to the hour unless
                 # we're looking at 12 noon.
                 # 12 noon == 12 PM == hour 12
                 ikiwa hour != 12:
                     hour += 12
-        elikiwa group_key == 'M':
+        lasivyo group_key == 'M':
             minute = int(found_dict['M'])
-        elikiwa group_key == 'S':
+        lasivyo group_key == 'S':
             second = int(found_dict['S'])
-        elikiwa group_key == 'f':
+        lasivyo group_key == 'f':
             s = found_dict['f']
             # Pad to always rudisha microseconds.
             s += "0" * (6 - len(s))
             fraction = int(s)
-        elikiwa group_key == 'A':
+        lasivyo group_key == 'A':
             weekday = locale_time.f_weekday.index(found_dict['A'].lower())
-        elikiwa group_key == 'a':
+        lasivyo group_key == 'a':
             weekday = locale_time.a_weekday.index(found_dict['a'].lower())
-        elikiwa group_key == 'w':
+        lasivyo group_key == 'w':
             weekday = int(found_dict['w'])
             ikiwa weekday == 0:
                 weekday = 6
             isipokua:
                 weekday -= 1
-        elikiwa group_key == 'u':
+        lasivyo group_key == 'u':
             weekday = int(found_dict['u'])
             weekday -= 1
-        elikiwa group_key == 'j':
+        lasivyo group_key == 'j':
             julian = int(found_dict['j'])
-        elikiwa group_key kwenye ('U', 'W'):
+        lasivyo group_key kwenye ('U', 'W'):
             week_of_year = int(found_dict[group_key])
             ikiwa group_key == 'U':
                 # U starts week on Sunday.
@@ -443,9 +443,9 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             isipokua:
                 # W starts week on Monday.
                 week_of_year_start = 0
-        elikiwa group_key == 'V':
+        lasivyo group_key == 'V':
             iso_week = int(found_dict['V'])
-        elikiwa group_key == 'z':
+        lasivyo group_key == 'z':
             z = found_dict['z']
             ikiwa z == 'Z':
                 gmtoff = 0
@@ -455,7 +455,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     ikiwa len(z) > 5:
                         ikiwa z[5] != ':':
                             msg = f"Inconsistent use of : kwenye {found_dict['z']}"
-                             ashiria ValueError(msg)
+                            ashiria ValueError(msg)
                         z = z[:5] + z[6:]
                 hours = int(z[1:3])
                 minutes = int(z[3:5])
@@ -468,7 +468,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                 ikiwa z.startswith("-"):
                     gmtoff = -gmtoff
                     gmtoff_fraction = -gmtoff_fraction
-        elikiwa group_key == 'Z':
+        lasivyo group_key == 'Z':
             # Since -1 ni default value only need to worry about setting tz if
             # it can be something other than -1.
             found_zone = found_dict['Z'].lower()
@@ -477,8 +477,8 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
                     # Deal ukijumuisha bad locale setup where timezone names are the
                     # same na yet time.daylight ni true; too ambiguous to
                     # be able to tell what timezone has daylight savings
-                    ikiwa (time.tzname[0] == time.tzname[1] and
-                       time.daylight na found_zone sio kwenye ("utc", "gmt")):
+                    ikiwa (time.tzname[0] == time.tzname[1] na
+                       time.daylight na found_zone haiko kwenye ("utc", "gmt")):
                         koma
                     isipokua:
                         tz = value
@@ -487,20 +487,20 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     # don't assume default values kila ISO week/year
     ikiwa year ni Tupu na iso_year ni sio Tupu:
         ikiwa iso_week ni Tupu ama weekday ni Tupu:
-             ashiria ValueError("ISO year directive '%G' must be used ukijumuisha "
+            ashiria ValueError("ISO year directive '%G' must be used ukijumuisha "
                              "the ISO week directive '%V' na a weekday "
                              "directive ('%A', '%a', '%w', ama '%u').")
         ikiwa julian ni sio Tupu:
-             ashiria ValueError("Day of the year directive '%j' ni sio "
+            ashiria ValueError("Day of the year directive '%j' ni sio "
                              "compatible ukijumuisha ISO year directive '%G'. "
                              "Use '%Y' instead.")
-    elikiwa week_of_year ni Tupu na iso_week ni sio Tupu:
+    lasivyo week_of_year ni Tupu na iso_week ni sio Tupu:
         ikiwa weekday ni Tupu:
-             ashiria ValueError("ISO week directive '%V' must be used ukijumuisha "
+            ashiria ValueError("ISO week directive '%V' must be used ukijumuisha "
                              "the ISO year directive '%G' na a weekday "
                              "directive ('%A', '%a', '%w', ama '%u').")
         isipokua:
-             ashiria ValueError("ISO week directive '%V' ni incompatible ukijumuisha "
+            ashiria ValueError("ISO week directive '%V' ni incompatible ukijumuisha "
                              "the year directive '%Y'. Use the ISO year '%G' "
                              "instead.")
 
@@ -508,7 +508,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
     ikiwa year ni Tupu na month == 2 na day == 29:
         year = 1904  # 1904 ni first leap year of 20th century
         leap_year_fix = Kweli
-    elikiwa year ni Tupu:
+    lasivyo year ni Tupu:
         year = 1900
 
 
@@ -519,7 +519,7 @@ eleza _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
             week_starts_Mon = Kweli ikiwa week_of_year_start == 0 isipokua Uongo
             julian = _calc_julian_from_U_or_W(year, week_of_year, weekday,
                                                 week_starts_Mon)
-        elikiwa iso_year ni sio Tupu na iso_week ni sio Tupu:
+        lasivyo iso_year ni sio Tupu na iso_week ni sio Tupu:
             year, julian = _calc_julian_from_V(iso_year, iso_week, weekday + 1)
         ikiwa julian ni sio Tupu na julian <= 0:
             year -= 1

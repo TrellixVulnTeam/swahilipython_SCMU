@@ -33,17 +33,17 @@ kundi BaseTest:
     # (str)
     contains_bytes = Uongo
 
-    # All tests pass their arguments to the testing methods
-    # as str objects. fixtesttype() can be used to propagate
+    # All tests pita their arguments to the testing methods
+    # kama str objects. fixtesttype() can be used to propagate
     # these arguments to the appropriate type
     eleza fixtype(self, obj):
         ikiwa isinstance(obj, str):
             rudisha self.__class__.type2test(obj)
-        elikiwa isinstance(obj, list):
+        lasivyo isinstance(obj, list):
             rudisha [self.fixtype(x) kila x kwenye obj]
-        elikiwa isinstance(obj, tuple):
+        lasivyo isinstance(obj, tuple):
             rudisha tuple([self.fixtype(x) kila x kwenye obj])
-        elikiwa isinstance(obj, dict):
+        lasivyo isinstance(obj, dict):
             rudisha dict([
                (self.fixtype(key), self.fixtype(value))
                kila (key, value) kwenye obj.items()
@@ -70,9 +70,9 @@ kundi BaseTest:
         ikiwa obj ni realresult:
             jaribu:
                 kundi subtype(self.__class__.type2test):
-                    pass
-            except TypeError:
-                pass  # Skip this ikiwa we can't subclass
+                    pita
+            tatizo TypeError:
+                pita  # Skip this ikiwa we can't subclass
             isipokua:
                 obj = subtype(obj)
                 realresult = getattr(obj, methodname)(*args)
@@ -82,7 +82,7 @@ kundi BaseTest:
     eleza checkraises(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         args = self.fixtype(args)
-        ukijumuisha self.assertRaises(exc) as cm:
+        ukijumuisha self.assertRaises(exc) kama cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
@@ -165,7 +165,7 @@ kundi BaseTest:
         self.checkequal(3, 'abc', 'find', '', 3)
         self.checkequal(-1, 'abc', 'find', '', 4)
 
-        # to check the ability to pass Tupu as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'find', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'find', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'find', 'a', 4, 6)
@@ -223,7 +223,7 @@ kundi BaseTest:
         self.checkequal(3, 'abc', 'rfind', '', 3)
         self.checkequal(-1, 'abc', 'rfind', '', 4)
 
-        # to check the ability to pass Tupu as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rfind', 'a', 4)
         self.checkequal(-1, 'rrarrrrrrrrra', 'rfind', 'a', 4, 6)
@@ -277,7 +277,7 @@ kundi BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', 8)
         self.checkraises(ValueError, 'abcdefghi', 'index', 'ghi', -1)
 
-        # to check the ability to pass Tupu as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal( 2, 'rrarrrrrrrrra', 'index', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'index', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'index', 'a', 4, 6)
@@ -303,7 +303,7 @@ kundi BaseTest:
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, 8)
         self.checkraises(ValueError, 'abcdefghi', 'rindex', 'ghi', 0, -1)
 
-        # to check the ability to pass Tupu as defaults
+        # to check the ability to pita Tupu kama defaults
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a')
         self.checkequal(12, 'rrarrrrrrrrra', 'rindex', 'a', 4)
         self.checkraises(ValueError, 'rrarrrrrrrrra', 'rindex', 'a', 4, 6)
@@ -1151,7 +1151,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkequal('abcabcabc', 'abc', '__mul__', 3)
         self.checkraises(TypeError, 'abc', '__mul__')
         self.checkraises(TypeError, 'abc', '__mul__', '')
-        # XXX: on a 64-bit system, this doesn't  ashiria an overflow error,
+        # XXX: on a 64-bit system, this doesn't ashiria an overflow error,
         # but either raises a MemoryError, ama succeeds (ikiwa you have 54TiB)
         #self.checkraises(OverflowError, 10000*'abc', '__mul__', 2000000000)
 
@@ -1185,8 +1185,8 @@ kundi MixinStrUnicodeUserStringTest:
             eleza f():
                 tuma 4 + ""
             self.fixtype(' ').join(f())
-        except TypeError as e:
-            ikiwa '+' sio kwenye str(e):
+        tatizo TypeError kama e:
+            ikiwa '+' haiko kwenye str(e):
                 self.fail('join() ate exception message')
         isipokua:
             self.fail('exception sio raised')
@@ -1233,7 +1233,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkraises(TypeError, '%10.*f', '__mod__', ('foo', 42.))
         self.checkraises(ValueError, '%10', '__mod__', (42,))
 
-        # Outrageously large width ama precision should  ashiria ValueError.
+        # Outrageously large width ama precision should ashiria ValueError.
         self.checkraises(ValueError, '%%%df' % (2**64), '__mod__', (3.2))
         self.checkraises(ValueError, '%%.%df' % (2**64), '__mod__', (3.2))
         self.checkraises(OverflowError, '%*s', '__mod__',
@@ -1241,7 +1241,7 @@ kundi MixinStrUnicodeUserStringTest:
         self.checkraises(OverflowError, '%.*f', '__mod__',
                          (sys.maxsize + 1, 1. / 7))
 
-        kundi X(object): pass
+        kundi X(object): pita
         self.checkraises(TypeError, 'abc', '__mod__', X())
 
     @support.cpython_only
@@ -1387,7 +1387,7 @@ kundi MixinStrUnicodeTest:
         # Check the optimisation still occurs kila standard objects.
         t = self.type2test
         kundi subclass(t):
-            pass
+            pita
         s1 = subclass("abcd")
         s2 = t().join([s1])
         self.assertIsNot(s1, s2)

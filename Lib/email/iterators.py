@@ -18,7 +18,7 @@ kutoka io agiza StringIO
 
 # This function will become a method of the Message class
 eleza walk(self):
-    """Walk over the message tree, yielding each subpart.
+    """Walk over the message tree, tumaing each subpart.
 
     The walk ni performed kwenye depth-first order.  This method ni a
     generator.
@@ -34,7 +34,7 @@ eleza walk(self):
 eleza body_line_iterator(msg, decode=Uongo):
     """Iterate over the parts, returning string payloads line-by-line.
 
-    Optional decode (default Uongo) ni passed through to .get_payload().
+    Optional decode (default Uongo) ni pitaed through to .get_payload().
     """
     kila subpart kwenye msg.walk():
         payload = subpart.get_payload(decode=decode)
@@ -45,7 +45,7 @@ eleza body_line_iterator(msg, decode=Uongo):
 eleza typed_subpart_iterator(msg, maintype='text', subtype=Tupu):
     """Iterate over the subparts ukijumuisha a given MIME type.
 
-    Use `maintype' as the main MIME type to match against; this defaults to
+    Use `maintype' kama the main MIME type to match against; this defaults to
     "text".  Optional `subtype' ni the MIME subtype to match against; if
     omitted, only the main type ni matched.
     """

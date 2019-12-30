@@ -14,7 +14,7 @@ Here are some of the useful functions provided by this module:
     getfile(), getsourcefile(), getsource() - find an object's source code
     getdoc(), getcomments() - get documentation on an object
     getmodule() - determine the module that an object came from
-    getclasstree() - arrange classes so as to represent their hierarchy
+    getclasstree() - arrange classes so kama to represent their hierarchy
 
     getargvalues(), getcallargs() - get info about function arguments
     getfullargspec() - same, ukijumuisha support kila Python 3 features
@@ -93,14 +93,14 @@ eleza ismethoddescriptor(object):
     But sio ikiwa ismethod() ama isclass() ama isfunction() are true.
 
     This ni new kwenye Python 2.2, and, kila example, ni true of int.__add__.
-    An object passing this test has a __get__ attribute but sio a __set__
+    An object pitaing this test has a __get__ attribute but sio a __set__
     attribute, but beyond that the set of attributes varies.  __name__ is
     usually sensible, na __doc__ often is.
 
-    Methods implemented via descriptors that also pass one of the other
+    Methods implemented via descriptors that also pita one of the other
     tests rudisha false kutoka the ismethoddescriptor() test, simply because
     the other tests promise more -- you can, e.g., count on having the
-    __func__ attribute (etc) when an object passes ismethod()."""
+    __func__ attribute (etc) when an object pitaes ismethod()."""
     ikiwa isclass(object) ama ismethod(object) ama isfunction(object):
         # mutual exclusion
         rudisha Uongo
@@ -182,7 +182,7 @@ eleza _has_code_flag(f, flag):
 eleza isgeneratorfunction(obj):
     """Return true ikiwa the object ni a user-defined generator function.
 
-    Generator function objects provide the same attributes as functions.
+    Generator function objects provide the same attributes kama functions.
     See help(isfunction) kila a list of attributes."""
     rudisha _has_code_flag(obj, CO_GENERATOR)
 
@@ -197,7 +197,7 @@ eleza isasyncgenfunction(obj):
     """Return true ikiwa the object ni an asynchronous generator function.
 
     Asynchronous generator functions are defined ukijumuisha "async def"
-    syntax na have "yield" expressions kwenye their body.
+    syntax na have "tuma" expressions kwenye their body.
     """
     rudisha _has_code_flag(obj, CO_ASYNC_GENERATOR)
 
@@ -218,8 +218,8 @@ eleza isgenerator(object):
         gi_running      set to 1 when generator ni executing, 0 otherwise
         next            rudisha the next item kutoka the container
         send            resumes the generator na "sends" a value that becomes
-                        the result of the current yield-expression
-        throw           used to  ashiria an exception inside the generator"""
+                        the result of the current tuma-expression
+        throw           used to ashiria an exception inside the generator"""
     rudisha isinstance(object, types.GeneratorType)
 
 eleza iscoroutine(object):
@@ -227,10 +227,10 @@ eleza iscoroutine(object):
     rudisha isinstance(object, types.CoroutineType)
 
 eleza isawaitable(object):
-    """Return true ikiwa object can be passed to an ``await`` expression."""
-    rudisha (isinstance(object, types.CoroutineType) or
-            isinstance(object, types.GeneratorType) and
-                bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) or
+    """Return true ikiwa object can be pitaed to an ``await`` expression."""
+    rudisha (isinstance(object, types.CoroutineType) ama
+            isinstance(object, types.GeneratorType) na
+                bool(object.gi_code.co_flags & CO_ITERABLE_COROUTINE) ama
             isinstance(object, collections.abc.Awaitable))
 
 eleza istraceback(object):
@@ -261,7 +261,7 @@ eleza iscode(object):
     """Return true ikiwa the object ni a code object.
 
     Code objects provide these attributes:
-        co_argcount         number of arguments (not including *, ** args
+        co_argcount         number of arguments (sio including *, ** args
                             ama keyword only arguments)
         co_code             string of raw compiled bytecode
         co_cellvars         tuple of names of cell variables
@@ -273,7 +273,7 @@ eleza iscode(object):
                             | 256=iterable_coroutine | 512=async_generator
         co_freevars         tuple of names of free variables
         co_posonlyargcount  number of positional only arguments
-        co_kwonlyargcount   number of keyword only arguments (not including ** arg)
+        co_kwonlyargcount   number of keyword only arguments (sio including ** arg)
         co_lnotab           encoded mapping of line numbers to bytecode indices
         co_name             name ukijumuisha which this code object was defined
         co_names            tuple of names of local variables
@@ -323,7 +323,7 @@ eleza isabstract(object):
     rudisha Uongo
 
 eleza getmembers(object, predicate=Tupu):
-    """Return all members of an object as (name, value) pairs sorted by name.
+    """Return all members of an object kama (name, value) pairs sorted by name.
     Optionally, only rudisha members that satisfy a given predicate."""
     ikiwa isclass(object):
         mro = (object,) + getmro(object)
@@ -334,14 +334,14 @@ eleza getmembers(object, predicate=Tupu):
     names = dir(object)
     # :dd any DynamicClassAttributes to the list of names ikiwa object ni a class;
     # this may result kwenye duplicate entries if, kila example, a virtual
-    # attribute ukijumuisha the same name as a DynamicClassAttribute exists
+    # attribute ukijumuisha the same name kama a DynamicClassAttribute exists
     jaribu:
         kila base kwenye object.__bases__:
             kila k, v kwenye base.__dict__.items():
                 ikiwa isinstance(v, types.DynamicClassAttribute):
                     names.append(k)
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     kila key kwenye names:
         # First try to get the value via getattr.  Some descriptors don't
         # like calling their __get__ (see bug #1785), so fall back to
@@ -350,8 +350,8 @@ eleza getmembers(object, predicate=Tupu):
             value = getattr(object, key)
             # handle the duplicate key
             ikiwa key kwenye processed:
-                 ashiria AttributeError
-        except AttributeError:
+                ashiria AttributeError
+        tatizo AttributeError:
             kila base kwenye mro:
                 ikiwa key kwenye base.__dict__:
                     value = base.__dict__[key]
@@ -385,25 +385,25 @@ eleza classify_class_attrs(cls):
 
         2. The kundi which defined this attribute (a class).
 
-        3. The object as obtained by calling getattr; ikiwa this fails, ama ikiwa the
+        3. The object kama obtained by calling getattr; ikiwa this fails, ama ikiwa the
            resulting object does sio live anywhere kwenye the class' mro (including
            metaclasses) then the object ni looked up kwenye the defining class's
            dict (found by walking the mro).
 
     If one of the items kwenye dir(cls) ni stored kwenye the metakundi it will now
-    be discovered na sio have Tupu be listed as the kundi kwenye which it was
+    be discovered na sio have Tupu be listed kama the kundi kwenye which it was
     defined.  Any items whose home kundi cannot be discovered are skipped.
     """
 
     mro = getmro(cls)
     metamro = getmro(type(cls)) # kila attributes stored kwenye the metaclass
-    metamro = tuple(cls kila cls kwenye metamro ikiwa cls sio kwenye (type, object))
+    metamro = tuple(cls kila cls kwenye metamro ikiwa cls haiko kwenye (type, object))
     class_bases = (cls,) + mro
     all_bases = class_bases + metamro
     names = dir(cls)
     # :dd any DynamicClassAttributes to the list of names;
     # this may result kwenye duplicate entries if, kila example, a virtual
-    # attribute ukijumuisha the same name as a DynamicClassAttribute exists.
+    # attribute ukijumuisha the same name kama a DynamicClassAttribute exists.
     kila base kwenye mro:
         kila k, v kwenye base.__dict__.items():
             ikiwa isinstance(v, types.DynamicClassAttribute):
@@ -416,7 +416,7 @@ eleza classify_class_attrs(cls):
         # Normal objects will be looked up ukijumuisha both getattr na directly in
         # its class' dict (in case getattr fails [bug #1785], na also to look
         # kila a docstring).
-        # For DynamicClassAttributes on the second pass we only look kwenye the
+        # For DynamicClassAttributes on the second pita we only look kwenye the
         # class's dict.
         #
         # Getting an obj kutoka the __dict__ sometimes reveals more than
@@ -424,16 +424,16 @@ eleza classify_class_attrs(cls):
         homecls = Tupu
         get_obj = Tupu
         dict_obj = Tupu
-        ikiwa name sio kwenye processed:
+        ikiwa name haiko kwenye processed:
             jaribu:
                 ikiwa name == '__dict__':
-                     ashiria Exception("__dict__ ni special, don't want the proxy")
+                    ashiria Exception("__dict__ ni special, don't want the proxy")
                 get_obj = getattr(cls, name)
-            except Exception as exc:
-                pass
+            tatizo Exception kama exc:
+                pita
             isipokua:
                 homecls = getattr(get_obj, "__objclass__", homecls)
-                ikiwa homecls sio kwenye class_bases:
+                ikiwa homecls haiko kwenye class_bases:
                     # ikiwa the resulting object does sio live somewhere kwenye the
                     # mro, drop it na search the mro manually
                     homecls = Tupu
@@ -447,7 +447,7 @@ eleza classify_class_attrs(cls):
                     kila srch_cls kwenye metamro:
                         jaribu:
                             srch_obj = srch_cls.__getattr__(cls, name)
-                        except AttributeError:
+                        tatizo AttributeError:
                             endelea
                         ikiwa srch_obj ni get_obj:
                             last_cls = srch_cls
@@ -456,7 +456,7 @@ eleza classify_class_attrs(cls):
         kila base kwenye all_bases:
             ikiwa name kwenye base.__dict__:
                 dict_obj = base.__dict__[name]
-                ikiwa homecls sio kwenye metamro:
+                ikiwa homecls haiko kwenye metamro:
                     homecls = base
                 koma
         ikiwa homecls ni Tupu:
@@ -468,13 +468,13 @@ eleza classify_class_attrs(cls):
         ikiwa isinstance(dict_obj, (staticmethod, types.BuiltinMethodType)):
             kind = "static method"
             obj = dict_obj
-        elikiwa isinstance(dict_obj, (classmethod, types.ClassMethodDescriptorType)):
+        lasivyo isinstance(dict_obj, (classmethod, types.ClassMethodDescriptorType)):
             kind = "kundi method"
             obj = dict_obj
-        elikiwa isinstance(dict_obj, property):
+        lasivyo isinstance(dict_obj, property):
             kind = "property"
             obj = dict_obj
-        elikiwa isroutine(obj):
+        lasivyo isroutine(obj):
             kind = "method"
         isipokua:
             kind = "data"
@@ -497,9 +497,9 @@ eleza unwrap(func, *, stop=Tupu):
    object kwenye the chain.
 
    *stop* ni an optional callback accepting an object kwenye the wrapper chain
-   as its sole argument that allows the unwrapping to be terminated early if
+   kama its sole argument that allows the unwrapping to be terminated early if
    the callback returns a true value. If the callback never returns a true
-   value, the last object kwenye the chain ni returned as usual. For example,
+   value, the last object kwenye the chain ni returned kama usual. For example,
    :func:`signature` uses this to stop unwrapping ikiwa any object kwenye the
    chain has a ``__signature__`` attribute defined.
 
@@ -521,7 +521,7 @@ eleza unwrap(func, *, stop=Tupu):
         func = func.__wrapped__
         id_func = id(func)
         ikiwa (id_func kwenye memo) ama (len(memo) >= recursion_limit):
-             ashiria ValueError('wrapper loop when unwrapping {!r}'.format(f))
+            ashiria ValueError('wrapper loop when unwrapping {!r}'.format(f))
         memo[id_func] = func
     rudisha func
 
@@ -547,7 +547,7 @@ eleza _finddoc(obj):
             ikiwa base ni sio object:
                 jaribu:
                     doc = base.__doc__
-                except AttributeError:
+                tatizo AttributeError:
                     endelea
                 ikiwa doc ni sio Tupu:
                     rudisha doc
@@ -556,34 +556,34 @@ eleza _finddoc(obj):
     ikiwa ismethod(obj):
         name = obj.__func__.__name__
         self = obj.__self__
-        ikiwa (isclass(self) and
+        ikiwa (isclass(self) na
             getattr(getattr(self, name, Tupu), '__func__') ni obj.__func__):
             # classmethod
             cls = self
         isipokua:
             cls = self.__class__
-    elikiwa isfunction(obj):
+    lasivyo isfunction(obj):
         name = obj.__name__
         cls = _findclass(obj)
         ikiwa cls ni Tupu ama getattr(cls, name) ni sio obj:
             rudisha Tupu
-    elikiwa isbuiltin(obj):
+    lasivyo isbuiltin(obj):
         name = obj.__name__
         self = obj.__self__
-        ikiwa (isclass(self) and
+        ikiwa (isclass(self) na
             self.__qualname__ + '.' + name == obj.__qualname__):
             # classmethod
             cls = self
         isipokua:
             cls = self.__class__
     # Should be tested before isdatadescriptor().
-    elikiwa isinstance(obj, property):
+    lasivyo isinstance(obj, property):
         func = obj.fget
         name = func.__name__
         cls = _findclass(func)
         ikiwa cls ni Tupu ama getattr(cls, name) ni sio obj:
             rudisha Tupu
-    elikiwa ismethoddescriptor(obj) ama isdatadescriptor(obj):
+    lasivyo ismethoddescriptor(obj) ama isdatadescriptor(obj):
         name = obj.__name__
         cls = obj.__objclass__
         ikiwa getattr(cls, name) ni sio obj:
@@ -597,7 +597,7 @@ eleza _finddoc(obj):
     kila base kwenye cls.__mro__:
         jaribu:
             doc = getattr(base, name).__doc__
-        except AttributeError:
+        tatizo AttributeError:
             endelea
         ikiwa doc ni sio Tupu:
             rudisha doc
@@ -611,12 +611,12 @@ eleza getdoc(object):
     uniformly removed kutoka the second line onwards ni removed."""
     jaribu:
         doc = object.__doc__
-    except AttributeError:
+    tatizo AttributeError:
         rudisha Tupu
     ikiwa doc ni Tupu:
         jaribu:
             doc = _finddoc(object)
-        except (AttributeError, TypeError):
+        tatizo (AttributeError, TypeError):
             rudisha Tupu
     ikiwa sio isinstance(doc, str):
         rudisha Tupu
@@ -629,7 +629,7 @@ eleza cleandoc(doc):
     onwards ni removed."""
     jaribu:
         lines = doc.expandtabs().split('\n')
-    except UnicodeError:
+    tatizo UnicodeError:
         rudisha Tupu
     isipokua:
         # Find minimum indentation of any non-blank lines after first line.
@@ -656,13 +656,13 @@ eleza getfile(object):
     ikiwa ismodule(object):
         ikiwa getattr(object, '__file__', Tupu):
             rudisha object.__file__
-         ashiria TypeError('{!r} ni a built-in module'.format(object))
+        ashiria TypeError('{!r} ni a built-in module'.format(object))
     ikiwa isclass(object):
         ikiwa hasattr(object, '__module__'):
             module = sys.modules.get(object.__module__)
             ikiwa getattr(module, '__file__', Tupu):
                 rudisha module.__file__
-         ashiria TypeError('{!r} ni a built-in class'.format(object))
+        ashiria TypeError('{!r} ni a built-in class'.format(object))
     ikiwa ismethod(object):
         object = object.__func__
     ikiwa isfunction(object):
@@ -673,7 +673,7 @@ eleza getfile(object):
         object = object.f_code
     ikiwa iscode(object):
         rudisha object.co_filename
-     ashiria TypeError('module, class, method, function, traceback, frame, ama '
+    ashiria TypeError('module, class, method, function, traceback, frame, ama '
                     'code object was expected, got {}'.format(
                     type(object).__name__))
 
@@ -699,7 +699,7 @@ eleza getsourcefile(object):
     ikiwa any(filename.endswith(s) kila s kwenye all_bytecode_suffixes):
         filename = (os.path.splitext(filename)[0] +
                     importlib.machinery.SOURCE_SUFFIXES[0])
-    elikiwa any(filename.endswith(s) kila s in
+    lasivyo any(filename.endswith(s) kila s in
                  importlib.machinery.EXTENSION_SUFFIXES):
         rudisha Tupu
     ikiwa os.path.exists(filename):
@@ -715,7 +715,7 @@ eleza getabsfile(object, _filename=Tupu):
     """Return an absolute path to the source ama compiled file kila an object.
 
     The idea ni kila each object to have a unique origin, so this routine
-    normalizes the result as much as possible."""
+    normalizes the result kama much kama possible."""
     ikiwa _filename ni Tupu:
         _filename = getsourcefile(object) ama getfile(object)
     rudisha os.path.normcase(os.path.abspath(_filename))
@@ -735,7 +735,7 @@ eleza getmodule(object, _filename=Tupu):
     # Try the cache again ukijumuisha the absolute file name
     jaribu:
         file = getabsfile(object, _filename)
-    except TypeError:
+    tatizo TypeError:
         rudisha Tupu
     ikiwa file kwenye modulesbyfile:
         rudisha sys.modules.get(modulesbyfile[file])
@@ -773,7 +773,7 @@ eleza findsource(object):
     """Return the entire source file na starting line number kila an object.
 
     The argument may be a module, class, method, function, traceback, frame,
-    ama code object.  The source code ni returned as a list of all the lines
+    ama code object.  The source code ni returned kama a list of all the lines
     kwenye the file na the line number indexes a line kwenye that list.  An OSError
     ni raised ikiwa the source code cannot be retrieved."""
 
@@ -783,11 +783,11 @@ eleza findsource(object):
         linecache.checkcache(file)
     isipokua:
         file = getfile(object)
-        # Allow filenames kwenye form of "<something>" to pass through.
+        # Allow filenames kwenye form of "<something>" to pita through.
         # `doctest` monkeypatches `linecache` module to enable
         # inspection, so let `linecache.getlines` to be called.
         ikiwa sio (file.startswith('<') na file.endswith('>')):
-             ashiria OSError('source code sio available')
+            ashiria OSError('source code sio available')
 
     module = getmodule(object, file)
     ikiwa module:
@@ -795,7 +795,7 @@ eleza findsource(object):
     isipokua:
         lines = linecache.getlines(file)
     ikiwa sio lines:
-         ashiria OSError('could sio get source code')
+        ashiria OSError('could sio get source code')
 
     ikiwa ismodule(object):
         rudisha lines, 0
@@ -821,7 +821,7 @@ eleza findsource(object):
             candidates.sort()
             rudisha lines, candidates[0][1]
         isipokua:
-             ashiria OSError('could sio find kundi definition')
+            ashiria OSError('could sio find kundi definition')
 
     ikiwa ismethod(object):
         object = object.__func__
@@ -833,14 +833,14 @@ eleza findsource(object):
         object = object.f_code
     ikiwa iscode(object):
         ikiwa sio hasattr(object, 'co_firstlineno'):
-             ashiria OSError('could sio find function definition')
+            ashiria OSError('could sio find function definition')
         lnum = object.co_firstlineno - 1
         pat = re.compile(r'^(\s*def\s)|(\s*async\s+def\s)|(.*(?<!\w)lambda(:|\s))|^(\s*@)')
         wakati lnum > 0:
             ikiwa pat.match(lines[lnum]): koma
             lnum = lnum - 1
         rudisha lines, lnum
-     ashiria OSError('could sio find code object')
+    ashiria OSError('could sio find code object')
 
 eleza getcomments(object):
     """Get lines of comments immediately preceding an object's source code.
@@ -849,7 +849,7 @@ eleza getcomments(object):
     """
     jaribu:
         lines, lnum = findsource(object)
-    except (OSError, TypeError):
+    tatizo (OSError, TypeError):
         rudisha Tupu
 
     ikiwa ismodule(object):
@@ -867,7 +867,7 @@ eleza getcomments(object):
             rudisha ''.join(comments)
 
     # Look kila a preceding block of comments at the same indentation.
-    elikiwa lnum > 0:
+    lasivyo lnum > 0:
         indent = indentsize(lines[lnum])
         end = lnum - 1
         ikiwa end >= 0 na lines[end].lstrip()[:1] == '#' na \
@@ -887,7 +887,7 @@ eleza getcomments(object):
                 comments[-1:] = []
             rudisha ''.join(comments)
 
-kundi EndOfBlock(Exception): pass
+kundi EndOfBlock(Exception): pita
 
 kundi BlockFinder:
     """Provide a tokeneater() method to detect the end of a code block."""
@@ -895,7 +895,7 @@ kundi BlockFinder:
         self.indent = 0
         self.islambda = Uongo
         self.started = Uongo
-        self.passline = Uongo
+        self.pitaline = Uongo
         self.indecorator = Uongo
         self.decoratorhasargs = Uongo
         self.last = 1
@@ -906,43 +906,43 @@ kundi BlockFinder:
             ikiwa token == "@":
                 self.indecorator = Kweli
             # look kila the first "def", "class" ama "lambda"
-            elikiwa token kwenye ("def", "class", "lambda"):
+            lasivyo token kwenye ("def", "class", "lambda"):
                 ikiwa token == "lambda":
                     self.islambda = Kweli
                 self.started = Kweli
-            self.passline = Kweli    # skip to the end of the line
-        elikiwa token == "(":
+            self.pitaline = Kweli    # skip to the end of the line
+        lasivyo token == "(":
             ikiwa self.indecorator:
                 self.decoratorhasargs = Kweli
-        elikiwa token == ")":
+        lasivyo token == ")":
             ikiwa self.indecorator:
                 self.indecorator = Uongo
                 self.decoratorhasargs = Uongo
-        elikiwa type == tokenize.NEWLINE:
-            self.passline = Uongo   # stop skipping when a NEWLINE ni seen
+        lasivyo type == tokenize.NEWLINE:
+            self.pitaline = Uongo   # stop skipping when a NEWLINE ni seen
             self.last = srowcol[0]
             ikiwa self.islambda:       # lambdas always end at the first NEWLINE
-                 ashiria EndOfBlock
+                ashiria EndOfBlock
             # hitting a NEWLINE when kwenye a decorator without args
             # ends the decorator
             ikiwa self.indecorator na sio self.decoratorhasargs:
                 self.indecorator = Uongo
-        elikiwa self.passline:
-            pass
-        elikiwa type == tokenize.INDENT:
+        lasivyo self.pitaline:
+            pita
+        lasivyo type == tokenize.INDENT:
             self.indent = self.indent + 1
-            self.passline = Kweli
-        elikiwa type == tokenize.DEDENT:
+            self.pitaline = Kweli
+        lasivyo type == tokenize.DEDENT:
             self.indent = self.indent - 1
             # the end of matching indent/dedent pairs end a block
             # (note that this only works kila "def"/"class" blocks,
             #  sio e.g. kila "if: isipokua:" ama "jaribu: mwishowe:" blocks)
             ikiwa self.indent <= 0:
-                 ashiria EndOfBlock
-        elikiwa self.indent == 0 na type sio kwenye (tokenize.COMMENT, tokenize.NL):
+                ashiria EndOfBlock
+        lasivyo self.indent == 0 na type haiko kwenye (tokenize.COMMENT, tokenize.NL):
             # any other token on the same indentation level end the previous
-            # block as well, except the pseudo-tokens COMMENT na NL.
-             ashiria EndOfBlock
+            # block kama well, tatizo the pseudo-tokens COMMENT na NL.
+            ashiria EndOfBlock
 
 eleza getblock(lines):
     """Extract the block of code at the top of the given list of lines."""
@@ -951,15 +951,15 @@ eleza getblock(lines):
         tokens = tokenize.generate_tokens(iter(lines).__next__)
         kila _token kwenye tokens:
             blockfinder.tokeneater(*_token)
-    except (EndOfBlock, IndentationError):
-        pass
+    tatizo (EndOfBlock, IndentationError):
+        pita
     rudisha lines[:blockfinder.last]
 
 eleza getsourcelines(object):
     """Return a list of source lines na starting line number kila an object.
 
     The argument may be a module, class, method, function, traceback, frame,
-    ama code object.  The source code ni returned as a list of the lines
+    ama code object.  The source code ni returned kama a list of the lines
     corresponding to the object na the line number indicates where kwenye the
     original source file the first line of code was found.  An OSError is
     raised ikiwa the source code cannot be retrieved."""
@@ -970,7 +970,7 @@ eleza getsourcelines(object):
         object = object.tb_frame
 
     # kila module ama frame that corresponds to module, rudisha all source lines
-    ikiwa (ismodule(object) or
+    ikiwa (ismodule(object) ama
         (isframe(object) na object.f_code.co_name == "<module>")):
         rudisha lines, 0
     isipokua:
@@ -980,7 +980,7 @@ eleza getsource(object):
     """Return the text of the source code kila an object.
 
     The argument may be a module, class, method, function, traceback, frame,
-    ama code object.  The source code ni returned as a single string.  An
+    ama code object.  The source code ni returned kama a single string.  An
     OSError ni raised ikiwa the source code cannot be retrieved."""
     lines, lnum = getsourcelines(object)
     rudisha ''.join(lines)
@@ -1010,15 +1010,15 @@ eleza getclasstree(classes, unique=Uongo):
     kila c kwenye classes:
         ikiwa c.__bases__:
             kila parent kwenye c.__bases__:
-                ikiwa parent sio kwenye children:
+                ikiwa parent haiko kwenye children:
                     children[parent] = []
-                ikiwa c sio kwenye children[parent]:
+                ikiwa c haiko kwenye children[parent]:
                     children[parent].append(c)
                 ikiwa unique na parent kwenye classes: koma
-        elikiwa c sio kwenye roots:
+        lasivyo c haiko kwenye roots:
             roots.append(c)
     kila parent kwenye children:
-        ikiwa parent sio kwenye classes:
+        ikiwa parent haiko kwenye classes:
             roots.append(parent)
     rudisha walktree(roots, children, Tupu)
 
@@ -1033,7 +1033,7 @@ eleza getargs(co):
     appended. 'varargs' na 'varkw' are the names of the * na **
     arguments ama Tupu."""
     ikiwa sio iscode(co):
-         ashiria TypeError('{!r} ni sio a code object'.format(co))
+        ashiria TypeError('{!r} ni sio a code object'.format(co))
 
     names = co.co_varnames
     nargs = co.co_argcount
@@ -1062,8 +1062,8 @@ eleza getargspec(func):
     'varargs' na 'keywords' are the names of the * na ** parameters ama Tupu.
     'defaults' ni an n-tuple of the default values of the last n parameters.
 
-    This function ni deprecated, as it does sio support annotations or
-    keyword-only parameters na will  ashiria ValueError ikiwa either ni present
+    This function ni deprecated, kama it does sio support annotations ama
+    keyword-only parameters na will ashiria ValueError ikiwa either ni present
     on the supplied callable.
 
     For a more structured introspection API, use inspect.signature() instead.
@@ -1080,7 +1080,7 @@ eleza getargspec(func):
     args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, ann = \
         getfullargspec(func)
     ikiwa kwonlyargs ama ann:
-         ashiria ValueError("Function has keyword-only parameters ama annotations"
+        ashiria ValueError("Function has keyword-only parameters ama annotations"
                          ", use inspect.signature() API which can support them")
     rudisha ArgSpec(args, varargs, varkw, defaults)
 
@@ -1109,7 +1109,7 @@ eleza getfullargspec(func):
         # There ni a notable difference kwenye behaviour between getfullargspec
         # na Signature: the former always returns 'self' parameter kila bound
         # methods, whereas the Signature always shows the actual calling
-        # signature of the passed object.
+        # signature of the pitaed object.
         #
         # To simulate this behaviour, we "unbind" bound methods, to trick
         # inspect.signature to always rudisha their first parameter ("self",
@@ -1124,12 +1124,12 @@ eleza getfullargspec(func):
                                        follow_wrapper_chains=Uongo,
                                        skip_bound_arg=Uongo,
                                        sigcls=Signature)
-    except Exception as ex:
-        # Most of the times 'signature' will  ashiria ValueError.
-        # But, it can also  ashiria AttributeError, and, maybe something
+    tatizo Exception kama ex:
+        # Most of the times 'signature' will ashiria ValueError.
+        # But, it can also ashiria AttributeError, and, maybe something
         # else. So to be fully backwards compatible, we catch all
-        # possible exceptions here, na re ashiria a TypeError.
-         ashiria TypeError('unsupported callable') kutoka ex
+        # possible exceptions here, na reashiria a TypeError.
+        ashiria TypeError('unsupported callable') kutoka ex
 
     args = []
     varargs = Tupu
@@ -1152,17 +1152,17 @@ eleza getfullargspec(func):
             posonlyargs.append(name)
             ikiwa param.default ni sio param.empty:
                 defaults += (param.default,)
-        elikiwa kind ni _POSITIONAL_OR_KEYWORD:
+        lasivyo kind ni _POSITIONAL_OR_KEYWORD:
             args.append(name)
             ikiwa param.default ni sio param.empty:
                 defaults += (param.default,)
-        elikiwa kind ni _VAR_POSITIONAL:
+        lasivyo kind ni _VAR_POSITIONAL:
             varargs = name
-        elikiwa kind ni _KEYWORD_ONLY:
+        lasivyo kind ni _KEYWORD_ONLY:
             kwonlyargs.append(name)
             ikiwa param.default ni sio param.empty:
                 kwdefaults[name] = param.default
-        elikiwa kind ni _VAR_KEYWORD:
+        lasivyo kind ni _VAR_KEYWORD:
             varkw = name
 
         ikiwa param.annotation ni sio param.empty:
@@ -1183,7 +1183,7 @@ eleza getfullargspec(func):
 ArgInfo = namedtuple('ArgInfo', 'args varargs keywords locals')
 
 eleza getargvalues(frame):
-    """Get information about arguments passed into a particular frame.
+    """Get information about arguments pitaed into a particular frame.
 
     A tuple of four things ni returned: (args, varargs, varkw, locals).
     'args' ni a list of the argument names.
@@ -1289,17 +1289,17 @@ eleza formatargvalues(args, varargs, varkw, locals,
     rudisha '(' + ', '.join(specs) + ')'
 
 eleza _missing_arguments(f_name, argnames, pos, values):
-    names = [repr(name) kila name kwenye argnames ikiwa name sio kwenye values]
+    names = [repr(name) kila name kwenye argnames ikiwa name haiko kwenye values]
     missing = len(names)
     ikiwa missing == 1:
         s = names[0]
-    elikiwa missing == 2:
+    lasivyo missing == 2:
         s = "{} na {}".format(*names)
     isipokua:
         tail = ", {} na {}".format(*names[-2:])
         toa names[-2:]
         s = ", ".join(names) + tail
-     ashiria TypeError("%s() missing %i required %s argument%s: %s" %
+    ashiria TypeError("%s() missing %i required %s argument%s: %s" %
                     (f_name, missing,
                       "positional" ikiwa pos isipokua "keyword-only",
                       "" ikiwa missing == 1 isipokua "s", s))
@@ -1310,7 +1310,7 @@ eleza _too_many(f_name, args, kwonly, varargs, defcount, given, values):
     ikiwa varargs:
         plural = atleast != 1
         sig = "at least %d" % (atleast,)
-    elikiwa defcount:
+    lasivyo defcount:
         plural = Kweli
         sig = "kutoka %d to %d" % (atleast, len(args))
     isipokua:
@@ -1321,7 +1321,7 @@ eleza _too_many(f_name, args, kwonly, varargs, defcount, given, values):
         msg = " positional argument%s (and %d keyword-only argument%s)"
         kwonly_sig = (msg % ("s" ikiwa given != 1 isipokua "", kwonly_given,
                              "s" ikiwa kwonly_given != 1 isipokua ""))
-     ashiria TypeError("%s() takes %s positional argument%s but %d%s %s given" %
+    ashiria TypeError("%s() takes %s positional argument%s but %d%s %s given" %
             (f_name, sig, "s" ikiwa plural isipokua "", given, kwonly_sig,
              "was" ikiwa given == 1 na sio kwonly_given isipokua "were"))
 
@@ -1353,14 +1353,14 @@ eleza getcallargs(func, /, *positional, **named):
     ikiwa varkw:
         arg2value[varkw] = {}
     kila kw, value kwenye named.items():
-        ikiwa kw sio kwenye possible_kwargs:
+        ikiwa kw haiko kwenye possible_kwargs:
             ikiwa sio varkw:
-                 ashiria TypeError("%s() got an unexpected keyword argument %r" %
+                ashiria TypeError("%s() got an unexpected keyword argument %r" %
                                 (f_name, kw))
             arg2value[varkw][kw] = value
             endelea
         ikiwa kw kwenye arg2value:
-             ashiria TypeError("%s() got multiple values kila argument %r" %
+            ashiria TypeError("%s() got multiple values kila argument %r" %
                             (f_name, kw))
         arg2value[kw] = value
     ikiwa num_pos > num_args na sio varargs:
@@ -1369,14 +1369,14 @@ eleza getcallargs(func, /, *positional, **named):
     ikiwa num_pos < num_args:
         req = args[:num_args - num_defaults]
         kila arg kwenye req:
-            ikiwa arg sio kwenye arg2value:
+            ikiwa arg haiko kwenye arg2value:
                 _missing_arguments(f_name, req, Kweli, arg2value)
         kila i, arg kwenye enumerate(args[num_args - num_defaults:]):
-            ikiwa arg sio kwenye arg2value:
+            ikiwa arg haiko kwenye arg2value:
                 arg2value[arg] = defaults[i]
     missing = 0
     kila kwarg kwenye kwonlyargs:
-        ikiwa kwarg sio kwenye arg2value:
+        ikiwa kwarg haiko kwenye arg2value:
             ikiwa kwonlydefaults na kwarg kwenye kwonlydefaults:
                 arg2value[kwarg] = kwonlydefaults[kwarg]
             isipokua:
@@ -1392,7 +1392,7 @@ eleza getclosurevars(func):
     Get the mapping of free variables to their current values.
 
     Returns a named tuple of dicts mapping the current nonlocal, global
-    na builtin references as seen by the body of the function. A final
+    na builtin references kama seen by the body of the function. A final
     set of unbound names that could sio be resolved ni also provided.
     """
 
@@ -1400,7 +1400,7 @@ eleza getclosurevars(func):
         func = func.__func__
 
     ikiwa sio isfunction(func):
-         ashiria TypeError("{!r} ni sio a Python function".format(func))
+        ashiria TypeError("{!r} ni sio a Python function".format(func))
 
     code = func.__code__
     # Nonlocal references are named kwenye co_freevars na resolved
@@ -1425,14 +1425,14 @@ eleza getclosurevars(func):
     kila name kwenye code.co_names:
         ikiwa name kwenye ("Tupu", "Kweli", "Uongo"):
             # Because these used to be builtins instead of keywords, they
-            # may still show up as name references. We ignore them.
+            # may still show up kama name references. We ignore them.
             endelea
         jaribu:
             global_vars[name] = global_ns[name]
-        except KeyError:
+        tatizo KeyError:
             jaribu:
                 builtin_vars[name] = builtin_ns[name]
-            except KeyError:
+            tatizo KeyError:
                 unbound_names.add(name)
 
     rudisha ClosureVars(nonlocal_vars, global_vars,
@@ -1456,14 +1456,14 @@ eleza getframeinfo(frame, context=1):
     isipokua:
         lineno = frame.f_lineno
     ikiwa sio isframe(frame):
-         ashiria TypeError('{!r} ni sio a frame ama traceback object'.format(frame))
+        ashiria TypeError('{!r} ni sio a frame ama traceback object'.format(frame))
 
     filename = getsourcefile(frame) ama getfile(frame)
     ikiwa context > 0:
         start = lineno - 1 - context//2
         jaribu:
             lines, lnum = findsource(frame)
-        except OSError:
+        tatizo OSError:
             lines = index = Tupu
         isipokua:
             start = max(0, min(start, len(lines) - context))
@@ -1529,8 +1529,8 @@ eleza _check_instance(obj, attr):
     instance_dict = {}
     jaribu:
         instance_dict = object.__getattribute__(obj, "__dict__")
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     rudisha dict.get(instance_dict, attr, _sentinel)
 
 
@@ -1539,14 +1539,14 @@ eleza _check_class(klass, attr):
         ikiwa _shadowed_dict(type(entry)) ni _sentinel:
             jaribu:
                 rudisha entry.__dict__[attr]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
     rudisha _sentinel
 
 eleza _is_type(obj):
     jaribu:
         _static_getmro(obj)
-    except TypeError:
+    tatizo TypeError:
         rudisha Uongo
     rudisha Kweli
 
@@ -1555,11 +1555,11 @@ eleza _shadowed_dict(klass):
     kila entry kwenye _static_getmro(klass):
         jaribu:
             class_dict = dict_attr.__get__(entry)["__dict__"]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         isipokua:
-            ikiwa sio (type(class_dict) ni types.GetSetDescriptorType and
-                    class_dict.__name__ == "__dict__" and
+            ikiwa sio (type(class_dict) ni types.GetSetDescriptorType na
+                    class_dict.__name__ == "__dict__" na
                     class_dict.__objclass__ ni entry):
                 rudisha class_dict
     rudisha _sentinel
@@ -1571,7 +1571,7 @@ eleza getattr_static(obj, attr, default=_sentinel):
        Note: this function may sio be able to retrieve all attributes
        that getattr can fetch (like dynamically created attributes)
        na may find attributes that getattr can't (like descriptors
-       that  ashiria AttributeError). It can also rudisha descriptor objects
+       that ashiria AttributeError). It can also rudisha descriptor objects
        instead of instance members kwenye some cases. See the
        documentation kila details.
     """
@@ -1579,7 +1579,7 @@ eleza getattr_static(obj, attr, default=_sentinel):
     ikiwa sio _is_type(obj):
         klass = type(obj)
         dict_attr = _shadowed_dict(klass)
-        ikiwa (dict_attr ni _sentinel or
+        ikiwa (dict_attr ni _sentinel ama
             type(dict_attr) ni types.MemberDescriptorType):
             instance_result = _check_instance(obj, attr)
     isipokua:
@@ -1588,7 +1588,7 @@ eleza getattr_static(obj, attr, default=_sentinel):
     klass_result = _check_class(klass, attr)
 
     ikiwa instance_result ni sio _sentinel na klass_result ni sio _sentinel:
-        ikiwa (_check_class(type(klass_result), '__get__') ni sio _sentinel and
+        ikiwa (_check_class(type(klass_result), '__get__') ni sio _sentinel na
             _check_class(type(klass_result), '__set__') ni sio _sentinel):
             rudisha klass_result
 
@@ -1603,11 +1603,11 @@ eleza getattr_static(obj, attr, default=_sentinel):
             ikiwa _shadowed_dict(type(entry)) ni _sentinel:
                 jaribu:
                     rudisha entry.__dict__[attr]
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
     ikiwa default ni sio _sentinel:
         rudisha default
-     ashiria AttributeError(attr)
+    ashiria AttributeError(attr)
 
 
 # ------------------------------------------------ generator introspection
@@ -1643,7 +1643,7 @@ eleza getgeneratorlocals(generator):
     bound values."""
 
     ikiwa sio isgenerator(generator):
-         ashiria TypeError("{!r} ni sio a Python generator".format(generator))
+        ashiria TypeError("{!r} ni sio a Python generator".format(generator))
 
     frame = getattr(generator, "gi_frame", Tupu)
     ikiwa frame ni sio Tupu:
@@ -1712,7 +1712,7 @@ eleza _signature_get_user_defined_method(cls, method_name):
     """
     jaribu:
         meth = getattr(cls, method_name)
-    except AttributeError:
+    tatizo AttributeError:
         return
     isipokua:
         ikiwa sio isinstance(meth, _NonUserDefinedCallables):
@@ -1738,17 +1738,17 @@ eleza _signature_get_partial(wrapped_sig, partial, extra_args=()):
 
     jaribu:
         ba = wrapped_sig.bind_partial(*partial_args, **partial_keywords)
-    except TypeError as ex:
+    tatizo TypeError kama ex:
         msg = 'partial object {!r} has incorrect arguments'.format(partial)
-         ashiria ValueError(msg) kutoka ex
+        ashiria ValueError(msg) kutoka ex
 
 
     transform_to_kwonly = Uongo
     kila param_name, param kwenye old_params.items():
         jaribu:
             arg_value = ba.arguments[param_name]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         isipokua:
             ikiwa param.kind ni _POSITIONAL_ONLY:
                 # If positional-only parameter ni bound by partial,
@@ -1763,18 +1763,18 @@ eleza _signature_get_partial(wrapped_sig, partial, extra_args=()):
                     # should be removed). Here's why. Consider the following
                     # function:
                     #     foo(a, b, *args, c):
-                    #         pass
+                    #         pita
                     #
                     # "partial(foo, a='spam')" will have the following
                     # signature: "(*, a='spam', b, c)". Because attempting
                     # to call that partial ukijumuisha "(10, 20)" arguments will
-                    #  ashiria a TypeError, saying that "a" argument received
+                    # ashiria a TypeError, saying that "a" argument received
                     # multiple values.
                     transform_to_kwonly = Kweli
                     # Set the new default value
                     new_params[param_name] = param.replace(default=arg_value)
                 isipokua:
-                    # was passed as a positional argument
+                    # was pitaed kama a positional argument
                     new_params.pop(param.name)
                     endelea
 
@@ -1789,9 +1789,9 @@ eleza _signature_get_partial(wrapped_sig, partial, extra_args=()):
                 new_param = new_params[param_name].replace(kind=_KEYWORD_ONLY)
                 new_params[param_name] = new_param
                 new_params.move_to_end(param_name)
-            elikiwa param.kind kwenye (_KEYWORD_ONLY, _VAR_KEYWORD):
+            lasivyo param.kind kwenye (_KEYWORD_ONLY, _VAR_KEYWORD):
                 new_params.move_to_end(param_name)
-            elikiwa param.kind ni _VAR_POSITIONAL:
+            lasivyo param.kind ni _VAR_POSITIONAL:
                 new_params.pop(param.name)
 
     rudisha wrapped_sig.replace(parameters=new_params.values())
@@ -1805,7 +1805,7 @@ eleza _signature_bound_method(sig):
     params = tuple(sig.parameters.values())
 
     ikiwa sio params ama params[0].kind kwenye (_VAR_KEYWORD, _KEYWORD_ONLY):
-         ashiria ValueError('invalid method signature')
+        ashiria ValueError('invalid method signature')
 
     kind = params[0].kind
     ikiwa kind kwenye (_POSITIONAL_OR_KEYWORD, _POSITIONAL_ONLY):
@@ -1816,7 +1816,7 @@ eleza _signature_bound_method(sig):
         ikiwa kind ni sio _VAR_POSITIONAL:
             # Unless we add a new parameter type we never
             # get here
-             ashiria ValueError('invalid argument type')
+            ashiria ValueError('invalid argument type')
         # It's a var-positional parameter.
         # Do nothing. '(*args[, ...])' -> '(*args[, ...])'
 
@@ -1827,10 +1827,10 @@ eleza _signature_is_builtin(obj):
     """Private helper to test ikiwa `obj` ni a callable that might
     support Argument Clinic's __text_signature__ protocol.
     """
-    rudisha (isbuiltin(obj) or
-            ismethoddescriptor(obj) or
-            isinstance(obj, _NonUserDefinedCallables) or
-            # Can't test 'isinstance(type)' here, as it would
+    rudisha (isbuiltin(obj) ama
+            ismethoddescriptor(obj) ama
+            isinstance(obj, _NonUserDefinedCallables) ama
+            # Can't test 'isinstance(type)' here, kama it would
             # also be Kweli kila regular python classes
             obj kwenye (type, object))
 
@@ -1853,10 +1853,10 @@ eleza _signature_is_functionlike(obj):
     kwdefaults = getattr(obj, '__kwdefaults__', _void) # ... na sio Tupu here
     annotations = getattr(obj, '__annotations__', Tupu)
 
-    rudisha (isinstance(code, types.CodeType) and
-            isinstance(name, str) and
-            (defaults ni Tupu ama isinstance(defaults, tuple)) and
-            (kwdefaults ni Tupu ama isinstance(kwdefaults, dict)) and
+    rudisha (isinstance(code, types.CodeType) na
+            isinstance(name, str) na
+            (defaults ni Tupu ama isinstance(defaults, tuple)) na
+            (kwdefaults ni Tupu ama isinstance(kwdefaults, dict)) na
             isinstance(annotations, dict))
 
 
@@ -1891,7 +1891,7 @@ eleza _signature_strip_non_python_syntax(signature):
     Returns a tuple of three things:
       * that signature re-rendered kwenye standard Python syntax,
       * the index of the "self" parameter (generally 0), ama Tupu if
-        the function does sio have a "self" parameter, and
+        the function does sio have a "self" parameter, na
       * the index of the last "positional only" parameter,
         ama Tupu ikiwa the signature has no positional-only parameters.
     """
@@ -1959,7 +1959,7 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
     """Private helper to parse content of '__text_signature__'
     na rudisha a Signature based on it.
     """
-    # Lazy agiza ast because it's relatively heavy and
+    # Lazy agiza ast because it's relatively heavy na
     # it's sio used kila other than this function.
     agiza ast
 
@@ -1968,15 +1968,15 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
     clean_signature, self_parameter, last_positional_only = \
         _signature_strip_non_python_syntax(s)
 
-    program = "eleza foo" + clean_signature + ": pass"
+    program = "eleza foo" + clean_signature + ": pita"
 
     jaribu:
         module = ast.parse(program)
-    except SyntaxError:
+    tatizo SyntaxError:
         module = Tupu
 
     ikiwa sio isinstance(module, ast.Module):
-         ashiria ValueError("{!r} builtin has invalid signature".format(obj))
+        ashiria ValueError("{!r} builtin has invalid signature".format(obj))
 
     f = module.body[0]
 
@@ -1996,21 +1996,21 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
     eleza parse_name(node):
         assert isinstance(node, ast.arg)
         ikiwa node.annotation ni sio Tupu:
-             ashiria ValueError("Annotations are sio currently supported")
+            ashiria ValueError("Annotations are sio currently supported")
         rudisha node.arg
 
     eleza wrap_value(s):
         jaribu:
             value = eval(s, module_dict)
-        except NameError:
+        tatizo NameError:
             jaribu:
                 value = eval(s, sys_module_dict)
-            except NameError:
-                 ashiria RuntimeError()
+            tatizo NameError:
+                ashiria RuntimeError()
 
         ikiwa isinstance(value, (str, int, float, bytes, bool, type(Tupu))):
             rudisha ast.Constant(value)
-         ashiria RuntimeError()
+        ashiria RuntimeError()
 
     kundi RewriteSymbolics(ast.NodeTransformer):
         eleza visit_Attribute(self, node):
@@ -2020,14 +2020,14 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
                 a.append(n.attr)
                 n = n.value
             ikiwa sio isinstance(n, ast.Name):
-                 ashiria RuntimeError()
+                ashiria RuntimeError()
             a.append(n.id)
             value = ".".join(reversed(a))
             rudisha wrap_value(value)
 
         eleza visit_Name(self, node):
             ikiwa sio isinstance(node.ctx, ast.Load):
-                 ashiria ValueError()
+                ashiria ValueError()
             rudisha wrap_value(node.id)
 
     eleza p(name_node, default_node, default=empty):
@@ -2038,7 +2038,7 @@ eleza _signature_fromstr(cls, obj, s, skip_bound_arg=Kweli):
             jaribu:
                 default_node = RewriteSymbolics().visit(default_node)
                 o = ast.literal_eval(default_node)
-            except ValueError:
+            tatizo ValueError:
                 o = invalid
             ikiwa o ni invalid:
                 rudisha Tupu
@@ -2099,12 +2099,12 @@ eleza _signature_from_builtin(cls, func, skip_bound_arg=Kweli):
     """
 
     ikiwa sio _signature_is_builtin(func):
-         ashiria TypeError("{!r} ni sio a Python builtin "
+        ashiria TypeError("{!r} ni sio a Python builtin "
                         "function".format(func))
 
     s = getattr(func, "__text_signature__", Tupu)
     ikiwa sio s:
-         ashiria ValueError("no signature found kila builtin {!r}".format(func))
+        ashiria ValueError("no signature found kila builtin {!r}".format(func))
 
     rudisha _signature_fromstr(cls, func, s, skip_bound_arg)
 
@@ -2119,7 +2119,7 @@ eleza _signature_from_function(cls, func, skip_bound_arg=Kweli):
         isipokua:
             # If it's sio a pure Python function, na sio a duck type
             # of pure function:
-             ashiria TypeError('{!r} ni sio a Python function'.format(func))
+            ashiria TypeError('{!r} ni sio a Python function'.format(func))
 
     s = getattr(func, "__text_signature__", Tupu)
     ikiwa s:
@@ -2213,7 +2213,7 @@ eleza _signature_from_callable(obj, *,
     """
 
     ikiwa sio callable(obj):
-         ashiria TypeError('{!r} ni sio a callable object'.format(obj))
+        ashiria TypeError('{!r} ni sio a callable object'.format(obj))
 
     ikiwa isinstance(obj, types.MethodType):
         # In this case we skip the first parameter of the underlying
@@ -2244,27 +2244,27 @@ eleza _signature_from_callable(obj, *,
 
     jaribu:
         sig = obj.__signature__
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         ikiwa sig ni sio Tupu:
             ikiwa sio isinstance(sig, Signature):
-                 ashiria TypeError(
+                ashiria TypeError(
                     'unexpected object {!r} kwenye __signature__ '
                     'attribute'.format(sig))
             rudisha sig
 
     jaribu:
         partialmethod = obj._partialmethod
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         ikiwa isinstance(partialmethod, functools.partialmethod):
             # Unbound partialmethod (see functools.partialmethod)
             # This means, that we need to calculate the signature
-            # as ikiwa it's a regular partial object, but taking into
+            # kama ikiwa it's a regular partial object, but taking into
             # account that the first positional argument
-            # (usually `self`, ama `cls`) will sio be passed
+            # (usually `self`, ama `cls`) will sio be pitaed
             # automatically (as kila boundmethods)
 
             wrapped_sig = _signature_from_callable(
@@ -2276,12 +2276,12 @@ eleza _signature_from_callable(obj, *,
             sig = _signature_get_partial(wrapped_sig, partialmethod, (Tupu,))
             first_wrapped_param = tuple(wrapped_sig.parameters.values())[0]
             ikiwa first_wrapped_param.kind ni Parameter.VAR_POSITIONAL:
-                # First argument of the wrapped callable ni `*args`, as in
+                # First argument of the wrapped callable ni `*args`, kama in
                 # `partialmethod(lambda *args)`.
                 rudisha sig
             isipokua:
                 sig_params = tuple(sig.parameters.values())
-                assert (not sig_params or
+                assert (sio sig_params ama
                         first_wrapped_param ni sio sig_params[0])
                 new_params = (first_wrapped_param,) + sig_params
                 rudisha sig.replace(parameters=new_params)
@@ -2341,17 +2341,17 @@ eleza _signature_from_callable(obj, *,
             # defined '__init__', '__new__', ama class-level '__call__'
 
             kila base kwenye obj.__mro__[:-1]:
-                # Since '__text_signature__' ni implemented as a
+                # Since '__text_signature__' ni implemented kama a
                 # descriptor that extracts text signature kutoka the
                 # kundi docstring, ikiwa 'obj' ni derived kutoka a builtin
                 # class, its own '__text_signature__' may be 'Tupu'.
-                # Therefore, we go through the MRO (except the last
+                # Therefore, we go through the MRO (tatizo the last
                 # kundi kwenye there, which ni 'object') to find the first
                 # kundi ukijumuisha non-empty text signature.
                 jaribu:
                     text_sig = base.__text_signature__
-                except AttributeError:
-                    pass
+                tatizo AttributeError:
+                    pita
                 isipokua:
                     ikiwa text_sig:
                         # If 'obj' kundi has a __text_signature__ attribute:
@@ -2361,18 +2361,18 @@ eleza _signature_from_callable(obj, *,
             # No '__text_signature__' was found kila the 'obj' class.
             # Last option ni to check ikiwa its '__init__' is
             # object.__init__ ama type.__init__.
-            ikiwa type sio kwenye obj.__mro__:
-                # We have a kundi (not metaclass), but no user-defined
+            ikiwa type haiko kwenye obj.__mro__:
+                # We have a kundi (sio metaclass), but no user-defined
                 # __init__ ama __new__ kila it
-                ikiwa (obj.__init__ ni object.__init__ and
+                ikiwa (obj.__init__ ni object.__init__ na
                     obj.__new__ ni object.__new__):
                     # Return a signature of 'object' builtin.
                     rudisha sigcls.from_callable(object)
                 isipokua:
-                     ashiria ValueError(
+                    ashiria ValueError(
                         'no signature found kila builtin type {!r}'.format(obj))
 
-    elikiwa sio isinstance(obj, _NonUserDefinedCallables):
+    lasivyo sio isinstance(obj, _NonUserDefinedCallables):
         # An object ukijumuisha __call__
         # We also check that the 'obj' ni sio an instance of
         # _WrapperDescriptor ama _MethodWrapper to avoid
@@ -2385,9 +2385,9 @@ eleza _signature_from_callable(obj, *,
                     follow_wrapper_chains=follow_wrapper_chains,
                     skip_bound_arg=skip_bound_arg,
                     sigcls=sigcls)
-            except ValueError as ex:
+            tatizo ValueError kama ex:
                 msg = 'no signature found kila {!r}'.format(obj)
-                 ashiria ValueError(msg) kutoka ex
+                ashiria ValueError(msg) kutoka ex
 
     ikiwa sig ni sio Tupu:
         # For classes na objects we skip the first parameter of their
@@ -2400,9 +2400,9 @@ eleza _signature_from_callable(obj, *,
     ikiwa isinstance(obj, types.BuiltinFunctionType):
         # Raise a nicer error message kila builtins
         msg = 'no signature found kila builtin function {!r}'.format(obj)
-         ashiria ValueError(msg)
+        ashiria ValueError(msg)
 
-     ashiria ValueError('callable {!r} ni sio supported by signature'.format(obj))
+    ashiria ValueError('callable {!r} ni sio supported by signature'.format(obj))
 
 
 kundi _void:
@@ -2448,7 +2448,7 @@ kundi Parameter:
     Has the following public attributes:
 
     * name : str
-        The name of the parameter as a string.
+        The name of the parameter kama a string.
     * default : object
         The default value kila the parameter ikiwa specified.  If the
         parameter has no default value, this attribute ni set to
@@ -2477,40 +2477,40 @@ kundi Parameter:
     eleza __init__(self, name, kind, *, default=_empty, annotation=_empty):
         jaribu:
             self._kind = _ParameterKind(kind)
-        except ValueError:
-             ashiria ValueError(f'value {kind!r} ni sio a valid Parameter.kind')
+        tatizo ValueError:
+            ashiria ValueError(f'value {kind!r} ni sio a valid Parameter.kind')
         ikiwa default ni sio _empty:
             ikiwa self._kind kwenye (_VAR_POSITIONAL, _VAR_KEYWORD):
                 msg = '{} parameters cannot have default values'
                 msg = msg.format(self._kind.description)
-                 ashiria ValueError(msg)
+                ashiria ValueError(msg)
         self._default = default
         self._annotation = annotation
 
         ikiwa name ni _empty:
-             ashiria ValueError('name ni a required attribute kila Parameter')
+            ashiria ValueError('name ni a required attribute kila Parameter')
 
         ikiwa sio isinstance(name, str):
             msg = 'name must be a str, sio a {}'.format(type(name).__name__)
-             ashiria TypeError(msg)
+            ashiria TypeError(msg)
 
         ikiwa name[0] == '.' na name[1:].isdigit():
             # These are implicit arguments generated by comprehensions. In
             # order to provide a friendlier interface to users, we recast
-            # their name as "implicitN" na treat them as positional-only.
+            # their name kama "implicitN" na treat them kama positional-only.
             # See issue 19611.
             ikiwa self._kind != _POSITIONAL_OR_KEYWORD:
                 msg = (
-                    'implicit arguments must be passed as '
+                    'implicit arguments must be pitaed kama '
                     'positional ama keyword arguments, sio {}'
                 )
                 msg = msg.format(self._kind.description)
-                 ashiria ValueError(msg)
+                ashiria ValueError(msg)
             self._kind = _POSITIONAL_ONLY
             name = 'implicit{}'.format(name[1:])
 
         ikiwa sio name.isidentifier():
-             ashiria ValueError('{!r} ni sio a valid parameter name'.format(name))
+            ashiria ValueError('{!r} ni sio a valid parameter name'.format(name))
 
         self._name = name
 
@@ -2575,7 +2575,7 @@ kundi Parameter:
 
         ikiwa kind == _VAR_POSITIONAL:
             formatted = '*' + formatted
-        elikiwa kind == _VAR_KEYWORD:
+        lasivyo kind == _VAR_KEYWORD:
             formatted = '**' + formatted
 
         rudisha formatted
@@ -2591,9 +2591,9 @@ kundi Parameter:
             rudisha Kweli
         ikiwa sio isinstance(other, Parameter):
             rudisha NotImplemented
-        rudisha (self._name == other._name and
-                self._kind == other._kind and
-                self._default == other._default and
+        rudisha (self._name == other._name na
+                self._kind == other._kind na
+                self._default == other._default na
                 self._annotation == other._annotation)
 
 
@@ -2633,7 +2633,7 @@ kundi BoundArguments:
 
             jaribu:
                 arg = self.arguments[param_name]
-            except KeyError:
+            tatizo KeyError:
                 # We're done here. Other arguments
                 # will be mapped kwenye 'BoundArguments.kwargs'
                 koma
@@ -2656,7 +2656,7 @@ kundi BoundArguments:
                 ikiwa param.kind kwenye (_VAR_KEYWORD, _KEYWORD_ONLY):
                     kwargs_started = Kweli
                 isipokua:
-                    ikiwa param_name sio kwenye self.arguments:
+                    ikiwa param_name haiko kwenye self.arguments:
                         kwargs_started = Kweli
                         endelea
 
@@ -2665,8 +2665,8 @@ kundi BoundArguments:
 
             jaribu:
                 arg = self.arguments[param_name]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
             isipokua:
                 ikiwa param.kind == _VAR_KEYWORD:
                     # **kwargs
@@ -2691,12 +2691,12 @@ kundi BoundArguments:
         kila name, param kwenye self._signature.parameters.items():
             jaribu:
                 new_arguments.append((name, arguments[name]))
-            except KeyError:
+            tatizo KeyError:
                 ikiwa param.default ni sio _empty:
                     val = param.default
-                elikiwa param.kind ni _VAR_POSITIONAL:
+                lasivyo param.kind ni _VAR_POSITIONAL:
                     val = ()
-                elikiwa param.kind ni _VAR_KEYWORD:
+                lasivyo param.kind ni _VAR_KEYWORD:
                     val = {}
                 isipokua:
                     # This BoundArguments was likely produced by
@@ -2710,7 +2710,7 @@ kundi BoundArguments:
             rudisha Kweli
         ikiwa sio isinstance(other, BoundArguments):
             rudisha NotImplemented
-        rudisha (self.signature == other.signature and
+        rudisha (self.signature == other.signature na
                 self.arguments == other.arguments)
 
     eleza __setstate__(self, state):
@@ -2730,14 +2730,14 @@ kundi BoundArguments:
 kundi Signature:
     """A Signature object represents the overall signature of a function.
     It stores a Parameter object kila each parameter accepted by the
-    function, as well as information specific to the function itself.
+    function, kama well kama information specific to the function itself.
 
     A Signature object has the following public attributes na methods:
 
     * parameters : OrderedDict
         An ordered mapping of parameters' names to the corresponding
         Parameter objects (keyword-only arguments are kwenye the same order
-        as listed kwenye `code.co_varnames`).
+        kama listed kwenye `code.co_varnames`).
     * return_annotation : object
         The annotation kila the rudisha type of the function ikiwa specified.
         If the function has no annotation kila its rudisha type, this
@@ -2782,8 +2782,8 @@ kundi Signature:
                         )
                         msg = msg.format(top_kind.description,
                                          kind.description)
-                         ashiria ValueError(msg)
-                    elikiwa kind > top_kind:
+                        ashiria ValueError(msg)
+                    lasivyo kind > top_kind:
                         kind_defaults = Uongo
                         top_kind = kind
 
@@ -2795,14 +2795,14 @@ kundi Signature:
                                 # a default
                                 msg = 'non-default argument follows default ' \
                                       'argument'
-                                 ashiria ValueError(msg)
+                                ashiria ValueError(msg)
                         isipokua:
                             # There ni a default kila this parameter.
                             kind_defaults = Kweli
 
                     ikiwa name kwenye params:
                         msg = 'duplicate parameter name: {!r}'.format(name)
-                         ashiria ValueError(msg)
+                        ashiria ValueError(msg)
 
                     params[name] = param
             isipokua:
@@ -2900,11 +2900,11 @@ kundi Signature:
             # parameters
             jaribu:
                 arg_val = next(arg_vals)
-            except StopIteration:
+            tatizo StopIteration:
                 # No more positional arguments
                 jaribu:
                     param = next(parameters)
-                except StopIteration:
+                tatizo StopIteration:
                     # No more parameters. That's it. Just need to check that
                     # we have no `kwargs` after this wakati loop
                     koma
@@ -2913,15 +2913,15 @@ kundi Signature:
                         # That's OK, just empty *args.  Let's start parsing
                         # kwargs
                         koma
-                    elikiwa param.name kwenye kwargs:
+                    lasivyo param.name kwenye kwargs:
                         ikiwa param.kind == _POSITIONAL_ONLY:
                             msg = '{arg!r} parameter ni positional only, ' \
-                                  'but was passed as a keyword'
+                                  'but was pitaed kama a keyword'
                             msg = msg.format(arg=param.name)
-                             ashiria TypeError(msg) kutoka Tupu
+                            ashiria TypeError(msg) kutoka Tupu
                         parameters_ex = (param,)
                         koma
-                    elikiwa (param.kind == _VAR_KEYWORD or
+                    lasivyo (param.kind == _VAR_KEYWORD ama
                                                 param.default ni sio _empty):
                         # That's fine too - we have a default value kila this
                         # parameter.  So, lets start parsing `kwargs`, starting
@@ -2930,25 +2930,25 @@ kundi Signature:
                         koma
                     isipokua:
                         # No default, sio VAR_KEYWORD, sio VAR_POSITIONAL,
-                        # sio kwenye `kwargs`
+                        # haiko kwenye `kwargs`
                         ikiwa partial:
                             parameters_ex = (param,)
                             koma
                         isipokua:
                             msg = 'missing a required argument: {arg!r}'
                             msg = msg.format(arg=param.name)
-                             ashiria TypeError(msg) kutoka Tupu
+                            ashiria TypeError(msg) kutoka Tupu
             isipokua:
                 # We have a positional argument to process
                 jaribu:
                     param = next(parameters)
-                except StopIteration:
-                     ashiria TypeError('too many positional arguments') kutoka Tupu
+                tatizo StopIteration:
+                    ashiria TypeError('too many positional arguments') kutoka Tupu
                 isipokua:
                     ikiwa param.kind kwenye (_VAR_KEYWORD, _KEYWORD_ONLY):
                         # Looks like we have no parameter kila this positional
                         # argument
-                         ashiria TypeError(
+                        ashiria TypeError(
                             'too many positional arguments') kutoka Tupu
 
                     ikiwa param.kind == _VAR_POSITIONAL:
@@ -2961,7 +2961,7 @@ kundi Signature:
                         koma
 
                     ikiwa param.name kwenye kwargs:
-                         ashiria TypeError(
+                        ashiria TypeError(
                             'multiple values kila argument {arg!r}'.format(
                                 arg=param.name)) kutoka Tupu
 
@@ -2985,14 +2985,14 @@ kundi Signature:
             param_name = param.name
             jaribu:
                 arg_val = kwargs.pop(param_name)
-            except KeyError:
+            tatizo KeyError:
                 # We have no value kila this parameter.  It's fine though,
                 # ikiwa it has a default value, ama it ni an '*args'-like
                 # parameter, left alone by the processing of positional
                 # arguments.
-                ikiwa (not partial na param.kind != _VAR_POSITIONAL and
+                ikiwa (sio partial na param.kind != _VAR_POSITIONAL na
                                                     param.default ni _empty):
-                     ashiria TypeError('missing a required argument: {arg!r}'. \
+                    ashiria TypeError('missing a required argument: {arg!r}'. \
                                     format(arg=param_name)) kutoka Tupu
 
             isipokua:
@@ -3000,8 +3000,8 @@ kundi Signature:
                     # This should never happen kwenye case of a properly built
                     # Signature object (but let's have this check here
                     # to ensure correct behaviour just kwenye case)
-                     ashiria TypeError('{arg!r} parameter ni positional only, '
-                                    'but was passed as a keyword'. \
+                    ashiria TypeError('{arg!r} parameter ni positional only, '
+                                    'but was pitaed kama a keyword'. \
                                     format(arg=param.name))
 
                 arguments[param_name] = arg_val
@@ -3011,23 +3011,23 @@ kundi Signature:
                 # Process our '**kwargs'-like parameter
                 arguments[kwargs_param.name] = kwargs
             isipokua:
-                 ashiria TypeError(
+                ashiria TypeError(
                     'got an unexpected keyword argument {arg!r}'.format(
                         arg=next(iter(kwargs))))
 
         rudisha self._bound_arguments_cls(self, arguments)
 
     eleza bind(self, /, *args, **kwargs):
-        """Get a BoundArguments object, that maps the passed `args`
+        """Get a BoundArguments object, that maps the pitaed `args`
         na `kwargs` to the function's signature.  Raises `TypeError`
-        ikiwa the passed arguments can sio be bound.
+        ikiwa the pitaed arguments can sio be bound.
         """
         rudisha self._bind(args, kwargs)
 
     eleza bind_partial(self, /, *args, **kwargs):
         """Get a BoundArguments object, that partially maps the
-        passed `args` na `kwargs` to the function's signature.
-        Raises `TypeError` ikiwa the passed arguments can sio be bound.
+        pitaed `args` na `kwargs` to the function's signature.
+        Raises `TypeError` ikiwa the pitaed arguments can sio be bound.
         """
         rudisha self._bind(args, kwargs, partial=Kweli)
 
@@ -3053,7 +3053,7 @@ kundi Signature:
 
             ikiwa kind == _POSITIONAL_ONLY:
                 render_pos_only_separator = Kweli
-            elikiwa render_pos_only_separator:
+            lasivyo render_pos_only_separator:
                 # It's sio a positional-only parameter, na the flag
                 # ni set to 'Kweli' (there were pos-only params before.)
                 result.append('/')
@@ -3063,7 +3063,7 @@ kundi Signature:
                 # OK, we have an '*args'-like parameter, so we won't need
                 # a '*' to separate keyword-only arguments
                 render_kw_only_separator = Uongo
-            elikiwa kind == _KEYWORD_ONLY na render_kw_only_separator:
+            lasivyo kind == _KEYWORD_ONLY na render_kw_only_separator:
                 # We have a keyword-only parameter to render na we haven't
                 # rendered an '*args'-like parameter before, so add a '*'
                 # separator to the parameters list ("foo(arg1, *, arg2)" case)
@@ -3089,7 +3089,7 @@ kundi Signature:
 
 
 eleza signature(obj, *, follow_wrapped=Kweli):
-    """Get a signature object kila the passed callable."""
+    """Get a signature object kila the pitaed callable."""
     rudisha Signature.from_callable(obj, follow_wrapped=follow_wrapped)
 
 
@@ -3113,7 +3113,7 @@ eleza _main():
     mod_name, has_attrs, attrs = target.partition(":")
     jaribu:
         obj = module = importlib.import_module(mod_name)
-    except Exception as exc:
+    tatizo Exception kama exc:
         msg = "Failed to agiza {} ({}: {})".format(mod_name,
                                                     type(exc).__name__,
                                                     exc)
@@ -3141,8 +3141,8 @@ eleza _main():
         isipokua:
             jaribu:
                 __, lineno = findsource(obj)
-            except Exception:
-                pass
+            tatizo Exception:
+                pita
             isipokua:
                 andika('Line: {}'.format(lineno))
 

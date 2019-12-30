@@ -1,7 +1,7 @@
 # This module implements the RFCs 3490 (IDNA) na 3491 (Nameprep)
 
 agiza stringprep, re, codecs
-kutoka unicodedata agiza ucd_3_2_0 as unicodedata
+kutoka unicodedata agiza ucd_3_2_0 kama unicodedata
 
 # IDNA section 3.1
 dots = re.compile("[\u002E\u3002\uFF0E\uFF61]")
@@ -35,7 +35,7 @@ eleza nameprep(label):
            stringprep.in_table_c7(c) ama \
            stringprep.in_table_c8(c) ama \
            stringprep.in_table_c9(c):
-             ashiria UnicodeError("Invalid character %r" % c)
+            ashiria UnicodeError("Invalid character %r" % c)
 
     # Check bidi
     RandAL = [stringprep.in_table_d1(x) kila x kwenye label]
@@ -48,14 +48,14 @@ eleza nameprep(label):
             # 2) If a string contains any RandALCat character, the string
             # MUST NOT contain any LCat character.
             ikiwa any(stringprep.in_table_d2(x) kila x kwenye label):
-                 ashiria UnicodeError("Violation of BIDI requirement 2")
+                ashiria UnicodeError("Violation of BIDI requirement 2")
 
             # 3) If a string contains any RandALCat character, a
             # RandALCat character MUST be the first character of the
             # string, na a RandALCat character MUST be the last
             # character of the string.
             ikiwa sio RandAL[0] ama sio RandAL[-1]:
-                 ashiria UnicodeError("Violation of BIDI requirement 3")
+                ashiria UnicodeError("Violation of BIDI requirement 3")
 
     rudisha label
 
@@ -63,14 +63,14 @@ eleza ToASCII(label):
     jaribu:
         # Step 1: try ASCII
         label = label.encode("ascii")
-    except UnicodeError:
-        pass
+    tatizo UnicodeError:
+        pita
     isipokua:
         # Skip to step 3: UseSTD3ASCIIRules ni false, so
         # Skip to step 8.
         ikiwa 0 < len(label) < 64:
             rudisha label
-         ashiria UnicodeError("label empty ama too long")
+        ashiria UnicodeError("label empty ama too long")
 
     # Step 2: nameprep
     label = nameprep(label)
@@ -79,17 +79,17 @@ eleza ToASCII(label):
     # Step 4: try ASCII
     jaribu:
         label = label.encode("ascii")
-    except UnicodeError:
-        pass
+    tatizo UnicodeError:
+        pita
     isipokua:
         # Skip to step 8.
         ikiwa 0 < len(label) < 64:
             rudisha label
-         ashiria UnicodeError("label empty ama too long")
+        ashiria UnicodeError("label empty ama too long")
 
     # Step 5: Check ACE prefix
     ikiwa label.startswith(sace_prefix):
-         ashiria UnicodeError("Label starts ukijumuisha ACE prefix")
+        ashiria UnicodeError("Label starts ukijumuisha ACE prefix")
 
     # Step 6: Encode ukijumuisha PUNYCODE
     label = label.encode("punycode")
@@ -100,7 +100,7 @@ eleza ToASCII(label):
     # Step 8: Check size
     ikiwa 0 < len(label) < 64:
         rudisha label
-     ashiria UnicodeError("label empty ama too long")
+    ashiria UnicodeError("label empty ama too long")
 
 eleza ToUnicode(label):
     # Step 1: Check kila ASCII
@@ -110,7 +110,7 @@ eleza ToUnicode(label):
         jaribu:
             label = label.encode("ascii")
             pure_ascii = Kweli
-        except UnicodeError:
+        tatizo UnicodeError:
             pure_ascii = Uongo
     ikiwa sio pure_ascii:
         # Step 2: Perform nameprep
@@ -118,8 +118,8 @@ eleza ToUnicode(label):
         # It doesn't say this, but apparently, it should be ASCII now
         jaribu:
             label = label.encode("ascii")
-        except UnicodeError:
-             ashiria UnicodeError("Invalid character kwenye IDN label")
+        tatizo UnicodeError:
+            ashiria UnicodeError("Invalid character kwenye IDN label")
     # Step 3: Check kila ACE prefix
     ikiwa sio label.startswith(ace_prefix):
         rudisha str(label, "ascii")
@@ -136,7 +136,7 @@ eleza ToUnicode(label):
     # Step 7: Compare the result of step 6 ukijumuisha the one of step 3
     # label2 will already be kwenye lower case.
     ikiwa str(label, "ascii").lower() != str(label2, "ascii"):
-         ashiria UnicodeError("IDNA does sio round-trip", label, label2)
+        ashiria UnicodeError("IDNA does sio round-trip", label, label2)
 
     # Step 8: rudisha the result of step 5
     rudisha result
@@ -148,23 +148,23 @@ kundi Codec(codecs.Codec):
 
         ikiwa errors != 'strict':
             # IDNA ni quite clear that implementations must be strict
-             ashiria UnicodeError("unsupported error handling "+errors)
+            ashiria UnicodeError("unsupported error handling "+errors)
 
         ikiwa sio input:
             rudisha b'', 0
 
         jaribu:
             result = input.encode('ascii')
-        except UnicodeEncodeError:
-            pass
+        tatizo UnicodeEncodeError:
+            pita
         isipokua:
             # ASCII name: fast path
             labels = result.split(b'.')
             kila label kwenye labels[:-1]:
                 ikiwa sio (0 < len(label) < 64):
-                     ashiria UnicodeError("label empty ama too long")
+                    ashiria UnicodeError("label empty ama too long")
             ikiwa len(labels[-1]) >= 64:
-                 ashiria UnicodeError("label too long")
+                ashiria UnicodeError("label too long")
             rudisha result, len(input)
 
         result = bytearray()
@@ -184,7 +184,7 @@ kundi Codec(codecs.Codec):
     eleza decode(self, input, errors='strict'):
 
         ikiwa errors != 'strict':
-             ashiria UnicodeError("Unsupported error handling "+errors)
+            ashiria UnicodeError("Unsupported error handling "+errors)
 
         ikiwa sio input:
             rudisha "", 0
@@ -194,12 +194,12 @@ kundi Codec(codecs.Codec):
             # XXX obviously wrong, see #3232
             input = bytes(input)
 
-        ikiwa ace_prefix sio kwenye input:
+        ikiwa ace_prefix haiko kwenye input:
             # Fast path
             jaribu:
                 rudisha input.decode('ascii'), len(input)
-            except UnicodeDecodeError:
-                pass
+            tatizo UnicodeDecodeError:
+                pita
 
         labels = input.split(b".")
 
@@ -219,7 +219,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
     eleza _buffer_encode(self, input, errors, final):
         ikiwa errors != 'strict':
             # IDNA ni quite clear that implementations must be strict
-             ashiria UnicodeError("unsupported error handling "+errors)
+            ashiria UnicodeError("unsupported error handling "+errors)
 
         ikiwa sio input:
             rudisha (b'', 0)
@@ -230,7 +230,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
             ikiwa sio labels[-1]:
                 trailing_dot = b'.'
                 toa labels[-1]
-            elikiwa sio final:
+            lasivyo sio final:
                 # Keep potentially unfinished label until the next call
                 toa labels[-1]
                 ikiwa labels:
@@ -253,7 +253,7 @@ kundi IncrementalEncoder(codecs.BufferedIncrementalEncoder):
 kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
     eleza _buffer_decode(self, input, errors, final):
         ikiwa errors != 'strict':
-             ashiria UnicodeError("Unsupported error handling "+errors)
+            ashiria UnicodeError("Unsupported error handling "+errors)
 
         ikiwa sio input:
             rudisha ("", 0)
@@ -271,7 +271,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             ikiwa sio labels[-1]:
                 trailing_dot = '.'
                 toa labels[-1]
-            elikiwa sio final:
+            lasivyo sio final:
                 # Keep potentially unfinished label until the next call
                 toa labels[-1]
                 ikiwa labels:
@@ -290,10 +290,10 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
         rudisha (result, size)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

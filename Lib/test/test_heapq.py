@@ -71,8 +71,8 @@ kundi TestHeap:
         jaribu:
             self.assertRaises(TypeError, self.module.heappush, Tupu, Tupu)
             self.assertRaises(TypeError, self.module.heappop, Tupu)
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza check_invariant(self, heap):
         # Check the heap invariant.
@@ -104,8 +104,8 @@ kundi TestHeap:
         jaribu:
             wakati 1:
                 tuma self.module.heappop(heap)
-        except IndexError:
-            pass
+        tatizo IndexError:
+            pita
 
     eleza test_nbest(self):
         # Less-naive "N-best" algorithm, much faster (ikiwa len(data) ni big
@@ -210,7 +210,7 @@ kundi TestHeap:
 
     eleza test_merge_stability(self):
         kundi Int(int):
-            pass
+            pita
         inputs = [[], [], [], []]
         kila i kwenye range(20000):
             stream = random.randrange(4)
@@ -283,7 +283,7 @@ kundi LenOnly:
 kundi CmpErr:
     "Dummy element that always raises an error during comparison"
     eleza __eq__(self, other):
-         ashiria ZeroDivisionError
+        ashiria ZeroDivisionError
     __ne__ = __lt__ = __le__ = __gt__ = __ge__ = __eq__
 
 eleza R(seqn):
@@ -306,7 +306,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -326,7 +326,7 @@ kundi X:
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -352,11 +352,11 @@ kundi E:
 kundi S:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pass
+        pita
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-         ashiria StopIteration
+        ashiria StopIteration
 
 kutoka itertools agiza chain
 eleza L(seqn):

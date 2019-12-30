@@ -193,7 +193,7 @@ kundi BitFieldTest(unittest.TestCase):
     eleza get_except(self, func, *args, **kw):
         jaribu:
             func(*args, **kw)
-        except Exception as detail:
+        tatizo Exception kama detail:
             rudisha detail.__class__, str(detail)
 
     eleza test_mixed_1(self):

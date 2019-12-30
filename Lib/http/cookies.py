@@ -27,10 +27,10 @@
 #   by Timothy O'Malley <timo@alum.mit.edu>
 #
 #  Cookie.py ni a Python module kila the handling of HTTP
-#  cookies as a Python dictionary.  See RFC 2109 kila more
+#  cookies kama a Python dictionary.  See RFC 2109 kila more
 #  information on cookies.
 #
-#  The original idea to treat Cookies as a dictionary came from
+#  The original idea to treat Cookies kama a dictionary came from
 #  Dave Mitchell (davem@magnet.com) kwenye 1995, when he released the
 #  first version of nscookie.py.
 #
@@ -51,7 +51,7 @@ Most of the time you start by creating a cookie.
 
    >>> C = cookies.SimpleCookie()
 
-Once you've created your Cookie, you can add values just as ikiwa it were
+Once you've created your Cookie, you can add values just kama ikiwa it were
 a dictionary.
 
    >>> C = cookies.SimpleCookie()
@@ -142,7 +142,7 @@ _spacejoin = ' '.join
 # Define an exception visible to External modules
 #
 kundi CookieError(Exception):
-    pass
+    pita
 
 
 # These quoting routines conform to the RFC2109 specification, which in
@@ -219,7 +219,7 @@ eleza _unquote(str):
             j = o_match.start(0)
         ikiwa q_match:
             k = q_match.start(0)
-        ikiwa q_match na (not o_match ama k < j):     # QuotePatt matched
+        ikiwa q_match na (sio o_match ama k < j):     # QuotePatt matched
             res.append(str[i:k])
             res.append(str[k+1])
             i = k + 2
@@ -258,7 +258,7 @@ kundi Morsel(dict):
     This kundi also includes a coded_value attribute, which ni used to hold
     the network representation of the value.
     """
-    # RFC 2109 lists these attributes as reserved:
+    # RFC 2109 lists these attributes kama reserved:
     #   path       comment         domain
     #   max-age    secure      version
     #
@@ -308,21 +308,21 @@ kundi Morsel(dict):
     eleza __setitem__(self, K, V):
         K = K.lower()
         ikiwa sio K kwenye self._reserved:
-             ashiria CookieError("Invalid attribute %r" % (K,))
+            ashiria CookieError("Invalid attribute %r" % (K,))
         dict.__setitem__(self, K, V)
 
     eleza setdefault(self, key, val=Tupu):
         key = key.lower()
-        ikiwa key sio kwenye self._reserved:
-             ashiria CookieError("Invalid attribute %r" % (key,))
+        ikiwa key haiko kwenye self._reserved:
+            ashiria CookieError("Invalid attribute %r" % (key,))
         rudisha dict.setdefault(self, key, val)
 
     eleza __eq__(self, morsel):
         ikiwa sio isinstance(morsel, Morsel):
             rudisha NotImplemented
-        rudisha (dict.__eq__(self, morsel) and
-                self._value == morsel._value and
-                self._key == morsel._key and
+        rudisha (dict.__eq__(self, morsel) na
+                self._value == morsel._value na
+                self._key == morsel._key na
                 self._coded_value == morsel._coded_value)
 
     __ne__ = object.__ne__
@@ -337,8 +337,8 @@ kundi Morsel(dict):
         data = {}
         kila key, val kwenye dict(values).items():
             key = key.lower()
-            ikiwa key sio kwenye self._reserved:
-                 ashiria CookieError("Invalid attribute %r" % (key,))
+            ikiwa key haiko kwenye self._reserved:
+                ashiria CookieError("Invalid attribute %r" % (key,))
             data[key] = val
         dict.update(self, data)
 
@@ -347,9 +347,9 @@ kundi Morsel(dict):
 
     eleza set(self, key, val, coded_val):
         ikiwa key.lower() kwenye self._reserved:
-             ashiria CookieError('Attempt to set a reserved key %r' % (key,))
+            ashiria CookieError('Attempt to set a reserved key %r' % (key,))
         ikiwa sio _is_legal_key(key):
-             ashiria CookieError('Illegal key %r' % (key,))
+            ashiria CookieError('Illegal key %r' % (key,))
 
         # It's a good key, so save it.
         self._key = key
@@ -402,15 +402,15 @@ kundi Morsel(dict):
         kila key, value kwenye items:
             ikiwa value == "":
                 endelea
-            ikiwa key sio kwenye attrs:
+            ikiwa key haiko kwenye attrs:
                 endelea
             ikiwa key == "expires" na isinstance(value, int):
                 append("%s=%s" % (self._reserved[key], _getdate(value)))
-            elikiwa key == "max-age" na isinstance(value, int):
+            lasivyo key == "max-age" na isinstance(value, int):
                 append("%s=%d" % (self._reserved[key], value))
-            elikiwa key == "comment" na isinstance(value, str):
+            lasivyo key == "comment" na isinstance(value, str):
                 append("%s=%s" % (self._reserved[key], _quote(value)))
-            elikiwa key kwenye self._flags:
+            lasivyo key kwenye self._flags:
                 ikiwa value:
                     append(str(self._reserved[key]))
             isipokua:
@@ -440,9 +440,9 @@ _CookiePattern = re.compile(r"""
     \s*=\s*                          # Equal Sign
     (?P<val>                         # Start of group 'val'
     "(?:[^\\"]|\\.)*"                  # Any doublequoted string
-    |                                  # or
+    |                                  # ama
     \w{3},\s[\w\d\s-]{9,11}\s[\d:]{8}\sGMT  # Special case kila "expires" attr
-    |                                  # or
+    |                                  # ama
     [""" + _LegalValueChars + r"""]*      # Any word ama empty string
     )                                # End of group 'val'
     )?                             # End of optional value group
@@ -520,7 +520,7 @@ kundi BaseCookie(dict):
         rudisha _nulljoin(result)
 
     eleza load(self, rawdata):
-        """Load cookies kutoka a string (presumably HTTP_COOKIE) or
+        """Load cookies kutoka a string (presumably HTTP_COOKIE) ama
         kutoka a dictionary.  Loading cookies kutoka a dictionary 'd'
         ni equivalent to calling:
             map(Cookie.__setitem__, d.keys(), d.values())
@@ -558,11 +558,11 @@ kundi BaseCookie(dict):
             ikiwa key[0] == "$":
                 ikiwa sio morsel_seen:
                     # We ignore attributes which pertain to the cookie
-                    # mechanism as a whole, such as "$Version".
+                    # mechanism kama a whole, such kama "$Version".
                     # See RFC 2965. (Does anyone care?)
                     endelea
                 parsed_items.append((TYPE_ATTRIBUTE, key[1:], value))
-            elikiwa key.lower() kwenye Morsel._reserved:
+            lasivyo key.lower() kwenye Morsel._reserved:
                 ikiwa sio morsel_seen:
                     # Invalid cookie string
                     return
@@ -574,7 +574,7 @@ kundi BaseCookie(dict):
                         return
                 isipokua:
                     parsed_items.append((TYPE_ATTRIBUTE, key, _unquote(value)))
-            elikiwa value ni sio Tupu:
+            lasivyo value ni sio Tupu:
                 parsed_items.append((TYPE_KEYVALUE, key, self.value_decode(value)))
                 morsel_seen = Kweli
             isipokua:
@@ -596,10 +596,10 @@ kundi BaseCookie(dict):
 
 kundi SimpleCookie(BaseCookie):
     """
-    SimpleCookie supports strings as cookie values.  When setting
+    SimpleCookie supports strings kama cookie values.  When setting
     the value using the dictionary assignment notation, SimpleCookie
     calls the builtin str() to convert the value to a string.  Values
-    received kutoka HTTP are kept as strings.
+    received kutoka HTTP are kept kama strings.
     """
     eleza value_decode(self, val):
         rudisha _unquote(val), val

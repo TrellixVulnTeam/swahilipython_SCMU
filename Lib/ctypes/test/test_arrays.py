@@ -136,7 +136,7 @@ kundi ArrayTestCase(unittest.TestCase):
 
         # Create a new type:
         kundi my_int(c_int):
-            pass
+            pita
         # Create a new array type based on it:
         t1 = my_int * 1
         t2 = my_int * 1
@@ -147,11 +147,11 @@ kundi ArrayTestCase(unittest.TestCase):
             _type_ = c_int
             _length_ = 13
         kundi U(T):
-            pass
+            pita
         kundi V(U):
-            pass
+            pita
         kundi W(V):
-            pass
+            pita
         kundi X(T):
             _type_ = c_short
         kundi Y(T):
@@ -176,7 +176,7 @@ kundi ArrayTestCase(unittest.TestCase):
     eleza test_bad_subclass(self):
         ukijumuisha self.assertRaises(AttributeError):
             kundi T(Array):
-                pass
+                pita
         ukijumuisha self.assertRaises(AttributeError):
             kundi T(Array):
                 _type_ = c_int

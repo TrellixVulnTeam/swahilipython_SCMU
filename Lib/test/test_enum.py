@@ -18,7 +18,7 @@ jaribu:
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     Stooges = exc
 
 jaribu:
@@ -26,7 +26,7 @@ jaribu:
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     IntStooges = exc
 
 jaribu:
@@ -34,7 +34,7 @@ jaribu:
         LARRY = 1.39
         CURLY = 2.72
         MOE = 3.142596
-except Exception as exc:
+tatizo Exception kama exc:
     FloatStooges = exc
 
 jaribu:
@@ -42,7 +42,7 @@ jaribu:
         LARRY = 1
         CURLY = 2
         MOE = 3
-except Exception as exc:
+tatizo Exception kama exc:
     FlagStooges = exc
 
 # kila pickle test na subkundi tests
@@ -52,22 +52,22 @@ jaribu:
     kundi Name(StrEnum):
         BDFL = 'Guido van Rossum'
         FLUFL = 'Barry Warsaw'
-except Exception as exc:
+tatizo Exception kama exc:
     Name = exc
 
 jaribu:
     Question = Enum('Question', 'who what when where why', module=__name__)
-except Exception as exc:
+tatizo Exception kama exc:
     Question = exc
 
 jaribu:
     Answer = Enum('Answer', 'him this then there because')
-except Exception as exc:
+tatizo Exception kama exc:
     Answer = exc
 
 jaribu:
     Theory = Enum('Theory', 'rule law supposition', qualname='spanish_inquisition')
-except Exception as exc:
+tatizo Exception kama exc:
     Theory = exc
 
 # kila doctests
@@ -76,8 +76,8 @@ jaribu:
         TOMATO = 1
         BANANA = 2
         CHERRY = 3
-except Exception:
-    pass
+tatizo Exception:
+    pita
 
 eleza test_pickle_dump_load(assertion, source, target=Tupu):
     ikiwa target ni Tupu:
@@ -95,7 +95,7 @@ kundi TestHelpers(unittest.TestCase):
 
     eleza test_is_descriptor(self):
         kundi foo:
-            pass
+            pita
         kila attr kwenye ('__get__','__set__','__delete__'):
             obj = foo()
             self.assertUongo(enum._is_descriptor(obj))
@@ -270,7 +270,7 @@ kundi TestEnum(unittest.TestCase):
             WINTER = 4
 
             eleza spam(cls):
-                pass
+                pita
 
         self.assertKweli(hasattr(Season, 'spam'))
         toa Season.spam
@@ -285,7 +285,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_bool_of_class(self):
         kundi Empty(Enum):
-            pass
+            pita
         self.assertKweli(bool(Empty))
 
     eleza test_bool_of_member(self):
@@ -517,7 +517,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_intenum_inherited(self):
         kundi IntEnum(int, Enum):
-            pass
+            pita
         kundi phy(IntEnum):
             pi = 3
             tau = 2 * pi
@@ -531,7 +531,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_floatenum_inherited(self):
         kundi FloatEnum(float, Enum):
-            pass
+            pita
         kundi phy(FloatEnum):
             pi = 3.1415926
             tau = 2 * pi
@@ -545,7 +545,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_strenum_inherited(self):
         kundi StrEnum(str, Enum):
-            pass
+            pita
         kundi phy(StrEnum):
             pi = 'Pi'
             tau = 'Tau'
@@ -610,37 +610,37 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_pickle_enum(self):
         ikiwa isinstance(Stooges, Exception):
-             ashiria Stooges
+            ashiria Stooges
         test_pickle_dump_load(self.assertIs, Stooges.CURLY)
         test_pickle_dump_load(self.assertIs, Stooges)
 
     eleza test_pickle_int(self):
         ikiwa isinstance(IntStooges, Exception):
-             ashiria IntStooges
+            ashiria IntStooges
         test_pickle_dump_load(self.assertIs, IntStooges.CURLY)
         test_pickle_dump_load(self.assertIs, IntStooges)
 
     eleza test_pickle_float(self):
         ikiwa isinstance(FloatStooges, Exception):
-             ashiria FloatStooges
+            ashiria FloatStooges
         test_pickle_dump_load(self.assertIs, FloatStooges.CURLY)
         test_pickle_dump_load(self.assertIs, FloatStooges)
 
     eleza test_pickle_enum_function(self):
         ikiwa isinstance(Answer, Exception):
-             ashiria Answer
+            ashiria Answer
         test_pickle_dump_load(self.assertIs, Answer.him)
         test_pickle_dump_load(self.assertIs, Answer)
 
     eleza test_pickle_enum_function_with_module(self):
         ikiwa isinstance(Question, Exception):
-             ashiria Question
+            ashiria Question
         test_pickle_dump_load(self.assertIs, Question.who)
         test_pickle_dump_load(self.assertIs, Question)
 
     eleza test_enum_function_with_qualname(self):
         ikiwa isinstance(Theory, Exception):
-             ashiria Theory
+            ashiria Theory
         self.assertEqual(Theory.__qualname__, 'spanish_inquisition')
 
     eleza test_class_nested_enum_and_pickle_protocol_four(self):
@@ -883,7 +883,7 @@ kundi TestEnum(unittest.TestCase):
 
     eleza test_subclassing(self):
         ikiwa isinstance(Name, Exception):
-             ashiria Name
+            ashiria Name
         self.assertEqual(Name.BDFL, 'Guido van Rossum')
         self.assertKweli(Name.BDFL, Name('Guido van Rossum'))
         self.assertIs(Name.BDFL, getattr(Name, 'BDFL'))
@@ -1038,16 +1038,16 @@ kundi TestEnum(unittest.TestCase):
                     i += 1
                     temp[k] = v
                 kila k, v kwenye classdict.items():
-                    ikiwa k sio kwenye names:
+                    ikiwa k haiko kwenye names:
                         temp[k] = v
                 rudisha super(auto_enum, metacls).__new__(
                         metacls, cls, bases, temp)
 
         kundi AutoNumberedEnum(Enum, metaclass=auto_enum):
-            pass
+            pita
 
         kundi AutoIntEnum(IntEnum, metaclass=auto_enum):
-            pass
+            pita
 
         kundi TestAutoNumber(AutoNumberedEnum):
             a = ...
@@ -1066,7 +1066,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1123,7 +1123,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1180,7 +1180,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1237,7 +1237,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1294,7 +1294,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1347,7 +1347,7 @@ kundi TestEnum(unittest.TestCase):
                 _args = args
                 name, *args = args
                 ikiwa len(args) == 0:
-                     ashiria TypeError("name na value must be specified")
+                    ashiria TypeError("name na value must be specified")
                 self = int.__new__(cls, *args)
                 self._intname = name
                 self._args = _args
@@ -1527,7 +1527,7 @@ kundi TestEnum(unittest.TestCase):
     eleza test_subclass_duplicate_name(self):
         kundi Base(Enum):
             eleza test(self):
-                pass
+                pita
         kundi Test(Base):
             test = 1
         self.assertIs(type(Test.test), Test)
@@ -1549,7 +1549,7 @@ kundi TestEnum(unittest.TestCase):
                 ikiwa any(self.value == e.value kila e kwenye cls):
                     a = self.name
                     e = cls(self.value).name
-                     ashiria ValueError(
+                    ashiria ValueError(
                             "aliases sio allowed kwenye UniqueEnum:  %r --> %r"
                             % (a, e)
                             )
@@ -1718,11 +1718,11 @@ kundi TestEnum(unittest.TestCase):
             eleza _missing_(cls, item):
                 ikiwa item == 'three':
                     rudisha cls.blue
-                elikiwa item == 'bad return':
+                lasivyo item == 'bad return':
                     # trigger internal error
                     rudisha 5
-                elikiwa item == 'error out':
-                     ashiria ZeroDivisionError
+                lasivyo item == 'error out':
+                    ashiria ZeroDivisionError
                 isipokua:
                     # trigger sio found
                     rudisha Tupu
@@ -1730,16 +1730,16 @@ kundi TestEnum(unittest.TestCase):
         self.assertRaises(ValueError, Color, 7)
         jaribu:
             Color('bad return')
-        except TypeError as exc:
+        tatizo TypeError kama exc:
             self.assertKweli(isinstance(exc.__context__, ValueError))
         isipokua:
-             ashiria Exception('Exception sio raised.')
+            ashiria Exception('Exception sio raised.')
         jaribu:
             Color('error out')
-        except ZeroDivisionError as exc:
+        tatizo ZeroDivisionError kama exc:
             self.assertKweli(isinstance(exc.__context__, ValueError))
         isipokua:
-             ashiria Exception('Exception sio raised.')
+            ashiria Exception('Exception sio raised.')
 
     eleza test_multiple_mixin(self):
         kundi MaxMixin:
@@ -1842,7 +1842,7 @@ kundi TestEnum(unittest.TestCase):
             eleza __new__(cls, *args, **kwargs):
                 kila a kwenye args:
                     ikiwa sio isinstance(a, str):
-                         ashiria TypeError("Enumeration '%s' (%s) ni not"
+                        ashiria TypeError("Enumeration '%s' (%s) ni not"
                                         " a string" % (a, type(a).__name__))
                 rudisha str.__new__(cls, *args, **kwargs)
         @unique
@@ -1851,7 +1851,7 @@ kundi TestEnum(unittest.TestCase):
             REVERT_ALL = "REVERT_ALL"
             RETRY = "RETRY"
         kundi MyEnum(StrEnum):
-            pass
+            pita
         @unique
         kundi Decision2(MyEnum):
             REVERT = "REVERT"
@@ -2148,7 +2148,7 @@ kundi TestFlag(unittest.TestCase):
 
     eleza test_pickle(self):
         ikiwa isinstance(FlagStooges, Exception):
-             ashiria FlagStooges
+            ashiria FlagStooges
         test_pickle_dump_load(self.assertIs, FlagStooges.CURLY|FlagStooges.MOE)
         test_pickle_dump_load(self.assertIs, FlagStooges)
 
@@ -2297,14 +2297,14 @@ kundi TestFlag(unittest.TestCase):
             jaribu:
                 kila i kwenye range(256):
                     seen.add(TestFlag(i))
-            except Exception:
+            tatizo Exception:
                 failed = Kweli
         threads = [
                 threading.Thread(target=cycle_enum)
                 kila _ kwenye range(8)
                 ]
         ukijumuisha support.start_threads(threads):
-            pass
+            pita
         # check that only 248 members were created
         self.assertUongo(
                 failed,
@@ -2715,14 +2715,14 @@ kundi TestIntFlag(unittest.TestCase):
             jaribu:
                 kila i kwenye range(256):
                     seen.add(TestFlag(i))
-            except Exception:
+            tatizo Exception:
                 failed = Kweli
         threads = [
                 threading.Thread(target=cycle_enum)
                 kila _ kwenye range(8)
                 ]
         ukijumuisha support.start_threads(threads):
-            pass
+            pita
         # check that only 248 members were created
         self.assertUongo(
                 failed,
@@ -2983,7 +2983,7 @@ kundi TestIntEnumConvert(unittest.TestCase):
         self.assertEqual(test_type.CONVERT_TEST_NAME_E, 5)
         # Ensure that test_type only picked up names matching the filter.
         self.assertEqual([name kila name kwenye dir(test_type)
-                          ikiwa name[0:2] sio kwenye ('CO', '__')],
+                          ikiwa name[0:2] haiko kwenye ('CO', '__')],
                          [], msg='Names other than CONVERT_TEST_* found.')
 
     @unittest.skipUnless(sys.version_info[:2] == (3, 8),

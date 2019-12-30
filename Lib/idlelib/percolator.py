@@ -56,7 +56,7 @@ kundi Percolator:
 
 
 eleza _percolator(parent):  # htest #
-    agiza tkinter as tk
+    agiza tkinter kama tk
 
     kundi Tracer(Delegator):
         eleza __init__(self, name):

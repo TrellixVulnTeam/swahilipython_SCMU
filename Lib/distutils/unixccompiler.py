@@ -36,8 +36,8 @@ ikiwa sys.platform == 'darwin':
 #     flags kwenye to us -- eg. a sysadmin might want to mandate certain flags
 #     via a site config file, ama a user might want to set something for
 #     compiling this module distribution only via the setup.py command
-#     line, whatever.  As long as these options come kutoka something on the
-#     current system, they can be as system-dependent as they like, na we
+#     line, whatever.  As long kama these options come kutoka something on the
+#     current system, they can be kama system-dependent kama they like, na we
 #     should just happily stuff them into the preprocessor/compiler/linker
 #     options na carry on.
 
@@ -47,7 +47,7 @@ kundi UnixCCompiler(CCompiler):
     compiler_type = 'unix'
 
     # These are used by CCompiler kwenye two places: the constructor sets
-    # instance attributes 'preprocessor', 'compiler', etc. kutoka them, and
+    # instance attributes 'preprocessor', 'compiler', etc. kutoka them, na
     # 'set_executable()' allows any of these to be set.  The defaults here
     # are pretty generic; they will probably have to be set by an outsider
     # (eg. using information discovered by the sysconfig about building
@@ -97,7 +97,7 @@ kundi UnixCCompiler(CCompiler):
         pp_args.append(source)
 
         # We need to preprocess: either we're being forced to, ama we're
-        # generating output to stdout, ama there's a target output file and
+        # generating output to stdout, ama there's a target output file na
         # the source file ni newer than the target (or the target doesn't
         # exist).
         ikiwa self.force ama output_file ni Tupu ama newer(source, output_file):
@@ -105,8 +105,8 @@ kundi UnixCCompiler(CCompiler):
                 self.mkpath(os.path.dirname(output_file))
             jaribu:
                 self.spawn(pp_args)
-            except DistutilsExecError as msg:
-                 ashiria CompileError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria CompileError(msg)
 
     eleza _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
@@ -116,8 +116,8 @@ kundi UnixCCompiler(CCompiler):
         jaribu:
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
-        except DistutilsExecError as msg:
-             ashiria CompileError(msg)
+        tatizo DistutilsExecError kama msg:
+            ashiria CompileError(msg)
 
     eleza create_static_lib(self, objects, output_libname,
                           output_dir=Tupu, debug=0, target_lang=Tupu):
@@ -140,8 +140,8 @@ kundi UnixCCompiler(CCompiler):
             ikiwa self.ranlib:
                 jaribu:
                     self.spawn(self.ranlib + [output_filename])
-                except DistutilsExecError as msg:
-                     ashiria LibError(msg)
+                tatizo DistutilsExecError kama msg:
+                    ashiria LibError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -158,7 +158,7 @@ kundi UnixCCompiler(CCompiler):
         lib_opts = gen_lib_options(self, library_dirs, runtime_library_dirs,
                                    libraries)
         ikiwa sio isinstance(output_dir, (str, type(Tupu))):
-             ashiria TypeError("'output_dir' must be a string ama Tupu")
+            ashiria TypeError("'output_dir' must be a string ama Tupu")
         ikiwa output_dir ni sio Tupu:
             output_filename = os.path.join(output_dir, output_filename)
 
@@ -202,8 +202,8 @@ kundi UnixCCompiler(CCompiler):
                     linker = _osx_support.compiler_fixup(linker, ld_args)
 
                 self.spawn(linker + ld_args)
-            except DistutilsExecError as msg:
-                 ashiria LinkError(msg)
+            tatizo DistutilsExecError kama msg:
+                ashiria LinkError(msg)
         isipokua:
             log.debug("skipping %s (up-to-date)", output_filename)
 
@@ -225,7 +225,7 @@ kundi UnixCCompiler(CCompiler):
         # specify that directories need to be added to the list of
         # directories searched kila dependencies when a dynamic library
         # ni sought.  GCC on GNU systems (Linux, FreeBSD, ...) has to
-        # be told to pass the -R option through to the linker, whereas
+        # be told to pita the -R option through to the linker, whereas
         # other compilers na gcc on other systems just know this.
         # Other compilers may need something slightly different.  At
         # this time, there's no way to determine this information from
@@ -235,16 +235,16 @@ kundi UnixCCompiler(CCompiler):
         ikiwa sys.platform[:6] == "darwin":
             # MacOSX's linker doesn't understand the -R flag at all
             rudisha "-L" + dir
-        elikiwa sys.platform[:7] == "freebsd":
+        lasivyo sys.platform[:7] == "freebsd":
             rudisha "-Wl,-rpath=" + dir
-        elikiwa sys.platform[:5] == "hp-ux":
+        lasivyo sys.platform[:5] == "hp-ux":
             ikiwa self._is_gcc(compiler):
                 rudisha ["-Wl,+s", "-L" + dir]
             rudisha ["+s", "-L" + dir]
         isipokua:
             ikiwa self._is_gcc(compiler):
                 # gcc on non-GNU systems does sio need -Wl, but can
-                # use it anyway.  Since distutils has always passed in
+                # use it anyway.  Since distutils has always pitaed in
                 # -Wl whenever gcc was used kwenye the past it ni probably
                 # safest to keep doing so.
                 ikiwa sysconfig.get_config_var("GNULD") == "yes":
@@ -254,7 +254,7 @@ kundi UnixCCompiler(CCompiler):
                 isipokua:
                     rudisha "-Wl,-R" + dir
             isipokua:
-                # No idea how --enable-new-dtags would be passed on to
+                # No idea how --enable-new-dtags would be pitaed on to
                 # ld ikiwa this system was using GNU ld.  Don't know ikiwa a
                 # system like this even exists.
                 rudisha "-R" + dir
@@ -273,7 +273,7 @@ kundi UnixCCompiler(CCompiler):
             # '-isysroot', calculate the SDK root ikiwa it ni specified
             # (and use it further on)
             #
-            # Note that, as of Xcode 7, Apple SDKs may contain textual stub
+            # Note that, kama of Xcode 7, Apple SDKs may contain textual stub
             # libraries ukijumuisha .tbd extensions rather than the normal .dylib
             # shared libraries installed kwenye /.  The Apple compiler tool
             # chain handles this transparently but it can cause problems
@@ -317,11 +317,11 @@ kundi UnixCCompiler(CCompiler):
             # ignoring even GCC's "-static" option.  So sue me.
             ikiwa os.path.exists(dylib):
                 rudisha dylib
-            elikiwa os.path.exists(xcode_stub):
+            lasivyo os.path.exists(xcode_stub):
                 rudisha xcode_stub
-            elikiwa os.path.exists(shared):
+            lasivyo os.path.exists(shared):
                 rudisha shared
-            elikiwa os.path.exists(static):
+            lasivyo os.path.exists(static):
                 rudisha static
 
         # Oops, didn't find it kwenye *any* of 'dirs'

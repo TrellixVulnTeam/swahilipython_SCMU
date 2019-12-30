@@ -17,7 +17,7 @@ kundi ClearTest(unittest.TestCase):
     eleza outer(self, **kwargs):
         jaribu:
             self.inner(**kwargs)
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             exc = e
         rudisha exc
 
@@ -31,7 +31,7 @@ kundi ClearTest(unittest.TestCase):
 
     eleza test_clear_locals(self):
         kundi C:
-            pass
+            pita
         c = C()
         wr = weakref.ref(c)
         exc = self.outer(c=c)
@@ -49,7 +49,7 @@ kundi ClearTest(unittest.TestCase):
         eleza g():
             nonlocal endly
             jaribu:
-                yield
+                tuma
                 inner()
             mwishowe:
                 endly = Kweli
@@ -64,7 +64,7 @@ kundi ClearTest(unittest.TestCase):
         # Attempting to clear an executing frame ni forbidden.
         jaribu:
             1/0
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             f = e.__traceback__.tb_frame
         ukijumuisha self.assertRaises(RuntimeError):
             f.clear()
@@ -78,7 +78,7 @@ kundi ClearTest(unittest.TestCase):
             nonlocal endly
             jaribu:
                 1/0
-            except ZeroDivisionError as e:
+            tatizo ZeroDivisionError kama e:
                 f = e.__traceback__.tb_frame
                 ukijumuisha self.assertRaises(RuntimeError):
                     f.clear()
@@ -99,7 +99,7 @@ kundi ClearTest(unittest.TestCase):
         # .clear() doesn't leave any refcycle behind
         ukijumuisha support.disable_gc():
             kundi C:
-                pass
+                pita
             c = C()
             wr = weakref.ref(c)
             exc = self.outer(c=c)
@@ -122,7 +122,7 @@ kundi FrameAttrsTest(unittest.TestCase):
             rudisha inner()
         jaribu:
             outer()
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
             frames = []
             wakati tb:
@@ -180,7 +180,7 @@ kundi ReprTest(unittest.TestCase):
         offset = outer.__code__.co_firstlineno
         jaribu:
             outer()
-        except ZeroDivisionError as e:
+        tatizo ZeroDivisionError kama e:
             tb = e.__traceback__
             frames = []
             wakati tb:

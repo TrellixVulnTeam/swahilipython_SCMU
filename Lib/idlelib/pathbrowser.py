@@ -54,7 +54,7 @@ kundi DirBrowserTreeItem(TreeItem):
     eleza GetSubList(self):
         jaribu:
             names = os.listdir(self.dir ama os.curdir)
-        except OSError:
+        tatizo OSError:
             rudisha []
         packages = []
         kila name kwenye names:
@@ -91,7 +91,7 @@ kundi DirBrowserTreeItem(TreeItem):
                 normed_name = os.path.normcase(name)
                 ikiwa normed_name[i:] == suff:
                     mod_name = name[:i]
-                    ikiwa mod_name sio kwenye modules:
+                    ikiwa mod_name haiko kwenye modules:
                         modules[mod_name] = Tupu
                         sorted.append((normed_name, name))
                         allnames.remove(name)

@@ -41,7 +41,7 @@ __all__ = ['dataclass',
 # +---------+-----------------------------------------+
 # | add     | Generated method ni added.              |
 # +---------+-----------------------------------------+
-# |  ashiria   | TypeError ni raised.                    |
+# | ashiria   | TypeError ni raised.                    |
 # +---------+-----------------------------------------+
 # | Tupu    | Attribute ni set to Tupu.               |
 # +=========+=========================================+
@@ -81,7 +81,7 @@ __all__ = ['dataclass',
 # +=======+=======+=======+
 # | Uongo |       |       |  <- the default
 # +-------+-------+-------+
-# | Kweli  | add   |  ashiria |
+# | Kweli  | add   | ashiria |
 # +=======+=======+=======+
 # Raise because sio adding these methods would koma the "frozen-ness"
 # of the class.
@@ -110,7 +110,7 @@ __all__ = ['dataclass',
 # +=======+=======+=======+
 # | Uongo |       |       |  <- the default
 # +-------+-------+-------+
-# | Kweli  | add   |  ashiria |
+# | Kweli  | add   | ashiria |
 # +=======+=======+=======+
 # Raise because to allow this case would interfere ukijumuisha using
 # functools.total_ordering.
@@ -132,27 +132,27 @@ __all__ = ['dataclass',
 # +-------+-------+-------+--------+--------+
 # | Uongo | Kweli  | Kweli  | add    |        | Frozen, so hashable, allows override
 # +-------+-------+-------+--------+--------+
-# | Kweli  | Uongo | Uongo | add    |  ashiria  | Has no __eq__, but hashable
+# | Kweli  | Uongo | Uongo | add    | ashiria  | Has no __eq__, but hashable
 # +-------+-------+-------+--------+--------+
-# | Kweli  | Uongo | Kweli  | add    |  ashiria  | Has no __eq__, but hashable
+# | Kweli  | Uongo | Kweli  | add    | ashiria  | Has no __eq__, but hashable
 # +-------+-------+-------+--------+--------+
-# | Kweli  | Kweli  | Uongo | add    |  ashiria  | Not frozen, but hashable
+# | Kweli  | Kweli  | Uongo | add    | ashiria  | Not frozen, but hashable
 # +-------+-------+-------+--------+--------+
-# | Kweli  | Kweli  | Kweli  | add    |  ashiria  | Frozen, so hashable
+# | Kweli  | Kweli  | Kweli  | add    | ashiria  | Frozen, so hashable
 # +=======+=======+=======+========+========+
 # For boxes that are blank, __hash__ ni untouched na therefore
 # inherited kutoka the base class.  If the base ni object, then
 # id-based hashing ni used.
 #
 # Note that a kundi may already have __hash__=Tupu ikiwa it specified an
-# __eq__ method kwenye the kundi body (not one that was created by
+# __eq__ method kwenye the kundi body (sio one that was created by
 # @dataclass).
 #
 # See _hash_action (below) kila a coded version of this table.
 
 
 # Raised when an attempt ni made to modify a frozen class.
-kundi FrozenInstanceError(AttributeError): pass
+kundi FrozenInstanceError(AttributeError): pita
 
 # A sentinel object kila default values to signal that a default
 # factory will be used.  This ni given a nice repr() which will appear
@@ -165,7 +165,7 @@ _HAS_DEFAULT_FACTORY = _HAS_DEFAULT_FACTORY_CLASS()
 # A sentinel object to detect ikiwa a parameter ni supplied ama not.  Use
 # a kundi to give it a better repr.
 kundi _MISSING_TYPE:
-    pass
+    pita
 MISSING = _MISSING_TYPE()
 
 # Since most per-field metadata will be unused, create an empty
@@ -220,9 +220,9 @@ kundi InitVar(metaclass=_InitVarMeta):
 
 # Instances of Field are only ever created kutoka within this module,
 # na only kutoka the field() function, although Field instances are
-# exposed externally as (conceptually) read-only objects.
+# exposed externally kama (conceptually) read-only objects.
 #
-# name na type are filled kwenye after the fact, sio kwenye __init__.
+# name na type are filled kwenye after the fact, haiko kwenye __init__.
 # They're sio known at the time this kundi ni instantiated, but it's
 # convenient ikiwa they're available later.
 #
@@ -271,7 +271,7 @@ kundi Field:
                 ')')
 
     # This ni used to support the PEP 487 __set_name__ protocol kwenye the
-    # case where we're using a field that contains a descriptor as a
+    # case where we're using a field that contains a descriptor kama a
     # default value.  For details on __set_name__, see
     # https://www.python.org/dev/peps/pep-0487/#implementation-details.
     #
@@ -334,13 +334,13 @@ eleza field(*, default=MISSING, default_factory=MISSING, init=Kweli, repr=Kweli,
     """
 
     ikiwa default ni sio MISSING na default_factory ni sio MISSING:
-         ashiria ValueError('cannot specify both default na default_factory')
+        ashiria ValueError('cannot specify both default na default_factory')
     rudisha Field(default, default_factory, init, repr, hash, compare,
                  metadata)
 
 
 eleza _tuple_str(obj_name, fields):
-    # Return a string representing each field of obj_name as a tuple
+    # Return a string representing each field of obj_name kama a tuple
     # member.  So, ikiwa fields ni ['x', 'y'] na obj_name ni "self",
     # rudisha "(self.x,self.y)".
 
@@ -379,10 +379,10 @@ eleza _create_fn(name, args, body, *, globals=Tupu, locals=Tupu,
     # worries about external callers.
     ikiwa locals ni Tupu:
         locals = {}
-    # __builtins__ may be the "builtins" module or
+    # __builtins__ may be the "builtins" module ama
     # the value of its "__dict__",
     # so make sure "__builtins__" ni the module.
-    ikiwa globals ni sio Tupu na '__builtins__' sio kwenye globals:
+    ikiwa globals ni sio Tupu na '__builtins__' haiko kwenye globals:
         globals['__builtins__'] = builtins
     return_annotation = ''
     ikiwa return_type ni sio MISSING:
@@ -424,7 +424,7 @@ eleza _field_init(f, frozen, globals, self_name):
                      f'ikiwa {f.name} ni _HAS_DEFAULT_FACTORY '
                      f'else {f.name}')
         isipokua:
-            # This ni a field that's sio kwenye the __init__ params, but
+            # This ni a field that's haiko kwenye the __init__ params, but
             # has a default factory function.  It needs to be
             # initialized here by calling the factory function,
             # because there's no other way to initialize it.
@@ -446,7 +446,7 @@ eleza _field_init(f, frozen, globals, self_name):
             ikiwa f.default ni MISSING:
                 # There's no default, just do an assignment.
                 value = f.name
-            elikiwa f.default ni sio MISSING:
+            lasivyo f.default ni sio MISSING:
                 globals[default_name] = f.default
                 value = f.name
         isipokua:
@@ -466,18 +466,18 @@ eleza _field_init(f, frozen, globals, self_name):
 
 eleza _init_param(f):
     # Return the __init__ parameter string kila this field.  For
-    # example, the equivalent of 'x:int=3' (except instead of 'int',
+    # example, the equivalent of 'x:int=3' (tatizo instead of 'int',
     # reference a variable set to int, na instead of '3', reference a
     # variable set to 3).
     ikiwa f.default ni MISSING na f.default_factory ni MISSING:
         # There's no default, na no default_factory, just output the
         # variable name na type.
         default = ''
-    elikiwa f.default ni sio MISSING:
+    lasivyo f.default ni sio MISSING:
         # There's a default, this will be the name that's used to look
         # it up.
         default = f'=_dflt_{f.name}'
-    elikiwa f.default_factory ni sio MISSING:
+    lasivyo f.default_factory ni sio MISSING:
         # There's a factory function.  Set a marker.
         default = '=_HAS_DEFAULT_FACTORY'
     rudisha f'{f.name}:_type_{f.name}{default}'
@@ -497,8 +497,8 @@ eleza _init_fn(fields, frozen, has_post_init, self_name):
         ikiwa f.init:
             ikiwa sio (f.default ni MISSING na f.default_factory ni MISSING):
                 seen_default = Kweli
-            elikiwa seen_default:
-                 ashiria TypeError(f'non-default argument {f.name!r} '
+            lasivyo seen_default:
+                ashiria TypeError(f'non-default argument {f.name!r} '
                                 'follows default argument')
 
     globals = {'MISSING': MISSING,
@@ -518,9 +518,9 @@ eleza _init_fn(fields, frozen, has_post_init, self_name):
                               ikiwa f._field_type ni _FIELD_INITVAR)
         body_lines.append(f'{self_name}.{_POST_INIT_NAME}({params_str})')
 
-    # If no body lines, use 'pass'.
+    # If no body lines, use 'pita'.
     ikiwa sio body_lines:
-        body_lines = ['pass']
+        body_lines = ['pita']
 
     locals = {f'_type_{f.name}': f.type kila f kwenye fields}
     rudisha _create_fn('__init__',
@@ -554,13 +554,13 @@ eleza _frozen_get_del_attr(cls, fields):
     rudisha (_create_fn('__setattr__',
                       ('self', 'name', 'value'),
                       (f'ikiwa type(self) ni cls ama name kwenye {fields_str}:',
-                        '  ashiria FrozenInstanceError(f"cannot assign to field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot assign to field {name!r}")',
                        f'super(cls, self).__setattr__(name, value)'),
                        globals=globals),
             _create_fn('__delattr__',
                       ('self', 'name'),
                       (f'ikiwa type(self) ni cls ama name kwenye {fields_str}:',
-                        '  ashiria FrozenInstanceError(f"cannot delete field {name!r}")',
+                        ' ashiria FrozenInstanceError(f"cannot delete field {name!r}")',
                        f'super(cls, self).__delattr__(name)'),
                        globals=globals),
             )
@@ -622,20 +622,20 @@ eleza _is_type(annotation, cls, a_module, a_type, is_type_predicate):
     # instead only a module (global) lookup), there are some things it
     # gets wrong.
 
-    # With string annotations, cv0 will be detected as a ClassVar:
+    # With string annotations, cv0 will be detected kama a ClassVar:
     #   CV = ClassVar
     #   @dataclass
     #   kundi C0:
     #     cv0: CV
 
-    # But kwenye this example cv1 will sio be detected as a ClassVar:
+    # But kwenye this example cv1 will sio be detected kama a ClassVar:
     #   @dataclass
     #   kundi C1:
     #     CV = ClassVar
     #     cv1: CV
 
     # In C1, the code kwenye this function (_is_type) will look up "CV" in
-    # the module na sio find it, so it will sio consider cv1 as a
+    # the module na sio find it, so it will sio consider cv1 kama a
     # ClassVar.  This ni a fairly obscure corner case, na the best
     # way to fix it would be to eval() the string "CV" ukijumuisha the
     # correct global na local namespaces.  However that would involve
@@ -662,7 +662,7 @@ eleza _is_type(annotation, cls, a_module, a_type, is_type_predicate):
 
 eleza _get_field(cls, a_name, a_type):
     # Return a Field object kila this field name na type.  ClassVars
-    # na InitVars are also returned, but marked as such (see
+    # na InitVars are also returned, but marked kama such (see
     # f._field_type).
 
     # If the default value isn't derived kutoka Field, then it's only a
@@ -697,7 +697,7 @@ eleza _get_field(cls, a_name, a_type):
 
     # If typing has sio been imported, then it's impossible kila any
     # annotation to be a ClassVar.  So, only look kila ClassVar if
-    # typing has been imported by any module (not necessarily cls's
+    # typing has been imported by any module (sio necessarily cls's
     # module).
     typing = sys.modules.get('typing')
     ikiwa typing:
@@ -726,7 +726,7 @@ eleza _get_field(cls, a_name, a_type):
     # Special restrictions kila ClassVar na InitVar.
     ikiwa f._field_type kwenye (_FIELD_CLASSVAR, _FIELD_INITVAR):
         ikiwa f.default_factory ni sio MISSING:
-             ashiria TypeError(f'field {f.name} cannot have a '
+            ashiria TypeError(f'field {f.name} cannot have a '
                             'default factory')
         # Should I check kila other field settings? default_factory
         # seems the most serious to check for.  Maybe add others.  For
@@ -736,7 +736,7 @@ eleza _get_field(cls, a_name, a_type):
 
     # For real fields, disallow mutable defaults kila known types.
     ikiwa f._field_type ni _FIELD na isinstance(f.default, (list, dict, set)):
-         ashiria ValueError(f'mutable default {type(f.default)} kila field '
+        ashiria ValueError(f'mutable default {type(f.default)} kila field '
                          f'{f.name} ni sio allowed: use default_factory')
 
     rudisha f
@@ -765,7 +765,7 @@ eleza _hash_add(cls, fields):
 
 eleza _hash_exception(cls, fields):
     # Raise an exception.
-     ashiria TypeError(f'Cannot overwrite attribute __hash__ '
+    ashiria TypeError(f'Cannot overwrite attribute __hash__ '
                     f'in kundi {cls.__name__}')
 
 #
@@ -825,7 +825,7 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
             ikiwa getattr(b, _PARAMS).frozen:
                 any_frozen_base = Kweli
 
-    # Annotations that are defined kwenye this kundi (not kwenye base
+    # Annotations that are defined kwenye this kundi (sio kwenye base
     # classes).  If __annotations__ isn't present, then this class
     # adds no new annotations.  We use this to compute fields that are
     # added by this class.
@@ -866,37 +866,37 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
     # Do we have any Field members that don't also have annotations?
     kila name, value kwenye cls.__dict__.items():
         ikiwa isinstance(value, Field) na sio name kwenye cls_annotations:
-             ashiria TypeError(f'{name!r} ni a field but has no type annotation')
+            ashiria TypeError(f'{name!r} ni a field but has no type annotation')
 
     # Check rules that apply ikiwa we are derived kutoka any dataclasses.
     ikiwa has_dataclass_bases:
         # Raise an exception ikiwa any of our bases are frozen, but we're not.
         ikiwa any_frozen_base na sio frozen:
-             ashiria TypeError('cannot inherit non-frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit non-frozen datakundi kutoka a '
                             'frozen one')
 
         # Raise an exception ikiwa we're frozen, but none of our bases are.
         ikiwa sio any_frozen_base na frozen:
-             ashiria TypeError('cannot inherit frozen datakundi kutoka a '
+            ashiria TypeError('cannot inherit frozen datakundi kutoka a '
                             'non-frozen one')
 
     # Remember all of the fields on our kundi (including bases).  This
-    # also marks this kundi as being a dataclass.
+    # also marks this kundi kama being a dataclass.
     setattr(cls, _FIELDS, fields)
 
     # Was this kundi defined ukijumuisha an explicit __hash__?  Note that if
     # __eq__ ni defined kwenye this class, then python will automatically
-    # set __hash__ to Tupu.  This ni a heuristic, as it's possible
+    # set __hash__ to Tupu.  This ni a heuristic, kama it's possible
     # that such a __hash__ == Tupu was sio auto-generated, but it
     # close enough.
     class_hash = cls.__dict__.get('__hash__', MISSING)
-    has_explicit_hash = sio (class_hash ni MISSING or
+    has_explicit_hash = sio (class_hash ni MISSING ama
                              (class_hash ni Tupu na '__eq__' kwenye cls.__dict__))
 
     # If we're generating ordering methods, we must be generating the
     # eq methods.
     ikiwa order na sio eq:
-         ashiria ValueError('eq must be true ikiwa order ni true')
+        ashiria ValueError('eq must be true ikiwa order ni true')
 
     ikiwa init:
         # Does this kundi have a post-init function?
@@ -916,7 +916,7 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
                                             isipokua 'self',
                           ))
 
-    # Get the fields as a list, na include only real fields.  This is
+    # Get the fields kama a list, na include only real fields.  This is
     # used kwenye all of the following methods.
     field_list = [f kila f kwenye fields.values() ikiwa f._field_type ni _FIELD]
 
@@ -946,14 +946,14 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
                          ]:
             ikiwa _set_new_attribute(cls, name,
                                   _cmp_fn(name, op, self_tuple, other_tuple)):
-                 ashiria TypeError(f'Cannot overwrite attribute {name} '
+                ashiria TypeError(f'Cannot overwrite attribute {name} '
                                 f'in kundi {cls.__name__}. Consider using '
                                 'functools.total_ordering')
 
     ikiwa frozen:
         kila fn kwenye _frozen_get_del_attr(cls, field_list):
             ikiwa _set_new_attribute(cls, fn.__name__, fn):
-                 ashiria TypeError(f'Cannot overwrite attribute {fn.__name__} '
+                ashiria TypeError(f'Cannot overwrite attribute {fn.__name__} '
                                 f'in kundi {cls.__name__}')
 
     # Decide if/how we're going to create a hash function.
@@ -976,7 +976,7 @@ eleza _process_class(cls, init, repr, eq, order, unsafe_hash, frozen):
 
 eleza dataclass(cls=Tupu, /, *, init=Kweli, repr=Kweli, eq=Kweli, order=Uongo,
               unsafe_hash=Uongo, frozen=Uongo):
-    """Returns the same kundi as was passed in, ukijumuisha dunder methods
+    """Returns the same kundi kama was pitaed in, ukijumuisha dunder methods
     added based on the fields defined kwenye the class.
 
     Examines PEP 526 __annotations__ to determine fields.
@@ -991,12 +991,12 @@ eleza dataclass(cls=Tupu, /, *, init=Kweli, repr=Kweli, eq=Kweli, order=Uongo,
     eleza wrap(cls):
         rudisha _process_class(cls, init, repr, eq, order, unsafe_hash, frozen)
 
-    # See ikiwa we're being called as @datakundi ama @dataclass().
+    # See ikiwa we're being called kama @datakundi ama @dataclass().
     ikiwa cls ni Tupu:
         # We're called ukijumuisha parens.
         rudisha wrap
 
-    # We're called as @datakundi without parens.
+    # We're called kama @datakundi without parens.
     rudisha wrap(cls)
 
 
@@ -1010,11 +1010,11 @@ eleza fields(class_or_instance):
     # Might it be worth caching this, per class?
     jaribu:
         fields = getattr(class_or_instance, _FIELDS)
-    except AttributeError:
-         ashiria TypeError('must be called ukijumuisha a datakundi type ama instance')
+    tatizo AttributeError:
+        ashiria TypeError('must be called ukijumuisha a datakundi type ama instance')
 
     # Exclude pseudo-fields.  Note that fields ni sorted by insertion
-    # order, so the order of the tuple ni as the fields were defined.
+    # order, so the order of the tuple ni kama the fields were defined.
     rudisha tuple(f kila f kwenye fields.values() ikiwa f._field_type ni _FIELD)
 
 
@@ -1031,7 +1031,7 @@ eleza is_dataclass(obj):
 
 
 eleza asdict(obj, *, dict_factory=dict):
-    """Return the fields of a datakundi instance as a new dictionary mapping
+    """Return the fields of a datakundi instance kama a new dictionary mapping
     field names to field values.
 
     Example usage:
@@ -1050,7 +1050,7 @@ eleza asdict(obj, *, dict_factory=dict):
     tuples, lists, na dicts.
     """
     ikiwa sio _is_dataclass_instance(obj):
-         ashiria TypeError("asdict() should be called on datakundi instances")
+        ashiria TypeError("asdict() should be called on datakundi instances")
     rudisha _asdict_inner(obj, dict_factory)
 
 
@@ -1061,7 +1061,7 @@ eleza _asdict_inner(obj, dict_factory):
             value = _asdict_inner(getattr(obj, f.name), dict_factory)
             result.append((f.name, value))
         rudisha dict_factory(result)
-    elikiwa isinstance(obj, tuple) na hasattr(obj, '_fields'):
+    lasivyo isinstance(obj, tuple) na hasattr(obj, '_fields'):
         # obj ni a namedtuple.  Recurse into it, but the returned
         # object ni another namedtuple of the same type.  This is
         # similar to how other list- ama tuple-derived classes are
@@ -1071,7 +1071,7 @@ eleza _asdict_inner(obj, dict_factory):
 
         # I'm sio using namedtuple's _asdict()
         # method, because:
-        # - it does sio recurse kwenye to the namedtuple fields and
+        # - it does sio recurse kwenye to the namedtuple fields na
         #   convert them to dicts (using dict_factory).
         # - I don't actually want to rudisha a dict here.  The the main
         #   use case here ni json.dumps, na it handles converting
@@ -1079,15 +1079,15 @@ eleza _asdict_inner(obj, dict_factory):
         #   information here when we produce a json list instead of a
         #   dict.  Note that ikiwa we returned dicts here instead of
         #   namedtuples, we could no longer call asdict() on a data
-        #   structure where a namedtuple was used as a dict key.
+        #   structure where a namedtuple was used kama a dict key.
 
         rudisha type(obj)(*[_asdict_inner(v, dict_factory) kila v kwenye obj])
-    elikiwa isinstance(obj, (list, tuple)):
-        # Assume we can create an object of this type by passing kwenye a
+    lasivyo isinstance(obj, (list, tuple)):
+        # Assume we can create an object of this type by pitaing kwenye a
         # generator (which ni sio true kila namedtuples, handled
         # above).
         rudisha type(obj)(_asdict_inner(v, dict_factory) kila v kwenye obj)
-    elikiwa isinstance(obj, dict):
+    lasivyo isinstance(obj, dict):
         rudisha type(obj)((_asdict_inner(k, dict_factory),
                           _asdict_inner(v, dict_factory))
                          kila k, v kwenye obj.items())
@@ -1096,7 +1096,7 @@ eleza _asdict_inner(obj, dict_factory):
 
 
 eleza astuple(obj, *, tuple_factory=tuple):
-    """Return the fields of a datakundi instance as a new tuple of field values.
+    """Return the fields of a datakundi instance kama a new tuple of field values.
 
     Example usage::
 
@@ -1115,7 +1115,7 @@ eleza astuple(obj, *, tuple_factory=tuple):
     """
 
     ikiwa sio _is_dataclass_instance(obj):
-         ashiria TypeError("astuple() should be called on datakundi instances")
+        ashiria TypeError("astuple() should be called on datakundi instances")
     rudisha _astuple_inner(obj, tuple_factory)
 
 
@@ -1126,7 +1126,7 @@ eleza _astuple_inner(obj, tuple_factory):
             value = _astuple_inner(getattr(obj, f.name), tuple_factory)
             result.append(value)
         rudisha tuple_factory(result)
-    elikiwa isinstance(obj, tuple) na hasattr(obj, '_fields'):
+    lasivyo isinstance(obj, tuple) na hasattr(obj, '_fields'):
         # obj ni a namedtuple.  Recurse into it, but the returned
         # object ni another namedtuple of the same type.  This is
         # similar to how other list- ama tuple-derived classes are
@@ -1134,12 +1134,12 @@ eleza _astuple_inner(obj, tuple_factory):
         # differently because a namedtuple's __init__ needs to be
         # called differently (see bpo-34363).
         rudisha type(obj)(*[_astuple_inner(v, tuple_factory) kila v kwenye obj])
-    elikiwa isinstance(obj, (list, tuple)):
-        # Assume we can create an object of this type by passing kwenye a
+    lasivyo isinstance(obj, (list, tuple)):
+        # Assume we can create an object of this type by pitaing kwenye a
         # generator (which ni sio true kila namedtuples, handled
         # above).
         rudisha type(obj)(_astuple_inner(v, tuple_factory) kila v kwenye obj)
-    elikiwa isinstance(obj, dict):
+    lasivyo isinstance(obj, dict):
         rudisha type(obj)((_astuple_inner(k, tuple_factory), _astuple_inner(v, tuple_factory))
                           kila k, v kwenye obj.items())
     isipokua:
@@ -1168,7 +1168,7 @@ eleza make_dataclass(cls_name, fields, *, bases=(), namespace=Tupu, init=Kweli,
 
     For the bases na namespace parameters, see the builtin type() function.
 
-    The parameters init, repr, eq, order, unsafe_hash, na frozen are passed to
+    The parameters init, repr, eq, order, unsafe_hash, na frozen are pitaed to
     dataclass().
     """
 
@@ -1186,20 +1186,20 @@ eleza make_dataclass(cls_name, fields, *, bases=(), namespace=Tupu, init=Kweli,
         ikiwa isinstance(item, str):
             name = item
             tp = 'typing.Any'
-        elikiwa len(item) == 2:
+        lasivyo len(item) == 2:
             name, tp, = item
-        elikiwa len(item) == 3:
+        lasivyo len(item) == 3:
             name, tp, spec = item
             namespace[name] = spec
         isipokua:
-             ashiria TypeError(f'Invalid field: {item!r}')
+            ashiria TypeError(f'Invalid field: {item!r}')
 
         ikiwa sio isinstance(name, str) ama sio name.isidentifier():
-             ashiria TypeError(f'Field names must be valid identifiers: {name!r}')
+            ashiria TypeError(f'Field names must be valid identifiers: {name!r}')
         ikiwa keyword.iskeyword(name):
-             ashiria TypeError(f'Field names must sio be keywords: {name!r}')
+            ashiria TypeError(f'Field names must sio be keywords: {name!r}')
         ikiwa name kwenye seen:
-             ashiria TypeError(f'Field name duplicated: {name!r}')
+            ashiria TypeError(f'Field name duplicated: {name!r}')
 
         seen.add(name)
         anns[name] = tp
@@ -1227,25 +1227,25 @@ eleza replace(*args, **changes):
       assert c1.x == 3 na c1.y == 2
       """
     ikiwa len(args) > 1:
-         ashiria TypeError(f'replace() takes 1 positional argument but {len(args)} were given')
+        ashiria TypeError(f'replace() takes 1 positional argument but {len(args)} were given')
     ikiwa args:
         obj, = args
-    elikiwa 'obj' kwenye changes:
+    lasivyo 'obj' kwenye changes:
         obj = changes.pop('obj')
         agiza warnings
-        warnings.warn("Passing 'obj' as keyword argument ni deprecated",
+        warnings.warn("Passing 'obj' kama keyword argument ni deprecated",
                       DeprecationWarning, stacklevel=2)
     isipokua:
-         ashiria TypeError("replace() missing 1 required positional argument: 'obj'")
+        ashiria TypeError("replace() missing 1 required positional argument: 'obj'")
 
     # We're going to mutate 'changes', but that's okay because it's a
     # new dict, even ikiwa called ukijumuisha 'replace(obj, **my_changes)'.
 
     ikiwa sio _is_dataclass_instance(obj):
-         ashiria TypeError("replace() should be called on datakundi instances")
+        ashiria TypeError("replace() should be called on datakundi instances")
 
     # It's an error to have init=Uongo fields kwenye 'changes'.
-    # If a field ni sio kwenye 'changes', read its value kutoka the provided obj.
+    # If a field ni haiko kwenye 'changes', read its value kutoka the provided obj.
 
     kila f kwenye getattr(obj, _FIELDS).values():
         # Only consider normal fields ama InitVars.
@@ -1255,21 +1255,21 @@ eleza replace(*args, **changes):
         ikiwa sio f.init:
             # Error ikiwa this field ni specified kwenye changes.
             ikiwa f.name kwenye changes:
-                 ashiria ValueError(f'field {f.name} ni declared ukijumuisha '
+                ashiria ValueError(f'field {f.name} ni declared ukijumuisha '
                                  'init=Uongo, it cannot be specified ukijumuisha '
                                  'replace()')
             endelea
 
-        ikiwa f.name sio kwenye changes:
+        ikiwa f.name haiko kwenye changes:
             ikiwa f._field_type ni _FIELD_INITVAR:
-                 ashiria ValueError(f"InitVar {f.name!r} "
+                ashiria ValueError(f"InitVar {f.name!r} "
                                  'must be specified ukijumuisha replace()')
             changes[f.name] = getattr(obj, f.name)
 
-    # Create the new object, which calls __init__() and
+    # Create the new object, which calls __init__() na
     # __post_init__() (ikiwa defined), using all of the init fields we've
     # added and/or left kwenye 'changes'.  If there are values supplied in
-    # changes that aren't fields, this will correctly  ashiria a
+    # changes that aren't fields, this will correctly ashiria a
     # TypeError.
     rudisha obj.__class__(**changes)
 replace.__text_signature__ = '(obj, /, **kwargs)'

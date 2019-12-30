@@ -397,7 +397,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         expandingbutton.base_text = expandingbutton.text
 
         # Patch the message box module to always rudisha Uongo.
-        ukijumuisha patch('idlelib.squeezer.tkMessageBox') as mock_msgbox:
+        ukijumuisha patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
             mock_msgbox.askokcancel.return_value = Uongo
             mock_msgbox.askyesno.return_value = Uongo
             # Trigger the expand event.
@@ -408,7 +408,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         self.assertEqual(expandingbutton.text.get('1.0', 'end-1c'), '')
 
         # Patch the message box module to always rudisha Kweli.
-        ukijumuisha patch('idlelib.squeezer.tkMessageBox') as mock_msgbox:
+        ukijumuisha patch('idlelib.squeezer.tkMessageBox') kama mock_msgbox:
             mock_msgbox.askokcancel.return_value = Kweli
             mock_msgbox.askyesno.return_value = Kweli
             # Trigger the expand event.
@@ -432,7 +432,7 @@ kundi ExpandingButtonTest(unittest.TestCase):
         retval = expandingbutton.copy(event=Mock())
         self.assertEqual(retval, Tupu)
 
-        # Vheck that the expanding button called clipboard_clear() and
+        # Vheck that the expanding button called clipboard_clear() na
         # clipboard_append('TEXT') once each.
         self.assertEqual(expandingbutton.clipboard_clear.call_count, 1)
         self.assertEqual(expandingbutton.clipboard_append.call_count, 1)
@@ -445,21 +445,21 @@ kundi ExpandingButtonTest(unittest.TestCase):
         expandingbutton.selection_own = Mock()
 
         ukijumuisha patch('idlelib.squeezer.view_text', autospec=view_text)\
-                as mock_view_text:
+                kama mock_view_text:
             # Trigger the view event.
             expandingbutton.view(event=Mock())
 
             # Check that the expanding button called view_text.
             self.assertEqual(mock_view_text.call_count, 1)
 
-            # Check that the proper text was passed.
+            # Check that the proper text was pitaed.
             self.assertEqual(mock_view_text.call_args[0][2], 'TEXT')
 
     eleza test_rmenu(self):
         """Test the context menu."""
         squeezer = self.make_mock_squeezer()
         expandingbutton = ExpandingButton('TEXT', 'TAGS', 50, squeezer)
-        ukijumuisha patch('tkinter.Menu') as mock_Menu:
+        ukijumuisha patch('tkinter.Menu') kama mock_Menu:
             mock_menu = Mock()
             mock_Menu.return_value = mock_menu
             mock_event = Mock()

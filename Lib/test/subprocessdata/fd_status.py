@@ -1,4 +1,4 @@
-"""When called as a script, print a comma-separated list of the open
+"""When called kama a script, print a comma-separated list of the open
 file descriptors on stdout.
 
 Usage:
@@ -24,7 +24,7 @@ ikiwa __name__ == "__main__":
     kila fd kwenye test_fds:
         jaribu:
             st = os.fstat(fd)
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EBADF:
                 endelea
             raise

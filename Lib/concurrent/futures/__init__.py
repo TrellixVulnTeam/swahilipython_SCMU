@@ -41,13 +41,13 @@ eleza __getattr__(name):
     global ProcessPoolExecutor, ThreadPoolExecutor
 
     ikiwa name == 'ProcessPoolExecutor':
-        kutoka .process agiza ProcessPoolExecutor as pe
+        kutoka .process agiza ProcessPoolExecutor kama pe
         ProcessPoolExecutor = pe
         rudisha pe
 
     ikiwa name == 'ThreadPoolExecutor':
-        kutoka .thread agiza ThreadPoolExecutor as te
+        kutoka .thread agiza ThreadPoolExecutor kama te
         ThreadPoolExecutor = te
         rudisha te
 
-     ashiria AttributeError(f"module {__name__} has no attribute {name}")
+    ashiria AttributeError(f"module {__name__} has no attribute {name}")

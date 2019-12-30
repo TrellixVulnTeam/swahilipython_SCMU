@@ -1,12 +1,12 @@
 """Tests kila distutils.command.upload."""
 agiza os
 agiza unittest
-agiza unittest.mock as mock
+agiza unittest.mock kama mock
 kutoka urllib.request agiza HTTPError
 
 kutoka test.support agiza run_unittest
 
-kutoka distutils.command agiza upload as upload_mod
+kutoka distutils.command agiza upload kama upload_mod
 kutoka distutils.command.upload agiza upload
 kutoka distutils.core agiza Distribution
 kutoka distutils.errors agiza DistutilsError
@@ -23,11 +23,11 @@ index-servers =
 
 [server1]
 username:me
-password:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+pitaword:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 [server2]
 username:meagain
-password: secret
+pitaword: secret
 realm:acme
 repository:http://another.pypi/
 """
@@ -91,27 +91,27 @@ kundi uploadTestCase(BasePyPIRCCommandTestCase):
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        kila attr, waited kwenye (('username', 'me'), ('password', 'secret'),
+        kila attr, waited kwenye (('username', 'me'), ('pitaword', 'secret'),
                              ('realm', 'pypi'),
                              ('repository', 'https://upload.pypi.org/legacy/')):
             self.assertEqual(getattr(cmd, attr), waited)
 
-    eleza test_saved_password(self):
-        # file ukijumuisha no password
+    eleza test_saved_pitaword(self):
+        # file ukijumuisha no pitaword
         self.write_file(self.rc, PYPIRC_NOPASSWORD)
 
-        # make sure it passes
+        # make sure it pitaes
         dist = Distribution()
         cmd = upload(dist)
         cmd.finalize_options()
-        self.assertEqual(cmd.password, Tupu)
+        self.assertEqual(cmd.pitaword, Tupu)
 
-        # make sure we get it as well, ikiwa another command
+        # make sure we get it kama well, ikiwa another command
         # initialized it at the dist level
-        dist.password = 'xxx'
+        dist.pitaword = 'xxx'
         cmd = upload(dist)
         cmd.finalize_options()
-        self.assertEqual(cmd.password, 'xxx')
+        self.assertEqual(cmd.pitaword, 'xxx')
 
     eleza test_upload(self):
         tmp = self.mkdtemp()

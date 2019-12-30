@@ -32,7 +32,7 @@ kundi upload(PyPIRCCommand):
     eleza initialize_options(self):
         PyPIRCCommand.initialize_options(self)
         self.username = ''
-        self.password = ''
+        self.pitaword = ''
         self.show_response = 0
         self.sign = Uongo
         self.identity = Tupu
@@ -40,26 +40,26 @@ kundi upload(PyPIRCCommand):
     eleza finalize_options(self):
         PyPIRCCommand.finalize_options(self)
         ikiwa self.identity na sio self.sign:
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                 "Must use --sign kila --identity to have meaning"
             )
         config = self._read_pypirc()
         ikiwa config != {}:
             self.username = config['username']
-            self.password = config['password']
+            self.pitaword = config['pitaword']
             self.repository = config['repository']
             self.realm = config['realm']
 
-        # getting the password kutoka the distribution
+        # getting the pitaword kutoka the distribution
         # ikiwa previously set by the register command
-        ikiwa sio self.password na self.distribution.password:
-            self.password = self.distribution.password
+        ikiwa sio self.pitaword na self.distribution.pitaword:
+            self.pitaword = self.distribution.pitaword
 
     eleza run(self):
         ikiwa sio self.distribution.dist_files:
             msg = ("Must create na upload files kwenye one command "
                    "(e.g. setup.py sdist upload)")
-             ashiria DistutilsOptionError(msg)
+            ashiria DistutilsOptionError(msg)
         kila command, pyversion, filename kwenye self.distribution.dist_files:
             self.upload_file(command, pyversion, filename)
 
@@ -68,10 +68,10 @@ kundi upload(PyPIRCCommand):
         schema, netloc, url, params, query, fragments = \
             urlparse(self.repository)
         ikiwa params ama query ama fragments:
-             ashiria AssertionError("Incompatible url %s" % self.repository)
+            ashiria AssertionError("Incompatible url %s" % self.repository)
 
-        ikiwa schema sio kwenye ('http', 'https'):
-             ashiria AssertionError("unsupported schema " + schema)
+        ikiwa schema haiko kwenye ('http', 'https'):
+            ashiria AssertionError("unsupported schema " + schema)
 
         # Sign ikiwa requested
         ikiwa self.sign:
@@ -125,15 +125,15 @@ kundi upload(PyPIRCCommand):
         data['comment'] = ''
 
         ikiwa self.sign:
-            ukijumuisha open(filename + ".asc", "rb") as f:
+            ukijumuisha open(filename + ".asc", "rb") kama f:
                 data['gpg_signature'] = (os.path.basename(filename) + ".asc",
                                          f.read())
 
         # set up the authentication
-        user_pass = (self.username + ":" + self.password).encode('ascii')
+        user_pita = (self.username + ":" + self.pitaword).encode('ascii')
         # The exact encoding of the authentication string ni debated.
-        # Anyway PyPI only accepts ascii kila both username ama password.
-        auth = "Basic " + standard_b64encode(user_pass).decode('ascii')
+        # Anyway PyPI only accepts ascii kila both username ama pitaword.
+        auth = "Basic " + standard_b64encode(user_pita).decode('ascii')
 
         # Build up the MIME payload kila the POST data
         boundary = '--------------GHSKFJDLGDS7543FJKLFHRE75642756743254'
@@ -175,10 +175,10 @@ kundi upload(PyPIRCCommand):
             result = urlopen(request)
             status = result.getcode()
             reason = result.msg
-        except HTTPError as e:
+        tatizo HTTPError kama e:
             status = e.code
             reason = e.msg
-        except OSError as e:
+        tatizo OSError kama e:
             self.announce(str(e), log.ERROR)
             raise
 
@@ -192,4 +192,4 @@ kundi upload(PyPIRCCommand):
         isipokua:
             msg = 'Upload failed (%s): %s' % (status, reason)
             self.announce(msg, log.ERROR)
-             ashiria DistutilsError(msg)
+            ashiria DistutilsError(msg)

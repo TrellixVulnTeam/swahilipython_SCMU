@@ -4,9 +4,9 @@ builtin open function ni defined kwenye this module.
 At the top of the I/O hierarchy ni the abstract base kundi IOBase. It
 defines the basic interface to a stream. Note, however, that there ni no
 separation between reading na writing to streams; implementations are
-allowed to  ashiria an OSError ikiwa they do sio support a given operation.
+allowed to ashiria an OSError ikiwa they do sio support a given operation.
 
-Extending IOBase ni RawIOBase which deals simply ukijumuisha the reading and
+Extending IOBase ni RawIOBase which deals simply ukijumuisha the reading na
 writing of raw bytes to a stream. FileIO subclasses RawIOBase to provide
 an interface to OS files.
 
@@ -22,7 +22,7 @@ interface to a buffered raw stream (`BufferedIOBase`). Finally, StringIO
 is an in-memory stream kila text.
 
 Argument names are sio part of the specification, na only the arguments
-of open() are intended to be used as keyword arguments.
+of open() are intended to be used kama keyword arguments.
 
 data:
 
@@ -93,7 +93,7 @@ toa klass
 
 jaribu:
     kutoka _io agiza _WindowsConsoleIO
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     RawIOBase.register(_WindowsConsoleIO)

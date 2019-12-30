@@ -8,7 +8,7 @@ agiza sys
 agiza test.support
 
 ikiwa getattr(sys, 'float_repr_style', '') != 'short':
-     ashiria unittest.SkipTest('correctly-rounded string->float conversions '
+    ashiria unittest.SkipTest('correctly-rounded string->float conversions '
                             'not available on this system')
 
 # Correctly rounded str -> float kwenye pure Python, kila comparison.
@@ -23,7 +23,7 @@ strtod_parser = re.compile(r"""    # A numeric string consists of:
 """, re.VERBOSE | re.IGNORECASE).match
 
 # Pure Python version of correctly rounded string->float conversion.
-# Avoids any use of floating-point by returning the result as a hex string.
+# Avoids any use of floating-point by returning the result kama a hex string.
 eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     """Convert a finite decimal string to a hex string representing an
     IEEE 754 binary64 float.  Return 'inf' ama '-inf' on overflow.
@@ -34,7 +34,7 @@ eleza strtod(s, mant_dig=53, min_exp = -1021, max_exp = 1024):
     # abs(decimal value) = a/b, along ukijumuisha a boolean 'negative'.
     m = strtod_parser(s)
     ikiwa m ni Tupu:
-         ashiria ValueError('invalid numeric string')
+        ashiria ValueError('invalid numeric string')
     fraction = m.group('frac') ama ''
     intpart = int(m.group('int') + fraction)
     exp = int(m.group('exp') ama '0') - len(fraction)
@@ -92,9 +92,9 @@ kundi StrtodTests(unittest.TestCase):
 
         jaribu:
             fs = float(s)
-        except OverflowError:
+        tatizo OverflowError:
             got = '-inf' ikiwa s[0] == '-' isipokua 'inf'
-        except MemoryError:
+        tatizo MemoryError:
             got = 'memory error'
         isipokua:
             got = fs.hex()
@@ -173,8 +173,8 @@ kundi StrtodTests(unittest.TestCase):
             self.check_strtod(s)
 
     eleza test_boundaries(self):
-        # boundaries expressed as triples (n, e, u), where
-        # n*10**e ni an approximation to the boundary value and
+        # boundaries expressed kama triples (n, e, u), where
+        # n*10**e ni an approximation to the boundary value na
         # u*10**e ni 1ulp
         boundaries = [
             (10000000000000000000, -19, 1110),   # a power of 2 boundary (1.0)
@@ -194,7 +194,7 @@ kundi StrtodTests(unittest.TestCase):
 
     eleza test_underflow_boundary(self):
         # test values close to 2**-1075, the underflow boundary; similar
-        # to boundary_tests, except that the random error doesn't scale
+        # to boundary_tests, tatizo that the random error doesn't scale
         # ukijumuisha n
         kila exponent kwenye range(-400, -320):
             base = 10**-exponent // 2**1075
@@ -243,8 +243,8 @@ kundi StrtodTests(unittest.TestCase):
                 isipokua:
                     jaribu:
                         float(s)
-                    except ValueError:
-                        pass
+                    tatizo ValueError:
+                        pita
                     isipokua:
                         assert Uongo, "expected ValueError"
 

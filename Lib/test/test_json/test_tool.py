@@ -84,14 +84,14 @@ kundi TestTool(unittest.TestCase):
 
     eleza test_stdin_stdout(self):
         args = sys.executable, '-m', 'json.tool'
-        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
+        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) kama proc:
             out, err = proc.communicate(self.data.encode())
         self.assertEqual(out.splitlines(), self.expect.encode().splitlines())
         self.assertEqual(err, b'')
 
     eleza _create_infile(self):
         infile = support.TESTFN
-        ukijumuisha open(infile, "w") as fp:
+        ukijumuisha open(infile, "w") kama fp:
             self.addCleanup(os.remove, infile)
             fp.write(self.data)
         rudisha infile
@@ -108,7 +108,7 @@ kundi TestTool(unittest.TestCase):
         outfile = support.TESTFN + '.out'
         rc, out, err = assert_python_ok('-m', 'json.tool', infile, outfile)
         self.addCleanup(os.remove, outfile)
-        ukijumuisha open(outfile, "r") as fp:
+        ukijumuisha open(outfile, "r") kama fp:
             self.assertEqual(fp.read(), self.expect)
         self.assertEqual(rc, 0)
         self.assertEqual(out, b'')
@@ -116,7 +116,7 @@ kundi TestTool(unittest.TestCase):
 
     eleza test_jsonlines(self):
         args = sys.executable, '-m', 'json.tool', '--json-lines'
-        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
+        ukijumuisha Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) kama proc:
             out, err = proc.communicate(self.jsonlines_raw.encode())
         self.assertEqual(out.splitlines(), self.jsonlines_expect.encode().splitlines())
         self.assertEqual(err, b'')

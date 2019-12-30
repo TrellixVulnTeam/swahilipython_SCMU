@@ -31,7 +31,7 @@ __darwin_intptr_t = c_long
 __darwin_natural_t = c_uint
 __darwin_ct_rune_t = c_int
 kundi __mbstate_t(Union):
-    pass
+    pita
 __mbstate_t._pack_ = 4
 __mbstate_t._fields_ = [
     ('__mbstate8', c_char * 128),
@@ -52,7 +52,7 @@ __darwin_ssize_t = c_long
 __darwin_time_t = c_long
 sig_atomic_t = c_int
 kundi sigcontext(Structure):
-    pass
+    pita
 sigcontext._fields_ = [
     ('sc_onstack', c_int),
     ('sc_mask', c_int),
@@ -92,7 +92,7 @@ syscall_arg_t = u_int64_t
 
 # values kila unnamed enumeration
 kundi aes_key_st(Structure):
-    pass
+    pita
 aes_key_st._fields_ = [
     ('rd_key', c_ulong * 60),
     ('rounds', c_int),
@@ -101,7 +101,7 @@ assert sizeof(aes_key_st) == 244, sizeof(aes_key_st)
 assert alignment(aes_key_st) == 4, alignment(aes_key_st)
 AES_KEY = aes_key_st
 kundi asn1_ctx_st(Structure):
-    pass
+    pita
 asn1_ctx_st._fields_ = [
     ('p', POINTER(c_ubyte)),
     ('eos', c_int),
@@ -119,7 +119,7 @@ assert sizeof(asn1_ctx_st) == 44, sizeof(asn1_ctx_st)
 assert alignment(asn1_ctx_st) == 4, alignment(asn1_ctx_st)
 ASN1_CTX = asn1_ctx_st
 kundi asn1_object_st(Structure):
-    pass
+    pita
 asn1_object_st._fields_ = [
     ('sn', STRING),
     ('ln', STRING),
@@ -132,7 +132,7 @@ assert sizeof(asn1_object_st) == 24, sizeof(asn1_object_st)
 assert alignment(asn1_object_st) == 4, alignment(asn1_object_st)
 ASN1_OBJECT = asn1_object_st
 kundi asn1_string_st(Structure):
-    pass
+    pita
 asn1_string_st._fields_ = [
     ('length', c_int),
     ('type', c_int),
@@ -143,7 +143,7 @@ assert sizeof(asn1_string_st) == 16, sizeof(asn1_string_st)
 assert alignment(asn1_string_st) == 4, alignment(asn1_string_st)
 ASN1_STRING = asn1_string_st
 kundi ASN1_ENCODING_st(Structure):
-    pass
+    pita
 ASN1_ENCODING_st._fields_ = [
     ('enc', POINTER(c_ubyte)),
     ('len', c_long),
@@ -153,7 +153,7 @@ assert sizeof(ASN1_ENCODING_st) == 12, sizeof(ASN1_ENCODING_st)
 assert alignment(ASN1_ENCODING_st) == 4, alignment(ASN1_ENCODING_st)
 ASN1_ENCODING = ASN1_ENCODING_st
 kundi asn1_string_table_st(Structure):
-    pass
+    pita
 asn1_string_table_st._fields_ = [
     ('nid', c_int),
     ('minsize', c_long),
@@ -165,30 +165,30 @@ assert sizeof(asn1_string_table_st) == 20, sizeof(asn1_string_table_st)
 assert alignment(asn1_string_table_st) == 4, alignment(asn1_string_table_st)
 ASN1_STRING_TABLE = asn1_string_table_st
 kundi ASN1_TEMPLATE_st(Structure):
-    pass
+    pita
 ASN1_TEMPLATE_st._fields_ = [
 ]
 ASN1_TEMPLATE = ASN1_TEMPLATE_st
 kundi ASN1_ITEM_st(Structure):
-    pass
+    pita
 ASN1_ITEM = ASN1_ITEM_st
 ASN1_ITEM_st._fields_ = [
 ]
 kundi ASN1_TLC_st(Structure):
-    pass
+    pita
 ASN1_TLC = ASN1_TLC_st
 ASN1_TLC_st._fields_ = [
 ]
 kundi ASN1_VALUE_st(Structure):
-    pass
+    pita
 ASN1_VALUE_st._fields_ = [
 ]
 ASN1_VALUE = ASN1_VALUE_st
 ASN1_ITEM_EXP = ASN1_ITEM
 kundi asn1_type_st(Structure):
-    pass
+    pita
 kundi N12asn1_type_st4DOLLAR_11E(Union):
-    pass
+    pita
 ASN1_BOOLEAN = c_int
 ASN1_INTEGER = asn1_string_st
 ASN1_ENUMERATED = asn1_string_st
@@ -236,7 +236,7 @@ assert sizeof(asn1_type_st) == 8, sizeof(asn1_type_st)
 assert alignment(asn1_type_st) == 4, alignment(asn1_type_st)
 ASN1_TYPE = asn1_type_st
 kundi asn1_method_st(Structure):
-    pass
+    pita
 asn1_method_st._fields_ = [
     ('i2d', CFUNCTYPE(c_int)),
     ('d2i', CFUNCTYPE(STRING)),
@@ -247,7 +247,7 @@ assert sizeof(asn1_method_st) == 16, sizeof(asn1_method_st)
 assert alignment(asn1_method_st) == 4, alignment(asn1_method_st)
 ASN1_METHOD = asn1_method_st
 kundi asn1_header_st(Structure):
-    pass
+    pita
 asn1_header_st._fields_ = [
     ('header', POINTER(ASN1_OCTET_STRING)),
     ('data', STRING),
@@ -257,7 +257,7 @@ assert sizeof(asn1_header_st) == 12, sizeof(asn1_header_st)
 assert alignment(asn1_header_st) == 4, alignment(asn1_header_st)
 ASN1_HEADER = asn1_header_st
 kundi BIT_STRING_BITNAME_st(Structure):
-    pass
+    pita
 BIT_STRING_BITNAME_st._fields_ = [
     ('bitnum', c_int),
     ('lname', STRING),
@@ -267,11 +267,11 @@ assert sizeof(BIT_STRING_BITNAME_st) == 12, sizeof(BIT_STRING_BITNAME_st)
 assert alignment(BIT_STRING_BITNAME_st) == 4, alignment(BIT_STRING_BITNAME_st)
 BIT_STRING_BITNAME = BIT_STRING_BITNAME_st
 kundi bio_st(Structure):
-    pass
+    pita
 BIO = bio_st
 bio_info_cb = CFUNCTYPE(Tupu, POINTER(bio_st), c_int, STRING, c_int, c_long, c_long)
 kundi bio_method_st(Structure):
-    pass
+    pita
 bio_method_st._fields_ = [
     ('type', c_int),
     ('name', STRING),
@@ -288,9 +288,9 @@ assert sizeof(bio_method_st) == 40, sizeof(bio_method_st)
 assert alignment(bio_method_st) == 4, alignment(bio_method_st)
 BIO_METHOD = bio_method_st
 kundi crypto_ex_data_st(Structure):
-    pass
+    pita
 kundi stack_st(Structure):
-    pass
+    pita
 STACK = stack_st
 crypto_ex_data_st._fields_ = [
     ('sk', POINTER(STACK)),
@@ -319,7 +319,7 @@ bio_st._fields_ = [
 assert sizeof(bio_st) == 64, sizeof(bio_st)
 assert alignment(bio_st) == 4, alignment(bio_st)
 kundi bio_f_buffer_ctx_struct(Structure):
-    pass
+    pita
 bio_f_buffer_ctx_struct._fields_ = [
     ('ibuf_size', c_int),
     ('obuf_size', c_int),
@@ -334,11 +334,11 @@ assert sizeof(bio_f_buffer_ctx_struct) == 32, sizeof(bio_f_buffer_ctx_struct)
 assert alignment(bio_f_buffer_ctx_struct) == 4, alignment(bio_f_buffer_ctx_struct)
 BIO_F_BUFFER_CTX = bio_f_buffer_ctx_struct
 kundi hostent(Structure):
-    pass
+    pita
 hostent._fields_ = [
 ]
 kundi bf_key_st(Structure):
-    pass
+    pita
 bf_key_st._fields_ = [
     ('P', c_uint * 18),
     ('S', c_uint * 1024),
@@ -347,7 +347,7 @@ assert sizeof(bf_key_st) == 4168, sizeof(bf_key_st)
 assert alignment(bf_key_st) == 4, alignment(bf_key_st)
 BF_KEY = bf_key_st
 kundi bignum_st(Structure):
-    pass
+    pita
 bignum_st._fields_ = [
     ('d', POINTER(c_ulong)),
     ('top', c_int),
@@ -359,12 +359,12 @@ assert sizeof(bignum_st) == 20, sizeof(bignum_st)
 assert alignment(bignum_st) == 4, alignment(bignum_st)
 BIGNUM = bignum_st
 kundi bignum_ctx(Structure):
-    pass
+    pita
 bignum_ctx._fields_ = [
 ]
 BN_CTX = bignum_ctx
 kundi bn_blinding_st(Structure):
-    pass
+    pita
 bn_blinding_st._fields_ = [
     ('init', c_int),
     ('A', POINTER(BIGNUM)),
@@ -376,7 +376,7 @@ assert sizeof(bn_blinding_st) == 20, sizeof(bn_blinding_st)
 assert alignment(bn_blinding_st) == 4, alignment(bn_blinding_st)
 BN_BLINDING = bn_blinding_st
 kundi bn_mont_ctx_st(Structure):
-    pass
+    pita
 bn_mont_ctx_st._fields_ = [
     ('ri', c_int),
     ('RR', BIGNUM),
@@ -389,7 +389,7 @@ assert sizeof(bn_mont_ctx_st) == 72, sizeof(bn_mont_ctx_st)
 assert alignment(bn_mont_ctx_st) == 4, alignment(bn_mont_ctx_st)
 BN_MONT_CTX = bn_mont_ctx_st
 kundi bn_recp_ctx_st(Structure):
-    pass
+    pita
 bn_recp_ctx_st._fields_ = [
     ('N', BIGNUM),
     ('Nr', BIGNUM),
@@ -401,7 +401,7 @@ assert sizeof(bn_recp_ctx_st) == 52, sizeof(bn_recp_ctx_st)
 assert alignment(bn_recp_ctx_st) == 4, alignment(bn_recp_ctx_st)
 BN_RECP_CTX = bn_recp_ctx_st
 kundi buf_mem_st(Structure):
-    pass
+    pita
 buf_mem_st._fields_ = [
     ('length', c_int),
     ('data', STRING),
@@ -411,7 +411,7 @@ assert sizeof(buf_mem_st) == 12, sizeof(buf_mem_st)
 assert alignment(buf_mem_st) == 4, alignment(buf_mem_st)
 BUF_MEM = buf_mem_st
 kundi cast_key_st(Structure):
-    pass
+    pita
 cast_key_st._fields_ = [
     ('data', c_ulong * 32),
     ('short_key', c_int),
@@ -420,7 +420,7 @@ assert sizeof(cast_key_st) == 132, sizeof(cast_key_st)
 assert alignment(cast_key_st) == 4, alignment(cast_key_st)
 CAST_KEY = cast_key_st
 kundi comp_method_st(Structure):
-    pass
+    pita
 comp_method_st._fields_ = [
     ('type', c_int),
     ('name', STRING),
@@ -435,7 +435,7 @@ assert sizeof(comp_method_st) == 32, sizeof(comp_method_st)
 assert alignment(comp_method_st) == 4, alignment(comp_method_st)
 COMP_METHOD = comp_method_st
 kundi comp_ctx_st(Structure):
-    pass
+    pita
 comp_ctx_st._fields_ = [
     ('meth', POINTER(COMP_METHOD)),
     ('compress_in', c_ulong),
@@ -448,11 +448,11 @@ assert sizeof(comp_ctx_st) == 28, sizeof(comp_ctx_st)
 assert alignment(comp_ctx_st) == 4, alignment(comp_ctx_st)
 COMP_CTX = comp_ctx_st
 kundi CRYPTO_dynlock_value(Structure):
-    pass
+    pita
 CRYPTO_dynlock_value._fields_ = [
 ]
 kundi CRYPTO_dynlock(Structure):
-    pass
+    pita
 CRYPTO_dynlock._fields_ = [
     ('references', c_int),
     ('data', POINTER(CRYPTO_dynlock_value)),
@@ -464,7 +464,7 @@ CRYPTO_EX_new = CFUNCTYPE(c_int, c_void_p, c_void_p, POINTER(CRYPTO_EX_DATA), c_
 CRYPTO_EX_free = CFUNCTYPE(Tupu, c_void_p, c_void_p, POINTER(CRYPTO_EX_DATA), c_int, c_long, c_void_p)
 CRYPTO_EX_dup = CFUNCTYPE(c_int, POINTER(CRYPTO_EX_DATA), POINTER(CRYPTO_EX_DATA), c_void_p, c_int, c_long, c_void_p)
 kundi crypto_ex_data_func_st(Structure):
-    pass
+    pita
 crypto_ex_data_func_st._fields_ = [
     ('argl', c_long),
     ('argp', c_void_p),
@@ -476,7 +476,7 @@ assert sizeof(crypto_ex_data_func_st) == 20, sizeof(crypto_ex_data_func_st)
 assert alignment(crypto_ex_data_func_st) == 4, alignment(crypto_ex_data_func_st)
 CRYPTO_EX_DATA_FUNCS = crypto_ex_data_func_st
 kundi st_CRYPTO_EX_DATA_IMPL(Structure):
-    pass
+    pita
 CRYPTO_EX_DATA_IMPL = st_CRYPTO_EX_DATA_IMPL
 st_CRYPTO_EX_DATA_IMPL._fields_ = [
 ]
@@ -484,9 +484,9 @@ CRYPTO_MEM_LEAK_CB = CFUNCTYPE(c_void_p, c_ulong, STRING, c_int, c_int, c_void_p
 DES_cblock = c_ubyte * 8
 const_DES_cblock = c_ubyte * 8
 kundi DES_ks(Structure):
-    pass
+    pita
 kundi N6DES_ks3DOLLAR_9E(Union):
-    pass
+    pita
 N6DES_ks3DOLLAR_9E._fields_ = [
     ('cblock', DES_cblock),
     ('deslong', c_ulong * 2),
@@ -501,9 +501,9 @@ assert alignment(DES_ks) == 4, alignment(DES_ks)
 DES_key_schedule = DES_ks
 _ossl_old_des_cblock = c_ubyte * 8
 kundi _ossl_old_des_ks_struct(Structure):
-    pass
+    pita
 kundi N23_ossl_old_des_ks_struct4DOLLAR_10E(Union):
-    pass
+    pita
 N23_ossl_old_des_ks_struct4DOLLAR_10E._fields_ = [
     ('_', _ossl_old_des_cblock),
     ('pad', c_ulong * 2),
@@ -517,10 +517,10 @@ assert sizeof(_ossl_old_des_ks_struct) == 8, sizeof(_ossl_old_des_ks_struct)
 assert alignment(_ossl_old_des_ks_struct) == 4, alignment(_ossl_old_des_ks_struct)
 _ossl_old_des_key_schedule = _ossl_old_des_ks_struct * 16
 kundi dh_st(Structure):
-    pass
+    pita
 DH = dh_st
 kundi dh_method(Structure):
-    pass
+    pita
 dh_method._fields_ = [
     ('name', STRING),
     ('generate_key', CFUNCTYPE(c_int, POINTER(DH))),
@@ -535,7 +535,7 @@ assert sizeof(dh_method) == 32, sizeof(dh_method)
 assert alignment(dh_method) == 4, alignment(dh_method)
 DH_METHOD = dh_method
 kundi engine_st(Structure):
-    pass
+    pita
 ENGINE = engine_st
 dh_st._fields_ = [
     ('pad', c_int),
@@ -560,10 +560,10 @@ dh_st._fields_ = [
 assert sizeof(dh_st) == 76, sizeof(dh_st)
 assert alignment(dh_st) == 4, alignment(dh_st)
 kundi dsa_st(Structure):
-    pass
+    pita
 DSA = dsa_st
 kundi DSA_SIG_st(Structure):
-    pass
+    pita
 DSA_SIG_st._fields_ = [
     ('r', POINTER(BIGNUM)),
     ('s', POINTER(BIGNUM)),
@@ -572,7 +572,7 @@ assert sizeof(DSA_SIG_st) == 8, sizeof(DSA_SIG_st)
 assert alignment(DSA_SIG_st) == 4, alignment(DSA_SIG_st)
 DSA_SIG = DSA_SIG_st
 kundi dsa_method(Structure):
-    pass
+    pita
 dsa_method._fields_ = [
     ('name', STRING),
     ('dsa_do_sign', CFUNCTYPE(POINTER(DSA_SIG), POINTER(c_ubyte), c_int, POINTER(DSA))),
@@ -609,11 +609,11 @@ dsa_st._fields_ = [
 assert sizeof(dsa_st) == 68, sizeof(dsa_st)
 assert alignment(dsa_st) == 4, alignment(dsa_st)
 kundi evp_pkey_st(Structure):
-    pass
+    pita
 kundi N11evp_pkey_st4DOLLAR_12E(Union):
-    pass
+    pita
 kundi rsa_st(Structure):
-    pass
+    pita
 N11evp_pkey_st4DOLLAR_12E._fields_ = [
     ('ptr', STRING),
     ('rsa', POINTER(rsa_st)),
@@ -633,9 +633,9 @@ evp_pkey_st._fields_ = [
 assert sizeof(evp_pkey_st) == 24, sizeof(evp_pkey_st)
 assert alignment(evp_pkey_st) == 4, alignment(evp_pkey_st)
 kundi env_md_st(Structure):
-    pass
+    pita
 kundi env_md_ctx_st(Structure):
-    pass
+    pita
 EVP_MD_CTX = env_md_ctx_st
 env_md_st._fields_ = [
     ('type', c_int),
@@ -665,9 +665,9 @@ env_md_ctx_st._fields_ = [
 assert sizeof(env_md_ctx_st) == 16, sizeof(env_md_ctx_st)
 assert alignment(env_md_ctx_st) == 4, alignment(env_md_ctx_st)
 kundi evp_cipher_st(Structure):
-    pass
+    pita
 kundi evp_cipher_ctx_st(Structure):
-    pass
+    pita
 EVP_CIPHER_CTX = evp_cipher_ctx_st
 evp_cipher_st._fields_ = [
     ('nid', c_int),
@@ -687,7 +687,7 @@ evp_cipher_st._fields_ = [
 assert sizeof(evp_cipher_st) == 52, sizeof(evp_cipher_st)
 assert alignment(evp_cipher_st) == 4, alignment(evp_cipher_st)
 kundi evp_cipher_info_st(Structure):
-    pass
+    pita
 EVP_CIPHER = evp_cipher_st
 evp_cipher_info_st._fields_ = [
     ('cipher', POINTER(EVP_CIPHER)),
@@ -716,7 +716,7 @@ evp_cipher_ctx_st._fields_ = [
 assert sizeof(evp_cipher_ctx_st) == 140, sizeof(evp_cipher_ctx_st)
 assert alignment(evp_cipher_ctx_st) == 4, alignment(evp_cipher_ctx_st)
 kundi evp_Encode_Ctx_st(Structure):
-    pass
+    pita
 evp_Encode_Ctx_st._fields_ = [
     ('num', c_int),
     ('length', c_int),
@@ -729,7 +729,7 @@ assert alignment(evp_Encode_Ctx_st) == 4, alignment(evp_Encode_Ctx_st)
 EVP_ENCODE_CTX = evp_Encode_Ctx_st
 EVP_PBE_KEYGEN = CFUNCTYPE(c_int, POINTER(EVP_CIPHER_CTX), STRING, c_int, POINTER(ASN1_TYPE), POINTER(EVP_CIPHER), POINTER(EVP_MD), c_int)
 kundi lhash_node_st(Structure):
-    pass
+    pita
 lhash_node_st._fields_ = [
     ('data', c_void_p),
     ('next', POINTER(lhash_node_st)),
@@ -743,7 +743,7 @@ LHASH_HASH_FN_TYPE = CFUNCTYPE(c_ulong, c_void_p)
 LHASH_DOALL_FN_TYPE = CFUNCTYPE(Tupu, c_void_p)
 LHASH_DOALL_ARG_FN_TYPE = CFUNCTYPE(Tupu, c_void_p, c_void_p)
 kundi lhash_st(Structure):
-    pass
+    pita
 lhash_st._fields_ = [
     ('b', POINTER(POINTER(LHASH_NODE))),
     ('comp', LHASH_COMP_FN_TYPE),
@@ -774,7 +774,7 @@ assert sizeof(lhash_st) == 96, sizeof(lhash_st)
 assert alignment(lhash_st) == 4, alignment(lhash_st)
 LHASH = lhash_st
 kundi MD2state_st(Structure):
-    pass
+    pita
 MD2state_st._fields_ = [
     ('num', c_int),
     ('data', c_ubyte * 16),
@@ -785,7 +785,7 @@ assert sizeof(MD2state_st) == 148, sizeof(MD2state_st)
 assert alignment(MD2state_st) == 4, alignment(MD2state_st)
 MD2_CTX = MD2state_st
 kundi MD4state_st(Structure):
-    pass
+    pita
 MD4state_st._fields_ = [
     ('A', c_uint),
     ('B', c_uint),
@@ -800,7 +800,7 @@ assert sizeof(MD4state_st) == 92, sizeof(MD4state_st)
 assert alignment(MD4state_st) == 4, alignment(MD4state_st)
 MD4_CTX = MD4state_st
 kundi MD5state_st(Structure):
-    pass
+    pita
 MD5state_st._fields_ = [
     ('A', c_uint),
     ('B', c_uint),
@@ -815,7 +815,7 @@ assert sizeof(MD5state_st) == 92, sizeof(MD5state_st)
 assert alignment(MD5state_st) == 4, alignment(MD5state_st)
 MD5_CTX = MD5state_st
 kundi mdc2_ctx_st(Structure):
-    pass
+    pita
 mdc2_ctx_st._fields_ = [
     ('num', c_int),
     ('data', c_ubyte * 8),
@@ -827,7 +827,7 @@ assert sizeof(mdc2_ctx_st) == 32, sizeof(mdc2_ctx_st)
 assert alignment(mdc2_ctx_st) == 4, alignment(mdc2_ctx_st)
 MDC2_CTX = mdc2_ctx_st
 kundi obj_name_st(Structure):
-    pass
+    pita
 obj_name_st._fields_ = [
     ('type', c_int),
     ('alias', c_int),
@@ -841,27 +841,27 @@ ASN1_TIME = asn1_string_st
 ASN1_NULL = c_int
 EVP_PKEY = evp_pkey_st
 kundi x509_st(Structure):
-    pass
+    pita
 X509 = x509_st
 kundi X509_algor_st(Structure):
-    pass
+    pita
 X509_ALGOR = X509_algor_st
 kundi X509_crl_st(Structure):
-    pass
+    pita
 X509_CRL = X509_crl_st
 kundi X509_name_st(Structure):
-    pass
+    pita
 X509_NAME = X509_name_st
 kundi x509_store_st(Structure):
-    pass
+    pita
 X509_STORE = x509_store_st
 kundi x509_store_ctx_st(Structure):
-    pass
+    pita
 X509_STORE_CTX = x509_store_ctx_st
 engine_st._fields_ = [
 ]
 kundi PEM_Encode_Seal_st(Structure):
-    pass
+    pita
 PEM_Encode_Seal_st._fields_ = [
     ('encode', EVP_ENCODE_CTX),
     ('md', EVP_MD_CTX),
@@ -871,7 +871,7 @@ assert sizeof(PEM_Encode_Seal_st) == 252, sizeof(PEM_Encode_Seal_st)
 assert alignment(PEM_Encode_Seal_st) == 4, alignment(PEM_Encode_Seal_st)
 PEM_ENCODE_SEAL_CTX = PEM_Encode_Seal_st
 kundi pem_recip_st(Structure):
-    pass
+    pita
 pem_recip_st._fields_ = [
     ('name', STRING),
     ('dn', POINTER(X509_NAME)),
@@ -882,9 +882,9 @@ assert sizeof(pem_recip_st) == 16, sizeof(pem_recip_st)
 assert alignment(pem_recip_st) == 4, alignment(pem_recip_st)
 PEM_USER = pem_recip_st
 kundi pem_ctx_st(Structure):
-    pass
+    pita
 kundi N10pem_ctx_st4DOLLAR_16E(Structure):
-    pass
+    pita
 N10pem_ctx_st4DOLLAR_16E._fields_ = [
     ('version', c_int),
     ('mode', c_int),
@@ -892,7 +892,7 @@ N10pem_ctx_st4DOLLAR_16E._fields_ = [
 assert sizeof(N10pem_ctx_st4DOLLAR_16E) == 8, sizeof(N10pem_ctx_st4DOLLAR_16E)
 assert alignment(N10pem_ctx_st4DOLLAR_16E) == 4, alignment(N10pem_ctx_st4DOLLAR_16E)
 kundi N10pem_ctx_st4DOLLAR_17E(Structure):
-    pass
+    pita
 N10pem_ctx_st4DOLLAR_17E._fields_ = [
     ('cipher', c_int),
 ]
@@ -921,9 +921,9 @@ pem_ctx_st._fields_ = [
 assert sizeof(pem_ctx_st) == 76, sizeof(pem_ctx_st)
 assert alignment(pem_ctx_st) == 4, alignment(pem_ctx_st)
 PEM_CTX = pem_ctx_st
-pem_password_cb = CFUNCTYPE(c_int, STRING, c_int, c_int, c_void_p)
+pem_pitaword_cb = CFUNCTYPE(c_int, STRING, c_int, c_int, c_void_p)
 kundi pkcs7_issuer_and_serial_st(Structure):
-    pass
+    pita
 pkcs7_issuer_and_serial_st._fields_ = [
     ('issuer', POINTER(X509_NAME)),
     ('serial', POINTER(ASN1_INTEGER)),
@@ -932,7 +932,7 @@ assert sizeof(pkcs7_issuer_and_serial_st) == 8, sizeof(pkcs7_issuer_and_serial_s
 assert alignment(pkcs7_issuer_and_serial_st) == 4, alignment(pkcs7_issuer_and_serial_st)
 PKCS7_ISSUER_AND_SERIAL = pkcs7_issuer_and_serial_st
 kundi pkcs7_signer_info_st(Structure):
-    pass
+    pita
 pkcs7_signer_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('issuer_and_serial', POINTER(PKCS7_ISSUER_AND_SERIAL)),
@@ -947,7 +947,7 @@ assert sizeof(pkcs7_signer_info_st) == 32, sizeof(pkcs7_signer_info_st)
 assert alignment(pkcs7_signer_info_st) == 4, alignment(pkcs7_signer_info_st)
 PKCS7_SIGNER_INFO = pkcs7_signer_info_st
 kundi pkcs7_recip_info_st(Structure):
-    pass
+    pita
 pkcs7_recip_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('issuer_and_serial', POINTER(PKCS7_ISSUER_AND_SERIAL)),
@@ -959,9 +959,9 @@ assert sizeof(pkcs7_recip_info_st) == 20, sizeof(pkcs7_recip_info_st)
 assert alignment(pkcs7_recip_info_st) == 4, alignment(pkcs7_recip_info_st)
 PKCS7_RECIP_INFO = pkcs7_recip_info_st
 kundi pkcs7_signed_st(Structure):
-    pass
+    pita
 kundi pkcs7_st(Structure):
-    pass
+    pita
 pkcs7_signed_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('md_algs', POINTER(STACK)),
@@ -974,7 +974,7 @@ assert sizeof(pkcs7_signed_st) == 24, sizeof(pkcs7_signed_st)
 assert alignment(pkcs7_signed_st) == 4, alignment(pkcs7_signed_st)
 PKCS7_SIGNED = pkcs7_signed_st
 kundi pkcs7_enc_content_st(Structure):
-    pass
+    pita
 pkcs7_enc_content_st._fields_ = [
     ('content_type', POINTER(ASN1_OBJECT)),
     ('algorithm', POINTER(X509_ALGOR)),
@@ -985,7 +985,7 @@ assert sizeof(pkcs7_enc_content_st) == 16, sizeof(pkcs7_enc_content_st)
 assert alignment(pkcs7_enc_content_st) == 4, alignment(pkcs7_enc_content_st)
 PKCS7_ENC_CONTENT = pkcs7_enc_content_st
 kundi pkcs7_enveloped_st(Structure):
-    pass
+    pita
 pkcs7_enveloped_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('recipientinfo', POINTER(STACK)),
@@ -995,7 +995,7 @@ assert sizeof(pkcs7_enveloped_st) == 12, sizeof(pkcs7_enveloped_st)
 assert alignment(pkcs7_enveloped_st) == 4, alignment(pkcs7_enveloped_st)
 PKCS7_ENVELOPE = pkcs7_enveloped_st
 kundi pkcs7_signedandenveloped_st(Structure):
-    pass
+    pita
 pkcs7_signedandenveloped_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('md_algs', POINTER(STACK)),
@@ -1009,7 +1009,7 @@ assert sizeof(pkcs7_signedandenveloped_st) == 28, sizeof(pkcs7_signedandenvelope
 assert alignment(pkcs7_signedandenveloped_st) == 4, alignment(pkcs7_signedandenveloped_st)
 PKCS7_SIGN_ENVELOPE = pkcs7_signedandenveloped_st
 kundi pkcs7_digest_st(Structure):
-    pass
+    pita
 pkcs7_digest_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('md', POINTER(X509_ALGOR)),
@@ -1020,7 +1020,7 @@ assert sizeof(pkcs7_digest_st) == 16, sizeof(pkcs7_digest_st)
 assert alignment(pkcs7_digest_st) == 4, alignment(pkcs7_digest_st)
 PKCS7_DIGEST = pkcs7_digest_st
 kundi pkcs7_encrypted_st(Structure):
-    pass
+    pita
 pkcs7_encrypted_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('enc_data', POINTER(PKCS7_ENC_CONTENT)),
@@ -1029,7 +1029,7 @@ assert sizeof(pkcs7_encrypted_st) == 8, sizeof(pkcs7_encrypted_st)
 assert alignment(pkcs7_encrypted_st) == 4, alignment(pkcs7_encrypted_st)
 PKCS7_ENCRYPT = pkcs7_encrypted_st
 kundi N8pkcs7_st4DOLLAR_15E(Union):
-    pass
+    pita
 N8pkcs7_st4DOLLAR_15E._fields_ = [
     ('ptr', STRING),
     ('data', POINTER(ASN1_OCTET_STRING)),
@@ -1054,7 +1054,7 @@ assert sizeof(pkcs7_st) == 24, sizeof(pkcs7_st)
 assert alignment(pkcs7_st) == 4, alignment(pkcs7_st)
 PKCS7 = pkcs7_st
 kundi rc2_key_st(Structure):
-    pass
+    pita
 rc2_key_st._fields_ = [
     ('data', c_uint * 64),
 ]
@@ -1062,7 +1062,7 @@ assert sizeof(rc2_key_st) == 256, sizeof(rc2_key_st)
 assert alignment(rc2_key_st) == 4, alignment(rc2_key_st)
 RC2_KEY = rc2_key_st
 kundi rc4_key_st(Structure):
-    pass
+    pita
 rc4_key_st._fields_ = [
     ('x', c_ubyte),
     ('y', c_ubyte),
@@ -1072,7 +1072,7 @@ assert sizeof(rc4_key_st) == 258, sizeof(rc4_key_st)
 assert alignment(rc4_key_st) == 1, alignment(rc4_key_st)
 RC4_KEY = rc4_key_st
 kundi rc5_key_st(Structure):
-    pass
+    pita
 rc5_key_st._fields_ = [
     ('rounds', c_int),
     ('data', c_ulong * 34),
@@ -1081,7 +1081,7 @@ assert sizeof(rc5_key_st) == 140, sizeof(rc5_key_st)
 assert alignment(rc5_key_st) == 4, alignment(rc5_key_st)
 RC5_32_KEY = rc5_key_st
 kundi RIPEMD160state_st(Structure):
-    pass
+    pita
 RIPEMD160state_st._fields_ = [
     ('A', c_uint),
     ('B', c_uint),
@@ -1098,7 +1098,7 @@ assert alignment(RIPEMD160state_st) == 4, alignment(RIPEMD160state_st)
 RIPEMD160_CTX = RIPEMD160state_st
 RSA = rsa_st
 kundi rsa_meth_st(Structure):
-    pass
+    pita
 rsa_meth_st._fields_ = [
     ('name', STRING),
     ('rsa_pub_enc', CFUNCTYPE(c_int, c_int, POINTER(c_ubyte), POINTER(c_ubyte), POINTER(RSA), c_int)),
@@ -1143,7 +1143,7 @@ assert sizeof(rsa_st) == 84, sizeof(rsa_st)
 assert alignment(rsa_st) == 4, alignment(rsa_st)
 openssl_fptr = CFUNCTYPE(Tupu)
 kundi SHAstate_st(Structure):
-    pass
+    pita
 SHAstate_st._fields_ = [
     ('h0', c_uint),
     ('h1', c_uint),
@@ -1159,10 +1159,10 @@ assert sizeof(SHAstate_st) == 96, sizeof(SHAstate_st)
 assert alignment(SHAstate_st) == 4, alignment(SHAstate_st)
 SHA_CTX = SHAstate_st
 kundi ssl_st(Structure):
-    pass
+    pita
 ssl_crock_st = POINTER(ssl_st)
 kundi ssl_cipher_st(Structure):
-    pass
+    pita
 ssl_cipher_st._fields_ = [
     ('valid', c_int),
     ('name', STRING),
@@ -1180,12 +1180,12 @@ assert alignment(ssl_cipher_st) == 4, alignment(ssl_cipher_st)
 SSL_CIPHER = ssl_cipher_st
 SSL = ssl_st
 kundi ssl_ctx_st(Structure):
-    pass
+    pita
 SSL_CTX = ssl_ctx_st
 kundi ssl_method_st(Structure):
-    pass
+    pita
 kundi ssl3_enc_method(Structure):
-    pass
+    pita
 ssl_method_st._fields_ = [
     ('version', c_int),
     ('ssl_new', CFUNCTYPE(c_int, POINTER(SSL))),
@@ -1219,9 +1219,9 @@ ssl3_enc_method._fields_ = [
 ]
 SSL_METHOD = ssl_method_st
 kundi ssl_session_st(Structure):
-    pass
+    pita
 kundi sess_cert_st(Structure):
-    pass
+    pita
 ssl_session_st._fields_ = [
     ('ssl_version', c_int),
     ('key_arg_length', c_uint),
@@ -1254,7 +1254,7 @@ sess_cert_st._fields_ = [
 SSL_SESSION = ssl_session_st
 GEN_SESSION_CB = CFUNCTYPE(c_int, POINTER(SSL), POINTER(c_ubyte), POINTER(c_uint))
 kundi ssl_comp_st(Structure):
-    pass
+    pita
 ssl_comp_st._fields_ = [
     ('id', c_int),
     ('name', STRING),
@@ -1264,7 +1264,7 @@ assert sizeof(ssl_comp_st) == 12, sizeof(ssl_comp_st)
 assert alignment(ssl_comp_st) == 4, alignment(ssl_comp_st)
 SSL_COMP = ssl_comp_st
 kundi N10ssl_ctx_st4DOLLAR_18E(Structure):
-    pass
+    pita
 N10ssl_ctx_st4DOLLAR_18E._fields_ = [
     ('sess_connect', c_int),
     ('sess_connect_renegotiate', c_int),
@@ -1281,7 +1281,7 @@ N10ssl_ctx_st4DOLLAR_18E._fields_ = [
 assert sizeof(N10ssl_ctx_st4DOLLAR_18E) == 44, sizeof(N10ssl_ctx_st4DOLLAR_18E)
 assert alignment(N10ssl_ctx_st4DOLLAR_18E) == 4, alignment(N10ssl_ctx_st4DOLLAR_18E)
 kundi cert_st(Structure):
-    pass
+    pita
 ssl_ctx_st._fields_ = [
     ('method', POINTER(SSL_METHOD)),
     ('cipher_list', POINTER(STACK)),
@@ -1300,8 +1300,8 @@ ssl_ctx_st._fields_ = [
     ('references', c_int),
     ('app_verify_callback', CFUNCTYPE(c_int, POINTER(X509_STORE_CTX), c_void_p)),
     ('app_verify_arg', c_void_p),
-    ('default_passwd_callback', POINTER(pem_password_cb)),
-    ('default_passwd_callback_userdata', c_void_p),
+    ('default_pitawd_callback', POINTER(pem_pitaword_cb)),
+    ('default_pitawd_callback_userdata', c_void_p),
     ('client_cert_cb', CFUNCTYPE(c_int, POINTER(SSL), POINTER(POINTER(X509)), POINTER(POINTER(EVP_PKEY)))),
     ('ex_data', CRYPTO_EX_DATA),
     ('rsa_md5', POINTER(EVP_MD)),
@@ -1333,9 +1333,9 @@ assert alignment(ssl_ctx_st) == 4, alignment(ssl_ctx_st)
 cert_st._fields_ = [
 ]
 kundi ssl2_state_st(Structure):
-    pass
+    pita
 kundi ssl3_state_st(Structure):
-    pass
+    pita
 ssl_st._fields_ = [
     ('version', c_int),
     ('type', c_int),
@@ -1400,7 +1400,7 @@ ssl_st._fields_ = [
 assert sizeof(ssl_st) == 268, sizeof(ssl_st)
 assert alignment(ssl_st) == 4, alignment(ssl_st)
 kundi N13ssl2_state_st4DOLLAR_19E(Structure):
-    pass
+    pita
 N13ssl2_state_st4DOLLAR_19E._fields_ = [
     ('conn_id_length', c_uint),
     ('cert_type', c_uint),
@@ -1456,7 +1456,7 @@ assert sizeof(ssl2_state_st) == 288, sizeof(ssl2_state_st)
 assert alignment(ssl2_state_st) == 4, alignment(ssl2_state_st)
 SSL2_STATE = ssl2_state_st
 kundi ssl3_record_st(Structure):
-    pass
+    pita
 ssl3_record_st._fields_ = [
     ('type', c_int),
     ('length', c_uint),
@@ -1469,7 +1469,7 @@ assert sizeof(ssl3_record_st) == 24, sizeof(ssl3_record_st)
 assert alignment(ssl3_record_st) == 4, alignment(ssl3_record_st)
 SSL3_RECORD = ssl3_record_st
 kundi ssl3_buffer_st(Structure):
-    pass
+    pita
 size_t = __darwin_size_t
 ssl3_buffer_st._fields_ = [
     ('buf', POINTER(c_ubyte)),
@@ -1481,7 +1481,7 @@ assert sizeof(ssl3_buffer_st) == 16, sizeof(ssl3_buffer_st)
 assert alignment(ssl3_buffer_st) == 4, alignment(ssl3_buffer_st)
 SSL3_BUFFER = ssl3_buffer_st
 kundi N13ssl3_state_st4DOLLAR_20E(Structure):
-    pass
+    pita
 N13ssl3_state_st4DOLLAR_20E._fields_ = [
     ('cert_verify_md', c_ubyte * 72),
     ('finish_md', c_ubyte * 72),
@@ -1558,17 +1558,17 @@ stack_st._fields_ = [
 assert sizeof(stack_st) == 20, sizeof(stack_st)
 assert alignment(stack_st) == 4, alignment(stack_st)
 kundi ui_st(Structure):
-    pass
+    pita
 ui_st._fields_ = [
 ]
 UI = ui_st
 kundi ui_method_st(Structure):
-    pass
+    pita
 ui_method_st._fields_ = [
 ]
 UI_METHOD = ui_method_st
 kundi ui_string_st(Structure):
-    pass
+    pita
 ui_string_st._fields_ = [
 ]
 UI_STRING = ui_string_st
@@ -1576,7 +1576,7 @@ UI_STRING = ui_string_st
 # values kila enumeration 'UI_string_types'
 UI_string_types = c_int # enum
 kundi X509_objects_st(Structure):
-    pass
+    pita
 X509_objects_st._fields_ = [
     ('nid', c_int),
     ('a2i', CFUNCTYPE(c_int)),
@@ -1592,7 +1592,7 @@ X509_algor_st._fields_ = [
 assert sizeof(X509_algor_st) == 8, sizeof(X509_algor_st)
 assert alignment(X509_algor_st) == 4, alignment(X509_algor_st)
 kundi X509_val_st(Structure):
-    pass
+    pita
 X509_val_st._fields_ = [
     ('notBefore', POINTER(ASN1_TIME)),
     ('notAfter', POINTER(ASN1_TIME)),
@@ -1601,7 +1601,7 @@ assert sizeof(X509_val_st) == 8, sizeof(X509_val_st)
 assert alignment(X509_val_st) == 4, alignment(X509_val_st)
 X509_VAL = X509_val_st
 kundi X509_pubkey_st(Structure):
-    pass
+    pita
 X509_pubkey_st._fields_ = [
     ('algor', POINTER(X509_ALGOR)),
     ('public_key', POINTER(ASN1_BIT_STRING)),
@@ -1611,7 +1611,7 @@ assert sizeof(X509_pubkey_st) == 12, sizeof(X509_pubkey_st)
 assert alignment(X509_pubkey_st) == 4, alignment(X509_pubkey_st)
 X509_PUBKEY = X509_pubkey_st
 kundi X509_sig_st(Structure):
-    pass
+    pita
 X509_sig_st._fields_ = [
     ('algor', POINTER(X509_ALGOR)),
     ('digest', POINTER(ASN1_OCTET_STRING)),
@@ -1620,7 +1620,7 @@ assert sizeof(X509_sig_st) == 8, sizeof(X509_sig_st)
 assert alignment(X509_sig_st) == 4, alignment(X509_sig_st)
 X509_SIG = X509_sig_st
 kundi X509_name_entry_st(Structure):
-    pass
+    pita
 X509_name_entry_st._fields_ = [
     ('object', POINTER(ASN1_OBJECT)),
     ('value', POINTER(ASN1_STRING)),
@@ -1639,7 +1639,7 @@ X509_name_st._fields_ = [
 assert sizeof(X509_name_st) == 16, sizeof(X509_name_st)
 assert alignment(X509_name_st) == 4, alignment(X509_name_st)
 kundi X509_extension_st(Structure):
-    pass
+    pita
 X509_extension_st._fields_ = [
     ('object', POINTER(ASN1_OBJECT)),
     ('critical', ASN1_BOOLEAN),
@@ -1649,9 +1649,9 @@ assert sizeof(X509_extension_st) == 12, sizeof(X509_extension_st)
 assert alignment(X509_extension_st) == 4, alignment(X509_extension_st)
 X509_EXTENSION = X509_extension_st
 kundi x509_attributes_st(Structure):
-    pass
+    pita
 kundi N18x509_attributes_st4DOLLAR_13E(Union):
-    pass
+    pita
 N18x509_attributes_st4DOLLAR_13E._fields_ = [
     ('ptr', STRING),
     ('set', POINTER(STACK)),
@@ -1668,7 +1668,7 @@ assert sizeof(x509_attributes_st) == 12, sizeof(x509_attributes_st)
 assert alignment(x509_attributes_st) == 4, alignment(x509_attributes_st)
 X509_ATTRIBUTE = x509_attributes_st
 kundi X509_req_info_st(Structure):
-    pass
+    pita
 X509_req_info_st._fields_ = [
     ('enc', ASN1_ENCODING),
     ('version', POINTER(ASN1_INTEGER)),
@@ -1680,7 +1680,7 @@ assert sizeof(X509_req_info_st) == 28, sizeof(X509_req_info_st)
 assert alignment(X509_req_info_st) == 4, alignment(X509_req_info_st)
 X509_REQ_INFO = X509_req_info_st
 kundi X509_req_st(Structure):
-    pass
+    pita
 X509_req_st._fields_ = [
     ('req_info', POINTER(X509_REQ_INFO)),
     ('sig_alg', POINTER(X509_ALGOR)),
@@ -1691,7 +1691,7 @@ assert sizeof(X509_req_st) == 16, sizeof(X509_req_st)
 assert alignment(X509_req_st) == 4, alignment(X509_req_st)
 X509_REQ = X509_req_st
 kundi x509_cinf_st(Structure):
-    pass
+    pita
 x509_cinf_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('serialNumber', POINTER(ASN1_INTEGER)),
@@ -1708,7 +1708,7 @@ assert sizeof(x509_cinf_st) == 40, sizeof(x509_cinf_st)
 assert alignment(x509_cinf_st) == 4, alignment(x509_cinf_st)
 X509_CINF = x509_cinf_st
 kundi x509_cert_aux_st(Structure):
-    pass
+    pita
 x509_cert_aux_st._fields_ = [
     ('trust', POINTER(STACK)),
     ('reject', POINTER(STACK)),
@@ -1720,7 +1720,7 @@ assert sizeof(x509_cert_aux_st) == 20, sizeof(x509_cert_aux_st)
 assert alignment(x509_cert_aux_st) == 4, alignment(x509_cert_aux_st)
 X509_CERT_AUX = x509_cert_aux_st
 kundi AUTHORITY_KEYID_st(Structure):
-    pass
+    pita
 x509_st._fields_ = [
     ('cert_info', POINTER(X509_CINF)),
     ('sig_alg', POINTER(X509_ALGOR)),
@@ -1744,7 +1744,7 @@ assert alignment(x509_st) == 4, alignment(x509_st)
 AUTHORITY_KEYID_st._fields_ = [
 ]
 kundi x509_trust_st(Structure):
-    pass
+    pita
 x509_trust_st._fields_ = [
     ('trust', c_int),
     ('flags', c_int),
@@ -1757,7 +1757,7 @@ assert sizeof(x509_trust_st) == 24, sizeof(x509_trust_st)
 assert alignment(x509_trust_st) == 4, alignment(x509_trust_st)
 X509_TRUST = x509_trust_st
 kundi X509_revoked_st(Structure):
-    pass
+    pita
 X509_revoked_st._fields_ = [
     ('serialNumber', POINTER(ASN1_INTEGER)),
     ('revocationDate', POINTER(ASN1_TIME)),
@@ -1768,7 +1768,7 @@ assert sizeof(X509_revoked_st) == 16, sizeof(X509_revoked_st)
 assert alignment(X509_revoked_st) == 4, alignment(X509_revoked_st)
 X509_REVOKED = X509_revoked_st
 kundi X509_crl_info_st(Structure):
-    pass
+    pita
 X509_crl_info_st._fields_ = [
     ('version', POINTER(ASN1_INTEGER)),
     ('sig_alg', POINTER(X509_ALGOR)),
@@ -1791,7 +1791,7 @@ X509_crl_st._fields_ = [
 assert sizeof(X509_crl_st) == 16, sizeof(X509_crl_st)
 assert alignment(X509_crl_st) == 4, alignment(X509_crl_st)
 kundi private_key_st(Structure):
-    pass
+    pita
 private_key_st._fields_ = [
     ('version', c_int),
     ('enc_algor', POINTER(X509_ALGOR)),
@@ -1807,7 +1807,7 @@ assert sizeof(private_key_st) == 52, sizeof(private_key_st)
 assert alignment(private_key_st) == 4, alignment(private_key_st)
 X509_PKEY = private_key_st
 kundi X509_info_st(Structure):
-    pass
+    pita
 X509_info_st._fields_ = [
     ('x509', POINTER(X509)),
     ('crl', POINTER(X509_CRL)),
@@ -1821,7 +1821,7 @@ assert sizeof(X509_info_st) == 44, sizeof(X509_info_st)
 assert alignment(X509_info_st) == 4, alignment(X509_info_st)
 X509_INFO = X509_info_st
 kundi Netscape_spkac_st(Structure):
-    pass
+    pita
 Netscape_spkac_st._fields_ = [
     ('pubkey', POINTER(X509_PUBKEY)),
     ('challenge', POINTER(ASN1_IA5STRING)),
@@ -1830,7 +1830,7 @@ assert sizeof(Netscape_spkac_st) == 8, sizeof(Netscape_spkac_st)
 assert alignment(Netscape_spkac_st) == 4, alignment(Netscape_spkac_st)
 NETSCAPE_SPKAC = Netscape_spkac_st
 kundi Netscape_spki_st(Structure):
-    pass
+    pita
 Netscape_spki_st._fields_ = [
     ('spkac', POINTER(NETSCAPE_SPKAC)),
     ('sig_algor', POINTER(X509_ALGOR)),
@@ -1840,7 +1840,7 @@ assert sizeof(Netscape_spki_st) == 12, sizeof(Netscape_spki_st)
 assert alignment(Netscape_spki_st) == 4, alignment(Netscape_spki_st)
 NETSCAPE_SPKI = Netscape_spki_st
 kundi Netscape_certificate_sequence(Structure):
-    pass
+    pita
 Netscape_certificate_sequence._fields_ = [
     ('type', POINTER(ASN1_OBJECT)),
     ('certs', POINTER(STACK)),
@@ -1849,7 +1849,7 @@ assert sizeof(Netscape_certificate_sequence) == 8, sizeof(Netscape_certificate_s
 assert alignment(Netscape_certificate_sequence) == 4, alignment(Netscape_certificate_sequence)
 NETSCAPE_CERT_SEQUENCE = Netscape_certificate_sequence
 kundi PBEPARAM_st(Structure):
-    pass
+    pita
 PBEPARAM_st._fields_ = [
     ('salt', POINTER(ASN1_OCTET_STRING)),
     ('iter', POINTER(ASN1_INTEGER)),
@@ -1858,7 +1858,7 @@ assert sizeof(PBEPARAM_st) == 8, sizeof(PBEPARAM_st)
 assert alignment(PBEPARAM_st) == 4, alignment(PBEPARAM_st)
 PBEPARAM = PBEPARAM_st
 kundi PBE2PARAM_st(Structure):
-    pass
+    pita
 PBE2PARAM_st._fields_ = [
     ('keyfunc', POINTER(X509_ALGOR)),
     ('encryption', POINTER(X509_ALGOR)),
@@ -1867,7 +1867,7 @@ assert sizeof(PBE2PARAM_st) == 8, sizeof(PBE2PARAM_st)
 assert alignment(PBE2PARAM_st) == 4, alignment(PBE2PARAM_st)
 PBE2PARAM = PBE2PARAM_st
 kundi PBKDF2PARAM_st(Structure):
-    pass
+    pita
 PBKDF2PARAM_st._fields_ = [
     ('salt', POINTER(ASN1_TYPE)),
     ('iter', POINTER(ASN1_INTEGER)),
@@ -1878,7 +1878,7 @@ assert sizeof(PBKDF2PARAM_st) == 16, sizeof(PBKDF2PARAM_st)
 assert alignment(PBKDF2PARAM_st) == 4, alignment(PBKDF2PARAM_st)
 PBKDF2PARAM = PBKDF2PARAM_st
 kundi pkcs8_priv_key_info_st(Structure):
-    pass
+    pita
 pkcs8_priv_key_info_st._fields_ = [
     ('broken', c_int),
     ('version', POINTER(ASN1_INTEGER)),
@@ -1890,7 +1890,7 @@ assert sizeof(pkcs8_priv_key_info_st) == 20, sizeof(pkcs8_priv_key_info_st)
 assert alignment(pkcs8_priv_key_info_st) == 4, alignment(pkcs8_priv_key_info_st)
 PKCS8_PRIV_KEY_INFO = pkcs8_priv_key_info_st
 kundi x509_hash_dir_st(Structure):
-    pass
+    pita
 x509_hash_dir_st._fields_ = [
     ('num_dirs', c_int),
     ('dirs', POINTER(STRING)),
@@ -1901,7 +1901,7 @@ assert sizeof(x509_hash_dir_st) == 16, sizeof(x509_hash_dir_st)
 assert alignment(x509_hash_dir_st) == 4, alignment(x509_hash_dir_st)
 X509_HASH_DIR_CTX = x509_hash_dir_st
 kundi x509_file_st(Structure):
-    pass
+    pita
 x509_file_st._fields_ = [
     ('num_paths', c_int),
     ('num_alloced', c_int),
@@ -1912,9 +1912,9 @@ assert sizeof(x509_file_st) == 16, sizeof(x509_file_st)
 assert alignment(x509_file_st) == 4, alignment(x509_file_st)
 X509_CERT_FILE_CTX = x509_file_st
 kundi x509_object_st(Structure):
-    pass
+    pita
 kundi N14x509_object_st4DOLLAR_14E(Union):
-    pass
+    pita
 N14x509_object_st4DOLLAR_14E._fields_ = [
     ('ptr', STRING),
     ('x509', POINTER(X509)),
@@ -1931,10 +1931,10 @@ assert sizeof(x509_object_st) == 8, sizeof(x509_object_st)
 assert alignment(x509_object_st) == 4, alignment(x509_object_st)
 X509_OBJECT = x509_object_st
 kundi x509_lookup_st(Structure):
-    pass
+    pita
 X509_LOOKUP = x509_lookup_st
 kundi x509_lookup_method_st(Structure):
-    pass
+    pita
 x509_lookup_method_st._fields_ = [
     ('name', STRING),
     ('new_item', CFUNCTYPE(c_int, POINTER(X509_LOOKUP))),
@@ -2018,7 +2018,7 @@ va_list = __darwin_va_list
 __darwin_off_t = __int64_t
 fpos_t = __darwin_off_t
 kundi __sbuf(Structure):
-    pass
+    pita
 __sbuf._fields_ = [
     ('_base', POINTER(c_ubyte)),
     ('_size', c_int),
@@ -2026,11 +2026,11 @@ __sbuf._fields_ = [
 assert sizeof(__sbuf) == 8, sizeof(__sbuf)
 assert alignment(__sbuf) == 4, alignment(__sbuf)
 kundi __sFILEX(Structure):
-    pass
+    pita
 __sFILEX._fields_ = [
 ]
 kundi __sFILE(Structure):
-    pass
+    pita
 __sFILE._pack_ = 4
 __sFILE._fields_ = [
     ('_p', POINTER(c_ubyte)),
@@ -2060,7 +2060,7 @@ FILE = __sFILE
 ct_rune_t = __darwin_ct_rune_t
 rune_t = __darwin_rune_t
 kundi div_t(Structure):
-    pass
+    pita
 div_t._fields_ = [
     ('quot', c_int),
     ('rem', c_int),
@@ -2068,7 +2068,7 @@ div_t._fields_ = [
 assert sizeof(div_t) == 8, sizeof(div_t)
 assert alignment(div_t) == 4, alignment(div_t)
 kundi ldiv_t(Structure):
-    pass
+    pita
 ldiv_t._fields_ = [
     ('quot', c_long),
     ('rem', c_long),
@@ -2076,7 +2076,7 @@ ldiv_t._fields_ = [
 assert sizeof(ldiv_t) == 8, sizeof(ldiv_t)
 assert alignment(ldiv_t) == 4, alignment(ldiv_t)
 kundi lldiv_t(Structure):
-    pass
+    pita
 lldiv_t._pack_ = 4
 lldiv_t._fields_ = [
     ('quot', c_longlong),
@@ -2089,15 +2089,15 @@ dev_t = __darwin_dev_t
 __darwin_mode_t = __uint16_t
 mode_t = __darwin_mode_t
 kundi mcontext(Structure):
-    pass
+    pita
 mcontext._fields_ = [
 ]
 kundi mcontext64(Structure):
-    pass
+    pita
 mcontext64._fields_ = [
 ]
 kundi __darwin_pthread_handler_rec(Structure):
-    pass
+    pita
 __darwin_pthread_handler_rec._fields_ = [
     ('__routine', CFUNCTYPE(Tupu, c_void_p)),
     ('__arg', c_void_p),
@@ -2106,7 +2106,7 @@ __darwin_pthread_handler_rec._fields_ = [
 assert sizeof(__darwin_pthread_handler_rec) == 12, sizeof(__darwin_pthread_handler_rec)
 assert alignment(__darwin_pthread_handler_rec) == 4, alignment(__darwin_pthread_handler_rec)
 kundi _opaque_pthread_attr_t(Structure):
-    pass
+    pita
 _opaque_pthread_attr_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 36),
@@ -2114,7 +2114,7 @@ _opaque_pthread_attr_t._fields_ = [
 assert sizeof(_opaque_pthread_attr_t) == 40, sizeof(_opaque_pthread_attr_t)
 assert alignment(_opaque_pthread_attr_t) == 4, alignment(_opaque_pthread_attr_t)
 kundi _opaque_pthread_cond_t(Structure):
-    pass
+    pita
 _opaque_pthread_cond_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 24),
@@ -2122,7 +2122,7 @@ _opaque_pthread_cond_t._fields_ = [
 assert sizeof(_opaque_pthread_cond_t) == 28, sizeof(_opaque_pthread_cond_t)
 assert alignment(_opaque_pthread_cond_t) == 4, alignment(_opaque_pthread_cond_t)
 kundi _opaque_pthread_condattr_t(Structure):
-    pass
+    pita
 _opaque_pthread_condattr_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 4),
@@ -2130,7 +2130,7 @@ _opaque_pthread_condattr_t._fields_ = [
 assert sizeof(_opaque_pthread_condattr_t) == 8, sizeof(_opaque_pthread_condattr_t)
 assert alignment(_opaque_pthread_condattr_t) == 4, alignment(_opaque_pthread_condattr_t)
 kundi _opaque_pthread_mutex_t(Structure):
-    pass
+    pita
 _opaque_pthread_mutex_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 40),
@@ -2138,7 +2138,7 @@ _opaque_pthread_mutex_t._fields_ = [
 assert sizeof(_opaque_pthread_mutex_t) == 44, sizeof(_opaque_pthread_mutex_t)
 assert alignment(_opaque_pthread_mutex_t) == 4, alignment(_opaque_pthread_mutex_t)
 kundi _opaque_pthread_mutexattr_t(Structure):
-    pass
+    pita
 _opaque_pthread_mutexattr_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 8),
@@ -2146,7 +2146,7 @@ _opaque_pthread_mutexattr_t._fields_ = [
 assert sizeof(_opaque_pthread_mutexattr_t) == 12, sizeof(_opaque_pthread_mutexattr_t)
 assert alignment(_opaque_pthread_mutexattr_t) == 4, alignment(_opaque_pthread_mutexattr_t)
 kundi _opaque_pthread_once_t(Structure):
-    pass
+    pita
 _opaque_pthread_once_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 4),
@@ -2154,7 +2154,7 @@ _opaque_pthread_once_t._fields_ = [
 assert sizeof(_opaque_pthread_once_t) == 8, sizeof(_opaque_pthread_once_t)
 assert alignment(_opaque_pthread_once_t) == 4, alignment(_opaque_pthread_once_t)
 kundi _opaque_pthread_rwlock_t(Structure):
-    pass
+    pita
 _opaque_pthread_rwlock_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 124),
@@ -2162,7 +2162,7 @@ _opaque_pthread_rwlock_t._fields_ = [
 assert sizeof(_opaque_pthread_rwlock_t) == 128, sizeof(_opaque_pthread_rwlock_t)
 assert alignment(_opaque_pthread_rwlock_t) == 4, alignment(_opaque_pthread_rwlock_t)
 kundi _opaque_pthread_rwlockattr_t(Structure):
-    pass
+    pita
 _opaque_pthread_rwlockattr_t._fields_ = [
     ('__sig', c_long),
     ('__opaque', c_char * 12),
@@ -2170,7 +2170,7 @@ _opaque_pthread_rwlockattr_t._fields_ = [
 assert sizeof(_opaque_pthread_rwlockattr_t) == 16, sizeof(_opaque_pthread_rwlockattr_t)
 assert alignment(_opaque_pthread_rwlockattr_t) == 4, alignment(_opaque_pthread_rwlockattr_t)
 kundi _opaque_pthread_t(Structure):
-    pass
+    pita
 _opaque_pthread_t._fields_ = [
     ('__sig', c_long),
     ('__cleanup_stack', POINTER(__darwin_pthread_handler_rec)),
@@ -2206,7 +2206,7 @@ __darwin_uid_t = __uint32_t
 __darwin_useconds_t = __uint32_t
 __darwin_uuid_t = c_ubyte * 16
 kundi sigaltstack(Structure):
-    pass
+    pita
 sigaltstack._fields_ = [
     ('ss_sp', c_void_p),
     ('ss_size', __darwin_size_t),
@@ -2216,7 +2216,7 @@ assert sizeof(sigaltstack) == 12, sizeof(sigaltstack)
 assert alignment(sigaltstack) == 4, alignment(sigaltstack)
 __darwin_stack_t = sigaltstack
 kundi ucontext(Structure):
-    pass
+    pita
 ucontext._fields_ = [
     ('uc_onstack', c_int),
     ('uc_sigmask', __darwin_sigset_t),
@@ -2229,7 +2229,7 @@ assert sizeof(ucontext) == 32, sizeof(ucontext)
 assert alignment(ucontext) == 4, alignment(ucontext)
 __darwin_ucontext_t = ucontext
 kundi ucontext64(Structure):
-    pass
+    pita
 ucontext64._fields_ = [
     ('uc_onstack', c_int),
     ('uc_sigmask', __darwin_sigset_t),
@@ -2242,7 +2242,7 @@ assert sizeof(ucontext64) == 32, sizeof(ucontext64)
 assert alignment(ucontext64) == 4, alignment(ucontext64)
 __darwin_ucontext64_t = ucontext64
 kundi timeval(Structure):
-    pass
+    pita
 timeval._fields_ = [
     ('tv_sec', __darwin_time_t),
     ('tv_usec', __darwin_suseconds_t),
@@ -2251,7 +2251,7 @@ assert sizeof(timeval) == 8, sizeof(timeval)
 assert alignment(timeval) == 4, alignment(timeval)
 rlim_t = __int64_t
 kundi rusage(Structure):
-    pass
+    pita
 rusage._fields_ = [
     ('ru_utime', timeval),
     ('ru_stime', timeval),
@@ -2273,7 +2273,7 @@ rusage._fields_ = [
 assert sizeof(rusage) == 72, sizeof(rusage)
 assert alignment(rusage) == 4, alignment(rusage)
 kundi rlimit(Structure):
-    pass
+    pita
 rlimit._pack_ = 4
 rlimit._fields_ = [
     ('rlim_cur', rlim_t),
@@ -2289,7 +2289,7 @@ ucontext_t = __darwin_ucontext_t
 ucontext64_t = __darwin_ucontext64_t
 uid_t = __darwin_uid_t
 kundi sigval(Union):
-    pass
+    pita
 sigval._fields_ = [
     ('sival_int', c_int),
     ('sival_ptr', c_void_p),
@@ -2297,7 +2297,7 @@ sigval._fields_ = [
 assert sizeof(sigval) == 4, sizeof(sigval)
 assert alignment(sigval) == 4, alignment(sigval)
 kundi sigevent(Structure):
-    pass
+    pita
 sigevent._fields_ = [
     ('sigev_notify', c_int),
     ('sigev_signo', c_int),
@@ -2308,7 +2308,7 @@ sigevent._fields_ = [
 assert sizeof(sigevent) == 20, sizeof(sigevent)
 assert alignment(sigevent) == 4, alignment(sigevent)
 kundi __siginfo(Structure):
-    pass
+    pita
 pid_t = __darwin_pid_t
 __siginfo._fields_ = [
     ('si_signo', c_int),
@@ -2326,7 +2326,7 @@ assert sizeof(__siginfo) == 64, sizeof(__siginfo)
 assert alignment(__siginfo) == 4, alignment(__siginfo)
 siginfo_t = __siginfo
 kundi __sigaction_u(Union):
-    pass
+    pita
 __sigaction_u._fields_ = [
     ('__sa_handler', CFUNCTYPE(Tupu, c_int)),
     ('__sa_sigaction', CFUNCTYPE(Tupu, c_int, POINTER(__siginfo), c_void_p)),
@@ -2334,7 +2334,7 @@ __sigaction_u._fields_ = [
 assert sizeof(__sigaction_u) == 4, sizeof(__sigaction_u)
 assert alignment(__sigaction_u) == 4, alignment(__sigaction_u)
 kundi __sigaction(Structure):
-    pass
+    pita
 __sigaction._fields_ = [
     ('__sigaction_u', __sigaction_u),
     ('sa_tramp', CFUNCTYPE(Tupu, c_void_p, c_int, c_int, POINTER(siginfo_t), c_void_p)),
@@ -2344,7 +2344,7 @@ __sigaction._fields_ = [
 assert sizeof(__sigaction) == 16, sizeof(__sigaction)
 assert alignment(__sigaction) == 4, alignment(__sigaction)
 kundi sigaction(Structure):
-    pass
+    pita
 sigaction._fields_ = [
     ('__sigaction_u', __sigaction_u),
     ('sa_mask', sigset_t),
@@ -2355,7 +2355,7 @@ assert alignment(sigaction) == 4, alignment(sigaction)
 sig_t = CFUNCTYPE(Tupu, c_int)
 stack_t = __darwin_stack_t
 kundi sigvec(Structure):
-    pass
+    pita
 sigvec._fields_ = [
     ('sv_handler', CFUNCTYPE(Tupu, c_int)),
     ('sv_mask', c_int),
@@ -2364,7 +2364,7 @@ sigvec._fields_ = [
 assert sizeof(sigvec) == 12, sizeof(sigvec)
 assert alignment(sigvec) == 4, alignment(sigvec)
 kundi sigstack(Structure):
-    pass
+    pita
 sigstack._fields_ = [
     ('ss_sp', STRING),
     ('ss_onstack', c_int),
@@ -2400,7 +2400,7 @@ useconds_t = __darwin_useconds_t
 suseconds_t = __darwin_suseconds_t
 fd_mask = __int32_t
 kundi fd_set(Structure):
-    pass
+    pita
 fd_set._fields_ = [
     ('fds_bits', __int32_t * 32),
 ]
@@ -2422,9 +2422,9 @@ fsfilcnt_t = __darwin_fsfilcnt_t
 idtype_t = c_int # enum
 id_t = __darwin_id_t
 kundi wait(Union):
-    pass
+    pita
 kundi N4wait3DOLLAR_3E(Structure):
-    pass
+    pita
 N4wait3DOLLAR_3E._fields_ = [
     ('w_Termsig', c_uint, 7),
     ('w_Coredump', c_uint, 1),
@@ -2434,7 +2434,7 @@ N4wait3DOLLAR_3E._fields_ = [
 assert sizeof(N4wait3DOLLAR_3E) == 4, sizeof(N4wait3DOLLAR_3E)
 assert alignment(N4wait3DOLLAR_3E) == 4, alignment(N4wait3DOLLAR_3E)
 kundi N4wait3DOLLAR_4E(Structure):
-    pass
+    pita
 N4wait3DOLLAR_4E._fields_ = [
     ('w_Stopval', c_uint, 8),
     ('w_Stopsig', c_uint, 8),
@@ -2450,7 +2450,7 @@ wait._fields_ = [
 assert sizeof(wait) == 4, sizeof(wait)
 assert alignment(wait) == 4, alignment(wait)
 kundi timespec(Structure):
-    pass
+    pita
 timespec._fields_ = [
     ('tv_sec', time_t),
     ('tv_nsec', c_long),
@@ -2458,7 +2458,7 @@ timespec._fields_ = [
 assert sizeof(timespec) == 8, sizeof(timespec)
 assert alignment(timespec) == 4, alignment(timespec)
 kundi tm(Structure):
-    pass
+    pita
 tm._fields_ = [
     ('tm_sec', c_int),
     ('tm_min', c_int),
@@ -2643,7 +2643,7 @@ __all__ = ['ENGINE', 'pkcs7_enc_content_st', '__int16_t',
            'const_DES_cblock', '__darwin_fsblkcnt_t', 'dsa_st',
            'int_least8_t', 'MD2state_st', 'X509_EXTENSION',
            'GEN_SESSION_CB', 'int_least16_t', '__darwin_wctrans_t',
-           'PBKDF2PARAM', 'x509_lookup_method_st', 'pem_password_cb',
+           'PBKDF2PARAM', 'x509_lookup_method_st', 'pem_pitaword_cb',
            'X509_info_st', 'x509_store_st', '__darwin_natural_t',
            'X509_pubkey_st', 'pkcs7_digest_st', '__darwin_size_t',
            'ASN1_STRING_TABLE', 'OSLittleEndian', 'RIPEMD160state_st',

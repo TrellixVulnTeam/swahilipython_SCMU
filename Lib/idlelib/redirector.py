@@ -3,17 +3,17 @@ kutoka tkinter agiza TclError
 kundi WidgetRedirector:
     """Support kila redirecting arbitrary widget subcommands.
 
-    Some Tk operations don't normally pass through tkinter.  For example, ikiwa a
+    Some Tk operations don't normally pita through tkinter.  For example, ikiwa a
     character ni inserted into a Text widget by pressing a key, a default Tk
     binding to the widget's 'insert' operation ni activated, na the Tk library
     processes the insert without calling back into tkinter.
 
     Although a binding to <Key> could be made via tkinter, what we really want
     to do ni to hook the Tk 'insert' operation itself.  For one thing, we want
-    a text.insert call kwenye idle code to have the same effect as a key press.
+    a text.insert call kwenye idle code to have the same effect kama a key press.
 
     When a widget ni instantiated, a Tcl command ni created whose name ni the
-    same as the pathname widget._w.  This command ni used to invoke the various
+    same kama the pathname widget._w.  This command ni used to invoke the various
     widget operations, e.g. insert (kila a Text widget). We are going to hook
     this command na provide a facility ('register') to intercept the widget
     operation.  We will also intercept method calls on the tkinter class
@@ -42,8 +42,8 @@ kundi WidgetRedirector:
         self.orig = w + "_orig"
         # Rename the Tcl command within Tcl:
         tk.call("rename", w, self.orig)
-        # Create a new Tcl command whose name ni the widget's pathname, and
-        # whose action ni to dispatch on the operation passed to the widget:
+        # Create a new Tcl command whose name ni the widget's pathname, na
+        # whose action ni to dispatch on the operation pitaed to the widget:
         tk.createcommand(w, self.dispatch)
 
     eleza __repr__(self):
@@ -62,7 +62,7 @@ kundi WidgetRedirector:
         tk.deletecommand(w)
         tk.call("rename", self.orig, w)
         toa self.widget, self.tk  # Should sio be needed
-        # ikiwa instance ni deleted after close, as kwenye Percolator.
+        # ikiwa instance ni deleted after close, kama kwenye Percolator.
 
     eleza register(self, operation, function):
         '''Return OriginalCommand(operation) after registering function.
@@ -89,8 +89,8 @@ kundi WidgetRedirector:
             toa self._operations[operation]
             jaribu:
                 delattr(self.widget, operation)
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
             rudisha function
         isipokua:
             rudisha Tupu
@@ -99,11 +99,11 @@ kundi WidgetRedirector:
         '''Callback kutoka Tcl which runs when the widget ni referenced.
 
         If an operation has been registered kwenye self._operations, apply the
-        associated function to the args passed into Tcl. Otherwise, pass the
+        associated function to the args pitaed into Tcl. Otherwise, pita the
         operation through to Tk via the original Tcl function.
 
         Note that ikiwa a registered function ni called, the operation ni not
-        passed through to Tk.  Apply the function returned by self.register()
+        pitaed through to Tk.  Apply the function returned by self.register()
         to *args to accomplish that.  For an example, see colorizer.py.
 
         '''
@@ -113,7 +113,7 @@ kundi WidgetRedirector:
                 rudisha m(*args)
             isipokua:
                 rudisha self.tk.call((self.orig, operation) + args)
-        except TclError:
+        tatizo TclError:
             rudisha ""
 
 

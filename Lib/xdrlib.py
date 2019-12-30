@@ -14,7 +14,7 @@ __all__ = ["Error", "Packer", "Unpacker", "ConversionError"]
 kundi Error(Exception):
     """Exception kundi kila this module. Use:
 
-    except xdrlib.Error as var:
+    tatizo xdrlib.Error kama var:
         # var has the Error instance kila the exception
 
     Public ivars:
@@ -30,7 +30,7 @@ kundi Error(Exception):
 
 
 kundi ConversionError(Error):
-    pass
+    pita
 
 eleza raise_conversion_error(function):
     """ Wrap any raised struct.errors kwenye a ConversionError. """
@@ -39,8 +39,8 @@ eleza raise_conversion_error(function):
     eleza result(self, value):
         jaribu:
             rudisha function(self, value)
-        except struct.error as e:
-             ashiria ConversionError(e.args[0]) kutoka Tupu
+        tatizo struct.error kama e:
+            ashiria ConversionError(e.args[0]) kutoka Tupu
     rudisha result
 
 
@@ -75,12 +75,12 @@ kundi Packer:
     eleza pack_uhyper(self, x):
         jaribu:
             self.pack_uint(x>>32 & 0xffffffff)
-        except (TypeError, struct.error) as e:
-             ashiria ConversionError(e.args[0]) kutoka Tupu
+        tatizo (TypeError, struct.error) kama e:
+            ashiria ConversionError(e.args[0]) kutoka Tupu
         jaribu:
             self.pack_uint(x & 0xffffffff)
-        except (TypeError, struct.error) as e:
-             ashiria ConversionError(e.args[0]) kutoka Tupu
+        tatizo (TypeError, struct.error) kama e:
+            ashiria ConversionError(e.args[0]) kutoka Tupu
 
     pack_hyper = pack_uhyper
 
@@ -94,7 +94,7 @@ kundi Packer:
 
     eleza pack_fstring(self, n, s):
         ikiwa n < 0:
-             ashiria ValueError('fstring size must be nonnegative')
+            ashiria ValueError('fstring size must be nonnegative')
         data = s[:n]
         n = ((n+3)//4)*4
         data = data + (n - len(data)) * b'\0'
@@ -118,7 +118,7 @@ kundi Packer:
 
     eleza pack_farray(self, n, list, pack_item):
         ikiwa len(list) != n:
-             ashiria ValueError('wrong array size')
+            ashiria ValueError('wrong array size')
         kila item kwenye list:
             pack_item(item)
 
@@ -150,14 +150,14 @@ kundi Unpacker:
 
     eleza done(self):
         ikiwa self.__pos < len(self.__buf):
-             ashiria Error('unextracted data remains')
+            ashiria Error('unextracted data remains')
 
     eleza unpack_uint(self):
         i = self.__pos
         self.__pos = j = i+4
         data = self.__buf[i:j]
         ikiwa len(data) < 4:
-             ashiria EOFError
+            ashiria EOFError
         rudisha struct.unpack('>L', data)[0]
 
     eleza unpack_int(self):
@@ -165,7 +165,7 @@ kundi Unpacker:
         self.__pos = j = i+4
         data = self.__buf[i:j]
         ikiwa len(data) < 4:
-             ashiria EOFError
+            ashiria EOFError
         rudisha struct.unpack('>l', data)[0]
 
     unpack_enum = unpack_int
@@ -189,7 +189,7 @@ kundi Unpacker:
         self.__pos = j = i+4
         data = self.__buf[i:j]
         ikiwa len(data) < 4:
-             ashiria EOFError
+            ashiria EOFError
         rudisha struct.unpack('>f', data)[0]
 
     eleza unpack_double(self):
@@ -197,16 +197,16 @@ kundi Unpacker:
         self.__pos = j = i+8
         data = self.__buf[i:j]
         ikiwa len(data) < 8:
-             ashiria EOFError
+            ashiria EOFError
         rudisha struct.unpack('>d', data)[0]
 
     eleza unpack_fstring(self, n):
         ikiwa n < 0:
-             ashiria ValueError('fstring size must be nonnegative')
+            ashiria ValueError('fstring size must be nonnegative')
         i = self.__pos
         j = i + (n+3)//4*4
         ikiwa j > len(self.__buf):
-             ashiria EOFError
+            ashiria EOFError
         self.__pos = j
         rudisha self.__buf[i:i+n]
 
@@ -225,7 +225,7 @@ kundi Unpacker:
             x = self.unpack_uint()
             ikiwa x == 0: koma
             ikiwa x != 1:
-                 ashiria ConversionError('0 ama 1 expected, got %r' % (x,))
+                ashiria ConversionError('0 ama 1 expected, got %r' % (x,))
             item = unpack_item()
             list.append(item)
         rudisha list

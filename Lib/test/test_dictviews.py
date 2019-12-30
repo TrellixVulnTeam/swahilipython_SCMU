@@ -77,15 +77,15 @@ kundi DictSetTest(unittest.TestCase):
         self.assertIsInstance(repr(d), str)
         r = repr(d.items())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_items([('a', 'ABC'), (1, 10)])" or
+        self.assertKweli(r == "dict_items([('a', 'ABC'), (1, 10)])" ama
                         r == "dict_items([(1, 10), ('a', 'ABC')])")
         r = repr(d.keys())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_keys(['a', 1])" or
+        self.assertKweli(r == "dict_keys(['a', 1])" ama
                         r == "dict_keys([1, 'a'])")
         r = repr(d.values())
         self.assertIsInstance(r, str)
-        self.assertKweli(r == "dict_values(['ABC', 10])" or
+        self.assertKweli(r == "dict_values(['ABC', 10])" ama
                         r == "dict_values([10, 'ABC'])")
 
     eleza test_keys_set_operations(self):
@@ -204,7 +204,7 @@ kundi DictSetTest(unittest.TestCase):
         d = {}
         d[42] = d.values()
         r = repr(d)
-        # Cannot perform a stronger test, as the contents of the repr
+        # Cannot perform a stronger test, kama the contents of the repr
         # are implementation-dependent.  All we can say ni that we
         # want a str result, sio an exception of any sort.
         self.assertIsInstance(r, str)
@@ -227,13 +227,13 @@ kundi DictSetTest(unittest.TestCase):
 
     eleza test_compare_error(self):
         kundi Exc(Exception):
-            pass
+            pita
 
         kundi BadEq:
             eleza __hash__(self):
                 rudisha 7
             eleza __eq__(self, other):
-                 ashiria Exc
+                ashiria Exc
 
         k1, k2 = BadEq(), BadEq()
         v1, v2 = BadEq(), BadEq()

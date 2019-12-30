@@ -91,7 +91,7 @@ eleza _resolve(name):
         used = used + '.' + n
         jaribu:
             found = getattr(found, n)
-        except AttributeError:
+        tatizo AttributeError:
             __import__(used)
             found = getattr(found, n)
     rudisha found
@@ -136,7 +136,7 @@ eleza _install_handlers(cp, formatters):
         fmt = section.get("formatter", "")
         jaribu:
             klass = eval(klass, vars(logging))
-        except (AttributeError, NameError):
+        tatizo (AttributeError, NameError):
             klass = _resolve(klass)
         args = section.get("args", '()')
         args = eval(args, vars(logging))
@@ -161,11 +161,11 @@ eleza _install_handlers(cp, formatters):
 eleza _handle_existing_loggers(existing, child_loggers, disable_existing):
     """
     When (re)configuring logging, handle loggers which were kwenye the previous
-    configuration but are sio kwenye the new configuration. There's no point
-    deleting them as other threads may endelea to hold references to them;
+    configuration but are haiko kwenye the new configuration. There's no point
+    deleting them kama other threads may endelea to hold references to them;
     na by disabling them, you stop them doing any logging.
 
-    However, don't disable children of named loggers, as that's probably not
+    However, don't disable children of named loggers, kama that's probably not
     what was intended by the user. Also, allow existing loggers to NOT be
     disabled ikiwa disable_existing ni false.
     """
@@ -207,11 +207,11 @@ eleza _install_loggers(cp, handlers, disable_existing):
     #we don't want to lose the existing loggers,
     #since other threads may have pointers to them.
     #existing ni set to contain all existing loggers,
-    #and as we go through the new configuration we
+    #and kama we go through the new configuration we
     #remove any which are configured. At the end,
     #what's left kwenye existing ni the set of loggers
     #which were kwenye the previous configuration but
-    #which are sio kwenye the new configuration.
+    #which are haiko kwenye the new configuration.
     existing = list(root.manager.loggerDict.keys())
     #The list needs to be sorted so that we can
     #avoid disabling child loggers of explicitly
@@ -252,9 +252,9 @@ eleza _install_loggers(cp, handlers, disable_existing):
                 logger.addHandler(handlers[hand])
 
     #Disable any old loggers. There's no point deleting
-    #them as other threads may endelea to hold references
+    #them kama other threads may endelea to hold references
     #and by disabling them, you stop them doing any logging.
-    #However, don't disable children of named loggers, as that's
+    #However, don't disable children of named loggers, kama that's
     #probably sio what was intended by the user.
     #kila log kwenye existing:
     #    logger = root.manager.loggerDict[log]
@@ -262,7 +262,7 @@ eleza _install_loggers(cp, handlers, disable_existing):
     #        logger.level = logging.NOTSET
     #        logger.handlers = []
     #        logger.propagate = 1
-    #    elikiwa disable_existing_loggers:
+    #    lasivyo disable_existing_loggers:
     #        logger.disabled = 1
     _handle_existing_loggers(existing, child_loggers, disable_existing)
 
@@ -280,7 +280,7 @@ IDENTIFIER = re.compile('^[a-z_][a-z0-9_]*$', re.I)
 eleza valid_ident(s):
     m = IDENTIFIER.match(s)
     ikiwa sio m:
-         ashiria ValueError('Not a valid Python identifier: %r' % s)
+        ashiria ValueError('Not a valid Python identifier: %r' % s)
     rudisha Kweli
 
 
@@ -386,15 +386,15 @@ kundi BaseConfigurator(object):
                 used += '.' + frag
                 jaribu:
                     found = getattr(found, frag)
-                except AttributeError:
+                tatizo AttributeError:
                     self.importer(used)
                     found = getattr(found, frag)
             rudisha found
-        except ImportError:
+        tatizo ImportError:
             e, tb = sys.exc_info()[1:]
             v = ValueError('Cannot resolve %r: %s' % (s, e))
             v.__cause__, v.__traceback__ = e, tb
-             ashiria v
+            ashiria v
 
     eleza ext_convert(self, value):
         """Default converter kila the ext:// protocol."""
@@ -405,7 +405,7 @@ kundi BaseConfigurator(object):
         rest = value
         m = self.WORD_PATTERN.match(rest)
         ikiwa m ni Tupu:
-             ashiria ValueError("Unable to convert %r" % value)
+            ashiria ValueError("Unable to convert %r" % value)
         isipokua:
             rest = rest[m.end():]
             d = self.config[m.groups()[0]]
@@ -422,14 +422,14 @@ kundi BaseConfigurator(object):
                             d = d[idx]
                         isipokua:
                             jaribu:
-                                n = int(idx) # try as number first (most likely)
+                                n = int(idx) # try kama number first (most likely)
                                 d = d[n]
-                            except TypeError:
+                            tatizo TypeError:
                                 d = d[idx]
                 ikiwa m:
                     rest = rest[m.end():]
                 isipokua:
-                     ashiria ValueError('Unable to convert '
+                    ashiria ValueError('Unable to convert '
                                      '%r at %r' % (value, rest))
         #rest should be empty
         rudisha d
@@ -443,14 +443,14 @@ kundi BaseConfigurator(object):
         ikiwa sio isinstance(value, ConvertingDict) na isinstance(value, dict):
             value = ConvertingDict(value)
             value.configurator = self
-        elikiwa sio isinstance(value, ConvertingList) na isinstance(value, list):
+        lasivyo sio isinstance(value, ConvertingList) na isinstance(value, list):
             value = ConvertingList(value)
             value.configurator = self
-        elikiwa sio isinstance(value, ConvertingTuple) and\
+        lasivyo sio isinstance(value, ConvertingTuple) and\
                  isinstance(value, tuple):
             value = ConvertingTuple(value)
             value.configurator = self
-        elikiwa isinstance(value, str): # str kila py3k
+        lasivyo isinstance(value, str): # str kila py3k
             m = self.CONVERT_PATTERN.match(value)
             ikiwa m:
                 d = m.groupdict()
@@ -492,10 +492,10 @@ kundi DictConfigurator(BaseConfigurator):
         """Do the configuration."""
 
         config = self.config
-        ikiwa 'version' sio kwenye config:
-             ashiria ValueError("dictionary doesn't specify a version")
+        ikiwa 'version' haiko kwenye config:
+            ashiria ValueError("dictionary doesn't specify a version")
         ikiwa config['version'] != 1:
-             ashiria ValueError("Unsupported version: %s" % config['version'])
+            ashiria ValueError("Unsupported version: %s" % config['version'])
         incremental = config.pop('incremental', Uongo)
         EMPTY_DICT = {}
         logging._acquireLock()
@@ -503,8 +503,8 @@ kundi DictConfigurator(BaseConfigurator):
             ikiwa incremental:
                 handlers = config.get('handlers', EMPTY_DICT)
                 kila name kwenye handlers:
-                    ikiwa name sio kwenye logging._handlers:
-                         ashiria ValueError('No handler found ukijumuisha '
+                    ikiwa name haiko kwenye logging._handlers:
+                        ashiria ValueError('No handler found ukijumuisha '
                                          'name %r'  % name)
                     isipokua:
                         jaribu:
@@ -513,22 +513,22 @@ kundi DictConfigurator(BaseConfigurator):
                             level = handler_config.get('level', Tupu)
                             ikiwa level:
                                 handler.setLevel(logging._checkLevel(level))
-                        except Exception as e:
-                             ashiria ValueError('Unable to configure handler '
+                        tatizo Exception kama e:
+                            ashiria ValueError('Unable to configure handler '
                                              '%r' % name) kutoka e
                 loggers = config.get('loggers', EMPTY_DICT)
                 kila name kwenye loggers:
                     jaribu:
                         self.configure_logger(name, loggers[name], Kweli)
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure logger '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure logger '
                                          '%r' % name) kutoka e
                 root = config.get('root', Tupu)
                 ikiwa root:
                     jaribu:
                         self.configure_root(root, Kweli)
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure root '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure root '
                                          'logger') kutoka e
             isipokua:
                 disable_existing = config.pop('disable_existing_loggers', Kweli)
@@ -541,16 +541,16 @@ kundi DictConfigurator(BaseConfigurator):
                     jaribu:
                         formatters[name] = self.configure_formatter(
                                                             formatters[name])
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure '
                                          'formatter %r' % name) kutoka e
                 # Next, do filters - they don't refer to anything else, either
                 filters = config.get('filters', EMPTY_DICT)
                 kila name kwenye filters:
                     jaribu:
                         filters[name] = self.configure_filter(filters[name])
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure '
                                          'filter %r' % name) kutoka e
 
                 # Next, do handlers - they refer to formatters na filters
@@ -563,11 +563,11 @@ kundi DictConfigurator(BaseConfigurator):
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception as e:
+                    tatizo Exception kama e:
                         ikiwa 'target sio configured yet' kwenye str(e.__cause__):
                             deferred.append(name)
                         isipokua:
-                             ashiria ValueError('Unable to configure handler '
+                            ashiria ValueError('Unable to configure handler '
                                              '%r' % name) kutoka e
 
                 # Now do any that were deferred
@@ -576,8 +576,8 @@ kundi DictConfigurator(BaseConfigurator):
                         handler = self.configure_handler(handlers[name])
                         handler.name = name
                         handlers[name] = handler
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure handler '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure handler '
                                          '%r' % name) kutoka e
 
                 # Next, do loggers - they refer to handlers na filters
@@ -585,11 +585,11 @@ kundi DictConfigurator(BaseConfigurator):
                 #we don't want to lose the existing loggers,
                 #since other threads may have pointers to them.
                 #existing ni set to contain all existing loggers,
-                #and as we go through the new configuration we
+                #and kama we go through the new configuration we
                 #remove any which are configured. At the end,
                 #what's left kwenye existing ni the set of loggers
                 #which were kwenye the previous configuration but
-                #which are sio kwenye the new configuration.
+                #which are haiko kwenye the new configuration.
                 root = logging.root
                 existing = list(root.manager.loggerDict.keys())
                 #The list needs to be sorted so that we can
@@ -615,14 +615,14 @@ kundi DictConfigurator(BaseConfigurator):
                         existing.remove(name)
                     jaribu:
                         self.configure_logger(name, loggers[name])
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure logger '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure logger '
                                          '%r' % name) kutoka e
 
                 #Disable any old loggers. There's no point deleting
-                #them as other threads may endelea to hold references
+                #them kama other threads may endelea to hold references
                 #and by disabling them, you stop them doing any logging.
-                #However, don't disable children of named loggers, as that's
+                #However, don't disable children of named loggers, kama that's
                 #probably sio what was intended by the user.
                 #kila log kwenye existing:
                 #    logger = root.manager.loggerDict[log]
@@ -630,7 +630,7 @@ kundi DictConfigurator(BaseConfigurator):
                 #        logger.level = logging.NOTSET
                 #        logger.handlers = []
                 #        logger.propagate = Kweli
-                #    elikiwa disable_existing:
+                #    lasivyo disable_existing:
                 #        logger.disabled = Kweli
                 _handle_existing_loggers(existing, child_loggers,
                                          disable_existing)
@@ -640,8 +640,8 @@ kundi DictConfigurator(BaseConfigurator):
                 ikiwa root:
                     jaribu:
                         self.configure_root(root)
-                    except Exception as e:
-                         ashiria ValueError('Unable to configure root '
+                    tatizo Exception kama e:
+                        ashiria ValueError('Unable to configure root '
                                          'logger') kutoka e
         mwishowe:
             logging._releaseLock()
@@ -652,8 +652,8 @@ kundi DictConfigurator(BaseConfigurator):
             factory = config['()'] # kila use kwenye exception handler
             jaribu:
                 result = self.configure_custom(config)
-            except TypeError as te:
-                ikiwa "'format'" sio kwenye str(te):
+            tatizo TypeError kama te:
+                ikiwa "'format'" haiko kwenye str(te):
                     raise
                 #Name of parameter changed kutoka fmt to format.
                 #Retry ukijumuisha old name.
@@ -673,8 +673,8 @@ kundi DictConfigurator(BaseConfigurator):
             isipokua:
                 c = _resolve(cname)
 
-            # A TypeError would be raised ikiwa "validate" key ni passed kwenye ukijumuisha a formatter callable
-            # that does sio accept "validate" as a parameter
+            # A TypeError would be raised ikiwa "validate" key ni pitaed kwenye ukijumuisha a formatter callable
+            # that does sio accept "validate" kama a parameter
             ikiwa 'validate' kwenye config:  # ikiwa user hasn't mentioned it, the default will be fine
                 result = c(fmt, dfmt, style, config['validate'])
             isipokua:
@@ -696,8 +696,8 @@ kundi DictConfigurator(BaseConfigurator):
         kila f kwenye filters:
             jaribu:
                 filterer.addFilter(self.config['filters'][f])
-            except Exception as e:
-                 ashiria ValueError('Unable to add filter %r' % f) kutoka e
+            tatizo Exception kama e:
+                ashiria ValueError('Unable to add filter %r' % f) kutoka e
 
     eleza configure_handler(self, config):
         """Configure a handler kutoka a dictionary."""
@@ -706,8 +706,8 @@ kundi DictConfigurator(BaseConfigurator):
         ikiwa formatter:
             jaribu:
                 formatter = self.config['formatters'][formatter]
-            except Exception as e:
-                 ashiria ValueError('Unable to set formatter '
+            tatizo Exception kama e:
+                ashiria ValueError('Unable to set formatter '
                                  '%r' % formatter) kutoka e
         level = config.pop('level', Tupu)
         filters = config.pop('filters', Tupu)
@@ -726,15 +726,15 @@ kundi DictConfigurator(BaseConfigurator):
                     th = self.config['handlers'][config['target']]
                     ikiwa sio isinstance(th, logging.Handler):
                         config.update(config_copy)  # restore kila deferred cfg
-                         ashiria TypeError('target sio configured yet')
+                        ashiria TypeError('target sio configured yet')
                     config['target'] = th
-                except Exception as e:
-                     ashiria ValueError('Unable to set target handler '
+                tatizo Exception kama e:
+                    ashiria ValueError('Unable to set target handler '
                                      '%r' % config['target']) kutoka e
-            elikiwa issubclass(klass, logging.handlers.SMTPHandler) and\
+            lasivyo issubclass(klass, logging.handlers.SMTPHandler) and\
                 'mailhost' kwenye config:
                 config['mailhost'] = self.as_tuple(config['mailhost'])
-            elikiwa issubclass(klass, logging.handlers.SysLogHandler) and\
+            lasivyo issubclass(klass, logging.handlers.SysLogHandler) and\
                 'address' kwenye config:
                 config['address'] = self.as_tuple(config['address'])
             factory = klass
@@ -742,8 +742,8 @@ kundi DictConfigurator(BaseConfigurator):
         kwargs = {k: config[k] kila k kwenye config ikiwa valid_ident(k)}
         jaribu:
             result = factory(**kwargs)
-        except TypeError as te:
-            ikiwa "'stream'" sio kwenye str(te):
+        tatizo TypeError kama te:
+            ikiwa "'stream'" haiko kwenye str(te):
                 raise
             #The argument name changed kutoka strm to stream
             #Retry ukijumuisha old name.
@@ -767,8 +767,8 @@ kundi DictConfigurator(BaseConfigurator):
         kila h kwenye handlers:
             jaribu:
                 logger.addHandler(self.config['handlers'][h])
-            except Exception as e:
-                 ashiria ValueError('Unable to add handler %r' % h) kutoka e
+            tatizo Exception kama e:
+                ashiria ValueError('Unable to add handler %r' % h) kutoka e
 
     eleza common_logger_config(self, logger, config, incremental=Uongo):
         """
@@ -813,7 +813,7 @@ eleza listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Tupu):
     Start up a socket server on the specified port, na listen kila new
     configurations.
 
-    These will be sent as a file suitable kila processing by fileConfig().
+    These will be sent kama a file suitable kila processing by fileConfig().
     Returns a Thread object on which you can call start() to start the server,
     na which you can join() when appropriate. To stop the server, call
     stopListening().
@@ -822,10 +822,10 @@ eleza listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Tupu):
     kutoka a client. If specified, it should be a callable which receives a
     single argument - the bytes of configuration data received across the
     network - na it should rudisha either ``Tupu``, to indicate that the
-    passed kwenye bytes could sio be verified na should be discarded, ama a
-    byte string which ni then passed to the configuration machinery as
+    pitaed kwenye bytes could sio be verified na should be discarded, ama a
+    byte string which ni then pitaed to the configuration machinery as
     normal. Note that you can rudisha transformed bytes, e.g. by decrypting
-    the bytes passed in.
+    the bytes pitaed in.
     """
 
     kundi ConfigStreamHandler(StreamRequestHandler):
@@ -860,17 +860,17 @@ eleza listen(port=DEFAULT_LOGGING_CONFIG_PORT, verify=Tupu):
                             d =json.loads(chunk)
                             assert isinstance(d, dict)
                             dictConfig(d)
-                        except Exception:
+                        tatizo Exception:
                             #Apply new configuration.
 
                             file = io.StringIO(chunk)
                             jaribu:
                                 fileConfig(file)
-                            except Exception:
+                            tatizo Exception:
                                 traceback.print_exc()
                     ikiwa self.server.ready:
                         self.server.ready.set()
-            except OSError as e:
+            tatizo OSError kama e:
                 ikiwa e.errno != RESET_ERROR:
                     raise
 

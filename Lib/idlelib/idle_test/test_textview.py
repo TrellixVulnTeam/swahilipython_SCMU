@@ -5,7 +5,7 @@ is a widget containing a widget, etcetera, all tests must be gui tests.
 Using mock Text would sio change this.  Other mocks are used to retrieve
 information about calls.
 """
-kutoka idlelib agiza textview as tv
+kutoka idlelib agiza textview kama tv
 kutoka test.support agiza requires
 requires('gui')
 
@@ -223,7 +223,7 @@ kundi ButtonClickTest(unittest.TestCase):
         self.assertEqual(self.called, Kweli)
         self.assertEqual(self.view.title(), 'TITLE_FILE')
         get = self.view.viewframe.textframe.text.get
-        ukijumuisha open(__file__) as f:
+        ukijumuisha open(__file__) kama f:
             self.assertEqual(get('1.0', '1.end'), f.readline().strip())
             f.readline()
             self.assertEqual(get('3.0', '3.end'), f.readline().strip())

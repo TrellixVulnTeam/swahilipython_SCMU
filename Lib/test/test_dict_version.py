@@ -175,7 +175,7 @@ kundi DictVersionTests(unittest.TestCase):
 
 
 kundi Dict(dict):
-    pass
+    pita
 
 
 kundi DictSubtypeVersionTests(DictVersionTests):

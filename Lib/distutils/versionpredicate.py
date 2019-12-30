@@ -21,7 +21,7 @@ eleza splitUp(pred):
     """
     res = re_splitComparison.match(pred)
     ikiwa sio res:
-         ashiria ValueError("bad package restriction syntax: %r" % pred)
+        ashiria ValueError("bad package restriction syntax: %r" % pred)
     comp, verStr = res.groups()
     rudisha (comp, distutils.version.StrictVersion(verStr))
 
@@ -69,7 +69,7 @@ kundi VersionPredicate:
     >>> v.satisfied_by('0.2')
     Uongo
 
-    If any version numbers passed kwenye do sio conform to the
+    If any version numbers pitaed kwenye do sio conform to the
     restrictions of `StrictVersion`, a `ValueError` ni raised::
 
     >>> v = VersionPredicate('p1.p2.p3.p4(>=1.0, <=1.3a1, !=1.2zb3)')
@@ -78,7 +78,7 @@ kundi VersionPredicate:
     ValueError: invalid version number '1.2zb3'
 
     It the module ama package name given does sio conform to what's
-    allowed as a legal module ama package name, `ValueError` is
+    allowed kama a legal module ama package name, `ValueError` is
     raised::
 
     >>> v = VersionPredicate('foo-bar')
@@ -102,20 +102,20 @@ kundi VersionPredicate:
 
         versionPredicateStr = versionPredicateStr.strip()
         ikiwa sio versionPredicateStr:
-             ashiria ValueError("empty package restriction")
+            ashiria ValueError("empty package restriction")
         match = re_validPackage.match(versionPredicateStr)
         ikiwa sio match:
-             ashiria ValueError("bad package name kwenye %r" % versionPredicateStr)
+            ashiria ValueError("bad package name kwenye %r" % versionPredicateStr)
         self.name, paren = match.groups()
         paren = paren.strip()
         ikiwa paren:
             match = re_paren.match(paren)
             ikiwa sio match:
-                 ashiria ValueError("expected parenthesized list: %r" % paren)
+                ashiria ValueError("expected parenthesized list: %r" % paren)
             str = match.groups()[0]
             self.pred = [splitUp(aPred) kila aPred kwenye str.split(",")]
             ikiwa sio self.pred:
-                 ashiria ValueError("empty parenthesized list kwenye %r"
+                ashiria ValueError("empty parenthesized list kwenye %r"
                                  % versionPredicateStr)
         isipokua:
             self.pred = []
@@ -143,7 +143,7 @@ _provision_rx = Tupu
 eleza split_provision(value):
     """Return the name na optional version number of a provision.
 
-    The version number, ikiwa given, will be returned as a `StrictVersion`
+    The version number, ikiwa given, will be returned kama a `StrictVersion`
     instance, otherwise it will be `Tupu`.
 
     >>> split_provision('mypkg')
@@ -159,7 +159,7 @@ eleza split_provision(value):
     value = value.strip()
     m = _provision_rx.match(value)
     ikiwa sio m:
-         ashiria ValueError("illegal provides specification: %r" % value)
+        ashiria ValueError("illegal provides specification: %r" % value)
     ver = m.group(2) ama Tupu
     ikiwa ver:
         ver = distutils.version.StrictVersion(ver)

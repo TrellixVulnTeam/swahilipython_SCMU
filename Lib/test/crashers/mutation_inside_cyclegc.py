@@ -13,7 +13,7 @@
 agiza weakref
 
 kundi A(object):
-    pass
+    pita
 
 eleza callback(x):
     toa lst[:]

@@ -20,7 +20,7 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         t = st1.totuple()
         jaribu:
             st2 = parser.sequence2st(t)
-        except parser.ParserError as why:
+        tatizo parser.ParserError kama why:
             self.fail("could sio roundtrip %r: %s" % (s, why))
 
         self.assertEqual(t, st2.totuple(),
@@ -29,8 +29,8 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
     eleza check_expr(self, s):
         self.roundtrip(parser.expr, s)
 
-    eleza test_flags_passed(self):
-        # The unicode literals flags has to be passed kutoka the parser to AST
+    eleza test_flags_pitaed(self):
+        # The unicode literals flags has to be pitaed kutoka the parser to AST
         # generation.
         suite = parser.suite("kutoka __future__ agiza unicode_literals; x = ''")
         code = suite.compile()
@@ -41,15 +41,15 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
     eleza check_suite(self, s):
         self.roundtrip(parser.suite, s)
 
-    eleza test_yield_statement(self):
+    eleza test_tuma_statement(self):
         self.check_suite("eleza f(): tuma 1")
-        self.check_suite("eleza f(): yield")
-        self.check_suite("eleza f(): x += yield")
+        self.check_suite("eleza f(): tuma")
+        self.check_suite("eleza f(): x += tuma")
         self.check_suite("eleza f(): x = tuma 1")
         self.check_suite("eleza f(): x = y = tuma 1")
-        self.check_suite("eleza f(): x = yield")
-        self.check_suite("eleza f(): x = y = yield")
-        self.check_suite("eleza f(): 1 + (yield)*2")
+        self.check_suite("eleza f(): x = tuma")
+        self.check_suite("eleza f(): x = y = tuma")
+        self.check_suite("eleza f(): 1 + (tuma)*2")
         self.check_suite("eleza f(): (tuma 1)*2")
         self.check_suite("eleza f(): return; tuma 1")
         self.check_suite("eleza f(): tuma 1; return")
@@ -61,7 +61,7 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
                          "    kila x kwenye range(30):\n"
                          "        tuma x\n")
         self.check_suite("eleza f():\n"
-                         "    ikiwa (yield):\n"
+                         "    ikiwa (tuma):\n"
                          "        tuma x\n")
 
     eleza test_await_statement(self):
@@ -73,12 +73,12 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("async eleza f():\n await foo(); rudisha 42")
 
     eleza test_async_with_statement(self):
-        self.check_suite("async eleza f():\n async ukijumuisha 1: pass")
-        self.check_suite("async eleza f():\n async ukijumuisha a as b, c as d: pass")
+        self.check_suite("async eleza f():\n async ukijumuisha 1: pita")
+        self.check_suite("async eleza f():\n async ukijumuisha a kama b, c kama d: pita")
 
     eleza test_async_for_statement(self):
-        self.check_suite("async eleza f():\n async kila i kwenye (): pass")
-        self.check_suite("async eleza f():\n async kila i, b kwenye (): pass")
+        self.check_suite("async eleza f():\n async kila i kwenye (): pita")
+        self.check_suite("async eleza f():\n async kila i, b kwenye (): pita")
 
     eleza test_nonlocal_statement(self):
         self.check_suite("eleza f():\n"
@@ -195,107 +195,107 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("a **= b")
 
     eleza test_function_defs(self):
-        self.check_suite("eleza f(): pass")
-        self.check_suite("eleza f(*args): pass")
-        self.check_suite("eleza f(*args, **kw): pass")
-        self.check_suite("eleza f(**kw): pass")
-        self.check_suite("eleza f(foo=bar): pass")
-        self.check_suite("eleza f(foo=bar, *args): pass")
-        self.check_suite("eleza f(foo=bar, *args, **kw): pass")
-        self.check_suite("eleza f(foo=bar, **kw): pass")
+        self.check_suite("eleza f(): pita")
+        self.check_suite("eleza f(*args): pita")
+        self.check_suite("eleza f(*args, **kw): pita")
+        self.check_suite("eleza f(**kw): pita")
+        self.check_suite("eleza f(foo=bar): pita")
+        self.check_suite("eleza f(foo=bar, *args): pita")
+        self.check_suite("eleza f(foo=bar, *args, **kw): pita")
+        self.check_suite("eleza f(foo=bar, **kw): pita")
 
-        self.check_suite("eleza f(a, b): pass")
-        self.check_suite("eleza f(a, b, *args): pass")
-        self.check_suite("eleza f(a, b, *args, **kw): pass")
-        self.check_suite("eleza f(a, b, **kw): pass")
-        self.check_suite("eleza f(a, b, foo=bar): pass")
-        self.check_suite("eleza f(a, b, foo=bar, *args): pass")
-        self.check_suite("eleza f(a, b, foo=bar, *args, **kw): pass")
-        self.check_suite("eleza f(a, b, foo=bar, **kw): pass")
+        self.check_suite("eleza f(a, b): pita")
+        self.check_suite("eleza f(a, b, *args): pita")
+        self.check_suite("eleza f(a, b, *args, **kw): pita")
+        self.check_suite("eleza f(a, b, **kw): pita")
+        self.check_suite("eleza f(a, b, foo=bar): pita")
+        self.check_suite("eleza f(a, b, foo=bar, *args): pita")
+        self.check_suite("eleza f(a, b, foo=bar, *args, **kw): pita")
+        self.check_suite("eleza f(a, b, foo=bar, **kw): pita")
 
         self.check_suite("@staticmethod\n"
-                         "eleza f(): pass")
+                         "eleza f(): pita")
         self.check_suite("@staticmethod\n"
                          "@funcattrs(x, y)\n"
-                         "eleza f(): pass")
+                         "eleza f(): pita")
         self.check_suite("@funcattrs()\n"
-                         "eleza f(): pass")
+                         "eleza f(): pita")
 
         # keyword-only arguments
-        self.check_suite("eleza f(*, a): pass")
-        self.check_suite("eleza f(*, a = 5): pass")
-        self.check_suite("eleza f(*, a = 5, b): pass")
-        self.check_suite("eleza f(*, a, b = 5): pass")
-        self.check_suite("eleza f(*, a, b = 5, **kwds): pass")
-        self.check_suite("eleza f(*args, a): pass")
-        self.check_suite("eleza f(*args, a = 5): pass")
-        self.check_suite("eleza f(*args, a = 5, b): pass")
-        self.check_suite("eleza f(*args, a, b = 5): pass")
-        self.check_suite("eleza f(*args, a, b = 5, **kwds): pass")
+        self.check_suite("eleza f(*, a): pita")
+        self.check_suite("eleza f(*, a = 5): pita")
+        self.check_suite("eleza f(*, a = 5, b): pita")
+        self.check_suite("eleza f(*, a, b = 5): pita")
+        self.check_suite("eleza f(*, a, b = 5, **kwds): pita")
+        self.check_suite("eleza f(*args, a): pita")
+        self.check_suite("eleza f(*args, a = 5): pita")
+        self.check_suite("eleza f(*args, a = 5, b): pita")
+        self.check_suite("eleza f(*args, a, b = 5): pita")
+        self.check_suite("eleza f(*args, a, b = 5, **kwds): pita")
 
         # positional-only arguments
-        self.check_suite("eleza f(a, /): pass")
-        self.check_suite("eleza f(a, /,): pass")
-        self.check_suite("eleza f(a, b, /): pass")
-        self.check_suite("eleza f(a, b, /, c): pass")
-        self.check_suite("eleza f(a, b, /, c = 6): pass")
-        self.check_suite("eleza f(a, b, /, c, *, d): pass")
-        self.check_suite("eleza f(a, b, /, c = 1, *, d): pass")
-        self.check_suite("eleza f(a, b, /, c, *, d = 1): pass")
-        self.check_suite("eleza f(a, b=1, /, c=2, *, d = 3): pass")
-        self.check_suite("eleza f(a=0, b=1, /, c=2, *, d = 3): pass")
+        self.check_suite("eleza f(a, /): pita")
+        self.check_suite("eleza f(a, /,): pita")
+        self.check_suite("eleza f(a, b, /): pita")
+        self.check_suite("eleza f(a, b, /, c): pita")
+        self.check_suite("eleza f(a, b, /, c = 6): pita")
+        self.check_suite("eleza f(a, b, /, c, *, d): pita")
+        self.check_suite("eleza f(a, b, /, c = 1, *, d): pita")
+        self.check_suite("eleza f(a, b, /, c, *, d = 1): pita")
+        self.check_suite("eleza f(a, b=1, /, c=2, *, d = 3): pita")
+        self.check_suite("eleza f(a=0, b=1, /, c=2, *, d = 3): pita")
 
         # function annotations
-        self.check_suite("eleza f(a: int): pass")
-        self.check_suite("eleza f(a: int = 5): pass")
-        self.check_suite("eleza f(*args: list): pass")
-        self.check_suite("eleza f(**kwds: dict): pass")
-        self.check_suite("eleza f(*, a: int): pass")
-        self.check_suite("eleza f(*, a: int = 5): pass")
-        self.check_suite("eleza f() -> int: pass")
+        self.check_suite("eleza f(a: int): pita")
+        self.check_suite("eleza f(a: int = 5): pita")
+        self.check_suite("eleza f(*args: list): pita")
+        self.check_suite("eleza f(**kwds: dict): pita")
+        self.check_suite("eleza f(*, a: int): pita")
+        self.check_suite("eleza f(*, a: int = 5): pita")
+        self.check_suite("eleza f() -> int: pita")
 
     eleza test_class_defs(self):
-        self.check_suite("kundi foo():pass")
-        self.check_suite("kundi foo(object):pass")
+        self.check_suite("kundi foo():pita")
+        self.check_suite("kundi foo(object):pita")
         self.check_suite("@class_decorator\n"
-                         "kundi foo():pass")
+                         "kundi foo():pita")
         self.check_suite("@class_decorator(arg)\n"
-                         "kundi foo():pass")
+                         "kundi foo():pita")
         self.check_suite("@decorator1\n"
                          "@decorator2\n"
-                         "kundi foo():pass")
+                         "kundi foo():pita")
 
     eleza test_import_from_statement(self):
         self.check_suite("kutoka sys.path agiza *")
         self.check_suite("kutoka sys.path agiza dirname")
         self.check_suite("kutoka sys.path agiza (dirname)")
         self.check_suite("kutoka sys.path agiza (dirname,)")
-        self.check_suite("kutoka sys.path agiza dirname as my_dirname")
-        self.check_suite("kutoka sys.path agiza (dirname as my_dirname)")
-        self.check_suite("kutoka sys.path agiza (dirname as my_dirname,)")
+        self.check_suite("kutoka sys.path agiza dirname kama my_dirname")
+        self.check_suite("kutoka sys.path agiza (dirname kama my_dirname)")
+        self.check_suite("kutoka sys.path agiza (dirname kama my_dirname,)")
         self.check_suite("kutoka sys.path agiza dirname, basename")
         self.check_suite("kutoka sys.path agiza (dirname, basename)")
         self.check_suite("kutoka sys.path agiza (dirname, basename,)")
         self.check_suite(
-            "kutoka sys.path agiza dirname as my_dirname, basename")
+            "kutoka sys.path agiza dirname kama my_dirname, basename")
         self.check_suite(
-            "kutoka sys.path agiza (dirname as my_dirname, basename)")
+            "kutoka sys.path agiza (dirname kama my_dirname, basename)")
         self.check_suite(
-            "kutoka sys.path agiza (dirname as my_dirname, basename,)")
+            "kutoka sys.path agiza (dirname kama my_dirname, basename,)")
         self.check_suite(
-            "kutoka sys.path agiza dirname, basename as my_basename")
+            "kutoka sys.path agiza dirname, basename kama my_basename")
         self.check_suite(
-            "kutoka sys.path agiza (dirname, basename as my_basename)")
+            "kutoka sys.path agiza (dirname, basename kama my_basename)")
         self.check_suite(
-            "kutoka sys.path agiza (dirname, basename as my_basename,)")
+            "kutoka sys.path agiza (dirname, basename kama my_basename,)")
         self.check_suite("kutoka .bogus agiza x")
 
     eleza test_basic_import_statement(self):
         self.check_suite("agiza sys")
-        self.check_suite("agiza sys as system")
+        self.check_suite("agiza sys kama system")
         self.check_suite("agiza sys, math")
-        self.check_suite("agiza sys as system, math")
-        self.check_suite("agiza sys, math as my_math")
+        self.check_suite("agiza sys kama system, math")
+        self.check_suite("agiza sys, math kama my_math")
 
     eleza test_relative_imports(self):
         self.check_suite("kutoka . agiza name")
@@ -311,29 +311,29 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
 
     eleza test_pep263(self):
         self.check_suite("# -*- coding: iso-8859-1 -*-\n"
-                         "pass\n")
+                         "pita\n")
 
     eleza test_assert(self):
         self.check_suite("assert alo < ahi na blo < bhi\n")
 
     eleza test_with(self):
-        self.check_suite("ukijumuisha open('x'): pass\n")
-        self.check_suite("ukijumuisha open('x') as f: pass\n")
-        self.check_suite("ukijumuisha open('x') as f, open('y') as g: pass\n")
+        self.check_suite("ukijumuisha open('x'): pita\n")
+        self.check_suite("ukijumuisha open('x') kama f: pita\n")
+        self.check_suite("ukijumuisha open('x') kama f, open('y') kama g: pita\n")
 
     eleza test_try_stmt(self):
-        self.check_suite("jaribu: pass\ntatizo: pass\n")
-        self.check_suite("jaribu: pass\nmwishowe: pass\n")
-        self.check_suite("jaribu: pass\nexcept A: pass\nmwishowe: pass\n")
-        self.check_suite("jaribu: pass\nexcept A: pass\ntatizo: pass\n"
-                         "mwishowe: pass\n")
-        self.check_suite("jaribu: pass\ntatizo: pass\nisipokua: pass\n")
-        self.check_suite("jaribu: pass\ntatizo: pass\nisipokua: pass\n"
-                         "mwishowe: pass\n")
+        self.check_suite("jaribu: pita\ntatizo: pita\n")
+        self.check_suite("jaribu: pita\nmwishowe: pita\n")
+        self.check_suite("jaribu: pita\ntatizo A: pita\nmwishowe: pita\n")
+        self.check_suite("jaribu: pita\ntatizo A: pita\ntatizo: pita\n"
+                         "mwishowe: pita\n")
+        self.check_suite("jaribu: pita\ntatizo: pita\nisipokua: pita\n")
+        self.check_suite("jaribu: pita\ntatizo: pita\nisipokua: pita\n"
+                         "mwishowe: pita\n")
 
     eleza test_if_stmt(self):
-        self.check_suite("ikiwa Kweli:\n  pass\nisipokua:\n  pass\n")
-        self.check_suite("ikiwa Kweli:\n  pass\nelikiwa Kweli:\n  pass\nisipokua:\n  pass\n")
+        self.check_suite("ikiwa Kweli:\n  pita\nisipokua:\n  pita\n")
+        self.check_suite("ikiwa Kweli:\n  pita\nlasivyo Kweli:\n  pita\nisipokua:\n  pita\n")
 
     eleza test_position(self):
         # An absolutely minimal test of position information.  Better
@@ -391,15 +391,15 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
         self.check_suite("*a = y")
         self.check_suite("x, *b, = m")
         self.check_suite("[*a, *b] = y")
-        self.check_suite("kila [*x, b] kwenye x: pass")
+        self.check_suite("kila [*x, b] kwenye x: pita")
 
     eleza test_raise_statement(self):
         self.check_suite("raise\n")
-        self.check_suite(" ashiria e\n")
+        self.check_suite("ashiria e\n")
         self.check_suite("jaribu:\n"
                          "    suite\n"
-                         "except Exception as e:\n"
-                         "     ashiria ValueError kutoka e\n")
+                         "tatizo Exception kama e:\n"
+                         "    ashiria ValueError kutoka e\n")
 
     eleza test_list_displays(self):
         self.check_expr('[]')
@@ -441,18 +441,18 @@ kundi RoundtripLegalSyntaxTestCase(unittest.TestCase):
     eleza test_named_expressions(self):
         self.check_suite("(a := 1)")
         self.check_suite("(a := a)")
-        self.check_suite("ikiwa (match := pattern.search(data)) ni Tupu: pass")
-        self.check_suite("wakati match := pattern.search(f.read()): pass")
+        self.check_suite("ikiwa (match := pattern.search(data)) ni Tupu: pita")
+        self.check_suite("wakati match := pattern.search(f.read()): pita")
         self.check_suite("[y := f(x), y**2, y**3]")
         self.check_suite("filtered_data = [y kila x kwenye data ikiwa (y := f(x)) ni Tupu]")
         self.check_suite("(y := f(x))")
         self.check_suite("y0 = (y1 := f(x))")
         self.check_suite("foo(x=(y := f(x)))")
-        self.check_suite("eleza foo(answer=(p := 42)): pass")
-        self.check_suite("eleza foo(answer: (p := 42) = 5): pass")
+        self.check_suite("eleza foo(answer=(p := 42)): pita")
+        self.check_suite("eleza foo(answer: (p := 42) = 5): pita")
         self.check_suite("lambda: (x := 1)")
         self.check_suite("(x := lambda: 1)")
-        self.check_suite("(x := lambda: (y := 1))")  # sio kwenye PEP
+        self.check_suite("(x := lambda: (y := 1))")  # haiko kwenye PEP
         self.check_suite("lambda line: (m := re.match(pattern, line)) na m.group(1)")
         self.check_suite("x = (y := 0)")
         self.check_suite("(z:=(y:=(x:=0)))")
@@ -486,8 +486,8 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
     eleza check_bad_tree(self, tree, label):
         jaribu:
             parser.sequence2st(tree)
-        except parser.ParserError:
-            pass
+        tatizo parser.ParserError:
+            pita
         isipokua:
             self.fail("did sio detect invalid tree kila %r" % label)
 
@@ -513,7 +513,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
               (270,
                (271,
                 (277,
-                 (1, b'pass'))),
+                 (1, b'pita'))),
                (4, ''))),
              (4, ''),
              (0, ''))
@@ -524,7 +524,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
               (270,
                (271,
                 (277,
-                 (1, 'pass', '0', 0))),
+                 (1, 'pita', '0', 0))),
                (4, ''))),
              (4, ''),
              (0, ''))
@@ -535,13 +535,13 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
               (270,
                (271,
                 (277,
-                 (1, 'pass', 0, 0))),
+                 (1, 'pita', 0, 0))),
                (4, ''))),
              (4, ''),
              (0, ''))
         self.check_bad_tree(tree, "too many items kwenye terminal node")
 
-    eleza test_illegal_yield_1(self):
+    eleza test_illegal_tuma_1(self):
         # Illegal tuma statement: eleza f(): rudisha 1; tuma 1
         tree = \
         (257,
@@ -577,7 +577,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
                  (266,
                   (272,
                    (276,
-                    (1, 'yield'),
+                    (1, 'tuma'),
                     (313,
                      (292,
                       (293,
@@ -596,7 +596,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
            (0, ''))))
         self.check_bad_tree(tree, "eleza f():\n  rudisha 1\n  tuma 1")
 
-    eleza test_illegal_yield_2(self):
+    eleza test_illegal_tuma_2(self):
         # Illegal rudisha kwenye generator: eleza f(): rudisha 1; tuma 1
         tree = \
         (257,
@@ -641,7 +641,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
                  (266,
                   (272,
                    (276,
-                    (1, 'yield'),
+                    (1, 'tuma'),
                     (313,
                      (292,
                       (293,
@@ -774,7 +774,7 @@ kundi IllegalSyntaxTestCase(unittest.TestCase):
     eleza test_ParserError_message(self):
         jaribu:
             parser.sequence2st((257,(269,(257,(0,'')))))
-        except parser.ParserError as why:
+        tatizo parser.ParserError kama why:
             self.assertIn("compound_stmt", str(why))  # Expected
             self.assertIn("file_input", str(why))     # Got
 

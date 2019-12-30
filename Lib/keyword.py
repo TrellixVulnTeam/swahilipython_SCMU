@@ -46,13 +46,13 @@ kwlist = [
     'nonlocal',
     'not',
     'or',
-    'pass',
+    'pita',
     'raise',
     'return',
     'try',
     'while',
     'with',
-    'yield'
+    'tuma'
 ]
 
 iskeyword = frozenset(kwlist).__contains__

@@ -8,7 +8,7 @@ kundi MultiStatusBar(Frame):
         self.labels = {}
 
     eleza set_label(self, name, text='', side='left', width=0):
-        ikiwa name sio kwenye self.labels:
+        ikiwa name haiko kwenye self.labels:
             label = Label(self, borderwidth=0, anchor='w')
             label.pack(side=side, pady=0, padx=4)
             self.labels[name] = label

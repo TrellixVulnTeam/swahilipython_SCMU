@@ -2,7 +2,7 @@
 gc.get_referrers() can be used to see objects before they are fully built.
 
 Note that this ni only an example.  There are many ways to crash Python
-by using gc.get_referrers(), as well as many extension modules (even
+by using gc.get_referrers(), kama well kama many extension modules (even
 when they are using perfectly documented patterns to build objects).
 
 Identifying na removing all places that expose to the GC a

@@ -224,9 +224,9 @@ kundi AbstractMemoryTests:
                 eleza __init__(self, base):
                     self.m = memoryview(base)
             kundi MySource(tp):
-                pass
+                pita
             kundi MyObject:
-                pass
+                pita
 
             # Create a reference cycle through a memoryview object.
             # This exercises mbuf_clear().
@@ -268,7 +268,7 @@ kundi AbstractMemoryTests:
         ukijumuisha check: m.strides
         ukijumuisha check:
             ukijumuisha m:
-                pass
+                pita
         # str() na repr() still function
         self.assertIn("released memory", str(m))
         self.assertIn("released memory", repr(m))
@@ -280,7 +280,7 @@ kundi AbstractMemoryTests:
         kila tp kwenye self._types:
             b = tp(self._source)
             m = self._view(b)
-            ukijumuisha m as cm:
+            ukijumuisha m kama cm:
                 self.assertIs(cm, m)
             self._check_released(m, tp)
             m = self._view(b)
@@ -300,7 +300,7 @@ kundi AbstractMemoryTests:
 
     eleza test_writable_readonly(self):
         # Issue #10451: memoryview incorrectly exposes a readonly
-        # buffer as writable causing a segfault ikiwa using mmap
+        # buffer kama writable causing a segfault ikiwa using mmap
         tp = self.ro_type
         ikiwa tp ni Tupu:
             self.skipTest("no read-only type to test")
@@ -314,7 +314,7 @@ kundi AbstractMemoryTests:
 
     eleza test_hash(self):
         # Memoryviews of readonly (hashable) types are hashable, na they
-        # hash as hash(obj.tobytes()).
+        # hash kama hash(obj.tobytes()).
         tp = self.ro_type
         ikiwa tp ni Tupu:
             self.skipTest("no read-only type to test")
@@ -415,11 +415,11 @@ kundi BaseArrayMemoryTests(AbstractMemoryTests):
 
     @unittest.skip('XXX test should be adapted kila non-byte buffers')
     eleza test_getbuffer(self):
-        pass
+        pita
 
     @unittest.skip('XXX NotImplementedError: tolist() only supports byte views')
     eleza test_tolist(self):
-        pass
+        pita
 
 
 # Variations on indirection levels: memoryview, slice of memoryview,
@@ -490,19 +490,19 @@ kundi ArrayMemoryviewTest(unittest.TestCase,
 
 kundi BytesMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseBytesMemoryTests):
-    pass
+    pita
 
 kundi ArrayMemorySliceTest(unittest.TestCase,
     BaseMemorySliceTests, BaseArrayMemoryTests):
-    pass
+    pita
 
 kundi BytesMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseBytesMemoryTests):
-    pass
+    pita
 
 kundi ArrayMemorySliceSliceTest(unittest.TestCase,
     BaseMemorySliceSliceTests, BaseArrayMemoryTests):
-    pass
+    pita
 
 
 kundi OtherTest(unittest.TestCase):

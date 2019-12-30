@@ -5,7 +5,7 @@ kutoka itertools agiza chain
 agiza unittest
 agiza unittest.mock
 kutoka test.support agiza requires
-agiza tkinter as tk
+agiza tkinter kama tk
 
 kutoka idlelib.delegator agiza Delegator
 kutoka idlelib.percolator agiza Percolator
@@ -20,7 +20,7 @@ kundi Dummy_editwin:
         self.per.insertfilter(self.undo)
 
     eleza setvar(self, name, value):
-        pass
+        pita
 
     eleza getlineno(self, index):
         rudisha int(float(self.text.index(index)))

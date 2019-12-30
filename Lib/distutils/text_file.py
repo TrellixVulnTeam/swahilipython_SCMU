@@ -10,7 +10,7 @@ agiza sys, io
 kundi TextFile:
     """Provides a file-like object that takes care of all the things you
        commonly want to do when processing a text file that has some
-       line-by-line syntax: strip comments (as long as "#" ni your
+       line-by-line syntax: strip comments (as long kama "#" ni your
        comment character), skip blank lines, join adjacent lines by
        escaping the newline (ie. backslash at end of line), strip
        leading and/or trailing whitespace.  All of these are optional
@@ -35,7 +35,7 @@ kundi TextFile:
        The options are all boolean, na affect the value returned by
        'readline()':
          strip_comments [default: true]
-           strip kutoka "#" to end-of-line, as well as any whitespace
+           strip kutoka "#" to end-of-line, kama well kama any whitespace
            leading up to the "#" -- unless it ni escaped by a backslash
          lstrip_ws [default: false]
            strip leading whitespace kutoka each line before returning it
@@ -43,7 +43,7 @@ kundi TextFile:
            strip trailing whitespace (including line terminator!) from
            each line before returning it
          skip_blanks [default: true}
-           skip lines that are empty *after* stripping comments and
+           skip lines that are empty *after* stripping comments na
            whitespace.  (If both lstrip_ws na rstrip_ws are false,
            then some lines may consist of solely whitespace: these will
            *not* be skipped, even ikiwa 'skip_blanks' ni true.)
@@ -81,7 +81,7 @@ kundi TextFile:
            They keyword argument options are described above na affect
            the values returned by 'readline()'."""
         ikiwa filename ni Tupu na file ni Tupu:
-             ashiria RuntimeError("you must supply either ama both of 'filename' na 'file'")
+            ashiria RuntimeError("you must supply either ama both of 'filename' na 'file'")
 
         # set values kila all options -- either kutoka client option hash
         # ama fallback to default_options
@@ -93,8 +93,8 @@ kundi TextFile:
 
         # sanity check client option hash
         kila opt kwenye options.keys():
-            ikiwa opt sio kwenye self.default_options:
-                 ashiria KeyError("invalid TextFile option '%s'" % opt)
+            ikiwa opt haiko kwenye self.default_options:
+                ashiria KeyError("invalid TextFile option '%s'" % opt)
 
         ikiwa file ni Tupu:
             self.open(filename)
@@ -137,7 +137,7 @@ kundi TextFile:
         rudisha "".join(outmsg)
 
     eleza error(self, msg, line=Tupu):
-         ashiria ValueError("error: " + self.gen_error(msg, line))
+        ashiria ValueError("error: " + self.gen_error(msg, line))
 
     eleza warn(self, msg, line=Tupu):
         """Print (to stderr) a warning message tied to the current logical
@@ -179,20 +179,20 @@ kundi TextFile:
             ikiwa self.strip_comments na line:
 
                 # Look kila the first "#" kwenye the line.  If none, never
-                # mind.  If we find one na it's the first character, or
+                # mind.  If we find one na it's the first character, ama
                 # ni sio preceded by "\", then it starts a comment --
-                # strip the comment, strip whitespace before it, and
+                # strip the comment, strip whitespace before it, na
                 # carry on.  Otherwise, it's just an escaped "#", so
                 # unescape it (and any other escaped "#"'s that might be
                 # lurking kwenye there) na otherwise leave the line alone.
 
                 pos = line.find("#")
                 ikiwa pos == -1: # no "#" -- no comments
-                    pass
+                    pita
 
                 # It's definitely a comment -- either "#" ni the first
                 # character, ama it's elsewhere na unescaped.
-                elikiwa pos == 0 ama line[pos-1] != "\\":
+                lasivyo pos == 0 ama line[pos-1] != "\\":
                     # Have to preserve the trailing newline, because it's
                     # the job of a later step (rstrip_ws) to remove it --
                     # na ikiwa rstrip_ws ni false, we'd better preserve it!
@@ -232,7 +232,7 @@ kundi TextFile:
                 isipokua:
                     self.current_line = [self.current_line,
                                          self.current_line + 1]
-            # just an ordinary line, read it as usual
+            # just an ordinary line, read it kama usual
             isipokua:
                 ikiwa line ni Tupu: # eof
                     rudisha Tupu
@@ -243,13 +243,13 @@ kundi TextFile:
                 isipokua:
                     self.current_line = self.current_line + 1
 
-            # strip whitespace however the client wants (leading and
+            # strip whitespace however the client wants (leading na
             # trailing, ama one ama the other, ama neither)
             ikiwa self.lstrip_ws na self.rstrip_ws:
                 line = line.strip()
-            elikiwa self.lstrip_ws:
+            lasivyo self.lstrip_ws:
                 line = line.lstrip()
-            elikiwa self.rstrip_ws:
+            lasivyo self.rstrip_ws:
                 line = line.rstrip()
 
             # blank line (whether we rstrip'ed ama not)? skip to next line

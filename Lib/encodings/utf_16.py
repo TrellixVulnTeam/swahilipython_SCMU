@@ -61,10 +61,10 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
                 codecs.utf_16_ex_decode(input, errors, 0, final)
             ikiwa byteorder == -1:
                 self.decoder = codecs.utf_16_le_decode
-            elikiwa byteorder == 1:
+            lasivyo byteorder == 1:
                 self.decoder = codecs.utf_16_be_decode
-            elikiwa consumed >= 2:
-                 ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
+            lasivyo consumed >= 2:
+                ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
             rudisha (output, consumed)
         rudisha self.decoder(input, self.errors, final)
 
@@ -74,9 +74,9 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
 
     eleza getstate(self):
         # additional state info kutoka the base kundi must be Tupu here,
-        # as it isn't passed along to the caller
+        # kama it isn't pitaed along to the caller
         state = codecs.BufferedIncrementalDecoder.getstate(self)[0]
-        # additional state info we pass to the caller:
+        # additional state info we pita to the caller:
         # 0: stream ni kwenye natural order kila this platform
         # 1: stream ni kwenye unnatural order
         # 2: endianness hasn't been determined yet
@@ -94,7 +94,7 @@ kundi IncrementalDecoder(codecs.BufferedIncrementalDecoder):
             self.decoder = (codecs.utf_16_be_decode
                             ikiwa sys.byteorder == "big"
                             isipokua codecs.utf_16_le_decode)
-        elikiwa state == 1:
+        lasivyo state == 1:
             self.decoder = (codecs.utf_16_le_decode
                             ikiwa sys.byteorder == "big"
                             isipokua codecs.utf_16_be_decode)
@@ -127,18 +127,18 @@ kundi StreamReader(codecs.StreamReader):
         codecs.StreamReader.reset(self)
         jaribu:
             toa self.decode
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza decode(self, input, errors='strict'):
         (object, consumed, byteorder) = \
             codecs.utf_16_ex_decode(input, errors, 0, Uongo)
         ikiwa byteorder == -1:
             self.decode = codecs.utf_16_le_decode
-        elikiwa byteorder == 1:
+        lasivyo byteorder == 1:
             self.decode = codecs.utf_16_be_decode
-        elikiwa consumed>=2:
-             ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
+        lasivyo consumed>=2:
+            ashiria UnicodeError("UTF-16 stream does sio start ukijumuisha BOM")
         rudisha (object, consumed)
 
 ### encodings module API

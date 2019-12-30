@@ -30,7 +30,7 @@ kundi UserStringTest(
     eleza checkraises(self, exc, obj, methodname, *args):
         obj = self.fixtype(obj)
         # we don't fix the arguments, because UserString can't cope ukijumuisha it
-        ukijumuisha self.assertRaises(exc) as cm:
+        ukijumuisha self.assertRaises(exc) kama cm:
             getattr(obj, methodname)(*args)
         self.assertNotEqual(str(cm.exception), '')
 
@@ -41,7 +41,7 @@ kundi UserStringTest(
 
     eleza test_rmod(self):
         kundi ustr2(UserString):
-            pass
+            pita
 
         kundi ustr3(ustr2):
             eleza __rmod__(self, other):

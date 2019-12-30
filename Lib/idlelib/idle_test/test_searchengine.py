@@ -1,12 +1,12 @@
 "Test searchengine, coverage 99%."
 
-kutoka idlelib agiza searchengine as se
+kutoka idlelib agiza searchengine kama se
 agiza unittest
 # kutoka test.support agiza requires
 kutoka tkinter agiza  BooleanVar, StringVar, TclError  # ,Tk, Text
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.messagebox kama tkMessageBox
 kutoka idlelib.idle_test.mock_tk agiza Var, Mbox
-kutoka idlelib.idle_test.mock_tk agiza Text as mockText
+kutoka idlelib.idle_test.mock_tk agiza Text kama mockText
 agiza re
 
 # With mock replacements, the module does sio use any gui widgets.
@@ -29,7 +29,7 @@ eleza tearDownModule():
 
 
 kundi Mock:
-    eleza __init__(self, *args, **kwargs): pass
+    eleza __init__(self, *args, **kwargs): pita
 
 kundi GetTest(unittest.TestCase):
     # SearchEngine.get returns singleton created & saved on first call.
@@ -77,14 +77,14 @@ kundi GetSelectionTest(unittest.TestCase):
             # select entire text, cursor irrelevant
             ikiwa s == 'sel.first': rudisha '1.0'
             ikiwa s == 'sel.last': rudisha '1.12'
-             ashiria TclError
+            ashiria TclError
         text.index = sel  # replaces .tag_add('sel', '1.0, '1.12')
         self.assertEqual(se.get_selection(text), ('1.0', '1.12'))
 
         eleza mark(s):
             # no selection, cursor after 'Hello'
             ikiwa s == 'insert': rudisha '1.5'
-             ashiria TclError
+            ashiria TclError
         text.index = mark  # replaces .mark_set('insert', '1.5')
         self.assertEqual(se.get_selection(text), ('1.5', '1.5'))
 
@@ -237,7 +237,7 @@ kundi SearchTest(unittest.TestCase):
         eleza mark(s):
             # no selection, cursor after 'Hello'
             ikiwa s == 'insert': rudisha '1.5'
-             ashiria TclError
+            ashiria TclError
         text.index = mark
         Equal(search(text, pat), ('f', (text, pat, 1, 5, Kweli, Uongo)))
         engine.wrapvar.set(Uongo)
@@ -250,7 +250,7 @@ kundi SearchTest(unittest.TestCase):
         eleza sel(s):
             ikiwa s == 'sel.first': rudisha '2.10'
             ikiwa s == 'sel.last': rudisha '2.16'
-             ashiria TclError
+            ashiria TclError
         text.index = sel
         Equal(search(text, pat), ('f', (text, pat, 2, 16, Kweli, Uongo)))
         Equal(search(text, pat, Kweli), ('f', (text, pat, 2, 10, Kweli, Kweli)))
@@ -282,7 +282,7 @@ kundi ForwardBackwardTest(unittest.TestCase):
         cls.text.insert('1.0', test_text)
         cls.pat = re.compile('target')
         cls.res = (2, (10, 16))  # line, slice indexes of 'target'
-        cls.failpat = re.compile('xyz')  # sio kwenye text
+        cls.failpat = re.compile('xyz')  # haiko kwenye text
         cls.emptypat = re.compile(r'\w*')  # empty match possible
 
     eleza make_search(self, func):

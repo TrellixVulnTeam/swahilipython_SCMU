@@ -9,11 +9,11 @@ kundi A:
     """Hello na goodbye"""
     eleza __init__():
         """Wow, I have no function!"""
-        pass
+        pita
 
 kundi B(object):
     NO_MEANING: str = "eggs"
-    pass
+    pita
 
 kundi C(object):
     eleza say_no(self):
@@ -34,4 +34,4 @@ eleza doc_func():
     """
 
 eleza nodoc_func():
-    pass
+    pita

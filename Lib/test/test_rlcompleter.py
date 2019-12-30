@@ -21,9 +21,9 @@ kundi TestRlcompleter(unittest.TestCase):
 
     eleza test_namespace(self):
         kundi A(dict):
-            pass
+            pita
         kundi B(list):
-            pass
+            pita
 
         self.assertKweli(self.stdcompleter.use_main_ns)
         self.assertUongo(self.completer.use_main_ns)
@@ -109,9 +109,9 @@ kundi TestRlcompleter(unittest.TestCase):
         self.assertEqual(completer.complete('a', 1), 'as ')
         self.assertEqual(completer.complete('as', 2), 'assert ')
         self.assertEqual(completer.complete('an', 0), 'and ')
-        self.assertEqual(completer.complete('pa', 0), 'pass')
+        self.assertEqual(completer.complete('pa', 0), 'pita')
         self.assertEqual(completer.complete('Fa', 0), 'Uongo')
-        self.assertEqual(completer.complete('el', 0), 'elikiwa ')
+        self.assertEqual(completer.complete('el', 0), 'lasivyo ')
         self.assertEqual(completer.complete('el', 1), 'else')
         self.assertEqual(completer.complete('tr', 0), 'jaribu:')
 

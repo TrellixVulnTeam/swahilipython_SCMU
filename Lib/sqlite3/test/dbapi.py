@@ -17,13 +17,13 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza threading
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kutoka test.support agiza TESTFN, unlink
 
@@ -168,7 +168,7 @@ kundi ConnectionTests(unittest.TestCase):
             eleza __fspath__(self):
                 rudisha TESTFN
         path = Path()
-        ukijumuisha sqlite.connect(path) as cx:
+        ukijumuisha sqlite.connect(path) kama cx:
             cx.execute('create table test(id integer)')
 
     eleza CheckOpenUri(self):
@@ -177,18 +177,18 @@ kundi ConnectionTests(unittest.TestCase):
                 sqlite.connect(':memory:', uri=Kweli)
             return
         self.addCleanup(unlink, TESTFN)
-        ukijumuisha sqlite.connect(TESTFN) as cx:
+        ukijumuisha sqlite.connect(TESTFN) kama cx:
             cx.execute('create table test(id integer)')
-        ukijumuisha sqlite.connect('file:' + TESTFN, uri=Kweli) as cx:
+        ukijumuisha sqlite.connect('file:' + TESTFN, uri=Kweli) kama cx:
             cx.execute('insert into test(id) values(0)')
-        ukijumuisha sqlite.connect('file:' + TESTFN + '?mode=ro', uri=Kweli) as cx:
+        ukijumuisha sqlite.connect('file:' + TESTFN + '?mode=ro', uri=Kweli) kama cx:
             ukijumuisha self.assertRaises(sqlite.OperationalError):
                 cx.execute('insert into test(id) values(1)')
 
     @unittest.skipIf(sqlite.sqlite_version_info >= (3, 3, 1),
                      'needs sqlite versions older than 3.3.1')
     eleza CheckSameThreadErrorOnOldVersion(self):
-        ukijumuisha self.assertRaises(sqlite.NotSupportedError) as cm:
+        ukijumuisha self.assertRaises(sqlite.NotSupportedError) kama cm:
             sqlite.connect(':memory:', check_same_thread=Uongo)
         self.assertEqual(str(cm.exception), 'shared connections sio available')
 
@@ -250,7 +250,7 @@ kundi CursorTests(unittest.TestCase):
         self.assertEqual(row[0], "Hu\x00go")
 
     eleza CheckExecuteNonIterable(self):
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             self.cu.execute("insert into test(id) values (?)", 42)
         self.assertEqual(str(cm.exception), 'parameters are of unsupported type')
 
@@ -362,7 +362,7 @@ kundi CursorTests(unittest.TestCase):
 
             eleza __next__(self):
                 ikiwa self.value == 10:
-                     ashiria StopIteration
+                    ashiria StopIteration
                 isipokua:
                     self.value += 1
                     rudisha (self.value,)
@@ -464,11 +464,11 @@ kundi CursorTests(unittest.TestCase):
 
     eleza CheckWrongCursorCallable(self):
         ukijumuisha self.assertRaises(TypeError):
-            eleza f(): pass
+            eleza f(): pita
             cur = self.cx.cursor(f)
 
     eleza CheckCursorWrongClass(self):
-        kundi Foo: pass
+        kundi Foo: pita
         foo = Foo()
         ukijumuisha self.assertRaises(TypeError):
             cur = sqlite.Cursor(foo)
@@ -525,9 +525,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(con, errors):
             jaribu:
                 cur = con.cursor()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -543,9 +543,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(con, errors):
             jaribu:
                 con.commit()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -561,9 +561,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(con, errors):
             jaribu:
                 con.rollback()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -579,9 +579,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(con, errors):
             jaribu:
                 con.close()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -597,9 +597,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(cur, errors):
             jaribu:
                 cur.execute("insert into test(name) values ('a')")
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -615,9 +615,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(cur, errors):
             jaribu:
                 cur.close()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -633,9 +633,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(cur, errors):
             jaribu:
                 cur.execute("select name kutoka test")
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -652,9 +652,9 @@ kundi ThreadTests(unittest.TestCase):
         eleza run(cur, errors):
             jaribu:
                 row = cur.fetchone()
-                errors.append("did sio  ashiria ProgrammingError")
+                errors.append("did sio ashiria ProgrammingError")
                 return
-            except sqlite.ProgrammingError:
+            tatizo sqlite.ProgrammingError:
                 return
             tatizo:
                 errors.append("raised wrong exception")
@@ -719,7 +719,7 @@ kundi ExtensionTests(unittest.TestCase):
     eleza CheckCursorExecutescriptAsBytes(self):
         con = sqlite.connect(":memory:")
         cur = con.cursor()
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             cur.executescript(b"create table test(foo); insert into test(foo) values (5);")
         self.assertEqual(str(cm.exception), 'script argument must be unicode.')
 
@@ -780,9 +780,9 @@ kundi ClosedConTests(unittest.TestCase):
         con.close()
         kundi Agg:
             eleza __init__(self):
-                pass
+                pita
             eleza step(self, x):
-                pass
+                pita
             eleza finalize(self):
                 rudisha 17
         ukijumuisha self.assertRaises(sqlite.ProgrammingError):
@@ -799,7 +799,7 @@ kundi ClosedConTests(unittest.TestCase):
     eleza CheckClosedSetProgressCallback(self):
         con = sqlite.connect(":memory:")
         con.close()
-        eleza progress(): pass
+        eleza progress(): pita
         ukijumuisha self.assertRaises(sqlite.ProgrammingError):
             con.set_progress_handler(progress, 100)
 
@@ -818,7 +818,7 @@ kundi ClosedCurTests(unittest.TestCase):
         kila method_name kwenye ("execute", "executemany", "executescript", "fetchall", "fetchmany", "fetchone"):
             ikiwa method_name kwenye ("execute", "executescript"):
                 params = ("select 4 union select 5",)
-            elikiwa method_name == "executemany":
+            lasivyo method_name == "executemany":
                 params = ("insert into foo(bar) values (?)", [(3,), (4,)])
             isipokua:
                 params = []

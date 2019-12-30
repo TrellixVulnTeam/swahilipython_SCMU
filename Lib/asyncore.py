@@ -7,7 +7,7 @@
 #
 #                         All Rights Reserved
 #
-# Permission to use, copy, modify, na distribute this software and
+# Permission to use, copy, modify, na distribute this software na
 # its documentation kila any purpose na without fee ni hereby
 # granted, provided that the above copyright notice appear kwenye all
 # copies na that both that copyright notice na this permission
@@ -28,7 +28,7 @@
 """Basic infrastructure kila asynchronous socket service clients na servers.
 
 There are only two ways to have a program on a single processor do "more
-than one thing at a time".  Multi-threaded programming ni the simplest and
+than one thing at a time".  Multi-threaded programming ni the simplest na
 most popular way to do it, but there ni another very different technique,
 that lets you have nearly all the advantages of multi-threading, without
 actually using multiple threads. it's really only practical ikiwa your program
@@ -39,8 +39,8 @@ rarely CPU-bound, however.
 If your operating system supports the select() system call kwenye its I/O
 library (and nearly all do), then you can use it to juggle multiple
 communication channels at once; doing other work wakati your I/O ni taking
-place kwenye the "background."  Although this strategy can seem strange and
-complex, especially at first, it ni kwenye many ways easier to understand and
+place kwenye the "background."  Although this strategy can seem strange na
+complex, especially at first, it ni kwenye many ways easier to understand na
 control than multi-threaded programming. The module documented here solves
 many of the difficult problems kila you, making the task of building
 sophisticated high-performance network servers na clients a snap.
@@ -62,26 +62,26 @@ _DISCONNECTED = frozenset({ECONNRESET, ENOTCONN, ESHUTDOWN, ECONNABORTED, EPIPE,
 
 jaribu:
     socket_map
-except NameError:
+tatizo NameError:
     socket_map = {}
 
 eleza _strerror(err):
     jaribu:
         rudisha os.strerror(err)
-    except (ValueError, OverflowError, NameError):
+    tatizo (ValueError, OverflowError, NameError):
         ikiwa err kwenye errorcode:
             rudisha errorcode[err]
         rudisha "Unknown error %s" %err
 
 kundi ExitNow(Exception):
-    pass
+    pita
 
 _reraised_exceptions = (ExitNow, KeyboardInterrupt, SystemExit)
 
 eleza read(obj):
     jaribu:
         obj.handle_read_event()
-    except _reraised_exceptions:
+    tatizo _reraised_exceptions:
         raise
     tatizo:
         obj.handle_error()
@@ -89,7 +89,7 @@ eleza read(obj):
 eleza write(obj):
     jaribu:
         obj.handle_write_event()
-    except _reraised_exceptions:
+    tatizo _reraised_exceptions:
         raise
     tatizo:
         obj.handle_error()
@@ -97,7 +97,7 @@ eleza write(obj):
 eleza _exception(obj):
     jaribu:
         obj.handle_expt_event()
-    except _reraised_exceptions:
+    tatizo _reraised_exceptions:
         raise
     tatizo:
         obj.handle_error()
@@ -112,12 +112,12 @@ eleza readwrite(obj, flags):
             obj.handle_expt_event()
         ikiwa flags & (select.POLLHUP | select.POLLERR | select.POLLNVAL):
             obj.handle_close()
-    except OSError as e:
-        ikiwa e.args[0] sio kwenye _DISCONNECTED:
+    tatizo OSError kama e:
+        ikiwa e.args[0] haiko kwenye _DISCONNECTED:
             obj.handle_error()
         isipokua:
             obj.handle_close()
-    except _reraised_exceptions:
+    tatizo _reraised_exceptions:
         raise
     tatizo:
         obj.handle_error()
@@ -232,10 +232,10 @@ kundi dispatcher:
             self.set_socket(sock, map)
             self.connected = Kweli
             # The constructor no longer requires that the socket
-            # passed be connected.
+            # pitaed be connected.
             jaribu:
                 self.addr = sock.getpeername()
-            except OSError as err:
+            tatizo OSError kama err:
                 ikiwa err.args[0] kwenye (ENOTCONN, EINVAL):
                     # To handle the case where we got an unconnected
                     # socket.
@@ -253,12 +253,12 @@ kundi dispatcher:
         status = [self.__class__.__module__+"."+self.__class__.__qualname__]
         ikiwa self.accepting na self.addr:
             status.append('listening')
-        elikiwa self.connected:
+        lasivyo self.connected:
             status.append('connected')
         ikiwa self.addr ni sio Tupu:
             jaribu:
                 status.append('%s:%d' % self.addr)
-            except TypeError:
+            tatizo TypeError:
                 status.append(repr(self.addr))
         rudisha '<%s at %#x>' % (' '.join(status), id(self))
 
@@ -296,13 +296,13 @@ kundi dispatcher:
                 self.socket.getsockopt(socket.SOL_SOCKET,
                                        socket.SO_REUSEADDR) | 1
                 )
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     # ==================================================
     # predicates kila select()
-    # these are used as filters kila the lists of sockets
-    # to pass to select().
+    # these are used kama filters kila the lists of sockets
+    # to pita to select().
     # ==================================================
 
     eleza readable(self):
@@ -337,15 +337,15 @@ kundi dispatcher:
             self.addr = address
             self.handle_connect_event()
         isipokua:
-             ashiria OSError(err, errorcode[err])
+            ashiria OSError(err, errorcode[err])
 
     eleza accept(self):
         # XXX can rudisha either an address pair ama Tupu
         jaribu:
             conn, addr = self.socket.accept()
-        except TypeError:
+        tatizo TypeError:
             rudisha Tupu
-        except OSError as why:
+        tatizo OSError kama why:
             ikiwa why.args[0] kwenye (EWOULDBLOCK, ECONNABORTED, EAGAIN):
                 rudisha Tupu
             isipokua:
@@ -357,10 +357,10 @@ kundi dispatcher:
         jaribu:
             result = self.socket.send(data)
             rudisha result
-        except OSError as why:
+        tatizo OSError kama why:
             ikiwa why.args[0] == EWOULDBLOCK:
                 rudisha 0
-            elikiwa why.args[0] kwenye _DISCONNECTED:
+            lasivyo why.args[0] kwenye _DISCONNECTED:
                 self.handle_close()
                 rudisha 0
             isipokua:
@@ -376,7 +376,7 @@ kundi dispatcher:
                 rudisha b''
             isipokua:
                 rudisha data
-        except OSError as why:
+        tatizo OSError kama why:
             # winsock sometimes raises ENOTCONN
             ikiwa why.args[0] kwenye _DISCONNECTED:
                 self.handle_close()
@@ -392,8 +392,8 @@ kundi dispatcher:
         ikiwa self.socket ni sio Tupu:
             jaribu:
                 self.socket.close()
-            except OSError as why:
-                ikiwa why.args[0] sio kwenye (ENOTCONN, EBADF):
+            tatizo OSError kama why:
+                ikiwa why.args[0] haiko kwenye (ENOTCONN, EBADF):
                     raise
 
     # log na log_info may be overridden to provide more sophisticated
@@ -404,7 +404,7 @@ kundi dispatcher:
         sys.stderr.write('log: %s\n' % str(message))
 
     eleza log_info(self, message, type='info'):
-        ikiwa type sio kwenye self.ignore_log_types:
+        ikiwa type haiko kwenye self.ignore_log_types:
             andika('%s: %s' % (type, message))
 
     eleza handle_read_event(self):
@@ -412,7 +412,7 @@ kundi dispatcher:
             # accepting sockets are never connected, they "spawn" new
             # sockets that are connected
             self.handle_accept()
-        elikiwa sio self.connected:
+        lasivyo sio self.connected:
             ikiwa self.connecting:
                 self.handle_connect_event()
             self.handle_read()
@@ -422,7 +422,7 @@ kundi dispatcher:
     eleza handle_connect_event(self):
         err = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
         ikiwa err != 0:
-             ashiria OSError(err, _strerror(err))
+            ashiria OSError(err, _strerror(err))
         self.handle_connect()
         self.connected = Kweli
         self.connecting = Uongo
@@ -518,7 +518,7 @@ kundi dispatcher_with_send(dispatcher):
         self.initiate_send()
 
     eleza writable(self):
-        rudisha (not self.connected) ama len(self.out_buffer)
+        rudisha (sio self.connected) ama len(self.out_buffer)
 
     eleza send(self, data):
         ikiwa self.debug:
@@ -534,7 +534,7 @@ eleza compact_traceback():
     t, v, tb = sys.exc_info()
     tbinfo = []
     ikiwa sio tb: # Must have a traceback
-         ashiria AssertionError("traceback does sio exist")
+        ashiria AssertionError("traceback does sio exist")
     wakati tb:
         tbinfo.append((
             tb.tb_frame.f_code.co_filename,
@@ -556,12 +556,12 @@ eleza close_all(map=Tupu, ignore_all=Uongo):
     kila x kwenye list(map.values()):
         jaribu:
             x.close()
-        except OSError as x:
+        tatizo OSError kama x:
             ikiwa x.args[0] == EBADF:
-                pass
-            elikiwa sio ignore_all:
+                pita
+            lasivyo sio ignore_all:
                 raise
-        except _reraised_exceptions:
+        tatizo _reraised_exceptions:
             raise
         tatizo:
             ikiwa sio ignore_all:
@@ -570,7 +570,7 @@ eleza close_all(map=Tupu, ignore_all=Uongo):
 
 # Asynchronous File I/O:
 #
-# After a little research (reading man pages on various unixen, and
+# After a little research (reading man pages on various unixen, na
 # digging through the linux kernel), I've determined that select()
 # isn't meant kila doing asynchronous file i/o.
 # Heartening, though - reading linux/mm/filemap.c shows that linux
@@ -585,7 +585,7 @@ ikiwa os.name == 'posix':
     kundi file_wrapper:
         # Here we override just enough to make a file
         # look like a socket kila the purposes of asyncore.
-        # The passed fd ni automatically os.dup()'d
+        # The pitaed fd ni automatically os.dup()'d
 
         eleza __init__(self, fd):
             self.fd = os.dup(fd)
@@ -603,11 +603,11 @@ ikiwa os.name == 'posix':
             rudisha os.write(self.fd, *args)
 
         eleza getsockopt(self, level, optname, buflen=Tupu):
-            ikiwa (level == socket.SOL_SOCKET and
-                optname == socket.SO_ERROR and
+            ikiwa (level == socket.SOL_SOCKET na
+                optname == socket.SO_ERROR na
                 sio buflen):
                 rudisha 0
-             ashiria NotImplementedError("Only asyncore specific behaviour "
+            ashiria NotImplementedError("Only asyncore specific behaviour "
                                       "implemented.")
 
         read = recv
@@ -630,8 +630,8 @@ ikiwa os.name == 'posix':
             self.connected = Kweli
             jaribu:
                 fd = fd.fileno()
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
             self.set_file(fd)
             # set it to non-blocking mode
             os.set_blocking(fd, Uongo)

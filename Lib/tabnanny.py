@@ -4,7 +4,7 @@
 
 tabnanny -- Detection of ambiguous indentation
 
-For the time being this module ni intended to be called as a script.
+For the time being this module ni intended to be called kama a script.
 However it ni possible to agiza it into an IDE na use the function
 check() described below.
 
@@ -24,7 +24,7 @@ agiza os
 agiza sys
 agiza tokenize
 ikiwa sio hasattr(tokenize, 'NL'):
-     ashiria ValueError("tokenize.NL doesn't exist -- tokenize module too old")
+    ashiria ValueError("tokenize.NL doesn't exist -- tokenize module too old")
 
 __all__ = ["check", "NannyNag", "process_tokens"]
 
@@ -44,7 +44,7 @@ eleza main():
     global verbose, filename_only
     jaribu:
         opts, args = getopt.getopt(sys.argv[1:], "qv")
-    except getopt.error as msg:
+    tatizo getopt.error kama msg:
         errandika(msg)
         return
     kila o, a kwenye opts:
@@ -88,15 +88,15 @@ eleza check(file):
         names = os.listdir(file)
         kila name kwenye names:
             fullname = os.path.join(file, name)
-            ikiwa (os.path.isdir(fullname) and
-                sio os.path.islink(fullname) or
+            ikiwa (os.path.isdir(fullname) na
+                sio os.path.islink(fullname) ama
                 os.path.normcase(name[-3:]) == ".py"):
                 check(fullname)
         return
 
     jaribu:
         f = tokenize.open(file)
-    except OSError as msg:
+    tatizo OSError kama msg:
         errandika("%r: I/O Error: %s" % (file, msg))
         return
 
@@ -106,15 +106,15 @@ eleza check(file):
     jaribu:
         process_tokens(tokenize.generate_tokens(f.readline))
 
-    except tokenize.TokenError as msg:
+    tatizo tokenize.TokenError kama msg:
         errandika("%r: Token Error: %s" % (file, msg))
         return
 
-    except IndentationError as msg:
+    tatizo IndentationError kama msg:
         errandika("%r: Indentation Error: %s" % (file, msg))
         return
 
-    except NannyNag as nag:
+    tatizo NannyNag kama nag:
         badline = nag.get_lineno()
         line = nag.get_line()
         ikiwa verbose:
@@ -145,7 +145,7 @@ kundi Whitespace:
     #   nt
     #       the number of tabs kwenye raw[:n]
     #   norm
-    #       the normal form as a pair (count, trailing), where:
+    #       the normal form kama a pair (count, trailing), where:
     #       count
     #           a tuple such that raw[:n] contains count[i]
     #           instances of S * i + T
@@ -165,7 +165,7 @@ kundi Whitespace:
             ikiwa ch == S:
                 n = n + 1
                 b = b + 1
-            elikiwa ch == T:
+            lasivyo ch == T:
                 n = n + 1
                 nt = nt + 1
                 ikiwa b >= len(count):
@@ -235,7 +235,7 @@ kundi Whitespace:
     # Unknown whether there's a faster general way.  I suspected so at
     # first, but no longer.
     # For the special (but common!) case where M na N are both of the
-    # form (T*)(S*), M.less(N) iff M.len() < N.len() and
+    # form (T*)(S*), M.less(N) iff M.len() < N.len() na
     # M.num_tabs() <= N.num_tabs(). Proof ni easy but kinda long-winded.
     # XXXwrite that up.
     # Note that M ni of the form (T*)(S*) iff len(M.norm[0]) <= 1.
@@ -291,16 +291,16 @@ eleza process_tokens(tokens):
             # be undone when we see the INDENT.
             check_equal = 1
 
-        elikiwa type == INDENT:
+        lasivyo type == INDENT:
             check_equal = 0
             thisguy = Whitespace(token)
             ikiwa sio indents[-1].less(thisguy):
                 witness = indents[-1].not_less_witness(thisguy)
                 msg = "indent sio greater e.g. " + format_witnesses(witness)
-                 ashiria NannyNag(start[0], msg, line)
+                ashiria NannyNag(start[0], msg, line)
             indents.append(thisguy)
 
-        elikiwa type == DEDENT:
+        lasivyo type == DEDENT:
             # there's nothing we need to check here!  what's important is
             # that when the run of DEDENTs ends, the indentation of the
             # program statement (or ENDMARKER) that triggered the run is
@@ -314,7 +314,7 @@ eleza process_tokens(tokens):
 
             toa indents[-1]
 
-        elikiwa check_equal na type sio kwenye JUNK:
+        lasivyo check_equal na type haiko kwenye JUNK:
             # this ni the first "real token" following a NEWLINE, so it
             # must be the first token of the next program statement, ama an
             # ENDMARKER; the "line" argument exposes the leading whitespace
@@ -326,7 +326,7 @@ eleza process_tokens(tokens):
             ikiwa sio indents[-1].equal(thisguy):
                 witness = indents[-1].not_equal_witness(thisguy)
                 msg = "indent sio equal e.g. " + format_witnesses(witness)
-                 ashiria NannyNag(start[0], msg, line)
+                ashiria NannyNag(start[0], msg, line)
 
 
 ikiwa __name__ == '__main__':

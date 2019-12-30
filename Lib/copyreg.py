@@ -11,24 +11,24 @@ dispatch_table = {}
 
 eleza pickle(ob_type, pickle_function, constructor_ob=Tupu):
     ikiwa sio callable(pickle_function):
-         ashiria TypeError("reduction functions must be callable")
+        ashiria TypeError("reduction functions must be callable")
     dispatch_table[ob_type] = pickle_function
 
     # The constructor_ob function ni a vestige of safe kila unpickling.
-    # There ni no reason kila the caller to pass it anymore.
+    # There ni no reason kila the caller to pita it anymore.
     ikiwa constructor_ob ni sio Tupu:
         constructor(constructor_ob)
 
 eleza constructor(object):
     ikiwa sio callable(object):
-         ashiria TypeError("constructors must be callable")
+        ashiria TypeError("constructors must be callable")
 
 # Example: provide pickling support kila complex numbers.
 
 jaribu:
     complex
-except NameError:
-    pass
+tatizo NameError:
+    pita
 isipokua:
 
     eleza pickle_complex(c):
@@ -63,20 +63,20 @@ eleza _reduce_ex(self, proto):
         state = Tupu
     isipokua:
         ikiwa base ni cls:
-             ashiria TypeError(f"cannot pickle {cls.__name__!r} object")
+            ashiria TypeError(f"cannot pickle {cls.__name__!r} object")
         state = base(self)
     args = (cls, base, state)
     jaribu:
         getstate = self.__getstate__
-    except AttributeError:
+    tatizo AttributeError:
         ikiwa getattr(self, "__slots__", Tupu):
-             ashiria TypeError(f"cannot pickle {cls.__name__!r} object: "
+            ashiria TypeError(f"cannot pickle {cls.__name__!r} object: "
                             f"a kundi that defines __slots__ without "
                             f"defining __getstate__ cannot be pickled "
                             f"ukijumuisha protocol {proto}") kutoka Tupu
         jaribu:
             dict = self.__dict__
-        except AttributeError:
+        tatizo AttributeError:
             dict = Tupu
     isipokua:
         dict = getstate()
@@ -116,13 +116,13 @@ eleza _slotnames(cls):
     names = []
     ikiwa sio hasattr(cls, "__slots__"):
         # This kundi has no slots
-        pass
+        pita
     isipokua:
         # Slots found -- gather slot names kutoka all base classes
         kila c kwenye cls.__mro__:
             ikiwa "__slots__" kwenye c.__dict__:
                 slots = c.__dict__['__slots__']
-                # ikiwa kundi has a single slot, it can be given as a string
+                # ikiwa kundi has a single slot, it can be given kama a string
                 ikiwa isinstance(slots, str):
                     slots = (slots,)
                 kila name kwenye slots:
@@ -130,7 +130,7 @@ eleza _slotnames(cls):
                     ikiwa name kwenye ("__dict__", "__weakref__"):
                         endelea
                     # mangled names
-                    elikiwa name.startswith('__') na sio name.endswith('__'):
+                    lasivyo name.startswith('__') na sio name.endswith('__'):
                         stripped = c.__name__.lstrip('_')
                         ikiwa stripped:
                             names.append('_%s%s' % (stripped, name))
@@ -143,7 +143,7 @@ eleza _slotnames(cls):
     jaribu:
         cls.__slotnames__ = names
     tatizo:
-        pass # But don't die ikiwa we can't
+        pita # But don't die ikiwa we can't
 
     rudisha names
 
@@ -166,16 +166,16 @@ eleza add_extension(module, name, code):
     """Register an extension code."""
     code = int(code)
     ikiwa sio 1 <= code <= 0x7fffffff:
-         ashiria ValueError("code out of range")
+        ashiria ValueError("code out of range")
     key = (module, name)
-    ikiwa (_extension_registry.get(key) == code and
+    ikiwa (_extension_registry.get(key) == code na
         _inverted_registry.get(code) == key):
         rudisha # Redundant registrations are benign
     ikiwa key kwenye _extension_regisjaribu:
-         ashiria ValueError("key %s ni already registered ukijumuisha code %s" %
+        ashiria ValueError("key %s ni already registered ukijumuisha code %s" %
                          (key, _extension_registry[key]))
     ikiwa code kwenye _inverted_regisjaribu:
-         ashiria ValueError("code %s ni already kwenye use kila key %s" %
+        ashiria ValueError("code %s ni already kwenye use kila key %s" %
                          (code, _inverted_registry[code]))
     _extension_registry[key] = code
     _inverted_registry[code] = key
@@ -183,9 +183,9 @@ eleza add_extension(module, name, code):
 eleza remove_extension(module, name, code):
     """Unregister an extension code.  For testing only."""
     key = (module, name)
-    ikiwa (_extension_registry.get(key) != code or
+    ikiwa (_extension_registry.get(key) != code ama
         _inverted_registry.get(code) != key):
-         ashiria ValueError("key %s ni sio registered ukijumuisha code %s" %
+        ashiria ValueError("key %s ni sio registered ukijumuisha code %s" %
                          (key, code))
     toa _extension_registry[key]
     toa _inverted_registry[code]

@@ -11,7 +11,7 @@ kundi DecimalContextTest(unittest.TestCase):
 
     eleza test_asyncio_task_decimal_context(self):
         async eleza fractions(t, precision, x, y):
-            ukijumuisha decimal.localcontext() as ctx:
+            ukijumuisha decimal.localcontext() kama ctx:
                 ctx.prec = precision
                 a = decimal.Decimal(x) / decimal.Decimal(y)
                 await asyncio.sleep(t)

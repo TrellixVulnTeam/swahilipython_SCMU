@@ -250,7 +250,7 @@ kundi UtilTestCase(support.EnvironGuard, unittest.TestCase):
         agiza pwd
 
         # only set pw_dir field, other fields are sio used
-        result = pwd.struct_passwd((Tupu, Tupu, Tupu, Tupu, Tupu,
+        result = pwd.struct_pitawd((Tupu, Tupu, Tupu, Tupu, Tupu,
                                     '/home/distutils', Tupu))
         ukijumuisha mock.patch.object(pwd, 'getpwuid', return_value=result):
             check_environ()
@@ -286,7 +286,7 @@ kundi UtilTestCase(support.EnvironGuard, unittest.TestCase):
         self.assertEqual(res, wanted)
 
     eleza test_dont_write_bytecode(self):
-        # makes sure byte_compile  ashiria a DistutilsError
+        # makes sure byte_compile ashiria a DistutilsError
         # ikiwa sys.dont_write_bytecode ni Kweli
         old_dont_write_bytecode = sys.dont_write_bytecode
         sys.dont_write_bytecode = Kweli

@@ -75,7 +75,7 @@ kundi PolicyAPITests(unittest.TestCase):
         kila policy, expected kwenye self.policies.items():
             kila attr kwenye dir(policy):
                 ukijumuisha self.subTest(policy=policy, attr=attr):
-                    ikiwa (attr.startswith('_') or
+                    ikiwa (attr.startswith('_') ama
                             isinstance(getattr(email.policy.EmailPolicy, attr),
                                   types.FunctionType)):
                         endelea
@@ -84,7 +84,7 @@ kundi PolicyAPITests(unittest.TestCase):
                                       "{} ni sio fully tested".format(attr))
 
     eleza test_abc(self):
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             email.policy.Policy()
         msg = str(cm.exception)
         abstract_methods = ('fold',
@@ -165,7 +165,7 @@ kundi PolicyAPITests(unittest.TestCase):
             self.defects = []
 
     kundi MyDefect(Exception):
-        pass
+        pita
 
     eleza test_handle_defect_raises_on_strict(self):
         foo = self.MyObj()
@@ -283,7 +283,7 @@ kundi PolicyAPITests(unittest.TestCase):
 
 
 kundi TestException(Exception):
-    pass
+    pita
 
 kundi TestPolicyPropagation(unittest.TestCase):
 
@@ -292,7 +292,7 @@ kundi TestPolicyPropagation(unittest.TestCase):
     # policy was actually propagated all the way to feedparser.
     kundi MyPolicy(email.policy.Policy):
         eleza badmethod(self, *args, **kw):
-             ashiria TestException("test")
+            ashiria TestException("test")
         fold = fold_binary = header_fetch_parser = badmethod
         header_source_parse = header_store_parse = badmethod
 

@@ -39,7 +39,7 @@ kundi TestBase:
         # Delete a file ama delete a directory recursively
         ikiwa os.path.isdir(target):
             support.rmtree(target)
-        elikiwa os.path.exists(target):
+        lasivyo os.path.exists(target):
             support.unlink(target)
 
 
@@ -111,7 +111,7 @@ kundi TestMailbox(TestBase):
 
     eleza test_add_that_raises_leaves_mailbox_empty(self):
         eleza raiser(*args, **kw):
-             ashiria Exception("a fake error")
+            ashiria Exception("a fake error")
         support.patch(self, email.generator.BytesGenerator, 'flatten', raiser)
         ukijumuisha self.assertRaises(Exception):
             self._box.add(email.message_from_string("From: Alphöso"))
@@ -135,7 +135,7 @@ kundi TestMailbox(TestBase):
         key = self._box.add(self._non_latin_bin_msg)
         self.assertEqual(self._box.get_bytes(key),
                          self._non_latin_bin_msg)
-        ukijumuisha self._box.get_file(key) as f:
+        ukijumuisha self._box.get_file(key) kama f:
             self.assertEqual(f.read(),
                              self._non_latin_bin_msg.replace(b'\n',
                                 os.linesep.encode()))
@@ -143,7 +143,7 @@ kundi TestMailbox(TestBase):
                         "Да, они летят.\n")
 
     eleza test_add_binary_file(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') as f:
+        ukijumuisha tempfile.TemporaryFile('wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             key = self._box.add(f)
@@ -151,7 +151,7 @@ kundi TestMailbox(TestBase):
             _bytes_sample_message.split(b'\n'))
 
     eleza test_add_binary_nonascii_file(self):
-        ukijumuisha tempfile.TemporaryFile('wb+') as f:
+        ukijumuisha tempfile.TemporaryFile('wb+') kama f:
             f.write(self._non_latin_bin_msg)
             f.seek(0)
             key = self._box.add(f)
@@ -159,7 +159,7 @@ kundi TestMailbox(TestBase):
             self._non_latin_bin_msg.split(b'\n'))
 
     eleza test_add_text_file_warns(self):
-        ukijumuisha tempfile.TemporaryFile('w+') as f:
+        ukijumuisha tempfile.TemporaryFile('w+') kama f:
             f.write(_sample_message)
             f.seek(0)
             ukijumuisha self.assertWarns(DeprecationWarning):
@@ -277,9 +277,9 @@ kundi TestMailbox(TestBase):
         # Get file representations of messages
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(_sample_message)
-        ukijumuisha self._box.get_file(key0) as file:
+        ukijumuisha self._box.get_file(key0) kama file:
             data0 = file.read()
-        ukijumuisha self._box.get_file(key1) as file:
+        ukijumuisha self._box.get_file(key1) kama file:
             data1 = file.read()
         self.assertEqual(data0.decode('ascii').replace(os.linesep, '\n'),
                          self._template % 0)
@@ -333,7 +333,7 @@ kundi TestMailbox(TestBase):
             values.append(self._template % i)
         ikiwa do_keys na sio do_values:
             returned_keys = list(method())
-        elikiwa do_values na sio do_keys:
+        lasivyo do_values na sio do_keys:
             returned_values = list(method())
         isipokua:
             returned_keys, returned_values = [], []
@@ -552,7 +552,7 @@ kundi TestMailbox(TestBase):
 kundi TestMailboxSuperclass(TestBase, unittest.TestCase):
 
     eleza test_notimplemented(self):
-        # Test that all Mailbox methods  ashiria NotImplementedException.
+        # Test that all Mailbox methods ashiria NotImplementedException.
         box = mailbox.Mailbox('path')
         self.assertRaises(NotImplementedError, lambda: box.add(''))
         self.assertRaises(NotImplementedError, lambda: box.remove(''))
@@ -649,7 +649,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Create new mailbox with
         kundi FakeMessage(mailbox.MaildirMessage):
-            pass
+            pita
         box = mailbox.Maildir(self._path, factory=FakeMessage)
         box.colon = self._box.colon
         msg2 = box.get_message(key)
@@ -723,9 +723,9 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         # Remove old files kutoka 'tmp'
         foo_path = os.path.join(self._path, 'tmp', 'foo')
         bar_path = os.path.join(self._path, 'tmp', 'bar')
-        ukijumuisha open(foo_path, 'w') as f:
+        ukijumuisha open(foo_path, 'w') kama f:
             f.write("@")
-        ukijumuisha open(bar_path, 'w') as f:
+        ukijumuisha open(bar_path, 'w') kama f:
             f.write("@")
         self._box.clean()
         self.assertKweli(os.path.exists(foo_path))
@@ -803,7 +803,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
     eleza test_refresh_after_safety_period(self):
         # Issue #13254: Call _refresh after the "file system safety
-        # period" of 2 seconds has passed; _toc should still be
+        # period" of 2 seconds has pitaed; _toc should still be
         # updated because this ni the first call to _refresh.
         key0 = self._box.add(self._template % 0)
         key1 = self._box.add(self._template % 1)
@@ -813,7 +813,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Emulate sleeping. Instead of sleeping kila 2 seconds, use the
         # skew factor to make _refresh think that the filesystem
-        # safety period has passed na re-reading the _toc ni only
+        # safety period has pitaed na re-reading the _toc ni only
         # required ikiwa mtimes differ.
         self._box._skewfactor = -3
 
@@ -861,7 +861,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Check that looping still works ukijumuisha the directory present.
         kila msg kwenye self._box:
-            pass
+            pita
 
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     eleza test_file_permissions(self):
@@ -879,7 +879,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
     @unittest.skipUnless(hasattr(os, 'umask'), 'test needs os.umask()')
     eleza test_folder_file_perms(self):
         # From bug #3228, we want to verify that the file created inside a Maildir
-        # subfolder isn't marked as executable.
+        # subfolder isn't marked kama executable.
         orig_umask = os.umask(0)
         jaribu:
             subfolder = self._box.add_folder('subfolder')
@@ -908,7 +908,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
         #
         # Because this ni a test, emulate sleeping. Instead of
         # sleeping kila 2 seconds, use the skew factor to make _refresh
-        # think that 2 seconds have passed na re-reading the _toc is
+        # think that 2 seconds have pitaed na re-reading the _toc is
         # only required ikiwa mtimes differ.
         self._box._skewfactor = -3
 
@@ -924,7 +924,7 @@ kundi TestMaildir(TestMailbox, unittest.TestCase):
 
         # Now, write something into cur na remove it.  This changes
         # the mtime na should cause a re-read. Note that "sleep
-        # emulation" ni still kwenye effect, as skewfactor ni -3.
+        # emulation" ni still kwenye effect, kama skewfactor ni -3.
         filename = os.path.join(self._path, 'cur', 'stray-file')
         support.create_empty_file(filename)
         os.unlink(filename)
@@ -983,7 +983,7 @@ kundi _TestMboxMMDF(_TestSingleFile):
             support.unlink(lock_remnant)
 
     eleza assertMailboxEmpty(self):
-        ukijumuisha open(self._path) as f:
+        ukijumuisha open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza test_get_bytes_from(self):
@@ -1056,7 +1056,7 @@ kundi _TestMboxMMDF(_TestSingleFile):
         self._box._file.seek(0)
         contents = self._box._file.read()
         self._box.close()
-        ukijumuisha open(self._path, 'rb') as f:
+        ukijumuisha open(self._path, 'rb') kama f:
             self.assertEqual(contents, f.read())
         self._box = self._factory(self._path)
 
@@ -1149,12 +1149,12 @@ kundi TestMbox(_TestMboxMMDF, unittest.TestCase):
     eleza test_message_separator(self):
         # Check there's always a single blank line after each message
         self._box.add('From: foo\n\n0')  # No newline at the end
-        ukijumuisha open(self._path) as f:
+        ukijumuisha open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
         self._box.add('From: foo\n\n0\n')  # Newline at the end
-        ukijumuisha open(self._path) as f:
+        ukijumuisha open(self._path) kama f:
             data = f.read()
             self.assertEqual(data[-3:], '0\n\n')
 
@@ -1304,7 +1304,7 @@ kundi TestBabyl(_TestSingleFile, unittest.TestCase):
     _factory = lambda self, path, factory=Tupu: mailbox.Babyl(path, factory)
 
     eleza assertMailboxEmpty(self):
-        ukijumuisha open(self._path) as f:
+        ukijumuisha open(self._path) kama f:
             self.assertEqual(f.readlines(), [])
 
     eleza tearDown(self):
@@ -1389,7 +1389,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_file(self):
         # Initialize based on contents of file
-        ukijumuisha open(self._path, 'w+') as f:
+        ukijumuisha open(self._path, 'w+') kama f:
             f.write(_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1398,7 +1398,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza test_initialize_with_binary_file(self):
         # Initialize based on contents of binary file
-        ukijumuisha open(self._path, 'wb+') as f:
+        ukijumuisha open(self._path, 'wb+') kama f:
             f.write(_bytes_sample_message)
             f.seek(0)
             msg = self._factory(f)
@@ -1447,7 +1447,7 @@ kundi TestMessage(TestBase, unittest.TestCase):
 
     eleza _post_initialize_hook(self, msg):
         # Overridden by subclasses to check extra things after initialization
-        pass
+        pita
 
 
 kundi TestMaildirMessage(TestMessage, unittest.TestCase):
@@ -1705,7 +1705,7 @@ kundi TestMessageConversion(TestBase, unittest.TestCase):
                 source = class1(_sample_message)
                 target = class2(source)
                 type_specific = [a kila a kwenye reference[class1]
-                                   ikiwa a sio kwenye reference[class2]]
+                                   ikiwa a haiko kwenye reference[class2]]
                 kila attr kwenye type_specific:
                     self.assertNotIn(attr, target.__dict__,
                         "wakati converting {} to {}".format(class1, class2))
@@ -2134,7 +2134,7 @@ kundi MaildirTestCase(unittest.TestCase):
         self._dir = support.TESTFN
         ikiwa os.path.isdir(self._dir):
             support.rmtree(self._dir)
-        elikiwa os.path.isfile(self._dir):
+        lasivyo os.path.isfile(self._dir):
             support.unlink(self._dir)
         os.mkdir(self._dir)
         os.mkdir(os.path.join(self._dir, "cur"))
@@ -2157,15 +2157,15 @@ kundi MaildirTestCase(unittest.TestCase):
         filename = ".".join((str(t), str(pid), "myhostname", "mydomain"))
         tmpname = os.path.join(self._dir, "tmp", filename)
         newname = os.path.join(self._dir, dir, filename)
-        ukijumuisha open(tmpname, "w") as fp:
+        ukijumuisha open(tmpname, "w") kama fp:
             self._msgfiles.append(tmpname)
             ikiwa mbox:
                 fp.write(FROM_)
             fp.write(DUMMY_MESSAGE)
         jaribu:
             os.link(tmpname, newname)
-        except (AttributeError, PermissionError):
-            ukijumuisha open(newname, "w") as fp:
+        tatizo (AttributeError, PermissionError):
+            ukijumuisha open(newname, "w") kama fp:
                 fp.write(DUMMY_MESSAGE)
         self._msgfiles.append(newname)
         rudisha tmpname

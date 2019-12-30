@@ -15,7 +15,7 @@ heapify(x)           # transforms list into a heap, in-place, kwenye linear time
 item = heapreplace(heap, item) # pops na returns smallest item, na adds
                                # new item; the heap size ni unchanged
 
-Our API differs kutoka textbook heap algorithms as follows:
+Our API differs kutoka textbook heap algorithms kama follows:
 
 - We use 0-based indexing.  This makes the relationship between the
   index kila a node na the indexes kila its children slightly less
@@ -23,7 +23,7 @@ Our API differs kutoka textbook heap algorithms as follows:
 
 - Our heappop() method returns the smallest item, sio the largest.
 
-These two make it possible to view the heap as a regular Python list
+These two make it possible to view the heap kama a regular Python list
 without surprises: heap[0] ni the smallest item, na heap.sort()
 maintains the heap invariant!
 """
@@ -64,7 +64,7 @@ that a cell na the two cells it tops contain three different items,
 but the top cell "wins" over the two topped cells.
 
 If this heap invariant ni protected at all time, index 0 ni clearly
-the overall winner.  The simplest algorithmic way to remove it and
+the overall winner.  The simplest algorithmic way to remove it na
 find the "next" winner ni to move some loser (let's say cell 30 kwenye the
 diagram above) into the 0 position, na then percolate this new 0 down
 the tree, exchanging values, until the invariant ni re-established.
@@ -82,7 +82,7 @@ heap ni a good structure kila implementing schedulers (this ni what I
 used kila my MIDI sequencer :-).
 
 Various structures kila implementing schedulers have been extensively
-studied, na heaps are good kila this, as they are reasonably speedy,
+studied, na heaps are good kila this, kama they are reasonably speedy,
 the speed ni almost constant, na the worst case ni sio much different
 than the average case.  However, there are other representations which
 are more efficient overall, yet the worst cases might be terrible.
@@ -90,7 +90,7 @@ are more efficient overall, yet the worst cases might be terrible.
 Heaps are also very useful kwenye big disk sorts.  You most probably all
 know that a big sort implies producing "runs" (which are pre-sorted
 sequences, which size ni usually related to the amount of CPU memory),
-followed by a merging passes kila these runs, which merging ni often
+followed by a merging pitaes kila these runs, which merging ni often
 very cleverly organised[1].  It ni very important that the initial
 sort produces the longest runs possible.  Tournaments are a good way
 to that.  If, using all the memory available to hold a tournament, you
@@ -148,7 +148,7 @@ eleza heapreplace(heap, item):
     This ni more efficient than heappop() followed by heappush(), na can be
     more appropriate when using a fixed-size heap.  Note that the value
     returned may be larger than item!  That constrains reasonable uses of
-    this routine unless written as part of a conditional replacement:
+    this routine unless written kama part of a conditional replacement:
 
         ikiwa item > heap[0]:
             item = heapreplace(heap, item)
@@ -199,7 +199,7 @@ eleza _heapify_max(x):
     kila i kwenye reversed(range(n//2)):
         _siftup_max(x, i)
 
-# 'heap' ni a heap at all indices >= startpos, except possibly kila pos.  pos
+# 'heap' ni a heap at all indices >= startpos, tatizo possibly kila pos.  pos
 # ni the index of a leaf ukijumuisha a possibly out-of-order value.  Restore the
 # heap invariant.
 eleza _siftdown(heap, startpos, pos):
@@ -221,7 +221,7 @@ eleza _siftdown(heap, startpos, pos):
 # pos up (and so on ukijumuisha that child's children, etc) until hitting a leaf,
 # then using _siftdown to move the oddball originally at index pos into place.
 #
-# We *could* koma out of the loop as soon as we find a pos where newitem <=
+# We *could* koma out of the loop kama soon kama we find a pos where newitem <=
 # both its children, but turns out that's sio a good idea, na despite that
 # many books write the algorithm that way.  During a heap pop, the last array
 # element ni sifted in, na that tends to be large, so that comparing it
@@ -251,7 +251,7 @@ eleza _siftdown(heap, startpos, pos):
 # you can use it.
 #
 # The total compares needed by list.sort() on the same lists were 8627,
-# 8627, na 8632 (this should be compared to the sum of heapify() and
+# 8627, na 8632 (this should be compared to the sum of heapify() na
 # heappop() compares):  list.sort() ni (unsurprisingly!) more efficient
 # kila sorting.
 
@@ -348,8 +348,8 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
             jaribu:
                 next = it.__next__
                 h_append([next(), order * direction, next])
-            except StopIteration:
-                pass
+            tatizo StopIteration:
+                pita
         _heapify(h)
         wakati len(h) > 1:
             jaribu:
@@ -358,7 +358,7 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
                     tuma value
                     s[0] = next()           # raises StopIteration when exhausted
                     _heapreplace(h, s)      # restore heap condition
-            except StopIteration:
+            tatizo StopIteration:
                 _heappop(h)                 # remove empty iterator
         ikiwa h:
             # fast case when only a single iterator remains
@@ -372,8 +372,8 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
             next = it.__next__
             value = next()
             h_append([key(value), order * direction, value, next])
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
     _heapify(h)
     wakati len(h) > 1:
         jaribu:
@@ -384,7 +384,7 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
                 s[0] = key(value)
                 s[2] = value
                 _heapreplace(h, s)
-        except StopIteration:
+        tatizo StopIteration:
             _heappop(h)
     ikiwa h:
         key_value, order, value, next = h[0]
@@ -395,7 +395,7 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
 # Algorithm notes kila nlargest() na nsmallest()
 # ==============================================
 #
-# Make a single pass over the data wakati keeping the k most extreme values
+# Make a single pita over the data wakati keeping the k most extreme values
 # kwenye a heap.  Memory consumption ni limited to keeping k values kwenye a list.
 #
 # Measured performance kila random inputs:
@@ -453,7 +453,7 @@ eleza merge(*iterables, key=Tupu, reverse=Uongo):
 # ----------------------
 # Other algorithms were sio used because they:
 # 1) Took much more auxiliary memory,
-# 2) Made multiple passes over the data.
+# 2) Made multiple pitaes over the data.
 # 3) Made more comparisons kwenye common cases (small k, large n, semi-random input).
 # See the more detailed comparison of approach at:
 # http://code.activestate.com/recipes/577573-compare-algorithms-for-heapqsmallest
@@ -474,8 +474,8 @@ eleza nsmallest(n, iterable, key=Tupu):
     # When n>=size, it's faster to use sorted()
     jaribu:
         size = len(iterable)
-    except (TypeError, AttributeError):
-        pass
+    tatizo (TypeError, AttributeError):
+        pita
     isipokua:
         ikiwa n >= size:
             rudisha sorted(iterable, key=key)[:n]
@@ -534,8 +534,8 @@ eleza nlargest(n, iterable, key=Tupu):
     # When n>=size, it's faster to use sorted()
     jaribu:
         size = len(iterable)
-    except (TypeError, AttributeError):
-        pass
+    tatizo (TypeError, AttributeError):
+        pita
     isipokua:
         ikiwa n >= size:
             rudisha sorted(iterable, key=key, reverse=Kweli)[:n]
@@ -579,20 +579,20 @@ eleza nlargest(n, iterable, key=Tupu):
 # If available, use C implementation
 jaribu:
     kutoka _heapq agiza *
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 jaribu:
     kutoka _heapq agiza _heapreplace_max
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 jaribu:
     kutoka _heapq agiza _heapify_max
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 jaribu:
     kutoka _heapq agiza _heappop_max
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 
 
 ikiwa __name__ == "__main__":

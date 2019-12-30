@@ -24,7 +24,7 @@ eleza onearg(x):
 
 eleza errfunc(*args):
     'Test function that raises an error'
-     ashiria ValueError
+    ashiria ValueError
 
 eleza gen3():
     'Non-restartable source sequence'
@@ -51,7 +51,7 @@ kundi StopNow:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-         ashiria StopIteration
+        ashiria StopIteration
 
 eleza take(n, seq):
     'Convenience function kila partially consuming a long of infinite iterable'
@@ -84,12 +84,12 @@ kundi TestBasicOps(unittest.TestCase):
         eleza expand(it, i=0):
             # Recursively expand iterables, within sensible bounds
             ikiwa i > 10:
-                 ashiria RuntimeError("infinite recursion encountered")
+                ashiria RuntimeError("infinite recursion encountered")
             ikiwa isinstance(it, str):
                 rudisha it
             jaribu:
                 l = list(islice(it, stop))
-            except TypeError:
+            tatizo TypeError:
                 rudisha it # can't expand it
             rudisha [expand(e, i+1) kila e kwenye l]
 
@@ -110,8 +110,8 @@ kundi TestBasicOps(unittest.TestCase):
             kila i kwenye range(take):
                 next(i3)
                 took += 1
-        except StopIteration:
-            pass #in case there ni less data than 'take'
+        tatizo StopIteration:
+            pita #in case there ni less data than 'take'
         dump = pickle.dumps(i3, protocol)
         i4 = pickle.loads(dump)
         a, b = expand(i3), expand(i4)
@@ -439,7 +439,7 @@ kundi TestBasicOps(unittest.TestCase):
                 self.assertEqual(result, list(permutations1(values, r))) # matches first pure python version
                 self.assertEqual(result, list(permutations2(values, r))) # matches second pure python version
                 ikiwa r == n:
-                    self.assertEqual(result, list(permutations(values, Tupu))) # test r as Tupu
+                    self.assertEqual(result, list(permutations(values, Tupu))) # test r kama Tupu
                     self.assertEqual(result, list(permutations(values)))       # test default r
 
                 kila proto kwenye range(pickle.HIGHEST_PROTOCOL + 1):
@@ -469,7 +469,7 @@ kundi TestBasicOps(unittest.TestCase):
 
                 # Check size
                 self.assertEqual(len(prod), n**r)
-                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n isipokua (not r))
+                self.assertEqual(len(cwr), (fact(n+r-1) / fact(r)/ fact(n-1)) ikiwa n isipokua (sio r))
                 self.assertEqual(len(perm), 0 ikiwa r>n isipokua fact(n) / fact(n-r))
                 self.assertEqual(len(comb), 0 ikiwa r>n isipokua fact(n) / fact(r) / fact(n-r))
 
@@ -671,7 +671,7 @@ kundi TestBasicOps(unittest.TestCase):
         # Verify both modes kila restoring state
 
         # Mode 0 ni efficient.  It uses an incompletely consumed input
-        # iterator to build a cycle object na then passes kwenye state with
+        # iterator to build a cycle object na then pitaes kwenye state with
         # a list of previously consumed values.  There ni no data
         # overlap between the two.
         c = cycle('defg')
@@ -680,7 +680,7 @@ kundi TestBasicOps(unittest.TestCase):
 
         # Mode 1 ni inefficient.  It starts ukijumuisha a cycle object built
         # kutoka an iterator over the remaining elements kwenye a partial
-        # cycle na then passes kwenye state ukijumuisha all of the previously
+        # cycle na then pitaes kwenye state ukijumuisha all of the previously
         # seen values (this overlaps values included kwenye the iterator).
         c = cycle('defg')
         c.__setstate__((list('abcdefg'), 1))
@@ -795,11 +795,11 @@ kundi TestBasicOps(unittest.TestCase):
 
         # iter.__next__ failure
         kundi ExpectedError(Exception):
-            pass
+            pita
         eleza delayed_raise(n=0):
             kila i kwenye range(n):
                 tuma 'yo'
-             ashiria ExpectedError
+            ashiria ExpectedError
         eleza gulp(iterable, keyp=Tupu, func=list):
             rudisha [func(g) kila k, g kwenye groupby(iterable, keyp)]
 
@@ -811,7 +811,7 @@ kundi TestBasicOps(unittest.TestCase):
         # __eq__ failure
         kundi DummyCmp:
             eleza __eq__(self, dst):
-                 ashiria ExpectedError
+                ashiria ExpectedError
         s = [DummyCmp(), DummyCmp(), Tupu]
 
         # __eq__ failure on outer object
@@ -825,7 +825,7 @@ kundi TestBasicOps(unittest.TestCase):
                 keyfunc.skip -= 1
                 rudisha obj
             isipokua:
-                 ashiria ExpectedError
+                ashiria ExpectedError
 
         # keyfunc failure on outer object
         keyfunc.skip = 0
@@ -948,10 +948,10 @@ kundi TestBasicOps(unittest.TestCase):
         ]:
             jaribu:
                 eval(stmt, globals(), locals())
-            except TypeError:
-                pass
+            tatizo TypeError:
+                pita
             isipokua:
-                self.fail('Did sio  ashiria Type in:  ' + stmt)
+                self.fail('Did sio ashiria Type in:  ' + stmt)
 
         self.assertEqual([tuple(list(pair)) kila pair kwenye zip_longest('abc', 'def')],
                          list(zip('abc', 'def')))
@@ -977,9 +977,9 @@ kundi TestBasicOps(unittest.TestCase):
 
         kundi BadIterable:
             eleza __iter__(self):
-                 ashiria exception
+                ashiria exception
 
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             zip_longest(BadIterable())
 
         self.assertIs(cm.exception, exception)
@@ -999,7 +999,7 @@ kundi TestBasicOps(unittest.TestCase):
                     self.t -= 1
                     rudisha self.o
                 isipokua:
-                     ashiria self.e
+                    ashiria self.e
 
         # Formerly this code kwenye would fail kwenye debug mode
         # ukijumuisha Undetected Error na Stop Iteration
@@ -1015,7 +1015,7 @@ kundi TestBasicOps(unittest.TestCase):
         self.assertEqual(run(r1, r2), [(1,2), (1,2), (1,2), (0,2)])
 
         # Formerly, the RuntimeError would be lost
-        # na StopIteration would stop as expected
+        # na StopIteration would stop kama expected
         r1 = Repeater(1, 3, RuntimeError)
         r2 = Repeater(2, 4, StopIteration)
         it = zip_longest(r1, r2, fillvalue=0)
@@ -1403,7 +1403,7 @@ kundi TestBasicOps(unittest.TestCase):
             self.assertEqual(len(result), n)
             self.assertEqual([list(x) kila x kwenye result], [list('abc')]*n)
 
-        # tee pass-through to copyable iterator
+        # tee pita-through to copyable iterator
         a, b = tee('abc')
         c, d = tee(a)
         self.assertKweli(a ni c)
@@ -1673,20 +1673,20 @@ kundi TestPurePythonRoughEquivalents(unittest.TestCase):
         it = iter(range(start, stop, step))
         jaribu:
             nexti = next(it)
-        except StopIteration:
+        tatizo StopIteration:
             # Consume *iterable* up to the *start* position.
             kila i, element kwenye zip(range(start), iterable):
-                pass
+                pita
             return
         jaribu:
             kila i, element kwenye enumerate(iterable):
                 ikiwa i == nexti:
                     tuma element
                     nexti = next(it)
-        except StopIteration:
+        tatizo StopIteration:
             # Consume to *stop*.
             kila i, element kwenye zip(range(i + 1, stop), iterable):
-                pass
+                pita
 
     eleza test_islice_recipe(self):
         self.assertEqual(list(self.islice('ABCDEFG', 2)), list('AB'))
@@ -1827,7 +1827,7 @@ kundi I:
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -1847,7 +1847,7 @@ kundi X:
         self.seqn = seqn
         self.i = 0
     eleza __next__(self):
-        ikiwa self.i >= len(self.seqn):  ashiria StopIteration
+        ikiwa self.i >= len(self.seqn): ashiria StopIteration
         v = self.seqn[self.i]
         self.i += 1
         rudisha v
@@ -1873,11 +1873,11 @@ kundi E:
 kundi S:
     'Test immediate stop'
     eleza __init__(self, seqn):
-        pass
+        pita
     eleza __iter__(self):
         rudisha self
     eleza __next__(self):
-         ashiria StopIteration
+        ashiria StopIteration
 
 eleza L(seqn):
     'Test multiple tiers of iterators'
@@ -2091,7 +2091,7 @@ kundi RegressionTests(unittest.TestCase):
             hist.append(0)
             tuma 1
             hist.append(1)
-             ashiria AssertionError
+            ashiria AssertionError
             hist.append(2)
 
         eleza gen2(x):
@@ -2131,7 +2131,7 @@ kundi RegressionTests(unittest.TestCase):
     eleza test_issue30347_2(self):
         kundi K:
             eleza __init__(self, v):
-                pass
+                pita
             eleza __eq__(self, other):
                 nonlocal i
                 i += 1
@@ -2154,7 +2154,7 @@ kundi SubclassWithKwargsTest(unittest.TestCase):
                     cls.__init__(self, *args)
             jaribu:
                 Subclass(newarg=1)
-            except TypeError as err:
+            tatizo TypeError kama err:
                 # we expect type errors because of wrong argument count
                 self.assertNotIn("keyword arguments", err.args[0])
 
@@ -2251,7 +2251,7 @@ Samuele
 [25, 26, 27, 28]
 
 >>> eleza take(n, iterable):
-...     "Return first n items of the iterable as a list"
+...     "Return first n items of the iterable kama a list"
 ...     rudisha list(islice(iterable, n))
 
 >>> eleza prepend(value, iterator):
@@ -2317,8 +2317,8 @@ Samuele
 ...     a, b = tee(iterable)
 ...     jaribu:
 ...         next(b)
-...     except StopIteration:
-...         pass
+...     tatizo StopIteration:
+...         pita
 ...     rudisha zip(a, b)
 
 >>> eleza grouper(n, iterable, fillvalue=Tupu):
@@ -2335,7 +2335,7 @@ Samuele
 ...         jaribu:
 ...             kila next kwenye nexts:
 ...                 tuma next()
-...         except StopIteration:
+...         tatizo StopIteration:
 ...             pending -= 1
 ...             nexts = cycle(islice(nexts, pending))
 
@@ -2352,13 +2352,13 @@ Samuele
 ...     seen_add = seen.add
 ...     ikiwa key ni Tupu:
 ...         kila element kwenye iterable:
-...             ikiwa element sio kwenye seen:
+...             ikiwa element haiko kwenye seen:
 ...                 seen_add(element)
 ...                 tuma element
 ...     isipokua:
 ...         kila element kwenye iterable:
 ...             k = key(element)
-...             ikiwa k sio kwenye seen:
+...             ikiwa k haiko kwenye seen:
 ...                 seen_add(k)
 ...                 tuma element
 
@@ -2386,7 +2386,7 @@ Samuele
 ...     pool = tuple(iterable)
 ...     n = len(pool)
 ...     ikiwa r < 0 ama r > n:
-...          ashiria ValueError
+...         ashiria ValueError
 ...     c = 1
 ...     k = min(r, n-r)
 ...     kila i kwenye range(1, k+1):
@@ -2394,7 +2394,7 @@ Samuele
 ...     ikiwa index < 0:
 ...         index += c
 ...     ikiwa index < 0 ama index >= c:
-...          ashiria IndexError
+...         ashiria IndexError
 ...     result = []
 ...     wakati r:
 ...         c, n, r = c*r//n, n-1, r-1
@@ -2406,7 +2406,7 @@ Samuele
 
 
 This ni sio part of the examples but it tests to make sure the definitions
-perform as purported.
+perform kama purported.
 
 >>> take(10, count())
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

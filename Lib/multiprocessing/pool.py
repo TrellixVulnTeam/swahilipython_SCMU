@@ -98,7 +98,7 @@ eleza worker(inqueue, outqueue, initializer=Tupu, initargs=(), maxtasks=Tupu,
            wrap_exception=Uongo):
     ikiwa (maxtasks ni sio Tupu) na sio (isinstance(maxtasks, int)
                                        na maxtasks >= 1):
-         ashiria AssertionError("Maxtasks {!r} ni sio valid".format(maxtasks))
+        ashiria AssertionError("Maxtasks {!r} ni sio valid".format(maxtasks))
     put = outqueue.put
     get = inqueue.get
     ikiwa hasattr(inqueue, '_writer'):
@@ -112,7 +112,7 @@ eleza worker(inqueue, outqueue, initializer=Tupu, initargs=(), maxtasks=Tupu,
     wakati maxtasks ni Tupu ama (maxtasks na completed < maxtasks):
         jaribu:
             task = get()
-        except (EOFError, OSError):
+        tatizo (EOFError, OSError):
             util.debug('worker got EOFError ama OSError -- exiting')
             koma
 
@@ -123,13 +123,13 @@ eleza worker(inqueue, outqueue, initializer=Tupu, initargs=(), maxtasks=Tupu,
         job, i, func, args, kwds = task
         jaribu:
             result = (Kweli, func(*args, **kwds))
-        except Exception as e:
+        tatizo Exception kama e:
             ikiwa wrap_exception na func ni sio _helper_reraises_exception:
                 e = ExceptionWithTraceback(e, e.__traceback__)
             result = (Uongo, e)
         jaribu:
             put((job, i, result))
-        except Exception as e:
+        tatizo Exception kama e:
             wrapped = MaybeEncodingError(e, result[1])
             util.debug("Possible encoding error wakati sending result: %s" % (
                 wrapped))
@@ -141,7 +141,7 @@ eleza worker(inqueue, outqueue, initializer=Tupu, initargs=(), maxtasks=Tupu,
 
 eleza _helper_reraises_exception(ex):
     'Pickle-able helper function kila use by _guarded_task_generation.'
-     ashiria ex
+    ashiria ex
 
 #
 # Class representing a process pool
@@ -202,15 +202,15 @@ kundi Pool(object):
         ikiwa processes ni Tupu:
             processes = os.cpu_count() ama 1
         ikiwa processes < 1:
-             ashiria ValueError("Number of processes must be at least 1")
+            ashiria ValueError("Number of processes must be at least 1")
 
         ikiwa initializer ni sio Tupu na sio callable(initializer):
-             ashiria TypeError('initializer must be a callable')
+            ashiria TypeError('initializer must be a callable')
 
         self._processes = processes
         jaribu:
             self._repopulate_pool()
-        except Exception:
+        tatizo Exception:
             kila p kwenye self._pool:
                 ikiwa p.exitcode ni Tupu:
                     p.terminate()
@@ -258,7 +258,7 @@ kundi Pool(object):
             )
         self._state = RUN
 
-    # Copy globals as function locals to make sure that they are available
+    # Copy globals kama function locals to make sure that they are available
     # during Python shutdown when the Pool ni destroyed.
     eleza __del__(self, _warn=warnings.warn, RUN=RUN):
         ikiwa self._state == RUN:
@@ -347,7 +347,7 @@ kundi Pool(object):
 
     eleza _check_running(self):
         ikiwa self._state != RUN:
-             ashiria ValueError("Pool sio running")
+            ashiria ValueError("Pool sio running")
 
     eleza apply(self, func, args=(), kwds={}):
         '''
@@ -366,7 +366,7 @@ kundi Pool(object):
     eleza starmap(self, func, iterable, chunksize=Tupu):
         '''
         Like `map()` method but the elements of the `iterable` are expected to
-        be iterables as well na will be unpacked as arguments. Hence
+        be iterables kama well na will be unpacked kama arguments. Hence
         `func` na (a, b) becomes func(a, b).
         '''
         rudisha self._map_async(func, iterable, starmapstar, chunksize).get()
@@ -387,7 +387,7 @@ kundi Pool(object):
             i = -1
             kila i, x kwenye enumerate(iterable):
                 tuma (result_job, i, func, (x,), {})
-        except Exception as e:
+        tatizo Exception kama e:
             tuma (result_job, i+1, _helper_reraises_exception, (e,), {})
 
     eleza imap(self, func, iterable, chunksize=1):
@@ -405,7 +405,7 @@ kundi Pool(object):
             rudisha result
         isipokua:
             ikiwa chunksize < 1:
-                 ashiria ValueError(
+                ashiria ValueError(
                     "Chunksize must be 1+, sio {0:n}".format(
                         chunksize))
             task_batches = Pool._get_tasks(func, iterable, chunksize)
@@ -434,7 +434,7 @@ kundi Pool(object):
             rudisha result
         isipokua:
             ikiwa chunksize < 1:
-                 ashiria ValueError(
+                ashiria ValueError(
                     "Chunksize must be 1+, sio {0!r}".format(chunksize))
             task_batches = Pool._get_tasks(func, iterable, chunksize)
             result = IMapUnorderedIterator(self)
@@ -535,12 +535,12 @@ kundi Pool(object):
                         koma
                     jaribu:
                         put(task)
-                    except Exception as e:
+                    tatizo Exception kama e:
                         job, idx = task[:2]
                         jaribu:
                             cache[job]._set(idx, (Uongo, e))
-                        except KeyError:
-                            pass
+                        tatizo KeyError:
+                            pita
                 isipokua:
                     ikiwa set_length:
                         util.debug('doing set_length()')
@@ -562,7 +562,7 @@ kundi Pool(object):
             util.debug('task handler sending sentinel to workers')
             kila p kwenye pool:
                 put(Tupu)
-        except OSError:
+        tatizo OSError:
             util.debug('task handler got OSError when sending sentinels')
 
         util.debug('task handler exiting')
@@ -574,12 +574,12 @@ kundi Pool(object):
         wakati 1:
             jaribu:
                 task = get()
-            except (OSError, EOFError):
+            tatizo (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
                 return
 
             ikiwa thread._state != RUN:
-                assert thread._state == TERMINATE, "Thread sio kwenye TERMINATE"
+                assert thread._state == TERMINATE, "Thread haiko kwenye TERMINATE"
                 util.debug('result handler found thread._state=TERMINATE')
                 koma
 
@@ -590,14 +590,14 @@ kundi Pool(object):
             job, i, obj = task
             jaribu:
                 cache[job]._set(i, obj)
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
             task = job = obj = Tupu
 
         wakati cache na thread._state != TERMINATE:
             jaribu:
                 task = get()
-            except (OSError, EOFError):
+            tatizo (OSError, EOFError):
                 util.debug('result handler got EOFError/OSError -- exiting')
                 return
 
@@ -607,8 +607,8 @@ kundi Pool(object):
             job, i, obj = task
             jaribu:
                 cache[job]._set(i, obj)
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
             task = job = obj = Tupu
 
         ikiwa hasattr(outqueue, '_reader'):
@@ -621,8 +621,8 @@ kundi Pool(object):
                     ikiwa sio outqueue._reader.poll():
                         koma
                     get()
-            except (OSError, EOFError):
-                pass
+            tatizo (OSError, EOFError):
+                pita
 
         util.debug('result handler exiting: len(cache)=%s, thread._state=%s',
               len(cache), thread._state)
@@ -637,8 +637,8 @@ kundi Pool(object):
             tuma (func, x)
 
     eleza __reduce__(self):
-         ashiria NotImplementedError(
-              'pool objects cannot be passed between processes ama pickled'
+        ashiria NotImplementedError(
+              'pool objects cannot be pitaed between processes ama pickled'
               )
 
     eleza close(self):
@@ -658,9 +658,9 @@ kundi Pool(object):
     eleza join(self):
         util.debug('joining pool')
         ikiwa self._state == RUN:
-             ashiria ValueError("Pool ni still running")
-        elikiwa self._state sio kwenye (CLOSE, TERMINATE):
-             ashiria ValueError("In unknown state")
+            ashiria ValueError("Pool ni still running")
+        lasivyo self._state haiko kwenye (CLOSE, TERMINATE):
+            ashiria ValueError("In unknown state")
         self._worker_handler.join()
         self._task_handler.join()
         self._result_handler.join()
@@ -688,8 +688,8 @@ kundi Pool(object):
         util.debug('helping task handler/workers to finish')
         cls._help_stuff_finish(inqueue, task_handler, len(pool))
 
-        ikiwa (not result_handler.is_alive()) na (len(cache) != 0):
-             ashiria AssertionError(
+        ikiwa (sio result_handler.is_alive()) na (len(cache) != 0):
+            ashiria AssertionError(
                 "Cannot have cache ukijumuisha result_hander sio alive")
 
         result_handler._state = TERMINATE
@@ -752,7 +752,7 @@ kundi ApplyResult(object):
 
     eleza successful(self):
         ikiwa sio self.ready():
-             ashiria ValueError("{0!r} sio ready".format(self))
+            ashiria ValueError("{0!r} sio ready".format(self))
         rudisha self._success
 
     eleza wait(self, timeout=Tupu):
@@ -761,11 +761,11 @@ kundi ApplyResult(object):
     eleza get(self, timeout=Tupu):
         self.wait(timeout)
         ikiwa sio self.ready():
-             ashiria TimeoutError
+            ashiria TimeoutError
         ikiwa self._success:
             rudisha self._value
         isipokua:
-             ashiria self._value
+            ashiria self._value
 
     eleza _set(self, i, obj):
         self._success, self._value = obj
@@ -846,23 +846,23 @@ kundi IMapIterator(object):
         ukijumuisha self._cond:
             jaribu:
                 item = self._items.popleft()
-            except IndexError:
+            tatizo IndexError:
                 ikiwa self._index == self._length:
                     self._pool = Tupu
-                     ashiria StopIteration kutoka Tupu
+                    ashiria StopIteration kutoka Tupu
                 self._cond.wait(timeout)
                 jaribu:
                     item = self._items.popleft()
-                except IndexError:
+                tatizo IndexError:
                     ikiwa self._index == self._length:
                         self._pool = Tupu
-                         ashiria StopIteration kutoka Tupu
-                     ashiria TimeoutError kutoka Tupu
+                        ashiria StopIteration kutoka Tupu
+                    ashiria TimeoutError kutoka Tupu
 
         success, value = item
         ikiwa success:
             rudisha value
-         ashiria value
+        ashiria value
 
     __next__ = next                    # XXX
 
@@ -940,8 +940,8 @@ kundi ThreadPool(Pool):
         jaribu:
             wakati Kweli:
                 inqueue.get(block=Uongo)
-        except queue.Empty:
-            pass
+        tatizo queue.Empty:
+            pita
         kila i kwenye range(size):
             inqueue.put(Tupu)
 

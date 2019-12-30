@@ -1,12 +1,12 @@
 "Test format, coverage 99%."
 
-kutoka idlelib agiza format as ft
+kutoka idlelib agiza format kama ft
 agiza unittest
 kutoka unittest agiza mock
 kutoka test.support agiza requires
 kutoka tkinter agiza Tk, Text
 kutoka idlelib.editor agiza EditorWindow
-kutoka idlelib.idle_test.mock_idle agiza Editor as MockEditor
+kutoka idlelib.idle_test.mock_idle agiza Editor kama MockEditor
 
 
 kundi Is_Get_Test(unittest.TestCase):
@@ -46,8 +46,8 @@ kundi FindTest(unittest.TestCase):
     Using the runcase() function, find_paragraph() ni called ukijumuisha 'mark' set at
     multiple indexes before na inside the test paragraph.
 
-    It appears that code ukijumuisha the same indentation as a quoted string ni grouped
-    as part of the same paragraph, which ni probably incorrect behavior.
+    It appears that code ukijumuisha the same indentation kama a quoted string ni grouped
+    kama part of the same paragraph, which ni probably incorrect behavior.
     """
 
     @classmethod
@@ -223,7 +223,7 @@ kundi FormatClassTest(unittest.TestCase):
 # a mock Editor ukijumuisha .text na  .get_selection_indices.  The text must
 # be a Text wrapper that adds two methods
 
-# A real EditorWindow creates unneeded, time-consuming baggage and
+# A real EditorWindow creates unneeded, time-consuming baggage na
 # sometimes emits shutdown warnings like this:
 # "warning: callback failed kwenye WindowList <kundi '_tkinter.TclError'>
 # : invalid command name ".55131368.windows".
@@ -235,8 +235,8 @@ kundi TextWrapper:
         self.text = Text(master=master)
     eleza __getattr__(self, name):
         rudisha getattr(self.text, name)
-    eleza undo_block_start(self): pass
-    eleza undo_block_stop(self): pass
+    eleza undo_block_start(self): pita
+    eleza undo_block_stop(self): pita
 
 kundi Editor:
     eleza __init__(self, root):
@@ -247,7 +247,7 @@ kundi FormatEventTest(unittest.TestCase):
     """Test the formatting of text inside a Text widget.
 
     This ni done ukijumuisha FormatParagraph.format.paragraph_event,
-    which calls functions kwenye the module as appropriate.
+    which calls functions kwenye the module kama appropriate.
     """
     test_string = (
         "    '''this ni a test of a reformat kila a triple "
@@ -427,7 +427,7 @@ kundi C1():
     eleza compare(self):
         ikiwa a > b:
             rudisha a
-        elikiwa a < b:
+        lasivyo a < b:
             rudisha b
         isipokua:
             rudisha Tupu
@@ -594,7 +594,7 @@ kundi rstripTest(unittest.TestCase):
     eleza test_rstrip_multiple(self):
         editor = MockEditor()
         #  Comment above, uncomment 3 below to test ukijumuisha real Editor & Text.
-        #kutoka idlelib.editor agiza EditorWindow as Editor
+        #kutoka idlelib.editor agiza EditorWindow kama Editor
         #kutoka tkinter agiza Tk
         #editor = Editor(root=Tk())
         text = editor.text

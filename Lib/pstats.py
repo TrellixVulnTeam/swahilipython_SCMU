@@ -8,7 +8,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may sio use this file except kwenye compliance ukijumuisha the License.
+# you may sio use this file tatizo kwenye compliance ukijumuisha the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -61,11 +61,11 @@ kundi Stats:
     The big change kutoka the previous Profiler (in terms of raw functionality)
     ni that an "add()" method has been provided to combine Stats from
     several distinct profile runs.  Both the constructor na the add()
-    method now take arbitrarily many file names as arguments.
+    method now take arbitrarily many file names kama arguments.
 
     All the print methods now take an argument that indicates how many lines
     to print.  If the arg ni a floating point number between 0 na 1.0, then
-    it ni taken as a decimal percentage of the available lines to be printed
+    it ni taken kama a decimal percentage of the available lines to be printed
     (e.g., .1 means print 10% of all available lines).  If it ni an integer,
     it ni taken to mean the number of lines of data that you wish to have
     printed.
@@ -110,7 +110,7 @@ kundi Stats:
         self.load_stats(arg)
         jaribu:
             self.get_top_level_stats()
-        except Exception:
+        tatizo Exception:
             andika("Invalid timing data %s" %
                   (self.files[-1] ikiwa self.files isipokua ''), file=self.stream)
             raise
@@ -119,21 +119,21 @@ kundi Stats:
         ikiwa arg ni Tupu:
             self.stats = {}
             return
-        elikiwa isinstance(arg, str):
-            ukijumuisha open(arg, 'rb') as f:
+        lasivyo isinstance(arg, str):
+            ukijumuisha open(arg, 'rb') kama f:
                 self.stats = marshal.load(f)
             jaribu:
                 file_stats = os.stat(arg)
                 arg = time.ctime(file_stats.st_mtime) + "    " + arg
             tatizo:  # kwenye case this ni sio unix
-                pass
+                pita
             self.files = [arg]
-        elikiwa hasattr(arg, 'create_stats'):
+        lasivyo hasattr(arg, 'create_stats'):
             arg.create_stats()
             self.stats = arg.stats
             arg.stats = {}
         ikiwa sio self.stats:
-             ashiria TypeError("Cannot create ama construct a %r object kutoka %r"
+            ashiria TypeError("Cannot create ama construct a %r object kutoka %r"
                             % (self.__class__, arg))
         return
 
@@ -175,7 +175,7 @@ kundi Stats:
 
     eleza dump_stats(self, filename):
         """Write the profile data to a file we know how to load back."""
-        ukijumuisha open(filename, 'wb') as f:
+        ukijumuisha open(filename, 'wb') kama f:
             marshal.dump(self.stats, f)
 
     # list the tuple indices na directions kila sorting,
@@ -225,10 +225,10 @@ kundi Stats:
                        0:  "calls",
                        1:  "time",
                        2:  "cumulative"}[field[0]] ]
-        elikiwa len(field) >= 2:
+        lasivyo len(field) >= 2:
             kila arg kwenye field[1:]:
                 ikiwa type(arg) != type(field[0]):
-                     ashiria TypeError("Can't have mixed argument type")
+                    ashiria TypeError("Can't have mixed argument type")
 
         sort_arg_defs = self.get_sort_arg_defs()
 
@@ -312,7 +312,7 @@ kundi Stats:
         ikiwa isinstance(sel, str):
             jaribu:
                 rex = re.compile(sel)
-            except re.error:
+            tatizo re.error:
                 msg += "   <Invalid regular expression %r>\n" % sel
                 rudisha new_list, msg
             new_list = []
@@ -324,7 +324,7 @@ kundi Stats:
             ikiwa isinstance(sel, float) na 0.0 <= sel < 1.0:
                 count = int(count * sel + .5)
                 new_list = list[:count]
-            elikiwa isinstance(sel, int) na 0 <= sel < count:
+            lasivyo isinstance(sel, int) na 0 <= sel < count:
                 count = sel
                 new_list = list[:count]
         ikiwa len(list) != len(new_list):
@@ -469,7 +469,7 @@ kundi TupleComp:
     """This kundi provides a generic function kila comparing any two tuples.
     Each instance records a list of tuple-indices (kutoka most significant
     to least significant), na sort direction (ascending ama decending) for
-    each tuple-index.  The compare functions can then be used as the function
+    each tuple-index.  The compare functions can then be used kama the function
     argument to the system sort() function when a list of tuples need to be
     sorted kwenye the instances order."""
 
@@ -511,7 +511,7 @@ eleza func_std_string(func_name): # match what old profile produced
 #**************************************************************************
 # The following functions combine statistics kila pairs functions.
 # The bulk of the processing involves correctly handling "call" lists,
-# such as callers na callees.
+# such kama callers na callees.
 #**************************************************************************
 
 eleza add_func_stats(target, source):
@@ -560,8 +560,8 @@ ikiwa __name__ == '__main__':
     agiza cmd
     jaribu:
         agiza readline
-    except ImportError:
-        pass
+    tatizo ImportError:
+        pita
 
     kundi ProfileBrowser(cmd.Cmd):
         eleza __init__(self, profile=Tupu):
@@ -579,8 +579,8 @@ ikiwa __name__ == '__main__':
                 jaribu:
                     processed.append(int(term))
                     endelea
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
                 jaribu:
                     frac = float(term)
                     ikiwa frac > 1 ama frac < 0:
@@ -588,8 +588,8 @@ ikiwa __name__ == '__main__':
                         endelea
                     processed.append(frac)
                     endelea
-                except ValueError:
-                    pass
+                tatizo ValueError:
+                    pita
                 processed.append(term)
             ikiwa self.stats:
                 getattr(self.stats, fn)(*processed)
@@ -608,7 +608,7 @@ ikiwa __name__ == '__main__':
             ikiwa self.stats:
                 jaribu:
                     self.stats.add(line)
-                except OSError as e:
+                tatizo OSError kama e:
                     andika("Failed to load statistics kila %s: %s" % (line, e), file=self.stream)
             isipokua:
                 andika("No statistics object ni loaded.", file=self.stream)
@@ -643,14 +643,14 @@ ikiwa __name__ == '__main__':
             ikiwa line:
                 jaribu:
                     self.stats = Stats(line)
-                except OSError as err:
+                tatizo OSError kama err:
                     andika(err.args[1], file=self.stream)
                     return
-                except Exception as err:
+                tatizo Exception kama err:
                     andika(err.__class__.__name__ + ':', err, file=self.stream)
                     return
                 self.prompt = line + "% "
-            elikiwa len(self.prompt) > 2:
+            lasivyo len(self.prompt) > 2:
                 line = self.prompt[:-2]
                 self.do_read(line)
             isipokua:
@@ -720,7 +720,7 @@ ikiwa __name__ == '__main__':
         andika("Welcome to the profile statistics browser.", file=browser.stream)
         browser.cmdloop()
         andika("Goodbye.", file=browser.stream)
-    except KeyboardInterrupt:
-        pass
+    tatizo KeyboardInterrupt:
+        pita
 
 # That's all, folks.

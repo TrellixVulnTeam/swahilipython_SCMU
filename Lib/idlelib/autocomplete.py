@@ -14,7 +14,7 @@ kutoka idlelib agiza autocomplete_w
 kutoka idlelib.config agiza idleConf
 kutoka idlelib.hyperparser agiza HyperParser
 
-# Tuples passed to open_completions.
+# Tuples pitaed to open_completions.
 #       EvalFunc, Complete, WantWin, Mode
 FORCE = Kweli,     Uongo,    Kweli,    Tupu   # Control-Space.
 TAB   = Uongo,    Kweli,     Kweli,    Tupu   # Tab.
@@ -32,7 +32,7 @@ kundi AutoComplete:
 
     eleza __init__(self, editwin=Tupu):
         self.editwin = editwin
-        ikiwa editwin ni sio Tupu:   # sio kwenye subprocess ama no-gui test
+        ikiwa editwin ni sio Tupu:   # haiko kwenye subprocess ama no-gui test
             self.text = editwin.text
         self.autocompletewindow = Tupu
         # id of delayed call, na the index of the text insert when
@@ -63,7 +63,7 @@ kundi AutoComplete:
         "(tab) Complete word ama open list ikiwa multiple options."
         ikiwa hasattr(event, "mc_state") na event.mc_state or\
                 sio self.text.get("insert linestart", "insert").strip():
-            # A modifier was pressed along ukijumuisha the tab or
+            # A modifier was pressed along ukijumuisha the tab ama
             # there ni only previous whitespace on this line, so tab.
             rudisha Tupu
         ikiwa self.autocompletewindow na self.autocompletewindow.is_active():
@@ -106,7 +106,7 @@ kundi AutoComplete:
         hp = HyperParser(self.editwin, "insert")
         curline = self.text.get("insert linestart", "insert")
         i = j = len(curline)
-        ikiwa hp.is_in_string() na (not mode ama mode==FILES):
+        ikiwa hp.is_in_string() na (sio mode ama mode==FILES):
             # Find the beginning of the string.
             # fetch_completions will look at the file system to determine
             # whether the string value constitutes an actual file name
@@ -115,15 +115,15 @@ kundi AutoComplete:
             self._remove_autocomplete_window()
             mode = FILES
             # Find last separator ama string start
-            wakati i na curline[i-1] sio kwenye "'\"" + SEPS:
+            wakati i na curline[i-1] haiko kwenye "'\"" + SEPS:
                 i -= 1
             comp_start = curline[i:j]
             j = i
             # Find string start
-            wakati i na curline[i-1] sio kwenye "'\"":
+            wakati i na curline[i-1] haiko kwenye "'\"":
                 i -= 1
             comp_what = curline[i:j]
-        elikiwa hp.is_in_code() na (not mode ama mode==ATTRS):
+        lasivyo hp.is_in_code() na (sio mode ama mode==ATTRS):
             self._remove_autocomplete_window()
             mode = ATTRS
             wakati i na (curline[i-1] kwenye ID_CHARS ama ord(curline[i-1]) > 127):
@@ -132,8 +132,8 @@ kundi AutoComplete:
             ikiwa i na curline[i-1] == '.':  # Need object ukijumuisha attributes.
                 hp.set_index("insert-%dc" % (len(curline)-(i-1)))
                 comp_what = hp.get_expression()
-                ikiwa (not comp_what or
-                   (not evalfuncs na comp_what.find('(') != -1)):
+                ikiwa (sio comp_what ama
+                   (sio evalfuncs na comp_what.find('(') != -1)):
                     rudisha Tupu
             isipokua:
                 comp_what = ""
@@ -192,7 +192,7 @@ kundi AutoComplete:
                     tatizo:
                         rudisha [], []
 
-            elikiwa mode == FILES:
+            lasivyo mode == FILES:
                 ikiwa what == "":
                     what = "."
                 jaribu:
@@ -200,7 +200,7 @@ kundi AutoComplete:
                     bigl = os.listdir(expandedpath)
                     bigl.sort()
                     smalll = [s kila s kwenye bigl ikiwa s[:1] != '.']
-                except OSError:
+                tatizo OSError:
                     rudisha [], []
 
             ikiwa sio smalll:

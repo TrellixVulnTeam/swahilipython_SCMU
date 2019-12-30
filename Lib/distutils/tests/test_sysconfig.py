@@ -26,7 +26,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
     eleza cleanup_testfn(self):
         ikiwa os.path.isfile(TESTFN):
             os.remove(TESTFN)
-        elikiwa os.path.isdir(TESTFN):
+        lasivyo os.path.isdir(TESTFN):
             shutil.rmtree(TESTFN)
 
     eleza test_get_config_h_filename(self):
@@ -58,7 +58,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
             Python_h = os.path.join(srcdir, 'Include', 'Python.h')
             self.assertKweli(os.path.exists(Python_h), Python_h)
             self.assertKweli(sysconfig._is_python_source_dir(srcdir))
-        elikiwa os.name == 'posix':
+        lasivyo os.name == 'posix':
             self.assertEqual(
                 os.path.dirname(sysconfig.get_makefile_filename()),
                 srcdir)
@@ -98,7 +98,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         }
 
         comp = compiler()
-        ukijumuisha contextlib.ExitStack() as cm:
+        ukijumuisha contextlib.ExitStack() kama cm:
             kila key, value kwenye sysconfig_vars.items():
                 cm.enter_context(swap_item(sysconfig._config_vars, key, value))
             sysconfig.customize_compiler(comp)
@@ -193,7 +193,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
 
 
     eleza test_sysconfig_module(self):
-        agiza sysconfig as global_sysconfig
+        agiza sysconfig kama global_sysconfig
         self.assertEqual(global_sysconfig.get_config_var('CFLAGS'),
                          sysconfig.get_config_var('CFLAGS'))
         self.assertEqual(global_sysconfig.get_config_var('LDFLAGS'),
@@ -216,7 +216,7 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         # The solution kila now ni to simply skip this test kwenye this case.
         # The longer-term solution ni to only have one version of sysconfig.
 
-        agiza sysconfig as global_sysconfig
+        agiza sysconfig kama global_sysconfig
         ikiwa sysconfig.get_config_var('CUSTOMIZED_OSX_COMPILER'):
             self.skipTest('compiler flags customized')
         self.assertEqual(global_sysconfig.get_config_var('LDSHARED'),
@@ -248,12 +248,12 @@ kundi SysconfigTestCase(support.EnvironGuard, unittest.TestCase):
         # Issue #21923: test that a Distribution compiler
         # instance can be called without an explicit call to
         # get_config_vars().
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.writelines(textwrap.dedent('''\
                 kutoka distutils.core agiza Distribution
                 config = Distribution().get_command_obj('config')
-                # try_compile may pass ama it may fail ikiwa no compiler
-                # ni found but it should sio  ashiria an exception.
+                # try_compile may pita ama it may fail ikiwa no compiler
+                # ni found but it should sio ashiria an exception.
                 rc = config.try_compile('int x;')
                 '''))
         p = subprocess.Popen([str(sys.executable), TESTFN],

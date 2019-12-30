@@ -33,14 +33,14 @@ kundi MIMEImage(MIMENonMultipart):
         Content-Transfer-Encoding ama other headers to the message as
         necessary.  The default encoding ni Base64.
 
-        Any additional keyword arguments are passed to the base class
+        Any additional keyword arguments are pitaed to the base class
         constructor, which turns them into parameters on the Content-Type
         header.
         """
         ikiwa _subtype ni Tupu:
             _subtype = imghdr.what(Tupu, _imagedata)
         ikiwa _subtype ni Tupu:
-             ashiria TypeError('Could sio guess image MIME subtype')
+            ashiria TypeError('Could sio guess image MIME subtype')
         MIMENonMultipart.__init__(self, 'image', _subtype, policy=policy,
                                   **_params)
         self.set_payload(_imagedata)

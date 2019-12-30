@@ -12,11 +12,11 @@ kutoka unittest agiza mock
 kutoka test agiza support
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 agiza asyncio
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 eleza tearDownModule():
@@ -61,14 +61,14 @@ kundi StreamTests(test_utils.TestCase):
         self.assertEqual(messages, [])
 
     eleza test_open_connection(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             conn_fut = asyncio.open_connection(*httpd.address,
                                                loop=self.loop)
             self._basetest_open_connection(conn_fut)
 
     @support.skip_unless_bind_unix_socket
     eleza test_open_unix_connection(self):
-        ukijumuisha test_utils.run_test_unix_server() as httpd:
+        ukijumuisha test_utils.run_test_unix_server() kama httpd:
             conn_fut = asyncio.open_unix_connection(httpd.address,
                                                     loop=self.loop)
             self._basetest_open_connection(conn_fut)
@@ -91,7 +91,7 @@ kundi StreamTests(test_utils.TestCase):
 
     @unittest.skipIf(ssl ni Tupu, 'No ssl module')
     eleza test_open_connection_no_loop_ssl(self):
-        ukijumuisha test_utils.run_test_server(use_ssl=Kweli) as httpd:
+        ukijumuisha test_utils.run_test_server(use_ssl=Kweli) kama httpd:
             conn_fut = asyncio.open_connection(
                 *httpd.address,
                 ssl=test_utils.dummy_ssl_context(),
@@ -102,7 +102,7 @@ kundi StreamTests(test_utils.TestCase):
     @support.skip_unless_bind_unix_socket
     @unittest.skipIf(ssl ni Tupu, 'No ssl module')
     eleza test_open_unix_connection_no_loop_ssl(self):
-        ukijumuisha test_utils.run_test_unix_server(use_ssl=Kweli) as httpd:
+        ukijumuisha test_utils.run_test_unix_server(use_ssl=Kweli) kama httpd:
             conn_fut = asyncio.open_unix_connection(
                 httpd.address,
                 ssl=test_utils.dummy_ssl_context(),
@@ -125,14 +125,14 @@ kundi StreamTests(test_utils.TestCase):
         self.assertEqual(messages, [])
 
     eleza test_open_connection_error(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             conn_fut = asyncio.open_connection(*httpd.address,
                                                loop=self.loop)
             self._basetest_open_connection_error(conn_fut)
 
     @support.skip_unless_bind_unix_socket
     eleza test_open_unix_connection_error(self):
-        ukijumuisha test_utils.run_test_unix_server() as httpd:
+        ukijumuisha test_utils.run_test_unix_server() kama httpd:
             conn_fut = asyncio.open_unix_connection(httpd.address,
                                                     loop=self.loop)
             self._basetest_open_connection_error(conn_fut)
@@ -276,7 +276,7 @@ kundi StreamTests(test_utils.TestCase):
         # No b'\n' at the end. The 'limit' ni set to 3. So before
         # waiting kila the new data kwenye buffer, 'readline' will consume
         # the entire buffer, na since the length of the consumed data
-        # ni more than 3, it will  ashiria a ValueError. The buffer is
+        # ni more than 3, it will ashiria a ValueError. The buffer is
         # expected to be empty now.
         self.assertEqual(b'', stream._buffer)
 
@@ -333,12 +333,12 @@ kundi StreamTests(test_utils.TestCase):
         self.assertEqual(b'', stream._buffer)
 
         stream.feed_data(b'12345678\n')
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             self.loop.run_until_complete(stream.readline())
         self.assertEqual(b'', stream._buffer)
 
         stream.feed_data(b'12345678')
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             self.loop.run_until_complete(stream.readline())
         self.assertEqual(b'', stream._buffer)
 
@@ -455,7 +455,7 @@ kundi StreamTests(test_utils.TestCase):
         stream.feed_data(b'some dataAA')
         stream.feed_eof()
 
-        ukijumuisha self.assertRaises(asyncio.IncompleteReadError) as cm:
+        ukijumuisha self.assertRaises(asyncio.IncompleteReadError) kama cm:
             self.loop.run_until_complete(stream.readuntil(b'AAA'))
         self.assertEqual(cm.exception.partial, b'some dataAA')
         self.assertIsTupu(cm.exception.expected)
@@ -465,14 +465,14 @@ kundi StreamTests(test_utils.TestCase):
         stream = asyncio.StreamReader(loop=self.loop, limit=3)
         stream.feed_data(b'some dataAA')
         ukijumuisha self.assertRaisesRegex(asyncio.LimitOverrunError,
-                                    'not found') as cm:
+                                    'not found') kama cm:
             self.loop.run_until_complete(stream.readuntil(b'AAA'))
 
         self.assertEqual(b'some dataAA', stream._buffer)
 
         stream.feed_data(b'A')
         ukijumuisha self.assertRaisesRegex(asyncio.LimitOverrunError,
-                                    'is found') as cm:
+                                    'is found') kama cm:
             self.loop.run_until_complete(stream.readuntil(b'AAA'))
 
         self.assertEqual(b'some dataAAA', stream._buffer)
@@ -525,7 +525,7 @@ kundi StreamTests(test_utils.TestCase):
             stream.feed_eof()
         self.loop.call_soon(cb)
 
-        ukijumuisha self.assertRaises(asyncio.IncompleteReadError) as cm:
+        ukijumuisha self.assertRaises(asyncio.IncompleteReadError) kama cm:
             self.loop.run_until_complete(read_task)
         self.assertEqual(cm.exception.partial, self.DATA)
         self.assertEqual(cm.exception.expected, n)
@@ -635,7 +635,7 @@ kundi StreamTests(test_utils.TestCase):
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        # test the server variant ukijumuisha a coroutine as client handler
+        # test the server variant ukijumuisha a coroutine kama client handler
         server = MyServer(self.loop)
         ukijumuisha self.assertWarns(DeprecationWarning):
             addr = server.start()
@@ -643,7 +643,7 @@ kundi StreamTests(test_utils.TestCase):
         server.stop()
         self.assertEqual(msg, b"hello world!\n")
 
-        # test the server variant ukijumuisha a callback as client handler
+        # test the server variant ukijumuisha a callback kama client handler
         server = MyServer(self.loop)
         ukijumuisha self.assertWarns(DeprecationWarning):
             addr = server.start_callback()
@@ -707,8 +707,8 @@ kundi StreamTests(test_utils.TestCase):
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        # test the server variant ukijumuisha a coroutine as client handler
-        ukijumuisha test_utils.unix_socket_path() as path:
+        # test the server variant ukijumuisha a coroutine kama client handler
+        ukijumuisha test_utils.unix_socket_path() kama path:
             server = MyServer(self.loop, path)
             ukijumuisha self.assertWarns(DeprecationWarning):
                 server.start()
@@ -717,8 +717,8 @@ kundi StreamTests(test_utils.TestCase):
             server.stop()
             self.assertEqual(msg, b"hello world!\n")
 
-        # test the server variant ukijumuisha a callback as client handler
-        ukijumuisha test_utils.unix_socket_path() as path:
+        # test the server variant ukijumuisha a callback kama client handler
+        ukijumuisha test_utils.unix_socket_path() kama path:
             server = MyServer(self.loop, path)
             ukijumuisha self.assertWarns(DeprecationWarning):
                 server.start_callback()
@@ -758,7 +758,7 @@ os.close(fd)
             asyncio.set_child_watcher(watcher)
             create = asyncio.create_subprocess_exec(
                 *args,
-                pass_fds={wfd},
+                pita_fds={wfd},
             )
             proc = self.loop.run_until_complete(create)
             self.loop.run_until_complete(proc.wait())
@@ -802,7 +802,7 @@ os.close(fd)
 
         eleza server():
             # Runs kwenye a separate thread.
-            ukijumuisha socket.create_server(('localhost', 0)) as sock:
+            ukijumuisha socket.create_server(('localhost', 0)) kama sock:
                 addr = sock.getsockname()
                 q.put(addr)
                 clt, _ = sock.accept()
@@ -894,7 +894,7 @@ os.close(fd)
                 self.assertEqual(e.consumed, e2.consumed)
 
     eleza test_wait_closed_on_close(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 rd, wr = self.loop.run_until_complete(
                     asyncio.open_connection(*httpd.address, loop=self.loop))
@@ -912,7 +912,7 @@ os.close(fd)
             self.loop.run_until_complete(wr.wait_closed())
 
     eleza test_wait_closed_on_close_with_unread_data(self):
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 rd, wr = self.loop.run_until_complete(
                     asyncio.open_connection(*httpd.address, loop=self.loop))
@@ -928,7 +928,7 @@ os.close(fd)
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 rd, wr = self.loop.run_until_complete(
                     asyncio.open_connection(*httpd.address, loop=self.loop))
@@ -959,7 +959,7 @@ os.close(fd)
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             rd = asyncio.StreamReader(loop=self.loop)
             pr = asyncio.StreamReaderProtocol(rd, loop=self.loop)
             toa rd
@@ -992,7 +992,7 @@ os.close(fd)
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             self.loop.run_until_complete(inner(httpd))
 
         self.assertEqual(messages, [])
@@ -1014,7 +1014,7 @@ os.close(fd)
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             self.loop.run_until_complete(inner(httpd))
 
         self.assertEqual(messages, [])
@@ -1024,7 +1024,7 @@ os.close(fd)
         messages = []
         self.loop.set_exception_handler(lambda loop, ctx: messages.append(ctx))
 
-        ukijumuisha test_utils.run_test_server() as httpd:
+        ukijumuisha test_utils.run_test_server() kama httpd:
             ukijumuisha self.assertWarns(DeprecationWarning):
                 rd, wr = self.loop.run_until_complete(
                     asyncio.open_connection(*httpd.address,

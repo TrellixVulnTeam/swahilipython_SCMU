@@ -472,7 +472,7 @@ kundi BaseTestUUID:
         # the value kutoka too_large_getter above.
         jaribu:
             self.uuid.uuid1(node=node)
-        except ValueError as e:
+        tatizo ValueError kama e:
             self.fail('uuid1 was given an invalid node ID')
 
     eleza test_uuid1(self):
@@ -540,7 +540,7 @@ kundi BaseTestUUID:
             self.skipTest('need uuid._generate_time_safe')
         ukijumuisha unittest.mock.patch.object(self.uuid, '_generate_time_safe',
                                         lambda: (f()[0], safe_value)):
-            yield
+            tuma
 
     @unittest.skipUnless(os.name == 'posix', 'POSIX-only test')
     eleza test_uuid1_unknown(self):
@@ -765,7 +765,7 @@ eth0      Link encap:Ethernet  HWaddr 12:34:56:78:90:ab
             self.skipTest("neither _uuid extension nor ctypes available")
         jaribu: # Issues 1481, 3581: _uuid_generate_time() might be Tupu.
             node = self.uuid._unix_getnode()
-        except TypeError:
+        tatizo TypeError:
             self.skipTest('requires uuid_generate_time')
         self.check_node(node, 'unix')
 

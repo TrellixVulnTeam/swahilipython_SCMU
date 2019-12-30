@@ -2,7 +2,7 @@
 
 # NOTE: the above "/usr/local/bin/python" ni NOT a mistake.  It is
 # intentionally NOT "/usr/bin/env python".  On many systems
-# (e.g. Solaris), /usr/local/bin ni sio kwenye $PATH as passed to CGI
+# (e.g. Solaris), /usr/local/bin ni haiko kwenye $PATH kama pitaed to CGI
 # scripts, na /usr/local/bin ni the default directory where Python is
 # installed, so /usr/bin/env would be unable to find python.  Granted,
 # binary installations by Linux vendors often install Python in
@@ -80,8 +80,8 @@ eleza initlog(*allargs):
     ikiwa logfile na sio logfp:
         jaribu:
             logfp = open(logfile, "a")
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
     ikiwa sio logfp:
         log = nolog
     isipokua:
@@ -94,7 +94,7 @@ eleza dolog(fmt, *args):
 
 eleza nolog(*allargs):
     """Dummy function, assigned to log when logging ni disabled."""
-    pass
+    pita
 
 eleza closelog():
     """Close the log file."""
@@ -125,20 +125,20 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
         environ         : environment dictionary; default: os.environ
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded forms should be treated as blank strings.
+            percent-encoded forms should be treated kama blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored na treated as ikiwa they were
+            blank values are to be ignored na treated kama ikiwa they were
             sio included.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
-            If true, errors  ashiria a ValueError exception.
+            If true, errors ashiria a ValueError exception.
     """
     ikiwa fp ni Tupu:
         fp = sys.stdin
 
-    # field keys na values (except kila files) are returned as strings
+    # field keys na values (tatizo kila files) are returned kama strings
     # an encoding ni required to decode the bytes read kutoka self.fp
     ikiwa hasattr(fp,'encoding'):
         encoding = fp.encoding
@@ -155,21 +155,21 @@ eleza parse(fp=Tupu, environ=os.environ, keep_blank_values=0, strict_parsing=0):
         ctype, pdict = parse_header(environ['CONTENT_TYPE'])
         ikiwa ctype == 'multipart/form-data':
             rudisha parse_multipart(fp, pdict)
-        elikiwa ctype == 'application/x-www-form-urlencoded':
+        lasivyo ctype == 'application/x-www-form-urlencoded':
             clength = int(environ['CONTENT_LENGTH'])
             ikiwa maxlen na clength > maxlen:
-                 ashiria ValueError('Maximum content length exceeded')
+                ashiria ValueError('Maximum content length exceeded')
             qs = fp.read(clength).decode(encoding)
         isipokua:
             qs = ''                     # Unknown content-type
         ikiwa 'QUERY_STRING' kwenye environ:
             ikiwa qs: qs = qs + '&'
             qs = qs + environ['QUERY_STRING']
-        elikiwa sys.argv[1:]:
+        lasivyo sys.argv[1:]:
             ikiwa qs: qs = qs + '&'
             qs = qs + sys.argv[1]
         environ['QUERY_STRING'] = qs    # XXX Shouldn't, really
-    elikiwa 'QUERY_STRING' kwenye environ:
+    lasivyo 'QUERY_STRING' kwenye environ:
         qs = environ['QUERY_STRING']
     isipokua:
         ikiwa sys.argv[1:]:
@@ -187,7 +187,7 @@ eleza parse_multipart(fp, pdict, encoding="utf-8", errors="replace"):
     Arguments:
     fp   : input file
     pdict: dictionary containing other parameters of content-type header
-    encoding, errors: request encoding na error handler, passed to
+    encoding, errors: request encoding na error handler, pitaed to
         FieldStorage
 
     Returns a dictionary just like parse_qs(): keys are the field names, each
@@ -195,7 +195,7 @@ eleza parse_multipart(fp, pdict, encoding="utf-8", errors="replace"):
     ni a list of strings.
     """
     # RFC 2026, Section 5.1 : The "multipart" boundary delimiters are always
-    # represented as 7bit US-ASCII.
+    # represented kama 7bit US-ASCII.
     boundary = pdict['boundary'].decode('ascii')
     ctype = "multipart/form-data; boundary={}".format(boundary)
     headers = Message()
@@ -270,10 +270,10 @@ kundi FieldStorage:
 
     """Store a sequence of fields, reading multipart/form-data.
 
-    This kundi provides naming, typing, files stored on disk, and
+    This kundi provides naming, typing, files stored on disk, na
     more.  At the top level, it ni accessible like a dictionary, whose
-    keys are the field names.  (Note: Tupu can occur as a field name.)
-    The items are either a Python list (ikiwa there's multiple values) or
+    keys are the field names.  (Note: Tupu can occur kama a field name.)
+    The items are either a Python list (ikiwa there's multiple values) ama
     another FieldStorage ama MiniFieldStorage object.  If it's a single
     object, it has the following attributes:
 
@@ -283,7 +283,7 @@ kundi FieldStorage:
         client side filename, *not* the file name on which it is
         stored (that's a temporary file you don't deal with)
 
-    value: the value as a *string*; kila file uploads, this
+    value: the value kama a *string*; kila file uploads, this
         transparently reads the file every time you request the value
         na returns *bytes*
 
@@ -306,7 +306,7 @@ kundi FieldStorage:
     the make_file() method, which ni called internally to come up with
     a file open kila reading na writing.  This makes it possible to
     override the default choice of storing all files kwenye a temporary
-    directory na unlinking them as soon as they have been opened.
+    directory na unlinking them kama soon kama they have been opened.
 
     """
     eleza __init__(self, fp=Tupu, headers=Tupu, outerboundary=b'',
@@ -318,13 +318,13 @@ kundi FieldStorage:
         Arguments, all optional:
 
         fp              : file pointer; default: sys.stdin.buffer
-            (not used when the request method ni GET)
+            (sio used when the request method ni GET)
             Can be :
             1. a TextIOWrapper object
             2. an object whose read() na readline() methods rudisha bytes
 
         headers         : header dictionary-like object; default:
-            taken kutoka environ as per CGI spec
+            taken kutoka environ kama per CGI spec
 
         outerboundary   : terminating multipart boundary
             (kila internal use only)
@@ -332,15 +332,15 @@ kundi FieldStorage:
         environ         : environment dictionary; default: os.environ
 
         keep_blank_values: flag indicating whether blank values in
-            percent-encoded forms should be treated as blank strings.
+            percent-encoded forms should be treated kama blank strings.
             A true value indicates that blanks should be retained as
             blank strings.  The default false value indicates that
-            blank values are to be ignored na treated as ikiwa they were
+            blank values are to be ignored na treated kama ikiwa they were
             sio included.
 
         strict_parsing: flag indicating what to do ukijumuisha parsing errors.
             If false (the default), errors are silently ignored.
-            If true, errors  ashiria a ValueError exception.
+            If true, errors ashiria a ValueError exception.
 
         limit : used internally to read parts of multipart/form-data forms,
             to exit kutoka the reading loop when reached. It ni the difference
@@ -348,8 +348,8 @@ kundi FieldStorage:
             read
 
         encoding, errors : the encoding na error handler used to decode the
-            binary stream to strings. Must be the same as the charset defined
-            kila the page sending the form (content-type : meta http-equiv or
+            binary stream to strings. Must be the same kama the charset defined
+            kila the page sending the form (content-type : meta http-equiv ama
             header)
 
         max_num_fields: int. If set, then __init__ throws a ValueError
@@ -366,7 +366,7 @@ kundi FieldStorage:
         ikiwa method == 'GET' ama method == 'HEAD':
             ikiwa 'QUERY_STRING' kwenye environ:
                 qs = environ['QUERY_STRING']
-            elikiwa sys.argv[1:]:
+            lasivyo sys.argv[1:]:
                 qs = sys.argv[1]
             isipokua:
                 qs = ""
@@ -388,24 +388,24 @@ kundi FieldStorage:
                 headers['content-length'] = environ['CONTENT_LENGTH']
         isipokua:
             ikiwa sio (isinstance(headers, (Mapping, Message))):
-                 ashiria TypeError("headers must be mapping ama an instance of "
+                ashiria TypeError("headers must be mapping ama an instance of "
                                 "email.message.Message")
         self.headers = headers
         ikiwa fp ni Tupu:
             self.fp = sys.stdin.buffer
         # self.fp.read() must rudisha bytes
-        elikiwa isinstance(fp, TextIOWrapper):
+        lasivyo isinstance(fp, TextIOWrapper):
             self.fp = fp.buffer
         isipokua:
             ikiwa sio (hasattr(fp, 'read') na hasattr(fp, 'readline')):
-                 ashiria TypeError("fp must be file pointer")
+                ashiria TypeError("fp must be file pointer")
             self.fp = fp
 
         self.encoding = encoding
         self.errors = errors
 
         ikiwa sio isinstance(outerboundary, bytes):
-             ashiria TypeError('outerboundary must be bytes, sio %s'
+            ashiria TypeError('outerboundary must be bytes, sio %s'
                             % type(outerboundary).__name__)
         self.outerboundary = outerboundary
 
@@ -440,7 +440,7 @@ kundi FieldStorage:
         # but it happens to be something we don't understand.
         ikiwa 'content-type' kwenye self.headers:
             ctype, pdict = parse_header(self.headers['content-type'])
-        elikiwa self.outerboundary ama method != 'POST':
+        lasivyo self.outerboundary ama method != 'POST':
             ctype, pdict = "text/plain", {}
         isipokua:
             ctype, pdict = 'application/x-www-form-urlencoded', {}
@@ -456,10 +456,10 @@ kundi FieldStorage:
         ikiwa 'content-length' kwenye self.headers:
             jaribu:
                 clen = int(self.headers['content-length'])
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             ikiwa maxlen na clen > maxlen:
-                 ashiria ValueError('Maximum content length exceeded')
+                ashiria ValueError('Maximum content length exceeded')
         self.length = clen
         ikiwa self.limit ni Tupu na clen >= 0:
             self.limit = clen
@@ -468,7 +468,7 @@ kundi FieldStorage:
         self.done = 0
         ikiwa ctype == 'application/x-www-form-urlencoded':
             self.read_urlencoded()
-        elikiwa ctype[:10] == 'multipart/':
+        lasivyo ctype[:10] == 'multipart/':
             self.read_multi(environ, keep_blank_values, strict_parsing)
         isipokua:
             self.read_single()
@@ -476,8 +476,8 @@ kundi FieldStorage:
     eleza __del__(self):
         jaribu:
             self.file.close()
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza __enter__(self):
         rudisha self
@@ -495,12 +495,12 @@ kundi FieldStorage:
 
     eleza __getattr__(self, name):
         ikiwa name != 'value':
-             ashiria AttributeError(name)
+            ashiria AttributeError(name)
         ikiwa self.file:
             self.file.seek(0)
             value = self.file.read()
             self.file.seek(0)
-        elikiwa self.list ni sio Tupu:
+        lasivyo self.list ni sio Tupu:
             value = self.list
         isipokua:
             value = Tupu
@@ -509,12 +509,12 @@ kundi FieldStorage:
     eleza __getitem__(self, key):
         """Dictionary style indexing."""
         ikiwa self.list ni Tupu:
-             ashiria TypeError("not indexable")
+            ashiria TypeError("not indexable")
         found = []
         kila item kwenye self.list:
             ikiwa item.name == key: found.append(item)
         ikiwa sio found:
-             ashiria KeyError(key)
+            ashiria KeyError(key)
         ikiwa len(found) == 1:
             rudisha found[0]
         isipokua:
@@ -556,13 +556,13 @@ kundi FieldStorage:
     eleza keys(self):
         """Dictionary style keys() method."""
         ikiwa self.list ni Tupu:
-             ashiria TypeError("not indexable")
+            ashiria TypeError("not indexable")
         rudisha list(set(item.name kila item kwenye self.list))
 
     eleza __contains__(self, key):
         """Dictionary style __contains__ method."""
         ikiwa self.list ni Tupu:
-             ashiria TypeError("not indexable")
+            ashiria TypeError("not indexable")
         rudisha any(item.name == key kila item kwenye self.list)
 
     eleza __len__(self):
@@ -571,14 +571,14 @@ kundi FieldStorage:
 
     eleza __bool__(self):
         ikiwa self.list ni Tupu:
-             ashiria TypeError("Cannot be converted to bool.")
+            ashiria TypeError("Cannot be converted to bool.")
         rudisha bool(self.list)
 
     eleza read_urlencoded(self):
         """Internal: read data kwenye query string format."""
         qs = self.fp.read(self.length)
         ikiwa sio isinstance(qs, bytes):
-             ashiria ValueError("%s should rudisha bytes, got %s" \
+            ashiria ValueError("%s should rudisha bytes, got %s" \
                              % (self.fp, type(qs).__name__))
         qs = qs.decode(self.encoding, self.errors)
         ikiwa self.qs_on_post:
@@ -596,7 +596,7 @@ kundi FieldStorage:
         """Internal: read a part that ni itself multipart."""
         ib = self.innerboundary
         ikiwa sio valid_boundary(ib):
-             ashiria ValueError('Invalid boundary kwenye multipart form: %r' % (ib,))
+            ashiria ValueError('Invalid boundary kwenye multipart form: %r' % (ib,))
         self.list = []
         ikiwa self.qs_on_post:
             query = urllib.parse.parse_qsl(
@@ -608,12 +608,12 @@ kundi FieldStorage:
         klass = self.FieldStorageClass ama self.__class__
         first_line = self.fp.readline() # bytes
         ikiwa sio isinstance(first_line, bytes):
-             ashiria ValueError("%s should rudisha bytes, got %s" \
+            ashiria ValueError("%s should rudisha bytes, got %s" \
                              % (self.fp, type(first_line).__name__))
         self.bytes_read += len(first_line)
 
         # Ensure that we consume the file until we've hit our inner boundary
-        wakati (first_line.strip() != (b"--" + self.innerboundary) and
+        wakati (first_line.strip() != (b"--" + self.innerboundary) na
                 first_line):
             first_line = self.fp.readline()
             self.bytes_read += len(first_line)
@@ -653,7 +653,7 @@ kundi FieldStorage:
                 ikiwa part.list:
                     max_num_fields -= len(part.list)
                 ikiwa max_num_fields < 0:
-                     ashiria ValueError('Max number of fields exceeded')
+                    ashiria ValueError('Max number of fields exceeded')
 
             self.bytes_read += part.bytes_read
             self.list.append(part)
@@ -680,7 +680,7 @@ kundi FieldStorage:
             wakati todo > 0:
                 data = self.fp.read(min(todo, self.bufsize)) # bytes
                 ikiwa sio isinstance(data, bytes):
-                     ashiria ValueError("%s should rudisha bytes, got %s"
+                    ashiria ValueError("%s should rudisha bytes, got %s"
                                      % (self.fp, type(data).__name__))
                 self.bytes_read += len(data)
                 ikiwa sio data:
@@ -692,9 +692,9 @@ kundi FieldStorage:
     eleza read_lines(self):
         """Internal: read lines until EOF ama outerboundary."""
         ikiwa self._binary_file:
-            self.file = self.__file = BytesIO() # store data as bytes kila files
+            self.file = self.__file = BytesIO() # store data kama bytes kila files
         isipokua:
-            self.file = self.__file = StringIO() # as strings kila other fields
+            self.file = self.__file = StringIO() # kama strings kila other fields
         ikiwa self.outerboundary:
             self.read_lines_to_outerboundary()
         isipokua:
@@ -727,7 +727,7 @@ kundi FieldStorage:
 
     eleza read_lines_to_outerboundary(self):
         """Internal: read lines until outerboundary.
-        Data ni read as bytes: boundaries na line ends must be converted
+        Data ni read kama bytes: boundaries na line ends must be converted
         to bytes kila comparisons.
         """
         next_boundary = b"--" + self.outerboundary
@@ -759,11 +759,11 @@ kundi FieldStorage:
                 delim = b"\r\n"
                 line = line[:-2]
                 last_line_lfend = Kweli
-            elikiwa line.endswith(b"\n"):
+            lasivyo line.endswith(b"\n"):
                 delim = b"\n"
                 line = line[:-1]
                 last_line_lfend = Kweli
-            elikiwa line.endswith(b"\r"):
+            lasivyo line.endswith(b"\r"):
                 # We may interrupt \r\n sequences ikiwa they span the 2**16
                 # byte boundary
                 delim = b"\r"
@@ -799,7 +799,7 @@ kundi FieldStorage:
     eleza make_file(self):
         """Overridable: rudisha a readable & writable file.
 
-        The file will be used as follows:
+        The file will be used kama follows:
         - data ni written to it
         - seek(0)
         - data ni read kutoka it
@@ -831,7 +831,7 @@ kundi FieldStorage:
 # ===============
 
 eleza test(environ=os.environ):
-    """Robust test CGI script, usable as main program.
+    """Robust test CGI script, usable kama main program.
 
     Write minimal HTTP headers na dump all information provided to
     the script kwenye HTML form.
@@ -884,7 +884,7 @@ eleza print_exception(type=Tupu, value=Tupu, tb=Tupu, limit=Tupu):
     toa tb
 
 eleza print_environ(environ=os.environ):
-    """Dump the shell environment as HTML."""
+    """Dump the shell environment kama HTML."""
     keys = sorted(environ.keys())
     andika()
     andika("<H3>Shell Environment:</H3>")
@@ -895,7 +895,7 @@ eleza print_environ(environ=os.environ):
     andika()
 
 eleza print_form(form):
-    """Dump the contents of a form as HTML."""
+    """Dump the contents of a form kama HTML."""
     keys = sorted(form.keys())
     andika()
     andika("<H3>Form Contents:</H3>")
@@ -911,12 +911,12 @@ eleza print_form(form):
     andika()
 
 eleza print_directory():
-    """Dump the current directory as HTML."""
+    """Dump the current directory kama HTML."""
     andika()
     andika("<H3>Current Working Directory:</H3>")
     jaribu:
         pwd = os.getcwd()
-    except OSError as msg:
+    tatizo OSError kama msg:
         andika("OSError:", html.escape(str(msg)))
     isipokua:
         andika(html.escape(pwd))
@@ -930,7 +930,7 @@ eleza print_arguments():
     andika()
 
 eleza print_environ_usage():
-    """Dump a list of environment variables used by CGI as HTML."""
+    """Dump a list of environment variables used by CGI kama HTML."""
     andika("""
 <H3>These environment variables could have been set:</H3>
 <UL>
@@ -960,8 +960,8 @@ eleza print_environ_usage():
 <LI>SERVER_ROOT
 <LI>SERVER_SOFTWARE
 </UL>
-In addition, HTTP headers sent by the server may be passed kwenye the
-environment as well.  Here are some common variable names:
+In addition, HTTP headers sent by the server may be pitaed kwenye the
+environment kama well.  Here are some common variable names:
 <UL>
 <LI>HTTP_ACCEPT
 <LI>HTTP_CONNECTION
@@ -987,6 +987,6 @@ eleza valid_boundary(s):
 # Invoke mainline
 # ===============
 
-# Call test() when this file ni run as a script (not imported as a module)
+# Call test() when this file ni run kama a script (sio imported kama a module)
 ikiwa __name__ == '__main__':
     test()

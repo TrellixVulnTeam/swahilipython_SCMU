@@ -12,7 +12,7 @@ kutoka test agiza support
 kutoka test.libregrtest.utils agiza print_warning
 jaribu:
     agiza _multiprocessing, multiprocessing.process
-except ImportError:
+tatizo ImportError:
     multiprocessing = Tupu
 
 
@@ -21,7 +21,7 @@ except ImportError:
 # tests fail, na the changes to environment go on to mess up other
 # tests.  This can cause issues ukijumuisha buildbot stability, since tests
 # are run kwenye random order na so problems may appear to come na go.
-# There are a few things we can save na restore to mitigate this, and
+# There are a few things we can save na restore to mitigate this, na
 # the following context manager handles this task.
 
 kundi saved_test_environment:
@@ -168,14 +168,14 @@ kundi saved_test_environment:
         rudisha id(logging._handlers), logging._handlers, logging._handlers.copy()
     eleza restore_logging__handlers(self, saved_handlers):
         # Can't easily revert the logging state
-        pass
+        pita
 
     eleza get_logging__handlerList(self):
         # _handlerList ni a list of weakrefs to handlers
         rudisha id(logging._handlerList), logging._handlerList, logging._handlerList[:]
     eleza restore_logging__handlerList(self, saved_handlerList):
         # Can't easily revert the logging state
-        pass
+        pita
 
     eleza get_sys_warnoptions(self):
         rudisha id(sys.warnoptions), sys.warnoptions, sys.warnoptions[:]
@@ -229,10 +229,10 @@ kundi saved_test_environment:
                       kila fn kwenye os.listdir())
     eleza restore_files(self, saved_value):
         fn = support.TESTFN
-        ikiwa fn sio kwenye saved_value na (fn + '/') sio kwenye saved_value:
+        ikiwa fn haiko kwenye saved_value na (fn + '/') haiko kwenye saved_value:
             ikiwa os.path.isfile(fn):
                 support.unlink(fn)
-            elikiwa os.path.isdir(fn):
+            lasivyo os.path.isdir(fn):
                 support.rmtree(fn)
 
     _lc = [getattr(locale, lc) kila lc kwenye dir(locale)
@@ -242,7 +242,7 @@ kundi saved_test_environment:
         kila lc kwenye self._lc:
             jaribu:
                 pairings.append((lc, locale.setlocale(lc, Tupu)))
-            except (TypeError, ValueError):
+            tatizo (TypeError, ValueError):
                 endelea
         rudisha pairings
     eleza restore_locale(self, saved):

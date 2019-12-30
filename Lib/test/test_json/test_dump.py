@@ -58,7 +58,7 @@ kundi TestDump:
         self.assertEqual(self.dumps(d, sort_keys=Kweli), '{"1337": "true.dat"}')
 
 
-kundi TestPyDump(TestDump, PyTest): pass
+kundi TestPyDump(TestDump, PyTest): pita
 
 kundi TestCDump(TestDump, CTest):
 

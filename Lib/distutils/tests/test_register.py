@@ -1,13 +1,13 @@
 """Tests kila distutils.command.register."""
 agiza os
 agiza unittest
-agiza getpass
+agiza getpita
 agiza urllib
 agiza warnings
 
 kutoka test.support agiza check_warnings, run_unittest
 
-kutoka distutils.command agiza register as register_module
+kutoka distutils.command agiza register kama register_module
 kutoka distutils.command.register agiza register
 kutoka distutils.errors agiza DistutilsSetupError
 kutoka distutils.log agiza INFO
@@ -16,7 +16,7 @@ kutoka distutils.tests.test_config agiza BasePyPIRCCommandTestCase
 
 jaribu:
     agiza docutils
-except ImportError:
+tatizo ImportError:
     docutils = Tupu
 
 PYPIRC_NOPASSWORD = """\
@@ -36,7 +36,7 @@ index-servers =
 
 [pypi]
 username:tarek
-password:password
+pitaword:pitaword
 """
 
 kundi Inputs(object):
@@ -76,17 +76,17 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
 
     eleza setUp(self):
         super(RegisterTestCase, self).setUp()
-        # patching the password prompt
-        self._old_getpass = getpass.getpass
-        eleza _getpass(prompt):
-            rudisha 'password'
-        getpass.getpass = _getpass
+        # patching the pitaword prompt
+        self._old_getpita = getpita.getpita
+        eleza _getpita(prompt):
+            rudisha 'pitaword'
+        getpita.getpita = _getpita
         urllib.request._opener = Tupu
         self.old_opener = urllib.request.build_opener
         self.conn = urllib.request.build_opener = FakeOpener()
 
     eleza tearDown(self):
-        getpass.getpass = self._old_getpass
+        getpita.getpita = self._old_getpita
         urllib.request._opener = Tupu
         urllib.request.build_opener = self.old_opener
         super(RegisterTestCase, self).tearDown()
@@ -109,13 +109,13 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         # we shouldn't have a .pypirc file yet
         self.assertUongo(os.path.exists(self.rc))
 
-        # patching input na getpass.getpass
+        # patching input na getpita.getpita
         # so register gets happy
         #
         # Here's what we are faking :
         # use your existing login (choice 1.)
         # Username : 'tarek'
-        # Password : 'password'
+        # Password : 'pitaword'
         # Save your login (y/N)? : 'y'
         inputs = Inputs('1', 'tarek', 'y')
         register_module.input = inputs.__call__
@@ -140,7 +140,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         # really works : we shouldn't be asked anything
         # ikiwa we run the command again
         eleza _no_way(prompt=''):
-             ashiria AssertionError(prompt)
+            ashiria AssertionError(prompt)
         register_module.input = _no_way
 
         cmd.show_response = 1
@@ -156,7 +156,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(req2['Content-length'], '1374')
         self.assertIn(b'xxx', self.conn.reqs[1].data)
 
-    eleza test_password_not_in_file(self):
+    eleza test_pitaword_not_in_file(self):
 
         self.write_file(self.rc, PYPIRC_NOPASSWORD)
         cmd = self._get_cmd()
@@ -164,9 +164,9 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         cmd.finalize_options()
         cmd.send_metadata()
 
-        # dist.password should be set
+        # dist.pitaword should be set
         # therefore used afterwards by other commands
-        self.assertEqual(cmd.distribution.password, 'password')
+        self.assertEqual(cmd.distribution.pitaword, 'pitaword')
 
     eleza test_registering(self):
         # this test runs choice 2
@@ -186,7 +186,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
         self.assertEqual(headers['Content-length'], '608')
         self.assertIn(b'tarek', req.data)
 
-    eleza test_password_reset(self):
+    eleza test_pitaword_reset(self):
         # this test runs choice 3
         cmd = self._get_cmd()
         inputs = Inputs('3', 'tarek@ziade.org')
@@ -289,7 +289,7 @@ kundi RegisterTestCase(BasePyPIRCCommandTestCase):
     eleza test_check_metadata_deprecated(self):
         # makes sure make_metadata ni deprecated
         cmd = self._get_cmd()
-        ukijumuisha check_warnings() as w:
+        ukijumuisha check_warnings() kama w:
             warnings.simplefilter("always")
             cmd.check_metadata()
             self.assertEqual(len(w.warnings), 1)

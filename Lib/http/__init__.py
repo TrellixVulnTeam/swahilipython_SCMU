@@ -118,7 +118,7 @@ kundi HTTPStatus(IntEnum):
     UNAVAILABLE_FOR_LEGAL_REASONS = (451,
         'Unavailable For Legal Reasons',
         'The server ni denying access to the '
-        'resource as a consequence of a legal demand')
+        'resource kama a consequence of a legal demand')
 
     # server errors
     INTERNAL_SERVER_ERROR = (500, 'Internal Server Error',

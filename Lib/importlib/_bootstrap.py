@@ -1,9 +1,9 @@
 """Core implementation of import.
 
 This module ni NOT meant to be directly imported! It has been designed such
-that it can be bootstrapped into Python as the implementation of import. As
+that it can be bootstrapped into Python kama the implementation of import. As
 such it requires the injection of specific modules na attributes kwenye order to
-work. One should use importlib as the public-facing version of this module.
+work. One should use importlib kama the public-facing version of this module.
 
 """
 #
@@ -46,7 +46,7 @@ _blocking_on = {}
 
 
 kundi _DeadlockError(RuntimeError):
-    pass
+    pita
 
 
 kundi _ModuleLock:
@@ -91,7 +91,7 @@ kundi _ModuleLock:
                         self.count += 1
                         rudisha Kweli
                     ikiwa self.has_deadlock():
-                         ashiria _DeadlockError('deadlock detected by %r' % self)
+                        ashiria _DeadlockError('deadlock detected by %r' % self)
                     ikiwa self.wakeup.acquire(Uongo):
                         self.waiters += 1
                 # Wait kila a release() call
@@ -104,7 +104,7 @@ kundi _ModuleLock:
         tid = _thread.get_ident()
         ukijumuisha self.lock:
             ikiwa self.owner != tid:
-                 ashiria RuntimeError('cannot release un-acquired lock')
+                ashiria RuntimeError('cannot release un-acquired lock')
             assert self.count > 0
             self.count -= 1
             ikiwa self.count == 0:
@@ -131,7 +131,7 @@ kundi _DummyModuleLock:
 
     eleza release(self):
         ikiwa self.count == 0:
-             ashiria RuntimeError('cannot release un-acquired lock')
+            ashiria RuntimeError('cannot release un-acquired lock')
         self.count -= 1
 
     eleza __repr__(self):
@@ -164,7 +164,7 @@ eleza _get_module_lock(name):
     jaribu:
         jaribu:
             lock = _module_locks[name]()
-        except KeyError:
+        tatizo KeyError:
             lock = Tupu
 
         ikiwa lock ni Tupu:
@@ -200,10 +200,10 @@ eleza _lock_unlock_module(name):
     lock = _get_module_lock(name)
     jaribu:
         lock.acquire()
-    except _DeadlockError:
+    tatizo _DeadlockError:
         # Concurrent circular import, we'll accept a partially initialized
         # module object.
-        pass
+        pita
     isipokua:
         lock.release()
 
@@ -230,8 +230,8 @@ eleza _verbose_message(message, *args, verbosity=1):
 eleza _requires_builtin(fxn):
     """Decorator to verify the named module ni built-in."""
     eleza _requires_builtin_wrapper(self, fullname):
-        ikiwa fullname sio kwenye sys.builtin_module_names:
-             ashiria ImportError('{!r} ni sio a built-in module'.format(fullname),
+        ikiwa fullname haiko kwenye sys.builtin_module_names:
+            ashiria ImportError('{!r} ni sio a built-in module'.format(fullname),
                               name=fullname)
         rudisha fxn(self, fullname)
     _wrap(_requires_builtin_wrapper, fxn)
@@ -242,14 +242,14 @@ eleza _requires_frozen(fxn):
     """Decorator to verify the named module ni frozen."""
     eleza _requires_frozen_wrapper(self, fullname):
         ikiwa sio _imp.is_frozen(fullname):
-             ashiria ImportError('{!r} ni sio a frozen module'.format(fullname),
+            ashiria ImportError('{!r} ni sio a frozen module'.format(fullname),
                               name=fullname)
         rudisha fxn(self, fullname)
     _wrap(_requires_frozen_wrapper, fxn)
     rudisha _requires_frozen_wrapper
 
 
-# Typically used by loader classes as a method replacement.
+# Typically used by loader classes kama a method replacement.
 eleza _load_module_shim(self, fullname):
     """Load the specified module into sys.modules na rudisha it.
 
@@ -270,17 +270,17 @@ eleza _module_repr(module):
     # The implementation of ModuleType.__repr__().
     loader = getattr(module, '__loader__', Tupu)
     ikiwa hasattr(loader, 'module_repr'):
-        # As soon as BuiltinImporter, FrozenImporter, na NamespaceLoader
+        # As soon kama BuiltinImporter, FrozenImporter, na NamespaceLoader
         # drop their implementations kila module_repr. we can add a
         # deprecation warning here.
         jaribu:
             rudisha loader.module_repr(module)
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
     jaribu:
         spec = module.__spec__
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         ikiwa spec ni sio Tupu:
             rudisha _module_repr_from_spec(spec)
@@ -289,11 +289,11 @@ eleza _module_repr(module):
     # various repr permutations.
     jaribu:
         name = module.__name__
-    except AttributeError:
+    tatizo AttributeError:
         name = '?'
     jaribu:
         filename = module.__file__
-    except AttributeError:
+    tatizo AttributeError:
         ikiwa loader ni Tupu:
             rudisha '<module {!r}>'.format(name)
         isipokua:
@@ -313,7 +313,7 @@ kundi ModuleSpec:
     to use when loading the module.  `parent` ni the name of the
     package the module ni in.  The parent ni derived kutoka the name.
 
-    `is_package` determines ikiwa the module ni considered a package or
+    `is_package` determines ikiwa the module ni considered a package ama
     not.  On modules this ni reflected by the `__path__` attribute.
 
     `origin` ni the specific location used by the loader kutoka which to
@@ -332,9 +332,9 @@ kundi ModuleSpec:
 
     Packages are simply modules that (may) have submodules.  If a spec
     has a non-Tupu value kwenye `submodule_search_locations`, the import
-    system will consider modules loaded kutoka the spec as packages.
+    system will consider modules loaded kutoka the spec kama packages.
 
-    Only finders (see importlib.abc.MetaPathFinder and
+    Only finders (see importlib.abc.MetaPathFinder na
     importlib.abc.PathEntryFinder) should modify ModuleSpec instances.
 
     """
@@ -364,13 +364,13 @@ kundi ModuleSpec:
     eleza __eq__(self, other):
         smsl = self.submodule_search_locations
         jaribu:
-            rudisha (self.name == other.name and
-                    self.loader == other.loader and
-                    self.origin == other.origin and
-                    smsl == other.submodule_search_locations and
-                    self.cached == other.cached and
+            rudisha (self.name == other.name na
+                    self.loader == other.loader na
+                    self.origin == other.origin na
+                    smsl == other.submodule_search_locations na
+                    self.cached == other.cached na
                     self.has_location == other.has_location)
-        except AttributeError:
+        tatizo AttributeError:
             rudisha Uongo
 
     @property
@@ -378,7 +378,7 @@ kundi ModuleSpec:
         ikiwa self._cached ni Tupu:
             ikiwa self.origin ni sio Tupu na self._set_fileattr:
                 ikiwa _bootstrap_external ni Tupu:
-                     ashiria NotImplementedError
+                    ashiria NotImplementedError
                 self._cached = _bootstrap_external._get_cached(self.origin)
         rudisha self._cached
 
@@ -407,7 +407,7 @@ eleza spec_from_loader(name, loader, *, origin=Tupu, is_package=Tupu):
     """Return a module spec based on various loader methods."""
     ikiwa hasattr(loader, 'get_filename'):
         ikiwa _bootstrap_external ni Tupu:
-             ashiria NotImplementedError
+            ashiria NotImplementedError
         spec_from_file_location = _bootstrap_external.spec_from_file_location
 
         ikiwa is_package ni Tupu:
@@ -420,7 +420,7 @@ eleza spec_from_loader(name, loader, *, origin=Tupu, is_package=Tupu):
         ikiwa hasattr(loader, 'is_package'):
             jaribu:
                 is_package = loader.is_package(name)
-            except ImportError:
+            tatizo ImportError:
                 is_package = Tupu  # aka, undefined
         isipokua:
             # the default
@@ -433,8 +433,8 @@ eleza _spec_from_module(module, loader=Tupu, origin=Tupu):
     # This function ni meant kila use kwenye _setup().
     jaribu:
         spec = module.__spec__
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         ikiwa spec ni sio Tupu:
             rudisha spec
@@ -443,28 +443,28 @@ eleza _spec_from_module(module, loader=Tupu, origin=Tupu):
     ikiwa loader ni Tupu:
         jaribu:
             loader = module.__loader__
-        except AttributeError:
+        tatizo AttributeError:
             # loader will stay Tupu.
-            pass
+            pita
     jaribu:
         location = module.__file__
-    except AttributeError:
+    tatizo AttributeError:
         location = Tupu
     ikiwa origin ni Tupu:
         ikiwa location ni Tupu:
             jaribu:
                 origin = loader._ORIGIN
-            except AttributeError:
+            tatizo AttributeError:
                 origin = Tupu
         isipokua:
             origin = location
     jaribu:
         cached = module.__cached__
-    except AttributeError:
+    tatizo AttributeError:
         cached = Tupu
     jaribu:
         submodule_search_locations = list(module.__path__)
-    except AttributeError:
+    tatizo AttributeError:
         submodule_search_locations = Tupu
 
     spec = ModuleSpec(name, loader, origin=origin)
@@ -475,14 +475,14 @@ eleza _spec_from_module(module, loader=Tupu, origin=Tupu):
 
 
 eleza _init_module_attrs(spec, module, *, override=Uongo):
-    # The passed-in module may be sio support attribute assignment,
+    # The pitaed-in module may be sio support attribute assignment,
     # kwenye which case we simply don't set the attributes.
     # __name__
     ikiwa (override ama getattr(module, '__name__', Tupu) ni Tupu):
         jaribu:
             module.__name__ = spec.name
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     # __loader__
     ikiwa override ama getattr(module, '__loader__', Tupu) ni Tupu:
         loader = spec.loader
@@ -490,7 +490,7 @@ eleza _init_module_attrs(spec, module, *, override=Uongo):
             # A backward compatibility hack.
             ikiwa spec.submodule_search_locations ni sio Tupu:
                 ikiwa _bootstrap_external ni Tupu:
-                     ashiria NotImplementedError
+                    ashiria NotImplementedError
                 _NamespaceLoader = _bootstrap_external._NamespaceLoader
 
                 loader = _NamespaceLoader.__new__(_NamespaceLoader)
@@ -509,40 +509,40 @@ eleza _init_module_attrs(spec, module, *, override=Uongo):
                 module.__file__ = Tupu
         jaribu:
             module.__loader__ = loader
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     # __package__
     ikiwa override ama getattr(module, '__package__', Tupu) ni Tupu:
         jaribu:
             module.__package__ = spec.parent
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     # __spec__
     jaribu:
         module.__spec__ = spec
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     # __path__
     ikiwa override ama getattr(module, '__path__', Tupu) ni Tupu:
         ikiwa spec.submodule_search_locations ni sio Tupu:
             jaribu:
                 module.__path__ = spec.submodule_search_locations
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
     # __file__/__cached__
     ikiwa spec.has_location:
         ikiwa override ama getattr(module, '__file__', Tupu) ni Tupu:
             jaribu:
                 module.__file__ = spec.origin
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
 
         ikiwa override ama getattr(module, '__cached__', Tupu) ni Tupu:
             ikiwa spec.cached ni sio Tupu:
                 jaribu:
                     module.__cached__ = spec.cached
-                except AttributeError:
-                    pass
+                tatizo AttributeError:
+                    pita
     rudisha module
 
 
@@ -554,8 +554,8 @@ eleza module_from_spec(spec):
         # If create_module() returns `Tupu` then it means default
         # module creation should be used.
         module = spec.loader.create_module(spec)
-    elikiwa hasattr(spec.loader, 'exec_module'):
-         ashiria ImportError('loaders that define exec_module() '
+    lasivyo hasattr(spec.loader, 'exec_module'):
+        ashiria ImportError('loaders that define exec_module() '
                           'must also define create_module()')
     ikiwa module ni Tupu:
         module = _new_module(spec.name)
@@ -585,12 +585,12 @@ eleza _exec(spec, module):
     name = spec.name
     ukijumuisha _ModuleLockManager(name):
         ikiwa sys.modules.get(name) ni sio module:
-            msg = 'module {!r} sio kwenye sys.modules'.format(name)
-             ashiria ImportError(msg, name=name)
+            msg = 'module {!r} haiko kwenye sys.modules'.format(name)
+            ashiria ImportError(msg, name=name)
         jaribu:
             ikiwa spec.loader ni Tupu:
                 ikiwa spec.submodule_search_locations ni Tupu:
-                     ashiria ImportError('missing loader', name=spec.name)
+                    ashiria ImportError('missing loader', name=spec.name)
                 # Namespace package.
                 _init_module_attrs(spec, module, override=Kweli)
             isipokua:
@@ -628,8 +628,8 @@ eleza _load_backward_compatible(spec):
     ikiwa getattr(module, '__loader__', Tupu) ni Tupu:
         jaribu:
             module.__loader__ = spec.loader
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     ikiwa getattr(module, '__package__', Tupu) ni Tupu:
         jaribu:
             # Since module.__path__ may sio line up with
@@ -638,13 +638,13 @@ eleza _load_backward_compatible(spec):
             module.__package__ = module.__name__
             ikiwa sio hasattr(module, '__path__'):
                 module.__package__ = spec.name.rpartition('.')[0]
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     ikiwa getattr(module, '__spec__', Tupu) ni Tupu:
         jaribu:
             module.__spec__ = spec
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     rudisha module
 
 eleza _load_unlocked(spec):
@@ -665,15 +665,15 @@ eleza _load_unlocked(spec):
         jaribu:
             ikiwa spec.loader ni Tupu:
                 ikiwa spec.submodule_search_locations ni Tupu:
-                     ashiria ImportError('missing loader', name=spec.name)
+                    ashiria ImportError('missing loader', name=spec.name)
                 # A namespace package so do nothing.
             isipokua:
                 spec.loader.exec_module(module)
         tatizo:
             jaribu:
                 toa sys.modules[spec.name]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
             raise
         # Move the module to the end of sys.modules.
         # We don't ensure that the import-related module attributes get
@@ -746,8 +746,8 @@ kundi BuiltinImporter:
     @classmethod
     eleza create_module(self, spec):
         """Create a built-in module"""
-        ikiwa spec.name sio kwenye sys.builtin_module_names:
-             ashiria ImportError('{!r} ni sio a built-in module'.format(spec.name),
+        ikiwa spec.name haiko kwenye sys.builtin_module_names:
+            ashiria ImportError('{!r} ni sio a built-in module'.format(spec.name),
                               name=spec.name)
         rudisha _call_with_frames_removed(_imp.create_builtin, spec)
 
@@ -759,19 +759,19 @@ kundi BuiltinImporter:
     @classmethod
     @_requires_builtin
     eleza get_code(cls, fullname):
-        """Return Tupu as built-in modules do sio have code objects."""
+        """Return Tupu kama built-in modules do sio have code objects."""
         rudisha Tupu
 
     @classmethod
     @_requires_builtin
     eleza get_source(cls, fullname):
-        """Return Tupu as built-in modules do sio have source code."""
+        """Return Tupu kama built-in modules do sio have source code."""
         rudisha Tupu
 
     @classmethod
     @_requires_builtin
     eleza is_package(cls, fullname):
-        """Return Uongo as built-in modules are never packages."""
+        """Return Uongo kama built-in modules are never packages."""
         rudisha Uongo
 
     load_module = classmethod(_load_module_shim)
@@ -821,7 +821,7 @@ kundi FrozenImporter:
     eleza exec_module(module):
         name = module.__spec__.name
         ikiwa sio _imp.is_frozen(name):
-             ashiria ImportError('{!r} ni sio a frozen module'.format(name),
+            ashiria ImportError('{!r} ni sio a frozen module'.format(name),
                               name=name)
         code = _call_with_frames_removed(_imp.get_frozen_object, name)
         exec(code, module.__dict__)
@@ -844,7 +844,7 @@ kundi FrozenImporter:
     @classmethod
     @_requires_frozen
     eleza get_source(cls, fullname):
-        """Return Tupu as frozen modules do sio have source code."""
+        """Return Tupu kama frozen modules do sio have source code."""
         rudisha Tupu
 
     @classmethod
@@ -873,7 +873,7 @@ eleza _resolve_name(name, package, level):
     """Resolve a relative module name to an absolute one."""
     bits = package.rsplit('.', level - 1)
     ikiwa len(bits) < level:
-         ashiria ValueError('attempted relative agiza beyond top-level package')
+        ashiria ValueError('attempted relative agiza beyond top-level package')
     base = bits[0]
     rudisha '{}.{}'.format(base, name) ikiwa name isipokua base
 
@@ -892,13 +892,13 @@ eleza _find_spec(name, path, target=Tupu):
     meta_path = sys.meta_path
     ikiwa meta_path ni Tupu:
         # PyImport_Cleanup() ni running ama has been called.
-         ashiria ImportError("sys.meta_path ni Tupu, Python ni likely "
+        ashiria ImportError("sys.meta_path ni Tupu, Python ni likely "
                           "shutting down")
 
     ikiwa sio meta_path:
         _warnings.warn('sys.meta_path ni empty', ImportWarning)
 
-    # We check sys.modules here kila the reload case.  While a passed-in
+    # We check sys.modules here kila the reload case.  While a pitaed-in
     # target will usually indicate a reload there ni no guarantee, whereas
     # sys.modules provides one.
     is_reload = name kwenye sys.modules
@@ -906,7 +906,7 @@ eleza _find_spec(name, path, target=Tupu):
         ukijumuisha _ImportLockContext():
             jaribu:
                 find_spec = finder.find_spec
-            except AttributeError:
+            tatizo AttributeError:
                 spec = _find_spec_legacy(finder, name, path)
                 ikiwa spec ni Tupu:
                     endelea
@@ -918,7 +918,7 @@ eleza _find_spec(name, path, target=Tupu):
                 module = sys.modules[name]
                 jaribu:
                     __spec__ = module.__spec__
-                except AttributeError:
+                tatizo AttributeError:
                     # We use the found spec since that ni the one that
                     # we would have used ikiwa the parent module hadn't
                     # beaten us to the punch.
@@ -937,17 +937,17 @@ eleza _find_spec(name, path, target=Tupu):
 eleza _sanity_check(name, package, level):
     """Verify arguments are "sane"."""
     ikiwa sio isinstance(name, str):
-         ashiria TypeError('module name must be str, sio {}'.format(type(name)))
+        ashiria TypeError('module name must be str, sio {}'.format(type(name)))
     ikiwa level < 0:
-         ashiria ValueError('level must be >= 0')
+        ashiria ValueError('level must be >= 0')
     ikiwa level > 0:
         ikiwa sio isinstance(package, str):
-             ashiria TypeError('__package__ sio set to a string')
-        elikiwa sio package:
-             ashiria ImportError('attempted relative agiza ukijumuisha no known parent '
+            ashiria TypeError('__package__ sio set to a string')
+        lasivyo sio package:
+            ashiria ImportError('attempted relative agiza ukijumuisha no known parent '
                               'package')
     ikiwa sio name na level == 0:
-         ashiria ValueError('Empty module name')
+        ashiria ValueError('Empty module name')
 
 
 _ERR_MSG_PREFIX = 'No module named '
@@ -957,7 +957,7 @@ eleza _find_and_load_unlocked(name, import_):
     path = Tupu
     parent = name.rpartition('.')[0]
     ikiwa parent:
-        ikiwa parent sio kwenye sys.modules:
+        ikiwa parent haiko kwenye sys.modules:
             _call_with_frames_removed(import_, parent)
         # Crazy side-effects!
         ikiwa name kwenye sys.modules:
@@ -965,16 +965,16 @@ eleza _find_and_load_unlocked(name, import_):
         parent_module = sys.modules[parent]
         jaribu:
             path = parent_module.__path__
-        except AttributeError:
+        tatizo AttributeError:
             msg = (_ERR_MSG + '; {!r} ni sio a package').format(name, parent)
-             ashiria ModuleNotFoundError(msg, name=name) kutoka Tupu
+            ashiria ModuleNotFoundError(msg, name=name) kutoka Tupu
     spec = _find_spec(name, path)
     ikiwa spec ni Tupu:
-         ashiria ModuleNotFoundError(_ERR_MSG.format(name), name=name)
+        ashiria ModuleNotFoundError(_ERR_MSG.format(name), name=name)
     isipokua:
         module = _load_unlocked(spec)
     ikiwa parent:
-        # Set the module as an attribute on its parent.
+        # Set the module kama an attribute on its parent.
         parent_module = sys.modules[parent]
         setattr(parent_module, name.rpartition('.')[2], module)
     rudisha module
@@ -993,7 +993,7 @@ eleza _find_and_load(name, import_):
     ikiwa module ni Tupu:
         message = ('agiza of {} halted; '
                    'Tupu kwenye sys.modules'.format(name))
-         ashiria ModuleNotFoundError(message, name=name)
+        ashiria ModuleNotFoundError(message, name=name)
 
     _lock_unlock_module(name)
     rudisha module
@@ -1030,21 +1030,21 @@ eleza _handle_fromlist(module, fromlist, import_, *, recursive=Uongo):
                 where = module.__name__ + '.__all__'
             isipokua:
                 where = "``kutoka list''"
-             ashiria TypeError(f"Item kwenye {where} must be str, "
+            ashiria TypeError(f"Item kwenye {where} must be str, "
                             f"not {type(x).__name__}")
-        elikiwa x == '*':
+        lasivyo x == '*':
             ikiwa sio recursive na hasattr(module, '__all__'):
                 _handle_fromlist(module, module.__all__, import_,
                                  recursive=Kweli)
-        elikiwa sio hasattr(module, x):
+        lasivyo sio hasattr(module, x):
             from_name = '{}.{}'.format(module.__name__, x)
             jaribu:
                 _call_with_frames_removed(import_, from_name)
-            except ModuleNotFoundError as exc:
+            tatizo ModuleNotFoundError kama exc:
                 # Backwards-compatibility dictates we ignore failed
                 # imports triggered by fromlist kila modules that don't
                 # exist.
-                ikiwa (exc.name == from_name and
+                ikiwa (exc.name == from_name na
                     sys.modules.get(from_name, _NEEDS_LOADING) ni sio Tupu):
                     endelea
                 raise
@@ -1066,14 +1066,14 @@ eleza _calc___package__(globals):
                            f"({package!r} != {spec.parent!r})",
                            ImportWarning, stacklevel=3)
         rudisha package
-    elikiwa spec ni sio Tupu:
+    lasivyo spec ni sio Tupu:
         rudisha spec.parent
     isipokua:
         _warnings.warn("can't resolve package kutoka __spec__ ama __package__, "
                        "falling back on __name__ na __path__",
                        ImportWarning, stacklevel=3)
         package = globals['__name__']
-        ikiwa '__path__' sio kwenye globals:
+        ikiwa '__path__' haiko kwenye globals:
             package = package.rpartition('.')[0]
     rudisha package
 
@@ -1083,7 +1083,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, fromlist=(), level=0):
 
     The 'globals' argument ni used to infer where the agiza ni occurring from
     to handle relative imports. The 'locals' argument ni ignored. The
-    'fromlist' argument specifies what should exist as attributes on the module
+    'fromlist' argument specifies what should exist kama attributes on the module
     being imported (e.g. ``kutoka module agiza <fromlist>``).  The 'level'
     argument represents the package location to agiza kutoka kwenye a relative
     agiza (e.g. ``kutoka ..pkg agiza mod`` would have a 'level' of 2).
@@ -1100,16 +1100,16 @@ eleza __import__(name, globals=Tupu, locals=Tupu, fromlist=(), level=0):
         # that 'name' may be relative.
         ikiwa level == 0:
             rudisha _gcd_import(name.partition('.')[0])
-        elikiwa sio name:
+        lasivyo sio name:
             rudisha module
         isipokua:
             # Figure out where to slice the module's name up to the first dot
             # kwenye 'name'.
             cut_off = len(name) - len(name.partition('.')[0])
             # Slice end needs to be positive to alleviate need to special-case
-            # when ``'.' sio kwenye name``.
+            # when ``'.' haiko kwenye name``.
             rudisha sys.modules[module.__name__[:len(module.__name__)-cut_off]]
-    elikiwa hasattr(module, '__path__'):
+    lasivyo hasattr(module, '__path__'):
         rudisha _handle_fromlist(module, fromlist, _gcd_import)
     isipokua:
         rudisha module
@@ -1118,7 +1118,7 @@ eleza __import__(name, globals=Tupu, locals=Tupu, fromlist=(), level=0):
 eleza _builtin_from_name(name):
     spec = BuiltinImporter.find_spec(name)
     ikiwa spec ni Tupu:
-         ashiria ImportError('no built-in module named ' + name)
+        ashiria ImportError('no built-in module named ' + name)
     rudisha _load_unlocked(spec)
 
 
@@ -1127,7 +1127,7 @@ eleza _setup(sys_module, _imp_module):
     into the global namespace.
 
     As sys ni needed kila sys.modules access na _imp ni needed to load built-in
-    modules, those two modules must be explicitly passed in.
+    modules, those two modules must be explicitly pitaed in.
 
     """
     global _imp, sys
@@ -1140,7 +1140,7 @@ eleza _setup(sys_module, _imp_module):
         ikiwa isinstance(module, module_type):
             ikiwa name kwenye sys.builtin_module_names:
                 loader = BuiltinImporter
-            elikiwa _imp.is_frozen(name):
+            lasivyo _imp.is_frozen(name):
                 loader = FrozenImporter
             isipokua:
                 endelea
@@ -1150,7 +1150,7 @@ eleza _setup(sys_module, _imp_module):
     # Directly load built-in modules needed during bootstrap.
     self_module = sys.modules[__name__]
     kila builtin_name kwenye ('_thread', '_warnings', '_weakref'):
-        ikiwa builtin_name sio kwenye sys.modules:
+        ikiwa builtin_name haiko kwenye sys.modules:
             builtin_module = _builtin_from_name(builtin_name)
         isipokua:
             builtin_module = sys.modules[builtin_name]

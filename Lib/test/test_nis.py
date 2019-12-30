@@ -9,15 +9,15 @@ kundi NisTests(unittest.TestCase):
     eleza test_maps(self):
         jaribu:
             maps = nis.maps()
-        except nis.error as msg:
+        tatizo nis.error kama msg:
             # NIS ni probably sio active, so this test isn't useful
             self.skipTest(str(msg))
         jaribu:
             # On some systems, this map ni only accessible to the
             # super user
-            maps.remove("passwd.adjunct.byname")
-        except ValueError:
-            pass
+            maps.remove("pitawd.adjunct.byname")
+        tatizo ValueError:
+            pita
 
         done = 0
         kila nismap kwenye maps:

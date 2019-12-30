@@ -3,9 +3,9 @@
 This module exports three objects:
 - zipimporter: a class; its constructor takes a path to a Zip archive.
 - ZipImportError: exception raised by zipimporter objects. It's a
-  subkundi of ImportError, so it can be caught as ImportError, too.
+  subkundi of ImportError, so it can be caught kama ImportError, too.
 - _zip_directory_cache: a dict, mapping archive paths to zip directory
-  info dicts, as used kwenye zipimporter._files.
+  info dicts, kama used kwenye zipimporter._files.
 
 It ni usually sio needed to use the zipagiza module explicitly; it is
 used by the builtin agiza mechanism kila sys.path items that are paths
@@ -14,9 +14,9 @@ to Zip archives.
 
 #kutoka importlib agiza _bootstrap_external
 #kutoka importlib agiza _bootstrap  # kila _verbose_message
-agiza _frozen_importlib_external as _bootstrap_external
+agiza _frozen_importlib_external kama _bootstrap_external
 kutoka _frozen_importlib_external agiza _unpack_uint16, _unpack_uint32
-agiza _frozen_importlib as _bootstrap  # kila _verbose_message
+agiza _frozen_importlib kama _bootstrap  # kila _verbose_message
 agiza _imp  # kila check_hash_based_pycs
 agiza _io  # kila open
 agiza marshal  # kila loads
@@ -31,7 +31,7 @@ alt_path_sep = _bootstrap_external.path_separators[1:]
 
 
 kundi ZipImportError(ImportError):
-    pass
+    pita
 
 # _read_directory() cache
 _zip_directory_cache = {}
@@ -65,7 +65,7 @@ kundi zipimporter:
             agiza os
             path = os.fsdecode(path)
         ikiwa sio path:
-             ashiria ZipImportError('archive path ni empty', path=path)
+            ashiria ZipImportError('archive path ni empty', path=path)
         ikiwa alt_path_sep:
             path = path.replace(alt_path_sep, path_sep)
 
@@ -73,24 +73,24 @@ kundi zipimporter:
         wakati Kweli:
             jaribu:
                 st = _bootstrap_external._path_stat(path)
-            except (OSError, ValueError):
+            tatizo (OSError, ValueError):
                 # On Windows a ValueError ni raised kila too long paths.
                 # Back up one path element.
                 dirname, basename = _bootstrap_external._path_split(path)
                 ikiwa dirname == path:
-                     ashiria ZipImportError('not a Zip file', path=path)
+                    ashiria ZipImportError('not a Zip file', path=path)
                 path = dirname
                 prefix.append(basename)
             isipokua:
                 # it exists
                 ikiwa (st.st_mode & 0o170000) != 0o100000:  # stat.S_ISREG
                     # it's a sio file
-                     ashiria ZipImportError('not a Zip file', path=path)
+                    ashiria ZipImportError('not a Zip file', path=path)
                 koma
 
         jaribu:
             files = _zip_directory_cache[path]
-        except KeyError:
+        tatizo KeyError:
             files = _read_directory(path)
             _zip_directory_cache[path] = files
         self._files = files
@@ -121,7 +121,7 @@ kundi zipimporter:
             # This ni a module ama package.
             rudisha self, []
 
-        # Not a module ama regular package. See ikiwa this ni a directory, and
+        # Not a module ama regular package. See ikiwa this ni a directory, na
         # therefore possibly a portion of a namespace package.
 
         # We're only interested kwenye the last path component of fullname
@@ -175,8 +175,8 @@ kundi zipimporter:
 
         jaribu:
             toc_entry = self._files[key]
-        except KeyError:
-             ashiria OSError(0, '', key)
+        tatizo KeyError:
+            ashiria OSError(0, '', key)
         rudisha _get_data(self.archive, toc_entry)
 
 
@@ -201,7 +201,7 @@ kundi zipimporter:
         """
         mi = _get_module_info(self, fullname)
         ikiwa mi ni Tupu:
-             ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
+            ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
         path = _get_module_path(self, fullname)
         ikiwa mi:
@@ -211,7 +211,7 @@ kundi zipimporter:
 
         jaribu:
             toc_entry = self._files[fullpath]
-        except KeyError:
+        tatizo KeyError:
             # we have the module, but no source
             rudisha Tupu
         rudisha _get_data(self.archive, toc_entry).decode()
@@ -226,7 +226,7 @@ kundi zipimporter:
         """
         mi = _get_module_info(self, fullname)
         ikiwa mi ni Tupu:
-             ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
+            ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
         rudisha mi
 
 
@@ -263,8 +263,8 @@ kundi zipimporter:
 
         jaribu:
             mod = sys.modules[fullname]
-        except KeyError:
-             ashiria ImportError(f'Loaded module {fullname!r} sio found kwenye sys.modules')
+        tatizo KeyError:
+            ashiria ImportError(f'Loaded module {fullname!r} sio found kwenye sys.modules')
         _bootstrap._verbose_message('agiza {} # loaded kutoka Zip {}', fullname, modpath)
         rudisha mod
 
@@ -278,7 +278,7 @@ kundi zipimporter:
         jaribu:
             ikiwa sio self.is_package(fullname):
                 rudisha Tupu
-        except ZipImportError:
+        tatizo ZipImportError:
             rudisha Tupu
         ikiwa sio _ZipImportResourceReader._registered:
             kutoka importlib.abc agiza ResourceReader
@@ -332,7 +332,7 @@ eleza _get_module_info(self, fullname):
 # _read_directory(archive) -> files dict (new reference)
 #
 # Given a path to a Zip archive, build a dict, mapping file names
-# (local to the archive, using SEP as a separator) to toc entries.
+# (local to the archive, using SEP kama a separator) to toc entries.
 #
 # A toc_entry ni a tuple:
 #
@@ -352,72 +352,72 @@ eleza _get_module_info(self, fullname):
 eleza _read_directory(archive):
     jaribu:
         fp = _io.open_code(archive)
-    except OSError:
-         ashiria ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
+    tatizo OSError:
+        ashiria ZipImportError(f"can't open Zip file: {archive!r}", path=archive)
 
     ukijumuisha fp:
         jaribu:
             fp.seek(-END_CENTRAL_DIR_SIZE, 2)
             header_position = fp.tell()
             buffer = fp.read(END_CENTRAL_DIR_SIZE)
-        except OSError:
-             ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        tatizo OSError:
+            ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         ikiwa len(buffer) != END_CENTRAL_DIR_SIZE:
-             ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+            ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         ikiwa buffer[:4] != STRING_END_ARCHIVE:
             # Bad: End of Central Dir signature
             # Check ikiwa there's a comment.
             jaribu:
                 fp.seek(0, 2)
                 file_size = fp.tell()
-            except OSError:
-                 ashiria ZipImportError(f"can't read Zip file: {archive!r}",
+            tatizo OSError:
+                ashiria ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             max_comment_start = max(file_size - MAX_COMMENT_LEN -
                                     END_CENTRAL_DIR_SIZE, 0)
             jaribu:
                 fp.seek(max_comment_start)
                 data = fp.read()
-            except OSError:
-                 ashiria ZipImportError(f"can't read Zip file: {archive!r}",
+            tatizo OSError:
+                ashiria ZipImportError(f"can't read Zip file: {archive!r}",
                                      path=archive)
             pos = data.rfind(STRING_END_ARCHIVE)
             ikiwa pos < 0:
-                 ashiria ZipImportError(f'not a Zip file: {archive!r}',
+                ashiria ZipImportError(f'not a Zip file: {archive!r}',
                                      path=archive)
             buffer = data[pos:pos+END_CENTRAL_DIR_SIZE]
             ikiwa len(buffer) != END_CENTRAL_DIR_SIZE:
-                 ashiria ZipImportError(f"corrupt Zip file: {archive!r}",
+                ashiria ZipImportError(f"corrupt Zip file: {archive!r}",
                                      path=archive)
             header_position = file_size - len(data) + pos
 
         header_size = _unpack_uint32(buffer[12:16])
         header_offset = _unpack_uint32(buffer[16:20])
         ikiwa header_position < header_size:
-             ashiria ZipImportError(f'bad central directory size: {archive!r}', path=archive)
+            ashiria ZipImportError(f'bad central directory size: {archive!r}', path=archive)
         ikiwa header_position < header_offset:
-             ashiria ZipImportError(f'bad central directory offset: {archive!r}', path=archive)
+            ashiria ZipImportError(f'bad central directory offset: {archive!r}', path=archive)
         header_position -= header_size
         arc_offset = header_position - header_offset
         ikiwa arc_offset < 0:
-             ashiria ZipImportError(f'bad central directory size ama offset: {archive!r}', path=archive)
+            ashiria ZipImportError(f'bad central directory size ama offset: {archive!r}', path=archive)
 
         files = {}
         # Start of Central Directory
         count = 0
         jaribu:
             fp.seek(header_position)
-        except OSError:
-             ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        tatizo OSError:
+            ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         wakati Kweli:
             buffer = fp.read(46)
             ikiwa len(buffer) < 4:
-                 ashiria EOFError('EOF read where sio expected')
+                ashiria EOFError('EOF read where sio expected')
             # Start of file header
             ikiwa buffer[:4] != b'PK\x01\x02':
                 koma                                # Bad: Central Dir File Header
             ikiwa len(buffer) != 46:
-                 ashiria EOFError('EOF read where sio expected')
+                ashiria EOFError('EOF read where sio expected')
             flags = _unpack_uint16(buffer[8:10])
             compress = _unpack_uint16(buffer[10:12])
             time = _unpack_uint16(buffer[12:14])
@@ -431,23 +431,23 @@ eleza _read_directory(archive):
             file_offset = _unpack_uint32(buffer[42:46])
             header_size = name_size + extra_size + comment_size
             ikiwa file_offset > header_offset:
-                 ashiria ZipImportError(f'bad local header offset: {archive!r}', path=archive)
+                ashiria ZipImportError(f'bad local header offset: {archive!r}', path=archive)
             file_offset += arc_offset
 
             jaribu:
                 name = fp.read(name_size)
-            except OSError:
-                 ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+            tatizo OSError:
+                ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
             ikiwa len(name) != name_size:
-                 ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
             # On Windows, calling fseek to skip over the fields we don't use is
             # slower than reading the data because fseek flushes stdio's
             # internal buffers.    See issue #8745.
             jaribu:
                 ikiwa len(fp.read(header_size - name_size)) != header_size - name_size:
-                     ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
-            except OSError:
-                 ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+                    ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+            tatizo OSError:
+                ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
 
             ikiwa flags & 0x800:
                 # UTF-8 file names extension
@@ -456,7 +456,7 @@ eleza _read_directory(archive):
                 # Historical ZIP filename encoding
                 jaribu:
                     name = name.decode('ascii')
-                except UnicodeDecodeError:
+                tatizo UnicodeDecodeError:
                     name = name.decode('latin1').translate(cp437_table)
 
             name = name.replace('/', path_sep)
@@ -513,14 +513,14 @@ eleza _get_decompress_func():
         # Someone has a zlib.py[co] kwenye their Zip file
         # let's avoid a stack overflow.
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
-         ashiria ZipImportError("can't decompress data; zlib sio available")
+        ashiria ZipImportError("can't decompress data; zlib sio available")
 
     _importing_zlib = Kweli
     jaribu:
         kutoka zlib agiza decompress
-    except Exception:
+    tatizo Exception:
         _bootstrap._verbose_message('zipimport: zlib UNAVAILABLE')
-         ashiria ZipImportError("can't decompress data; zlib sio available")
+        ashiria ZipImportError("can't decompress data; zlib sio available")
     mwishowe:
         _importing_zlib = Uongo
 
@@ -531,21 +531,21 @@ eleza _get_decompress_func():
 eleza _get_data(archive, toc_entry):
     datapath, compress, data_size, file_size, file_offset, time, date, crc = toc_entry
     ikiwa data_size < 0:
-         ashiria ZipImportError('negative data size')
+        ashiria ZipImportError('negative data size')
 
-    ukijumuisha _io.open_code(archive) as fp:
+    ukijumuisha _io.open_code(archive) kama fp:
         # Check to make sure the local file header ni correct
         jaribu:
             fp.seek(file_offset)
-        except OSError:
-             ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        tatizo OSError:
+            ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         buffer = fp.read(30)
         ikiwa len(buffer) != 30:
-             ashiria EOFError('EOF read where sio expected')
+            ashiria EOFError('EOF read where sio expected')
 
         ikiwa buffer[:4] != b'PK\x03\x04':
             # Bad: Local File Header
-             ashiria ZipImportError(f'bad local file header: {archive!r}', path=archive)
+            ashiria ZipImportError(f'bad local file header: {archive!r}', path=archive)
 
         name_size = _unpack_uint16(buffer[26:28])
         extra_size = _unpack_uint16(buffer[28:30])
@@ -553,11 +553,11 @@ eleza _get_data(archive, toc_entry):
         file_offset += header_size  # Start of file data
         jaribu:
             fp.seek(file_offset)
-        except OSError:
-             ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
+        tatizo OSError:
+            ashiria ZipImportError(f"can't read Zip file: {archive!r}", path=archive)
         raw_data = fp.read(data_size)
         ikiwa len(raw_data) != data_size:
-             ashiria OSError("zipimport: can't read data")
+            ashiria OSError("zipimport: can't read data")
 
     ikiwa compress == 0:
         # data ni sio compressed
@@ -566,8 +566,8 @@ eleza _get_data(archive, toc_entry):
     # Decompress ukijumuisha zlib
     jaribu:
         decompress = _get_decompress_func()
-    except Exception:
-         ashiria ZipImportError("can't decompress data; zlib sio available")
+    tatizo Exception:
+        ashiria ZipImportError("can't decompress data; zlib sio available")
     rudisha decompress(raw_data, -15)
 
 
@@ -582,7 +582,7 @@ eleza _eq_mtime(t1, t2):
 # Given the contents of a .py[co] file, unmarshal the data
 # na rudisha the code object. Return Tupu ikiwa it the magic word doesn't
 # match, ama ikiwa the recorded .py[co] metadata does sio match the source,
-# (we do this instead of raising an exception as we fall back
+# (we do this instead of raising an exception kama we fall back
 # to .py ikiwa available na we don't want to mask other errors).
 eleza _unmarshal_code(self, pathname, fullpath, fullname, data):
     exc_details = {
@@ -592,13 +592,13 @@ eleza _unmarshal_code(self, pathname, fullpath, fullname, data):
 
     jaribu:
         flags = _bootstrap_external._classify_pyc(data, fullname, exc_details)
-    except ImportError:
+    tatizo ImportError:
         rudisha Tupu
 
     hash_based = flags & 0b1 != 0
     ikiwa hash_based:
         check_source = flags & 0b10 != 0
-        ikiwa (_imp.check_hash_based_pycs != 'never' and
+        ikiwa (_imp.check_hash_based_pycs != 'never' na
                 (check_source ama _imp.check_hash_based_pycs == 'always')):
             source_bytes = _get_pyc_source(self, fullpath)
             ikiwa source_bytes ni sio Tupu:
@@ -610,7 +610,7 @@ eleza _unmarshal_code(self, pathname, fullpath, fullname, data):
                 jaribu:
                     _boostrap_external._validate_hash_pyc(
                         data, source_hash, fullname, exc_details)
-                except ImportError:
+                tatizo ImportError:
                     rudisha Tupu
     isipokua:
         source_mtime, source_size = \
@@ -619,7 +619,7 @@ eleza _unmarshal_code(self, pathname, fullpath, fullname, data):
         ikiwa source_mtime:
             # We don't use _bootstrap_external._validate_timestamp_pyc
             # to allow kila a more lenient timestamp check.
-            ikiwa (not _eq_mtime(_unpack_uint32(data[8:12]), source_mtime) or
+            ikiwa (sio _eq_mtime(_unpack_uint32(data[8:12]), source_mtime) ama
                     _unpack_uint32(data[12:16]) != source_size):
                 _bootstrap._verbose_message(
                     f'bytecode ni stale kila {fullname!r}')
@@ -627,7 +627,7 @@ eleza _unmarshal_code(self, pathname, fullpath, fullname, data):
 
     code = marshal.loads(data[16:])
     ikiwa sio isinstance(code, _code_type):
-         ashiria TypeError(f'compiled module {pathname!r} ni sio a code object')
+        ashiria TypeError(f'compiled module {pathname!r} ni sio a code object')
     rudisha code
 
 _code_type = type(_unmarshal_code.__code__)
@@ -673,7 +673,7 @@ eleza _get_mtime_and_size_of_source(self, path):
         date = toc_entry[6]
         uncompressed_size = toc_entry[3]
         rudisha _parse_dostime(date, time), uncompressed_size
-    except (KeyError, IndexError, TypeError):
+    tatizo (KeyError, IndexError, TypeError):
         rudisha 0, 0
 
 
@@ -687,7 +687,7 @@ eleza _get_pyc_source(self, path):
 
     jaribu:
         toc_entry = self._files[path]
-    except KeyError:
+    tatizo KeyError:
         rudisha Tupu
     isipokua:
         rudisha _get_data(self.archive, toc_entry)
@@ -702,8 +702,8 @@ eleza _get_module_code(self, fullname):
         _bootstrap._verbose_message('trying {}{}{}', self.archive, path_sep, fullpath, verbosity=2)
         jaribu:
             toc_entry = self._files[fullpath]
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         isipokua:
             modpath = toc_entry[0]
             data = _get_data(self.archive, toc_entry)
@@ -718,7 +718,7 @@ eleza _get_module_code(self, fullname):
             modpath = toc_entry[0]
             rudisha code, ispackage, modpath
     isipokua:
-         ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
+        ashiria ZipImportError(f"can't find module {fullname!r}", name=fullname)
 
 
 kundi _ZipImportResourceReader:
@@ -739,14 +739,14 @@ kundi _ZipImportResourceReader:
         kutoka io agiza BytesIO
         jaribu:
             rudisha BytesIO(self.zipimporter.get_data(path))
-        except OSError:
-             ashiria FileNotFoundError(path)
+        tatizo OSError:
+            ashiria FileNotFoundError(path)
 
     eleza resource_path(self, resource):
         # All resources are kwenye the zip file, so there ni no path to the file.
         # Raising FileNotFoundError tells the higher level API to extract the
         # binary data na create a temporary file.
-         ashiria FileNotFoundError
+        ashiria FileNotFoundError
 
     eleza is_resource(self, name):
         # Maybe we could do better, but ikiwa we can get the data, it's a
@@ -755,7 +755,7 @@ kundi _ZipImportResourceReader:
         path = f'{fullname_as_path}/{name}'
         jaribu:
             self.zipimporter.get_data(path)
-        except OSError:
+        tatizo OSError:
             rudisha Uongo
         rudisha Kweli
 
@@ -778,7 +778,7 @@ kundi _ZipImportResourceReader:
         kila filename kwenye self.zipimporter._files:
             jaribu:
                 relative = Path(filename).relative_to(package_path)
-            except ValueError:
+            tatizo ValueError:
                 endelea
             # If the path of the file (which ni relative to the top of the zip
             # namespace), relative to the package given when the resource
@@ -787,6 +787,6 @@ kundi _ZipImportResourceReader:
             parent_name = relative.parent.name
             ikiwa len(parent_name) == 0:
                 tuma relative.name
-            elikiwa parent_name sio kwenye subdirs_seen:
+            lasivyo parent_name haiko kwenye subdirs_seen:
                 subdirs_seen.add(parent_name)
                 tuma parent_name

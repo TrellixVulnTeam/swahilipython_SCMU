@@ -16,21 +16,21 @@ to a public API ikiwa there ni demand.
 # (almost?) never happens.  There could be a public API kila adding entries
 # to the CTE tables, but YAGNI kila now.  'q' ni Quoted Printable, 'b' is
 # Base64.  The meaning of encoded_string should be obvious.  'lang' ni optional
-# as indicated by the brackets (they are sio part of the syntax) but ni almost
+# kama indicated by the brackets (they are sio part of the syntax) but ni almost
 # never encountered kwenye practice.
 #
 # The general interface kila a CTE decoder ni that it takes the encoded_string
-# as its argument, na returns a tuple (cte_decoded_string, defects).  The
+# kama its argument, na returns a tuple (cte_decoded_string, defects).  The
 # cte_decoded_string ni the original binary that was encoded using the
 # specified cte.  'defects' ni a list of MessageDefect instances indicating any
 # problems encountered during conversion.  'charset' na 'lang' are the
 # corresponding strings extracted kutoka the EW, case preserved.
 #
 # The general interface kila a CTE encoder ni that it takes a binary sequence
-# as input na returns the cte_encoded_string, which ni an ascii-only string.
+# kama input na returns the cte_encoded_string, which ni an ascii-only string.
 #
 # Each decoder must also supply a length function that takes the binary
-# sequence as its argument na returns the length of the resulting encoded
+# sequence kama its argument na returns the length of the resulting encoded
 # string.
 #
 # The main API functions kila the module are decode, which calls the decoder
@@ -107,10 +107,10 @@ eleza decode_b(encoded):
             base64.b64decode(encoded + missing_padding, validate=Kweli),
             [errors.InvalidBase64PaddingDefect()] ikiwa pad_err isipokua [],
         )
-    except binascii.Error:
+    tatizo binascii.Error:
         # Since we had correct padding, this ni likely an invalid char error.
         #
-        # The non-alphabet characters are ignored as far as padding
+        # The non-alphabet characters are ignored kama far kama padding
         # goes, but we don't know how many there are.  So try without adding
         # padding to see ikiwa it works.
         jaribu:
@@ -118,8 +118,8 @@ eleza decode_b(encoded):
                 base64.b64decode(encoded, validate=Uongo),
                 [errors.InvalidBase64CharactersDefect()],
             )
-        except binascii.Error:
-            # Add as much padding as could possibly be necessary (extra padding
+        tatizo binascii.Error:
+            # Add kama much padding kama could possibly be necessary (extra padding
             # ni ignored).
             jaribu:
                 rudisha (
@@ -127,7 +127,7 @@ eleza decode_b(encoded):
                     [errors.InvalidBase64CharactersDefect(),
                      errors.InvalidBase64PaddingDefect()],
                 )
-            except binascii.Error:
+            tatizo binascii.Error:
                 # This only happens when the encoded string's length ni 1 more
                 # than a multiple of 4, which ni invalid.
                 #
@@ -159,8 +159,8 @@ eleza decode(ew):
     where '*lang' may be omitted but the other parts may sio be.
 
     This function expects exactly such a string (that is, it does sio check the
-    syntax na may  ashiria errors ikiwa the string ni sio well formed), na returns
-    the encoded_string decoded first kutoka its Content Transfer Encoding and
+    syntax na may ashiria errors ikiwa the string ni sio well formed), na returns
+    the encoded_string decoded first kutoka its Content Transfer Encoding na
     then kutoka the resulting bytes into unicode using the specified charset.  If
     the cte-decoded string does sio successfully decode using the specified
     character set, a defect ni added to the defects list na the unknown octets
@@ -179,15 +179,15 @@ eleza decode(ew):
     # Turn the CTE decoded bytes into unicode.
     jaribu:
         string = bstring.decode(charset)
-    except UnicodeError:
+    tatizo UnicodeError:
         defects.append(errors.UndecodableBytesDefect("Encoded word "
             "contains bytes sio decodable using {} charset".format(charset)))
         string = bstring.decode(charset, 'surrogateescape')
-    except LookupError:
+    tatizo LookupError:
         string = bstring.decode('ascii', 'surrogateescape')
         ikiwa charset.lower() != 'unknown-8bit':
             defects.append(errors.CharsetError("Unknown charset {} "
-                "in encoded word; decoded as unknown bytes".format(charset)))
+                "in encoded word; decoded kama unknown bytes".format(charset)))
     rudisha string, charset, lang, defects
 
 
@@ -213,7 +213,7 @@ eleza encode(string, charset='utf-8', encoding=Tupu, lang=''):
     to encode the string to binary before CTE encoding it.  Optional argument
     'encoding' ni the cte specifier kila the encoding that should be used ('q'
     ama 'b'); ikiwa it ni Tupu (the default) the encoding which produces the
-    shortest encoded sequence ni used, except that 'q' ni preferred ikiwa it ni up
+    shortest encoded sequence ni used, tatizo that 'q' ni preferred ikiwa it ni up
     to five characters longer.  Optional argument 'lang' (default '') gives the
     RFC 2243 language string to specify kwenye the encoded word.
 

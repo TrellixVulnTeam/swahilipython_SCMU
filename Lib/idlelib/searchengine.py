@@ -2,7 +2,7 @@
 agiza re
 
 kutoka tkinter agiza StringVar, BooleanVar, TclError
-agiza tkinter.messagebox as tkMessageBox
+agiza tkinter.messagebox kama tkMessageBox
 
 eleza get(root):
     '''Return the singleton SearchEngine instance kila the process.
@@ -84,7 +84,7 @@ kundi SearchEngine:
             flags = flags | re.IGNORECASE
         jaribu:
             prog = re.compile(pat, flags)
-        except re.error as what:
+        tatizo re.error kama what:
             args = what.args
             msg = args[0]
             col = args[1] ikiwa len(args) >= 2 isipokua -1
@@ -109,7 +109,7 @@ kundi SearchEngine:
         It directly rudisha the result of that call.
 
         Text ni a text widget. Prog ni a precompiled pattern.
-        The ok parameter ni a bit complicated as it has two effects.
+        The ok parameter ni a bit complicated kama it has two effects.
 
         If there ni a selection, the search begin at either end,
         depending on the direction setting na ok, ukijumuisha ok meaning that
@@ -218,7 +218,7 @@ eleza get_selection(text):
     jaribu:
         first = text.index("sel.first")
         last = text.index("sel.last")
-    except TclError:
+    tatizo TclError:
         first = last = Tupu
     ikiwa sio first:
         first = text.index("insert")

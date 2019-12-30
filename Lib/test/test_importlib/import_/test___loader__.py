@@ -15,7 +15,7 @@ kundi SpecLoaderMock:
         rudisha Tupu
 
     eleza exec_module(self, module):
-        pass
+        pita
 
 
 kundi SpecLoaderAttributeTests:
@@ -48,8 +48,8 @@ kundi LoaderAttributeTests:
         module = types.ModuleType('blah')
         jaribu:
             toa module.__loader__
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         loader = LoaderMock()
         loader.module = module
         ukijumuisha util.uncache('blah'), util.import_state(meta_path=[loader]):

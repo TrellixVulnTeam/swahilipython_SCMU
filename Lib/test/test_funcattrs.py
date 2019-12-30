@@ -5,11 +5,11 @@ agiza unittest
 eleza global_function():
     eleza inner_function():
         kundi LocalClass:
-            pass
+            pita
         global inner_global_function
         eleza inner_global_function():
             eleza inner_function2():
-                pass
+                pita
             rudisha inner_function2
         rudisha LocalClass
     rudisha lambda: inner_function
@@ -19,7 +19,7 @@ kundi FuncAttrsTest(unittest.TestCase):
     eleza setUp(self):
         kundi F:
             eleza a(self):
-                pass
+                pita
         eleza b():
             rudisha 3
         self.fi = F()
@@ -29,14 +29,14 @@ kundi FuncAttrsTest(unittest.TestCase):
     eleza cannot_set_attr(self, obj, name, value, exceptions):
         jaribu:
             setattr(obj, name, value)
-        except exceptions:
-            pass
+        tatizo exceptions:
+            pita
         isipokua:
             self.fail("shouldn't be able to set %s to %r" % (name, value))
         jaribu:
             delattr(obj, name)
-        except exceptions:
-            pass
+        tatizo exceptions:
+            pita
         isipokua:
             self.fail("shouldn't be able to toa %s" % name)
 
@@ -49,21 +49,21 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
     eleza test_dir_includes_correct_attrs(self):
         self.b.known_attr = 7
         self.assertIn('known_attr', dir(self.b),
-            "set attributes sio kwenye dir listing of method")
+            "set attributes haiko kwenye dir listing of method")
         # Test on underlying function object of method
         self.F.a.known_attr = 7
         self.assertIn('known_attr', dir(self.fi.a), "set attribute on function "
                      "implementations, should show up kwenye next dir")
 
     eleza test_duplicate_function_equality(self):
-        # Body of `duplicate' ni the exact same as self.b
+        # Body of `duplicate' ni the exact same kama self.b
         eleza duplicate():
             'my docstring'
             rudisha 3
         self.assertNotEqual(self.b, duplicate)
 
     eleza test_copying___code__(self):
-        eleza test(): pass
+        eleza test(): pita
         self.assertEqual(test(), Tupu)
         test.__code__ = self.b.__code__
         self.assertEqual(test(), 3) # self.b always returns 3, arbitrarily
@@ -96,8 +96,8 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         eleza f(): andika(a)
         jaribu:
             f.__closure__[0].cell_contents
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("shouldn't be able to read an empty cell")
         a = 12
@@ -113,8 +113,8 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         toa c[0].cell_contents
         jaribu:
             c[0].cell_contents
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("shouldn't be able to read an empty cell")
         ukijumuisha self.assertRaises(NameError):
@@ -132,7 +132,7 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         self.cannot_set_attr(self.b, '__name__', 7, TypeError)
         # __name__ must be available when kwenye restricted mode. Exec will raise
         # AttributeError ikiwa __name__ ni sio available on f.
-        s = """eleza f(): pass\nf.__name__"""
+        s = """eleza f(): pita\nf.__name__"""
         exec(s, {'__builtins__': {}})
         # Test on methods, too
         self.assertEqual(self.fi.a.__name__, 'a')
@@ -160,7 +160,7 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
 
     eleza test___code__(self):
         num_one, num_two = 7, 8
-        eleza a(): pass
+        eleza a(): pita
         eleza b(): rudisha 12
         eleza c(): rudisha num_one
         eleza d(): rudisha num_two
@@ -175,15 +175,15 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         # self.assertEqual(d(), 7)
         jaribu:
             b.__code__ = c.__code__
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("__code__ ukijumuisha different numbers of free vars should "
                       "not be possible")
         jaribu:
             e.__code__ = d.__code__
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             self.fail("__code__ ukijumuisha different numbers of free vars should "
                       "not be possible")
@@ -209,8 +209,8 @@ kundi FunctionPropertiesTest(FuncAttrsTest):
         self.assertEqual(second_func.__defaults__, Tupu)
         jaribu:
             second_func()
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
             self.fail("__defaults__ does sio update; deleting it does sio "
                       "remove requirement")
@@ -238,10 +238,10 @@ kundi InstancemethodAttrTest(FuncAttrsTest):
         # Test usage
         jaribu:
             self.fi.id.unknown_attr
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
-            self.fail("using unknown attributes should  ashiria AttributeError")
+            self.fail("using unknown attributes should ashiria AttributeError")
         # Test assignment na deletion
         self.cannot_set_attr(self.fi.id, 'unknown_attr', 2, AttributeError)
 
@@ -252,27 +252,27 @@ kundi ArbitraryFunctionAttrTest(FuncAttrsTest):
         self.assertEqual(self.b.known_attr, 7)
         jaribu:
             self.fi.a.known_attr = 7
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
-            self.fail("setting attributes on methods should  ashiria error")
+            self.fail("setting attributes on methods should ashiria error")
 
     eleza test_delete_unknown_attr(self):
         jaribu:
             toa self.b.unknown_attr
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
-            self.fail("deleting unknown attribute should  ashiria TypeError")
+            self.fail("deleting unknown attribute should ashiria TypeError")
 
     eleza test_unset_attr(self):
         kila func kwenye [self.b, self.fi.a]:
             jaribu:
                 func.non_existent_attr
-            except AttributeError:
-                pass
+            tatizo AttributeError:
+                pita
             isipokua:
-                self.fail("using unknown attributes should  ashiria "
+                self.fail("using unknown attributes should ashiria "
                           "AttributeError")
 
 
@@ -302,10 +302,10 @@ kundi FunctionDictsTest(FuncAttrsTest):
     eleza test_delete___dict__(self):
         jaribu:
             toa self.b.__dict__
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-            self.fail("deleting function dictionary should  ashiria TypeError")
+            self.fail("deleting function dictionary should ashiria TypeError")
 
     eleza test_unassigned_dict(self):
         self.assertEqual(self.b.__dict__, {})
@@ -355,7 +355,7 @@ eleza empty_cell(empty=Kweli):
 kundi CellTest(unittest.TestCase):
     eleza test_comparison(self):
         # These tests are here simply to exercise the comparison code;
-        # their presence should sio be interpreted as providing any
+        # their presence should sio be interpreted kama providing any
         # guarantees about the semantics (or even existence) of cell
         # comparisons kwenye future versions of CPython.
         self.assertKweli(cell(2) < cell(3))
@@ -368,7 +368,7 @@ kundi CellTest(unittest.TestCase):
 kundi StaticMethodAttrsTest(unittest.TestCase):
     eleza test_func_attribute(self):
         eleza f():
-            pass
+            pita
 
         c = classmethod(f)
         self.assertKweli(c.__func__ ni f)

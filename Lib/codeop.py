@@ -12,12 +12,12 @@ and:
 
 Approach:
 
-First, check ikiwa the source consists entirely of blank lines and
-comments; ikiwa so, replace it ukijumuisha 'pass', because the built-in
+First, check ikiwa the source consists entirely of blank lines na
+comments; ikiwa so, replace it ukijumuisha 'pita', because the built-in
 parser doesn't always do the right thing kila these.
 
-Compile three times: as is, ukijumuisha \n, na ukijumuisha \n\n appended.  If it
-compiles as is, it's complete.  If it compiles ukijumuisha one \n appended,
+Compile three times: kama is, ukijumuisha \n, na ukijumuisha \n\n appended.  If it
+compiles kama is, it's complete.  If it compiles ukijumuisha one \n appended,
 we expect more.  If it doesn't compile either way, we compare the
 error we get when compiling ukijumuisha \n ama \n\n appended.  If the errors
 are the same, the code ni broken.  But ikiwa the errors are different, we
@@ -73,30 +73,30 @@ eleza _maybe_compile(compiler, source, filename, symbol):
             koma               # Leave it alone
     isipokua:
         ikiwa symbol != "eval":
-            source = "pass"     # Replace it ukijumuisha a 'pass' statement
+            source = "pita"     # Replace it ukijumuisha a 'pita' statement
 
     err = err1 = err2 = Tupu
     code = code1 = code2 = Tupu
 
     jaribu:
         code = compiler(source, filename, symbol)
-    except SyntaxError as err:
-        pass
+    tatizo SyntaxError kama err:
+        pita
 
     jaribu:
         code1 = compiler(source + "\n", filename, symbol)
-    except SyntaxError as e:
+    tatizo SyntaxError kama e:
         err1 = e
 
     jaribu:
         code2 = compiler(source + "\n\n", filename, symbol)
-    except SyntaxError as e:
+    tatizo SyntaxError kama e:
         err2 = e
 
     ikiwa code:
         rudisha code
     ikiwa sio code1 na repr(err1) == repr(err2):
-         ashiria err1
+        ashiria err1
 
 eleza _compile(source, filename, symbol):
     rudisha compile(source, filename, symbol, PyCF_DONT_IMPLY_DEDENT)
@@ -154,7 +154,7 @@ kundi CommandCompiler:
         source -- the source string; may contain \n characters
         filename -- optional filename kutoka which source was read;
                     default "<input>"
-        symbol -- optional grammar start symbol; "single" (default) or
+        symbol -- optional grammar start symbol; "single" (default) ama
                   "eval"
 
         Return value / exceptions raised:

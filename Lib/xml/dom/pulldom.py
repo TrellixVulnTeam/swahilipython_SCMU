@@ -23,9 +23,9 @@ kundi PullDOM(xml.sax.ContentHandler):
         self.push = self.elementStack.append
         jaribu:
             self.pop = self.elementStack.pop
-        except AttributeError:
+        tatizo AttributeError:
             # use class' pop instead
-            pass
+            pita
         self._ns_contexts = [{XML_NAMESPACE:'xml'}] # contains uri -> prefix dicts
         self._current_context = self._ns_contexts[-1]
         self.pending_events = []
@@ -88,7 +88,7 @@ kundi PullDOM(xml.sax.ContentHandler):
                     qname = 'xmlns:' + a_localname
                 attr = self.document.createAttributeNS(a_uri, qname)
                 node.setAttributeNodeNS(attr)
-            elikiwa a_uri:
+            lasivyo a_uri:
                 prefix = self._current_context[a_uri]
                 ikiwa prefix:
                     qname = prefix + ":" + a_localname
@@ -175,11 +175,11 @@ kundi PullDOM(xml.sax.ContentHandler):
                 _,target,data = e[0]
                 n = self.document.createProcessingInstruction(target, data)
                 e[0] = (PROCESSING_INSTRUCTION, n)
-            elikiwa e[0][0] == COMMENT:
+            lasivyo e[0][0] == COMMENT:
                 n = self.document.createComment(e[0][1])
                 e[0] = (COMMENT, n)
             isipokua:
-                 ashiria AssertionError("Unknown pending event ",e[0][0])
+                ashiria AssertionError("Unknown pending event ",e[0][0])
             self.lastEvent[1] = e
             self.lastEvent = e
         self.pending_events = Tupu
@@ -197,9 +197,9 @@ kundi ErrorHandler:
     eleza warning(self, exception):
         andika(exception)
     eleza error(self, exception):
-         ashiria exception
+        ashiria exception
     eleza fatalError(self, exception):
-         ashiria exception
+        ashiria exception
 
 kundi DOMEventStream:
     eleza __init__(self, stream, parser, bufsize):
@@ -227,13 +227,13 @@ kundi DOMEventStream:
         rc = self.getEvent()
         ikiwa rc:
             rudisha rc
-         ashiria IndexError
+        ashiria IndexError
 
     eleza __next__(self):
         rc = self.getEvent()
         ikiwa rc:
             rudisha rc
-         ashiria StopIteration
+        ashiria StopIteration
 
     eleza __iter__(self):
         rudisha self
@@ -249,7 +249,7 @@ kundi DOMEventStream:
                 parents[-1].appendChild(cur_node)
             ikiwa token == START_ELEMENT:
                 parents.append(cur_node)
-            elikiwa token == END_ELEMENT:
+            lasivyo token == END_ELEMENT:
                 toa parents[-1]
             event = self.getEvent()
 

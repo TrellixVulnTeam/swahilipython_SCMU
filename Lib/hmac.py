@@ -1,18 +1,18 @@
 """HMAC (Keyed-Hashing kila Message Authentication) Python module.
 
-Implements the HMAC algorithm as described by RFC 2104.
+Implements the HMAC algorithm kama described by RFC 2104.
 """
 
-agiza warnings as _warnings
-kutoka _operator agiza _compare_digest as compare_digest
+agiza warnings kama _warnings
+kutoka _operator agiza _compare_digest kama compare_digest
 jaribu:
-    agiza _hashlib as _hashopenssl
-except ImportError:
+    agiza _hashlib kama _hashopenssl
+tatizo ImportError:
     _hashopenssl = Tupu
     _openssl_md_meths = Tupu
 isipokua:
     _openssl_md_meths = frozenset(_hashopenssl.openssl_md_meth_names)
-agiza hashlib as _hashlib
+agiza hashlib kama _hashlib
 
 trans_5C = bytes((x ^ 0x5C) kila x kwenye range(256))
 trans_36 = bytes((x ^ 0x36) kila x kwenye range(256))
@@ -43,14 +43,14 @@ kundi HMAC:
         """
 
         ikiwa sio isinstance(key, (bytes, bytearray)):
-             ashiria TypeError("key: expected bytes ama bytearray, but got %r" % type(key).__name__)
+            ashiria TypeError("key: expected bytes ama bytearray, but got %r" % type(key).__name__)
 
         ikiwa digestmod ni Tupu:
-             ashiria ValueError('`digestmod` ni required.')
+            ashiria ValueError('`digestmod` ni required.')
 
         ikiwa callable(digestmod):
             self.digest_cons = digestmod
-        elikiwa isinstance(digestmod, str):
+        lasivyo isinstance(digestmod, str):
             self.digest_cons = lambda d=b'': _hashlib.new(digestmod, d)
         isipokua:
             self.digest_cons = lambda d=b'': digestmod.new(d)
@@ -73,7 +73,7 @@ kundi HMAC:
             blocksize = self.blocksize
 
         # self.blocksize ni the default blocksize. self.block_size is
-        # effective block size as well as the public API attribute.
+        # effective block size kama well kama the public API attribute.
         self.block_size = blocksize
 
         ikiwa len(key) > blocksize:
@@ -157,13 +157,13 @@ eleza digest(key, msg, digest):
 
     Note: key na msg must be a bytes ama bytearray objects.
     """
-    ikiwa (_hashopenssl ni sio Tupu and
+    ikiwa (_hashopenssl ni sio Tupu na
             isinstance(digest, str) na digest kwenye _openssl_md_meths):
         rudisha _hashopenssl.hmac_digest(key, msg, digest)
 
     ikiwa callable(digest):
         digest_cons = digest
-    elikiwa isinstance(digest, str):
+    lasivyo isinstance(digest, str):
         digest_cons = lambda d=b'': _hashlib.new(digest, d)
     isipokua:
         digest_cons = lambda d=b'': digest.new(d)

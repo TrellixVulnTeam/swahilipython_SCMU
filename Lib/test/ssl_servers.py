@@ -4,8 +4,8 @@ agiza ssl
 agiza pprint
 agiza threading
 agiza urllib.parse
-# Rename HTTPServer to _HTTPServer so as to avoid confusion ukijumuisha HTTPSServer.
-kutoka http.server agiza (HTTPServer as _HTTPServer,
+# Rename HTTPServer to _HTTPServer so kama to avoid confusion ukijumuisha HTTPSServer.
+kutoka http.server agiza (HTTPServer kama _HTTPServer,
     SimpleHTTPRequestHandler, BaseHTTPRequestHandler)
 
 kutoka test agiza support
@@ -34,7 +34,7 @@ kundi HTTPSServer(_HTTPServer):
         jaribu:
             sock, addr = self.socket.accept()
             sslconn = self.context.wrap_socket(sock, server_side=Kweli)
-        except OSError as e:
+        tatizo OSError kama e:
             # socket errors are silenced by the caller, print them here
             ikiwa support.verbose:
                 sys.stderr.write("Got an error:\n%s\n" % e)

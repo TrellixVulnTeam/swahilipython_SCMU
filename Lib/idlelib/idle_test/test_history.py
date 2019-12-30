@@ -4,9 +4,9 @@ kutoka idlelib.history agiza History
 agiza unittest
 kutoka test.support agiza requires
 
-agiza tkinter as tk
-kutoka tkinter agiza Text as tkText
-kutoka idlelib.idle_test.mock_tk agiza Text as mkText
+agiza tkinter kama tk
+kutoka tkinter agiza Text kama tkText
+kutoka idlelib.idle_test.mock_tk agiza Text kama mkText
 kutoka idlelib.config agiza idleConf
 
 line1 = 'a = 7'
@@ -88,7 +88,7 @@ kundi FetchTest(unittest.TestCase):
         toa cls.root
 
     eleza fetch_test(self, reverse, line, prefix, index, *, bell=Uongo):
-        # Perform one fetch as invoked by Alt-N ama Alt-P
+        # Perform one fetch kama invoked by Alt-N ama Alt-P
         # Test the result. The line test ni the most important.
         # The last two are diagnostic of fetch internals.
         History = self.history

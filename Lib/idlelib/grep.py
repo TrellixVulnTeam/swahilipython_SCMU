@@ -22,7 +22,7 @@ eleza grep(text, io=Tupu, flist=Tupu):
 
     Module-level function to access the singleton GrepDialog
     instance na open the dialog.  If text ni selected, it is
-    used as the search phrase; otherwise, the previous entry
+    used kama the search phrase; otherwise, the previous entry
     ni used.
 
     Args:
@@ -71,7 +71,7 @@ kundi GrepDialog(SearchDialogBase):
     eleza __init__(self, root, engine, flist):
         """Create search dialog kila searching kila a phrase kwenye the file system.
 
-        Uses SearchDialogBase as the basis kila the GUI na a
+        Uses SearchDialogBase kama the basis kila the GUI na a
         searchengine instance to prepare the search.
 
         Attributes:
@@ -130,7 +130,7 @@ kundi GrepDialog(SearchDialogBase):
         """Grep kila search pattern kwenye file path. The default command ni bound
         to <Return>.
 
-        If entry values are populated, set OutputWindow as stdout
+        If entry values are populated, set OutputWindow kama stdout
         na perform search.  The search dialog ni closed automatically
         when the search begins.
         """
@@ -152,7 +152,7 @@ kundi GrepDialog(SearchDialogBase):
     eleza grep_it(self, prog, path):
         """Search kila prog within the lines of the files kwenye path.
 
-        For the each file kwenye the path directory, open the file and
+        For the each file kwenye the path directory, open the file na
         search each line kila the matching pattern.  If the pattern is
         found,  write the file na line information to stdout (which
         ni an OutputWindow).
@@ -172,21 +172,21 @@ kundi GrepDialog(SearchDialogBase):
         jaribu:
             kila fn kwenye filelist:
                 jaribu:
-                    ukijumuisha open(fn, errors='replace') as f:
+                    ukijumuisha open(fn, errors='replace') kama f:
                         kila lineno, line kwenye enumerate(f, 1):
                             ikiwa line[-1:] == '\n':
                                 line = line[:-1]
                             ikiwa prog.search(line):
                                 sys.stdout.write(f"{fn}: {lineno}: {line}\n")
                                 hits += 1
-                except OSError as msg:
+                tatizo OSError kama msg:
                     andika(msg)
             andika(f"Hits found: {hits}\n(Hint: right-click to open locations.)"
                   ikiwa hits isipokua "No hits.")
-        except AttributeError:
+        tatizo AttributeError:
             # Tk window has been closed, OutputWindow.text = Tupu,
             # so kwenye OW.write, OW.text.insert fails.
-            pass
+            pita
 
 
 eleza _grep_dialog(parent):  # htest #

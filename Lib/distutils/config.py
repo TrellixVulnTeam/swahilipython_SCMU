@@ -15,7 +15,7 @@ index-servers =
 
 [pypi]
 username:%s
-password:%s
+pitaword:%s
 """
 
 kundi PyPIRCCommand(Command):
@@ -39,11 +39,11 @@ kundi PyPIRCCommand(Command):
         """Returns rc file path."""
         rudisha os.path.join(os.path.expanduser('~'), '.pypirc')
 
-    eleza _store_pypirc(self, username, password):
+    eleza _store_pypirc(self, username, pitaword):
         """Creates a default .pypirc file."""
         rc = self._get_rc_file()
-        ukijumuisha os.fdopen(os.open(rc, os.O_CREAT | os.O_WRONLY, 0o600), 'w') as f:
-            f.write(DEFAULT_PYPIRC % (username, password))
+        ukijumuisha os.fdopen(os.open(rc, os.O_CREAT | os.O_WRONLY, 0o600), 'w') kama f:
+            f.write(DEFAULT_PYPIRC % (username, pitaword))
 
     eleza _read_pypirc(self):
         """Reads the .pypirc file."""
@@ -77,7 +77,7 @@ kundi PyPIRCCommand(Command):
                     kila key, default kwenye (('repository',
                                           self.DEFAULT_REPOSITORY),
                                          ('realm', self.DEFAULT_REALM),
-                                         ('password', Tupu)):
+                                         ('pitaword', Tupu)):
                         ikiwa config.has_option(server, key):
                             current[key] = config.get(server, key)
                         isipokua:
@@ -86,15 +86,15 @@ kundi PyPIRCCommand(Command):
                     # work around people having "repository" kila the "pypi"
                     # section of their config set to the HTTP (rather than
                     # HTTPS) URL
-                    ikiwa (server == 'pypi' and
+                    ikiwa (server == 'pypi' na
                         repository kwenye (self.DEFAULT_REPOSITORY, 'pypi')):
                         current['repository'] = self.DEFAULT_REPOSITORY
                         rudisha current
 
-                    ikiwa (current['server'] == repository or
+                    ikiwa (current['server'] == repository ama
                         current['repository'] == repository):
                         rudisha current
-            elikiwa 'server-login' kwenye sections:
+            lasivyo 'server-login' kwenye sections:
                 # old format
                 server = 'server-login'
                 ikiwa config.has_option(server, 'repository'):
@@ -102,7 +102,7 @@ kundi PyPIRCCommand(Command):
                 isipokua:
                     repository = self.DEFAULT_REPOSITORY
                 rudisha {'username': config.get(server, 'username'),
-                        'password': config.get(server, 'password'),
+                        'pitaword': config.get(server, 'pitaword'),
                         'repository': repository,
                         'server': server,
                         'realm': self.DEFAULT_REALM}

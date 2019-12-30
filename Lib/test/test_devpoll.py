@@ -1,6 +1,6 @@
 # Test case kila the select.devpoll() function
 
-# Initial tests are copied as ni kutoka "test_poll.py"
+# Initial tests are copied kama ni kutoka "test_poll.py"
 
 agiza os
 agiza random
@@ -9,7 +9,7 @@ agiza unittest
 kutoka test.support agiza run_unittest, cpython_only
 
 ikiwa sio hasattr(select, 'devpoll') :
-     ashiria unittest.SkipTest('test works only on Solaris OS family')
+    ashiria unittest.SkipTest('test works only on Solaris OS family')
 
 
 eleza find_ready_matching(ready, flag):

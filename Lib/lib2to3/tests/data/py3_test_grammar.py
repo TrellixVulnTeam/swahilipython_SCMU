@@ -1,7 +1,7 @@
 # Python test set -- part 1, grammar.
 # This just tests whether the parser accepts them all.
 
-# NOTE: When you run this test as a script kutoka the command line, you
+# NOTE: When you run this test kama a script kutoka the command line, you
 # get warnings about certain hex/oct constants.  Since those are
 # issued by the parser, you can't suppress them by adding a
 # filterwarnings() call to this module.  Therefore, to shut up the
@@ -45,9 +45,9 @@ kundi TokenTests(unittest.TestCase):
                       '0b10000000000000000000000000000000'):
                 jaribu:
                     x = eval(s)
-                except OverflowError:
+                tatizo OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
-        elikiwa maxsize == 9223372036854775807:
+        lasivyo maxsize == 9223372036854775807:
             self.assertEquals(-9223372036854775807-1, -0o1000000000000000000000)
             self.assert_(0o1777777777777777777777 > 0)
             self.assert_(0xffffffffffffffff > 0)
@@ -57,7 +57,7 @@ kundi TokenTests(unittest.TestCase):
                      '0b100000000000000000000000000000000000000000000000000000000000000':
                 jaribu:
                     x = eval(s)
-                except OverflowError:
+                tatizo OverflowError:
                     self.fail("OverflowError on huge integer literal %r" % s)
         isipokua:
             self.fail('Weird maxsize value %r' % maxsize)
@@ -161,7 +161,7 @@ kundi GrammarTests(unittest.TestCase):
     # XXX can't test kwenye a script -- this rule ni only used when interactive
 
     # file_input: (NEWLINE | stmt)* ENDMARKER
-    # Being tested as this very moment this very module
+    # Being tested kama this very moment this very module
 
     # expr_input: testlist NEWLINE
     # XXX Hard to test -- used only kwenye calls to uliza()
@@ -183,19 +183,19 @@ kundi GrammarTests(unittest.TestCase):
         ###              ('*' [vfpdef] (',' vfpeleza ['=' test])*  [',' '**' vfpdef] | '**' vfpdef)
         ###              | vfpeleza ['=' test] (',' vfpeleza ['=' test])* [','])
         ### vfpdef: NAME
-        eleza f1(): pass
+        eleza f1(): pita
         f1()
         f1(*())
         f1(*(), **{})
-        eleza f2(one_argument): pass
-        eleza f3(two, arguments): pass
+        eleza f2(one_argument): pita
+        eleza f3(two, arguments): pita
         self.assertEquals(f2.__code__.co_varnames, ('one_argument',))
         self.assertEquals(f3.__code__.co_varnames, ('two', 'arguments'))
-        eleza a1(one_arg,): pass
-        eleza a2(two, args,): pass
-        eleza v0(*rest): pass
-        eleza v1(a, *rest): pass
-        eleza v2(a, b, *rest): pass
+        eleza a1(one_arg,): pita
+        eleza a2(two, args,): pita
+        eleza v0(*rest): pita
+        eleza v1(a, *rest): pita
+        eleza v2(a, b, *rest): pita
 
         f1()
         f2(1)
@@ -217,23 +217,23 @@ kundi GrammarTests(unittest.TestCase):
         v2(1,2,3,4)
         v2(1,2,3,4,5,6,7,8,9,0)
 
-        eleza d01(a=1): pass
+        eleza d01(a=1): pita
         d01()
         d01(1)
         d01(*(1,))
         d01(**{'a':2})
-        eleza d11(a, b=1): pass
+        eleza d11(a, b=1): pita
         d11(1)
         d11(1, 2)
         d11(1, **{'b':2})
-        eleza d21(a, b, c=1): pass
+        eleza d21(a, b, c=1): pita
         d21(1, 2)
         d21(1, 2, 3)
         d21(*(1, 2, 3))
         d21(1, *(2, 3))
         d21(1, 2, *(3,))
         d21(1, 2, **{'c':3})
-        eleza d02(a=1, b=2): pass
+        eleza d02(a=1, b=2): pita
         d02()
         d02(1)
         d02(1, 2)
@@ -241,39 +241,39 @@ kundi GrammarTests(unittest.TestCase):
         d02(1, *(2,))
         d02(1, **{'b':2})
         d02(**{'a': 1, 'b': 2})
-        eleza d12(a, b=1, c=2): pass
+        eleza d12(a, b=1, c=2): pita
         d12(1)
         d12(1, 2)
         d12(1, 2, 3)
-        eleza d22(a, b, c=1, d=2): pass
+        eleza d22(a, b, c=1, d=2): pita
         d22(1, 2)
         d22(1, 2, 3)
         d22(1, 2, 3, 4)
-        eleza d01v(a=1, *rest): pass
+        eleza d01v(a=1, *rest): pita
         d01v()
         d01v(1)
         d01v(1, 2)
         d01v(*(1, 2, 3, 4))
         d01v(*(1,))
         d01v(**{'a':2})
-        eleza d11v(a, b=1, *rest): pass
+        eleza d11v(a, b=1, *rest): pita
         d11v(1)
         d11v(1, 2)
         d11v(1, 2, 3)
-        eleza d21v(a, b, c=1, *rest): pass
+        eleza d21v(a, b, c=1, *rest): pita
         d21v(1, 2)
         d21v(1, 2, 3)
         d21v(1, 2, 3, 4)
         d21v(*(1, 2, 3, 4))
         d21v(1, 2, **{'c': 3})
-        eleza d02v(a=1, b=2, *rest): pass
+        eleza d02v(a=1, b=2, *rest): pita
         d02v()
         d02v(1)
         d02v(1, 2)
         d02v(1, 2, 3)
         d02v(1, *(2, 3, 4))
         d02v(**{'a': 1, 'b': 2})
-        eleza d12v(a, b=1, c=2, *rest): pass
+        eleza d12v(a, b=1, c=2, *rest): pita
         d12v(1)
         d12v(1, 2)
         d12v(1, 2, 3)
@@ -281,7 +281,7 @@ kundi GrammarTests(unittest.TestCase):
         d12v(*(1, 2, 3, 4))
         d12v(1, 2, *(3, 4, 5))
         d12v(1, *(2,), **{'c': 3})
-        eleza d22v(a, b, c=1, d=2, *rest): pass
+        eleza d22v(a, b, c=1, d=2, *rest): pita
         d22v(1, 2)
         d22v(1, 2, 3)
         d22v(1, 2, 3, 4)
@@ -293,10 +293,10 @@ kundi GrammarTests(unittest.TestCase):
         # keyword argument type tests
         jaribu:
             str('x', **{b'foo':1 })
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
         isipokua:
-            self.fail('Bytes should sio work as keyword argument names')
+            self.fail('Bytes should sio work kama keyword argument names')
         # keyword only argument tests
         eleza pos0key1(*, key): rudisha key
         pos0key1(key=100)
@@ -317,30 +317,30 @@ kundi GrammarTests(unittest.TestCase):
         self.assertRaises(SyntaxError, eval, "f(1, x=2, *(3,4), x=5)")
 
         # argument annotation tests
-        eleza f(x) -> list: pass
+        eleza f(x) -> list: pita
         self.assertEquals(f.__annotations__, {'return': list})
-        eleza f(x:int): pass
+        eleza f(x:int): pita
         self.assertEquals(f.__annotations__, {'x': int})
-        eleza f(*x:str): pass
+        eleza f(*x:str): pita
         self.assertEquals(f.__annotations__, {'x': str})
-        eleza f(**x:float): pass
+        eleza f(**x:float): pita
         self.assertEquals(f.__annotations__, {'x': float})
-        eleza f(x, y:1+2): pass
+        eleza f(x, y:1+2): pita
         self.assertEquals(f.__annotations__, {'y': 3})
-        eleza f(a, b:1, c:2, d): pass
+        eleza f(a, b:1, c:2, d): pita
         self.assertEquals(f.__annotations__, {'b': 1, 'c': 2})
-        eleza f(a, b:1, c:2, d, e:3=4, f=5, *g:6): pass
+        eleza f(a, b:1, c:2, d, e:3=4, f=5, *g:6): pita
         self.assertEquals(f.__annotations__,
                           {'b': 1, 'c': 2, 'e': 3, 'g': 6})
         eleza f(a, b:1, c:2, d, e:3=4, f=5, *g:6, h:7, i=8, j:9=10,
-              **k:11) -> 12: pass
+              **k:11) -> 12: pita
         self.assertEquals(f.__annotations__,
                           {'b': 1, 'c': 2, 'e': 3, 'g': 6, 'h': 7, 'j': 9,
                            'k': 11, 'return': 12})
         # Check kila SF Bug #1697248 - mixing decorators na a rudisha annotation
         eleza null(x): rudisha x
         @null
-        eleza f(x) -> list: pass
+        eleza f(x) -> list: pita
         self.assertEquals(f.__annotations__, {'return': list})
 
         # test closures ukijumuisha a variety of oparg's
@@ -378,13 +378,13 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza testSimpleStmt(self):
         ### simple_stmt: small_stmt (';' small_stmt)* [';']
-        x = 1; pass; toa x
+        x = 1; pita; toa x
         eleza foo():
             # verify statements that end ukijumuisha semi-colons
-            x = 1; pass; toa x;
+            x = 1; pita; toa x;
         foo()
 
-    ### small_stmt: expr_stmt | pass_stmt | del_stmt | flow_stmt | import_stmt | global_stmt | access_stmt
+    ### small_stmt: expr_stmt | pita_stmt | del_stmt | flow_stmt | import_stmt | global_stmt | access_stmt
     # Tested below
 
     eleza testExprStmt(self):
@@ -410,8 +410,8 @@ kundi GrammarTests(unittest.TestCase):
         toa x, y, (z, xyz)
 
     eleza testPassStmt(self):
-        # 'pass'
-        pass
+        # 'pita'
+        pita
 
     # flow_stmt: koma_stmt | endelea_stmt | return_stmt | raise_stmt
     # Tested below
@@ -432,7 +432,7 @@ kundi GrammarTests(unittest.TestCase):
                 endelea
                 msg = "endelea failed to endelea inside try"
             tatizo:
-                msg = "endelea inside try called except block"
+                msg = "endelea inside try called tatizo block"
         ikiwa msg != "ok":
             self.fail(msg)
 
@@ -448,12 +448,12 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza test_koma_endelea_loop(self):
         # This test warrants an explanation. It ni a test specifically kila SF bugs
-        # #463359 na #462937. The bug ni that a 'koma' statement executed or
-        # exception raised inside a try/except inside a loop, *after* a endelea
+        # #463359 na #462937. The bug ni that a 'koma' statement executed ama
+        # exception raised inside a try/tatizo inside a loop, *after* a endelea
         # statement has been executed kwenye that loop, will cause the wrong number of
         # arguments to be popped off the stack na the instruction pointer reset to
         # a very small number (usually 0.) Because of this, the following test
-        # *must* written as a function, na the tracking vars *must* be function
+        # *must* written kama a function, na the tracking vars *must* be function
         # arguments ukijumuisha default values. Otherwise, the test will loop na loop.
 
         eleza test_inner(extra_burning_oil = 1, count=0):
@@ -469,7 +469,7 @@ kundi GrammarTests(unittest.TestCase):
                 tatizo:
                     raise
             ikiwa count > 2 ama big_hippo != 1:
-                self.fail("endelea then koma kwenye try/except kwenye loop broken!")
+                self.fail("endelea then koma kwenye try/tatizo kwenye loop broken!")
         test_inner()
 
     eleza testReturn(self):
@@ -485,10 +485,10 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza testRaise(self):
         # 'raise' test [',' test]
-        jaribu:  ashiria RuntimeError('just testing')
-        except RuntimeError: pass
-        jaribu:  ashiria KeyboardInterrupt
-        except KeyboardInterrupt: pass
+        jaribu: ashiria RuntimeError('just testing')
+        tatizo RuntimeError: pita
+        jaribu: ashiria KeyboardInterrupt
+        tatizo KeyboardInterrupt: pita
 
     eleza testImport(self):
         # 'import' dotted_as_names
@@ -525,7 +525,7 @@ kundi GrammarTests(unittest.TestCase):
         assert 1, lambda x:x+1
         jaribu:
             assert 0, "msg"
-        except AssertionError as e:
+        tatizo AssertionError kama e:
             self.assertEquals(e.args[0], "msg")
         isipokua:
             ikiwa __debug__:
@@ -536,22 +536,22 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza testIf(self):
         # 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-        ikiwa 1: pass
-        ikiwa 1: pass
-        isipokua: pass
-        ikiwa 0: pass
-        elikiwa 0: pass
-        ikiwa 0: pass
-        elikiwa 0: pass
-        elikiwa 0: pass
-        elikiwa 0: pass
-        isipokua: pass
+        ikiwa 1: pita
+        ikiwa 1: pita
+        isipokua: pita
+        ikiwa 0: pita
+        lasivyo 0: pita
+        ikiwa 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
+        lasivyo 0: pita
+        isipokua: pita
 
     eleza testWhile(self):
         # 'while' test ':' suite ['else' ':' suite]
-        wakati 0: pass
-        wakati 0: pass
-        isipokua: pass
+        wakati 0: pita
+        wakati 0: pita
+        isipokua: pita
 
         # Issue1920: "wakati 0" ni optimized away,
         # ensure that the "else" clause ni still present.
@@ -564,16 +564,16 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza testFor(self):
         # 'for' exprlist 'in' exprlist ':' suite ['else' ':' suite]
-        kila i kwenye 1, 2, 3: pass
-        kila i, j, k kwenye (): pass
-        isipokua: pass
+        kila i kwenye 1, 2, 3: pita
+        kila i, j, k kwenye (): pita
+        isipokua: pita
         kundi Squares:
             eleza __init__(self, max):
                 self.max = max
                 self.sofar = []
             eleza __len__(self): rudisha len(self.sofar)
             eleza __getitem__(self, i):
-                ikiwa sio 0 <= i < self.max:  ashiria IndexError
+                ikiwa sio 0 <= i < self.max: ashiria IndexError
                 n = len(self.sofar)
                 wakati n <= i:
                     self.sofar.append(n*n)
@@ -595,65 +595,65 @@ kundi GrammarTests(unittest.TestCase):
         ### except_clause: 'except' [expr ['as' expr]]
         jaribu:
             1/0
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
-            pass
+            pita
         jaribu: 1/0
-        except EOFError: pass
-        except TypeError as msg: pass
-        except RuntimeError as msg: pass
-        tatizo: pass
-        isipokua: pass
+        tatizo EOFError: pita
+        tatizo TypeError kama msg: pita
+        tatizo RuntimeError kama msg: pita
+        tatizo: pita
+        isipokua: pita
         jaribu: 1/0
-        except (EOFError, TypeError, ZeroDivisionError): pass
+        tatizo (EOFError, TypeError, ZeroDivisionError): pita
         jaribu: 1/0
-        except (EOFError, TypeError, ZeroDivisionError) as msg: pass
-        jaribu: pass
-        mwishowe: pass
+        tatizo (EOFError, TypeError, ZeroDivisionError) kama msg: pita
+        jaribu: pita
+        mwishowe: pita
 
     eleza testSuite(self):
         # simple_stmt | NEWLINE INDENT NEWLINE* (stmt NEWLINE*)+ DEDENT
-        ikiwa 1: pass
+        ikiwa 1: pita
         ikiwa 1:
-            pass
+            pita
         ikiwa 1:
             #
             #
             #
-            pass
-            pass
+            pita
+            pita
             #
-            pass
+            pita
             #
 
     eleza testTest(self):
         ### and_test ('or' and_test)*
         ### and_test: not_test ('and' not_test)*
         ### not_test: 'not' not_test | comparison
-        ikiwa sio 1: pass
-        ikiwa 1 na 1: pass
-        ikiwa 1 ama 1: pass
-        ikiwa sio sio sio 1: pass
-        ikiwa sio 1 na 1 na 1: pass
-        ikiwa 1 na 1 ama 1 na 1 na 1 ama sio 1 na 1: pass
+        ikiwa sio 1: pita
+        ikiwa 1 na 1: pita
+        ikiwa 1 ama 1: pita
+        ikiwa sio sio sio 1: pita
+        ikiwa sio 1 na 1 na 1: pita
+        ikiwa 1 na 1 ama 1 na 1 na 1 ama sio 1 na 1: pita
 
     eleza testComparison(self):
         ### comparison: expr (comp_op expr)*
         ### comp_op: '<'|'>'|'=='|'>='|'<='|'!='|'in'|'not' 'in'|'is'|'is' 'not'
-        ikiwa 1: pass
+        ikiwa 1: pita
         x = (1 == 1)
-        ikiwa 1 == 1: pass
-        ikiwa 1 != 1: pass
-        ikiwa 1 < 1: pass
-        ikiwa 1 > 1: pass
-        ikiwa 1 <= 1: pass
-        ikiwa 1 >= 1: pass
-        ikiwa 1 ni 1: pass
-        ikiwa 1 ni sio 1: pass
-        ikiwa 1 kwenye (): pass
-        ikiwa 1 sio kwenye (): pass
-        ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 kwenye 1 sio kwenye 1 ni 1 ni sio 1: pass
+        ikiwa 1 == 1: pita
+        ikiwa 1 != 1: pita
+        ikiwa 1 < 1: pita
+        ikiwa 1 > 1: pita
+        ikiwa 1 <= 1: pita
+        ikiwa 1 >= 1: pita
+        ikiwa 1 ni 1: pita
+        ikiwa 1 ni sio 1: pita
+        ikiwa 1 kwenye (): pita
+        ikiwa 1 haiko kwenye (): pita
+        ikiwa 1 < 1 > 1 == 1 >= 1 <= 1 != 1 kwenye 1 haiko kwenye 1 ni 1 ni sio 1: pita
 
     eleza testBinaryMaskOps(self):
         x = 1 & 1
@@ -751,22 +751,22 @@ kundi GrammarTests(unittest.TestCase):
 
     eleza testClassdef(self):
         # 'class' NAME ['(' [testlist] ')'] ':' suite
-        kundi B: pass
-        kundi B2(): pass
-        kundi C1(B): pass
-        kundi C2(B): pass
-        kundi D(C1, C2, B): pass
+        kundi B: pita
+        kundi B2(): pita
+        kundi C1(B): pita
+        kundi C2(B): pita
+        kundi D(C1, C2, B): pita
         kundi C:
-            eleza meth1(self): pass
-            eleza meth2(self, arg): pass
-            eleza meth3(self, a1, a2): pass
+            eleza meth1(self): pita
+            eleza meth2(self, arg): pita
+            eleza meth3(self, a1, a2): pita
 
         # decorator: '@' dotted_name [ '(' [arglist] ')' ] NEWLINE
         # decorators: decorator+
         # decorated: decorators (classeleza | funcdef)
         eleza class_decorator(x): rudisha x
         @class_decorator
-        kundi G: pass
+        kundi G: pita
 
     eleza testDictcomps(self):
         # dictorsetmaker: ( (test ':' test (comp_kila |
@@ -845,16 +845,16 @@ kundi GrammarTests(unittest.TestCase):
         jaribu:
             next(g)
             self.fail('should produce StopIteration exception')
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
 
         a = 1
         jaribu:
             g = (a kila d kwenye a)
             next(g)
             self.fail('should produce TypeError')
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         self.assertEqual(list((x, y) kila x kwenye 'abcd' kila y kwenye 'abcd'), [(x, y) kila x kwenye 'abcd' kila y kwenye 'abcd'])
         self.assertEqual(list((x, y) kila x kwenye 'ab' kila y kwenye 'xy'), [(x, y) kila x kwenye 'ab' kila y kwenye 'xy'])
@@ -897,20 +897,20 @@ kundi GrammarTests(unittest.TestCase):
             eleza __enter__(self):
                 rudisha (1, 2)
             eleza __exit__(self, *args):
-                pass
+                pita
 
         ukijumuisha manager():
-            pass
-        ukijumuisha manager() as x:
-            pass
-        ukijumuisha manager() as (x, y):
-            pass
+            pita
+        ukijumuisha manager() kama x:
+            pita
+        ukijumuisha manager() kama (x, y):
+            pita
         ukijumuisha manager(), manager():
-            pass
-        ukijumuisha manager() as x, manager() as y:
-            pass
-        ukijumuisha manager() as x, manager():
-            pass
+            pita
+        ukijumuisha manager() kama x, manager() kama y:
+            pita
+        ukijumuisha manager() kama x, manager():
+            pita
 
     eleza testIfElseExpr(self):
         # Test ifelse expressions kwenye various cases
@@ -931,8 +931,8 @@ kundi GrammarTests(unittest.TestCase):
         self.assertEqual((0 ama _checkeval("check 3", 2) ikiwa 0 isipokua 3), 3)
         self.assertEqual((1 ama _checkeval("check 4", 2) ikiwa 1 isipokua _checkeval("check 5", 3)), 1)
         self.assertEqual((0 ama 5 ikiwa 1 isipokua _checkeval("check 6", 3)), 5)
-        self.assertEqual((not 5 ikiwa 1 isipokua 1), Uongo)
-        self.assertEqual((not 5 ikiwa 0 isipokua 1), 1)
+        self.assertEqual((sio 5 ikiwa 1 isipokua 1), Uongo)
+        self.assertEqual((sio 5 ikiwa 0 isipokua 1), 1)
         self.assertEqual((6 + 1 ikiwa 1 isipokua 2), 7)
         self.assertEqual((6 - 1 ikiwa 1 isipokua 2), 5)
         self.assertEqual((6 * 2 ikiwa 1 isipokua 4), 12)

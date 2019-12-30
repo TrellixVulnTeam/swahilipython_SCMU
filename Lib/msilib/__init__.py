@@ -53,13 +53,13 @@ kundi Table:
                     tname="CHAR(%d)" % size
                 isipokua:
                     tname="CHAR"
-            elikiwa dtype == type_short:
+            lasivyo dtype == type_short:
                 assert size==2
                 tname = "SHORT"
-            elikiwa dtype == type_long:
+            lasivyo dtype == type_long:
                 assert size==4
                 tname="LONG"
-            elikiwa dtype == type_binary:
+            lasivyo dtype == type_binary:
                 assert size==0
                 tname="OBJECT"
             isipokua:
@@ -83,7 +83,7 @@ kundi Table:
         v.Execute(Tupu)
         v.Close()
 
-kundi _Unspecified:pass
+kundi _Unspecified:pita
 eleza change_sequence(seq, action, seqno=_Unspecified, cond = _Unspecified):
     "Change the sequence number of an action kwenye a sequence list"
     kila i kwenye range(len(seq)):
@@ -94,7 +94,7 @@ eleza change_sequence(seq, action, seqno=_Unspecified, cond = _Unspecified):
                 seqno = seq[i][2]
             seq[i] = (action, cond, seqno)
             return
-     ashiria ValueError("Action sio found kwenye sequence")
+    ashiria ValueError("Action sio found kwenye sequence")
 
 eleza add_data(db, table, values):
     v = db.OpenView("SELECT * FROM `%s`" % table)
@@ -106,18 +106,18 @@ eleza add_data(db, table, values):
             field = value[i]
             ikiwa isinstance(field, int):
                 r.SetInteger(i+1,field)
-            elikiwa isinstance(field, str):
+            lasivyo isinstance(field, str):
                 r.SetString(i+1,field)
-            elikiwa field ni Tupu:
-                pass
-            elikiwa isinstance(field, Binary):
+            lasivyo field ni Tupu:
+                pita
+            lasivyo isinstance(field, Binary):
                 r.SetStream(i+1, field.name)
             isipokua:
-                 ashiria TypeError("Unsupported type %s" % field.__class__.__name__)
+                ashiria TypeError("Unsupported type %s" % field.__class__.__name__)
         jaribu:
             v.Modify(MSIMODIFY_INSERT, r)
-        except Exception as e:
-             ashiria MSIError("Could sio insert "+repr(values)+" into "+table)
+        tatizo Exception kama e:
+            ashiria MSIError("Could sio insert "+repr(values)+" into "+table)
 
         r.ClearData()
     v.Close()
@@ -135,8 +135,8 @@ eleza init_database(name, schema,
                   Manufacturer):
     jaribu:
         os.unlink(name)
-    except OSError:
-        pass
+    tatizo OSError:
+        pita
     ProductCode = ProductCode.upper()
     # Create the database
     db = OpenDatabase(name, MSIDBOPEN_CREATE)
@@ -316,7 +316,7 @@ kundi Directory:
                     file = "%s~%d.%s" % (prefix, pos, suffix)
                 isipokua:
                     file = "%s~%d" % (prefix, pos)
-                ikiwa file sio kwenye self.short_names: koma
+                ikiwa file haiko kwenye self.short_names: koma
                 pos += 1
                 assert pos < 10000
                 ikiwa pos kwenye (10, 100, 1000):
@@ -344,7 +344,7 @@ kundi Directory:
         isipokua:
             logical = Tupu
         sequence, logical = self.cab.append(absolute, file, logical)
-        assert logical sio kwenye self.ids
+        assert logical haiko kwenye self.ids
         self.ids.add(logical)
         short = self.make_short(file)
         full = "%s|%s" % (short, file)
@@ -375,11 +375,11 @@ kundi Directory:
         rudisha logical
 
     eleza glob(self, pattern, exclude = Tupu):
-        """Add a list of files to the current component as specified kwenye the
+        """Add a list of files to the current component kama specified kwenye the
         glob pattern. Individual files can be excluded kwenye the exclude list."""
         jaribu:
             files = os.listdir(self.absolute)
-        except OSError:
+        tatizo OSError:
             rudisha []
         ikiwa pattern[:1] != '.':
             files = (f kila f kwenye files ikiwa f[0] != '.')

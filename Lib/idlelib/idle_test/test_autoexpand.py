@@ -26,8 +26,8 @@ kundi AutoExpandTest(unittest.TestCase):
 # to run these test on non-gui machines (but check bell).
 ##        jaribu:
 ##            requires('gui')
-##            # ashiria ResourceDenied()  # Uncomment to test mock.
-##        except ResourceDenied:
+##            #ashiria ResourceDenied()  # Uncomment to test mock.
+##        tatizo ResourceDenied:
 ##            kutoka idlelib.idle_test.mock_tk agiza Text
 ##            cls.text = Text()
 ##            cls.text.bell = lambda: Tupu

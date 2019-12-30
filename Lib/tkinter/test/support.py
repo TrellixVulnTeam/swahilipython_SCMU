@@ -17,8 +17,8 @@ kundi AbstractTkTest:
         cls.root.wm_state('normal')
         jaribu:
             cls.root.wm_attributes('-zoomed', Uongo)
-        except tkinter.TclError:
-            pass
+        tatizo tkinter.TclError:
+            pita
 
     @classmethod
     eleza tearDownClass(cls):
@@ -103,7 +103,7 @@ eleza tcl_obj_eq(actual, expected):
             rudisha str(actual) == expected
     ikiwa isinstance(actual, tuple):
         ikiwa isinstance(expected, tuple):
-            rudisha (len(actual) == len(expected) and
+            rudisha (len(actual) == len(expected) na
                     all(tcl_obj_eq(act, exp)
                         kila act, exp kwenye zip(actual, expected)))
     rudisha Uongo

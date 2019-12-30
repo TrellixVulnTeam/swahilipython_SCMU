@@ -13,13 +13,13 @@ winsound = support.import_module('winsound')
 # Unless we actually have an ear kwenye the room, we have no idea whether a sound
 # actually plays, na it's incredibly flaky trying to figure out ikiwa a sound
 # even *should* play.  Instead of guessing, just call the function na assume
-# it either passed ama raised the RuntimeError we expect kwenye case of failure.
+# it either pitaed ama raised the RuntimeError we expect kwenye case of failure.
 eleza sound_func(func):
     @functools.wraps(func)
     eleza wrapper(*args, **kwargs):
         jaribu:
             ret = func(*args, **kwargs)
-        except RuntimeError as e:
+        tatizo RuntimeError kama e:
             ikiwa support.verbose:
                 andika(func.__name__, 'failed:', e)
         isipokua:
@@ -104,7 +104,7 @@ kundi PlaySoundTest(unittest.TestCase):
 
     eleza test_snd_memory(self):
         ukijumuisha open(support.findfile('pluck-pcm8.wav',
-                                   subdir='audiodata'), 'rb') as f:
+                                   subdir='audiodata'), 'rb') kama f:
             audio_data = f.read()
         safe_PlaySound(audio_data, winsound.SND_MEMORY)
         audio_data = bytearray(audio_data)
@@ -140,7 +140,7 @@ kundi PlaySoundTest(unittest.TestCase):
         time.sleep(0.5)
         safe_PlaySound('SystemQuestion', winsound.SND_ALIAS | winsound.SND_NOSTOP)
         # Issue 8367: PlaySound(Tupu, winsound.SND_PURGE)
-        # does sio  ashiria on systems without a sound card.
+        # does sio ashiria on systems without a sound card.
         winsound.PlaySound(Tupu, winsound.SND_PURGE)
 
 

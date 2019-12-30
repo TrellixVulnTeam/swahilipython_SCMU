@@ -17,7 +17,7 @@ DEFAULT_REPEAT = 5
 # long time to run because they test the default number of loops, which is
 # large.  The tests could be enabled ikiwa there was a way to override the default
 # number of loops during testing, but this would require changing the signature
-# of some functions that use the default as a default argument.
+# of some functions that use the default kama a default argument.
 
 kundi FakeTimer:
     BASE_TIME = 42.0
@@ -37,7 +37,7 @@ kundi FakeTimer:
         self.setup_calls += 1
 
     eleza wrap_timer(self, timer):
-        """Records 'timer' na returns self as callable timer."""
+        """Records 'timer' na returns self kama callable timer."""
         self.saved_timer = timer
         rudisha self
 
@@ -46,16 +46,16 @@ kundi TestTimeit(unittest.TestCase):
     eleza tearDown(self):
         jaribu:
             toa timeit._fake_timer
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
     eleza test_reindent_empty(self):
         self.assertEqual(timeit.reindent("", 0), "")
         self.assertEqual(timeit.reindent("", 4), "")
 
     eleza test_reindent_single(self):
-        self.assertEqual(timeit.reindent("pass", 0), "pass")
-        self.assertEqual(timeit.reindent("pass", 4), "pass")
+        self.assertEqual(timeit.reindent("pita", 0), "pita")
+        self.assertEqual(timeit.reindent("pita", 4), "pita")
 
     eleza test_reindent_multi_empty(self):
         self.assertEqual(timeit.reindent("\n\n", 0), "\n\n")
@@ -63,16 +63,16 @@ kundi TestTimeit(unittest.TestCase):
 
     eleza test_reindent_multi(self):
         self.assertEqual(timeit.reindent(
-            "andika()\npass\nkoma", 0),
-            "andika()\npass\nkoma")
+            "andika()\npita\nkoma", 0),
+            "andika()\npita\nkoma")
         self.assertEqual(timeit.reindent(
-            "andika()\npass\nkoma", 4),
-            "andika()\n    pass\n    koma")
+            "andika()\npita\nkoma", 4),
+            "andika()\n    pita\n    koma")
 
     eleza test_timer_invalid_stmt(self):
         self.assertRaises(ValueError, timeit.Timer, stmt=Tupu)
         self.assertRaises(SyntaxError, timeit.Timer, stmt='return')
-        self.assertRaises(SyntaxError, timeit.Timer, stmt='yield')
+        self.assertRaises(SyntaxError, timeit.Timer, stmt='tuma')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='tuma kutoka ()')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='koma')
         self.assertRaises(SyntaxError, timeit.Timer, stmt='endelea')
@@ -81,7 +81,7 @@ kundi TestTimeit(unittest.TestCase):
     eleza test_timer_invalid_setup(self):
         self.assertRaises(ValueError, timeit.Timer, setup=Tupu)
         self.assertRaises(SyntaxError, timeit.Timer, setup='return')
-        self.assertRaises(SyntaxError, timeit.Timer, setup='yield')
+        self.assertRaises(SyntaxError, timeit.Timer, setup='tuma')
         self.assertRaises(SyntaxError, timeit.Timer, setup='tuma kutoka ()')
         self.assertRaises(SyntaxError, timeit.Timer, setup='koma')
         self.assertRaises(SyntaxError, timeit.Timer, setup='endelea')
@@ -237,7 +237,7 @@ kundi TestTimeit(unittest.TestCase):
         args.append(self.fake_stmt)
         # timeit.main() modifies sys.path, so save na restore it.
         orig_sys_path = sys.path[:]
-        ukijumuisha captured_stdout() as s:
+        ukijumuisha captured_stdout() kama s:
             timeit.main(args=args, _wrap_timer=timer.wrap_timer)
         sys.path[:] = orig_sys_path[:]
         rudisha s.getvalue()
@@ -288,7 +288,7 @@ kundi TestTimeit(unittest.TestCase):
     @unittest.skipIf(sys.flags.optimize >= 2, "need __doc__")
     eleza test_main_help(self):
         s = self.run_main(switches=['-h'])
-        # Note: It's sio clear that the trailing space was intended as part of
+        # Note: It's sio clear that the trailing space was intended kama part of
         # the help text, but since it's there, check kila it.
         self.assertEqual(s, timeit.__doc__ + ' ')
 
@@ -338,19 +338,19 @@ kundi TestTimeit(unittest.TestCase):
         self.assertEqual(unit_usec,
                 "100 loops, best of 5: 3e+03 usec per loop\n")
         # Test invalid unit input
-        ukijumuisha captured_stderr() as error_stringio:
+        ukijumuisha captured_stderr() kama error_stringio:
             invalid = self.run_main(seconds_per_increment=0.003,
                     switches=['-u', 'parsec'])
         self.assertEqual(error_stringio.getvalue(),
                     "Unrecognized unit. Please select nsec, usec, msec, ama sec.\n")
 
     eleza test_main_exception(self):
-        ukijumuisha captured_stderr() as error_stringio:
+        ukijumuisha captured_stderr() kama error_stringio:
             s = self.run_main(switches=['1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
     eleza test_main_exception_fixed_reps(self):
-        ukijumuisha captured_stderr() as error_stringio:
+        ukijumuisha captured_stderr() kama error_stringio:
             s = self.run_main(switches=['-n1', '1/0'])
         self.assert_exc_string(error_stringio.getvalue(), 'ZeroDivisionError')
 
@@ -372,7 +372,7 @@ kundi TestTimeit(unittest.TestCase):
     eleza test_autorange_with_callback(self):
         eleza callback(a, b):
             andika("{} {:.3f}".format(a, b))
-        ukijumuisha captured_stdout() as s:
+        ukijumuisha captured_stdout() kama s:
             num_loops, time_taken = self.autorange(callback=callback)
         self.assertEqual(num_loops, 500)
         self.assertEqual(time_taken, 500/1024)

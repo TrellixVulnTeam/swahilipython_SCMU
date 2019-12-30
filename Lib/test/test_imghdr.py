@@ -24,16 +24,16 @@ TEST_FILES = (
 
 kundi UnseekableIO(io.FileIO):
     eleza tell(self):
-         ashiria io.UnsupportedOperation
+        ashiria io.UnsupportedOperation
 
     eleza seek(self, *args, **kwargs):
-         ashiria io.UnsupportedOperation
+        ashiria io.UnsupportedOperation
 
 kundi TestImghdr(unittest.TestCase):
     @classmethod
     eleza setUpClass(cls):
         cls.testfile = findfile('python.png', subdir='imghdrdata')
-        ukijumuisha open(cls.testfile, 'rb') as stream:
+        ukijumuisha open(cls.testfile, 'rb') kama stream:
             cls.testdata = stream.read()
 
     eleza tearDown(self):
@@ -43,9 +43,9 @@ kundi TestImghdr(unittest.TestCase):
         kila filename, expected kwenye TEST_FILES:
             filename = findfile(filename, subdir='imghdrdata')
             self.assertEqual(imghdr.what(filename), expected)
-            ukijumuisha open(filename, 'rb') as stream:
+            ukijumuisha open(filename, 'rb') kama stream:
                 self.assertEqual(imghdr.what(stream), expected)
-            ukijumuisha open(filename, 'rb') as stream:
+            ukijumuisha open(filename, 'rb') kama stream:
                 data = stream.read()
             self.assertEqual(imghdr.what(Tupu, data), expected)
             self.assertEqual(imghdr.what(Tupu, bytearray(data)), expected)
@@ -65,11 +65,11 @@ kundi TestImghdr(unittest.TestCase):
         self.assertEqual(imghdr.what(Tupu, b'eggs'), 'ham')
 
     eleza test_file_pos(self):
-        ukijumuisha open(TESTFN, 'wb') as stream:
+        ukijumuisha open(TESTFN, 'wb') kama stream:
             stream.write(b'ababagalamaga')
             pos = stream.tell()
             stream.write(self.testdata)
-        ukijumuisha open(TESTFN, 'rb') as stream:
+        ukijumuisha open(TESTFN, 'rb') kama stream:
             stream.seek(pos)
             self.assertEqual(imghdr.what(stream), 'png')
             self.assertEqual(stream.tell(), pos)
@@ -83,7 +83,7 @@ kundi TestImghdr(unittest.TestCase):
             imghdr.what(self.testfile, 1)
         ukijumuisha self.assertRaises(AttributeError):
             imghdr.what(os.fsencode(self.testfile))
-        ukijumuisha open(self.testfile, 'rb') as f:
+        ukijumuisha open(self.testfile, 'rb') kama f:
             ukijumuisha self.assertRaises(AttributeError):
                 imghdr.what(f.fileno())
 
@@ -101,7 +101,7 @@ kundi TestImghdr(unittest.TestCase):
             warnings.simplefilter("ignore", BytesWarning)
             kila filename, _ kwenye TEST_FILES:
                 filename = findfile(filename, subdir='imghdrdata')
-                ukijumuisha open(filename, 'rb') as stream:
+                ukijumuisha open(filename, 'rb') kama stream:
                     data = stream.read().decode('latin1')
                 ukijumuisha self.assertRaises(TypeError):
                     imghdr.what(io.StringIO(data))
@@ -115,25 +115,25 @@ kundi TestImghdr(unittest.TestCase):
     eleza test_closed_file(self):
         stream = open(self.testfile, 'rb')
         stream.close()
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             imghdr.what(stream)
         stream = io.BytesIO(self.testdata)
         stream.close()
-        ukijumuisha self.assertRaises(ValueError) as cm:
+        ukijumuisha self.assertRaises(ValueError) kama cm:
             imghdr.what(stream)
 
     eleza test_unseekable(self):
-        ukijumuisha open(TESTFN, 'wb') as stream:
+        ukijumuisha open(TESTFN, 'wb') kama stream:
             stream.write(self.testdata)
-        ukijumuisha UnseekableIO(TESTFN, 'rb') as stream:
+        ukijumuisha UnseekableIO(TESTFN, 'rb') kama stream:
             ukijumuisha self.assertRaises(io.UnsupportedOperation):
                 imghdr.what(stream)
 
     eleza test_output_stream(self):
-        ukijumuisha open(TESTFN, 'wb') as stream:
+        ukijumuisha open(TESTFN, 'wb') kama stream:
             stream.write(self.testdata)
             stream.seek(0)
-            ukijumuisha self.assertRaises(OSError) as cm:
+            ukijumuisha self.assertRaises(OSError) kama cm:
                 imghdr.what(stream)
 
 ikiwa __name__ == '__main__':

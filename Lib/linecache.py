@@ -45,7 +45,7 @@ eleza getlines(filename, module_globals=Tupu):
 
     jaribu:
         rudisha updatecache(filename, module_globals)
-    except MemoryError:
+    tatizo MemoryError:
         clearcache()
         rudisha []
 
@@ -72,7 +72,7 @@ eleza checkcache(filename=Tupu):
             endelea   # no-op kila files loaded via a __loader__
         jaribu:
             stat = os.stat(fullname)
-        except OSError:
+        tatizo OSError:
             toa cache[filename]
             endelea
         ikiwa size != stat.st_size ama mtime != stat.st_mtime:
@@ -93,7 +93,7 @@ eleza updatecache(filename, module_globals=Tupu):
     fullname = filename
     jaribu:
         stat = os.stat(fullname)
-    except OSError:
+    tatizo OSError:
         basename = filename
 
         # Realise a lazy loader based lookup ikiwa there ni one
@@ -101,8 +101,8 @@ eleza updatecache(filename, module_globals=Tupu):
         ikiwa lazycache(filename, module_globals):
             jaribu:
                 data = cache[filename][0]()
-            except (ImportError, OSError):
-                pass
+            tatizo (ImportError, OSError):
+                pita
             isipokua:
                 ikiwa data ni Tupu:
                     # No luck, the PEP302 loader cannot find the source
@@ -122,20 +122,20 @@ eleza updatecache(filename, module_globals=Tupu):
         kila dirname kwenye sys.path:
             jaribu:
                 fullname = os.path.join(dirname, basename)
-            except (TypeError, AttributeError):
+            tatizo (TypeError, AttributeError):
                 # Not sufficiently string-like to do anything useful with.
                 endelea
             jaribu:
                 stat = os.stat(fullname)
                 koma
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
         isipokua:
             rudisha []
     jaribu:
-        ukijumuisha tokenize.open(fullname) as fp:
+        ukijumuisha tokenize.open(fullname) kama fp:
             lines = fp.readlines()
-    except OSError:
+    tatizo OSError:
         rudisha []
     ikiwa lines na sio lines[-1].endswith('\n'):
         lines[-1] += '\n'

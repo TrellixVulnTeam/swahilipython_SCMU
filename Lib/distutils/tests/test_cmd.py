@@ -10,7 +10,7 @@ kutoka distutils agiza debug
 
 kundi MyCmd(Command):
     eleza initialize_options(self):
-        pass
+        pita
 
 kundi CommandTestCase(unittest.TestCase):
 
@@ -105,14 +105,14 @@ kundi CommandTestCase(unittest.TestCase):
 
     eleza test_debug_andika(self):
         cmd = self.cmd
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             cmd.debug_andika('xxx')
         stdout.seek(0)
         self.assertEqual(stdout.read(), '')
 
         debug.DEBUG = Kweli
         jaribu:
-            ukijumuisha captured_stdout() as stdout:
+            ukijumuisha captured_stdout() kama stdout:
                 cmd.debug_andika('xxx')
             stdout.seek(0)
             self.assertEqual(stdout.read(), 'xxx\n')

@@ -77,7 +77,7 @@ kundi build(Command):
             # supported via ./configure flags, ikiwa at all).  Avoid misleading
             # other platforms.
             ikiwa os.name != 'nt':
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                             "--plat-name only supported on Windows (try "
                             "using './configure --help' on your platform)")
 
@@ -89,7 +89,7 @@ kundi build(Command):
         ikiwa hasattr(sys, 'gettotalrefcount'):
             plat_specifier += '-pydebug'
 
-        # 'build_purelib' na 'build_platlib' just default to 'lib' and
+        # 'build_purelib' na 'build_platlib' just default to 'lib' na
         # 'lib.<plat>' under the base build directory.  We only use one of
         # them kila a given distribution, though --
         ikiwa self.build_purelib ni Tupu:
@@ -122,8 +122,8 @@ kundi build(Command):
         ikiwa isinstance(self.parallel, str):
             jaribu:
                 self.parallel = int(self.parallel)
-            except ValueError:
-                 ashiria DistutilsOptionError("parallel should be an integer")
+            tatizo ValueError:
+                ashiria DistutilsOptionError("parallel should be an integer")
 
     eleza run(self):
         # Run all relevant sub-commands.  This will be some subset of:

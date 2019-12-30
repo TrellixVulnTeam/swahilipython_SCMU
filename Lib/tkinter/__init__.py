@@ -1,13 +1,13 @@
 """Wrapper functions kila Tcl/Tk.
 
-Tkinter provides classes which allow the display, positioning and
+Tkinter provides classes which allow the display, positioning na
 control of widgets. Toplevel widgets are Tk na Toplevel. Other
 widgets are Frame, Label, Entry, Text, Canvas, Button, Radiobutton,
 Checkbutton, Scale, Listbox, Scrollbar, OptionMenu, Spinbox
 LabelFrame na PanedWindow.
 
 Properties of the widgets are specified ukijumuisha keyword arguments.
-Keyword arguments have the same name as the corresponding resource
+Keyword arguments have the same name kama the corresponding resource
 under Tk.
 
 Widgets are positioned ukijumuisha one of the geometry managers Place, Pack
@@ -71,14 +71,14 @@ eleza _stringify(value):
         value = str(value)
         ikiwa sio value:
             value = '{}'
-        elikiwa _magic_re.search(value):
+        lasivyo _magic_re.search(value):
             # add '\' before special characters na spaces
             value = _magic_re.sub(r'\\\1', value)
             value = value.replace('\n', r'\n')
             value = _space_re.sub(r'\\\1', value)
             ikiwa value[0] == '"':
                 value = '\\' + value
-        elikiwa value[0] == '"' ama _space_re.search(value):
+        lasivyo value[0] == '"' ama _space_re.search(value):
             value = '{%s}' % value
     rudisha value
 
@@ -89,27 +89,27 @@ eleza _flatten(seq):
     kila item kwenye seq:
         ikiwa isinstance(item, (tuple, list)):
             res = res + _flatten(item)
-        elikiwa item ni sio Tupu:
+        lasivyo item ni sio Tupu:
             res = res + (item,)
     rudisha res
 
 
 jaribu: _flatten = _tkinter._flatten
-except AttributeError: pass
+tatizo AttributeError: pita
 
 
 eleza _cnfmerge(cnfs):
     """Internal function."""
     ikiwa isinstance(cnfs, dict):
         rudisha cnfs
-    elikiwa isinstance(cnfs, (type(Tupu), str)):
+    lasivyo isinstance(cnfs, (type(Tupu), str)):
         rudisha cnfs
     isipokua:
         cnf = {}
         kila c kwenye _flatten(cnfs):
             jaribu:
                 cnf.update(c)
-            except (AttributeError, TypeError) as msg:
+            tatizo (AttributeError, TypeError) kama msg:
                 andika("_cnfmerge: fallback due to:", msg)
                 kila k, v kwenye c.items():
                     cnf[k] = v
@@ -117,7 +117,7 @@ eleza _cnfmerge(cnfs):
 
 
 jaribu: _cnfmerge = _tkinter._cnfmerge
-except AttributeError: pass
+tatizo AttributeError: pita
 
 
 eleza _splitdict(tk, v, cut_minus=Kweli, conv=Tupu):
@@ -130,7 +130,7 @@ eleza _splitdict(tk, v, cut_minus=Kweli, conv=Tupu):
     """
     t = tk.splitlist(v)
     ikiwa len(t) % 2:
-         ashiria RuntimeError('Tcl list representing a dict ni expected '
+        ashiria RuntimeError('Tcl list representing a dict ni expected '
                            'to contain an even number of elements')
     it = iter(t)
     dict = {}
@@ -202,7 +202,7 @@ kundi Event:
 
     If a callback function kila one of these events ni registered
     using bind, bind_all, bind_class, ama tag_bind, the callback is
-    called ukijumuisha an Event as first argument. It will have the
+    called ukijumuisha an Event kama first argument. It will have the
     following attributes (in braces are the event types kila which
     the attribute ni valid):
 
@@ -212,10 +212,10 @@ kundi Event:
     height - height of the exposed window (Configure, Expose)
     width - width of the exposed window (Configure, Expose)
     keycode - keycode of the pressed key (KeyPress, KeyRelease)
-    state - state of the event as a number (ButtonPress, ButtonRelease,
+    state - state of the event kama a number (ButtonPress, ButtonRelease,
                             Enter, KeyPress, KeyRelease,
                             Leave, Motion)
-    state - state as a string (Visibility)
+    state - state kama a string (Visibility)
     time - when the event occurred
     x - x-position of the mouse
     y - y-position of the mouse
@@ -225,9 +225,9 @@ kundi Event:
              (ButtonPress, ButtonRelease, KeyPress, KeyRelease, Motion)
     char - pressed character (KeyPress, KeyRelease)
     send_event - see X/Windows documentation
-    keysym - keysym of the event as a string (KeyPress, KeyRelease)
-    keysym_num - keysym of the event as a number (KeyPress, KeyRelease)
-    type - type of the event as a number
+    keysym - keysym of the event kama a string (KeyPress, KeyRelease)
+    keysym_num - keysym of the event kama a number (KeyPress, KeyRelease)
+    type - type of the event kama a number
     widget - widget kwenye which the event occurred
     delta - delta of wheel movement (MouseWheel)
     """
@@ -236,13 +236,13 @@ kundi Event:
         attrs = {k: v kila k, v kwenye self.__dict__.items() ikiwa v != '??'}
         ikiwa sio self.char:
             toa attrs['char']
-        elikiwa self.char != '??':
+        lasivyo self.char != '??':
             attrs['char'] = repr(self.char)
         ikiwa sio getattr(self, 'send_event', Kweli):
             toa attrs['send_event']
         ikiwa self.state == 0:
             toa attrs['state']
-        elikiwa isinstance(self.state, int):
+        lasivyo isinstance(self.state, int):
             state = self.state
             mods = ('Shift', 'Lock', 'Control',
                     'Mod1', 'Mod2', 'Mod3', 'Mod4', 'Mod5',
@@ -290,16 +290,16 @@ eleza NoDefaultRoot():
 
 eleza _tkerror(err):
     """Internal function."""
-    pass
+    pita
 
 
 eleza _exit(code=0):
-    """Internal function. Calling it will  ashiria the exception SystemExit."""
+    """Internal function. Calling it will ashiria the exception SystemExit."""
     jaribu:
         code = int(code)
-    except ValueError:
-        pass
-     ashiria SystemExit(code)
+    tatizo ValueError:
+        pita
+    ashiria SystemExit(code)
 
 
 _varnum = 0
@@ -317,7 +317,7 @@ kundi Variable:
     eleza __init__(self, master=Tupu, value=Tupu, name=Tupu):
         """Construct a variable
 
-        MASTER can be given as master widget.
+        MASTER can be given kama master widget.
         VALUE ni an optional value (defaults to "")
         NAME ni an optional Tcl name (defaults to PY_VARnum).
 
@@ -328,7 +328,7 @@ kundi Variable:
         # raised kutoka Modules/_tkinter.c:SetVar like:
         # TypeError: setvar() takes exactly 3 arguments (2 given)
         ikiwa name ni sio Tupu na sio isinstance(name, str):
-             ashiria TypeError("name must be a string")
+            ashiria TypeError("name must be a string")
         global _varnum
         ikiwa sio master:
             master = _default_root
@@ -341,7 +341,7 @@ kundi Variable:
             _varnum += 1
         ikiwa value ni sio Tupu:
             self.initialize(value)
-        elikiwa sio self._tk.getboolean(self._tk.call("info", "exists", self._name)):
+        lasivyo sio self._tk.getboolean(self._tk.call("info", "exists", self._name)):
             self.initialize(self._default)
 
     eleza __del__(self):
@@ -375,12 +375,12 @@ kundi Variable:
         cbname = repr(id(f))
         jaribu:
             callback = callback.__func__
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         jaribu:
             cbname = cbname + callback.__name__
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self._tk.createcommand(cbname, f)
         ikiwa self._tclCommands ni Tupu:
             self._tclCommands = []
@@ -406,7 +406,7 @@ kundi Variable:
         """Delete the trace callback kila a variable.
 
         Mode ni one of "read", "write", "unset" ama a list ama tuple of
-        such strings.  Must be same as were specified kwenye trace_add().
+        such strings.  Must be same kama were specified kwenye trace_add().
         cbname ni the name of the callback returned kutoka trace_add().
         """
         self._tk.call('trace', 'remove', 'variable',
@@ -418,8 +418,8 @@ kundi Variable:
             self._tk.deletecommand(cbname)
             jaribu:
                 self._tclCommands.remove(cbname)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
     eleza trace_info(self):
         """Return all trace callback information."""
@@ -465,8 +465,8 @@ kundi Variable:
             self._tk.deletecommand(cbname)
             jaribu:
                 self._tclCommands.remove(cbname)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
 
     eleza trace_vinfo(self):
         """Return all trace callback information.
@@ -495,7 +495,7 @@ kundi StringVar(Variable):
     eleza __init__(self, master=Tupu, value=Tupu, name=Tupu):
         """Construct a string variable.
 
-        MASTER can be given as master widget.
+        MASTER can be given kama master widget.
         VALUE ni an optional value (defaults to "")
         NAME ni an optional Tcl name (defaults to PY_VARnum).
 
@@ -505,7 +505,7 @@ kundi StringVar(Variable):
         Variable.__init__(self, master, value, name)
 
     eleza get(self):
-        """Return value of variable as string."""
+        """Return value of variable kama string."""
         value = self._tk.globalgetvar(self._name)
         ikiwa isinstance(value, str):
             rudisha value
@@ -519,7 +519,7 @@ kundi IntVar(Variable):
     eleza __init__(self, master=Tupu, value=Tupu, name=Tupu):
         """Construct an integer variable.
 
-        MASTER can be given as master widget.
+        MASTER can be given kama master widget.
         VALUE ni an optional value (defaults to 0)
         NAME ni an optional Tcl name (defaults to PY_VARnum).
 
@@ -529,11 +529,11 @@ kundi IntVar(Variable):
         Variable.__init__(self, master, value, name)
 
     eleza get(self):
-        """Return the value of the variable as an integer."""
+        """Return the value of the variable kama an integer."""
         value = self._tk.globalgetvar(self._name)
         jaribu:
             rudisha self._tk.getint(value)
-        except (TypeError, TclError):
+        tatizo (TypeError, TclError):
             rudisha int(self._tk.getdouble(value))
 
 
@@ -544,7 +544,7 @@ kundi DoubleVar(Variable):
     eleza __init__(self, master=Tupu, value=Tupu, name=Tupu):
         """Construct a float variable.
 
-        MASTER can be given as master widget.
+        MASTER can be given kama master widget.
         VALUE ni an optional value (defaults to 0.0)
         NAME ni an optional Tcl name (defaults to PY_VARnum).
 
@@ -554,7 +554,7 @@ kundi DoubleVar(Variable):
         Variable.__init__(self, master, value, name)
 
     eleza get(self):
-        """Return the value of the variable as a float."""
+        """Return the value of the variable kama a float."""
         rudisha self._tk.getdouble(self._tk.globalgetvar(self._name))
 
 
@@ -565,7 +565,7 @@ kundi BooleanVar(Variable):
     eleza __init__(self, master=Tupu, value=Tupu, name=Tupu):
         """Construct a boolean variable.
 
-        MASTER can be given as master widget.
+        MASTER can be given kama master widget.
         VALUE ni an optional value (defaults to Uongo)
         NAME ni an optional Tcl name (defaults to PY_VARnum).
 
@@ -581,11 +581,11 @@ kundi BooleanVar(Variable):
     initialize = set
 
     eleza get(self):
-        """Return the value of the variable as a bool."""
+        """Return the value of the variable kama a bool."""
         jaribu:
             rudisha self._tk.getboolean(self._tk.globalgetvar(self._name))
-        except TclError:
-             ashiria ValueError("invalid literal kila getboolean()")
+        tatizo TclError:
+            ashiria ValueError("invalid literal kila getboolean()")
 
 
 eleza mainloop(n=0):
@@ -602,8 +602,8 @@ eleza getboolean(s):
     """Convert true na false to integer values 1 na 0."""
     jaribu:
         rudisha _default_root.tk.getboolean(s)
-    except TclError:
-         ashiria ValueError("invalid literal kila getboolean()")
+    tatizo TclError:
+        ashiria ValueError("invalid literal kila getboolean()")
 
 
 # Methods defined on both toplevel na interior widgets
@@ -638,27 +638,27 @@ kundi Misc:
         self.tk.deletecommand(name)
         jaribu:
             self._tclCommands.remove(name)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
 
     eleza tk_strictMotif(self, boolean=Tupu):
         """Set Tcl internal variable, whether the look na feel
         should adhere to Motif.
 
         A parameter of 1 means adhere to Motikiwa (e.g. no color
-        change ikiwa mouse passes over slider).
+        change ikiwa mouse pitaes over slider).
         Returns the set value."""
         rudisha self.tk.getboolean(self.tk.call(
             'set', 'tk_strictMotif', boolean))
 
     eleza tk_bisque(self):
-        """Change the color scheme to light brown as used kwenye Tk 3.6 na before."""
+        """Change the color scheme to light brown kama used kwenye Tk 3.6 na before."""
         self.tk.call('tk_bisque')
 
     eleza tk_setPalette(self, *args, **kw):
         """Set a new color scheme kila all widget elements.
 
-        A single color as argument will cause that all colors of Tk
+        A single color kama argument will cause that all colors of Tk
         widget elements are derived kutoka this.
         Alternatively several keyword parameters na its associated
         colors can be given. The following keywords are valid:
@@ -672,7 +672,7 @@ kundi Misc:
     eleza wait_variable(self, name='PY_VAR'):
         """Wait until the variable ni modified.
 
-        A parameter of type IntVar, StringVar, DoubleVar or
+        A parameter of type IntVar, StringVar, DoubleVar ama
         BooleanVar must be given."""
         self.tk.call('tkwait', 'variable', name)
     waitvar = wait_variable # XXX b/w compat
@@ -705,21 +705,21 @@ kundi Misc:
     eleza getint(self, s):
         jaribu:
             rudisha self.tk.getint(s)
-        except TclError as exc:
-             ashiria ValueError(str(exc))
+        tatizo TclError kama exc:
+            ashiria ValueError(str(exc))
 
     eleza getdouble(self, s):
         jaribu:
             rudisha self.tk.getdouble(s)
-        except TclError as exc:
-             ashiria ValueError(str(exc))
+        tatizo TclError kama exc:
+            ashiria ValueError(str(exc))
 
     eleza getboolean(self, s):
-        """Return a boolean value kila Tcl boolean values true na false given as parameter."""
+        """Return a boolean value kila Tcl boolean values true na false given kama parameter."""
         jaribu:
             rudisha self.tk.getboolean(s)
-        except TclError:
-             ashiria ValueError("invalid literal kila getboolean()")
+        tatizo TclError:
+            ashiria ValueError("invalid literal kila getboolean()")
 
     eleza focus_set(self):
         """Direct input focus to this widget.
@@ -792,7 +792,7 @@ kundi Misc:
 
         MS specifies the time kwenye milliseconds. FUNC gives the
         function which shall be called. Additional parameters
-        are given as parameters to the function call.  Return
+        are given kama parameters to the function call.  Return
         identifier to cancel scheduling ukijumuisha after_cancel."""
         ikiwa sio func:
             # I'd rather use time.sleep(ms*0.001)
@@ -805,8 +805,8 @@ kundi Misc:
                 mwishowe:
                     jaribu:
                         self.deletecommand(name)
-                    except TclError:
-                        pass
+                    tatizo TclError:
+                        pita
             callit.__name__ = func.__name__
             name = self._register(callit)
             rudisha self.tk.call('after', ms, name)
@@ -823,17 +823,17 @@ kundi Misc:
         """Cancel scheduling of function identified ukijumuisha ID.
 
         Identifier returned by after ama after_idle must be
-        given as first parameter.
+        given kama first parameter.
         """
         ikiwa sio id:
-             ashiria ValueError('id must be a valid identifier returned kutoka '
+            ashiria ValueError('id must be a valid identifier returned kutoka '
                              'after ama after_idle')
         jaribu:
             data = self.tk.call('after', 'info', id)
             script = self.tk.splitlist(data)[0]
             self.deletecommand(script)
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
         self.tk.call('after', 'cancel', id)
 
     eleza bell(self, displayof=0):
@@ -848,19 +848,19 @@ kundi Misc:
         application.
 
         The type keyword specifies the form kwenye which the data is
-        to be returned na should be an atom name such as STRING
-        ama FILE_NAME.  Type defaults to STRING, except on X11, where the default
+        to be returned na should be an atom name such kama STRING
+        ama FILE_NAME.  Type defaults to STRING, tatizo on X11, where the default
         ni to try UTF8_STRING na fall back to STRING.
 
         This command ni equivalent to:
 
         selection_get(CLIPBOARD)
         """
-        ikiwa 'type' sio kwenye kw na self._windowingsystem == 'x11':
+        ikiwa 'type' haiko kwenye kw na self._windowingsystem == 'x11':
             jaribu:
                 kw['type'] = 'UTF8_STRING'
                 rudisha self.tk.call(('clipboard', 'get') + self._options(kw))
-            except TclError:
+            tatizo TclError:
                 toa kw['type']
         rudisha self.tk.call(('clipboard', 'get') + self._options(kw))
 
@@ -869,7 +869,7 @@ kundi Misc:
 
         A widget specified kila the optional displayof keyword
         argument specifies the target display."""
-        ikiwa 'displayof' sio kwenye kw: kw['displayof'] = self._w
+        ikiwa 'displayof' haiko kwenye kw: kw['displayof'] = self._w
         self.tk.call(('clipboard', 'clear') + self._options(kw))
 
     eleza clipboard_append(self, string, **kw):
@@ -878,7 +878,7 @@ kundi Misc:
         A widget specified at the optional displayof keyword
         argument specifies the target display. The clipboard
         can be retrieved ukijumuisha selection_get."""
-        ikiwa 'displayof' sio kwenye kw: kw['displayof'] = self._w
+        ikiwa 'displayof' haiko kwenye kw: kw['displayof'] = self._w
         self.tk.call(('clipboard', 'append') + self._options(kw)
               + ('--', string))
     # XXX grab current w/o window argument
@@ -904,7 +904,7 @@ kundi Misc:
     eleza grab_set_global(self):
         """Set global grab kila this widget.
 
-        A global grab directs all events to this and
+        A global grab directs all events to this na
         descendant widgets on the display. Use ukijumuisha caution -
         other applications do sio get events anymore."""
         self.tk.call('grab', 'set', '-global', self._w)
@@ -946,7 +946,7 @@ kundi Misc:
 
     eleza selection_clear(self, **kw):
         """Clear the current X selection."""
-        ikiwa 'displayof' sio kwenye kw: kw['displayof'] = self._w
+        ikiwa 'displayof' haiko kwenye kw: kw['displayof'] = self._w
         self.tk.call(('selection', 'clear') + self._options(kw))
 
     eleza selection_get(self, **kw):
@@ -956,14 +956,14 @@ kundi Misc:
         the selection na defaults to PRIMARY.  A keyword
         parameter displayof specifies a widget on the display
         to use. A keyword parameter type specifies the form of data to be
-        fetched, defaulting to STRING except on X11, where UTF8_STRING ni tried
+        fetched, defaulting to STRING tatizo on X11, where UTF8_STRING ni tried
         before STRING."""
-        ikiwa 'displayof' sio kwenye kw: kw['displayof'] = self._w
-        ikiwa 'type' sio kwenye kw na self._windowingsystem == 'x11':
+        ikiwa 'displayof' haiko kwenye kw: kw['displayof'] = self._w
+        ikiwa 'type' haiko kwenye kw na self._windowingsystem == 'x11':
             jaribu:
                 kw['type'] = 'UTF8_STRING'
                 rudisha self.tk.call(('selection', 'get') + self._options(kw))
-            except TclError:
+            tatizo TclError:
                 toa kw['type']
         rudisha self.tk.call(('selection', 'get') + self._options(kw))
 
@@ -998,7 +998,7 @@ kundi Misc:
         be provided:
         selection - name of the selection (default PRIMARY),
         type - type of the selection (e.g. STRING, FILE_NAME)."""
-        ikiwa 'displayof' sio kwenye kw: kw['displayof'] = self._w
+        ikiwa 'displayof' haiko kwenye kw: kw['displayof'] = self._w
         name = self.tk.call(('selection', 'own') + self._options(kw))
         ikiwa sio name: rudisha Tupu
         rudisha self._nametowidget(name)
@@ -1042,8 +1042,8 @@ kundi Misc:
                 # Tcl sometimes returns extra windows, e.g. for
                 # menus; those need to be skipped
                 result.append(self._nametowidget(child))
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
         rudisha result
 
     eleza winfo_class(self):
@@ -1074,7 +1074,7 @@ kundi Misc:
 
     eleza winfo_fpixels(self, number):
         """Return the number of pixels kila the given distance NUMBER
-        (e.g. "3c") as float."""
+        (e.g. "3c") kama float."""
         rudisha self.tk.getdouble(self.tk.call(
             'winfo', 'fpixels', self._w, number))
 
@@ -1314,7 +1314,7 @@ kundi Misc:
         """Set ama get the list of bindtags kila this widget.
 
         With no argument rudisha the list of all bindtags associated with
-        this widget. With a list of strings as argument the bindtags are
+        this widget. With a list of strings kama argument the bindtags are
         set to this list. The bindtags determine kwenye which order events are
         processed (see bind)."""
         ikiwa tagList ni Tupu:
@@ -1327,7 +1327,7 @@ kundi Misc:
         """Internal function."""
         ikiwa isinstance(func, str):
             self.tk.call(what + (sequence, func))
-        elikiwa func:
+        lasivyo func:
             funcid = self._register(func, self._substitute,
                         needcleanup)
             cmd = ('%sikiwa {"[%s %s]" == "koma"} koma\n'
@@ -1336,7 +1336,7 @@ kundi Misc:
                 funcid, self._subst_format_str))
             self.tk.call(what + (sequence, cmd))
             rudisha funcid
-        elikiwa sequence:
+        lasivyo sequence:
             rudisha self.tk.call(what + (sequence,))
         isipokua:
             rudisha self.tk.splitlist(self.tk.call(what))
@@ -1356,9 +1356,9 @@ kundi Misc:
         Colormap, Gravity Reparent, Configure, KeyPress, Key,
         Unmap, Deactivate, KeyRelease Visibility, Destroy,
         Leave na DETAIL ni the button number kila ButtonPress,
-        ButtonRelease na DETAIL ni the Keysym kila KeyPress and
+        ButtonRelease na DETAIL ni the Keysym kila KeyPress na
         KeyRelease. Examples are
-        <Control-Button-1> kila pressing Control na mouse button 1 or
+        <Control-Button-1> kila pressing Control na mouse button 1 ama
         <Alt-A> kila pressing A na the Alt key (KeyPress can be omitted).
         An event pattern can also be a virtual event of the form
         <<AString>> where AString can be arbitrary. This
@@ -1367,7 +1367,7 @@ kundi Misc:
         after each other.
 
         FUNC will be called ikiwa the event sequence occurs ukijumuisha an
-        instance of Event as argument. If the rudisha value of FUNC is
+        instance of Event kama argument. If the rudisha value of FUNC is
         "koma" no further bound function ni invoked.
 
         An additional boolean parameter ADD specifies whether FUNC will
@@ -1404,7 +1404,7 @@ kundi Misc:
         """Bind to widgets ukijumuisha bindtag CLASSNAME at event
         SEQUENCE a call of function FUNC. An additional
         boolean parameter ADD specifies whether FUNC will be
-        called additionally to the other bound function or
+        called additionally to the other bound function ama
         whether it will replace the previous function. See bind for
         the rudisha value."""
 
@@ -1451,7 +1451,7 @@ kundi Misc:
         """Internal function."""
         jaribu:
             rudisha self._root()._windowingsystem_cached
-        except AttributeError:
+        tatizo AttributeError:
             ws = self._root()._windowingsystem_cached = \
                         self.tk.call('tk', 'windowingsystem')
             rudisha ws
@@ -1468,12 +1468,12 @@ kundi Misc:
                 ikiwa k[-1] == '_': k = k[:-1]
                 ikiwa callable(v):
                     v = self._register(v)
-                elikiwa isinstance(v, (tuple, list)):
+                lasivyo isinstance(v, (tuple, list)):
                     nv = []
                     kila item kwenye v:
                         ikiwa isinstance(item, int):
                             nv.append(str(item))
-                        elikiwa isinstance(item, str):
+                        lasivyo isinstance(item, str):
                             nv.append(_stringify(item))
                         isipokua:
                             koma
@@ -1510,12 +1510,12 @@ kundi Misc:
         name = repr(id(f))
         jaribu:
             func = func.__func__
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         jaribu:
             name = name + func.__name__
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self.tk.createcommand(name, f)
         ikiwa needcleanup:
             ikiwa self._tclCommands ni Tupu:
@@ -1545,7 +1545,7 @@ kundi Misc:
             """Tk changed behavior kwenye 8.4.2, returning "??" rather more often."""
             jaribu:
                 rudisha getint(s)
-            except (ValueError, TclError):
+            tatizo (ValueError, TclError):
                 rudisha s
 
         nsign, b, f, h, k, s, t, w, x, y, A, E, K, N, W, T, X, Y, D = args
@@ -1561,13 +1561,13 @@ kundi Misc:
         # na Expose events only
         # x field: "valid kila events that contain an x field"
         # y field: "valid kila events that contain a y field"
-        # keysym as decimal: KeyPress na KeyRelease events only
+        # keysym kama decimal: KeyPress na KeyRelease events only
         # x_root, y_root fields: ButtonPress, ButtonRelease, KeyPress,
         # KeyRelease, na Motion events
         e.serial = getint(nsign)
         e.num = getint_event(b)
         jaribu: e.focus = getboolean(f)
-        except TclError: pass
+        tatizo TclError: pita
         e.height = getint_event(h)
         e.keycode = getint_event(k)
         e.state = getint_event(s)
@@ -1577,22 +1577,22 @@ kundi Misc:
         e.y = getint_event(y)
         e.char = A
         jaribu: e.send_event = getboolean(E)
-        except TclError: pass
+        tatizo TclError: pita
         e.keysym = K
         e.keysym_num = getint_event(N)
         jaribu:
             e.type = EventType(T)
-        except ValueError:
+        tatizo ValueError:
             e.type = T
         jaribu:
             e.widget = self._nametowidget(W)
-        except KeyError:
+        tatizo KeyError:
             e.widget = W
         e.x_root = getint_event(X)
         e.y_root = getint_event(Y)
         jaribu:
             e.delta = getint(D)
-        except (ValueError, TclError):
+        tatizo (ValueError, TclError):
             e.delta = 0
         rudisha (e,)
 
@@ -1603,7 +1603,7 @@ kundi Misc:
         root.report_callback_exception(exc, val, tb)
 
     eleza _getconfigure(self, *args):
-        """Call Tcl configure command na rudisha the result as a dict."""
+        """Call Tcl configure command na rudisha the result kama a dict."""
         cnf = {}
         kila x kwenye self.tk.splitlist(self.tk.call(*args)):
             x = self.tk.splitlist(x)
@@ -1618,7 +1618,7 @@ kundi Misc:
         """Internal function."""
         ikiwa kw:
             cnf = _cnfmerge((cnf, kw))
-        elikiwa cnf:
+        lasivyo cnf:
             cnf = _cnfmerge(cnf)
         ikiwa cnf ni Tupu:
             rudisha self._getconfigure(_flatten((self._w, cmd)))
@@ -1630,7 +1630,7 @@ kundi Misc:
     eleza configure(self, cnf=Tupu, **kw):
         """Configure resources of a widget.
 
-        The values kila resources are specified as keyword
+        The values kila resources are specified kama keyword
         arguments. To get an overview about
         the allowed keyword arguments call the method keys.
         """
@@ -1639,7 +1639,7 @@ kundi Misc:
     config = configure
 
     eleza cget(self, key):
-        """Return the resource value kila a KEY given as string."""
+        """Return the resource value kila a KEY given kama string."""
         rudisha self.tk.call(self._w, 'cget', '-' + key)
 
     __getitem__ = cget
@@ -1735,12 +1735,12 @@ kundi Misc:
                 svalue = str(value)
                 ikiwa sio svalue:
                     rudisha Tupu
-                elikiwa '.' kwenye svalue:
+                lasivyo '.' kwenye svalue:
                     rudisha self.tk.getdouble(svalue)
                 isipokua:
                     rudisha self.tk.getint(svalue)
-            except (ValueError, TclError):
-                pass
+            tatizo (ValueError, TclError):
+                pita
         rudisha value
 
     eleza _grid_configure(self, command, index, cnf, kw):
@@ -1870,7 +1870,7 @@ kundi CallWrapper:
     defined Tcl function ni called e.g. after an event occurred."""
 
     eleza __init__(self, func, subst, widget):
-        """Store FUNC, SUBST na WIDGET as members."""
+        """Store FUNC, SUBST na WIDGET kama members."""
         self.func = func
         self.subst = subst
         self.widget = widget
@@ -1881,7 +1881,7 @@ kundi CallWrapper:
             ikiwa self.subst:
                 args = self.subst(*args)
             rudisha self.func(*args)
-        except SystemExit:
+        tatizo SystemExit:
             raise
         tatizo:
             self.widget._report_exception()
@@ -1948,10 +1948,10 @@ kundi Wm:
     eleza wm_attributes(self, *args):
         """This subcommand returns ama sets platform specific attributes
 
-        The first form returns a list of the platform specific flags and
+        The first form returns a list of the platform specific flags na
         their values. The second form returns the value kila the specific
         option. The third form sets one ama more of the values. The values
-        are as follows:
+        are kama follows:
 
         On Windows, -disabled gets ama sets whether the window ni kwenye a
         disabled state. -toolwindow gets ama sets the style of the window
@@ -2000,14 +2000,14 @@ kundi Wm:
 
     eleza wm_deiconify(self):
         """Deiconify this widget. If it was never mapped it will sio be mapped.
-        On Windows it will  ashiria this widget na give it the focus."""
+        On Windows it will ashiria this widget na give it the focus."""
         rudisha self.tk.call('wm', 'deiconify', self._w)
 
     deiconify = wm_deiconify
 
     eleza wm_focusmodel(self, model=Tupu):
         """Set focus motoa to MODEL. "active" means that this widget will claim
-        the focus itself, "passive" means that the window manager shall give
+        the focus itself, "pitaive" means that the window manager shall give
         the focus. Return current focus motoa ikiwa MODEL ni Tupu."""
         rudisha self.tk.call('wm', 'focusmodel', self._w, model)
 
@@ -2040,7 +2040,7 @@ kundi Wm:
          baseWidth=Tupu, baseHeight=Tupu,
          widthInc=Tupu, heightInc=Tupu):
         """Instruct the window manager that this widget shall only be
-        resized on grid boundaries. WIDTHINC na HEIGHTINC are the width and
+        resized on grid boundaries. WIDTHINC na HEIGHTINC are the width na
         height of a grid unit kwenye pixels. BASEWIDTH na BASEHEIGHT are the
         number of grid units requested kwenye Tk_GeometryRequest."""
         rudisha self._getints(self.tk.call(
@@ -2073,7 +2073,7 @@ kundi Wm:
     iconbitmap = wm_iconbitmap
 
     eleza wm_iconify(self):
-        """Display widget as icon."""
+        """Display widget kama icon."""
         rudisha self.tk.call('wm', 'iconify', self._w)
 
     iconify = wm_iconify
@@ -2094,10 +2094,10 @@ kundi Wm:
 
     eleza wm_iconphoto(self, default=Uongo, *args): # new kwenye Tk 8.5
         """Sets the titlebar icon kila this window based on the named photo
-        images passed through args. If default ni Kweli, this ni applied to
-        all future created toplevels as well.
+        images pitaed through args. If default ni Kweli, this ni applied to
+        all future created toplevels kama well.
 
-        The data kwenye the images ni taken as a snapshot at the time of
+        The data kwenye the images ni taken kama a snapshot at the time of
         invocation. If the images are later changed, this ni sio reflected
         to the titlebar icons. Multiple images are accepted to allow
         different images sizes to be provided. The window manager may scale
@@ -2206,7 +2206,7 @@ kundi Wm:
     sizekutoka = wm_sizefrom
 
     eleza wm_state(self, newstate=Tupu):
-        """Query ama set the state of this widget as one of normal, icon,
+        """Query ama set the state of this widget kama one of normal, icon,
         iconic (see wm_iconwindow), withdrawn, ama zoomed (Windows only)."""
         rudisha self.tk.call('wm', 'state', self._w, newstate)
 
@@ -2255,7 +2255,7 @@ kundi Tk(Misc, Wm):
             agiza os
             baseName = os.path.basename(sys.argv[0])
             baseName, ext = os.path.splitext(baseName)
-            ikiwa ext sio kwenye ('.py', '.pyc'):
+            ikiwa ext haiko kwenye ('.py', '.pyc'):
                 baseName = baseName + ext
         interactive = 0
         self.tk = _tkinter.create(screenName, baseName, className, interactive, wantobjects, useTk, sync, use)
@@ -2276,12 +2276,12 @@ kundi Tk(Misc, Wm):
         # Version sanity checks
         tk_version = self.tk.getvar('tk_version')
         ikiwa tk_version != _tkinter.TK_VERSION:
-             ashiria RuntimeError("tk.h version (%s) doesn't match libtk.a version (%s)"
+            ashiria RuntimeError("tk.h version (%s) doesn't match libtk.a version (%s)"
                                % (_tkinter.TK_VERSION, tk_version))
         # Under unknown circumstances, tcl_version gets coerced to float
         tcl_version = str(self.tk.getvar('tcl_version'))
         ikiwa tcl_version != _tkinter.TCL_VERSION:
-             ashiria RuntimeError("tcl.h version (%s) doesn't match libtcl.a version (%s)" \
+            ashiria RuntimeError("tcl.h version (%s) doesn't match libtcl.a version (%s)" \
                                % (_tkinter.TCL_VERSION, tcl_version))
         # Create na register the tkerror na exit commands
         # We need to inline parts of _register here, _ register
@@ -2308,7 +2308,7 @@ kundi Tk(Misc, Wm):
 
     eleza readprofile(self, baseName, className):
         """Internal function. It reads BASENAME.tcl na CLASSNAME.tcl into
-        the Tcl Interpreter na calls exec on the contents of BASENAME.py and
+        the Tcl Interpreter na calls exec on the contents of BASENAME.py na
         CLASSNAME.py ikiwa such a file exists kwenye the home directory."""
         agiza os
         ikiwa 'HOME' kwenye os.environ: home = os.environ['HOME']
@@ -2331,7 +2331,7 @@ kundi Tk(Misc, Wm):
     eleza report_callback_exception(self, exc, val, tb):
         """Report callback exception on sys.stderr.
 
-        Applications may want to override this internal function, and
+        Applications may want to override this internal function, na
         should when sys.stderr ni Tupu."""
         agiza traceback
         andika("Exception kwenye Tkinter callback", file=sys.stderr)
@@ -2345,15 +2345,15 @@ kundi Tk(Misc, Wm):
         rudisha getattr(self.tk, attr)
 
 # Ideally, the classes Pack, Place na Grid disappear, the
-# pack/place/grid methods are defined on the Widget class, and
+# pack/place/grid methods are defined on the Widget class, na
 # everybody uses w.pack_whatever(...) instead of Pack.whatever(w,
 # ...), ukijumuisha pack(), place() na grid() being short for
-# pack_configure(), place_configure() na grid_columnconfigure(), and
+# pack_configure(), place_configure() na grid_columnconfigure(), na
 # forget() being short kila pack_forget().  As a practical matter, I'm
 # afraid that there ni too much code out there that may be using the
 # Pack, Place ama Grid class, so I leave them intact -- but only as
 # backwards compatibility features.  Also note that those methods that
-# take a master as argument (e.g. pack_propagate) have been moved to
+# take a master kama argument (e.g. pack_propagate) have been moved to
 # the Misc kundi (which now incorporates all methods common between
 # toplevel na interior widgets).  Again, kila compatibility, these are
 # copied into the Pack, Place ama Grid class.
@@ -2369,7 +2369,7 @@ kundi Pack:
     Base kundi to use the methods pack_* kwenye every widget."""
 
     eleza pack_configure(self, cnf={}, **kw):
-        """Pack a widget kwenye the parent widget. Use as options:
+        """Pack a widget kwenye the parent widget. Use kama options:
         after=widget - pack it after you have packed widget
         anchor=NSEW (or subset) - position widget according to
                                   given direction
@@ -2415,7 +2415,7 @@ kundi Place:
     Base kundi to use the methods place_* kwenye every widget."""
 
     eleza place_configure(self, cnf={}, **kw):
-        """Place a widget kwenye the parent widget. Use as options:
+        """Place a widget kwenye the parent widget. Use kama options:
         in=master - master relative to which the widget ni placed
         in_=master - see 'in' option description
         x=amount - locate anchor of this widget at position x of master
@@ -2429,10 +2429,10 @@ kundi Place:
         height=amount - height of this widget kwenye pixel
         relwidth=amount - width of this widget between 0.0 na 1.0
                           relative to width of master (1.0 ni the same width
-                          as the master)
+                          kama the master)
         relheight=amount - height of this widget between 0.0 na 1.0
                            relative to height of master (1.0 ni the same
-                           height as the master)
+                           height kama the master)
         bordermode="inside" ama "outside" - whether to take border width of
                                            master widget into account
         """
@@ -2467,7 +2467,7 @@ kundi Grid:
     # Thanks to Masazumi Yoshikawa (yosikawa@isi.edu)
 
     eleza grid_configure(self, cnf={}, **kw):
-        """Position a widget kwenye the parent widget kwenye a grid. Use as options:
+        """Position a widget kwenye the parent widget kwenye a grid. Use kama options:
         column=number - use cell identified ukijumuisha given column (starting ukijumuisha 0)
         columnspan=number - this widget will span several columns
         in=master - use master to contain this widget
@@ -2587,7 +2587,7 @@ kundi Widget(BaseWidget, Pack, Place, Grid):
 
     Base kundi kila a widget which can be positioned ukijumuisha the geometry managers
     Pack, Place ama Grid."""
-    pass
+    pita
 
 
 kundi Toplevel(BaseWidget, Wm):
@@ -2608,7 +2608,7 @@ kundi Toplevel(BaseWidget, Wm):
             ikiwa wmkey kwenye cnf:
                 val = cnf[wmkey]
                 # TBD: a hack needed because some keys
-                # are sio valid as keyword arguments
+                # are sio valid kama keyword arguments
                 ikiwa wmkey[-1] == '_': opt = '-'+wmkey[:-1]
                 isipokua: opt = '-'+wmkey
                 extra = extra + (opt, val)
@@ -2648,9 +2648,9 @@ kundi Button(Widget):
         """Flash the button.
 
         This ni accomplished by redisplaying
-        the button several times, alternating between active and
+        the button several times, alternating between active na
         normal colors. At the end of the flash the button ni left
-        kwenye the same normal/active state as when the command was
+        kwenye the same normal/active state kama when the command was
         invoked. This command ni ignored ikiwa the button's state is
         disabled.
         """
@@ -2721,7 +2721,7 @@ kundi Canvas(Widget, XView, YView):
 
     eleza bbox(self, *args):
         """Return a tuple of X1,Y1,X2,Y2 coordinates kila a rectangle
-        which encloses all items ukijumuisha tags specified as arguments."""
+        which encloses all items ukijumuisha tags specified kama arguments."""
         rudisha self._getints(
             self.tk.call((self._w, 'bbox') + args)) ama Tupu
 
@@ -2818,7 +2818,7 @@ kundi Canvas(Widget, XView, YView):
         self.tk.call((self._w, 'delete') + args)
 
     eleza dtag(self, *args):
-        """Delete tag ama id given as last arguments kwenye ARGS kutoka items
+        """Delete tag ama id given kama last arguments kwenye ARGS kutoka items
         identified by first argument kwenye ARGS."""
         self.tk.call((self._w, 'dtag') + args)
 
@@ -2875,7 +2875,7 @@ kundi Canvas(Widget, XView, YView):
         self.tk.call((self._w, 'icursor') + args)
 
     eleza index(self, *args):
-        """Return position of cursor as integer kwenye item specified kwenye ARGS."""
+        """Return position of cursor kama integer kwenye item specified kwenye ARGS."""
         rudisha self.tk.getint(self.tk.call((self._w, 'index') + args))
 
     eleza insert(self, *args):
@@ -2891,7 +2891,7 @@ kundi Canvas(Widget, XView, YView):
     eleza itemconfigure(self, tagOrId, cnf=Tupu, **kw):
         """Configure resources of an item TAGORID.
 
-        The values kila resources are specified as keyword
+        The values kila resources are specified kama keyword
         arguments. To get an overview about
         the allowed keyword arguments call the method without arguments.
         """
@@ -2936,7 +2936,7 @@ kundi Canvas(Widget, XView, YView):
         (optional above another item)."""
         self.tk.call((self._w, 'raise') + args)
 
-    lift = tk ashiria = tag_raise
+    lift = tkashiria = tag_raise
 
     eleza scale(self, *args):
         """Scale item TAGORID ukijumuisha XORIGIN, YORIGIN, XSCALE, YSCALE."""
@@ -3001,7 +3001,7 @@ kundi Checkbutton(Widget):
         self.tk.call(self._w, 'flash')
 
     eleza invoke(self):
-        """Toggle the button na invoke a command ikiwa given as resource."""
+        """Toggle the button na invoke a command ikiwa given kama resource."""
         rudisha self.tk.call(self._w, 'invoke')
 
     eleza select(self):
@@ -3030,7 +3030,7 @@ kundi Entry(Widget, XView):
         Widget.__init__(self, master, 'entry', cnf, kw)
 
     eleza delete(self, first, last=Tupu):
-        """Delete text kutoka FIRST to LAST (not included)."""
+        """Delete text kutoka FIRST to LAST (sio included)."""
         self.tk.call(self._w, 'delete', first, last)
 
     eleza get(self):
@@ -3087,7 +3087,7 @@ kundi Entry(Widget, XView):
     select_present = selection_present
 
     eleza selection_range(self, start, end):
-        """Set the selection kutoka START to END (not included)."""
+        """Set the selection kutoka START to END (sio included)."""
         self.tk.call(self._w, 'selection', 'range', start, end)
 
     select_range = selection_range
@@ -3113,7 +3113,7 @@ kundi Frame(Widget):
         ikiwa 'class_' kwenye cnf:
             extra = ('-class', cnf['class_'])
             toa cnf['class_']
-        elikiwa 'class' kwenye cnf:
+        lasivyo 'class' kwenye cnf:
             extra = ('-class', cnf['class'])
             toa cnf['class']
         Widget.__init__(self, master, 'frame', cnf, {}, extra)
@@ -3249,7 +3249,7 @@ kundi Listbox(Widget, XView, YView):
     eleza itemconfigure(self, index, cnf=Tupu, **kw):
         """Configure resources of an ITEM.
 
-        The values kila resources are specified as keyword arguments.
+        The values kila resources are specified kama keyword arguments.
         To get an overview about the allowed keyword arguments
         call the method without arguments.
         Valid resource names: background, bg, foreground, fg,
@@ -3428,7 +3428,7 @@ kundi Radiobutton(Widget):
         self.tk.call(self._w, 'flash')
 
     eleza invoke(self):
-        """Toggle the button na invoke a command ikiwa given as resource."""
+        """Toggle the button na invoke a command ikiwa given kama resource."""
         rudisha self.tk.call(self._w, 'invoke')
 
     eleza select(self):
@@ -3451,11 +3451,11 @@ kundi Scale(Widget):
         Widget.__init__(self, master, 'scale', cnf, kw)
 
     eleza get(self):
-        """Get the current value as integer ama float."""
+        """Get the current value kama integer ama float."""
         value = self.tk.call(self._w, 'get')
         jaribu:
             rudisha self.tk.getint(value)
-        except (ValueError, TypeError, TclError):
+        tatizo (ValueError, TypeError, TclError):
             rudisha self.tk.getdouble(value)
 
     eleza set(self, value):
@@ -3490,7 +3490,7 @@ kundi Scrollbar(Widget):
         Widget.__init__(self, master, 'scrollbar', cnf, kw)
 
     eleza activate(self, index=Tupu):
-        """Marks the element indicated by index as active.
+        """Marks the element indicated by index kama active.
         The only index values understood by this method are "arrow1",
         "slider", ama "arrow2".  If any other value ni specified then no
         element of the scrollbar will be active.  If index ni sio specified,
@@ -3510,7 +3510,7 @@ kundi Scrollbar(Widget):
         rudisha self.tk.getdouble(self.tk.call(self._w, 'fraction', x, y))
 
     eleza identify(self, x, y):
-        """Return the element under position X,Y as one of
+        """Return the element under position X,Y kama one of
         "arrow1","slider","arrow2" ama ""."""
         rudisha self.tk.call(self._w, 'identify', x, y)
 
@@ -3520,8 +3520,8 @@ kundi Scrollbar(Widget):
         rudisha self._getdoubles(self.tk.call(self._w, 'get'))
 
     eleza set(self, first, last):
-        """Set the fractional values of the slider position (upper and
-        lower ends as value between 0 na 1)."""
+        """Set the fractional values of the slider position (upper na
+        lower ends kama value between 0 na 1)."""
         self.tk.call(self._w, 'set', first, last)
 
 
@@ -3593,7 +3593,7 @@ kundi Text(Widget, XView, YView):
         self.tk.call(self._w, 'debug', boolean)
 
     eleza delete(self, index1, index2=Tupu):
-        """Delete the characters between INDEX1 na INDEX2 (not included)."""
+        """Delete the characters between INDEX1 na INDEX2 (sio included)."""
         self.tk.call(self._w, 'delete', index1, index2)
 
     eleza dlineinfo(self, index):
@@ -3612,7 +3612,7 @@ kundi Text(Widget, XView, YView):
         keywords are true then 'all' ni used by default.
 
         If the 'command' argument ni given, it ni called once kila each element
-        of the list of triples, ukijumuisha the values of each triple serving as the
+        of the list of triples, ukijumuisha the values of each triple serving kama the
         arguments to the function. In this case the list ni sio returned."""
         args = []
         func_name = Tupu
@@ -3621,7 +3621,7 @@ kundi Text(Widget, XView, YView):
             # Never call the dump command without the -command flag, since the
             # output could involve Tcl quoting na would be a pain to parse
             # right. Instead just set the command to build a list of triples
-            # as ikiwa we had done the parsing.
+            # kama ikiwa we had done the parsing.
             result = []
             eleza append_triple(key, value, index, result=result):
                 result.append((key, value, index))
@@ -3645,7 +3645,7 @@ kundi Text(Widget, XView, YView):
     eleza edit(self, *args):
         """Internal method
 
-        This method controls the undo mechanism and
+        This method controls the undo mechanism na
         the modified flag. The exact behavior of the
         command depends on the option argument that
         follows the edit argument. The following forms
@@ -3661,7 +3661,7 @@ kundi Text(Widget, XView, YView):
         """Get ama Set the modified flag
 
         If arg ni sio specified, returns the modified
-        flag of the widget. The insert, delete, edit undo and
+        flag of the widget. The insert, delete, edit undo na
         edit redo commands ama the user can set ama clear the
         modified flag. If boolean ni specified, sets the
         modified flag of the widget to arg.
@@ -3694,7 +3694,7 @@ kundi Text(Widget, XView, YView):
         """Undoes the last edit action
 
         If the undo option ni true. An edit action ni defined
-        as all the insert na delete commands that are recorded
+        kama all the insert na delete commands that are recorded
         on the undo stack kwenye between two separators. Generates
         an error when the undo stack ni empty. Does nothing
         when the undo option ni false
@@ -3702,7 +3702,7 @@ kundi Text(Widget, XView, YView):
         rudisha self.edit("undo")
 
     eleza get(self, index1, index2=Tupu):
-        """Return the text kutoka INDEX1 to INDEX2 (not included)."""
+        """Return the text kutoka INDEX1 to INDEX2 (sio included)."""
         rudisha self.tk.call(self._w, 'get', index1, index2)
     # (Image commands are new kwenye 8.0)
 
@@ -3767,7 +3767,7 @@ kundi Text(Widget, XView, YView):
     eleza peer_create(self, newPathName, cnf={}, **kw): # new kwenye Tk 8.5
         """Creates a peer text widget ukijumuisha the given newPathName, na any
         optional standard configuration options. By default the peer will
-        have the same start na end line as the parent widget, but
+        have the same start na end line kama the parent widget, but
         these can be overridden ukijumuisha the standard configuration options."""
         self.tk.call(self._w, 'peer', 'create', newPathName,
             *self._options(cnf, kw))
@@ -3963,7 +3963,7 @@ kundi OptionMenu(Menubutton):
         ikiwa 'command' kwenye kwargs:
             toa kwargs['command']
         ikiwa kwargs:
-             ashiria TclError('unknown option -'+kwargs.keys()[0])
+            ashiria TclError('unknown option -'+kwargs.keys()[0])
         menu.add_command(label=value,
                  command=_setit(variable, value, callback))
         kila v kwenye values:
@@ -3991,13 +3991,13 @@ kundi Image:
         ikiwa sio master:
             master = _default_root
             ikiwa sio master:
-                 ashiria RuntimeError('Too early to create image')
+                ashiria RuntimeError('Too early to create image')
         self.tk = getattr(master, 'tk', master)
         ikiwa sio name:
             Image._last_id += 1
             name = "pyimage%r" % (Image._last_id,) # tk itself would use image<x>
         ikiwa kw na cnf: cnf = _cnfmerge((cnf, kw))
-        elikiwa kw: cnf = kw
+        lasivyo kw: cnf = kw
         options = ()
         kila k, v kwenye cnf.items():
             ikiwa callable(v):
@@ -4012,9 +4012,9 @@ kundi Image:
         ikiwa self.name:
             jaribu:
                 self.tk.call('image', 'delete', self.name)
-            except TclError:
+            tatizo TclError:
                 # May happen ikiwa the root was destroyed
-                pass
+                pita
 
     eleza __setitem__(self, key, value):
         self.tk.call(self.name, 'configure', '-'+key, value)
@@ -4074,15 +4074,15 @@ kundi PhotoImage(Image):
     # XXX copy -from, -to, ...?
 
     eleza copy(self):
-        """Return a new PhotoImage ukijumuisha the same image as this widget."""
+        """Return a new PhotoImage ukijumuisha the same image kama this widget."""
         destImage = PhotoImage(master=self.tk)
         self.tk.call(destImage, 'copy', self.name)
         rudisha destImage
 
     eleza zoom(self, x, y=''):
-        """Return a new PhotoImage ukijumuisha the same image as this widget
+        """Return a new PhotoImage ukijumuisha the same image kama this widget
         but zoom it ukijumuisha a factor of x kwenye the X direction na y kwenye the Y
-        direction.  If y ni sio given, the default value ni the same as x.
+        direction.  If y ni sio given, the default value ni the same kama x.
         """
         destImage = PhotoImage(master=self.tk)
         ikiwa y=='': y=x
@@ -4090,9 +4090,9 @@ kundi PhotoImage(Image):
         rudisha destImage
 
     eleza subsample(self, x, y=''):
-        """Return a new PhotoImage based on the same image as this widget
+        """Return a new PhotoImage based on the same image kama this widget
         but use only every Xth ama Yth pixel.  If y ni sio given, the
-        default value ni the same as x.
+        default value ni the same kama x.
         """
         destImage = PhotoImage(master=self.tk)
         ikiwa y=='': y=x
@@ -4320,7 +4320,7 @@ kundi Spinbox(Widget, XView):
             self.tk.call(self._w, 'selection', 'present'))
 
     eleza selection_range(self, start, end):
-        """Set the selection kutoka START to END (not included)."""
+        """Set the selection kutoka START to END (sio included)."""
         self.selection('range', start, end)
 
     eleza selection_to(self, index):
@@ -4396,9 +4396,9 @@ kundi PanedWindow(Widget):
         """Identify the panedwindow component at point x, y
 
         If the point ni over a sash ama a sash handle, the result
-        ni a two element list containing the index of the sash or
+        ni a two element list containing the index of the sash ama
         handle, na a word indicating whether it ni over a sash
-        ama a handle, such as {0 sash} ama {2 handle}. If the point
+        ama a handle, such kama {0 sash} ama {2 handle}. If the point
         ni over any other part of the panedwindow, the result is
         an empty list.
         """
@@ -4523,7 +4523,7 @@ kundi PanedWindow(Widget):
         width size
             Specify a width kila the window. The width will be
             the outer dimension of the window including its
-            border, ikiwa any. If size ni an empty string, or
+            border, ikiwa any. If size ni an empty string, ama
             ikiwa -width ni sio specified, then the width requested
             internally by the window will be used initially; the
             width may later be adjusted by the movement of sashes

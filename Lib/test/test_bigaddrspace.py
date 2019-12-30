@@ -4,7 +4,7 @@ than what the address space allows are properly met ukijumuisha an OverflowError
 (rather than crash weirdly).
 
 Primarily, this means 32-bit builds ukijumuisha at least 2 GiB of available memory.
-You need to pass the -M option to regrtest (e.g. "-M 2.1G") kila tests to
+You need to pita the -M option to regrtest (e.g. "-M 2.1G") kila tests to
 be enabled.
 """
 
@@ -34,11 +34,11 @@ kundi BytesTest(unittest.TestCase):
         jaribu:
             x = b"x" * (MAX_Py_ssize_t - 128)
 
-            ukijumuisha self.assertRaises(OverflowError) as cm:
+            ukijumuisha self.assertRaises(OverflowError) kama cm:
                 # this statement used a fast path kwenye ceval.c
                 x = x + b"x" * 128
 
-            ukijumuisha self.assertRaises(OverflowError) as cm:
+            ukijumuisha self.assertRaises(OverflowError) kama cm:
                 # this statement used a fast path kwenye ceval.c
                 x +=  b"x" * 128
         mwishowe:
@@ -73,11 +73,11 @@ kundi StrTest(unittest.TestCase):
         jaribu:
             x = "x" * int(MAX_Py_ssize_t // (1.1 * self.unicodesize))
 
-            ukijumuisha self.assertRaises(MemoryError) as cm:
+            ukijumuisha self.assertRaises(MemoryError) kama cm:
                 # this statement uses a fast path kwenye ceval.c
                 x = x + x
 
-            ukijumuisha self.assertRaises(MemoryError) as cm:
+            ukijumuisha self.assertRaises(MemoryError) kama cm:
                 # this statement uses a fast path kwenye ceval.c
                 x +=  x
         mwishowe:

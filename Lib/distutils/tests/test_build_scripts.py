@@ -57,12 +57,12 @@ kundi BuildScriptsTestCase(support.TempdirManager,
         self.write_script(dir, "script1.py",
                           ("#! /usr/bin/env python2.3\n"
                            "# bogus script w/ Python sh-bang\n"
-                           "pass\n"))
+                           "pita\n"))
         expected.append("script2.py")
         self.write_script(dir, "script2.py",
                           ("#!/usr/bin/python\n"
                            "# bogus script w/ Python sh-bang\n"
-                           "pass\n"))
+                           "pita\n"))
         expected.append("shell.sh")
         self.write_script(dir, "shell.sh",
                           ("#!/bin/sh\n"

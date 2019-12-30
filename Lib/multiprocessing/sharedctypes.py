@@ -78,7 +78,7 @@ eleza Value(typecode_or_type, *args, lock=Kweli, ctx=Tupu):
         ctx = ctx ama get_context()
         lock = ctx.RLock()
     ikiwa sio hasattr(lock, 'acquire'):
-         ashiria AttributeError("%r has no method 'acquire'" % lock)
+        ashiria AttributeError("%r has no method 'acquire'" % lock)
     rudisha synchronized(obj, lock, ctx=ctx)
 
 eleza Array(typecode_or_type, size_or_initializer, *, lock=Kweli, ctx=Tupu):
@@ -92,7 +92,7 @@ eleza Array(typecode_or_type, size_or_initializer, *, lock=Kweli, ctx=Tupu):
         ctx = ctx ama get_context()
         lock = ctx.RLock()
     ikiwa sio hasattr(lock, 'acquire'):
-         ashiria AttributeError("%r has no method 'acquire'" % lock)
+        ashiria AttributeError("%r has no method 'acquire'" % lock)
     rudisha synchronized(obj, lock, ctx=ctx)
 
 eleza copy(obj):
@@ -106,7 +106,7 @@ eleza synchronized(obj, lock=Tupu, ctx=Tupu):
 
     ikiwa isinstance(obj, ctypes._SimpleCData):
         rudisha Synchronized(obj, lock, ctx)
-    elikiwa isinstance(obj, ctypes.Array):
+    lasivyo isinstance(obj, ctypes.Array):
         ikiwa obj._type_ ni ctypes.c_char:
             rudisha SynchronizedString(obj, lock, ctx)
         rudisha SynchronizedArray(obj, lock, ctx)
@@ -114,7 +114,7 @@ eleza synchronized(obj, lock=Tupu, ctx=Tupu):
         cls = type(obj)
         jaribu:
             scls = class_cache[cls]
-        except KeyError:
+        tatizo KeyError:
             names = [field[0] kila field kwenye cls._fields_]
             d = {name: make_property(name) kila name kwenye names}
             classname = 'Synchronized' + cls.__name__
@@ -148,7 +148,7 @@ eleza rebuild_ctype(type_, wrapper, length):
 eleza make_property(name):
     jaribu:
         rudisha prop_cache[name]
-    except KeyError:
+    tatizo KeyError:
         d = {}
         exec(template % ((name,)*7), d)
         prop_cache[name] = d[name]

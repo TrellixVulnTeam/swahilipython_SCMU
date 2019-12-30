@@ -214,7 +214,7 @@ kundi Symbol(object):
     eleza is_namespace(self):
         """Returns true ikiwa name binding introduces new namespace.
 
-        If the name ni used as the target of a function ama class
+        If the name ni used kama the target of a function ama class
         statement, this will be true.
 
         Note that a single name can be bound to multiple objects.  If
@@ -234,12 +234,12 @@ kundi Symbol(object):
         Raises ValueError ikiwa the name ni bound to multiple namespaces.
         """
         ikiwa len(self.__namespaces) != 1:
-             ashiria ValueError("name ni bound to multiple namespaces")
+            ashiria ValueError("name ni bound to multiple namespaces")
         rudisha self.__namespaces[0]
 
 ikiwa __name__ == "__main__":
     agiza os, sys
-    ukijumuisha open(sys.argv[0]) as f:
+    ukijumuisha open(sys.argv[0]) kama f:
         src = f.read()
     mod = symtable(src, os.path.split(sys.argv[0])[1], "exec")
     kila ident kwenye mod.get_identifiers():

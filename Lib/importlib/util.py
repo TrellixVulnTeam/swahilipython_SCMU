@@ -20,7 +20,7 @@ agiza warnings
 
 
 eleza source_hash(source_bytes):
-    "Return the hash of *source_bytes* as used kwenye hash-based pyc files."
+    "Return the hash of *source_bytes* kama used kwenye hash-based pyc files."
     rudisha _imp.source_hash(_RAW_MAGIC_NUMBER, source_bytes)
 
 
@@ -28,8 +28,8 @@ eleza resolve_name(name, package):
     """Resolve a relative module name to an absolute one."""
     ikiwa sio name.startswith('.'):
         rudisha name
-    elikiwa sio package:
-         ashiria ValueError(f'no package specified kila {repr(name)} '
+    lasivyo sio package:
+        ashiria ValueError(f'no package specified kila {repr(name)} '
                          '(required kila relative module names)')
     level = 0
     kila character kwenye name:
@@ -54,7 +54,7 @@ eleza _find_spec_from_path(name, path=Tupu):
     order kila a submodule to get the correct spec.
 
     """
-    ikiwa name sio kwenye sys.modules:
+    ikiwa name haiko kwenye sys.modules:
         rudisha _find_spec(name, path)
     isipokua:
         module = sys.modules[name]
@@ -62,11 +62,11 @@ eleza _find_spec_from_path(name, path=Tupu):
             rudisha Tupu
         jaribu:
             spec = module.__spec__
-        except AttributeError:
-             ashiria ValueError('{}.__spec__ ni sio set'.format(name)) kutoka Tupu
+        tatizo AttributeError:
+            ashiria ValueError('{}.__spec__ ni sio set'.format(name)) kutoka Tupu
         isipokua:
             ikiwa spec ni Tupu:
-                 ashiria ValueError('{}.__spec__ ni Tupu'.format(name))
+                ashiria ValueError('{}.__spec__ ni Tupu'.format(name))
             rudisha spec
 
 
@@ -83,19 +83,19 @@ eleza find_spec(name, package=Tupu):
     If the name ni kila submodule (contains a dot), the parent module is
     automatically imported.
 
-    The name na package arguments work the same as importlib.import_module().
+    The name na package arguments work the same kama importlib.import_module().
     In other words, relative module names (ukijumuisha leading dots) work.
 
     """
     fullname = resolve_name(name, package) ikiwa name.startswith('.') isipokua name
-    ikiwa fullname sio kwenye sys.modules:
+    ikiwa fullname haiko kwenye sys.modules:
         parent_name = fullname.rpartition('.')[0]
         ikiwa parent_name:
             parent = __import__(parent_name, fromlist=['__path__'])
             jaribu:
                 parent_path = parent.__path__
-            except AttributeError as e:
-                 ashiria ModuleNotFoundError(
+            tatizo AttributeError kama e:
+                ashiria ModuleNotFoundError(
                     f"__path__ attribute sio found on {parent_name!r} "
                     f"wakati trying to find {fullname!r}", name=fullname) kutoka e
         isipokua:
@@ -107,11 +107,11 @@ eleza find_spec(name, package=Tupu):
             rudisha Tupu
         jaribu:
             spec = module.__spec__
-        except AttributeError:
-             ashiria ValueError('{}.__spec__ ni sio set'.format(name)) kutoka Tupu
+        tatizo AttributeError:
+            ashiria ValueError('{}.__spec__ ni sio set'.format(name)) kutoka Tupu
         isipokua:
             ikiwa spec ni Tupu:
-                 ashiria ValueError('{}.__spec__ ni Tupu'.format(name))
+                ashiria ValueError('{}.__spec__ ni Tupu'.format(name))
             rudisha spec
 
 
@@ -121,7 +121,7 @@ eleza _module_to_load(name):
 
     module = sys.modules.get(name)
     ikiwa sio is_reload:
-        # This must be done before open() ni called as the 'io' module
+        # This must be done before open() ni called kama the 'io' module
         # implicitly imports 'locale' na would otherwise trigger an
         # infinite loop.
         module = type(sys)(name)
@@ -131,12 +131,12 @@ eleza _module_to_load(name):
         sys.modules[name] = module
     jaribu:
         tuma module
-    except Exception:
+    tatizo Exception:
         ikiwa sio is_reload:
             jaribu:
                 toa sys.modules[name]
-            except KeyError:
-                pass
+            tatizo KeyError:
+                pita
     mwishowe:
         module.__initializing__ = Uongo
 
@@ -180,12 +180,12 @@ eleza set_loader(fxn):
 eleza module_for_loader(fxn):
     """Decorator to handle selecting the proper module kila loaders.
 
-    The decorated function ni passed the module to use instead of the module
-    name. The module passed kwenye to the function ni either kutoka sys.modules if
+    The decorated function ni pitaed the module to use instead of the module
+    name. The module pitaed kwenye to the function ni either kutoka sys.modules if
     it already exists ama ni a new module. If the module ni new, then __name__
-    ni set the first argument to the method, __loader__ ni set to self, and
+    ni set the first argument to the method, __loader__ ni set to self, na
     __package__ ni set accordingly (ikiwa self.is_package() ni defined) will be set
-    before it ni passed to the decorated function (ikiwa self.is_package() does
+    before it ni pitaed to the decorated function (ikiwa self.is_package() does
     sio work kila the module it will be set post-load).
 
     If an exception ni raised na the decorator created the module it is
@@ -199,12 +199,12 @@ eleza module_for_loader(fxn):
                   DeprecationWarning, stacklevel=2)
     @functools.wraps(fxn)
     eleza module_for_loader_wrapper(self, fullname, *args, **kwargs):
-        ukijumuisha _module_to_load(fullname) as module:
+        ukijumuisha _module_to_load(fullname) kama module:
             module.__loader__ = self
             jaribu:
                 is_package = self.is_package(fullname)
-            except (ImportError, AttributeError):
-                pass
+            tatizo (ImportError, AttributeError):
+                pita
             isipokua:
                 ikiwa is_package:
                     module.__package__ = fullname
@@ -238,16 +238,16 @@ kundi _LazyModule(types.ModuleType):
         kila key, value kwenye attrs_now.items():
             # Code that set the attribute may have kept a reference to the
             # assigned object, making identity more important than equality.
-            ikiwa key sio kwenye attrs_then:
+            ikiwa key haiko kwenye attrs_then:
                 attrs_updated[key] = value
-            elikiwa id(attrs_now[key]) != id(attrs_then[key]):
+            lasivyo id(attrs_now[key]) != id(attrs_then[key]):
                 attrs_updated[key] = value
         self.__spec__.loader.exec_module(self)
         # If exec_module() was used directly there ni no guarantee the module
         # object was put into sys.modules.
         ikiwa original_name kwenye sys.modules:
             ikiwa id(self) != id(sys.modules[original_name]):
-                 ashiria ValueError(f"module object kila {original_name!r} "
+                ashiria ValueError(f"module object kila {original_name!r} "
                                   "substituted kwenye sys.modules during a lazy "
                                   "load")
         # Update after loading since that's what would happen kwenye an eager
@@ -257,7 +257,7 @@ kundi _LazyModule(types.ModuleType):
 
     eleza __delattr__(self, attr):
         """Trigger the load na then perform the deletion."""
-        # To trigger the load na  ashiria an exception ikiwa the attribute
+        # To trigger the load na ashiria an exception ikiwa the attribute
         # doesn't exist.
         self.__getattribute__(attr)
         delattr(self, attr)
@@ -270,7 +270,7 @@ kundi LazyLoader(abc.Loader):
     @staticmethod
     eleza __check_eager_loader(loader):
         ikiwa sio hasattr(loader, 'exec_module'):
-             ashiria TypeError('loader must define exec_module()')
+            ashiria TypeError('loader must define exec_module()')
 
     @classmethod
     eleza factory(cls, loader):
@@ -289,7 +289,7 @@ kundi LazyLoader(abc.Loader):
         """Make the module load lazily."""
         module.__spec__.loader = self.loader
         module.__loader__ = self.loader
-        # Don't need to worry about deep-copying as trying to set an attribute
+        # Don't need to worry about deep-copying kama trying to set an attribute
         # on an object would have triggered the load,
         # e.g. ``module.__spec__.loader = Tupu`` would trigger a load from
         # trying to access module.__spec__.

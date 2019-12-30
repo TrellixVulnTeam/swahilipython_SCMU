@@ -16,10 +16,10 @@ Basic kundi construction.
 
 Use *args notation kila the bases.
 
-    >>> kundi A: pass
-    >>> kundi B: pass
+    >>> kundi A: pita
+    >>> kundi B: pita
     >>> bases = (A, B)
-    >>> kundi C(*bases): pass
+    >>> kundi C(*bases): pita
     >>> C.__bases__ == bases
     Kweli
     >>>
@@ -27,7 +27,7 @@ Use *args notation kila the bases.
 Use a trivial metaclass.
 
     >>> kundi M(type):
-    ...     pass
+    ...     pita
     ...
     >>> kundi C(metaclass=M):
     ...    eleza meth(self): andika("Hello")
@@ -44,7 +44,7 @@ Use a trivial metaclass.
 Use **kwds notation kila the metakundi keyword.
 
     >>> kwds = {'metaclass': M}
-    >>> kundi C(**kwds): pass
+    >>> kundi C(**kwds): pita
     ...
     >>> C.__class__ ni M
     Kweli
@@ -64,7 +64,7 @@ Use a metakundi ukijumuisha a __prepare__ static method.
     ...        andika("New called:", kwds)
     ...        rudisha type.__new__(cls, name, bases, namespace)
     ...    eleza __init__(cls, *args, **kwds):
-    ...        pass
+    ...        pita
     ...
     >>> kundi C(metaclass=M):
     ...     eleza meth(self): andika("Hello")
@@ -73,10 +73,10 @@ Use a metakundi ukijumuisha a __prepare__ static method.
     New called: {}
     >>>
 
-Also pass another keyword.
+Also pita another keyword.
 
     >>> kundi C(object, metaclass=M, other="haha"):
-    ...     pass
+    ...     pita
     ...
     Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
@@ -92,7 +92,7 @@ Also pass another keyword.
 Check that build_kundi doesn't mutate the kwds dict.
 
     >>> kwds = {'metaclass': type}
-    >>> kundi C(**kwds): pass
+    >>> kundi C(**kwds): pita
     ...
     >>> kwds == {'metaclass': type}
     Kweli
@@ -102,7 +102,7 @@ Use various combinations of explicit keywords na **kwds.
 
     >>> bases = (object,)
     >>> kwds = {'metaclass': M, 'other': 'haha'}
-    >>> kundi C(*bases, **kwds): pass
+    >>> kundi C(*bases, **kwds): pita
     ...
     Prepare called: ('C', (<kundi 'object'>,)) {'other': 'haha'}
     New called: {'other': 'haha'}
@@ -110,9 +110,9 @@ Use various combinations of explicit keywords na **kwds.
     Kweli
     >>> C.__bases__ == (object,)
     Kweli
-    >>> kundi B: pass
+    >>> kundi B: pita
     >>> kwds = {'other': 'haha'}
-    >>> kundi C(B, metaclass=M, *bases, **kwds): pass
+    >>> kundi C(B, metaclass=M, *bases, **kwds): pita
     ...
     Prepare called: ('C', (<kundi 'test.test_metaclass.B'>, <kundi 'object'>)) {'other': 'haha'}
     New called: {'other': 'haha'}
@@ -124,7 +124,7 @@ Use various combinations of explicit keywords na **kwds.
 
 Check kila duplicate keywords.
 
-    >>> kundi C(metaclass=type, metaclass=type): pass
+    >>> kundi C(metaclass=type, metaclass=type): pita
     ...
     Traceback (most recent call last):
     [...]
@@ -134,7 +134,7 @@ Check kila duplicate keywords.
 Another way.
 
     >>> kwds = {'metaclass': type}
-    >>> kundi C(metaclass=type, **kwds): pass
+    >>> kundi C(metaclass=type, **kwds): pita
     ...
     Traceback (most recent call last):
     [...]
@@ -234,14 +234,14 @@ Make sure it works ukijumuisha subclassing.
 
 Test failures kwenye looking up the __prepare__ method work.
     >>> kundi ObscureException(Exception):
-    ...     pass
+    ...     pita
     >>> kundi FailDescr:
     ...     eleza __get__(self, instance, owner):
-    ...         ashiria ObscureException
+    ...        ashiria ObscureException
     >>> kundi Meta(type):
     ...     __prepare__ = FailDescr()
     >>> kundi X(metaclass=Meta):
-    ...     pass
+    ...     pita
     Traceback (most recent call last):
     [...]
     test.test_metaclass.ObscureException

@@ -329,7 +329,7 @@ kundi ConstructorTestCase(unittest.TestCase):
         # Standard constructor call.
         jaribu:
             hmac.HMAC(b"key", digestmod='sha256')
-        except Exception:
+        tatizo Exception:
             self.fail("Standard constructor call raised exception.")
 
     @requires_hashdigest('sha256')
@@ -351,7 +351,7 @@ kundi ConstructorTestCase(unittest.TestCase):
         # Constructor call ukijumuisha text.
         jaribu:
             h = hmac.HMAC(b"key", b"hash this!", digestmod='sha256')
-        except Exception:
+        tatizo Exception:
             self.fail("Constructor call ukijumuisha text argument raised exception.")
         self.assertEqual(h.hexdigest(), self.expected)
 
@@ -360,7 +360,7 @@ kundi ConstructorTestCase(unittest.TestCase):
         jaribu:
             h = hmac.HMAC(bytearray(b"key"), bytearray(b"hash this!"),
                           digestmod="sha256")
-        except Exception:
+        tatizo Exception:
             self.fail("Constructor call ukijumuisha bytearray arguments raised exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
@@ -368,7 +368,7 @@ kundi ConstructorTestCase(unittest.TestCase):
     eleza test_with_memoryview_msg(self):
         jaribu:
             h = hmac.HMAC(b"key", memoryview(b"hash this!"), digestmod="sha256")
-        except Exception:
+        tatizo Exception:
             self.fail("Constructor call ukijumuisha memoryview msg raised exception.")
             self.assertEqual(h.hexdigest(), self.expected)
 
@@ -377,7 +377,7 @@ kundi ConstructorTestCase(unittest.TestCase):
         # Constructor call ukijumuisha text na digest module.
         jaribu:
             h = hmac.HMAC(b"key", b"", hashlib.sha256)
-        except Exception:
+        tatizo Exception:
             self.fail("Constructor call ukijumuisha hashlib.sha256 raised exception.")
 
 
@@ -386,14 +386,14 @@ kundi SanityTestCase(unittest.TestCase):
     @requires_hashdigest('sha256')
     eleza test_exercise_all_methods(self):
         # Exercising all methods once.
-        # This must sio  ashiria any exceptions
+        # This must sio ashiria any exceptions
         jaribu:
             h = hmac.HMAC(b"my secret key", digestmod="sha256")
             h.update(b"compute the hash of this text!")
             dig = h.digest()
             dig = h.hexdigest()
             h2 = h.copy()
-        except Exception:
+        tatizo Exception:
             self.fail("Exception raised during normal usage of HMAC class.")
 
 

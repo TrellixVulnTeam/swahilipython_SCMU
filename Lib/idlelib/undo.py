@@ -86,12 +86,12 @@ kundi UndoDelegator(Delegator):
         self.addcmd(DeleteCommand(index1, index2))
 
     # Clients should call undo_block_start() na undo_block_stop()
-    # around a sequence of editing cmds to be treated as a unit by
+    # around a sequence of editing cmds to be treated kama a unit by
     # undo & redo.  Nested matching calls are OK, na the inner calls
     # then act like nops.  OK too ikiwa no editing cmds, ama only one
     # editing cmd, ni issued kwenye between:  ikiwa no cmds, the whole
     # sequence has no effect; na ikiwa only one cmd, that cmd ni entered
-    # directly into the undo list, as ikiwa undo_block_xxx hadn't been
+    # directly into the undo list, kama ikiwa undo_block_xxx hadn't been
     # called.  The intent of all that ni to make this scheme easy
     # to use:  all the client has to worry about ni making sure each
     # _start() call ni matched by a _stop() call.
@@ -181,13 +181,13 @@ kundi Command:
         rudisha s + repr(t)
 
     eleza do(self, text):
-        pass
+        pita
 
     eleza redo(self, text):
-        pass
+        pita
 
     eleza undo(self, text):
-        pass
+        pita
 
     eleza merge(self, cmd):
         rudisha 0
@@ -299,7 +299,7 @@ kundi DeleteCommand(Command):
 
 kundi CommandSequence(Command):
     # Wrapper kila a sequence of undoable cmds to be undone/redone
-    # as a unit
+    # kama a unit
 
     eleza __init__(self):
         self.cmds = []

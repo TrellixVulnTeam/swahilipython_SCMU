@@ -17,12 +17,12 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kutoka test.support agiza TESTFN, unlink
 
@@ -34,7 +34,7 @@ kundi CollationTests(unittest.TestCase):
 
     eleza CheckCreateCollationNotCallable(self):
         con = sqlite.connect(":memory:")
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             con.create_collation("X", 42)
         self.assertEqual(str(cm.exception), 'parameter must be callable')
 
@@ -52,9 +52,9 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation(BadUpperStr("mycoll"), mycoll)
         result = con.execute("""
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             ) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
@@ -71,11 +71,11 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation("mycoll", mycoll)
         sql = """
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             union
-            select 'c' as x
+            select 'c' kama x
             ) order by x collate mycoll
             """
         result = con.execute(sql).fetchall()
@@ -83,7 +83,7 @@ kundi CollationTests(unittest.TestCase):
                          msg='the expected order was sio returned')
 
         con.create_collation("mycoll", Tupu)
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             result = con.execute(sql).fetchall()
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
@@ -95,11 +95,11 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation("mycoll", mycoll)
         sql = """
             select x kutoka (
-            select 'a' as x
+            select 'a' kama x
             union
-            select 'b' as x
+            select 'b' kama x
             union
-            select 'c' as x
+            select 'c' kama x
             ) order by x collate mycoll
             """
         result = con.execute(sql).fetchall()
@@ -115,7 +115,7 @@ kundi CollationTests(unittest.TestCase):
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", lambda x, y: -((x > y) - (x < y)))
         result = con.execute("""
-            select x kutoka (select 'a' as x union select 'b' as x) order by x collate mycoll
+            select x kutoka (select 'a' kama x union select 'b' kama x) order by x collate mycoll
             """).fetchall()
         self.assertEqual(result[0][0], 'b')
         self.assertEqual(result[1][0], 'a')
@@ -128,8 +128,8 @@ kundi CollationTests(unittest.TestCase):
         con = sqlite.connect(":memory:")
         con.create_collation("mycoll", lambda x, y: (x > y) - (x < y))
         con.create_collation("mycoll", Tupu)
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
-            con.execute("select 'a' as x union select 'b' as x order by x collate mycoll")
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
+            con.execute("select 'a' kama x union select 'b' kama x order by x collate mycoll")
         self.assertEqual(str(cm.exception), 'no such collation sequence: mycoll')
 
 kundi ProgressTests(unittest.TestCase):
@@ -239,7 +239,7 @@ kundi TraceCallbackTests(unittest.TestCase):
             traced_statements.append(statement)
         con.set_trace_callback(trace)
         con.execute("create table foo(x)")
-        # Can't execute bound parameters as their values don't appear
+        # Can't execute bound parameters kama their values don't appear
         # kwenye traced statements before SQLite 3.6.21
         # (cf. http://www.sqlite.org/draft/releaselog/3_6_21.html)
         con.execute('insert into foo(x) values ("%s")' % unicode_value)

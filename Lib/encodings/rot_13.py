@@ -26,10 +26,10 @@ kundi IncrementalDecoder(codecs.IncrementalDecoder):
         rudisha str.translate(input, rot13_map)
 
 kundi StreamWriter(Codec,codecs.StreamWriter):
-    pass
+    pita
 
 kundi StreamReader(Codec,codecs.StreamReader):
-    pass
+    pita
 
 ### encodings module API
 

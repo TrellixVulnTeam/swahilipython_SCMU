@@ -25,12 +25,12 @@ kundi DummyServer(smtpd.SMTPServer):
 
 
 kundi DummyDispatcherBroken(Exception):
-    pass
+    pita
 
 
 kundi BrokenDummyServer(DummyServer):
     eleza listen(self, num):
-         ashiria DummyDispatcherBroken()
+        ashiria DummyDispatcherBroken()
 
 
 kundi SMTPDServerTest(unittest.TestCase):
@@ -91,7 +91,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        decode_data=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, decode_data=Kweli)
-        ukijumuisha support.captured_stdout() as s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nhello\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -107,7 +107,7 @@ kundi DebuggingServerTest(unittest.TestCase):
         server = smtpd.DebuggingServer((support.HOST, 0), ('b', 0))
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr)
-        ukijumuisha support.captured_stdout() as s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -124,7 +124,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        ukijumuisha support.captured_stdout() as s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n')
         stdout = s.getvalue()
         self.assertEqual(stdout, textwrap.dedent("""\
@@ -141,7 +141,7 @@ kundi DebuggingServerTest(unittest.TestCase):
                                        enable_SMTPUTF8=Kweli)
         conn, addr = server.accept()
         channel = smtpd.SMTPChannel(server, conn, addr, enable_SMTPUTF8=Kweli)
-        ukijumuisha support.captured_stdout() as s:
+        ukijumuisha support.captured_stdout() kama s:
             self.send_data(channel, b'From: test\n\nh\xc3\xa9llo\xff\n',
                            enable_SMTPUTF8=Kweli)
         stdout = s.getvalue()

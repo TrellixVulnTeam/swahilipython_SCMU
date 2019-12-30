@@ -42,13 +42,13 @@ kundi TestCallable(unittest.TestCase):
 
     eleza test_subclasses(self):
         kundi MockSub(Mock):
-            pass
+            pita
 
         one = MockSub()
         self.assertKweli(issubclass(type(one.one), MockSub))
 
         kundi MagicSub(MagicMock):
-            pass
+            pita
 
         two = MagicSub()
         self.assertKweli(issubclass(type(two.two), MagicSub))
@@ -98,17 +98,17 @@ kundi TestCallable(unittest.TestCase):
 
     eleza test_patch_spec_callable_class(self):
         kundi CallableX(X):
-            eleza __call__(self): pass
+            eleza __call__(self): pita
 
         kundi Sub(CallableX):
-            pass
+            pita
 
         kundi Multi(SomeClass, Sub):
-            pass
+            pita
 
         kila arg kwenye 'spec', 'spec_set':
             kila Klass kwenye CallableX, Sub, Multi:
-                ukijumuisha patch('%s.X' % __name__, **{arg: Klass}) as mock:
+                ukijumuisha patch('%s.X' % __name__, **{arg: Klass}) kama mock:
                     instance = mock()
                     mock.assert_called_once_with()
 

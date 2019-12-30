@@ -29,7 +29,7 @@ kundi Number:
         rudisha self.x >= other
 
     eleza __cmp__(self, other):
-         ashiria support.TestFailed("Number.__cmp__() should sio be called")
+        ashiria support.TestFailed("Number.__cmp__() should sio be called")
 
     eleza __repr__(self):
         rudisha "Number(%r)" % (self.x, )
@@ -51,10 +51,10 @@ kundi Vector:
     __hash__ = Tupu # Vectors cannot be hashed
 
     eleza __bool__(self):
-         ashiria TypeError("Vectors cannot be used kwenye Boolean contexts")
+        ashiria TypeError("Vectors cannot be used kwenye Boolean contexts")
 
     eleza __cmp__(self, other):
-         ashiria support.TestFailed("Vector.__cmp__() should sio be called")
+        ashiria support.TestFailed("Vector.__cmp__() should sio be called")
 
     eleza __repr__(self):
         rudisha "Vector(%r)" % (self.data, )
@@ -81,7 +81,7 @@ kundi Vector:
         ikiwa isinstance(other, Vector):
             other = other.data
         ikiwa len(self.data) != len(other):
-             ashiria ValueError("Cannot compare vectors of different length")
+            ashiria ValueError("Cannot compare vectors of different length")
         rudisha other
 
 opmap = {
@@ -120,7 +120,7 @@ kundi VectorTest(unittest.TestCase):
 
         a = list(range(5))
         b = 5 * [2]
-        # try mixed arguments (but sio (a, b) as that won't rudisha a bool vector)
+        # try mixed arguments (but sio (a, b) kama that won't rudisha a bool vector)
         args = [(a, Vector(b)), (Vector(a), b), (Vector(a), Vector(b))]
         kila (a, b) kwenye args:
             self.checkequal("lt", a, b, [Kweli,  Kweli,  Uongo, Uongo, Uongo])
@@ -139,7 +139,7 @@ kundi NumberTest(unittest.TestCase):
 
     eleza test_basic(self):
         # Check that comparisons involving Number objects
-        # give the same results give as comparing the
+        # give the same results give kama comparing the
         # corresponding ints
         kila a kwenye range(3):
             kila b kwenye range(3):
@@ -209,10 +209,10 @@ kundi MiscTest(unittest.TestCase):
         # propagated by the sio operator
         agiza operator
         kundi Exc(Exception):
-            pass
+            pita
         kundi Bad:
             eleza __bool__(self):
-                 ashiria Exc
+                ashiria Exc
 
         eleza do(bad):
             sio bad
@@ -238,7 +238,7 @@ kundi MiscTest(unittest.TestCase):
         b.append(17)
         # Even recursive lists of different lengths are different,
         # but they cannot be ordered
-        self.assertKweli(not (a == b))
+        self.assertKweli(sio (a == b))
         self.assertKweli(a != b)
         self.assertRaises(RecursionError, operator.lt, a, b)
         self.assertRaises(RecursionError, operator.le, a, b)
@@ -249,13 +249,13 @@ kundi MiscTest(unittest.TestCase):
         self.assertRaises(RecursionError, operator.ne, a, b)
         a.insert(0, 11)
         b.insert(0, 12)
-        self.assertKweli(not (a == b))
+        self.assertKweli(sio (a == b))
         self.assertKweli(a != b)
         self.assertKweli(a < b)
 
     eleza test_exception_message(self):
         kundi Spam:
-            pass
+            pita
 
         tests = [
             (lambda: 42 < Tupu, r"'<' .* of 'int' na 'TupuType'"),
@@ -281,7 +281,7 @@ kundi MiscTest(unittest.TestCase):
 kundi DictTest(unittest.TestCase):
 
     eleza test_dicts(self):
-        # Verify that __eq__ na __ne__ work kila dicts even ikiwa the keys and
+        # Verify that __eq__ na __ne__ work kila dicts even ikiwa the keys na
         # values don't support anything other than __eq__ na __ne__ (and
         # __hash__).  Complex numbers are a fine example of that.
         agiza random
@@ -326,10 +326,10 @@ kundi ListTest(unittest.TestCase):
         # make sure that exceptions kila item comparison are properly
         # propagated kwenye list comparisons
         kundi Exc(Exception):
-            pass
+            pita
         kundi Bad:
             eleza __eq__(self, other):
-                 ashiria Exc
+                ashiria Exc
 
         x = [Bad()]
         y = [Bad()]

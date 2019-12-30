@@ -13,7 +13,7 @@ eleza check_version(testfile):
     rudisha unidata_version kwenye hdr
 
 kundi RangeError(Exception):
-    pass
+    pita
 
 eleza NFC(str):
     rudisha normalize("NFC", str)
@@ -31,7 +31,7 @@ eleza unistr(data):
     data = [int(x, 16) kila x kwenye data.split(" ")]
     kila x kwenye data:
         ikiwa x > sys.maxunicode:
-             ashiria RangeError
+            ashiria RangeError
     rudisha "".join([chr(x) kila x kwenye data])
 
 kundi NormalizationTest(unittest.TestCase):
@@ -40,10 +40,10 @@ kundi NormalizationTest(unittest.TestCase):
         jaribu:
             testdata = open_urlresource(TESTDATAURL, encoding="utf-8",
                                         check=check_version)
-        except PermissionError:
+        tatizo PermissionError:
             self.skipTest(f"Permission error when downloading {TESTDATAURL} "
                           f"into the test data directory")
-        except (OSError, HTTPException):
+        tatizo (OSError, HTTPException):
             self.fail(f"Could sio retrieve {TESTDATAURL}")
 
         ukijumuisha testdata:
@@ -64,14 +64,14 @@ kundi NormalizationTest(unittest.TestCase):
                 endelea
             jaribu:
                 c1,c2,c3,c4,c5 = [unistr(x) kila x kwenye line.split(';')[:-1]]
-            except RangeError:
+            tatizo RangeError:
                 # Skip unsupported characters;
                 # try at least adding c1 ikiwa we are kwenye part1
                 ikiwa part == "@Part1":
                     jaribu:
                         c1 = unistr(line.split(';')[0])
-                    except RangeError:
-                        pass
+                    tatizo RangeError:
+                        pita
                     isipokua:
                         part1_data[c1] = 1
                 endelea

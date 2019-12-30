@@ -98,7 +98,7 @@ kundi SlicesTestCase(unittest.TestCase):
         s = b"abcdefghijklmnopqrstuvwxyz"
 
         kundi allocated_c_char_p(c_char_p):
-            pass
+            pita
 
         dll.my_free.restype = Tupu
         eleza errcheck(result, func, args):
@@ -147,9 +147,9 @@ kundi SlicesTestCase(unittest.TestCase):
 
         ikiwa sizeof(c_wchar) == sizeof(c_short):
             dll.my_wcsdup.restype = POINTER(c_short)
-        elikiwa sizeof(c_wchar) == sizeof(c_int):
+        lasivyo sizeof(c_wchar) == sizeof(c_int):
             dll.my_wcsdup.restype = POINTER(c_int)
-        elikiwa sizeof(c_wchar) == sizeof(c_long):
+        lasivyo sizeof(c_wchar) == sizeof(c_long):
             dll.my_wcsdup.restype = POINTER(c_long)
         isipokua:
             self.skipTest('Pointers to c_wchar are sio supported')

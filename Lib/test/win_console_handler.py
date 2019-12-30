@@ -1,6 +1,6 @@
 """Script used to test os.kill on Windows, kila issue #1220212
 
-This script ni started as a subprocess kwenye test_os na ni used to test the
+This script ni started kama a subprocess kwenye test_os na ni used to test the
 CTRL_C_EVENT na CTRL_BREAK_EVENT signals, which requires a custom handler
 to be written into the kill target.
 
@@ -20,9 +20,9 @@ HandlerRoutine = WINFUNCTYPE(wintypes.BOOL, wintypes.DWORD)
 eleza _ctrl_handler(sig):
     """Handle a sig event na rudisha 0 to terminate the process"""
     ikiwa sig == signal.CTRL_C_EVENT:
-        pass
-    elikiwa sig == signal.CTRL_BREAK_EVENT:
-        pass
+        pita
+    lasivyo sig == signal.CTRL_BREAK_EVENT:
+        pita
     isipokua:
         andika("UNKNOWN EVENT")
     rudisha 0
@@ -46,4 +46,4 @@ ikiwa __name__ == "__main__":
 
     # Do nothing but wait kila the signal
     wakati Kweli:
-        pass
+        pita

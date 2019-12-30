@@ -9,7 +9,7 @@ agiza unittest
 kutoka test agiza support
 
 ikiwa sys.platform != 'win32':
-     ashiria unittest.SkipTest("test only relevant on win32")
+    ashiria unittest.SkipTest("test only relevant on win32")
 
 kutoka _testconsole agiza write_input
 
@@ -25,7 +25,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         self.assertRaisesRegex(ValueError,
             "negative file descriptor", ConIO, -1)
 
-        ukijumuisha tempfile.TemporaryFile() as tmpfile:
+        ukijumuisha tempfile.TemporaryFile() kama tmpfile:
             fd = tmpfile.fileno()
             # Windows 10: "Cannot open non-console file"
             # Earlier: "Cannot open console output buffer kila reading"
@@ -34,9 +34,9 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         jaribu:
             f = ConIO(0)
-        except ValueError:
+        tatizo ValueError:
             # cannot open console because it's sio a real console
-            pass
+            pita
         isipokua:
             self.assertKweli(f.readable())
             self.assertUongo(f.writable())
@@ -46,9 +46,9 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         jaribu:
             f = ConIO(1, 'w')
-        except ValueError:
+        tatizo ValueError:
             # cannot open console because it's sio a real console
-            pass
+            pita
         isipokua:
             self.assertUongo(f.readable())
             self.assertKweli(f.writable())
@@ -58,9 +58,9 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         jaribu:
             f = ConIO(2, 'w')
-        except ValueError:
+        tatizo ValueError:
             # cannot open console because it's sio a real console
-            pass
+            pita
         isipokua:
             self.assertUongo(f.readable())
             self.assertKweli(f.writable())
@@ -113,14 +113,14 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
 
         conout_path = os.path.join(temp_path, 'CONOUT$')
 
-        ukijumuisha open(conout_path, 'wb', buffering=0) as f:
+        ukijumuisha open(conout_path, 'wb', buffering=0) kama f:
             ikiwa sys.getwindowsversion()[:2] > (6, 1):
                 self.assertIsInstance(f, ConIO)
             isipokua:
                 self.assertNotIsInstance(f, ConIO)
 
     eleza test_write_empty_data(self):
-        ukijumuisha ConIO('CONOUT$', 'w') as f:
+        ukijumuisha ConIO('CONOUT$', 'w') kama f:
             self.assertEqual(f.write(b''), 0)
 
     eleza assertStdinRoundTrip(self, text):
@@ -130,7 +130,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
             sys.stdin = stdin
             write_uliza(
                 stdin.buffer.raw,
-                (text + '\r\n').encode('utf-16-le', 'surrogatepass')
+                (text + '\r\n').encode('utf-16-le', 'surrogatepita')
             )
             actual = uliza()
         mwishowe:
@@ -153,7 +153,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         source = 'ϼўТλФЙ\r\n'.encode('utf-16-le')
         expected = 'ϼўТλФЙ\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
-            ukijumuisha open('CONIN$', 'rb', buffering=0) as stdin:
+            ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
                 write_uliza(stdin, source)
 
                 actual = b''
@@ -170,7 +170,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
         source = '\U00101FFF\U00101001\r\n'.encode('utf-16-le')
         expected = '\U00101FFF\U00101001\r\n'.encode('utf-8')
         kila read_count kwenye range(1, 16):
-            ukijumuisha open('CONIN$', 'rb', buffering=0) as stdin:
+            ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
                 write_uliza(stdin, source)
 
                 actual = b''
@@ -181,7 +181,7 @@ kundi WindowsConsoleIOTests(unittest.TestCase):
                 self.assertEqual(actual, expected, 'stdin.read({})'.format(read_count))
 
     eleza test_ctrl_z(self):
-        ukijumuisha open('CONIN$', 'rb', buffering=0) as stdin:
+        ukijumuisha open('CONIN$', 'rb', buffering=0) kama stdin:
             source = '\xC4\x1A\r\n'.encode('utf-16-le')
             expected = '\xC4'.encode('utf-8')
             write_uliza(stdin, source)

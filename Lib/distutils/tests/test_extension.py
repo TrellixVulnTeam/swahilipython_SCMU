@@ -54,7 +54,7 @@ kundi ExtensionTestCase(unittest.TestCase):
         self.assertEqual(ext.optional, Tupu)
 
         # ikiwa there are unknown keyword options, warn about them
-        ukijumuisha check_warnings() as w:
+        ukijumuisha check_warnings() kama w:
             warnings.simplefilter('always')
             ext = Extension('name', ['file1', 'file2'], chic=Kweli)
 

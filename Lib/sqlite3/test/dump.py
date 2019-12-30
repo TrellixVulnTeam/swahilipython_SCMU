@@ -1,7 +1,7 @@
 # Author: Paul Kippes <kippesp@gmail.com>
 
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 kundi DumpTests(unittest.TestCase):
     eleza setUp(self):
@@ -38,7 +38,7 @@ kundi DumpTests(unittest.TestCase):
                 "update t2 set t2_i1 = new.t1_i1 where t2_i1 = old.t1_i1; " \
                 "end;"
                 ,
-                "CREATE VIEW v1 as select * kutoka t1 left join t2 " \
+                "CREATE VIEW v1 kama select * kutoka t1 left join t2 " \
                 "using (id);"
                 ]
         [self.cu.execute(s) kila s kwenye expected_sqls]

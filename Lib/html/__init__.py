@@ -2,8 +2,8 @@
 General functions kila HTML manipulation.
 """
 
-agiza re as _re
-kutoka html.entities agiza html5 as _html5
+agiza re kama _re
+kutoka html.entities agiza html5 kama _html5
 
 
 __all__ = ['escape', 'unescape']
@@ -127,6 +127,6 @@ eleza unescape(s):
     kila both valid na invalid character references, na the list of
     HTML 5 named character references defined kwenye html.entities.html5.
     """
-    ikiwa '&' sio kwenye s:
+    ikiwa '&' haiko kwenye s:
         rudisha s
     rudisha _charref.sub(_replace_charref, s)

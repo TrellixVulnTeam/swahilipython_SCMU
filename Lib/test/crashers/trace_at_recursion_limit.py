@@ -8,14 +8,14 @@ agiza sys
 
 
 eleza x():
-    pass
+    pita
 
 eleza g(*args):
     ikiwa Kweli: # change to Kweli to crash interpreter
         jaribu:
             x()
         tatizo:
-            pass
+            pita
     rudisha g
 
 eleza f():

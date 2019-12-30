@@ -1,14 +1,14 @@
 # This tests the internal _objects attribute
 agiza unittest
 kutoka ctypes agiza *
-kutoka sys agiza getrefcount as grc
+kutoka sys agiza getrefcount kama grc
 
 # XXX This test must be reviewed kila correctness!!!
 
 # ctypes' types are container types.
 #
 # They have an internal memory block, which only consists of some bytes,
-# but it has to keep references to other objects as well. This ni not
+# but it has to keep references to other objects kama well. This ni not
 # really needed kila trivial C types like int ama char, but it ni important
 # kila aggregate types like strings ama pointers kwenye particular.
 #

@@ -39,13 +39,13 @@ eleza _run_object_doctest(obj, module):
     # Otherwise, use the module's name
     jaribu:
         name = "%s.%s" % (obj.__module__, obj.__qualname__)
-    except AttributeError:
+    tatizo AttributeError:
         name = module.__name__
     kila example kwenye finder.find(obj, name, module):
         runner.run(example)
     f, t = runner.failures, runner.tries
     ikiwa f:
-         ashiria test.support.TestFailed("%d of %d doctests failed" % (f, t))
+        ashiria test.support.TestFailed("%d of %d doctests failed" % (f, t))
     ikiwa verbose:
         print ('doctest (%s) ... %d tests ukijumuisha zero failures' % (module.__name__, t))
     rudisha f, t
@@ -76,8 +76,8 @@ kundi ZipSupportTests(unittest.TestCase):
         sys.path_importer_cache.clear()
 
     eleza test_inspect_getsource_issue4223(self):
-        test_src = "eleza foo(): pass\n"
-        ukijumuisha test.support.temp_dir() as d:
+        test_src = "eleza foo(): pita\n"
+        ukijumuisha test.support.temp_dir() kama d:
             init_name = make_script(d, '__init__', test_src)
             name_in_zip = os.path.join('zip_pkg',
                                        os.path.basename(init_name))
@@ -100,7 +100,7 @@ kundi ZipSupportTests(unittest.TestCase):
         test_src = inspect.getsource(test_doctest)
         test_src = test_src.replace(
                          "kutoka test agiza test_doctest",
-                         "agiza test_zipped_doctest as test_doctest")
+                         "agiza test_zipped_doctest kama test_doctest")
         test_src = test_src.replace("test.test_doctest",
                                     "test_zipped_doctest")
         test_src = test_src.replace("test.sample_doctest",
@@ -117,16 +117,16 @@ kundi ZipSupportTests(unittest.TestCase):
             mod_name = mod_name.replace("sample_", "sample_zipped_")
             sample_sources[mod_name] = src
 
-        ukijumuisha test.support.temp_dir() as d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'test_zipped_doctest',
                                             test_src)
             zip_name, run_name = make_zip_script(d, 'test_zip',
                                                 script_name)
-            ukijumuisha zipfile.ZipFile(zip_name, 'a') as z:
+            ukijumuisha zipfile.ZipFile(zip_name, 'a') kama z:
                 kila mod_name, src kwenye sample_sources.items():
                     z.writestr(mod_name + ".py", src)
             ikiwa verbose:
-                ukijumuisha zipfile.ZipFile(zip_name, 'r') as zip_file:
+                ukijumuisha zipfile.ZipFile(zip_name, 'r') kama zip_file:
                     print ('Contents of %r:' % zip_name)
                     zip_file.printdir()
             os.remove(script_name)
@@ -186,13 +186,13 @@ kundi ZipSupportTests(unittest.TestCase):
         test_src = textwrap.dedent("""\
                     kundi Test:
                         ">>> 'line 2'"
-                        pass
+                        pita
 
                     agiza doctest
                     doctest.testmod()
                     """)
         pattern = 'File "%s", line 2, kwenye %s'
-        ukijumuisha test.support.temp_dir() as d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'script', test_src)
             rc, out, err = assert_python_ok(script_name)
             expected = pattern % (script_name, "__main__.Test")
@@ -214,12 +214,12 @@ kundi ZipSupportTests(unittest.TestCase):
     eleza test_pdb_issue4201(self):
         test_src = textwrap.dedent("""\
                     eleza f():
-                        pass
+                        pita
 
                     agiza pdb
                     pdb.Pdb(nosigint=Kweli).runcall(f)
                     """)
-        ukijumuisha test.support.temp_dir() as d:
+        ukijumuisha test.support.temp_dir() kama d:
             script_name = make_script(d, 'script', test_src)
             p = spawn_python(script_name)
             p.stdin.write(b'l\n')

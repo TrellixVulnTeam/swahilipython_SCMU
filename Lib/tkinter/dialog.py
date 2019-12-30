@@ -18,9 +18,9 @@ kundi Dialog(Widget):
                       cnf['bitmap'], cnf['default'],
                       *cnf['strings']))
         jaribu: Widget.destroy(self)
-        except TclError: pass
+        tatizo TclError: pita
 
-    eleza destroy(self): pass
+    eleza destroy(self): pita
 
 
 eleza _test():

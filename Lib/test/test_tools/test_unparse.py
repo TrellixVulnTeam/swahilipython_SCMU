@@ -20,9 +20,9 @@ ukijumuisha test.support.DirsOnSysPath(parser_path):
 eleza read_pyfile(filename):
     """Read na rudisha the contents of a Python source file (as a
     string), taking into account the file encoding."""
-    ukijumuisha open(filename, "rb") as pyfile:
+    ukijumuisha open(filename, "rb") kama pyfile:
         encoding = tokenize.detect_encoding(pyfile.readline)[0]
-    ukijumuisha open(filename, "r", encoding=encoding) as pyfile:
+    ukijumuisha open(filename, "r", encoding=encoding) kama pyfile:
         source = pyfile.read()
     rudisha source
 
@@ -47,7 +47,7 @@ eleza g():
 relative_agiza = """\
 kutoka . agiza fred
 kutoka .. agiza barney
-kutoka .australia agiza shrimp as prawns
+kutoka .australia agiza shrimp kama prawns
 """
 
 nonlocal_ex = """\
@@ -61,24 +61,24 @@ eleza f():
             nonlocal x, y
 """
 
-# also acts as test kila 'except ... as ...'
+# also acts kama test kila 'tatizo ... kama ...'
 raise_kutoka = """\
 jaribu:
     1 / 0
-except ZeroDivisionError as e:
-     ashiria ArithmeticError kutoka e
+tatizo ZeroDivisionError kama e:
+    ashiria ArithmeticError kutoka e
 """
 
 class_decorator = """\
 @f1(arg)
 @f2
-kundi Foo: pass
+kundi Foo: pita
 """
 
 elif1 = """\
 ikiwa cond1:
     suite1
-elikiwa cond2:
+lasivyo cond2:
     suite2
 isipokua:
     suite3
@@ -87,16 +87,16 @@ isipokua:
 elif2 = """\
 ikiwa cond1:
     suite1
-elikiwa cond2:
+lasivyo cond2:
     suite2
 """
 
 try_except_finally = """\
 jaribu:
     suite1
-except ex1:
+tatizo ex1:
     suite2
-except ex2:
+tatizo ex2:
     suite3
 isipokua:
     suite4
@@ -110,12 +110,12 @@ ukijumuisha f():
 """
 
 with_as = """\
-ukijumuisha f() as x:
+ukijumuisha f() kama x:
     suite1
 """
 
 with_two_items = """\
-ukijumuisha f() as x, g() as y:
+ukijumuisha f() kama x, g() kama y:
     suite1
 """
 
@@ -191,18 +191,18 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip("a ni b ni c ni sio d")
 
     eleza test_function_arguments(self):
-        self.check_roundtrip("eleza f(): pass")
-        self.check_roundtrip("eleza f(a): pass")
-        self.check_roundtrip("eleza f(b = 2): pass")
-        self.check_roundtrip("eleza f(a, b): pass")
-        self.check_roundtrip("eleza f(a, b = 2): pass")
-        self.check_roundtrip("eleza f(a = 5, b = 2): pass")
-        self.check_roundtrip("eleza f(*, a = 1, b = 2): pass")
-        self.check_roundtrip("eleza f(*, a = 1, b): pass")
-        self.check_roundtrip("eleza f(*, a, b = 2): pass")
-        self.check_roundtrip("eleza f(a, b = Tupu, *, c, **kwds): pass")
-        self.check_roundtrip("eleza f(a=2, *args, c=5, d, **kwds): pass")
-        self.check_roundtrip("eleza f(*args, **kwargs): pass")
+        self.check_roundtrip("eleza f(): pita")
+        self.check_roundtrip("eleza f(a): pita")
+        self.check_roundtrip("eleza f(b = 2): pita")
+        self.check_roundtrip("eleza f(a, b): pita")
+        self.check_roundtrip("eleza f(a, b = 2): pita")
+        self.check_roundtrip("eleza f(a = 5, b = 2): pita")
+        self.check_roundtrip("eleza f(*, a = 1, b = 2): pita")
+        self.check_roundtrip("eleza f(*, a = 1, b): pita")
+        self.check_roundtrip("eleza f(*, a, b = 2): pita")
+        self.check_roundtrip("eleza f(a, b = Tupu, *, c, **kwds): pita")
+        self.check_roundtrip("eleza f(a=2, *args, c=5, d, **kwds): pita")
+        self.check_roundtrip("eleza f(*args, **kwargs): pita")
 
     eleza test_relative_import(self):
         self.check_roundtrip(relative_import)
@@ -217,11 +217,11 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip("b'123'")
 
     eleza test_annotations(self):
-        self.check_roundtrip("eleza f(a : int): pass")
-        self.check_roundtrip("eleza f(a: int = 5): pass")
-        self.check_roundtrip("eleza f(*args: [int]): pass")
-        self.check_roundtrip("eleza f(**kwargs: dict): pass")
-        self.check_roundtrip("eleza f() -> Tupu: pass")
+        self.check_roundtrip("eleza f(a : int): pita")
+        self.check_roundtrip("eleza f(a: int = 5): pita")
+        self.check_roundtrip("eleza f(*args: [int]): pita")
+        self.check_roundtrip("eleza f(**kwargs: dict): pita")
+        self.check_roundtrip("eleza f() -> Tupu: pita")
 
     eleza test_set_literal(self):
         self.check_roundtrip("{'a', 'b', 'c'}")
@@ -236,7 +236,7 @@ kundi UnparseTestCase(ASTTestCase):
         self.check_roundtrip(class_decorator)
 
     eleza test_class_definition(self):
-        self.check_roundtrip("kundi A(metaclass=type, *[], **{}): pass")
+        self.check_roundtrip("kundi A(metaclass=type, *[], **{}): pita")
 
     eleza test_elifs(self):
         self.check_roundtrip(elif1)

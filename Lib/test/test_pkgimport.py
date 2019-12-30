@@ -42,7 +42,7 @@ kundi TestImport(unittest.TestCase):
         compiled_path = cache_from_source(self.module_path)
         ikiwa os.path.exists(compiled_path):
             os.remove(compiled_path)
-        ukijumuisha open(self.module_path, 'w') as f:
+        ukijumuisha open(self.module_path, 'w') kama f:
             f.write(contents)
 
     eleza test_package_import__semantics(self):
@@ -52,8 +52,8 @@ kundi TestImport(unittest.TestCase):
         # ...try loading the module when there's a SyntaxError
         self.rewrite_file('for')
         jaribu: __import__(self.module_name)
-        except SyntaxError: pass
-        isipokua:  ashiria RuntimeError('Failed to induce SyntaxError') # self.fail()?
+        tatizo SyntaxError: pita
+        isipokua: ashiria RuntimeError('Failed to induce SyntaxError') # self.fail()?
         self.assertNotIn(self.module_name, sys.modules)
         self.assertUongo(hasattr(sys.modules[self.package_name], 'foo'))
 
@@ -66,8 +66,8 @@ kundi TestImport(unittest.TestCase):
         self.rewrite_file(var)
 
         jaribu: __import__(self.module_name)
-        except NameError: pass
-        isipokua:  ashiria RuntimeError('Failed to induce NameError.')
+        tatizo NameError: pita
+        isipokua: ashiria RuntimeError('Failed to induce NameError.')
 
         # ...now  change  the module  so  that  the NameError  doesn't
         # happen

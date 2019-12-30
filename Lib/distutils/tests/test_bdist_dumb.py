@@ -22,7 +22,7 @@ setup(name='foo', version='0.1', py_modules=['foo'],
 jaribu:
     agiza zlib
     ZLIB_SUPPORT = Kweli
-except ImportError:
+tatizo ImportError:
     ZLIB_SUPPORT = Uongo
 
 

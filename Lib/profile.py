@@ -12,7 +12,7 @@
 # Licensed to PSF under a Contributor Agreement
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may sio use this file except kwenye compliance ukijumuisha the License.
+# you may sio use this file tatizo kwenye compliance ukijumuisha the License.
 # You may obtain a copy of the License at
 #
 # http://www.apache.org/licenses/LICENSE-2.0
@@ -51,8 +51,8 @@ kundi _Utils:
         prof = self.profiler()
         jaribu:
             prof.run(statement)
-        except SystemExit:
-            pass
+        tatizo SystemExit:
+            pita
         mwishowe:
             self._show(prof, filename, sort)
 
@@ -60,8 +60,8 @@ kundi _Utils:
         prof = self.profiler()
         jaribu:
             prof.runctx(statement, globals, locals)
-        except SystemExit:
-            pass
+        tatizo SystemExit:
+            pita
         mwishowe:
             self._show(prof, filename, sort)
 
@@ -80,7 +80,7 @@ kundi _Utils:
 eleza run(statement, filename=Tupu, sort=-1):
     """Run statement under profiler optionally saving results kwenye filename
 
-    This function takes a single argument that can be passed to the
+    This function takes a single argument that can be pitaed to the
     "exec" statement, na an optional file name.  In all cases this
     routine attempts to "exec" its first argument na gather profiling
     statistics kutoka the execution. If no file name ni present, then this
@@ -94,7 +94,7 @@ eleza runctx(statement, globals, locals, filename=Tupu, sort=-1):
     """Run statement under profiler, supplying your own globals na locals,
     optionally saving results kwenye filename.
 
-    statement na filename have the same semantics as profile.run
+    statement na filename have the same semantics kama profile.run
     """
     rudisha _Utils(Profile).runctx(statement, globals, locals, filename, sort)
 
@@ -107,9 +107,9 @@ kundi Profile:
     definitions of its members.  We use this external "parallel stack" to
     avoid contaminating the program that we are profiling. (old profiler
     used to write into the frames local dictionary!!) Derived classes
-    can change the definition of some entries, as long as they leave
+    can change the definition of some entries, kama long kama they leave
     [-2:] intact (frame na previous tuple).  In case an internal error is
-    detected, the -3 element ni used as the function name.
+    detected, the -3 element ni used kama the function name.
 
     [ 0] = Time that needs to be charged to the parent frame's function.
            It ni used so that a function call will sio have to access the
@@ -122,7 +122,7 @@ kundi Profile:
     [-2] = Actual frame that we correspond to (used to sync exception handling).
     [-1] = Our parent 6-tuple (corresponds to frame.f_back).
 
-    Timing data kila each function ni stored as a 5-tuple kwenye the dictionary
+    Timing data kila each function ni stored kama a 5-tuple kwenye the dictionary
     self.timings[].  The index ni always the name stored kwenye self.cur[-3].
     The following are the definitions of the members:
 
@@ -158,7 +158,7 @@ kundi Profile:
             t = self.timer() # test out timer function
             jaribu:
                 length = len(t)
-            except TypeError:
+            tatizo TypeError:
                 self.get_time = timer
                 self.dispatcher = self.trace_dispatch_i
             isipokua:
@@ -167,7 +167,7 @@ kundi Profile:
                 isipokua:
                     self.dispatcher = self.trace_dispatch_l
                 # This get_time() implementation needs to be defined
-                # here to capture the passed-in timer kwenye the parameter
+                # here to capture the pitaed-in timer kwenye the parameter
                 # list (kila performance).  Note that we can't assume
                 # the timer() result contains two values kwenye all
                 # cases.
@@ -305,7 +305,7 @@ kundi Profile:
         cc, ns, tt, ct, callers = timings[rfn]
         ikiwa sio ns:
             # This ni the only occurrence of the function on the stack.
-            # Else this ni a (directly ama indirectly) recursive call, and
+            # Else this ni a (directly ama indirectly) recursive call, na
             # its cumulative time will get updated when the topmost call to
             # it returns.
             ct = ct + frame_total
@@ -313,7 +313,7 @@ kundi Profile:
 
         ikiwa pfn kwenye callers:
             callers[pfn] = callers[pfn] + 1  # hack: gather more
-            # stats such as the amount of time added to ct courtesy
+            # stats such kama the amount of time added to ct courtesy
             # of this specific call, na the contribution to cc
             # courtesy of this call.
         isipokua:
@@ -336,8 +336,8 @@ kundi Profile:
 
     # The next few functions play ukijumuisha self.cmd. By carefully preloading
     # our parallel stack, we can force the profiled result to include
-    # an arbitrary string as the name of the calling function.
-    # We use self.cmd as that string, na the resulting stats look
+    # an arbitrary string kama the name of the calling function.
+    # We use self.cmd kama that string, na the resulting stats look
     # very nice :-).
 
     eleza set_cmd(self, cmd):
@@ -389,7 +389,7 @@ kundi Profile:
                   print_stats()
 
     eleza dump_stats(self, file):
-        ukijumuisha open(file, 'wb') as f:
+        ukijumuisha open(file, 'wb') kama f:
             self.create_stats()
             marshal.dump(self.stats, f)
 
@@ -408,7 +408,7 @@ kundi Profile:
 
 
     # The following two methods can be called by clients to use
-    # a profiler to profile a statement, given as a string.
+    # a profiler to profile a statement, given kama a string.
 
     eleza run(self, cmd):
         agiza __main__
@@ -428,17 +428,17 @@ kundi Profile:
     eleza runcall(*args, **kw):
         ikiwa len(args) >= 2:
             self, func, *args = args
-        elikiwa sio args:
-             ashiria TypeError("descriptor 'runcall' of 'Profile' object "
+        lasivyo sio args:
+            ashiria TypeError("descriptor 'runcall' of 'Profile' object "
                             "needs an argument")
-        elikiwa 'func' kwenye kw:
+        lasivyo 'func' kwenye kw:
             func = kw.pop('func')
             self, *args = args
             agiza warnings
-            warnings.warn("Passing 'func' as keyword argument ni deprecated",
+            warnings.warn("Passing 'func' kama keyword argument ni deprecated",
                           DeprecationWarning, stacklevel=2)
         isipokua:
-             ashiria TypeError('runcall expected at least 1 positional argument, '
+            ashiria TypeError('runcall expected at least 1 positional argument, '
                             'got %d' % (len(args)-1))
 
         self.set_cmd(repr(func))
@@ -465,7 +465,7 @@ kundi Profile:
     # profiler calibrated kila the current platform.  This *could* be
     # done on the fly during init() time, but it ni sio worth the
     # effort.  Also note that ikiwa too large a value specified, then
-    # execution time on some functions will actually appear as a
+    # execution time on some functions will actually appear kama a
     # negative number.  It ni *normal* kila some functions (ukijumuisha very
     # low call counts) to have such negative stats, even ikiwa the
     # calibration figure ni "correct."
@@ -492,7 +492,7 @@ kundi Profile:
 
     eleza calibrate(self, m, verbose=0):
         ikiwa self.__class__ ni sio Profile:
-             ashiria TypeError("Subclasses must override .calibrate().")
+            ashiria TypeError("Subclasses must override .calibrate().")
 
         saved_bias = self.bias
         self.bias = 0
@@ -506,7 +506,7 @@ kundi Profile:
 
         # Set up a test case to be run ukijumuisha na without profiling.  Include
         # lots of calls, because we're trying to quantify stopwatch overhead.
-        # Do sio  ashiria any exceptions, though, because we want to know
+        # Do sio ashiria any exceptions, though, because we want to know
         # exactly how many profile events are generated (one call event, +
         # one rudisha event, per Python-level call).
 
@@ -552,7 +552,7 @@ kundi Profile:
             andika("'CPU seconds' profiler reported =", reported_time)
             andika("total # calls =", total_calls)
         ikiwa total_calls != m + 1:
-             ashiria ValueError("internal error: total calls = %d" % total_calls)
+            ashiria ValueError("internal error: total calls = %d" % total_calls)
 
         # reported_time - elapsed_noprofile = overhead the profiler wasn't
         # able to measure.  Divide by twice the number of calls (since there
@@ -598,7 +598,7 @@ eleza main():
         isipokua:
             progname = args[0]
             sys.path.insert(0, os.path.dirname(progname))
-            ukijumuisha open(progname, 'rb') as fp:
+            ukijumuisha open(progname, 'rb') kama fp:
                 code = compile(fp.read(), progname, 'exec')
             globs = {
                 '__file__': progname,
@@ -611,6 +611,6 @@ eleza main():
         parser.print_usage()
     rudisha parser
 
-# When invoked as main program, invoke the profiler on a script
+# When invoked kama main program, invoke the profiler on a script
 ikiwa __name__ == '__main__':
     main()

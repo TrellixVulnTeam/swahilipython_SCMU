@@ -143,14 +143,14 @@ kundi bdist_msi(Command):
             self.bdist_dir = os.path.join(bdist_base, 'msi')
 
         short_version = get_python_version()
-        ikiwa (not self.target_version) na self.distribution.has_ext_modules():
+        ikiwa (sio self.target_version) na self.distribution.has_ext_modules():
             self.target_version = short_version
 
         ikiwa self.target_version:
             self.versions = [self.target_version]
             ikiwa sio self.skip_build na self.distribution.has_ext_modules()\
                na self.target_version != short_version:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "target version can only be %s, ama the '--skip-build'"
                       " option must be specified" % (short_version,))
         isipokua:
@@ -162,7 +162,7 @@ kundi bdist_msi(Command):
                                    )
 
         ikiwa self.pre_install_script:
-             ashiria DistutilsOptionError(
+            ashiria DistutilsOptionError(
                   "the pre-install-script feature ni sio yet implemented")
 
         ikiwa self.install_script:
@@ -170,7 +170,7 @@ kundi bdist_msi(Command):
                 ikiwa self.install_script == os.path.basename(script):
                     koma
             isipokua:
-                 ashiria DistutilsOptionError(
+                ashiria DistutilsOptionError(
                       "install_script '%s' sio found kwenye scripts"
                       % self.install_script)
         self.install_script_key = Tupu
@@ -209,7 +209,7 @@ kundi bdist_msi(Command):
         install.ensure_finalized()
 
         # avoid warning of 'install_lib' about installing
-        # into a directory sio kwenye sys.path
+        # into a directory haiko kwenye sys.path
         sys.path.insert(0, os.path.join(self.bdist_dir, 'PURELIB'))
 
         install.run()
@@ -306,11 +306,11 @@ kundi bdist_msi(Command):
                     isipokua:
                         ikiwa sio dir.component:
                             dir.start_component(dir.logical, feature, 0)
-                        ikiwa afile sio kwenye seen:
+                        ikiwa afile haiko kwenye seen:
                             key = seen[afile] = dir.add_file(file)
                             ikiwa file==self.install_script:
                                 ikiwa self.install_script_key:
-                                     ashiria DistutilsOptionError(
+                                    ashiria DistutilsOptionError(
                                           "Multiple files ukijumuisha name %s" % file)
                                 self.install_script_key = '[#%s]' % key
                         isipokua:
@@ -387,10 +387,10 @@ kundi bdist_msi(Command):
                 start += 1
         # XXX pre-install scripts are currently refused kwenye finalize_options()
         #     but ikiwa this feature ni completed, it will also need to add
-        #     entries kila each version as the above code does
+        #     entries kila each version kama the above code does
         ikiwa self.pre_install_script:
             scriptfn = os.path.join(self.bdist_dir, "preinstall.bat")
-            ukijumuisha open(scriptfn, "w") as f:
+            ukijumuisha open(scriptfn, "w") kama f:
                 # The batch file will be executed ukijumuisha [PYTHON], so that %1
                 # ni the path to the Python interpreter; %0 will be the path
                 # of the batch file.
@@ -400,7 +400,7 @@ kundi bdist_msi(Command):
                 # """
                 # <actual script>
                 f.write('rem ="""\n%1 %0\nexit\n"""\n')
-                ukijumuisha open(self.pre_install_script) as fin:
+                ukijumuisha open(self.pre_install_script) kama fin:
                     f.write(fin.read())
             add_data(self.db, "Binary",
                 [("PreInstall", msilib.Binary(scriptfn))
@@ -558,7 +558,7 @@ kundi bdist_msi(Command):
         c.event("EndDialog", "Exit")
 
         #####################################################################
-        # Preparation dialog: no user input except cancellation
+        # Preparation dialog: no user input tatizo cancellation
         prep = PyDialog(db, "PrepareDlg", x, y, w, h, modeless, title,
                         "Cancel", "Cancel", "Cancel")
         prep.text("Description", 15, 70, 320, 40, 0x30003,

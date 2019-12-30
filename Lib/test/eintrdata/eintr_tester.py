@@ -55,7 +55,7 @@ kundi EINTRBaseTest(unittest.TestCase):
         signal.setitimer(signal.ITIMER_REAL, self.signal_delay,
                          self.signal_period)
 
-        # Use faulthandler as watchdog to debug when a test hangs
+        # Use faulthandler kama watchdog to debug when a test hangs
         # (timeout of 10 minutes)
         ikiwa hasattr(faulthandler, 'dump_traceback_later'):
             faulthandler.dump_traceback_later(10 * 60, exit=Kweli,
@@ -135,7 +135,7 @@ kundi OSEINTRTest(EINTRBaseTest):
             '    os.write(wr, data)',
         ))
 
-        proc = self.subprocess(code, str(wr), pass_fds=[wr])
+        proc = self.subprocess(code, str(wr), pita_fds=[wr])
         ukijumuisha kill_on_error(proc):
             os.close(wr)
             kila data kwenye datas:
@@ -168,11 +168,11 @@ kundi OSEINTRTest(EINTRBaseTest):
             '',
             'value = read_data.getvalue()',
             'ikiwa value != data:',
-            '     ashiria Exception("read error: %s vs %s bytes"',
+            '    ashiria Exception("read error: %s vs %s bytes"',
             '                    % (len(value), data_len))',
         ))
 
-        proc = self.subprocess(code, str(rd), pass_fds=[rd])
+        proc = self.subprocess(code, str(rd), pita_fds=[rd])
         ukijumuisha kill_on_error(proc):
             os.close(rd)
             written = 0
@@ -214,7 +214,7 @@ kundi SocketEINTRTest(EINTRBaseTest):
         ))
 
         fd = wr.fileno()
-        proc = self.subprocess(code, str(fd), pass_fds=[fd])
+        proc = self.subprocess(code, str(fd), pita_fds=[fd])
         ukijumuisha kill_on_error(proc):
             wr.close()
             kila data kwenye datas:
@@ -259,12 +259,12 @@ kundi SocketEINTRTest(EINTRBaseTest):
             '        n += rd.recv_into(memoryview(received_data)[n:])',
             '',
             'ikiwa received_data != data:',
-            '     ashiria Exception("recv error: %s vs %s bytes"',
+            '    ashiria Exception("recv error: %s vs %s bytes"',
             '                    % (len(received_data), data_len))',
         ))
 
         fd = rd.fileno()
-        proc = self.subprocess(code, str(fd), pass_fds=[fd])
+        proc = self.subprocess(code, str(fd), pita_fds=[fd])
         ukijumuisha kill_on_error(proc):
             rd.close()
             written = 0
@@ -322,7 +322,7 @@ kundi SocketEINTRTest(EINTRBaseTest):
         support.unlink(filename)
         jaribu:
             os.mkfifo(filename)
-        except PermissionError as e:
+        tatizo PermissionError kama e:
             self.skipTest('os.mkfifo(): %s' % e)
         self.addCleanup(support.unlink, filename)
 
@@ -490,22 +490,22 @@ kundi FNTLEINTRTest(EINTRBaseTest):
         self.addCleanup(support.unlink, support.TESTFN)
         code = '\n'.join((
             "agiza fcntl, time",
-            "ukijumuisha open('%s', 'wb') as f:" % support.TESTFN,
+            "ukijumuisha open('%s', 'wb') kama f:" % support.TESTFN,
             "   fcntl.%s(f, fcntl.LOCK_EX)" % lock_name,
             "   time.sleep(%s)" % self.sleep_time))
         start_time = time.monotonic()
         proc = self.subprocess(code)
         ukijumuisha kill_on_error(proc):
-            ukijumuisha open(support.TESTFN, 'wb') as f:
+            ukijumuisha open(support.TESTFN, 'wb') kama f:
                 wakati Kweli:  # synchronize the subprocess
                     dt = time.monotonic() - start_time
                     ikiwa dt > 60.0:
-                         ashiria Exception("failed to sync child kwenye %.1f sec" % dt)
+                        ashiria Exception("failed to sync child kwenye %.1f sec" % dt)
                     jaribu:
                         lock_func(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
                         lock_func(f, fcntl.LOCK_UN)
                         time.sleep(0.01)
-                    except BlockingIOError:
+                    tatizo BlockingIOError:
                         koma
                 # the child locked the file just a moment ago kila 'sleep_time' seconds
                 # that means that the lock below will block kila 'sleep_time' minus some

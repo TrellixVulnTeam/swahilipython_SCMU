@@ -16,7 +16,7 @@ kundi FunctionCallTestCase(unittest.TestCase):
         # "Windows fatal exception: access violation"
         ukijumuisha support.disable_faulthandler():
             # Call functions ukijumuisha invalid arguments, na make sure
-            # that access violations are trapped na  ashiria an
+            # that access violations are trapped na ashiria an
             # exception.
             self.assertRaises(OSError, windll.kernel32.GetModuleHandleA, 32)
 
@@ -83,8 +83,8 @@ kundi TestWinError(unittest.TestCase):
 
         windll.kernel32.SetLastError(ERROR_INVALID_PARAMETER)
         jaribu:
-             ashiria WinError()
-        except OSError as exc:
+            ashiria WinError()
+        tatizo OSError kama exc:
             e = exc
         self.assertEqual(e.args, args)
         self.assertEqual(e.errno, errno.EINVAL)
@@ -122,7 +122,7 @@ kundi Structures(unittest.TestCase):
             ret = ReturnRect(i, rect, pointer(rect), pt, rect,
                          byref(rect), pt, rect)
             # the c function will check na modify ret ikiwa something is
-            # passed kwenye improperly
+            # pitaed kwenye improperly
             self.assertEqual(ret.left, left.value)
             self.assertEqual(ret.right, right.value)
             self.assertEqual(ret.top, top.value)

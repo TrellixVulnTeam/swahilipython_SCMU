@@ -66,13 +66,13 @@ kundi MsiDatabaseTestCase(unittest.TestCase):
             os.unlink(db_path)
 
     eleza test_database_open_failed(self):
-        ukijumuisha self.assertRaises(msilib.MSIError) as cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
             msilib.OpenDatabase('non-existent.msi', msilib.MSIDBOPEN_READONLY)
         self.assertEqual(str(cm.exception), 'open failed')
 
     eleza test_database_create_failed(self):
         db_path = os.path.join(TESTFN, 'test.msi')
-        ukijumuisha self.assertRaises(msilib.MSIError) as cm:
+        ukijumuisha self.assertRaises(msilib.MSIError) kama cm:
             msilib.OpenDatabase(db_path, msilib.MSIDBOPEN_CREATE)
         self.assertEqual(str(cm.exception), 'create failed')
 

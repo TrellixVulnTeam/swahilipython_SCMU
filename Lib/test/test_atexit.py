@@ -20,13 +20,13 @@ eleza h4(*args, **kwargs):
     andika("h4", args, kwargs)
 
 eleza raise1():
-     ashiria TypeError
+    ashiria TypeError
 
 eleza raise2():
-     ashiria SystemError
+    ashiria SystemError
 
 eleza exit():
-     ashiria SystemExit
+    ashiria SystemExit
 
 
 kundi GeneralTest(unittest.TestCase):
@@ -181,7 +181,7 @@ kundi SubinterpreterTest(unittest.TestCase):
         code = r"""ikiwa 1:
             agiza atexit
             eleza f():
-                pass
+                pita
             atexit.register(f)
             toa atexit
             """
@@ -196,7 +196,7 @@ kundi SubinterpreterTest(unittest.TestCase):
         code = r"""ikiwa 1:
             agiza atexit
             eleza f():
-                pass
+                pita
             atexit.register(f)
             atexit.__atexit = atexit
             """
@@ -207,14 +207,14 @@ kundi SubinterpreterTest(unittest.TestCase):
     eleza test_callback_on_subinterpreter_teardown(self):
         # This tests ikiwa a callback ni called on
         # subinterpreter teardown.
-        expected = b"The test has passed!"
+        expected = b"The test has pitaed!"
         r, w = os.pipe()
 
         code = r"""ikiwa 1:
             agiza os
             agiza atexit
             eleza callback():
-                os.write({:d}, b"The test has passed!")
+                os.write({:d}, b"The test has pitaed!")
             atexit.register(callback)
         """.format(w)
         ret = support.run_in_subinterp(code)

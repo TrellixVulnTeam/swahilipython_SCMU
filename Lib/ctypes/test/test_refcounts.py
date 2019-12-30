@@ -13,7 +13,7 @@ kundi RefcountTestCase(unittest.TestCase):
 
     @support.refcount_test
     eleza test_1(self):
-        kutoka sys agiza getrefcount as grc
+        kutoka sys agiza getrefcount kama grc
 
         f = dll._testfunc_callback_i_if
         f.restype = ctypes.c_int
@@ -38,9 +38,9 @@ kundi RefcountTestCase(unittest.TestCase):
 
     @support.refcount_test
     eleza test_refcount(self):
-        kutoka sys agiza getrefcount as grc
+        kutoka sys agiza getrefcount kama grc
         eleza func(*args):
-            pass
+            pita
         # this ni the standard refcount kila func
         self.assertEqual(grc(func), 2)
 

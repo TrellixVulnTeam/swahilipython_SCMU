@@ -43,7 +43,7 @@ kundi TestEmailMessageBase:
     # The first argument ni a triple (related, html, plain) of indices into the
     # list returned by 'walk' called on a Message constructed kutoka the third.
     # The indices indicate which part should match the corresponding part-type
-    # when passed to get_body (ie: the "first" part of that type kwenye the
+    # when pitaed to get_body (ie: the "first" part of that type kwenye the
     # message).  The second argument ni a list of indices into the 'walk' list
     # of the attachments that should be returned by a call to
     # 'iter_attachments'.  The third argument ni a list of indices into 'walk'
@@ -543,11 +543,11 @@ kundi TestEmailMessageBase:
         self.assertEqual(cm.args, ('foo',))
         self.assertEqual(cm.kw, dict(bar=1, k=2))
 
-    # outcome ni whether xxx_method should  ashiria ValueError error when called
+    # outcome ni whether xxx_method should ashiria ValueError error when called
     # on multipart/subtype.  Blank outcome means it depends on xxx (add
     # succeeds, make raises).  Note: 'none' means there are content-type
     # headers but payload ni Tupu...this happening kwenye practice would be very
-    # unusual, so treating it as ikiwa there were content seems reasonable.
+    # unusual, so treating it kama ikiwa there were content seems reasonable.
     #    method          subtype           outcome
     subtype_params = (
         ('related',      'no_content',     'succeeds'),
@@ -584,7 +584,7 @@ kundi TestEmailMessageBase:
             payload = ''
             msg_headers.append(('Content-Type', 'text/plain'))
             m.set_payload('')
-        elikiwa subtype != 'no_content':
+        lasivyo subtype != 'no_content':
             payload = []
             msg_headers.append(('Content-Type', 'multipart/' + subtype))
         msg_headers.append(('X-Trump', 'Random'))
@@ -594,7 +594,7 @@ kundi TestEmailMessageBase:
         rudisha m, msg_headers, payload
 
     eleza _check_disallowed_subtype_raises(self, m, method_name, subtype, method):
-        ukijumuisha self.assertRaises(ValueError) as ar:
+        ukijumuisha self.assertRaises(ValueError) kama ar:
             getattr(m, method)()
         exc_text = str(ar.exception)
         self.assertIn(subtype, exc_text)
@@ -639,12 +639,12 @@ kundi TestEmailMessageBase:
         m = self.message()
         ikiwa outcome kwenye ('', 'raises'):
             m['Content-Type'] = 'multipart/' + subtype
-            ukijumuisha self.assertRaises(ValueError) as cm:
+            ukijumuisha self.assertRaises(ValueError) kama cm:
                 getattr(m, 'make_' + method)()
             return
         ikiwa subtype == 'plain':
             m['Content-Type'] = 'text/plain'
-        elikiwa subtype != 'no_content':
+        lasivyo subtype != 'no_content':
             m['Content-Type'] = 'multipart/' + subtype
         getattr(m, 'make_' + method)(boundary="abc")
         self.assertKweli(m.is_multipart())
@@ -685,7 +685,7 @@ kundi TestEmailMessageBase:
         self.assertEqual(part.get_payload(), 'test')
         ikiwa method=='mixed':
             self.assertEqual(part['Content-Disposition'], 'attachment')
-        elikiwa method=='related':
+        lasivyo method=='related':
             self.assertEqual(part['Content-Disposition'], 'inline')
         isipokua:
             # Otherwise we don't guess.
@@ -693,13 +693,13 @@ kundi TestEmailMessageBase:
 
     kundi _TestSetRaisingContentManager:
         eleza set_content(self, msg, content, *args, **kw):
-             ashiria Exception('test')
+            ashiria Exception('test')
 
     eleza test_default_content_manager_for_add_comes_from_policy(self):
         cm = self._TestSetRaisingContentManager()
         m = self.message(policy=self.policy.clone(content_manager=cm))
         kila method kwenye ('add_related', 'add_alternative', 'add_attachment'):
-            ukijumuisha self.assertRaises(Exception) as ar:
+            ukijumuisha self.assertRaises(Exception) kama ar:
                 getattr(m, method)('')
             self.assertEqual(str(ar.exception), 'test')
 
@@ -735,9 +735,9 @@ kundi TestEmailMessageBase:
     eleza test_iter_attachments_mutation(self):
         # We had a bug where iter_attachments was mutating the list.
         m = self._make_message()
-        m.set_content('arbitrary text as main part')
-        m.add_related('more text as a related part')
-        m.add_related('yet more text as a second "attachment"')
+        m.set_content('arbitrary text kama main part')
+        m.add_related('more text kama a related part')
+        m.add_related('yet more text kama a second "attachment"')
         orig = m.get_payload().copy()
         self.assertEqual(len(list(m.iter_attachments())), 2)
         self.assertEqual(m.get_payload(), orig)

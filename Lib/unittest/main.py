@@ -37,7 +37,7 @@ eleza _convert_name(name):
             ikiwa os.path.isabs(rel_path) ama rel_path.startswith(os.pardir):
                 rudisha name
             name = rel_path
-        # on Windows both '\' na '/' are used as path
+        # on Windows both '\' na '/' are used kama path
         # separators. Better to replace both than rely on os.path.sep
         rudisha name[:-3].replace('\\', '.').replace('/', '.')
     rudisha name
@@ -87,11 +87,11 @@ kundi TestProgram(object):
             # specified by the warnings arg ama the -W python flag
             self.warnings = 'default'
         isipokua:
-            # here self.warnings ni set either to the value passed
+            # here self.warnings ni set either to the value pitaed
             # to the warnings args ama to Tupu.
-            # If the user didn't pass a value self.warnings will
+            # If the user didn't pita a value self.warnings will
             # be Tupu. This means that the behavior ni unchanged
-            # na depends on the values passed to -W.
+            # na depends on the values pitaed to -W.
             self.warnings = warnings
         self.defaultTest = defaultTest
         self.testRunner = testRunner
@@ -137,10 +137,10 @@ kundi TestProgram(object):
             ikiwa __name__ == '__main__':
                 # to support python -m unittest ...
                 self.module = Tupu
-        elikiwa self.defaultTest ni Tupu:
+        lasivyo self.defaultTest ni Tupu:
             # createTests will load tests kutoka self.module
             self.testNames = Tupu
-        elikiwa isinstance(self.defaultTest, str):
+        lasivyo isinstance(self.defaultTest, str):
             self.testNames = (self.defaultTest,)
         isipokua:
             self.testNames = list(self.defaultTest)
@@ -152,7 +152,7 @@ kundi TestProgram(object):
         ikiwa from_discovery:
             loader = self.testLoader ikiwa Loader ni Tupu isipokua Loader()
             self.test = loader.discover(self.start, self.pattern, self.top)
-        elikiwa self.testNames ni Tupu:
+        lasivyo self.testNames ni Tupu:
             self.test = self.testLoader.loadTestsFromModule(self.module)
         isipokua:
             self.test = self.testLoader.loadTestsFromNames(self.testNames,
@@ -256,13 +256,13 @@ kundi TestProgram(object):
                                                  buffer=self.buffer,
                                                  warnings=self.warnings,
                                                  tb_locals=self.tb_locals)
-                except TypeError:
+                tatizo TypeError:
                     # didn't accept the tb_locals argument
                     testRunner = self.testRunner(verbosity=self.verbosity,
                                                  failfast=self.failfast,
                                                  buffer=self.buffer,
                                                  warnings=self.warnings)
-            except TypeError:
+            tatizo TypeError:
                 # didn't accept the verbosity, buffer ama failfast arguments
                 testRunner = self.testRunner()
         isipokua:
@@ -270,6 +270,6 @@ kundi TestProgram(object):
             testRunner = self.testRunner
         self.result = testRunner.run(self.test)
         ikiwa self.exit:
-            sys.exit(not self.result.wasSuccessful())
+            sys.exit(sio self.result.wasSuccessful())
 
 main = TestProgram

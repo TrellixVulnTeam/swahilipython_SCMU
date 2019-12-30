@@ -2,7 +2,7 @@ agiza unittest
 kutoka test agiza support
 
 agiza io # C implementation.
-agiza _pyio as pyio # Python implementation.
+agiza _pyio kama pyio # Python implementation.
 
 # Simple test to ensure that optimizations kwenye the IO library deliver the
 # expected results.  For best testing, run this under a debug-build Python too
@@ -41,7 +41,7 @@ kundi BufferSizeTest:
 
     eleza drive_one(self, pattern):
         kila length kwenye lengths:
-            # Repeat string 'pattern' as often as needed to reach total length
+            # Repeat string 'pattern' kama often kama needed to reach total length
             # 'length'.  Then call try_one ukijumuisha that string, a string one larger
             # than that, na a string one smaller than that.  Try this ukijumuisha all
             # small sizes na various powers of 2, so we exercise all likely

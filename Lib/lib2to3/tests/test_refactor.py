@@ -106,12 +106,12 @@ kutoka __future__ agiza print_function"""
         self.assertEqual(run(inp), fs(("print_function",)))
         inp = "# comment\n'doc'\nkutoka __future__ agiza print_function"
         self.assertEqual(run(inp), fs(("print_function",)))
-        inp = "kundi x: pass\nkutoka __future__ agiza print_function"
+        inp = "kundi x: pita\nkutoka __future__ agiza print_function"
         self.assertEqual(run(inp), empty)
 
     eleza test_get_headnode_dict(self):
         kundi TupuFix(fixer_base.BaseFix):
-            pass
+            pita
 
         kundi FileInputFix(fixer_base.BaseFix):
             PATTERN = "file_input< any * >"
@@ -149,11 +149,11 @@ kutoka __future__ agiza print_function"""
 
     eleza test_refactor_string(self):
         rt = self.rt()
-        input = "eleza parrot(): pass\n\n"
+        input = "eleza parrot(): pita\n\n"
         tree = rt.refactor_string(input, "<test>")
         self.assertNotEqual(str(tree), input)
 
-        input = "eleza f(): pass\n\n"
+        input = "eleza f(): pita\n\n"
         tree = rt.refactor_string(input, "<test>")
         self.assertEqual(str(tree), input)
 
@@ -167,13 +167,13 @@ kutoka __future__ agiza print_function"""
         results = []
         rt = MyRT(_DEFAULT_FIXERS)
         save = sys.stdin
-        sys.stdin = io.StringIO("eleza parrot(): pass\n\n")
+        sys.stdin = io.StringIO("eleza parrot(): pita\n\n")
         jaribu:
             rt.refactor_stdin()
         mwishowe:
             sys.stdin = save
-        expected = ["eleza parrot(): pass\n\n",
-                    "eleza cheese(): pass\n\n",
+        expected = ["eleza parrot(): pita\n\n",
+                    "eleza cheese(): pita\n\n",
                     "<stdin>", Uongo]
         self.assertEqual(results, expected)
 
@@ -205,7 +205,7 @@ kutoka __future__ agiza print_function"""
         rudisha test_file
 
     eleza read_file(self, test_file):
-        ukijumuisha open(test_file, "rb") as fp:
+        ukijumuisha open(test_file, "rb") kama fp:
             rudisha fp.read()
 
     eleza refactor_file(self, test_file, fixers=_2TO3_FIXERS):
@@ -229,7 +229,7 @@ kutoka __future__ agiza print_function"""
                                     options={"write_unchanged_files": Kweli},
                                     mock_log_debug=recording_log_debug,
                                     actually_write=Uongo)
-        # Testing that it logged this message when write=Uongo was passed is
+        # Testing that it logged this message when write=Uongo was pitaed is
         # sufficient to see that it did sio bail early after "No changes".
         message_regex = r"Not writing changes to .*%s" % \
                 re.escape(os.sep + os.path.basename(test_file))

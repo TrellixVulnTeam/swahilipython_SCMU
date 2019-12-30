@@ -2,7 +2,7 @@ agiza asyncore
 agiza base64
 agiza email.mime.text
 kutoka email.message agiza EmailMessage
-kutoka email.base64mime agiza body_encode as encode_base64
+kutoka email.base64mime agiza body_encode kama encode_base64
 agiza email.utils
 agiza hashlib
 agiza hmac
@@ -30,7 +30,7 @@ ikiwa sys.platform == 'darwin':
     # select.poll returns a select.POLLHUP at the end of the tests
     # on darwin, so just ignore it
     eleza handle_expt(self):
-        pass
+        pita
     smtpd.SMTPChannel.handle_expt = handle_expt
 
 
@@ -39,8 +39,8 @@ eleza server(evt, buf, serv):
     evt.set()
     jaribu:
         conn, addr = serv.accept()
-    except socket.timeout:
-        pass
+    tatizo socket.timeout:
+        pita
     isipokua:
         n = 500
         wakati buf na n > 0:
@@ -132,7 +132,7 @@ kundi GeneralTests(unittest.TestCase):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(1)
-        ukijumuisha support.captured_stderr() as stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             smtp.connect(HOST, self.port)
         smtp.close()
         expected = re.compile(r"^connect:", re.MULTILINE)
@@ -142,7 +142,7 @@ kundi GeneralTests(unittest.TestCase):
         mock_socket.reply_with(b"220 Hello world")
         smtp = smtplib.SMTP()
         smtp.set_debuglevel(2)
-        ukijumuisha support.captured_stderr() as stderr:
+        ukijumuisha support.captured_stderr() kama stderr:
             smtp.connect(HOST, self.port)
         smtp.close()
         expected = re.compile(r"^\d{2}:\d{2}:\d{2}\.\d{6} connect: ",
@@ -172,8 +172,8 @@ eleza debugging_server(serv, serv_evt, client_evt):
 
             n -= 1
 
-    except socket.timeout:
-        pass
+    tatizo socket.timeout:
+        pita
     mwishowe:
         ikiwa sio client_evt.is_set():
             # allow some time kila the client to read the result
@@ -209,7 +209,7 @@ kundi DebuggingServerTests(unittest.TestCase):
         # Capture SMTPChannel debug output
         self.old_DEBUGSTREAM = smtpd.DEBUGSTREAM
         smtpd.DEBUGSTREAM = io.StringIO()
-        # Pick a random unused port by passing 0 kila the port number
+        # Pick a random unused port by pitaing 0 kila the port number
         self.serv = smtpd.DebuggingServer((HOST, 0), ('nowhere', -1),
                                           decode_data=Kweli)
         # Keep a note of what server host na port were assigned
@@ -258,7 +258,7 @@ kundi DebuggingServerTests(unittest.TestCase):
             self.assertEqual(smtp.source_address, (self.host, src_port))
             self.assertEqual(smtp.local_hostname, 'localhost')
             smtp.quit()
-        except OSError as e:
+        tatizo OSError kama e:
             ikiwa e.errno == errno.EADDRINUSE:
                 self.skipTest("couldn't bind to source port %d" % src_port)
             raise
@@ -399,10 +399,10 @@ kundi DebuggingServerTests(unittest.TestCase):
         self.client_evt.set()
         self.serv_evt.wait()
         self.output.flush()
-        # Remove the X-Peer header that DebuggingServer adds as figuring out
+        # Remove the X-Peer header that DebuggingServer adds kama figuring out
         # exactly what IP address format ni put there ni sio easy (and
         # irrelevant to our test).  Typically 127.0.0.1 ama ::1, but it is
-        # sio always the same as socket.gethostbyname(HOST). :(
+        # sio always the same kama socket.gethostbyname(HOST). :(
         test_output = self.get_output_without_xpeer()
         toa m['X-Peer']
         mexpect = '%s%s\n%s' % (MSG_BEGIN, m.as_string(), MSG_END)
@@ -589,7 +589,7 @@ kundi NonConnectingTests(unittest.TestCase):
 
     eleza testNotConnected(self):
         # Test various operations on an unconnected SMTP object that
-        # should  ashiria exceptions (at present the attempt kwenye SMTP.send
+        # should ashiria exceptions (at present the attempt kwenye SMTP.send
         # to reference the nonexistent 'sock' attribute of the SMTP object
         # causes an AttributeError)
         smtp = smtplib.SMTP()
@@ -608,7 +608,7 @@ kundi NonConnectingTests(unittest.TestCase):
         # check that sock attribute ni present outside of a connect() call
         # (regression test, the previous behavior raised an
         #  AttributeError: 'SMTP' object has no attribute 'sock')
-        ukijumuisha smtplib.SMTP() as smtp:
+        ukijumuisha smtplib.SMTP() kama smtp:
             self.assertIsTupu(smtp.sock)
 
 
@@ -696,7 +696,7 @@ sim_users = {'Mr.A@somewhere.com':'John A',
              'Mrs.C@somewhereesle.com':'Ruth C',
             }
 
-sim_auth = ('Mr.A@somewhere.com', 'somepassword')
+sim_auth = ('Mr.A@somewhere.com', 'somepitaword')
 sim_cram_md5_challenge = ('PENCeUxFREJoU0NnbmhNWitOMjNGNn'
                           'dAZWx3b29kLmlubm9zb2Z0LmNvbT4=')
 sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
@@ -704,7 +704,7 @@ sim_lists = {'list-1':['Mr.A@somewhere.com','Mrs.C@somewhereesle.com'],
             }
 
 # Simulated SMTP channel & server
-kundi ResponseException(Exception): pass
+kundi ResponseException(Exception): pita
 kundi SimSMTPChannel(smtpd.SMTPChannel):
 
     quit_response = Tupu
@@ -730,7 +730,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
             self.received_lines = []
             jaribu:
                 self.auth_object(line)
-            except ResponseException as e:
+            tatizo ResponseException kama e:
                 self.smtp_state = self.COMMAND
                 self.push('%s %s' % (e.smtp_code, e.smtp_error))
                 return
@@ -741,7 +741,7 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
         ikiwa sio self.seen_greeting:
             self.push('503 Error: send EHLO first')
             return
-        ikiwa sio self.extended_smtp ama 'AUTH' sio kwenye self._extrafeatures:
+        ikiwa sio self.extended_smtp ama 'AUTH' haiko kwenye self._extrafeatures:
             self.push('500 Error: command "AUTH" sio recognized')
             return
         ikiwa self.authenticated_user ni sio Tupu:
@@ -749,13 +749,13 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
                 '503 Bad sequence of commands: already authenticated')
             return
         args = arg.split()
-        ikiwa len(args) sio kwenye [1, 2]:
+        ikiwa len(args) haiko kwenye [1, 2]:
             self.push('501 Syntax: AUTH <mechanism> [initial-response]')
             return
         auth_object_name = '_auth_%s' % args[0].lower().replace('-', '_')
         jaribu:
             self.auth_object = getattr(self, auth_object_name)
-        except AttributeError:
+        tatizo AttributeError:
             self.push('504 Command parameter sio implemented: unsupported '
                       ' authentication mechanism {!r}'.format(auth_object_name))
             return
@@ -777,44 +777,44 @@ kundi SimSMTPChannel(smtpd.SMTPChannel):
         ikiwa arg ni Tupu:
             self.push('334 ')
         isipokua:
-            logpass = self._decode_base64(arg)
+            logpita = self._decode_base64(arg)
             jaribu:
-                *_, user, password = logpass.split('\0')
-            except ValueError as e:
-                self.push('535 Splitting response {!r} into user na password'
-                          ' failed: {}'.format(logpass, e))
+                *_, user, pitaword = logpita.split('\0')
+            tatizo ValueError kama e:
+                self.push('535 Splitting response {!r} into user na pitaword'
+                          ' failed: {}'.format(logpita, e))
                 return
-            self._authenticated(user, password == sim_auth[1])
+            self._authenticated(user, pitaword == sim_auth[1])
 
     eleza _auth_login(self, arg=Tupu):
         ikiwa arg ni Tupu:
             # base64 encoded 'Username:'
             self.push('334 VXNlcm5hbWU6')
-        elikiwa sio hasattr(self, '_auth_login_user'):
+        lasivyo sio hasattr(self, '_auth_login_user'):
             self._auth_login_user = self._decode_base64(arg)
             # base64 encoded 'Password:'
             self.push('334 UGFzc3dvcmQ6')
         isipokua:
-            password = self._decode_base64(arg)
-            self._authenticated(self._auth_login_user, password == sim_auth[1])
+            pitaword = self._decode_base64(arg)
+            self._authenticated(self._auth_login_user, pitaword == sim_auth[1])
             toa self._auth_login_user
 
     eleza _auth_cram_md5(self, arg=Tupu):
         ikiwa arg ni Tupu:
             self.push('334 {}'.format(sim_cram_md5_challenge))
         isipokua:
-            logpass = self._decode_base64(arg)
+            logpita = self._decode_base64(arg)
             jaribu:
-                user, hashed_pass = logpass.split()
-            except ValueError as e:
-                self.push('535 Splitting response {!r} into user na password '
-                          'failed: {}'.format(logpass, e))
+                user, hashed_pita = logpita.split()
+            tatizo ValueError kama e:
+                self.push('535 Splitting response {!r} into user na pitaword '
+                          'failed: {}'.format(logpita, e))
                 rudisha Uongo
-            valid_hashed_pass = hmac.HMAC(
+            valid_hashed_pita = hmac.HMAC(
                 sim_auth[1].encode('ascii'),
                 self._decode_base64(sim_cram_md5_challenge).encode('ascii'),
                 'md5').hexdigest()
-            self._authenticated(user, hashed_pass == valid_hashed_pass)
+            self._authenticated(user, hashed_pita == valid_hashed_pita)
     # end AUTH related stuff.
 
     eleza smtp_EHLO(self, arg):
@@ -919,7 +919,7 @@ kundi SMTPSimTests(unittest.TestCase):
         socket.getfqdn = mock_socket.getfqdn
         self.serv_evt = threading.Event()
         self.client_evt = threading.Event()
-        # Pick a random unused port by passing 0 kila the port number
+        # Pick a random unused port by pitaing 0 kila the port number
         self.serv = SimSMTPServer((HOST, 0), ('nowhere', -1), decode_data=Kweli)
         # Keep a note of what port was assigned
         self.port = self.serv.socket.getsockname()[1]
@@ -1031,8 +1031,8 @@ kundi SMTPSimTests(unittest.TestCase):
         supported = {'PLAIN', 'LOGIN'}
         jaribu:
             hashlib.md5()
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
             supported.add('CRAM-MD5')
         kila mechanism kwenye supported:
@@ -1042,7 +1042,7 @@ kundi SMTPSimTests(unittest.TestCase):
                 smtp = smtplib.SMTP(HOST, self.port,
                                     local_hostname='localhost', timeout=15)
                 smtp.ehlo('foo')
-                smtp.user, smtp.password = sim_auth[0], sim_auth[1]
+                smtp.user, smtp.pitaword = sim_auth[0], sim_auth[1]
                 method = 'auth_' + mechanism.lower().replace('-', '_')
                 resp = smtp.auth(mechanism, getattr(smtp, method))
                 self.assertEqual(resp, (235, b'Authentication Succeeded'))
@@ -1064,17 +1064,17 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp.quit()
 
     eleza test_with_statement(self):
-        ukijumuisha smtplib.SMTP(HOST, self.port) as smtp:
+        ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
             code, message = smtp.noop()
             self.assertEqual(code, 250)
         self.assertRaises(smtplib.SMTPServerDisconnected, smtp.send, b'foo')
-        ukijumuisha smtplib.SMTP(HOST, self.port) as smtp:
+        ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
             smtp.close()
         self.assertRaises(smtplib.SMTPServerDisconnected, smtp.send, b'foo')
 
     eleza test_with_statement_QUIT_failure(self):
-        ukijumuisha self.assertRaises(smtplib.SMTPResponseException) as error:
-            ukijumuisha smtplib.SMTP(HOST, self.port) as smtp:
+        ukijumuisha self.assertRaises(smtplib.SMTPResponseException) kama error:
+            ukijumuisha smtplib.SMTP(HOST, self.port) kama smtp:
                 smtp.noop()
                 self.serv._SMTPchannel.quit_response = '421 QUIT FAILED'
         self.assertEqual(error.exception.smtp_code, 421)
@@ -1083,7 +1083,7 @@ kundi SMTPSimTests(unittest.TestCase):
     #TODO: add tests kila correct AUTH method fallback now that the
     #test infrastructure can support it.
 
-    # Issue 17498: make sure _rset does sio  ashiria SMTPServerDisconnected exception
+    # Issue 17498: make sure _rset does sio ashiria SMTPServerDisconnected exception
     eleza test__rest_from_mail_cmd(self):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
@@ -1107,7 +1107,7 @@ kundi SMTPSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port, local_hostname='localhost', timeout=15)
         smtp.noop()
         self.serv._SMTPchannel.rcpt_response = ['250 accepted', '421 closing']
-        ukijumuisha self.assertRaises(smtplib.SMTPRecipientsRefused) as r:
+        ukijumuisha self.assertRaises(smtplib.SMTPRecipientsRefused) kama r:
             smtp.sendmail('John', ['Sally', 'Frank', 'George'], 'test message')
         self.assertIsTupu(smtp.sock)
         self.assertEqual(self.serv._SMTPchannel.rset_count, 0)
@@ -1151,7 +1151,7 @@ kundi SMTPSimTests(unittest.TestCase):
         self.assertRaises(UnicodeEncodeError, smtp.mail, 'Älice')
 
     eleza test_send_message_error_on_non_ascii_addrs_if_no_smtputf8(self):
-        # This test ni located here na sio kwenye the SMTPUTF8SimTests
+        # This test ni located here na haiko kwenye the SMTPUTF8SimTests
         # kundi because it needs a "regular" SMTP server to work
         msg = EmailMessage()
         msg['From'] = "Páolo <főo@bar.com>"
@@ -1184,7 +1184,7 @@ kundi SimSMTPUTF8Server(SimSMTPServer):
     eleza __init__(self, *args, **kw):
         # The base SMTP server turns these on automatically, but our test
         # server ni set up to munge the EHLO response, so we need to provide
-        # them as well.  And yes, the call ni to SMTPServer sio SimSMTPServer.
+        # them kama well.  And yes, the call ni to SMTPServer sio SimSMTPServer.
         self._extra_features = ['SMTPUTF8', '8BITMIME']
         smtpd.SMTPServer.__init__(self, *args, **kw)
 
@@ -1215,7 +1215,7 @@ kundi SMTPUTF8SimTests(unittest.TestCase):
         socket.getfqdn = mock_socket.getfqdn
         self.serv_evt = threading.Event()
         self.client_evt = threading.Event()
-        # Pick a random unused port by passing 0 kila the port number
+        # Pick a random unused port by pitaing 0 kila the port number
         self.serv = SimSMTPUTF8Server((HOST, 0), ('nowhere', -1),
                                       decode_data=Uongo,
                                       enable_SMTPUTF8=Kweli)
@@ -1340,7 +1340,7 @@ kundi SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         socket.getfqdn = mock_socket.getfqdn
         self.serv_evt = threading.Event()
         self.client_evt = threading.Event()
-        # Pick a random unused port by passing 0 kila the port number
+        # Pick a random unused port by pitaing 0 kila the port number
         self.serv = SimSMTPAUTHInitialResponseServer(
             (HOST, 0), ('nowhere', -1), decode_data=Kweli)
         # Keep a note of what port was assigned
@@ -1376,7 +1376,7 @@ kundi SMTPAUTHInitialResponseSimTests(unittest.TestCase):
         smtp = smtplib.SMTP(HOST, self.port,
                             local_hostname='localhost', timeout=15)
         smtp.user = 'psu'
-        smtp.password = 'doesnotexist'
+        smtp.pitaword = 'doesnotexist'
         code, response = smtp.auth('plain', smtp.auth_plain)
         smtp.close()
         self.assertEqual(code, 235)

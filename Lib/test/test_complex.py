@@ -42,9 +42,9 @@ kundi ComplexTest(unittest.TestCase):
 
     eleza assertFloatsAreIdentical(self, x, y):
         """assert that floats x na y are identical, kwenye the sense that:
-        (1) both x na y are nans, or
-        (2) both x na y are infinities, ukijumuisha the same sign, or
-        (3) both x na y are zeros, ukijumuisha the same sign, or
+        (1) both x na y are nans, ama
+        (2) both x na y are infinities, ukijumuisha the same sign, ama
+        (3) both x na y are zeros, ukijumuisha the same sign, ama
         (4) x na y are both finite na nonzero, na x == y
 
         """
@@ -53,11 +53,11 @@ kundi ComplexTest(unittest.TestCase):
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) na isnan(y):
                 return
-        elikiwa x == y:
+        lasivyo x == y:
             ikiwa x != 0.0:
                 return
             # both zero; check that signs match
-            elikiwa copysign(1.0, x) == copysign(1.0, y):
+            lasivyo copysign(1.0, x) == copysign(1.0, y):
                 return
             isipokua:
                 msg += ': zeros have different signs'
@@ -89,7 +89,7 @@ kundi ComplexTest(unittest.TestCase):
             kila y kwenye simple_complex:
                 self.check_div(x, y)
 
-        # A naive complex division algorithm (such as kwenye 2.0) ni very prone to
+        # A naive complex division algorithm (such kama kwenye 2.0) ni very prone to
         # nonsense errors kila these (overflows na underflows).
         self.check_div(complex(1e200, 1e200), 1+0j)
         self.check_div(complex(1e-200, 1e-200), 1+0j)
@@ -184,15 +184,15 @@ kundi ComplexTest(unittest.TestCase):
 
         jaribu:
             0j ** a
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
             self.fail("should fail 0.0 to negative ama complex power")
 
         jaribu:
             0j ** (3-2j)
-        except ZeroDivisionError:
-            pass
+        tatizo ZeroDivisionError:
+            pita
         isipokua:
             self.fail("should fail 0.0 to negative ama complex power")
 
@@ -209,7 +209,7 @@ kundi ComplexTest(unittest.TestCase):
     eleza test_boolcontext(self):
         kila i kwenye range(100):
             self.assertKweli(complex(random() + 1e-6, random() + 1e-6))
-        self.assertKweli(not complex(0.0, 0.0))
+        self.assertKweli(sio complex(0.0, 0.0))
 
     eleza test_conjugate(self):
         self.assertClose(complex(5.3, 9.8).conjugate(), 5.3-9.8j)
@@ -274,7 +274,7 @@ kundi ComplexTest(unittest.TestCase):
         self.assertAlmostEqual(complex('-1e-500j'), 0.0 - 0.0j)
         self.assertAlmostEqual(complex('-1e-500+1e-500j'), -0.0 + 0.0j)
 
-        kundi complex2(complex): pass
+        kundi complex2(complex): pita
         self.assertAlmostEqual(complex(complex2(1+1j)), 1+1j)
         self.assertAlmostEqual(complex(real=17, imag=23), 17+23j)
         self.assertAlmostEqual(complex(real=17+23j), 17+23j)
@@ -349,11 +349,11 @@ kundi ComplexTest(unittest.TestCase):
         self.assertRaises(ValueError, complex, '\u3053\u3093\u306b\u3061\u306f')
 
         kundi EvilExc(Exception):
-            pass
+            pita
 
         kundi evilcomplex:
             eleza __complex__(self):
-                 ashiria EvilExc
+                ashiria EvilExc
 
         self.assertRaises(EvilExc, complex, evilcomplex())
 
@@ -411,7 +411,7 @@ kundi ComplexTest(unittest.TestCase):
     @support.requires_IEEE_754
     eleza test_constructor_special_numbers(self):
         kundi complex2(complex):
-            pass
+            pita
         kila x kwenye 0.0, -0.0, INF, -INF, NAN:
             kila y kwenye 0.0, -0.0, INF, -INF, NAN:
                 ukijumuisha self.subTest(x=x, y=y):
@@ -512,7 +512,7 @@ kundi ComplexTest(unittest.TestCase):
             fo = open(support.TESTFN, "r")
             self.assertEqual(fo.read(), ("%s %s\n" % (a, b)))
         mwishowe:
-            ikiwa (fo ni sio Tupu) na (not fo.closed):
+            ikiwa (fo ni sio Tupu) na (sio fo.closed):
                 fo.close()
             support.unlink(support.TESTFN)
 
@@ -568,7 +568,7 @@ kundi ComplexTest(unittest.TestCase):
                 self.assertFloatsAreIdentical(z.imag, roundtrip.imag)
 
         # ikiwa we predefine some constants, then eval(repr(z)) should
-        # also work, except that it might change the sign of zeros
+        # also work, tatizo that it might change the sign of zeros
         inf, nan = float('inf'), float('nan')
         infj, nanj = complex(0.0, inf), complex(0.0, nan)
         kila x kwenye vals:
@@ -582,7 +582,7 @@ kundi ComplexTest(unittest.TestCase):
                                               0.0 + roundtrip.imag)
 
     eleza test_format(self):
-        # empty format string ni same as str()
+        # empty format string ni same kama str()
         self.assertEqual(format(1+3j, ''), str(1+3j))
         self.assertEqual(format(1.5+3.5j, ''), str(1.5+3.5j))
         self.assertEqual(format(3j, ''), str(3j))

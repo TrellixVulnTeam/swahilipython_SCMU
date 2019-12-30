@@ -107,8 +107,8 @@ kundi bdist(Command):
         ikiwa self.formats ni Tupu:
             jaribu:
                 self.formats = [self.default_format[os.name]]
-            except KeyError:
-                 ashiria DistutilsPlatformError(
+            tatizo KeyError:
+                ashiria DistutilsPlatformError(
                       "don't know how to create built distributions "
                       "on platform %s" % os.name)
 
@@ -121,17 +121,17 @@ kundi bdist(Command):
         kila format kwenye self.formats:
             jaribu:
                 commands.append(self.format_command[format][0])
-            except KeyError:
-                 ashiria DistutilsOptionError("invalid format '%s'" % format)
+            tatizo KeyError:
+                ashiria DistutilsOptionError("invalid format '%s'" % format)
 
         # Reinitialize na run each command.
         kila i kwenye range(len(self.formats)):
             cmd_name = commands[i]
             sub_cmd = self.reinitialize_command(cmd_name)
-            ikiwa cmd_name sio kwenye self.no_format_option:
+            ikiwa cmd_name haiko kwenye self.no_format_option:
                 sub_cmd.format = self.formats[i]
 
-            # passing the owner na group names kila tar archiving
+            # pitaing the owner na group names kila tar archiving
             ikiwa cmd_name == 'bdist_dumb':
                 sub_cmd.owner = self.owner
                 sub_cmd.group = self.group

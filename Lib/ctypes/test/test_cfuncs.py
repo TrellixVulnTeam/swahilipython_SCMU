@@ -193,13 +193,13 @@ kundi CFunctions(unittest.TestCase):
 # they are available)
 jaribu:
     WinDLL
-except NameError:
-    eleza stdcall_dll(*_): pass
+tatizo NameError:
+    eleza stdcall_dll(*_): pita
 isipokua:
     kundi stdcall_dll(WinDLL):
         eleza __getattr__(self, name):
             ikiwa name[:2] == '__' na name[-2:] == '__':
-                 ashiria AttributeError(name)
+                ashiria AttributeError(name)
             func = self._FuncPtr(("s_" + name, self))
             setattr(self, name, func)
             rudisha func

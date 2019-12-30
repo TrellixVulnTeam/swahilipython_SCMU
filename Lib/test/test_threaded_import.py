@@ -5,7 +5,7 @@
 # complains several times about module random having no attribute
 # randrange, na then Python hangs.
 
-agiza _imp as imp
+agiza _imp kama imp
 agiza os
 agiza importlib
 agiza sys
@@ -30,7 +30,7 @@ eleza task(N, done, done_tasks, errors):
             agiza modulefinder
         # This will fail ikiwa random ni sio completely initialized
         x = random.randrange(1, 3)
-    except Exception as e:
+    tatizo Exception kama e:
         errors.append(e.with_traceback(Tupu))
     mwishowe:
         done_tasks.append(threading.get_ident())
@@ -75,7 +75,7 @@ kundi Finder:
 
     eleza find_spec(self, name, path=Tupu, target=Tupu):
         # Simulate some thread-unsafe behaviour. If calls to find_spec()
-        # are properly serialized, `x` will end up the same as `numcalls`.
+        # are properly serialized, `x` will end up the same kama `numcalls`.
         # Otherwise not.
         assert imp.lock_held()
         ukijumuisha self.lock:
@@ -108,7 +108,7 @@ kundi ThreadedImportTests(unittest.TestCase):
     eleza check_parallel_module_init(self, mock_os):
         ikiwa imp.lock_held():
             # This triggers on, e.g., kutoka test agiza autotest.
-             ashiria unittest.SkipTest("can't run when agiza lock ni held")
+            ashiria unittest.SkipTest("can't run when agiza lock ni held")
 
         done = threading.Event()
         kila N kwenye (20, 50) * 3:
@@ -118,8 +118,8 @@ kundi ThreadedImportTests(unittest.TestCase):
             kila modname kwenye ['random', 'modulefinder']:
                 jaribu:
                     toa sys.modules[modname]
-                except KeyError:
-                    pass
+                tatizo KeyError:
+                    pita
             errors = []
             done_tasks = []
             done.clear()
@@ -127,7 +127,7 @@ kundi ThreadedImportTests(unittest.TestCase):
             ukijumuisha start_threads(threading.Thread(target=task,
                                                 args=(N, done, done_tasks, errors,))
                                kila i kwenye range(N)):
-                pass
+                pita
             completed = done.wait(10 * 60)
             dt = time.monotonic() - t0
             ikiwa verbose:
@@ -161,7 +161,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         flushing_finder = FlushingFinder()
         eleza path_hook(path):
             finder.find_spec('')
-             ashiria ImportError
+            ashiria ImportError
         sys.path_hooks.insert(0, path_hook)
         sys.meta_path.append(flushing_finder)
         jaribu:
@@ -179,8 +179,8 @@ kundi ThreadedImportTests(unittest.TestCase):
         # gets loaded kutoka scratch again.
         jaribu:
             toa sys.modules['test.threaded_import_hangers']
-        except KeyError:
-            pass
+        tatizo KeyError:
+            pita
         agiza test.threaded_import_hangers
         self.assertUongo(test.threaded_import_hangers.errors)
 
@@ -191,7 +191,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         # circular imports, kila example:
         # - thread 1 imports A (grabbing the lock kila A) which imports B
         # - thread 2 imports B (grabbing the lock kila B) which imports A
-        # Such implementations should be able to detect such situations and
+        # Such implementations should be able to detect such situations na
         # resolve them one way ama the other, without freezing.
         # NOTE: our test constructs a slightly less trivial agiza cycle,
         # kwenye order to better stress the deadlock avoidance mechanism.
@@ -202,7 +202,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         self.addCleanup(sys.path.remove, TESTFN)
         kila name, contents kwenye circular_imports_modules.items():
             contents = contents % {'delay': delay}
-            ukijumuisha open(os.path.join(TESTFN, name + ".py"), "wb") as f:
+            ukijumuisha open(os.path.join(TESTFN, name + ".py"), "wb") kama f:
                 f.write(contents.encode('utf-8'))
             self.addCleanup(forget, name)
 
@@ -235,7 +235,7 @@ kundi ThreadedImportTests(unittest.TestCase):
         sys.path.insert(0, os.curdir)
         self.addCleanup(sys.path.remove, os.curdir)
         filename = TESTFN + ".py"
-        ukijumuisha open(filename, "wb") as f:
+        ukijumuisha open(filename, "wb") kama f:
             f.write(code.encode('utf-8'))
         self.addCleanup(unlink, filename)
         self.addCleanup(forget, TESTFN)
@@ -251,8 +251,8 @@ eleza test_main():
     jaribu:
         old_switchinterval = sys.getswitchinterval()
         sys.setswitchinterval(1e-5)
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     jaribu:
         run_unittest(ThreadedImportTests)
     mwishowe:

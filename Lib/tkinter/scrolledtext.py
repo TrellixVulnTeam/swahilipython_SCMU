@@ -1,13 +1,13 @@
 """A ScrolledText widget feels like a text widget but also has a
 vertical scroll bar on its right.  (Later, options may be added to
-add a horizontal bar as well, to make the bars disappear
+add a horizontal bar kama well, to make the bars disappear
 automatically when sio needed, to move them to the other side of the
 window, etc.)
 
-Configuration options are passed to the Text widget.
+Configuration options are pitaed to the Text widget.
 A Frame widget ni inserted between the master na the text, to hold
 the Scrollbar widget.
-Most methods calls are inherited kutoka the Text widget; Pack, Grid and
+Most methods calls are inherited kutoka the Text widget; Pack, Grid na
 Place methods are redirected to the Frame widget however.
 """
 

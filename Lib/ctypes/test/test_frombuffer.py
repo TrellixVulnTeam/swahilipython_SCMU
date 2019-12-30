@@ -51,7 +51,7 @@ kundi Test(unittest.TestCase):
     eleza test_fortran_contiguous(self):
         jaribu:
             agiza _testbuffer
-        except ImportError as err:
+        tatizo ImportError kama err:
             self.skipTest(str(err))
         flags = _testbuffer.ND_WRITABLE | _testbuffer.ND_FORTRAN
         array = _testbuffer.ndarray(

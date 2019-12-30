@@ -21,7 +21,7 @@ kundi TestableTestProgram(unittest.TestProgram):
     testRunner = testLoader = Tupu
 
     eleza __init__(self):
-        pass
+        pita
 
 
 kundi TestDiscovery(unittest.TestCase):
@@ -152,7 +152,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) sio kwenye directories
+        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -226,7 +226,7 @@ kundi TestDiscovery(unittest.TestCase):
         os.path.isdir = lambda path: Kweli
         self.addCleanup(restore_isdir)
 
-        os.path.isfile = lambda path: os.path.basename(path) sio kwenye directories
+        os.path.isfile = lambda path: os.path.basename(path) haiko kwenye directories
         self.addCleanup(restore_isfile)
 
         kundi Module(object):
@@ -349,7 +349,7 @@ kundi TestDiscovery(unittest.TestCase):
         # a test package
         suite = list(loader._find_tests(abspath('/foo'), 'test*.py'))
 
-        # We should have loaded tests kutoka both my_package and
+        # We should have loaded tests kutoka both my_package na
         # my_package.test_module, na also run the load_tests hook kwenye both.
         # (normally this would be nested TestSuites.)
         self.assertEqual(suite,
@@ -417,7 +417,7 @@ kundi TestDiscovery(unittest.TestCase):
 
         # Test data: we expect the following:
         # an isfile to verify the package, then importing na scanning
-        # as per _find_tests' normal behaviour.
+        # kama per _find_tests' normal behaviour.
         # We expect to see our load_tests hook called once.
         vfs = {abspath('/toplevel'): ['startdir'],
                abspath('/toplevel/startdir'): ['__init__.py']}
@@ -505,7 +505,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-             ashiria ImportError("Cannot agiza Name")
+            ashiria ImportError("Cannot agiza Name")
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -530,12 +530,12 @@ kundi TestDiscovery(unittest.TestCase):
 
     eleza test_discover_with_module_that_raises_SkipTest_on_import(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-             ashiria unittest.SkipTest("Suite cleanup ni disabled")
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         loader = unittest.TestLoader()
 
         eleza _get_module_from_name(name):
-             ashiria unittest.SkipTest('skipperoo')
+            ashiria unittest.SkipTest('skipperoo')
         loader._get_module_from_name = _get_module_from_name
 
         self.setup_import_issue_tests('test_skip_dummy.py')
@@ -553,7 +553,7 @@ kundi TestDiscovery(unittest.TestCase):
 
     eleza test_discover_with_init_module_that_raises_SkipTest_on_import(self):
         ikiwa sio unittest.BaseTestSuite._cleanup:
-             ashiria unittest.SkipTest("Suite cleanup ni disabled")
+            ashiria unittest.SkipTest("Suite cleanup ni disabled")
 
         vfs = {abspath('/foo'): ['my_package'],
                abspath('/foo/my_package'): ['__init__.py', 'test_module.py']}
@@ -561,7 +561,7 @@ kundi TestDiscovery(unittest.TestCase):
         import_calls = []
         eleza _get_module_from_name(name):
             import_calls.append(name)
-             ashiria unittest.SkipTest('skipperoo')
+            ashiria unittest.SkipTest('skipperoo')
         loader = unittest.TestLoader()
         loader._get_module_from_name = _get_module_from_name
         suite = loader.discover(abspath('/foo'))
@@ -619,8 +619,8 @@ kundi TestDiscovery(unittest.TestCase):
         program = TestableTestProgram()
         program.testLoader = Tupu
 
-        ukijumuisha support.captured_stderr() as stderr, \
-             self.assertRaises(SystemExit) as cm:
+        ukijumuisha support.captured_stderr() kama stderr, \
+             self.assertRaises(SystemExit) kama cm:
             # too many args
             program._do_discovery(['one', 'two', 'three', 'four'])
         self.assertEqual(cm.exception.args, (2,))
@@ -818,7 +818,7 @@ kundi TestDiscovery(unittest.TestCase):
             sys.path[:] = orig_sys_path
         self.addCleanup(restore)
 
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             loader.discover('sys')
         self.assertEqual(str(cm.exception),
                          'Can sio use builtin modules '
@@ -868,7 +868,7 @@ kundi TestDiscovery(unittest.TestCase):
             ukijumuisha support.DirsOnSysPath():
                 # Make sure to remove 'package' kutoka sys.modules when done.
                 ukijumuisha test.test_importlib.util.uncache('package'):
-                    ukijumuisha self.assertRaises(TypeError) as cm:
+                    ukijumuisha self.assertRaises(TypeError) kama cm:
                         loader.discover('package')
                     self.assertEqual(str(cm.exception),
                                      'don\'t know how to discover kutoka {!r}'

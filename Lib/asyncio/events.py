@@ -66,7 +66,7 @@ kundi Handle:
         ikiwa sio self._cancelled:
             self._cancelled = Kweli
             ikiwa self._loop.get_debug():
-                # Keep a representation kwenye debug mode to keep callback and
+                # Keep a representation kwenye debug mode to keep callback na
                 # parameters. For example, to log the warning
                 # "Executing <Handle...> took 2.5 second"
                 self._repr = repr(self)
@@ -79,9 +79,9 @@ kundi Handle:
     eleza _run(self):
         jaribu:
             self._context.run(self._callback, *self._args)
-        except (SystemExit, KeyboardInterrupt):
+        tatizo (SystemExit, KeyboardInterrupt):
             raise
-        except BaseException as exc:
+        tatizo BaseException kama exc:
             cb = format_helpers._format_callback_source(
                 self._callback, self._args)
             msg = f'Exception kwenye callback {cb}'
@@ -136,9 +136,9 @@ kundi TimerHandle(Handle):
 
     eleza __eq__(self, other):
         ikiwa isinstance(other, TimerHandle):
-            rudisha (self._when == other._when and
-                    self._callback == other._callback and
-                    self._args == other._args and
+            rudisha (self._when == other._when na
+                    self._callback == other._callback na
+                    self._args == other._args na
                     self._cancelled == other._cancelled)
         rudisha NotImplemented
 
@@ -155,7 +155,7 @@ kundi TimerHandle(Handle):
         """Return a scheduled callback time.
 
         The time ni an absolute timestamp, using the same time
-        reference as loop.time().
+        reference kama loop.time().
         """
         rudisha self._when
 
@@ -165,15 +165,15 @@ kundi AbstractServer:
 
     eleza close(self):
         """Stop serving.  This leaves existing connections open."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_loop(self):
         """Get the event loop the Server object ni attached to."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza is_serving(self):
         """Return Kweli ikiwa the server ni accepting connections."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza start_serving(self):
         """Start accepting connections.
@@ -181,18 +181,18 @@ kundi AbstractServer:
         This method ni idempotent, so it can be called when
         the server ni already being serving.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza serve_forever(self):
         """Start accepting connections until the coroutine ni cancelled.
 
         The server ni closed when the coroutine ni cancelled.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza wait_closed(self):
         """Coroutine to wait until service ni closed."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza __aenter__(self):
         rudisha self
@@ -209,30 +209,30 @@ kundi AbstractEventLoop:
 
     eleza run_forever(self):
         """Run the event loop until stop() ni called."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza run_until_complete(self, future):
         """Run the event loop until a Future ni done.
 
-        Return the Future's result, ama  ashiria its exception.
+        Return the Future's result, ama ashiria its exception.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza stop(self):
-        """Stop the event loop as soon as reasonable.
+        """Stop the event loop kama soon kama reasonable.
 
         Exactly how soon that ni may depend on the implementation, but
         no more I/O callbacks should be scheduled.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza is_running(self):
         """Return whether the event loop ni currently running."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza is_closed(self):
         """Returns Kweli ikiwa the event loop was closed."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza close(self):
         """Close the loop.
@@ -243,57 +243,57 @@ kundi AbstractEventLoop:
 
         No other methods should be called after this one.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza shutdown_asyncgens(self):
         """Shutdown all active asynchronous generators."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Methods scheduling callbacks.  All these rudisha Handles.
 
     eleza _timer_handle_cancelled(self, handle):
         """Notification that a TimerHandle has been cancelled."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_soon(self, callback, *args):
         rudisha self.call_later(0, callback, *args)
 
     eleza call_later(self, delay, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_at(self, when, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza time(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza create_future(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Method scheduling a coroutine object: create a task.
 
     eleza create_task(self, coro, *, name=Tupu):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Methods kila interacting ukijumuisha threads.
 
     eleza call_soon_threadsafe(self, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza run_in_executor(self, executor, func, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_default_executor(self, executor):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Network I/O methods returning Futures.
 
     async eleza getaddrinfo(self, host, port, *,
                           family=0, type=0, proto=0, flags=0):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza getnameinfo(self, sockaddr, flags=0):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_connection(
             self, protocol_factory, host=Tupu, port=Tupu,
@@ -302,7 +302,7 @@ kundi AbstractEventLoop:
             server_hostname=Tupu,
             ssl_handshake_timeout=Tupu,
             happy_eyeballs_delay=Tupu, interleave=Tupu):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_server(
             self, protocol_factory, host=Tupu, port=Tupu,
@@ -330,7 +330,7 @@ kundi AbstractEventLoop:
         sock can optionally be specified kwenye order to use a preexisting
         socket object.
 
-        backlog ni the maximum number of queued connections passed to
+        backlog ni the maximum number of queued connections pitaed to
         listen() (defaults to 100).
 
         ssl can be set to an SSLContext to enable SSL over the
@@ -342,7 +342,7 @@ kundi AbstractEventLoop:
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
+        the same port kama other existing endpoints are bound to, so long as
         they all set this flag when being created. This option ni not
         supported on Windows.
 
@@ -355,7 +355,7 @@ kundi AbstractEventLoop:
         the user should await Server.start_serving() ama Server.serve_forever()
         to make the server to start accepting connections.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sendfile(self, transport, file, offset=0, count=Tupu,
                        *, fallback=Kweli):
@@ -363,7 +363,7 @@ kundi AbstractEventLoop:
 
         Return an amount of sent bytes.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza start_tls(self, transport, protocol, sslcontext, *,
                         server_side=Uongo,
@@ -374,14 +374,14 @@ kundi AbstractEventLoop:
         Return a new transport that *protocol* should start using
         immediately.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_unix_connection(
             self, protocol_factory, path=Tupu, *,
             ssl=Tupu, sock=Tupu,
             server_hostname=Tupu,
             ssl_handshake_timeout=Tupu):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_unix_server(
             self, protocol_factory, path=Tupu, *,
@@ -399,7 +399,7 @@ kundi AbstractEventLoop:
         sock can optionally be specified kwenye order to use a preexisting
         socket object.
 
-        backlog ni the maximum number of queued connections passed to
+        backlog ni the maximum number of queued connections pitaed to
         listen() (defaults to 100).
 
         ssl can be set to an SSLContext to enable SSL over the
@@ -413,7 +413,7 @@ kundi AbstractEventLoop:
         the user should await Server.start_serving() ama Server.serve_forever()
         to make the server to start accepting connections.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza create_datagram_endpoint(self, protocol_factory,
                                        local_addr=Tupu, remote_addr=Tupu, *,
@@ -436,7 +436,7 @@ kundi AbstractEventLoop:
         UNIX.
 
         reuse_port tells the kernel to allow this endpoint to be bound to
-        the same port as other existing endpoints are bound to, so long as
+        the same port kama other existing endpoints are bound to, so long as
         they all set this flag when being created. This option ni not
         supported on Windows na some UNIX's. If the
         :py:data:`~socket.SO_REUSEPORT` constant ni sio defined then this
@@ -448,7 +448,7 @@ kundi AbstractEventLoop:
         sock can optionally be specified kwenye order to use a preexisting
         socket object.
         """
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Pipes na subprocesses.
 
@@ -461,9 +461,9 @@ kundi AbstractEventLoop:
         ReadTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe na close it at transport finishing
-        # Can got complicated errors ikiwa pass f.fileno(),
+        # Can got complicated errors ikiwa pita f.fileno(),
         # close fd kwenye pipe transport then close f na vise versa.
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza connect_write_pipe(self, protocol_factory, pipe):
         """Register write pipe kwenye event loop.
@@ -474,23 +474,23 @@ kundi AbstractEventLoop:
         WriteTransport interface."""
         # The reason to accept file-like object instead of just file descriptor
         # is: we need to own pipe na close it at transport finishing
-        # Can got complicated errors ikiwa pass f.fileno(),
+        # Can got complicated errors ikiwa pita f.fileno(),
         # close fd kwenye pipe transport then close f na vise versa.
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza subprocess_shell(self, protocol_factory, cmd, *,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
                                **kwargs):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza subprocess_exec(self, protocol_factory, *args,
                               stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE,
                               **kwargs):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Ready-based callback registration methods.
     # The add_*() methods rudisha Tupu.
@@ -498,75 +498,75 @@ kundi AbstractEventLoop:
     # Uongo ikiwa there was nothing to delete.
 
     eleza add_reader(self, fd, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_reader(self, fd):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza add_writer(self, fd, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_writer(self, fd):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Completion based I/O methods returning Futures.
 
     async eleza sock_recv(self, sock, nbytes):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_recv_into(self, sock, buf):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_sendall(self, sock, data):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_connect(self, sock, address):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_accept(self, sock):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     async eleza sock_sendfile(self, sock, file, offset=0, count=Tupu,
                             *, fallback=Tupu):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Signal handling.
 
     eleza add_signal_handler(self, sig, callback, *args):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza remove_signal_handler(self, sig):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Task factory.
 
     eleza set_task_factory(self, factory):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza get_task_factory(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Error handlers.
 
     eleza get_exception_handler(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_exception_handler(self, handler):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza default_exception_handler(self, context):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza call_exception_handler(self, context):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Debug flag management.
 
     eleza get_debug(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_debug(self, enabled):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi AbstractEventLoopPolicy:
@@ -580,27 +580,27 @@ kundi AbstractEventLoopPolicy:
         current context na the current policy does sio specify to create one.
 
         It should never rudisha Tupu."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_event_loop(self, loop):
         """Set the event loop kila the current context to loop."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza new_event_loop(self):
         """Create na rudisha a new event loop object according to this
-        policy's rules. If there's need to set this loop as the event loop for
+        policy's rules. If there's need to set this loop kama the event loop for
         the current context, set_event_loop must be called explicitly."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     # Child processes handling (Unix only).
 
     eleza get_child_watcher(self):
         "Get the watcher kila child processes."
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza set_child_watcher(self, watcher):
         """Set the watcher kila child processes."""
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
@@ -611,7 +611,7 @@ kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
     thread; other threads by default have no event loop.
 
     Other policies may have different rules (e.g. a single global
-    event loop, ama automatically creating an event loop per thread, or
+    event loop, ama automatically creating an event loop per thread, ama
     using some other notion of context to which an event loop is
     associated).
     """
@@ -630,13 +630,13 @@ kundi BaseDefaultEventLoopPolicy(AbstractEventLoopPolicy):
 
         Returns an instance of EventLoop ama raises an exception.
         """
-        ikiwa (self._local._loop ni Tupu and
-                sio self._local._set_called and
+        ikiwa (self._local._loop ni Tupu na
+                sio self._local._set_called na
                 isinstance(threading.current_thread(), threading._MainThread)):
             self.set_event_loop(self.new_event_loop())
 
         ikiwa self._local._loop ni Tupu:
-             ashiria RuntimeError('There ni no current event loop kwenye thread %r.'
+            ashiria RuntimeError('There ni no current event loop kwenye thread %r.'
                                % threading.current_thread().name)
 
         rudisha self._local._loop
@@ -682,7 +682,7 @@ eleza get_running_loop():
     # NOTE: this function ni implemented kwenye C (see _asynciomodule.c)
     loop = _get_running_loop()
     ikiwa loop ni Tupu:
-         ashiria RuntimeError('no running event loop')
+        ashiria RuntimeError('no running event loop')
     rudisha loop
 
 
@@ -782,8 +782,8 @@ jaribu:
     # about 4 times slower than C-accelerated.
     kutoka _asyncio agiza (_get_running_loop, _set_running_loop,
                           get_running_loop, get_event_loop)
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     # Alias C implementations kila testing purposes.
     _c__get_running_loop = _get_running_loop

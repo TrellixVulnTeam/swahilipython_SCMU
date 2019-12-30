@@ -237,7 +237,7 @@ eleza get_object_traceback(obj):
     Get the traceback where the Python object *obj* was allocated.
     Return a Traceback instance.
 
-    Return Tupu ikiwa the tracemalloc module ni sio tracing memory allocations or
+    Return Tupu ikiwa the tracemalloc module ni sio tracing memory allocations ama
     did sio trace the allocation of the object.
     """
     frames = _get_object_traceback(obj)
@@ -321,7 +321,7 @@ kundi BaseFilter:
         self.inclusive = inclusive
 
     eleza _match(self, trace):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 
 kundi Filter(BaseFilter):
@@ -348,7 +348,7 @@ kundi Filter(BaseFilter):
             rudisha (lineno == self.lineno)
 
     eleza _match_frame(self, filename, lineno):
-        rudisha self._match_frame_impl(filename, lineno) ^ (not self.inclusive)
+        rudisha self._match_frame_impl(filename, lineno) ^ (sio self.inclusive)
 
     eleza _match_traceback(self, traceback):
         ikiwa self.all_frames:
@@ -356,7 +356,7 @@ kundi Filter(BaseFilter):
                    kila filename, lineno kwenye traceback):
                 rudisha self.inclusive
             isipokua:
-                rudisha (not self.inclusive)
+                rudisha (sio self.inclusive)
         isipokua:
             filename, lineno = traceback[0]
             rudisha self._match_frame(filename, lineno)
@@ -383,7 +383,7 @@ kundi DomainFilter(BaseFilter):
 
     eleza _match(self, trace):
         domain, size, traceback = trace
-        rudisha (domain == self.domain) ^ (not self.inclusive)
+        rudisha (domain == self.domain) ^ (sio self.inclusive)
 
 
 kundi Snapshot:
@@ -401,7 +401,7 @@ kundi Snapshot:
         """
         Write the snapshot into a file.
         """
-        ukijumuisha open(filename, "wb") as fp:
+        ukijumuisha open(filename, "wb") kama fp:
             pickle.dump(self, fp, pickle.HIGHEST_PROTOCOL)
 
     @staticmethod
@@ -409,7 +409,7 @@ kundi Snapshot:
         """
         Load a snapshot kutoka a file.
         """
-        ukijumuisha open(filename, "rb") as fp:
+        ukijumuisha open(filename, "rb") kama fp:
             rudisha pickle.load(fp)
 
     eleza _filter_trace(self, include_filters, exclude_filters, trace):
@@ -418,7 +418,7 @@ kundi Snapshot:
                        kila trace_filter kwenye include_filters):
                 rudisha Uongo
         ikiwa exclude_filters:
-            ikiwa any(not trace_filter._match(trace)
+            ikiwa any(sio trace_filter._match(trace)
                    kila trace_filter kwenye exclude_filters):
                 rudisha Uongo
         rudisha Kweli
@@ -430,7 +430,7 @@ kundi Snapshot:
         list, rudisha a new Snapshot instance ukijumuisha a copy of the traces.
         """
         ikiwa sio isinstance(filters, Iterable):
-             ashiria TypeError("filters must be a list of filters, sio %s"
+            ashiria TypeError("filters must be a list of filters, sio %s"
                             % type(filters).__name__)
         ikiwa filters:
             include_filters = []
@@ -449,10 +449,10 @@ kundi Snapshot:
         rudisha Snapshot(new_traces, self.traceback_limit)
 
     eleza _group_by(self, key_type, cumulative):
-        ikiwa key_type sio kwenye ('traceback', 'filename', 'lineno'):
-             ashiria ValueError("unknown key_type: %r" % (key_type,))
-        ikiwa cumulative na key_type sio kwenye ('lineno', 'filename'):
-             ashiria ValueError("cumulative mode cannot by used "
+        ikiwa key_type haiko kwenye ('traceback', 'filename', 'lineno'):
+            ashiria ValueError("unknown key_type: %r" % (key_type,))
+        ikiwa cumulative na key_type haiko kwenye ('lineno', 'filename'):
+            ashiria ValueError("cumulative mode cannot by used "
                              "ukijumuisha key type %r" % key_type)
 
         stats = {}
@@ -462,10 +462,10 @@ kundi Snapshot:
                 domain, size, trace_traceback = trace
                 jaribu:
                     traceback = tracebacks[trace_traceback]
-                except KeyError:
+                tatizo KeyError:
                     ikiwa key_type == 'traceback':
                         frames = trace_traceback
-                    elikiwa key_type == 'lineno':
+                    lasivyo key_type == 'lineno':
                         frames = trace_traceback[:1]
                     isipokua: # key_type == 'filename':
                         frames = ((trace_traceback[0][0], 0),)
@@ -475,7 +475,7 @@ kundi Snapshot:
                     stat = stats[traceback]
                     stat.size += size
                     stat.count += 1
-                except KeyError:
+                tatizo KeyError:
                     stats[traceback] = Statistic(traceback, size, 1)
         isipokua:
             # cumulative statistics
@@ -484,7 +484,7 @@ kundi Snapshot:
                 kila frame kwenye trace_traceback:
                     jaribu:
                         traceback = tracebacks[frame]
-                    except KeyError:
+                    tatizo KeyError:
                         ikiwa key_type == 'lineno':
                             frames = (frame,)
                         isipokua: # key_type == 'filename':
@@ -495,7 +495,7 @@ kundi Snapshot:
                         stat = stats[traceback]
                         stat.size += size
                         stat.count += 1
-                    except KeyError:
+                    tatizo KeyError:
                         stats[traceback] = Statistic(traceback, size, 1)
         rudisha stats
 
@@ -512,7 +512,7 @@ kundi Snapshot:
     eleza compare_to(self, old_snapshot, key_type, cumulative=Uongo):
         """
         Compute the differences ukijumuisha an old snapshot old_snapshot. Get
-        statistics as a sorted list of StatisticDiff instances, grouped by
+        statistics kama a sorted list of StatisticDiff instances, grouped by
         group_by.
         """
         new_group = self._group_by(key_type, cumulative)
@@ -527,7 +527,7 @@ eleza take_snapshot():
     Take a snapshot of traces of memory blocks allocated by Python.
     """
     ikiwa sio is_tracing():
-         ashiria RuntimeError("the tracemalloc module must be tracing memory "
+        ashiria RuntimeError("the tracemalloc module must be tracing memory "
                            "allocations to take a snapshot")
     traces = _get_traces()
     traceback_limit = get_traceback_limit()

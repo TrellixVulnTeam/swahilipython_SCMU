@@ -8,7 +8,7 @@ kundi Test(unittest.TestCase):
     eleza test_open(self):
         libc_name = find_library("c")
         ikiwa libc_name ni Tupu:
-             ashiria unittest.SkipTest("Unable to find C library")
+            ashiria unittest.SkipTest("Unable to find C library")
         libc = CDLL(libc_name, use_errno=Kweli)
         ikiwa os.name == "nt":
             libc_open = libc._open

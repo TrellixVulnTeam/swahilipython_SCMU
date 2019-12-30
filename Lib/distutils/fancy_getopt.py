@@ -5,7 +5,7 @@ additional features:
   * short na long options are tied together
   * options have help strings, so fancy_getopt could potentially
     create a complete usage summary
-  * options set attributes of a passed-in object
+  * options set attributes of a pitaed-in object
 """
 
 agiza sys, string, re
@@ -13,7 +13,7 @@ agiza getopt
 kutoka distutils.errors agiza *
 
 # Much like command_re kwenye distutils.core, this ni close to but sio quite
-# the same as a Python NAME -- except, kwenye the spirit of most GNU
+# the same kama a Python NAME -- except, kwenye the spirit of most GNU
 # utilities, we use '-' kwenye place of '_'.  (The spirit of LISP lives on!)
 # The similarities to NAME are again sio a coincidence...
 longopt_pat = r'[a-zA-Z](?:[a-zA-Z0-9-]*)'
@@ -23,7 +23,7 @@ longopt_re = re.compile(r'^%s$' % longopt_pat)
 neg_alias_re = re.compile("^(%s)=!(%s)$" % (longopt_pat, longopt_pat))
 
 # This ni used to translate long options to legitimate Python identifiers
-# (kila use as attributes of some object).
+# (kila use kama attributes of some object).
 longopt_xlate = str.maketrans('-', '_')
 
 kundi FancyGetopt:
@@ -32,7 +32,7 @@ kundi FancyGetopt:
       * short na long options are tied together
       * options have help strings, na help text can be assembled
         kutoka them
-      * options set attributes of a passed-in object
+      * options set attributes of a pitaed-in object
       * boolean options can have "negative aliases" -- eg. if
         --quiet ni the "negative alias" of --verbose, then "--quiet"
         on the command line sets 'verbose' to false
@@ -65,7 +65,7 @@ kundi FancyGetopt:
 
         # These keep track of the information kwenye the option table.  We
         # don't actually populate these structures until we're ready to
-        # parse the command-line, since the 'option_table' passed kwenye here
+        # parse the command-line, since the 'option_table' pitaed kwenye here
         # isn't necessarily the final word.
         self.short_opts = []
         self.long_opts = []
@@ -89,7 +89,7 @@ kundi FancyGetopt:
 
     eleza add_option(self, long_option, short_option=Tupu, help_string=Tupu):
         ikiwa long_option kwenye self.option_index:
-             ashiria DistutilsGetoptError(
+            ashiria DistutilsGetoptError(
                   "option conflict: already an option '%s'" % long_option)
         isipokua:
             option = (long_option, short_option, help_string)
@@ -103,18 +103,18 @@ kundi FancyGetopt:
 
     eleza get_attr_name(self, long_option):
         """Translate long option name 'long_option' to the form it
-        has as an attribute of some object: ie., translate hyphens
+        has kama an attribute of some object: ie., translate hyphens
         to underscores."""
         rudisha long_option.translate(longopt_xlate)
 
     eleza _check_alias_dict(self, aliases, what):
         assert isinstance(aliases, dict)
         kila (alias, opt) kwenye aliases.items():
-            ikiwa alias sio kwenye self.option_index:
-                 ashiria DistutilsGetoptError(("invalid %s '%s': "
+            ikiwa alias haiko kwenye self.option_index:
+                ashiria DistutilsGetoptError(("invalid %s '%s': "
                        "option '%s' sio defined") % (what, alias, alias))
-            ikiwa opt sio kwenye self.option_index:
-                 ashiria DistutilsGetoptError(("invalid %s '%s': "
+            ikiwa opt haiko kwenye self.option_index:
+                ashiria DistutilsGetoptError(("invalid %s '%s': "
                        "aliased option '%s' sio defined") % (what, alias, opt))
 
     eleza set_aliases(self, alias):
@@ -144,21 +144,21 @@ kundi FancyGetopt:
             ikiwa len(option) == 3:
                 long, short, help = option
                 repeat = 0
-            elikiwa len(option) == 4:
+            lasivyo len(option) == 4:
                 long, short, help, repeat = option
             isipokua:
                 # the option table ni part of the code, so simply
                 # assert that it ni correct
-                 ashiria ValueError("invalid option tuple: %r" % (option,))
+                ashiria ValueError("invalid option tuple: %r" % (option,))
 
             # Type- na value-check the option names
             ikiwa sio isinstance(long, str) ama len(long) < 2:
-                 ashiria DistutilsGetoptError(("invalid long option '%s': "
+                ashiria DistutilsGetoptError(("invalid long option '%s': "
                        "must be a string of length >= 2") % long)
 
-            ikiwa (not ((short ni Tupu) or
+            ikiwa (sio ((short ni Tupu) ama
                      (isinstance(short, str) na len(short) == 1))):
-                 ashiria DistutilsGetoptError("invalid short option '%s': "
+                ashiria DistutilsGetoptError("invalid short option '%s': "
                        "must a single character ama Tupu" % short)
 
             self.repeat[long] = repeat
@@ -174,7 +174,7 @@ kundi FancyGetopt:
                 alias_to = self.negative_alias.get(long)
                 ikiwa alias_to ni sio Tupu:
                     ikiwa self.takes_arg[alias_to]:
-                         ashiria DistutilsGetoptError(
+                        ashiria DistutilsGetoptError(
                               "invalid negative alias '%s': "
                               "aliased option '%s' takes a value"
                               % (long, alias_to))
@@ -183,11 +183,11 @@ kundi FancyGetopt:
                 self.takes_arg[long] = 0
 
             # If this ni an alias option, make sure its "takes arg" flag is
-            # the same as the option it's aliased to.
+            # the same kama the option it's aliased to.
             alias_to = self.alias.get(long)
             ikiwa alias_to ni sio Tupu:
                 ikiwa self.takes_arg[long] != self.takes_arg[alias_to]:
-                     ashiria DistutilsGetoptError(
+                    ashiria DistutilsGetoptError(
                           "invalid alias '%s': inconsistent ukijumuisha "
                           "aliased option '%s' (one of them takes a value, "
                           "the other doesn't"
@@ -198,7 +198,7 @@ kundi FancyGetopt:
             # to do this a bit late to make sure we've removed any trailing
             # '='.
             ikiwa sio longopt_re.match(long):
-                 ashiria DistutilsGetoptError(
+                ashiria DistutilsGetoptError(
                        "invalid long option name '%s' "
                        "(must be letters, numbers, hyphens only" % long)
 
@@ -208,14 +208,14 @@ kundi FancyGetopt:
                 self.short2long[short[0]] = long
 
     eleza getopt(self, args=Tupu, object=Tupu):
-        """Parse command-line options kwenye args. Store as attributes on object.
+        """Parse command-line options kwenye args. Store kama attributes on object.
 
         If 'args' ni Tupu ama sio supplied, uses 'sys.argv[1:]'.  If
         'object' ni Tupu ama sio supplied, creates a new OptionDummy
         object, stores option values there, na returns a tuple (args,
-        object).  If 'object' ni supplied, it ni modified kwenye place and
+        object).  If 'object' ni supplied, it ni modified kwenye place na
         'getopt()' just returns 'args'; kwenye both cases, the returned
-        'args' ni a modified copy of the passed-in 'args' list, which
+        'args' ni a modified copy of the pitaed-in 'args' list, which
         ni left untouched.
         """
         ikiwa args ni Tupu:
@@ -231,8 +231,8 @@ kundi FancyGetopt:
         short_opts = ' '.join(self.short_opts)
         jaribu:
             opts, args = getopt.getopt(args, short_opts, self.long_opts)
-        except getopt.error as msg:
-             ashiria DistutilsArgError(msg)
+        tatizo getopt.error kama msg:
+            ashiria DistutilsArgError(msg)
 
         kila opt, val kwenye opts:
             ikiwa len(opt) == 2 na opt[0] == '-': # it's a short option
@@ -274,7 +274,7 @@ kundi FancyGetopt:
         'getopt()' hasn't been called yet.
         """
         ikiwa self.option_order ni Tupu:
-             ashiria RuntimeError("'getopt()' hasn't been called yet")
+            ashiria RuntimeError("'getopt()' hasn't been called yet")
         isipokua:
             rudisha self.option_order
 
@@ -285,7 +285,7 @@ kundi FancyGetopt:
         # Blithely assume the option table ni good: probably wouldn't call
         # 'generate_help()' unless you've already called 'getopt()'.
 
-        # First pass: determine maximum length of long option names
+        # First pita: determine maximum length of long option names
         max_opt = 0
         kila option kwenye self.option_table:
             long = option[0]
@@ -306,7 +306,7 @@ kundi FancyGetopt:
         #   --flimflam  set the flim-flam level
         # na ukijumuisha wrapped text:
         #   --flimflam  set the flim-flam level (must be between
-        #               0 na 100, except on Tuesdays)
+        #               0 na 100, tatizo on Tuesdays)
         # Options ukijumuisha short names will have the short name shown (but
         # it doesn't contribute to max_opt):
         #   --foo (-f)  controls foonabulation
@@ -419,7 +419,7 @@ eleza wrap_text(text, width):
             ikiwa chunks[0][0] == ' ':
                 toa chunks[0]
 
-        # na store this line kwenye the list-of-all-lines -- as a single
+        # na store this line kwenye the list-of-all-lines -- kama a single
         # string, of course!
         lines.append(''.join(cur_line))
 
@@ -434,8 +434,8 @@ eleza translate_longopt(opt):
 
 
 kundi OptionDummy:
-    """Dummy kundi just used as a place to hold command-line option
-    values as instance attributes."""
+    """Dummy kundi just used kama a place to hold command-line option
+    values kama instance attributes."""
 
     eleza __init__(self, options=[]):
         """Create a new OptionDummy instance.  The attributes listed in

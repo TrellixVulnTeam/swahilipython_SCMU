@@ -13,7 +13,7 @@ kutoka asyncio.proactor_events agiza _ProactorWritePipeTransport
 kutoka asyncio.proactor_events agiza _ProactorDuplexPipeTransport
 kutoka asyncio.proactor_events agiza _ProactorDatagramTransport
 kutoka test agiza support
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 
 
 eleza tearDownModule():
@@ -918,7 +918,7 @@ kundi ProactorEventLoopUnixSockSendfileTests(test_utils.TestCase):
 
     @classmethod
     eleza setUpClass(cls):
-        ukijumuisha open(support.TESTFN, 'wb') as fp:
+        ukijumuisha open(support.TESTFN, 'wb') kama fp:
             fp.write(cls.DATA)
         super().setUpClass()
 

@@ -22,7 +22,7 @@ kundi MIMEText(MIMENonMultipart):
         _subtype ni the MIME sub content type, defaulting to "plain".
 
         _charset ni the character set parameter added to the Content-Type
-        header.  This defaults to "us-ascii".  Note that as a side-effect, the
+        header.  This defaults to "us-ascii".  Note that kama a side-effect, the
         Content-Transfer-Encoding header will also be set.
         """
 
@@ -33,7 +33,7 @@ kundi MIMEText(MIMENonMultipart):
             jaribu:
                 _text.encode('us-ascii')
                 _charset = 'us-ascii'
-            except UnicodeEncodeError:
+            tatizo UnicodeEncodeError:
                 _charset = 'utf-8'
 
         MIMENonMultipart.__init__(self, 'text', _subtype, policy=policy,

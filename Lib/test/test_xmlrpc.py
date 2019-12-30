@@ -5,7 +5,7 @@ agiza sys
 agiza time
 agiza unittest
 kutoka unittest agiza mock
-agiza xmlrpc.client as xmlrpclib
+agiza xmlrpc.client kama xmlrpclib
 agiza xmlrpc.server
 agiza http.client
 agiza http, http.server
@@ -18,7 +18,7 @@ kutoka test agiza support
 
 jaribu:
     agiza gzip
-except ImportError:
+tatizo ImportError:
     gzip = Tupu
 
 alist = [{'astring': 'foo@bar.baz.spam',
@@ -50,7 +50,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
         # This checks that an unwrapped datetime.date object can be handled
         # by the marshalling code.  This can't be done via test_dump_load()
         # since ukijumuisha use_builtin_types set to 1 the unmarshaller would create
-        # datetime objects kila the 'datetime[123]' keys as well
+        # datetime objects kila the 'datetime[123]' keys kama well
         dt = datetime.datetime(2005, 2, 10, 11, 41, 23)
         self.assertEqual(dt, xmlrpclib.DateTime('20050210T11:41:23'))
         s = xmlrpclib.dumps((dt,))
@@ -81,7 +81,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
 
 
     eleza test_datetime_before_1900(self):
-        # same as before but ukijumuisha a date before 1900
+        # same kama before but ukijumuisha a date before 1900
         dt = datetime.datetime(1,  2, 10, 11, 41, 23)
         self.assertEqual(dt, xmlrpclib.DateTime('00010210T11:41:23'))
         s = xmlrpclib.dumps((dt,))
@@ -110,7 +110,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
 
     eleza test_newstyle_class(self):
         kundi T(object):
-            pass
+            pita
         t = T()
         t.x = 100
         t.y = "Hello"
@@ -147,7 +147,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
                           (xmlrpclib.MININT-1,))
 
         eleza dummy_write(s):
-            pass
+            pita
 
         m = xmlrpclib.Marshaller()
         m.dump_int(xmlrpclib.MAXINT, dummy_write)
@@ -165,7 +165,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
                          float(xmlrpclib.MININT - 42)))
 
         eleza dummy_write(s):
-            pass
+            pita
 
         m = xmlrpclib.Marshaller()
         m.dump_double(xmlrpclib.MAXINT, dummy_write)
@@ -293,15 +293,15 @@ kundi XMLRPCTestCase(unittest.TestCase):
     eleza test_ssl_presence(self):
         jaribu:
             agiza ssl
-        except ImportError:
+        tatizo ImportError:
             has_ssl = Uongo
         isipokua:
             has_ssl = Kweli
         jaribu:
             xmlrpc.client.ServerProxy('https://localhost:9999').bad_function()
-        except NotImplementedError:
+        tatizo NotImplementedError:
             self.assertUongo(has_ssl, "xmlrpc client's error ukijumuisha SSL support")
-        except OSError:
+        tatizo OSError:
             self.assertKweli(has_ssl)
 
     eleza test_keepalive_disconnect(self):
@@ -326,7 +326,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
 
             eleza log_message(self, format, *args):
                 # don't clobber sys.stderr
-                pass
+                pita
 
         eleza run_server():
             server.socket.settimeout(float(1))  # Don't hang ikiwa client fails
@@ -339,7 +339,7 @@ kundi XMLRPCTestCase(unittest.TestCase):
         thread.start()
         self.addCleanup(thread.join)
         url = "http://{}:{}/".format(*server.server_address)
-        ukijumuisha xmlrpclib.ServerProxy(url) as p:
+        ukijumuisha xmlrpclib.ServerProxy(url) kama p:
             self.assertEqual(p.method(), 5)
             self.assertEqual(p.method(), 5)
 
@@ -357,18 +357,18 @@ kundi SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
         exp_params = 1, 2, 3
 
         eleza dispatched_func(*params):
-             ashiria self.DispatchExc(params)
+            ashiria self.DispatchExc(params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_function(dispatched_func)
-        ukijumuisha self.assertRaises(self.DispatchExc) as exc_ctx:
+        ukijumuisha self.assertRaises(self.DispatchExc) kama exc_ctx:
             dispatcher._dispatch('dispatched_func', exp_params)
         self.assertEqual(exc_ctx.exception.args, (exp_params,))
         self.assertIsTupu(exc_ctx.exception.__cause__)
         self.assertIsTupu(exc_ctx.exception.__context__)
 
     eleza test_call_instance_func(self):
-        """Calls a registered instance attribute as a function"""
+        """Calls a registered instance attribute kama a function"""
         # Makes sure any exception raised inside the function has no other
         # exception chained to it
 
@@ -376,11 +376,11 @@ kundi SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
 
         kundi DispatchedClass:
             eleza dispatched_func(self, *params):
-                 ashiria SimpleXMLRPCDispatcherTestCase.DispatchExc(params)
+                ashiria SimpleXMLRPCDispatcherTestCase.DispatchExc(params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_instance(DispatchedClass())
-        ukijumuisha self.assertRaises(self.DispatchExc) as exc_ctx:
+        ukijumuisha self.assertRaises(self.DispatchExc) kama exc_ctx:
             dispatcher._dispatch('dispatched_func', exp_params)
         self.assertEqual(exc_ctx.exception.args, (exp_params,))
         self.assertIsTupu(exc_ctx.exception.__cause__)
@@ -396,12 +396,12 @@ kundi SimpleXMLRPCDispatcherTestCase(unittest.TestCase):
 
         kundi TestInstance:
             eleza _dispatch(self, method, params):
-                 ashiria SimpleXMLRPCDispatcherTestCase.DispatchExc(
+                ashiria SimpleXMLRPCDispatcherTestCase.DispatchExc(
                     method, params)
 
         dispatcher = xmlrpc.server.SimpleXMLRPCDispatcher()
         dispatcher.register_instance(TestInstance())
-        ukijumuisha self.assertRaises(self.DispatchExc) as exc_ctx:
+        ukijumuisha self.assertRaises(self.DispatchExc) kama exc_ctx:
             dispatcher._dispatch(exp_method, exp_params)
         self.assertEqual(exc_ctx.exception.args, (exp_method, exp_params))
         self.assertIsTupu(exc_ctx.exception.__cause__)
@@ -454,7 +454,7 @@ kundi FaultTestCase(unittest.TestCase):
         self.assertRaises(xmlrpclib.Fault, xmlrpclib.loads, s)
 
     eleza test_dotted_attribute(self):
-        # this will  ashiria AttributeError because code don't want us to use
+        # this will ashiria AttributeError because code don't want us to use
         # private methods
         self.assertRaises(AttributeError,
                           xmlrpc.server.resolve_dotted_attribute, str, '__add')
@@ -462,7 +462,7 @@ kundi FaultTestCase(unittest.TestCase):
 
 kundi DateTimeTestCase(unittest.TestCase):
     eleza test_default(self):
-        ukijumuisha mock.patch('time.localtime') as localtime_mock:
+        ukijumuisha mock.patch('time.localtime') kama localtime_mock:
             time_struct = time.struct_time(
                 [2013, 7, 15, 0, 24, 49, 0, 196, 0])
             localtime_mock.return_value = time_struct
@@ -550,7 +550,7 @@ kundi DateTimeTestCase(unittest.TestCase):
 kundi BinaryTestCase(unittest.TestCase):
 
     # XXX What should str(Binary(b"\xff")) return?  I'm chosing "\xff"
-    # kila now (i.e. interpreting the binary data as Latin-1-encoded
+    # kila now (i.e. interpreting the binary data kama Latin-1-encoded
     # text).  But this feels very unsatisfactory.  Perhaps we should
     # only define repr(), na rudisha r"Binary(b'\xff')" instead?
 
@@ -636,8 +636,8 @@ eleza http_server(evt, numrequests, requestHandler=Tupu, encoding=Tupu):
             serv.handle_request()
             numrequests -= 1
 
-    except socket.timeout:
-        pass
+    tatizo socket.timeout:
+        pita
     mwishowe:
         serv.socket.close()
         PORT = Tupu
@@ -671,7 +671,7 @@ eleza http_multi_server(evt, numrequests, requestHandler=Tupu):
 
     kundi BrokenDispatcher:
         eleza _marshaled_dispatch(self, data, dispatch_method=Tupu, path=Tupu):
-             ashiria RuntimeError("broken dispatcher")
+            ashiria RuntimeError("broken dispatcher")
 
     serv = MyXMLRPCServer(("localhost", 0), MyRequestHandler,
                           logRequests=Uongo, bind_and_activate=Uongo)
@@ -701,8 +701,8 @@ eleza http_multi_server(evt, numrequests, requestHandler=Tupu):
             serv.handle_request()
             numrequests -= 1
 
-    except socket.timeout:
-        pass
+    tatizo socket.timeout:
+        pita
     mwishowe:
         serv.socket.close()
         PORT = Tupu
@@ -720,7 +720,7 @@ eleza is_unavailable_exception(e):
         ikiwa e.errcode == -1 ama e.headers ni Tupu:
             rudisha Kweli
         exc_mess = e.headers.get('X-exception')
-    except AttributeError:
+    tatizo AttributeError:
         # Ignore OSErrors here.
         exc_mess = str(e)
 
@@ -736,10 +736,10 @@ eleza make_request_and_skipIf(condition, reason):
         eleza make_request_and_skip(self):
             jaribu:
                 xmlrpclib.ServerProxy(URL).my_function()
-            except (xmlrpclib.ProtocolError, OSError) as e:
+            tatizo (xmlrpclib.ProtocolError, OSError) kama e:
                 ikiwa sio is_unavailable_exception(e):
                     raise
-             ashiria unittest.SkipTest(reason)
+            ashiria unittest.SkipTest(reason)
         rudisha make_request_and_skip
     rudisha decorator
 
@@ -775,7 +775,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
         jaribu:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.pow(6,8), 6**8)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -788,7 +788,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -802,7 +802,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL, encoding='iso-8859-15')
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, socket.error) as e:
+        tatizo (xmlrpclib.ProtocolError, socket.error) kama e:
             # ignore failures due to non-blocking socket unavailable errors.
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -812,16 +812,16 @@ kundi SimpleServerTestCase(BaseServerTestCase):
         jaribu:
             p = xmlrpclib.ServerProxy(URL, encoding='ascii')
             self.assertEqual(p.têšt(42), 42)
-        except (xmlrpclib.ProtocolError, socket.error) as e:
+        tatizo (xmlrpclib.ProtocolError, socket.error) kama e:
             # ignore failures due to non-blocking socket unavailable errors.
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
                 self.fail("%s\n%s" % (e, getattr(e, "headers", "")))
 
     eleza test_404(self):
-        # send POST ukijumuisha http.client, it should rudisha 404 header and
+        # send POST ukijumuisha http.client, it should rudisha 404 header na
         # 'Not Found' message.
-        ukijumuisha contextlib.closing(http.client.HTTPConnection(ADDR, PORT)) as conn:
+        ukijumuisha contextlib.closing(http.client.HTTPConnection(ADDR, PORT)) kama conn:
             conn.request('POST', '/this-is-not-valid')
             response = conn.getresponse()
 
@@ -837,7 +837,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             meth = p.system.listMethods()
             self.assertEqual(set(meth), expected_methods)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -850,7 +850,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             divhelp = p.system.methodHelp('div')
             self.assertEqual(divhelp, 'This ni the div function')
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -864,7 +864,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             myfunction = p.system.methodHelp('my_function')
             self.assertEqual(myfunction, 'This ni my function')
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -877,7 +877,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             divsig = p.system.methodSignature('div')
             self.assertEqual(divsig, 'signatures sio supported')
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -894,7 +894,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             self.assertEqual(add_result, 2+3)
             self.assertEqual(pow_result, 6**8)
             self.assertEqual(div_result, 127//42)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -915,7 +915,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
             self.assertEqual(result.results[0]['faultString'],
                 '<kundi \'Exception\'>:method "this_is_not_exists" '
                 'is sio supported')
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -943,7 +943,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
 
     eleza test_partial_post(self):
         # Check that a partial POST doesn't make the server loop: issue #14001.
-        ukijumuisha contextlib.closing(socket.create_connection((ADDR, PORT))) as conn:
+        ukijumuisha contextlib.closing(socket.create_connection((ADDR, PORT))) kama conn:
             conn.send('POST /RPC2 HTTP/1.0\r\n'
                       'Content-Length: 100\r\n\r\n'
                       'bye HTTP/1.1\r\n'
@@ -952,7 +952,7 @@ kundi SimpleServerTestCase(BaseServerTestCase):
                       'Content-Length: 0\r\n\r\n'.encode('ascii'))
 
     eleza test_context_manager(self):
-        ukijumuisha xmlrpclib.ServerProxy(URL) as server:
+        ukijumuisha xmlrpclib.ServerProxy(URL) kama server:
             server.add(2, 3)
             self.assertNotEqual(server('transport')._connection,
                                 (Tupu, Tupu))
@@ -961,10 +961,10 @@ kundi SimpleServerTestCase(BaseServerTestCase):
 
     eleza test_context_manager_method_error(self):
         jaribu:
-            ukijumuisha xmlrpclib.ServerProxy(URL) as server:
+            ukijumuisha xmlrpclib.ServerProxy(URL) kama server:
                 server.add(2, "a")
-        except xmlrpclib.Fault:
-            pass
+        tatizo xmlrpclib.Fault:
+            pita
         self.assertEqual(server('transport')._connection,
                          (Tupu, Tupu))
 
@@ -982,7 +982,7 @@ kundi SimpleServerEncodingTestCase(BaseServerTestCase):
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.add(start_string, end_string),
                              start_string + end_string)
-        except (xmlrpclib.ProtocolError, socket.error) as e:
+        tatizo (xmlrpclib.ProtocolError, socket.error) kama e:
             # ignore failures due to non-blocking socket unavailable errors.
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -1078,7 +1078,7 @@ kundi KeepaliveServerTestCase2(BaseKeepaliveServerTestCase):
         p = xmlrpclib.ServerProxy(URL)
         #do some requests ukijumuisha close.
         self.assertEqual(p.pow(6,8), 6**8)
-        p("transport").close() #same as above, really.
+        p("transport").close() #same kama above, really.
         self.assertEqual(p.pow(6,8), 6**8)
         p("close")()
         self.assertEqual(len(self.RequestHandler.myRequests), 2)
@@ -1292,11 +1292,11 @@ kundi FailingServerTestCase(unittest.TestCase):
         # enable traceback reporting
         xmlrpc.server.SimpleXMLRPCServer._send_traceback_header = Kweli
 
-        # test a call that shouldn't fail just as a smoke test
+        # test a call that shouldn't fail just kama a smoke test
         jaribu:
             p = xmlrpclib.ServerProxy(URL)
             self.assertEqual(p.pow(6,8), 6**8)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e):
                 # protocol error; provide additional information kwenye test output
@@ -1309,7 +1309,7 @@ kundi FailingServerTestCase(unittest.TestCase):
         jaribu:
             p = xmlrpclib.ServerProxy(URL)
             p.pow(6,8)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e) na hasattr(e, "headers"):
                 # The two server-side error headers shouldn't be sent back kwenye this case
@@ -1329,7 +1329,7 @@ kundi FailingServerTestCase(unittest.TestCase):
         jaribu:
             p = xmlrpclib.ServerProxy(URL)
             p.pow(6,8)
-        except (xmlrpclib.ProtocolError, OSError) as e:
+        tatizo (xmlrpclib.ProtocolError, OSError) kama e:
             # ignore failures due to non-blocking socket 'unavailable' errors
             ikiwa sio is_unavailable_exception(e) na hasattr(e, "headers"):
                 # We should get error info kwenye the response
@@ -1361,11 +1361,11 @@ kundi CGIHandlerTestCase(unittest.TestCase):
         self.cgi = Tupu
 
     eleza test_cgi_get(self):
-        ukijumuisha support.EnvironmentVarGuard() as env:
+        ukijumuisha support.EnvironmentVarGuard() kama env:
             env['REQUEST_METHOD'] = 'GET'
             # ikiwa the method ni GET na no request_text ni given, it runs handle_get
             # get sysout output
-            ukijumuisha captured_stdout(encoding=self.cgi.encoding) as data_out:
+            ukijumuisha captured_stdout(encoding=self.cgi.encoding) kama data_out:
                 self.cgi.handle_request()
 
             # parse Status header
@@ -1393,9 +1393,9 @@ kundi CGIHandlerTestCase(unittest.TestCase):
         </methodCall>
         """
 
-        ukijumuisha support.EnvironmentVarGuard() as env, \
-             captured_stdout(encoding=self.cgi.encoding) as data_out, \
-             support.captured_stdin() as data_in:
+        ukijumuisha support.EnvironmentVarGuard() kama env, \
+             captured_stdout(encoding=self.cgi.encoding) kama data_out, \
+             support.captured_stdin() kama data_in:
             data_in.write(data)
             data_in.seek(0)
             env['CONTENT_LENGTH'] = str(len(data))
@@ -1405,12 +1405,12 @@ kundi CGIHandlerTestCase(unittest.TestCase):
         # will respond exception, ikiwa so, our goal ni achieved ;)
         handle = data_out.read()
 
-        # start ukijumuisha 44th char so as sio to get http header, we just
+        # start ukijumuisha 44th char so kama sio to get http header, we just
         # need only xml
         self.assertRaises(xmlrpclib.Fault, xmlrpclib.loads, handle[44:])
 
         # Also test the content-length returned  by handle_request
-        # Using the same test method inorder to avoid all the datapassing
+        # Using the same test method inorder to avoid all the datapitaing
         # boilerplate code.
         # Test kila bug: http://bugs.python.org/issue5040
 
@@ -1425,8 +1425,8 @@ kundi UseBuiltinTypesTestCase(unittest.TestCase):
 
     eleza test_use_builtin_types(self):
         # SimpleXMLRPCDispatcher.__init__ accepts use_builtin_types, which
-        # makes all dispatch of binary data as bytes instances, na all
-        # dispatch of datetime argument as datetime.datetime instances.
+        # makes all dispatch of binary data kama bytes instances, na all
+        # dispatch of datetime argument kama datetime.datetime instances.
         self.log = []
         expected_bytes = b"my dog has fleas"
         expected_date = datetime.datetime(2008, 5, 26, 18, 25, 12)

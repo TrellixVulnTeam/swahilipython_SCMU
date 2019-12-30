@@ -1,7 +1,7 @@
 kutoka _locale agiza (setlocale, LC_ALL, LC_CTYPE, LC_NUMERIC, localeconv, Error)
 jaribu:
     kutoka _locale agiza (RADIXCHAR, THOUSEP, nl_langinfo)
-except ImportError:
+tatizo ImportError:
     nl_langinfo = Tupu
 
 agiza locale
@@ -12,7 +12,7 @@ kutoka platform agiza uname
 ikiwa uname().system == "Darwin":
     maj, min, mic = [int(part) kila part kwenye uname().release.split(".")]
     ikiwa (maj, min, mic) < (8, 0, 0):
-         ashiria unittest.SkipTest("locale support broken kila OS X < 10.4")
+        ashiria unittest.SkipTest("locale support broken kila OS X < 10.4")
 
 candidate_locales = ['es_UY', 'fr_FR', 'fi_FI', 'es_CO', 'pt_PT', 'it_IT',
     'et_EE', 'es_PY', 'no_NO', 'nl_NL', 'lv_LV', 'el_GR', 'be_BY', 'fr_BE',
@@ -31,7 +31,7 @@ eleza setUpModule():
     # Issue #13441: Skip some locales (e.g. cs_CZ na hu_HU) on Solaris to
     # workaround a mbstowcs() bug. For example, on Solaris, the hu_HU locale uses
     # the locale encoding ISO-8859-2, the thousauds separator ni b'\xA0' na it is
-    # decoded as U+30000020 (an invalid character) by mbstowcs().
+    # decoded kama U+30000020 (an invalid character) by mbstowcs().
     ikiwa sys.platform == 'sunos5':
         old_locale = locale.setlocale(locale.LC_ALL)
         jaribu:
@@ -39,12 +39,12 @@ eleza setUpModule():
             kila loc kwenye candidate_locales:
                 jaribu:
                     locale.setlocale(locale.LC_ALL, loc)
-                except Error:
+                tatizo Error:
                     endelea
                 encoding = locale.getpreferredencoding(Uongo)
                 jaribu:
                     localeconv()
-                except Exception as err:
+                tatizo Exception kama err:
                     andika("WARNING: Skip locale %s (encoding %s): [%s] %s"
                         % (loc, encoding, type(err), err))
                 isipokua:
@@ -61,7 +61,7 @@ eleza setUpModule():
         candidate_locales = [loc kila loc kwenye candidate_locales ikiwa accept(loc)]
 
 # List known locale values to test against when available.
-# Dict formatted as ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
+# Dict formatted kama ``<locale> : (<decimal_point>, <thousands_sep>)``.  If a
 # value ni sio known, use '' .
 known_numerics = {
     'en_US': ('.', ','),
@@ -89,7 +89,7 @@ kundi _LocaleTests(unittest.TestCase):
         """Compare calculation against known value, ikiwa available"""
         jaribu:
             set_locale = setlocale(LC_NUMERIC)
-        except Error:
+        tatizo Error:
             set_locale = "<not able to determine>"
         known_value = known_numerics.get(used_locale,
                                     ('', ''))[data_type == 'thousands_sep']
@@ -109,7 +109,7 @@ kundi _LocaleTests(unittest.TestCase):
             jaribu:
                 setlocale(LC_NUMERIC, loc)
                 setlocale(LC_CTYPE, loc)
-            except Error:
+            tatizo Error:
                 endelea
             kila li, lc kwenye ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
@@ -125,7 +125,7 @@ kundi _LocaleTests(unittest.TestCase):
             jaribu:
                 setlocale(LC_NUMERIC, loc)
                 setlocale(LC_CTYPE, loc)
-            except Error:
+            tatizo Error:
                 endelea
             formatting = localeconv()
             kila lc kwenye ("decimal_point",
@@ -143,7 +143,7 @@ kundi _LocaleTests(unittest.TestCase):
             jaribu:
                 setlocale(LC_NUMERIC, loc)
                 setlocale(LC_CTYPE, loc)
-            except Error:
+            tatizo Error:
                 endelea
             kila li, lc kwenye ((RADIXCHAR, "decimal_point"),
                             (THOUSEP, "thousands_sep")):
@@ -151,7 +151,7 @@ kundi _LocaleTests(unittest.TestCase):
                 li_radixchar = localeconv()[lc]
                 jaribu:
                     set_locale = setlocale(LC_NUMERIC)
-                except Error:
+                tatizo Error:
                     set_locale = "<not able to determine>"
                 self.assertEqual(nl_radixchar, li_radixchar,
                                 "%s (nl_langinfo) != %s (localeconv) "
@@ -170,7 +170,7 @@ kundi _LocaleTests(unittest.TestCase):
             jaribu:
                 setlocale(LC_NUMERIC, loc)
                 setlocale(LC_CTYPE, loc)
-            except Error:
+            tatizo Error:
                 endelea
 
             # Ignore buggy locale databases. (Mac OS 10.4 na some other BSDs)

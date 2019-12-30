@@ -89,7 +89,7 @@ kundi DistributionTestCase(support.LoggingSilencer,
 
         fakepath = '/somedir'
 
-        ukijumuisha open(TESTFN, "w") as f:
+        ukijumuisha open(TESTFN, "w") kama f:
             andika(("[install]\n"
                    "install-base = {0}\n"
                    "install-platbase = {0}\n"
@@ -106,7 +106,7 @@ kundi DistributionTestCase(support.LoggingSilencer,
                    "root = {0}").format(fakepath), file=f)
 
         # Base case: Not kwenye a Virtual Environment
-        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/a') as values:
+        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/a') kama values:
             d = self.create_distribution([TESTFN])
 
         option_tuple = (TESTFN, fakepath)
@@ -135,7 +135,7 @@ kundi DistributionTestCase(support.LoggingSilencer,
             self.assertEqual(value, result_dict[key])
 
         # Test case: In a Virtual Environment
-        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/b') as values:
+        ukijumuisha mock.patch.multiple(sys, prefix='/a', base_prefix='/b') kama values:
             d = self.create_distribution([TESTFN])
 
         kila key kwenye result_dict.keys():
@@ -232,7 +232,7 @@ kundi DistributionTestCase(support.LoggingSilencer,
         isipokua:
             user_filename = os.path.join(temp_home, "pydistutils.cfg")
 
-        ukijumuisha open(user_filename, 'w') as f:
+        ukijumuisha open(user_filename, 'w') kama f:
             f.write('[distutils]\n')
 
         eleza _expander(path):
@@ -368,9 +368,9 @@ kundi MetadataTestCase(support.TempdirManager, support.EnvironGuard,
     eleza test_classifier_invalid_type(self):
         attrs = {'name': 'Boa', 'version': '3.0',
                  'classifiers': ('Programming Language :: Python :: 3',)}
-        ukijumuisha captured_stderr() as error:
+        ukijumuisha captured_stderr() kama error:
             d = Distribution(attrs)
-        # should have warning about passing a non-list
+        # should have warning about pitaing a non-list
         self.assertIn('should be a list', error.getvalue())
         # should be converted to a list
         self.assertIsInstance(d.metadata.classifiers, list)
@@ -387,9 +387,9 @@ kundi MetadataTestCase(support.TempdirManager, support.EnvironGuard,
     eleza test_keywords_invalid_type(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'keywords': ('spam', 'eggs', 'life of brian')}
-        ukijumuisha captured_stderr() as error:
+        ukijumuisha captured_stderr() kama error:
             d = Distribution(attrs)
-        # should have warning about passing a non-list
+        # should have warning about pitaing a non-list
         self.assertIn('should be a list', error.getvalue())
         # should be converted to a list
         self.assertIsInstance(d.metadata.keywords, list)
@@ -405,9 +405,9 @@ kundi MetadataTestCase(support.TempdirManager, support.EnvironGuard,
     eleza test_platforms_invalid_types(self):
         attrs = {'name': 'Monty', 'version': '1.0',
                  'platforms': ('GNU/Linux', 'Some Evil Platform')}
-        ukijumuisha captured_stderr() as error:
+        ukijumuisha captured_stderr() kama error:
             d = Distribution(attrs)
-        # should have warning about passing a non-list
+        # should have warning about pitaing a non-list
         self.assertIn('should be a list', error.getvalue())
         # should be converted to a list
         self.assertIsInstance(d.metadata.platforms, list)
@@ -483,7 +483,7 @@ kundi MetadataTestCase(support.TempdirManager, support.EnvironGuard,
         sys.argv = []
         dist.help = 1
         dist.script_name = 'setup.py'
-        ukijumuisha captured_stdout() as s:
+        ukijumuisha captured_stdout() kama s:
             dist.parse_command_line()
 
         output = [line kila line kwenye s.getvalue().split('\n')

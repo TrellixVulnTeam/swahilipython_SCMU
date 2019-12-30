@@ -26,10 +26,10 @@ test_dir = os.path.dirname(__file__) ama os.curdir
 format_testfile = os.path.join(test_dir, 'formatfloat_testcases.txt')
 
 kundi FloatSubclass(float):
-    pass
+    pita
 
 kundi OtherFloatSubclass(float):
-    pass
+    pita
 
 kundi GeneralFloatCases(unittest.TestCase):
 
@@ -74,7 +74,7 @@ kundi GeneralFloatCases(unittest.TestCase):
                 endelea
             ikiwa sio any(ch kwenye lit kila ch kwenye 'jJxXoObB'):
                 self.assertRaises(ValueError, float, lit)
-        # Additional test cases; nan na inf are never valid as literals,
+        # Additional test cases; nan na inf are never valid kama literals,
         # only kwenye the float() constructor, but we don't allow underscores
         # kwenye ama around them.
         self.assertRaises(ValueError, float, '_NaN')
@@ -88,9 +88,9 @@ kundi GeneralFloatCases(unittest.TestCase):
     eleza test_non_numeric_input_types(self):
         # Test possible non-numeric types kila the argument x, including
         # subclasses of the explicitly documented accepted types.
-        kundi CustomStr(str): pass
-        kundi CustomBytes(bytes): pass
-        kundi CustomByteArray(bytearray): pass
+        kundi CustomStr(str): pita
+        kundi CustomBytes(bytes): pita
+        kundi CustomByteArray(bytearray): pita
 
         factories = [
             bytes,
@@ -102,8 +102,8 @@ kundi GeneralFloatCases(unittest.TestCase):
         ]
         jaribu:
             kutoka array agiza array
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         isipokua:
             factories.append(lambda b: array('B', b))
 
@@ -123,7 +123,7 @@ kundi GeneralFloatCases(unittest.TestCase):
 
     eleza test_error_message(self):
         eleza check(s):
-            ukijumuisha self.assertRaises(ValueError, msg='float(%r)' % (s,)) as cm:
+            ukijumuisha self.assertRaises(ValueError, msg='float(%r)' % (s,)) kama cm:
                 float(s)
             self.assertEqual(str(cm.exception),
                 'could sio convert string to float: %r' % (s,))
@@ -338,7 +338,7 @@ kundi GeneralFloatCases(unittest.TestCase):
         # Special cases taken kutoka section F.9.4.4 of the C99 specification
 
         kila pow_op kwenye pow, operator.pow:
-            # x**NAN ni NAN kila any x except 1
+            # x**NAN ni NAN kila any x tatizo 1
             self.assertKweli(isnan(pow_op(-INF, NAN)))
             self.assertKweli(isnan(pow_op(-2.0, NAN)))
             self.assertKweli(isnan(pow_op(-1.0, NAN)))
@@ -350,7 +350,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertKweli(isnan(pow_op(INF, NAN)))
             self.assertKweli(isnan(pow_op(NAN, NAN)))
 
-            # NAN**y ni NAN kila any y except +-0
+            # NAN**y ni NAN kila any y tatizo +-0
             self.assertKweli(isnan(pow_op(NAN, -INF)))
             self.assertKweli(isnan(pow_op(NAN, -2.0)))
             self.assertKweli(isnan(pow_op(NAN, -1.0)))
@@ -422,7 +422,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(INF, -0.0), 1.0)
             self.assertEqualAndEqualSign(pow_op(NAN, -0.0), 1.0)
 
-            # x**y defers to complex pow kila finite negative x and
+            # x**y defers to complex pow kila finite negative x na
             # non-integral y.
             self.assertEqual(type(pow_op(-2.0, -0.5)), complex)
             self.assertEqual(type(pow_op(-2.0, 0.5)), complex)
@@ -520,7 +520,7 @@ kundi GeneralFloatCases(unittest.TestCase):
             self.assertEqualAndEqualSign(pow_op(0.5, 2000.5), 0.0)
             self.assertEqualAndEqualSign(pow_op(0.5, 2001.0), 0.0)
 
-            # check we don't  ashiria an exception kila subnormal results,
+            # check we don't ashiria an exception kila subnormal results,
             # na validate signs.  Tests currently disabled, since
             # they fail on systems where a subnormal result kutoka pow
             # ni flushed to zero (e.g. Debian/ia64.)
@@ -559,7 +559,7 @@ kundi FormatFunctionsTestCase(unittest.TestCase):
             ikiwa self.save_formats[t] == 'IEEE, big-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, little-endian')
-            elikiwa self.save_formats[t] == 'IEEE, little-endian':
+            lasivyo self.save_formats[t] == 'IEEE, little-endian':
                 self.assertRaises(ValueError, float.__setformat__,
                                   t, 'IEEE, big-endian')
             isipokua:
@@ -583,7 +583,7 @@ BE_FLOAT_NAN = b'\x7f\xc0\x00\x00'
 LE_FLOAT_NAN = bytes(reversed(BE_FLOAT_NAN))
 
 # on non-IEEE platforms, attempting to unpack a bit pattern
-# representing an infinity ama a NaN should  ashiria an exception.
+# representing an infinity ama a NaN should ashiria an exception.
 
 @requires_setformat
 kundi UnknownFormatTestCase(unittest.TestCase):
@@ -613,7 +613,7 @@ kundi UnknownFormatTestCase(unittest.TestCase):
 
 
 # on an IEEE platform, all we guarantee ni that bit patterns
-# representing infinities ama NaNs do sio  ashiria an exception; all else
+# representing infinities ama NaNs do sio ashiria an exception; all else
 # ni accident (today).
 # let's also try to guarantee that -0.0 na 0.0 don't get confused.
 
@@ -644,17 +644,17 @@ kundi IEEEFormatTestCase(unittest.TestCase):
 kundi FormatTestCase(unittest.TestCase):
 
     eleza test_format(self):
-        # these should be rewritten to use both format(x, spec) and
+        # these should be rewritten to use both format(x, spec) na
         # x.__format__(spec)
 
         self.assertEqual(format(0.0, 'f'), '0.000000')
 
-        # the default ni 'g', except kila empty format spec
+        # the default ni 'g', tatizo kila empty format spec
         self.assertEqual(format(0.0, ''), '0.0')
         self.assertEqual(format(0.01, ''), '0.01')
         self.assertEqual(format(0.01, 'g'), '0.01')
 
-        # empty presentation type should format kwenye the same way as str
+        # empty presentation type should format kwenye the same way kama str
         # (issue 5920)
         x = 100/7.
         self.assertEqual(format(x, ''), str(x))
@@ -698,7 +698,7 @@ kundi FormatTestCase(unittest.TestCase):
 
     @support.requires_IEEE_754
     eleza test_format_testfile(self):
-        ukijumuisha open(format_testfile) as testfile:
+        ukijumuisha open(format_testfile) kama testfile:
             kila line kwenye testfile:
                 ikiwa line.startswith('--'):
                     endelea
@@ -738,7 +738,7 @@ kundi FormatTestCase(unittest.TestCase):
 kundi ReprTestCase(unittest.TestCase):
     eleza test_repr(self):
         ukijumuisha open(os.path.join(os.path.split(__file__)[0],
-                  'floating_points.txt')) as floats_file:
+                  'floating_points.txt')) kama floats_file:
             kila line kwenye floats_file:
                 line = line.strip()
                 ikiwa sio line ama line.startswith('#'):
@@ -854,7 +854,7 @@ kundi RoundTestCase(unittest.TestCase):
     @unittest.skipUnless(getattr(sys, 'float_repr_style', '') == 'short',
                          "applies only when using short float repr style")
     eleza test_matches_float_format(self):
-        # round should give the same results as float formatting
+        # round should give the same results kama float formatting
         kila i kwenye range(500):
             x = i/1000.
             self.assertEqual(float(format(x, '.0f')), round(x, 0))
@@ -1033,7 +1033,7 @@ kundi HexFloatTestCase(unittest.TestCase):
         ikiwa isnan(x) ama isnan(y):
             ikiwa isnan(x) == isnan(y):
                 return
-        elikiwa x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
+        lasivyo x == y na (x != 0.0 ama copysign(1.0, x) == copysign(1.0, y)):
             return
         self.fail('%r sio identical to %r' % (x, y))
 
@@ -1100,10 +1100,10 @@ kundi HexFloatTestCase(unittest.TestCase):
         kila x kwenye invalid_inputs:
             jaribu:
                 result = fromHex(x)
-            except ValueError:
-                pass
+            tatizo ValueError:
+                pita
             isipokua:
-                self.fail('Expected float.fromhex(%r) to  ashiria ValueError; '
+                self.fail('Expected float.fromhex(%r) to ashiria ValueError; '
                           'got %r instead' % (x, result))
 
 
@@ -1434,8 +1434,8 @@ kundi HexFloatTestCase(unittest.TestCase):
             s = random.choice([1.0, -1.0])
             jaribu:
                 x = s*ldexp(m, e)
-            except OverflowError:
-                pass
+            tatizo OverflowError:
+                pita
             isipokua:
                 self.identical(x, fromHex(toHex(x)))
 

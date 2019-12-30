@@ -2,17 +2,17 @@
 
 Formatter objects transform an abstract flow of formatting events into
 specific output events on writer objects. Formatters manage several stack
-structures to allow various properties of a writer object to be changed and
+structures to allow various properties of a writer object to be changed na
 restored; writers need sio be able to handle relative changes nor any sort
 of ``change back'' operation. Specific writer properties which may be
 controlled via formatter objects are horizontal alignment, font, na left
 margin indentations. A mechanism ni provided which supports providing
-arbitrary, non-exclusive style settings to a writer as well. Additional
+arbitrary, non-exclusive style settings to a writer kama well. Additional
 interfaces facilitate formatting events which are sio reversible, such as
 paragraph separation.
 
 Writer objects encapsulate device interfaces. Abstract devices, such as
-file formats, are supported as well as physical devices. The provided
+file formats, are supported kama well kama physical devices. The provided
 implementations all work ukijumuisha abstract devices. The interface makes
 available mechanisms kila setting the properties which formatter objects
 manage na inserting data into the output.
@@ -42,23 +42,23 @@ kundi NullFormatter:
         ikiwa writer ni Tupu:
             writer = NullWriter()
         self.writer = writer
-    eleza end_paragraph(self, blankline): pass
-    eleza add_line_koma(self): pass
-    eleza add_hor_rule(self, *args, **kw): pass
-    eleza add_label_data(self, format, counter, blankline=Tupu): pass
-    eleza add_flowing_data(self, data): pass
-    eleza add_literal_data(self, data): pass
-    eleza flush_softspace(self): pass
-    eleza push_alignment(self, align): pass
-    eleza pop_alignment(self): pass
-    eleza push_font(self, x): pass
-    eleza pop_font(self): pass
-    eleza push_margin(self, margin): pass
-    eleza pop_margin(self): pass
-    eleza set_spacing(self, spacing): pass
-    eleza push_style(self, *styles): pass
-    eleza pop_style(self, n=1): pass
-    eleza assert_line_data(self, flag=1): pass
+    eleza end_paragraph(self, blankline): pita
+    eleza add_line_koma(self): pita
+    eleza add_hor_rule(self, *args, **kw): pita
+    eleza add_label_data(self, format, counter, blankline=Tupu): pita
+    eleza add_flowing_data(self, data): pita
+    eleza add_literal_data(self, data): pita
+    eleza flush_softspace(self): pita
+    eleza push_alignment(self, align): pita
+    eleza pop_alignment(self): pita
+    eleza push_font(self, x): pita
+    eleza pop_font(self): pita
+    eleza push_margin(self, margin): pita
+    eleza pop_margin(self): pita
+    eleza set_spacing(self, spacing): pita
+    eleza push_style(self, *styles): pita
+    eleza pop_style(self, n=1): pita
+    eleza assert_line_data(self, flag=1): pita
 
 
 kundi AbstractFormatter:
@@ -132,10 +132,10 @@ kundi AbstractFormatter:
         kila c kwenye format:
             ikiwa c == '1':
                 label = label + ('%d' % counter)
-            elikiwa c kwenye 'aA':
+            lasivyo c kwenye 'aA':
                 ikiwa counter > 0:
                     label = label + self.format_letter(c, counter)
-            elikiwa c kwenye 'iI':
+            lasivyo c kwenye 'iI':
                 ikiwa counter > 0:
                     label = label + self.format_roman(c, counter)
             isipokua:
@@ -162,7 +162,7 @@ kundi AbstractFormatter:
             counter, x = divmod(counter, 10)
             ikiwa x == 9:
                 label = ones[index] + ones[index+1] + label
-            elikiwa x == 4:
+            lasivyo x == 4:
                 label = ones[index] + fives[index] + label
             isipokua:
                 ikiwa x >= 5:
@@ -184,7 +184,7 @@ kundi AbstractFormatter:
         data = " ".join(data.split())
         ikiwa self.nospace na sio data:
             return
-        elikiwa prespace ama self.softspace:
+        lasivyo prespace ama self.softspace:
             ikiwa sio data:
                 ikiwa sio self.nospace:
                     self.softspace = 1
@@ -303,25 +303,25 @@ kundi NullWriter:
     which do sio need to inherit any implementation methods.
 
     """
-    eleza __init__(self): pass
-    eleza flush(self): pass
-    eleza new_alignment(self, align): pass
-    eleza new_font(self, font): pass
-    eleza new_margin(self, margin, level): pass
-    eleza new_spacing(self, spacing): pass
-    eleza new_styles(self, styles): pass
-    eleza send_paragraph(self, blankline): pass
-    eleza send_line_koma(self): pass
-    eleza send_hor_rule(self, *args, **kw): pass
-    eleza send_label_data(self, data): pass
-    eleza send_flowing_data(self, data): pass
-    eleza send_literal_data(self, data): pass
+    eleza __init__(self): pita
+    eleza flush(self): pita
+    eleza new_alignment(self, align): pita
+    eleza new_font(self, font): pita
+    eleza new_margin(self, margin, level): pita
+    eleza new_spacing(self, spacing): pita
+    eleza new_styles(self, styles): pita
+    eleza send_paragraph(self, blankline): pita
+    eleza send_line_koma(self): pita
+    eleza send_hor_rule(self, *args, **kw): pita
+    eleza send_label_data(self, data): pita
+    eleza send_flowing_data(self, data): pita
+    eleza send_literal_data(self, data): pita
 
 
 kundi AbstractWriter(NullWriter):
     """A writer which can be used kwenye debugging formatters, but sio much else.
 
-    Each method simply announces itself by printing its name and
+    Each method simply announces itself by printing its name na
     arguments on standard output.
 
     """
@@ -361,8 +361,8 @@ kundi AbstractWriter(NullWriter):
 
 
 kundi DumbWriter(NullWriter):
-    """Simple writer kundi which writes output on the file object passed in
-    as the file parameter or, ikiwa file ni omitted, on standard output.  The
+    """Simple writer kundi which writes output on the file object pitaed in
+    kama the file parameter or, ikiwa file ni omitted, on standard output.  The
     output ni simply word-wrapped to the number of columns specified by
     the maxcol parameter.  This kundi ni suitable kila reflowing a sequence
     of paragraphs.
@@ -432,7 +432,7 @@ eleza test(file = Tupu):
     f = AbstractFormatter(w)
     ikiwa file ni sio Tupu:
         fp = open(file)
-    elikiwa sys.argv[1:]:
+    lasivyo sys.argv[1:]:
         fp = open(sys.argv[1])
     isipokua:
         fp = sys.stdin

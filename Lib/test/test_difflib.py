@@ -238,10 +238,10 @@ kundi TestSFpatches(unittest.TestCase):
         actual = full.replace('</body>','\n%s\n</body>' % tables)
 
         # temporarily uncomment next two lines to baseline this test
-        #ukijumuisha open('test_difflib_expect.html','w') as fp:
+        #ukijumuisha open('test_difflib_expect.html','w') kama fp:
         #    fp.write(actual)
 
-        ukijumuisha open(findfile('test_difflib_expect.html')) as fp:
+        ukijumuisha open(findfile('test_difflib_expect.html')) kama fp:
             self.assertEqual(actual, fp.read())
 
     eleza test_recursion_limit(self):
@@ -390,7 +390,7 @@ kundi TestBytes(unittest.TestCase):
         check(difflib.diff_bytes(context, a, b, fna, fnb))
 
         eleza assertDiff(expect, actual):
-            # do sio compare expect na equal as lists, because unittest
+            # do sio compare expect na equal kama lists, because unittest
             # uses difflib to report difference between lists
             actual = list(actual)
             self.assertEqual(len(expect), len(actual))
@@ -448,7 +448,7 @@ kundi TestBytes(unittest.TestCase):
         self._assert_type_error(expect, difflib.diff_bytes, context, b, a)
 
     eleza test_mixed_types_filenames(self):
-        # cannot pass filenames as bytes ikiwa content ni str (this may sio be
+        # cannot pita filenames kama bytes ikiwa content ni str (this may sio be
         # the right behaviour, but at least the test demonstrates how
         # things work)
         a = ['hello\n']
@@ -476,7 +476,7 @@ kundi TestBytes(unittest.TestCase):
         list(difflib.unified_diff(a, b, 'a', 'b', datea, dateb))
 
     eleza _assert_type_error(self, msg, generator, *args):
-        ukijumuisha self.assertRaises(TypeError) as ctx:
+        ukijumuisha self.assertRaises(TypeError) kama ctx:
             list(generator(*args))
         self.assertEqual(msg, str(ctx.exception))
 

@@ -28,9 +28,9 @@ eleza _showwarnmsg_impl(msg):
     text = _formatwarnmsg(msg)
     jaribu:
         file.write(text)
-    except OSError:
+    tatizo OSError:
         # the file (probably stderr) ni invalid - this warning gets lost.
-        pass
+        pita
 
 eleza _formatwarnmsg_impl(msg):
     category = msg.category.__name__
@@ -40,7 +40,7 @@ eleza _formatwarnmsg_impl(msg):
         jaribu:
             agiza linecache
             line = linecache.getline(msg.filename, msg.lineno)
-        except Exception:
+        tatizo Exception:
             # When a warning ni logged during Python shutdown, linecache
             # na the agiza machinery don't work anymore
             line = Tupu
@@ -54,9 +54,9 @@ eleza _formatwarnmsg_impl(msg):
     ikiwa msg.source ni sio Tupu:
         jaribu:
             agiza tracemalloc
-        # Logging a warning should sio  ashiria a new exception:
+        # Logging a warning should sio ashiria a new exception:
         # catch Exception, sio only ImportError na RecursionError.
-        except Exception:
+        tatizo Exception:
             # don't suggest to enable tracemalloc ikiwa it's sio available
             tracing = Kweli
             tb = Tupu
@@ -64,7 +64,7 @@ eleza _formatwarnmsg_impl(msg):
             tracing = tracemalloc.is_tracing()
             jaribu:
                 tb = tracemalloc.get_object_traceback(msg.source)
-            except Exception:
+            tatizo Exception:
                 # When a warning ni logged during Python shutdown, tracemalloc
                 # na the agiza machinery don't work anymore
                 tb = Tupu
@@ -80,12 +80,12 @@ eleza _formatwarnmsg_impl(msg):
                         line = linecache.getline(frame.filename, frame.lineno)
                     isipokua:
                         line = Tupu
-                except Exception:
+                tatizo Exception:
                     line = Tupu
                 ikiwa line:
                     line = line.strip()
                     s += '    %s\n' % line
-        elikiwa sio tracing:
+        lasivyo sio tracing:
             s += (f'{category}: Enable tracemalloc to get the object '
                   f'allocation traceback\n')
     rudisha s
@@ -97,13 +97,13 @@ eleza _showwarnmsg(msg):
     """Hook to write a warning to a file; replace ikiwa you like."""
     jaribu:
         sw = showwarning
-    except NameError:
-        pass
+    tatizo NameError:
+        pita
     isipokua:
         ikiwa sw ni sio _showwarning_orig:
             # warnings.showwarning() was replaced
             ikiwa sio callable(sw):
-                 ashiria TypeError("warnings.showwarning() must be set to a "
+                ashiria TypeError("warnings.showwarning() must be set to a "
                                 "function ama method")
 
             sw(msg.message, msg.category, msg.filename, msg.lineno,
@@ -118,8 +118,8 @@ eleza _formatwarnmsg(msg):
     """Function to format a warning the standard way."""
     jaribu:
         fw = formatwarning
-    except NameError:
-        pass
+    tatizo NameError:
+        pita
     isipokua:
         ikiwa fw ni sio _formatwarning_orig:
             # warnings.formatwarning() was replaced
@@ -184,11 +184,11 @@ eleza _add_filter(*item, append):
     ikiwa sio append:
         jaribu:
             filters.remove(item)
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         filters.insert(0, item)
     isipokua:
-        ikiwa item sio kwenye filters:
+        ikiwa item haiko kwenye filters:
             filters.append(item)
     _filters_mutated()
 
@@ -199,14 +199,14 @@ eleza resetwarnings():
 
 kundi _OptionError(Exception):
     """Exception used by option processing helpers."""
-    pass
+    pita
 
-# Helper to process -W options passed via sys.warnoptions
+# Helper to process -W options pitaed via sys.warnoptions
 eleza _processoptions(args):
     kila arg kwenye args:
         jaribu:
             _setoption(arg)
-        except _OptionError as msg:
+        tatizo _OptionError kama msg:
             andika("Invalid -W option ignored:", msg, file=sys.stderr)
 
 # Helper kila _processoptions()
@@ -214,7 +214,7 @@ eleza _setoption(arg):
     agiza re
     parts = arg.split(':')
     ikiwa len(parts) > 5:
-         ashiria _OptionError("too many fields (max 5): %r" % (arg,))
+        ashiria _OptionError("too many fields (max 5): %r" % (arg,))
     wakati len(parts) < 5:
         parts.append('')
     action, message, category, module, lineno = [s.strip()
@@ -229,9 +229,9 @@ eleza _setoption(arg):
         jaribu:
             lineno = int(lineno)
             ikiwa lineno < 0:
-                 ashiria ValueError
-        except (ValueError, OverflowError):
-             ashiria _OptionError("invalid lineno %r" % (lineno,)) kutoka Tupu
+                ashiria ValueError
+        tatizo (ValueError, OverflowError):
+            ashiria _OptionError("invalid lineno %r" % (lineno,)) kutoka Tupu
     isipokua:
         lineno = 0
     filterwarnings(action, message, category, module, lineno)
@@ -244,7 +244,7 @@ eleza _getaction(action):
     kila a kwenye ('default', 'always', 'ignore', 'module', 'once', 'error'):
         ikiwa a.startswith(action):
             rudisha a
-     ashiria _OptionError("invalid action: %r" % (action,))
+    ashiria _OptionError("invalid action: %r" % (action,))
 
 # Helper kila _setoption()
 eleza _getcategory(category):
@@ -254,22 +254,22 @@ eleza _getcategory(category):
     ikiwa re.match("^[a-zA-Z0-9_]+$", category):
         jaribu:
             cat = eval(category)
-        except NameError:
-             ashiria _OptionError("unknown warning category: %r" % (category,)) kutoka Tupu
+        tatizo NameError:
+            ashiria _OptionError("unknown warning category: %r" % (category,)) kutoka Tupu
     isipokua:
         i = category.rfind(".")
         module = category[:i]
         klass = category[i+1:]
         jaribu:
             m = __import__(module, Tupu, Tupu, [klass])
-        except ImportError:
-             ashiria _OptionError("invalid module name: %r" % (module,)) kutoka Tupu
+        tatizo ImportError:
+            ashiria _OptionError("invalid module name: %r" % (module,)) kutoka Tupu
         jaribu:
             cat = getattr(m, klass)
-        except AttributeError:
-             ashiria _OptionError("unknown warning category: %r" % (category,)) kutoka Tupu
+        tatizo AttributeError:
+            ashiria _OptionError("unknown warning category: %r" % (category,)) kutoka Tupu
     ikiwa sio issubclass(cat, Warning):
-         ashiria _OptionError("invalid warning category: %r" % (category,))
+        ashiria _OptionError("invalid warning category: %r" % (category,))
     rudisha cat
 
 
@@ -289,7 +289,7 @@ eleza _next_external_frame(frame):
 
 # Code typically replaced by _warnings
 eleza warn(message, category=Tupu, stacklevel=1, source=Tupu):
-    """Issue a warning, ama maybe ignore it ama  ashiria an exception."""
+    """Issue a warning, ama maybe ignore it ama ashiria an exception."""
     # Check ikiwa message ni already a Warning object
     ikiwa isinstance(message, Warning):
         category = message.__class__
@@ -297,7 +297,7 @@ eleza warn(message, category=Tupu, stacklevel=1, source=Tupu):
     ikiwa category ni Tupu:
         category = UserWarning
     ikiwa sio (isinstance(category, type) na issubclass(category, Warning)):
-         ashiria TypeError("category must be a Warning subclass, "
+        ashiria TypeError("category must be a Warning subclass, "
                         "not '{:s}'".format(type(category).__name__))
     # Get context information
     jaribu:
@@ -311,8 +311,8 @@ eleza warn(message, category=Tupu, stacklevel=1, source=Tupu):
             kila x kwenye range(stacklevel-1):
                 frame = _next_external_frame(frame)
                 ikiwa frame ni Tupu:
-                     ashiria ValueError
-    except ValueError:
+                    ashiria ValueError
+    tatizo ValueError:
         globals = sys.__dict__
         filename = "sys"
         lineno = 1
@@ -354,9 +354,9 @@ eleza warn_explicit(message, category, filename, lineno,
     # Search the filters
     kila item kwenye filters:
         action, msg, cat, mod, ln = item
-        ikiwa ((msg ni Tupu ama msg.match(text)) and
-            issubclass(category, cat) and
-            (mod ni Tupu ama mod.match(module)) and
+        ikiwa ((msg ni Tupu ama msg.match(text)) na
+            issubclass(category, cat) na
+            (mod ni Tupu ama mod.match(module)) na
             (ln == 0 ama lineno == ln)):
             koma
     isipokua:
@@ -371,7 +371,7 @@ eleza warn_explicit(message, category, filename, lineno,
     linecache.getlines(filename, module_globals)
 
     ikiwa action == "error":
-         ashiria message
+        ashiria message
     # Other actions
     ikiwa action == "once":
         registry[key] = 1
@@ -379,19 +379,19 @@ eleza warn_explicit(message, category, filename, lineno,
         ikiwa onceregistry.get(oncekey):
             return
         onceregistry[oncekey] = 1
-    elikiwa action == "always":
-        pass
-    elikiwa action == "module":
+    lasivyo action == "always":
+        pita
+    lasivyo action == "module":
         registry[key] = 1
         altkey = (text, category, 0)
         ikiwa registry.get(altkey):
             return
         registry[altkey] = 1
-    elikiwa action == "default":
+    lasivyo action == "default":
         registry[key] = 1
     isipokua:
         # Unrecognized actions are errors
-         ashiria RuntimeError(
+        ashiria RuntimeError(
               "Unrecognized action (%r) kwenye warnings.filters:\n %s" %
               (action, item))
     # Print message na context
@@ -461,7 +461,7 @@ kundi catch_warnings(object):
 
     eleza __enter__(self):
         ikiwa self._entered:
-             ashiria RuntimeError("Cannot enter %r twice" % self)
+            ashiria RuntimeError("Cannot enter %r twice" % self)
         self._entered = Kweli
         self._filters = self._module.filters
         self._module.filters = self._filters[:]
@@ -480,7 +480,7 @@ kundi catch_warnings(object):
 
     eleza __exit__(self, *exc_info):
         ikiwa sio self._entered:
-             ashiria RuntimeError("Cannot exit %r without entering first" % self)
+            ashiria RuntimeError("Cannot exit %r without entering first" % self)
         self._module.filters = self._filters
         self._module._filters_mutated()
         self._module.showwarning = self._showwarning
@@ -524,7 +524,7 @@ jaribu:
     defaultaction = _defaultaction
     onceregistry = _onceregistry
     _warnings_defaults = Kweli
-except ImportError:
+tatizo ImportError:
     filters = []
     defaultaction = "default"
     onceregistry = {}

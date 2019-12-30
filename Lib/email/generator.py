@@ -26,7 +26,7 @@ fcre = re.compile(r'^From ', re.MULTILINE)
 kundi Generator:
     """Generates output kutoka a Message object tree.
 
-    This basic generator writes the message to the given file object as plain
+    This basic generator writes the message to the given file object kama plain
     text.
     """
     #
@@ -48,12 +48,12 @@ kundi Generator:
         header.  When a header line ni longer (in characters, ukijumuisha tabs
         expanded to 8 spaces) than maxheaderlen, the header will split as
         defined kwenye the Header class.  Set maxheaderlen to zero to disable
-        header wrapping.  The default ni 78, as recommended (but sio required)
+        header wrapping.  The default ni 78, kama recommended (but sio required)
         by RFC 2822.
 
         The policy keyword specifies a policy object that controls a number of
         aspects of the generator's operation.  If no policy ni specified,
-        the policy associated ukijumuisha the Message object passed to the
+        the policy associated ukijumuisha the Message object pitaed to the
         flatten method ni used.
 
         """
@@ -88,7 +88,7 @@ kundi Generator:
         """
         # We use the _XXX constants kila operating on data that comes directly
         # kutoka the msg, na _encoded_XXX constants kila operating on data that
-        # has already been converted (to bytes kwenye the BytesGenerator) and
+        # has already been converted (to bytes kwenye the BytesGenerator) na
         # inserted into a temporary buffer.
         policy = msg.policy ikiwa self.policy ni Tupu isipokua self.policy
         ikiwa linesep ni sio Tupu:
@@ -100,7 +100,7 @@ kundi Generator:
         self._EMPTY = ''
         self._encoded_EMPTY = self._encode(self._EMPTY)
         # Because we use clone (below) when we recursively process message
-        # subparts, na because clone uses the computed policy (not Tupu),
+        # subparts, na because clone uses the computed policy (sio Tupu),
         # submessages will automatically get set to the computed policy when
         # they are processed by this code.
         old_gen_policy = self.policy
@@ -157,7 +157,7 @@ kundi Generator:
         ikiwa lines[-1]:
             self.write(lines[-1])
         # XXX logic tells me this isipokua should be needed, but the tests fail
-        # ukijumuisha it na pass without it.  (NLCRE.split ends ukijumuisha a blank element
+        # ukijumuisha it na pita without it.  (NLCRE.split ends ukijumuisha a blank element
         # ikiwa na only ikiwa there was a trailing newline.)
         #isipokua:
         #    self.write(self._NL)
@@ -169,7 +169,7 @@ kundi Generator:
         # the headers so that we can write the correct Content-Type:
         # parameter.
         #
-        # The way we do this, so as to make the _handle_*() methods simpler,
+        # The way we do this, so kama to make the _handle_*() methods simpler,
         # ni to cache any subpart writes into a buffer.  The we write the
         # headers na the buffer contents.  That way, subpart handlers can
         # Do The Right Thing, na can still modify the Content-Type: header if
@@ -232,7 +232,7 @@ kundi Generator:
         ikiwa payload ni Tupu:
             return
         ikiwa sio isinstance(payload, str):
-             ashiria TypeError('string payload expected: %s' % type(payload))
+            ashiria TypeError('string payload expected: %s' % type(payload))
         ikiwa _has_surrogates(msg._payload):
             charset = msg.get_param('charset')
             ikiwa charset ni sio Tupu:
@@ -259,11 +259,11 @@ kundi Generator:
         subparts = msg.get_payload()
         ikiwa subparts ni Tupu:
             subparts = []
-        elikiwa isinstance(subparts, str):
+        lasivyo isinstance(subparts, str):
             # e.g. a non-strict parse of a message ukijumuisha no starting boundary.
             self.write(subparts)
             return
-        elikiwa sio isinstance(subparts, list):
+        lasivyo sio isinstance(subparts, list):
             # Scalar payload
             subparts = [subparts]
         kila part kwenye subparts:
@@ -346,7 +346,7 @@ kundi Generator:
         g = self.clone(s)
         # The payload of a message/rfc822 part should be a multipart sequence
         # of length 1.  The zeroth element of the list should be the Message
-        # object kila the subpart.  Extract that object, stringify it, and
+        # object kila the subpart.  Extract that object, stringify it, na
         # write it out.
         # Except, it turns out, when it's a string instead, which happens when
         # na only when HeaderParser ni used on a message of mime type
@@ -392,7 +392,7 @@ kundi Generator:
 kundi BytesGenerator(Generator):
     """Generates a bytes version of a Message object tree.
 
-    Functionally identical to the base Generator except that the output is
+    Functionally identical to the base Generator tatizo that the output is
     bytes na sio string.  When surrogates were used kwenye the input to encode
     bytes, these are decoded back to bytes kila output.  If the policy has
     cte_type set to 7bit, then the message ni transformed such that the
@@ -412,7 +412,7 @@ kundi BytesGenerator(Generator):
         rudisha s.encode('ascii')
 
     eleza _write_headers(self, msg):
-        # This ni almost the same as the string version, except kila handling
+        # This ni almost the same kama the string version, tatizo kila handling
         # strings ukijumuisha 8bit bytes.
         kila h, v kwenye msg.raw_items():
             self._fp.write(self.policy.fold_binary(h, v))
@@ -445,12 +445,12 @@ _FMT = '[Non-text (%(type)s) part of message omitted, filename %(filename)s]'
 kundi DecodedGenerator(Generator):
     """Generates a text representation of a message.
 
-    Like the Generator base class, except that non-text parts are substituted
+    Like the Generator base class, tatizo that non-text parts are substituted
     ukijumuisha a format string representing the part.
     """
     eleza __init__(self, outfp, mangle_from_=Tupu, maxheaderlen=Tupu, fmt=Tupu, *,
                  policy=Tupu):
-        """Like Generator.__init__() except that an additional optional
+        """Like Generator.__init__() tatizo that an additional optional
         argument ni allowed.
 
         Walks through all subparts of a message.  If the subpart ni of main
@@ -483,9 +483,9 @@ kundi DecodedGenerator(Generator):
             maintype = part.get_content_maintype()
             ikiwa maintype == 'text':
                 andika(part.get_payload(decode=Uongo), file=self)
-            elikiwa maintype == 'multipart':
+            lasivyo maintype == 'multipart':
                 # Just skip this
-                pass
+                pita
             isipokua:
                 andika(self._fmt % {
                     'type'       : part.get_content_type(),

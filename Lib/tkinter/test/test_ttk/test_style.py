@@ -60,7 +60,7 @@ kundi StyleTest(AbstractTkTest, unittest.TestCase):
         # should rudisha a list
         self.assertIsInstance(style.layout('TButton'), list)
 
-        # correct layout, but "option" doesn't exist as option
+        # correct layout, but "option" doesn't exist kama option
         self.assertRaises(tkinter.TclError, style.layout, 'Treeview',
             [('name', {'option': 'inexistent'})])
 

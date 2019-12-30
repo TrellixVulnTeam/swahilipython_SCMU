@@ -6,7 +6,7 @@ Each line ni of the form:
                               CompilerFlag ")"
 
 where, normally, OptionalRelease < MandatoryRelease, na both are 5-tuples
-of the same form as sys.version_info:
+of the same form kama sys.version_info:
 
     (PY_MAJOR_VERSION, # the 2 kwenye 2.1.0a3; an int
      PY_MINOR_VERSION, # the 1; an int
@@ -38,7 +38,7 @@ dropped.
 Instances of kundi _Feature have two corresponding methods,
 .getOptionalRelease() na .getMandatoryRelease().
 
-CompilerFlag ni the (bitfield) flag that should be passed kwenye the fourth
+CompilerFlag ni the (bitfield) flag that should be pitaed kwenye the fourth
 argument to the builtin function compile() to enable the feature in
 dynamically compiled code.  This flag ni stored kwenye the .compiler_flag
 attribute on _Future instances.  These values must match the appropriate
@@ -86,7 +86,7 @@ kundi _Feature:
     eleza getOptionalRelease(self):
         """Return first release kwenye which this feature was recognized.
 
-        This ni a 5-tuple, of the same form as sys.version_info.
+        This ni a 5-tuple, of the same form kama sys.version_info.
         """
 
         rudisha self.optional
@@ -94,7 +94,7 @@ kundi _Feature:
     eleza getMandatoryRelease(self):
         """Return release kwenye which this feature will become mandatory.
 
-        This ni a 5-tuple, of the same form as sys.version_info, or, if
+        This ni a 5-tuple, of the same form kama sys.version_info, or, if
         the feature was dropped, ni Tupu.
         """
 

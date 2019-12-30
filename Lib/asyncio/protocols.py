@@ -47,13 +47,13 @@ kundi BaseProtocol:
         pause_writing() ni sio called -- it must go strictly over.
         Conversely, resume_writing() ni called when the buffer size is
         equal ama lower than the low-water mark.  These end conditions
-        are important to ensure that things go as expected when either
+        are important to ensure that things go kama expected when either
         mark ni zero.
 
         NOTE: This ni the only Protocol callback that ni sio called
         through EventLoop.call_soon() -- ikiwa it were, it would have no
         effect when it's most needed (when the app keeps writing
-        without yielding until pause_writing() ni called).
+        without tumaing until pause_writing() ni called).
         """
 
     eleza resume_writing(self):
@@ -68,16 +68,16 @@ kundi Protocol(BaseProtocol):
 
     The user should implement this interface.  They can inherit from
     this kundi but don't need to.  The implementations here do
-    nothing (they don't  ashiria exceptions).
+    nothing (they don't ashiria exceptions).
 
-    When the user wants to requests a transport, they pass a protocol
+    When the user wants to requests a transport, they pita a protocol
     factory to a utility function (e.g., EventLoop.create_connection()).
 
     When the connection ni made successfully, connection_made() is
     called ukijumuisha a suitable transport object.  Then data_received()
     will be called 0 ama more times ukijumuisha data (bytes) received kutoka the
     transport; finally, connection_lost() will be called exactly once
-    ukijumuisha either an exception object ama Tupu as an argument.
+    ukijumuisha either an exception object ama Tupu kama an argument.
 
     State machine of calls:
 
@@ -110,10 +110,10 @@ kundi BufferedProtocol(BaseProtocol):
     """Interface kila stream protocol ukijumuisha manual buffer control.
 
     Important: this has been added to asyncio kwenye Python 3.7
-    *on a provisional basis*!  Consider it as an experimental API that
+    *on a provisional basis*!  Consider it kama an experimental API that
     might be changed ama removed kwenye Python 3.8.
 
-    Event methods, such as `create_server` na `create_connection`,
+    Event methods, such kama `create_server` na `create_connection`,
     accept factories that rudisha protocols that implement this interface.
 
     The idea of BufferedProtocol ni that it allows to manually allocate
@@ -207,7 +207,7 @@ eleza _feed_data_to_buffered_proto(proto, data):
         buf = proto.get_buffer(data_len)
         buf_len = len(buf)
         ikiwa sio buf_len:
-             ashiria RuntimeError('get_buffer() returned an empty buffer')
+            ashiria RuntimeError('get_buffer() returned an empty buffer')
 
         ikiwa buf_len >= data_len:
             buf[:data_len] = data

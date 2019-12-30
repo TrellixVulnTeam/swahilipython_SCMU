@@ -30,11 +30,11 @@ kundi Test(object):
     "Keep these TestCase classes out of the main namespace"
 
     kundi Foo(unittest.TestCase):
-        eleza runTest(self): pass
-        eleza test1(self): pass
+        eleza runTest(self): pita
+        eleza test1(self): pita
 
     kundi Bar(Foo):
-        eleza test2(self): pass
+        eleza test2(self): pita
 
     kundi LoggingTestCase(unittest.TestCase):
         """A test case which logs its calls."""
@@ -81,8 +81,8 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # thing.
     eleza test_init__no_test_name(self):
         kundi Test(unittest.TestCase):
-            eleza runTest(self):  ashiria MyException()
-            eleza test(self): pass
+            eleza runTest(self): ashiria MyException()
+            eleza test(self): pita
 
         self.assertEqual(Test().id()[-13:], '.Test.runTest')
 
@@ -102,8 +102,8 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # method named methodName."
     eleza test_init__test_name__valid(self):
         kundi Test(unittest.TestCase):
-            eleza runTest(self):  ashiria MyException()
-            eleza test(self): pass
+            eleza runTest(self): ashiria MyException()
+            eleza test(self): pita
 
         self.assertEqual(Test('test').id()[-10:], '.Test.test')
 
@@ -113,32 +113,32 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     # method named methodName."
     eleza test_init__test_name__invalid(self):
         kundi Test(unittest.TestCase):
-            eleza runTest(self):  ashiria MyException()
-            eleza test(self): pass
+            eleza runTest(self): ashiria MyException()
+            eleza test(self): pita
 
         jaribu:
             Test('testfoo')
-        except ValueError:
-            pass
+        tatizo ValueError:
+            pita
         isipokua:
-            self.fail("Failed to  ashiria ValueError")
+            self.fail("Failed to ashiria ValueError")
 
     # "Return the number of tests represented by the this test object. For
     # TestCase instances, this will always be 1"
     eleza test_countTestCases(self):
         kundi Foo(unittest.TestCase):
-            eleza test(self): pass
+            eleza test(self): pita
 
         self.assertEqual(Foo('test').countTestCases(), 1)
 
     # "Return the default type of test result object to be used to run this
     # test. For TestCase instances, this will always be
     # unittest.TestResult;  subclasses of TestCase should
-    # override this as necessary."
+    # override this kama necessary."
     eleza test_defaultTestResult(self):
         kundi Foo(unittest.TestCase):
             eleza runTest(self):
-                pass
+                pita
 
         result = Foo().defaultTestResult()
         self.assertEqual(type(result), unittest.TestResult)
@@ -157,7 +157,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         kundi Foo(Test.LoggingTestCase):
             eleza setUp(self):
                 super(Foo, self).setUp()
-                 ashiria RuntimeError('raised by Foo.setUp')
+                ashiria RuntimeError('raised by Foo.setUp')
 
         Foo(events).run(result)
         expected = ['startTest', 'setUp', 'addError', 'stopTest']
@@ -173,7 +173,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
             eleza setUp(self):
                 super(Foo, self).setUp()
-                 ashiria RuntimeError('raised by Foo.setUp')
+                ashiria RuntimeError('raised by Foo.setUp')
 
         Foo(events).run()
         expected = ['startTestRun', 'startTest', 'setUp', 'addError',
@@ -194,7 +194,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         kundi Foo(Test.LoggingTestCase):
             eleza test(self):
                 super(Foo, self).test()
-                 ashiria RuntimeError('raised by Foo.test')
+                ashiria RuntimeError('raised by Foo.test')
 
         expected = ['startTest', 'setUp', 'test', 'tearDown',
                     'addError', 'stopTest']
@@ -212,7 +212,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
             eleza test(self):
                 super(Foo, self).test()
-                 ashiria RuntimeError('raised by Foo.test')
+                ashiria RuntimeError('raised by Foo.test')
 
         expected = ['startTestRun', 'startTest', 'setUp', 'test',
                     'tearDown', 'addError', 'stopTest', 'stopTestRun']
@@ -270,7 +270,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         kundi Foo(Test.LoggingTestCase):
             eleza tearDown(self):
                 super(Foo, self).tearDown()
-                 ashiria RuntimeError('raised by Foo.tearDown')
+                ashiria RuntimeError('raised by Foo.tearDown')
 
         Foo(events).run(result)
         expected = ['startTest', 'setUp', 'test', 'tearDown', 'addError',
@@ -285,7 +285,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                 rudisha LoggingResult(self.events)
             eleza tearDown(self):
                 super(Foo, self).tearDown()
-                 ashiria RuntimeError('raised by Foo.tearDown')
+                ashiria RuntimeError('raised by Foo.tearDown')
 
         events = []
         Foo(events).run()
@@ -301,7 +301,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             eleza defaultTestResult(self):
                 rudisha ResultWithNoStartTestRunStopTestRun()
             eleza test(self):
-                pass
+                pita
 
         Foo('test').run()
 
@@ -316,7 +316,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                         kila j kwenye [2, 3]:
                             ukijumuisha self.subTest(j=j):
                                 ikiwa i * j == 6:
-                                     ashiria RuntimeError('raised by Foo.test')
+                                    ashiria RuntimeError('raised by Foo.test')
                 1 / 0
 
         # Order ni the following:
@@ -355,7 +355,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
                     ukijumuisha self.subTest(i=i):
                         kila j kwenye [2, 3]:
                             ukijumuisha self.subTest(j=j):
-                                pass
+                                pita
 
         Foo(events).run(result)
         self.assertEqual(events, expected_events)
@@ -447,7 +447,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     eleza test_failureException__default(self):
         kundi Foo(unittest.TestCase):
             eleza test(self):
-                pass
+                pita
 
         self.assertIs(Foo('test').failureException, AssertionError)
 
@@ -463,7 +463,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         kundi Foo(unittest.TestCase):
             eleza test(self):
-                 ashiria RuntimeError()
+                ashiria RuntimeError()
 
             failureException = RuntimeError
 
@@ -501,7 +501,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     eleza test_setUp(self):
         kundi Foo(unittest.TestCase):
             eleza runTest(self):
-                pass
+                pita
 
         # ... na nothing should happen
         Foo().setUp()
@@ -510,7 +510,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     eleza test_tearDown(self):
         kundi Foo(unittest.TestCase):
             eleza runTest(self):
-                pass
+                pita
 
         # ... na nothing should happen
         Foo().tearDown()
@@ -524,7 +524,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
     eleza test_id(self):
         kundi Foo(unittest.TestCase):
             eleza runTest(self):
-                pass
+                pita
 
         self.assertIsInstance(Foo().id(), str)
 
@@ -558,7 +558,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         kundi Foo(unittest.TestCase):
             eleza test(self):
-                pass
+                pita
 
         result = unittest.TestResult()
 
@@ -574,7 +574,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         kundi Foo(unittest.TestCase):
             eleza test(self):
-                pass
+                pita
 
             eleza run(self, result):
                 self.assertIs(result, resultIn)
@@ -708,15 +708,15 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
             # itself.
             jaribu:
                 self.assertEqual(a, b)
-            except self.failureException:
+            tatizo self.failureException:
                 self.fail('assertEqual(%r, %r) failed' % (a, b))
             jaribu:
                 self.assertEqual(a, b, msg='foo')
-            except self.failureException:
+            tatizo self.failureException:
                 self.fail('assertEqual(%r, %r) ukijumuisha msg= failed' % (a, b))
             jaribu:
                 self.assertEqual(a, b, 'foo')
-            except self.failureException:
+            tatizo self.failureException:
                 self.fail('assertEqual(%r, %r) ukijumuisha third parameter failed' %
                           (a, b))
 
@@ -798,7 +798,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         jaribu:
 
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             msg = e.args[0]
         isipokua:
             self.fail('assertSequenceEqual did sio fail.')
@@ -808,7 +808,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.maxDiff = len(diff) * 2
         jaribu:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             msg = e.args[0]
         isipokua:
             self.fail('assertSequenceEqual did sio fail.')
@@ -818,7 +818,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         self.maxDiff = Tupu
         jaribu:
             self.assertSequenceEqual(seq1, seq2)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             msg = e.args[0]
         isipokua:
             self.fail('assertSequenceEqual did sio fail.')
@@ -846,7 +846,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         test._truncateMessage = truncate
         jaribu:
             test.assertDictEqual({}, {1: 0})
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             self.assertEqual(str(e), 'foo')
         isipokua:
             self.fail('assertDictEqual did sio fail')
@@ -858,7 +858,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
         test._truncateMessage = truncate
         jaribu:
             test.assertMultiLineEqual('foo', 'bar')
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             self.assertEqual(str(e), 'foo')
         isipokua:
             self.fail('assertMultiLineEqual did sio fail')
@@ -876,24 +876,24 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         # under the threshold: diff marker (^) kwenye error message
         s = 'x' * (2**4)
-        ukijumuisha self.assertRaises(self.failureException) as cm:
+        ukijumuisha self.assertRaises(self.failureException) kama cm:
             self.assertEqual(s + 'a', s + 'b')
         self.assertIn('^', str(cm.exception))
         self.assertEqual(s + 'a', s + 'a')
 
-        # over the threshold: diff sio used na marker (^) sio kwenye error message
+        # over the threshold: diff sio used na marker (^) haiko kwenye error message
         s = 'x' * (2**6)
         # ikiwa the path that uses difflib ni taken, _truncateMessage will be
         # called -- replace it ukijumuisha explodingTruncation to verify that this
         # doesn't happen
         eleza explodingTruncation(message, diff):
-             ashiria SystemError('this should sio be raised')
+            ashiria SystemError('this should sio be raised')
         old_truncate = self._truncateMessage
         self._truncateMessage = explodingTruncation
         self.addCleanup(lambda: setattr(self, '_truncateMessage', old_truncate))
 
         s1, s2 = s + 'a', s + 'b'
-        ukijumuisha self.assertRaises(self.failureException) as cm:
+        ukijumuisha self.assertRaises(self.failureException) kama cm:
             self.assertEqual(s1, s2)
         self.assertNotIn('^', str(cm.exception))
         self.assertEqual(str(cm.exception), '%r != %r' % (s1, s2))
@@ -907,7 +907,7 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         s = 'x' * 100
         s1, s2 = s + 'a', s + 'b'
-        ukijumuisha self.assertRaises(self.failureException) as cm:
+        ukijumuisha self.assertRaises(self.failureException) kama cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[35 chars]' + 'x' * 61
         self.assertEqual(str(cm.exception), "'%sa' != '%sb'" % (c, c))
@@ -915,14 +915,14 @@ kundi Test_TestCase(unittest.TestCase, TestEquality, TestHashing):
 
         p = 'y' * 50
         s1, s2 = s + 'a' + p, s + 'b' + p
-        ukijumuisha self.assertRaises(self.failureException) as cm:
+        ukijumuisha self.assertRaises(self.failureException) kama cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[85 chars]xxxxxxxxxxx'
         self.assertEqual(str(cm.exception), "'%sa%s' != '%sb%s'" % (c, p, c, p))
 
         p = 'y' * 100
         s1, s2 = s + 'a' + p, s + 'b' + p
-        ukijumuisha self.assertRaises(self.failureException) as cm:
+        ukijumuisha self.assertRaises(self.failureException) kama cm:
             self.assertEqual(s1, s2)
         c = 'xxxx[91 chars]xxxxx'
         d = 'y' * 40 + '[56 chars]yyyy'
@@ -1114,7 +1114,7 @@ test case
         self.maxDiff = Tupu
         jaribu:
             self.assertMultiLineEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1130,7 +1130,7 @@ test case
 """
         jaribu:
             self.assertEqual(sample_text, revised_sample_text)
-        except self.failureException as e:
+        tatizo self.failureException kama e:
             # need to remove the first line of the error message
             error = str(e).split('\n', 1)[1]
             self.assertEqual(sample_text_error, error)
@@ -1224,9 +1224,9 @@ test case
 
     eleza testAssertRaisesCallable(self):
         kundi ExceptionMock(Exception):
-            pass
+            pita
         eleza Stub():
-             ashiria ExceptionMock('We expect')
+            ashiria ExceptionMock('We expect')
         self.assertRaises(ExceptionMock, Stub)
         # A tuple of exception classes ni accepted
         self.assertRaises((ValueError, ExceptionMock), Stub)
@@ -1244,13 +1244,13 @@ test case
 
     eleza testAssertRaisesContext(self):
         kundi ExceptionMock(Exception):
-            pass
+            pita
         eleza Stub():
-             ashiria ExceptionMock('We expect')
+            ashiria ExceptionMock('We expect')
         ukijumuisha self.assertRaises(ExceptionMock):
             Stub()
         # A tuple of exception classes ni accepted
-        ukijumuisha self.assertRaises((ValueError, ExceptionMock)) as cm:
+        ukijumuisha self.assertRaises((ValueError, ExceptionMock)) kama cm:
             Stub()
         # The context manager exposes caught exception
         self.assertIsInstance(cm.exception, ExceptionMock)
@@ -1261,15 +1261,15 @@ test case
         # Failure when no exception ni raised
         ukijumuisha self.assertRaises(self.failureException):
             ukijumuisha self.assertRaises(ExceptionMock):
-                pass
+                pita
         # Custom message
         ukijumuisha self.assertRaisesRegex(self.failureException, 'foobar'):
             ukijumuisha self.assertRaises(ExceptionMock, msg='foobar'):
-                pass
+                pita
         # Invalid keyword argument
         ukijumuisha self.assertRaisesRegex(TypeError, 'foobar'):
             ukijumuisha self.assertRaises(ExceptionMock, foobar=42):
-                pass
+                pita
         # Failure when another exception ni raised
         ukijumuisha self.assertRaises(ExceptionMock):
             self.assertRaises(ValueError, Stub)
@@ -1291,9 +1291,9 @@ test case
         # than expected
         eleza func() :
             jaribu:
-                 ashiria ValueError
-            except ValueError:
-                 ashiria ValueError
+                ashiria ValueError
+            tatizo ValueError:
+                ashiria ValueError
 
         refcount = sys.getrefcount(func)
         self.assertRaises(ValueError, func)
@@ -1301,10 +1301,10 @@ test case
 
     eleza testAssertRaisesRegex(self):
         kundi ExceptionMock(Exception):
-            pass
+            pita
 
         eleza Stub():
-             ashiria ExceptionMock('We expect')
+            ashiria ExceptionMock('We expect')
 
         self.assertRaisesRegex(ExceptionMock, re.compile('expect$'), Stub)
         self.assertRaisesRegex(ExceptionMock, 'expect$', Stub)
@@ -1323,27 +1323,27 @@ test case
         # Custom message
         ukijumuisha self.assertRaisesRegex(self.failureException, 'foobar'):
             ukijumuisha self.assertRaisesRegex(Exception, 'expect', msg='foobar'):
-                pass
+                pita
         # Invalid keyword argument
         ukijumuisha self.assertRaisesRegex(TypeError, 'foobar'):
             ukijumuisha self.assertRaisesRegex(Exception, 'expect', foobar=42):
-                pass
+                pita
 
     eleza testAssertRaisesRegexInvalidRegex(self):
         # Issue 20145.
         kundi MyExc(Exception):
-            pass
+            pita
         self.assertRaises(TypeError, self.assertRaisesRegex, MyExc, lambda: Kweli)
 
     eleza testAssertWarnsRegexInvalidRegex(self):
         # Issue 20145.
         kundi MyWarn(Warning):
-            pass
+            pita
         self.assertRaises(TypeError, self.assertWarnsRegex, MyWarn, lambda: Kweli)
 
     eleza testAssertRaisesRegexMismatch(self):
         eleza Stub():
-             ashiria Exception('Unexpected')
+            ashiria Exception('Unexpected')
 
         self.assertRaisesRegex(
                 self.failureException,
@@ -1358,10 +1358,10 @@ test case
 
     eleza testAssertRaisesExcValue(self):
         kundi ExceptionMock(Exception):
-            pass
+            pita
 
         eleza Stub(foo):
-             ashiria ExceptionMock(foo)
+            ashiria ExceptionMock(foo)
         v = "particular value"
 
         ctx = self.assertRaises(ExceptionMock)
@@ -1420,10 +1420,10 @@ test case
         eleza _runtime_warn():
             warnings.warn("foo", RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
-        ukijumuisha self.assertWarns(RuntimeWarning) as cm:
+        ukijumuisha self.assertWarns(RuntimeWarning) kama cm:
             _runtime_warn()
         # A tuple of warning classes ni accepted
-        ukijumuisha self.assertWarns((DeprecationWarning, RuntimeWarning)) as cm:
+        ukijumuisha self.assertWarns((DeprecationWarning, RuntimeWarning)) kama cm:
             _runtime_warn()
         # The context manager exposes various useful attributes
         self.assertIsInstance(cm.warning, RuntimeWarning)
@@ -1439,15 +1439,15 @@ test case
         # Failure when no warning ni triggered
         ukijumuisha self.assertRaises(self.failureException):
             ukijumuisha self.assertWarns(RuntimeWarning):
-                pass
+                pita
         # Custom message
         ukijumuisha self.assertRaisesRegex(self.failureException, 'foobar'):
             ukijumuisha self.assertWarns(RuntimeWarning, msg='foobar'):
-                pass
+                pita
         # Invalid keyword argument
         ukijumuisha self.assertRaisesRegex(TypeError, 'foobar'):
             ukijumuisha self.assertWarns(RuntimeWarning, foobar=42):
-                pass
+                pita
         # Failure when another warning ni triggered
         ukijumuisha warnings.catch_warnings():
             # Force default filter (in case tests are run ukijumuisha -We)
@@ -1510,11 +1510,11 @@ test case
                                       _runtime_warn, "barz")
 
     eleza testAssertWarnsRegexContext(self):
-        # Same as above, but ukijumuisha assertWarnsRegex as a context manager
+        # Same kama above, but ukijumuisha assertWarnsRegex kama a context manager
         eleza _runtime_warn(msg):
             warnings.warn(msg, RuntimeWarning)
         _runtime_warn_lineno = inspect.getsourcelines(_runtime_warn)[1]
-        ukijumuisha self.assertWarnsRegex(RuntimeWarning, "o+") as cm:
+        ukijumuisha self.assertWarnsRegex(RuntimeWarning, "o+") kama cm:
             _runtime_warn("foox")
         self.assertIsInstance(cm.warning, RuntimeWarning)
         self.assertEqual(cm.warning.args[0], "foox")
@@ -1523,15 +1523,15 @@ test case
         # Failure when no warning ni triggered
         ukijumuisha self.assertRaises(self.failureException):
             ukijumuisha self.assertWarnsRegex(RuntimeWarning, "o+"):
-                pass
+                pita
         # Custom message
         ukijumuisha self.assertRaisesRegex(self.failureException, 'foobar'):
             ukijumuisha self.assertWarnsRegex(RuntimeWarning, 'o+', msg='foobar'):
-                pass
+                pita
         # Invalid keyword argument
         ukijumuisha self.assertRaisesRegex(TypeError, 'foobar'):
             ukijumuisha self.assertWarnsRegex(RuntimeWarning, 'o+', foobar=42):
-                pass
+                pita
         # Failure when another warning ni triggered
         ukijumuisha warnings.catch_warnings():
             # Force default filter (in case tests are run ukijumuisha -We)
@@ -1571,8 +1571,8 @@ test case
 
     @contextlib.contextmanager
     eleza assertNoStderr(self):
-        ukijumuisha captured_stderr() as buf:
-            yield
+        ukijumuisha captured_stderr() kama buf:
+            tuma
         self.assertEqual(buf.getvalue(), "")
 
     eleza assertLogRecords(self, records, matches):
@@ -1585,7 +1585,7 @@ test case
     eleza testAssertLogsDefaults(self):
         # defaults: root logger, level INFO
         ukijumuisha self.assertNoStderr():
-            ukijumuisha self.assertLogs() as cm:
+            ukijumuisha self.assertLogs() kama cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
             self.assertEqual(cm.output, ["INFO:foo:1"])
@@ -1594,7 +1594,7 @@ test case
     eleza testAssertLogsTwoMatchingMessages(self):
         # Same, but ukijumuisha two matching log messages
         ukijumuisha self.assertNoStderr():
-            ukijumuisha self.assertLogs() as cm:
+            ukijumuisha self.assertLogs() kama cm:
                 log_foo.info("1")
                 log_foobar.debug("2")
                 log_quux.warning("3")
@@ -1605,7 +1605,7 @@ test case
     eleza checkAssertLogsPerLevel(self, level):
         # Check level filtering
         ukijumuisha self.assertNoStderr():
-            ukijumuisha self.assertLogs(level=level) as cm:
+            ukijumuisha self.assertLogs(level=level) kama cm:
                 log_foo.warning("1")
                 log_foobar.error("2")
                 log_quux.critical("3")
@@ -1620,8 +1620,8 @@ test case
     eleza checkAssertLogsPerLogger(self, logger):
         # Check per-logger filtering
         ukijumuisha self.assertNoStderr():
-            ukijumuisha self.assertLogs(level='DEBUG') as outer_cm:
-                ukijumuisha self.assertLogs(logger, level='DEBUG') as cm:
+            ukijumuisha self.assertLogs(level='DEBUG') kama outer_cm:
+                ukijumuisha self.assertLogs(logger, level='DEBUG') kama cm:
                     log_foo.info("1")
                     log_foobar.debug("2")
                     log_quux.warning("3")
@@ -1640,7 +1640,7 @@ test case
         ukijumuisha self.assertNoStderr():
             ukijumuisha self.assertRaises(self.failureException):
                 ukijumuisha self.assertLogs():
-                    pass
+                    pita
 
     eleza testAssertLogsFailureLevelTooHigh(self):
         # Failure due to level too high
@@ -1651,7 +1651,7 @@ test case
 
     eleza testAssertLogsFailureMismatchingLogger(self):
         # Failure due to mismatching logger (and the logged message is
-        # passed through)
+        # pitaed through)
         ukijumuisha self.assertLogs('quux', level='ERROR'):
             ukijumuisha self.assertRaises(self.failureException):
                 ukijumuisha self.assertLogs('foo'):
@@ -1659,7 +1659,7 @@ test case
 
     eleza testDeprecatedMethodNames(self):
         """
-        Test that the deprecated methods  ashiria a DeprecationWarning. See #9424.
+        Test that the deprecated methods ashiria a DeprecationWarning. See #9424.
         """
         old = (
             (self.failIfEqual, (3, 5)),
@@ -1701,7 +1701,7 @@ test case
         # Issue: 5660
         kundi TestableTest(unittest.TestCase):
             eleza testNothing(self):
-                pass
+                pita
 
         test = TestableTest('testNothing')
 
@@ -1727,9 +1727,9 @@ test case
 
     eleza testKeyboardInterrupt(self):
         eleza _raise(self=Tupu):
-             ashiria KeyboardInterrupt
+            ashiria KeyboardInterrupt
         eleza nothing(self):
-            pass
+            pita
 
         kundi Test1(unittest.TestCase):
             test_something = _raise
@@ -1752,9 +1752,9 @@ test case
 
     eleza testSkippingEverywhere(self):
         eleza _skip(self=Tupu):
-             ashiria unittest.SkipTest('some reason')
+            ashiria unittest.SkipTest('some reason')
         eleza nothing(self):
-            pass
+            pita
 
         kundi Test1(unittest.TestCase):
             test_something = _skip
@@ -1779,9 +1779,9 @@ test case
 
     eleza testSystemExit(self):
         eleza _raise(self=Tupu):
-             ashiria SystemExit
+            ashiria SystemExit
         eleza nothing(self):
-            pass
+            pita
 
         kundi Test1(unittest.TestCase):
             test_something = _raise
@@ -1827,11 +1827,11 @@ test case
 
         kundi TestCase(unittest.TestCase):
             eleza test1(self):
-                 ashiria MyException()
+                ashiria MyException()
 
             @unittest.expectedFailure
             eleza test2(self):
-                 ashiria MyException()
+                ashiria MyException()
 
         kila method_name kwenye ('test1', 'test2'):
             testcase = TestCase(method_name)

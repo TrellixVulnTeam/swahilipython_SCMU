@@ -174,7 +174,7 @@ kundi TestUninstall(EnsurepipMixin, unittest.TestCase):
 
     eleza test_uninstall_skipped_with_warning_for_wrong_version(self):
         ukijumuisha fake_pip("not a valid version"):
-            ukijumuisha test.support.captured_stderr() as stderr:
+            ukijumuisha test.support.captured_stderr() kama stderr:
                 ensurepip._uninstall_helper()
         warning = stderr.getvalue().strip()
         self.assertIn("only uninstall a matching version", warning)
@@ -248,7 +248,7 @@ EXPECTED_VERSION_OUTPUT = "pip " + ensurepip._PIP_VERSION
 kundi TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
 
     eleza test_bootstrap_version(self):
-        ukijumuisha test.support.captured_stdout() as stdout:
+        ukijumuisha test.support.captured_stdout() kama stdout:
             ukijumuisha self.assertRaises(SystemExit):
                 ensurepip._main(["--version"])
         result = stdout.getvalue().strip()
@@ -279,7 +279,7 @@ kundi TestBootstrappingMainFunction(EnsurepipMixin, unittest.TestCase):
 kundi TestUninstallationMainFunction(EnsurepipMixin, unittest.TestCase):
 
     eleza test_uninstall_version(self):
-        ukijumuisha test.support.captured_stdout() as stdout:
+        ukijumuisha test.support.captured_stdout() kama stdout:
             ukijumuisha self.assertRaises(SystemExit):
                 ensurepip._uninstall._main(["--version"])
         result = stdout.getvalue().strip()

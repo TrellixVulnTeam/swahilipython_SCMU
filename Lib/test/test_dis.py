@@ -14,7 +14,7 @@ eleza get_tb():
     eleza _error():
         jaribu:
             1 / 0
-        except Exception as e:
+        tatizo Exception kama e:
             tb = e.__traceback__
         rudisha tb
 
@@ -117,7 +117,7 @@ dis_f_co_code = """\
 eleza bug708901():
     kila res kwenye range(1,
                      10):
-        pass
+        pita
 
 dis_bug708901 = """\
 %3d           0 LOAD_GLOBAL              0 (range)
@@ -142,7 +142,7 @@ dis_bug708901 = """\
 eleza bug1333982(x=[]):
     assert 0, ([s kila s kwenye x] +
               1)
-    pass
+    pita
 
 dis_bug1333982 = """\
 %3d           0 LOAD_CONST               1 (0)
@@ -339,7 +339,7 @@ async eleza _ag(x):
 
 async eleza _co(x):
     async kila item kwenye _ag(x):
-        pass
+        pita
 
 eleza _h(y):
     eleza foo(x):
@@ -564,19 +564,19 @@ kundi DisTests(unittest.TestCase):
     eleza test_dis_none(self):
         jaribu:
             toa sys.last_traceback
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         self.assertRaises(RuntimeError, dis.dis, Tupu)
 
     eleza test_dis_traceback(self):
         jaribu:
             toa sys.last_traceback
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
 
         jaribu:
             1/0
-        except Exception as e:
+        tatizo Exception kama e:
             tb = e.__traceback__
             sys.last_traceback = tb
 
@@ -742,8 +742,8 @@ Names:
 
 async eleza async_def():
     await 1
-    async kila a kwenye b: pass
-    async ukijumuisha c as d: pass
+    async kila a kwenye b: pita
+    async ukijumuisha c kama d: pita
 
 code_info_async_eleza = """\
 Name:              async_def
@@ -783,7 +783,7 @@ kundi CodeInfoTests(unittest.TestCase):
     eleza test_show_code(self):
         self.maxDiff = 1000
         kila x, expected kwenye self.test_pairs:
-            ukijumuisha captured_stdout() as output:
+            ukijumuisha captured_stdout() kama output:
                 dis.show_code(x)
             self.assertRegex(output.getvalue(), expected+"\n")
             output = io.StringIO()
@@ -829,10 +829,10 @@ eleza jumpy():
         andika("Who let lolcatz into this test suite?")
     jaribu:
         1 / 0
-    except ZeroDivisionError:
+    tatizo ZeroDivisionError:
         andika("Here we go, here we go, here we go...")
     isipokua:
-        ukijumuisha i as dodgy:
+        ukijumuisha i kama dodgy:
             andika("Never reach this")
     mwishowe:
         andika("OK, now we're done")
@@ -848,7 +848,7 @@ expected_jumpy_line = 1
 
 # The following lines are useful to regenerate the expected results after
 # either the fodder ni modified ama the bytecode generation changes
-# After regeneration, update the references to code_object_f and
+# After regeneration, update the references to code_object_f na
 # code_object_inner before rerunning the tests
 
 #_instructions = dis.get_instructions(outer, first_line=expected_outer_line)
@@ -1023,7 +1023,7 @@ expected_opinfo_jumpy = [
 ]
 
 # One last piece of inspect fodder to check the default line number handling
-eleza simple(): pass
+eleza simple(): pita
 expected_opinfo_simple = [
   Instruction(opname='LOAD_CONST', opcode=100, arg=0, argval=Tupu, argrepr='Tupu', offset=0, starts_line=simple.__code__.co_firstlineno, is_jump_target=Uongo),
   Instruction(opname='RETURN_VALUE', opcode=83, arg=Tupu, argval=Tupu, argrepr='', offset=2, starts_line=Tupu, is_jump_target=Uongo)

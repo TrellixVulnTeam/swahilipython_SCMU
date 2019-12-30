@@ -18,11 +18,11 @@ Some of the things this checks:
     SERVER_NAME, SERVER_PORT, wsgi.version, wsgi.input, wsgi.errors,
     wsgi.multithread, wsgi.multiprocess, wsgi.run_once
 
-  - That HTTP_CONTENT_TYPE na HTTP_CONTENT_LENGTH are sio kwenye the
-    environment (these headers should appear as CONTENT_LENGTH and
+  - That HTTP_CONTENT_TYPE na HTTP_CONTENT_LENGTH are haiko kwenye the
+    environment (these headers should appear kama CONTENT_LENGTH na
     CONTENT_TYPE).
 
-  - Warns ikiwa QUERY_STRING ni missing, as the cgi module acts
+  - Warns ikiwa QUERY_STRING ni missing, kama the cgi module acts
     unpredictably kwenye that case.
 
   - That CGI-style variables (that don't contain a .) have
@@ -45,7 +45,7 @@ Some of the things this checks:
   - That SCRIPT_NAME ni sio '/' (it should be '', na PATH_INFO should
     be '/').
 
-  - That wsgi.input has the methods read, readline, readlines, and
+  - That wsgi.input has the methods read, readline, readlines, na
     __iter__
 
   - That wsgi.errors has the methods flush, write, writelines
@@ -53,7 +53,7 @@ Some of the things this checks:
 * The status ni a string, contains a space, starts ukijumuisha an integer,
   na that integer ni kwenye range (> 100).
 
-* That the headers ni a list (not a subclass, sio another kind of
+* That the headers ni a list (sio a subclass, sio another kind of
   sequence).
 
 * That the items of the headers are tuples of strings.
@@ -61,7 +61,7 @@ Some of the things this checks:
 * That there ni no 'status' header (that ni used kwenye CGI, but sio in
   WSGI).
 
-* That the headers don't contain newlines ama colons, end kwenye _ ama -, or
+* That the headers don't contain newlines ama colons, end kwenye _ ama -, ama
   contain characters codes below 037.
 
 * That Content-Type ni given ikiwa there ni content (CGI often has a
@@ -104,7 +104,7 @@ Some of the things this checks:
     been called (that can signal either a server ama application
     error).
 
-  - That .close() ni called (doesn't  ashiria exception, only prints to
+  - That .close() ni called (doesn't ashiria exception, only prints to
     sys.stderr, because we only know it isn't called when the object
     ni garbage collected).
 """
@@ -125,12 +125,12 @@ kundi WSGIWarning(Warning):
 
 eleza assert_(cond, *args):
     ikiwa sio cond:
-         ashiria AssertionError(*args)
+        ashiria AssertionError(*args)
 
 eleza check_string_type(value, title):
     ikiwa type (value) ni str:
         rudisha value
-     ashiria AssertionError(
+    ashiria AssertionError(
         "{0} must be of type str (got {1})".format(title, repr(value)))
 
 eleza validator(application):
@@ -139,15 +139,15 @@ eleza validator(application):
     When applied between a WSGI server na a WSGI application, this
     middleware will check kila WSGI compliancy on a number of levels.
     This middleware does sio modify the request ama response kwenye any
-    way, but will  ashiria an AssertionError ikiwa anything seems off
-    (except kila a failure to close the application iterator, which
-    will be printed to stderr -- there's no way to  ashiria an exception
+    way, but will ashiria an AssertionError ikiwa anything seems off
+    (tatizo kila a failure to close the application iterator, which
+    will be printed to stderr -- there's no way to ashiria an exception
     at that point).
     """
 
     eleza lint_app(*args, **kw):
         assert_(len(args) == 2, "Two arguments required")
-        assert_(not kw, "No keyword arguments allowed")
+        assert_(sio kw, "No keyword arguments allowed")
         environ, start_response = args
 
         check_environ(environ)
@@ -159,7 +159,7 @@ eleza validator(application):
         eleza start_response_wrapper(*args, **kw):
             assert_(len(args) == 2 ama len(args) == 3, (
                 "Invalid number of arguments: %s" % (args,)))
-            assert_(not kw, "No keyword arguments allowed")
+            assert_(sio kw, "No keyword arguments allowed")
             status = args[0]
             headers = args[1]
             ikiwa len(args) == 3:
@@ -272,11 +272,11 @@ kundi IteratorWrapper:
         rudisha self
 
     eleza __next__(self):
-        assert_(not self.closed,
+        assert_(sio self.closed,
             "Iterator read after closed")
         v = next(self.iterator)
         ikiwa type(v) ni sio bytes:
-            assert_(Uongo, "Iterator yielded non-bytestring (%r)" % (v,))
+            assert_(Uongo, "Iterator tumaed non-bytestring (%r)" % (v,))
         ikiwa self.check_start_response ni sio Tupu:
             assert_(self.check_start_response,
                 "The application returns na we started iterating over its body, but start_response has sio yet been called")
@@ -308,13 +308,13 @@ eleza check_environ(environ):
             "Environment missing required key: %r" % (key,))
 
     kila key kwenye ['HTTP_CONTENT_TYPE', 'HTTP_CONTENT_LENGTH']:
-        assert_(key sio kwenye environ,
+        assert_(key haiko kwenye environ,
             "Environment should sio have the key: %s "
             "(use %s instead)" % (key, key[5:]))
 
-    ikiwa 'QUERY_STRING' sio kwenye environ:
+    ikiwa 'QUERY_STRING' haiko kwenye environ:
         warnings.warn(
-            'QUERY_STRING ni sio kwenye the WSGI environment; the cgi '
+            'QUERY_STRING ni haiko kwenye the WSGI environment; the cgi '
             'module will use sys.argv when this variable ni missing, '
             'so application errors are more likely',
             WSGIWarning)
@@ -336,16 +336,16 @@ eleza check_environ(environ):
     check_errors(environ['wsgi.errors'])
 
     # @@: these need filling out:
-    ikiwa environ['REQUEST_METHOD'] sio kwenye (
+    ikiwa environ['REQUEST_METHOD'] haiko kwenye (
         'GET', 'HEAD', 'POST', 'OPTIONS', 'PATCH', 'PUT', 'DELETE', 'TRACE'):
         warnings.warn(
             "Unknown REQUEST_METHOD: %r" % environ['REQUEST_METHOD'],
             WSGIWarning)
 
-    assert_(not environ.get('SCRIPT_NAME')
+    assert_(sio environ.get('SCRIPT_NAME')
             ama environ['SCRIPT_NAME'].startswith('/'),
         "SCRIPT_NAME doesn't start ukijumuisha /: %r" % environ['SCRIPT_NAME'])
-    assert_(not environ.get('PATH_INFO')
+    assert_(sio environ.get('PATH_INFO')
             ama environ['PATH_INFO'].startswith('/'),
         "PATH_INFO doesn't start ukijumuisha /: %r" % environ['PATH_INFO'])
     ikiwa environ.get('CONTENT_LENGTH'):
@@ -402,10 +402,10 @@ eleza check_headers(headers):
             "The Status header cannot be used; it conflicts ukijumuisha CGI "
             "script, na HTTP status ni sio given through headers "
             "(value: %r)." % value)
-        assert_('\n' sio kwenye name na ':' sio kwenye name,
+        assert_('\n' haiko kwenye name na ':' haiko kwenye name,
             "Header names may sio contain ':' ama '\\n': %r" % name)
         assert_(header_re.search(name), "Bad header name: %r" % name)
-        assert_(not name.endswith('-') na sio name.endswith('_'),
+        assert_(sio name.endswith('-') na sio name.endswith('_'),
             "Names may sio end kwenye '-' ama '_': %r" % name)
         ikiwa bad_header_value_re.search(value):
             assert_(0, "Bad header value: %r (bad char: %r)"
@@ -420,11 +420,11 @@ eleza check_content_type(status, headers):
     kila name, value kwenye headers:
         name = check_string_type(name, "Header name")
         ikiwa name.lower() == 'content-type':
-            ikiwa code sio kwenye NO_MESSAGE_BODY:
+            ikiwa code haiko kwenye NO_MESSAGE_BODY:
                 return
             assert_(0, ("Content-Type header found kwenye a %s response, "
                         "which must sio rudisha content.") % code)
-    ikiwa code sio kwenye NO_MESSAGE_BODY:
+    ikiwa code haiko kwenye NO_MESSAGE_BODY:
         assert_(0, "No Content-Type header found kwenye headers (%s)" % headers)
 
 eleza check_exc_info(exc_info):
@@ -436,6 +436,6 @@ eleza check_iterator(iterator):
     # Technically a bytestring ni legal, which ni why it's a really bad
     # idea, because it may cause the response to be returned
     # character-by-character
-    assert_(not isinstance(iterator, (str, bytes)),
-        "You should sio rudisha a string as your application iterator, "
+    assert_(sio isinstance(iterator, (str, bytes)),
+        "You should sio rudisha a string kama your application iterator, "
         "instead rudisha a single-item list containing a bytestring.")

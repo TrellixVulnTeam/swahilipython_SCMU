@@ -7,7 +7,7 @@ kutoka unittest agiza mock
 agiza asyncio
 kutoka asyncio agiza base_subprocess
 kutoka asyncio agiza subprocess
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 
 ikiwa sys.platform != 'win32':
@@ -70,7 +70,7 @@ kundi SubprocessTransportTests(test_utils.TestCase):
         self.assertIsTupu(transport._proc)
         self.assertIsTupu(transport._protocol)
 
-        # methods must  ashiria ProcessLookupError ikiwa the process exited
+        # methods must ashiria ProcessLookupError ikiwa the process exited
         self.assertRaises(ProcessLookupError,
                           transport.send_signal, signal.SIGTERM)
         self.assertRaises(ProcessLookupError, transport.terminate)
@@ -229,7 +229,7 @@ kundi SubprocessMixin:
         # the program ends before the stdin can be feeded
         proc = self.loop.run_until_complete(
             asyncio.create_subprocess_exec(
-                sys.executable, '-c', 'pass',
+                sys.executable, '-c', 'pita',
                 stdin=subprocess.PIPE,
             )
         )
@@ -245,7 +245,7 @@ kundi SubprocessMixin:
             await proc.stdin.drain()
 
         coro = write_stdin(proc, large_data)
-        # drain() must  ashiria BrokenPipeError ama ConnectionResetError
+        # drain() must ashiria BrokenPipeError ama ConnectionResetError
         ukijumuisha test_utils.disable_logger():
             self.assertRaises((BrokenPipeError, ConnectionResetError),
                               self.loop.run_until_complete, coro)
@@ -410,8 +410,8 @@ kundi SubprocessMixin:
             self.loop.call_soon(task.cancel)
             jaribu:
                 await task
-            except asyncio.CancelledError:
-                pass
+            tatizo asyncio.CancelledError:
+                pita
 
             # Cancel the future
             task.cancel()
@@ -431,8 +431,8 @@ kundi SubprocessMixin:
             self.loop.call_soon(task.cancel)
             jaribu:
                 await task
-            except asyncio.CancelledError:
-                pass
+            tatizo asyncio.CancelledError:
+                pita
 
         # ignore the log:
         # "Exception during subprocess creation, kill the subprocess"
@@ -449,8 +449,8 @@ kundi SubprocessMixin:
             self.loop.call_soon(task.cancel)
             jaribu:
                 await task
-            except asyncio.CancelledError:
-                pass
+            tatizo asyncio.CancelledError:
+                pita
 
         # ignore the log:
         # "Exception during subprocess creation, kill the subprocess"
@@ -525,7 +525,7 @@ kundi SubprocessMixin:
         # Unlike SafeChildWatcher, FastChildWatcher does sio pop the
         # callbacks ikiwa waitpid() ni called elsewhere. Let's clear them
         # manually to avoid a warning when the watcher ni detached.
-        ikiwa (sys.platform != 'win32' and
+        ikiwa (sys.platform != 'win32' na
                 isinstance(self, SubprocessFastWatcherTests)):
             asyncio.get_child_watcher()._callbacks.clear()
 
@@ -534,16 +534,16 @@ kundi SubprocessMixin:
             target = 'asyncio.windows_utils.Popen'
         isipokua:
             target = 'subprocess.Popen'
-        ukijumuisha mock.patch(target) as popen:
+        ukijumuisha mock.patch(target) kama popen:
             exc = ZeroDivisionError
             popen.side_effect = exc
 
-            ukijumuisha warnings.catch_warnings(record=Kweli) as warns:
+            ukijumuisha warnings.catch_warnings(record=Kweli) kama warns:
                 ukijumuisha self.assertRaises(exc):
                     await asyncio.create_subprocess_exec(
                         sys.executable,
                         '-c',
-                        'pass',
+                        'pita',
                         stdin=stdin
                     )
                 self.assertEqual(warns, [])
@@ -618,10 +618,10 @@ kundi SubprocessMixin:
     eleza test_create_subprocess_exec_with_path(self):
         async eleza execute():
             p = await subprocess.create_subprocess_exec(
-                support.FakePath(sys.executable), '-c', 'pass')
+                support.FakePath(sys.executable), '-c', 'pita')
             await p.wait()
             p = await subprocess.create_subprocess_exec(
-                sys.executable, '-c', 'pass', support.FakePath('.'))
+                sys.executable, '-c', 'pita', support.FakePath('.'))
             await p.wait()
 
         self.assertIsTupu(self.loop.run_until_complete(execute()))
@@ -630,7 +630,7 @@ kundi SubprocessMixin:
         async eleza go():
             ukijumuisha self.assertWarns(DeprecationWarning):
                 proc = await asyncio.create_subprocess_exec(
-                    sys.executable, '-c', 'pass',
+                    sys.executable, '-c', 'pita',
                     loop=self.loop,
                 )
             await proc.wait()
@@ -712,7 +712,7 @@ kundi GenericWatcherTests:
 
             ukijumuisha self.assertRaises(RuntimeError):
                 await subprocess.create_subprocess_exec(
-                    support.FakePath(sys.executable), '-c', 'pass')
+                    support.FakePath(sys.executable), '-c', 'pita')
 
             watcher.add_child_handler.assert_not_called()
 

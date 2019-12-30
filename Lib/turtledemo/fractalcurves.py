@@ -12,11 +12,11 @@ methods are taken kutoka the PythonCard example
 scripts kila turtle-graphics.
 """
 kutoka turtle agiza *
-kutoka time agiza sleep, perf_counter as clock
+kutoka time agiza sleep, perf_counter kama clock
 
 kundi CurvesTurtle(Pen):
     # example derived from
-    # Turtle Geomejaribu: The Computer as a Medium kila Exploring Mathematics
+    # Turtle Geomejaribu: The Computer kama a Medium kila Exploring Mathematics
     # by Harold Abelson na Andrea diSessa
     # p. 96-98
     eleza hilbert(self, size, level, parity):
@@ -25,7 +25,7 @@ kundi CurvesTurtle(Pen):
         # rotate na draw first subcurve ukijumuisha opposite parity to big curve
         self.left(parity * 90)
         self.hilbert(size, level - 1, -parity)
-        # interface to na draw second subcurve ukijumuisha same parity as big curve
+        # interface to na draw second subcurve ukijumuisha same parity kama big curve
         self.forward(size)
         self.right(parity * 90)
         self.hilbert(size, level - 1, parity)

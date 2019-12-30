@@ -6,7 +6,7 @@ agiza shutil
 kutoka test.support agiza TESTFN, run_unittest, unlink, reap_children
 
 ikiwa os.name != 'posix':
-     ashiria unittest.SkipTest('pipes module only works on posix')
+    ashiria unittest.SkipTest('pipes module only works on posix')
 
 TESTFN2 = TESTFN + "2"
 
@@ -23,26 +23,26 @@ kundi SimplePipeTests(unittest.TestCase):
             self.skipTest('tr ni sio available')
         t = pipes.Template()
         t.append(s_command, pipes.STDIN_STDOUT)
-        ukijumuisha t.open(TESTFN, 'w') as f:
+        ukijumuisha t.open(TESTFN, 'w') kama f:
             f.write('hello world #1')
-        ukijumuisha open(TESTFN) as f:
+        ukijumuisha open(TESTFN) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #1')
 
     eleza testSimplePipe2(self):
         ikiwa shutil.which('tr') ni Tupu:
             self.skipTest('tr ni sio available')
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN > $OUT', pipes.FILEIN_FILEOUT)
         t.copy(TESTFN, TESTFN2)
-        ukijumuisha open(TESTFN2) as f:
+        ukijumuisha open(TESTFN2) kama f:
             self.assertEqual(f.read(), 'HELLO WORLD #2')
 
     eleza testSimplePipe3(self):
         ikiwa shutil.which('tr') ni Tupu:
             self.skipTest('tr ni sio available')
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write('hello world #2')
         t = pipes.Template()
         t.append(s_command + ' < $IN', pipes.FILEIN_STDOUT)
@@ -55,19 +55,19 @@ kundi SimplePipeTests(unittest.TestCase):
     eleza testEmptyPipeline1(self):
         # copy through empty pipe
         d = 'empty pipeline test COPY'
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write(d)
-        ukijumuisha open(TESTFN2, 'w') as f:
+        ukijumuisha open(TESTFN2, 'w') kama f:
             f.write('')
         t=pipes.Template()
         t.copy(TESTFN, TESTFN2)
-        ukijumuisha open(TESTFN2) as f:
+        ukijumuisha open(TESTFN2) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testEmptyPipeline2(self):
         # read through empty pipe
         d = 'empty pipeline test READ'
-        ukijumuisha open(TESTFN, 'w') as f:
+        ukijumuisha open(TESTFN, 'w') kama f:
             f.write(d)
         t=pipes.Template()
         f = t.open(TESTFN, 'r')
@@ -80,9 +80,9 @@ kundi SimplePipeTests(unittest.TestCase):
         # write through empty pipe
         d = 'empty pipeline test WRITE'
         t = pipes.Template()
-        ukijumuisha t.open(TESTFN, 'w') as f:
+        ukijumuisha t.open(TESTFN, 'w') kama f:
             f.write(d)
-        ukijumuisha open(TESTFN) as f:
+        ukijumuisha open(TESTFN) kama f:
             self.assertEqual(f.read(), d)
 
     eleza testRepr(self):

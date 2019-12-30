@@ -1,7 +1,7 @@
 agiza _signal
 kutoka _signal agiza *
-kutoka functools agiza wraps as _wraps
-kutoka enum agiza IntEnum as _IntEnum
+kutoka functools agiza wraps kama _wraps
+kutoka enum agiza IntEnum kama _IntEnum
 
 _globals = globals()
 
@@ -28,7 +28,7 @@ eleza _int_to_enum(value, enum_klass):
     """
     jaribu:
         rudisha enum_klass(value)
-    except ValueError:
+    tatizo ValueError:
         rudisha value
 
 
@@ -38,7 +38,7 @@ eleza _enum_to_int(value):
     """
     jaribu:
         rudisha int(value)
-    except (ValueError, TypeError):
+    tatizo (ValueError, TypeError):
         rudisha value
 
 

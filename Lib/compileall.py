@@ -1,7 +1,7 @@
 """Module/script to byte-compile all .py files to .pyc files.
 
-When called as a script ukijumuisha arguments, this compiles the directories
-given as arguments recursively; the -l option prevents it from
+When called kama a script ukijumuisha arguments, this compiles the directories
+given kama arguments recursively; the -l option prevents it from
 recursing into directories.
 
 Without arguments, ikiwa compiles all modules on sys.path, without
@@ -27,7 +27,7 @@ eleza _walk_dir(dir, ddir=Tupu, maxlevels=10, quiet=0):
         andika('Listing {!r}...'.format(dir))
     jaribu:
         names = os.listdir(dir)
-    except OSError:
+    tatizo OSError:
         ikiwa quiet < 2:
             andika("Can't list {!r}".format(dir))
         names = []
@@ -42,7 +42,7 @@ eleza _walk_dir(dir, ddir=Tupu, maxlevels=10, quiet=0):
             dfile = Tupu
         ikiwa sio os.path.isdir(fullname):
             tuma fullname
-        elikiwa (maxlevels > 0 na name != os.curdir na name != os.pardir and
+        lasivyo (maxlevels > 0 na name != os.curdir na name != os.pardir na
               os.path.isdir(fullname) na sio os.path.islink(fullname)):
             tuma kutoka _walk_dir(fullname, ddir=dfile,
                                  maxlevels=maxlevels - 1, quiet=quiet)
@@ -57,7 +57,7 @@ eleza compile_dir(dir, maxlevels=10, ddir=Tupu, force=Uongo, rx=Tupu,
     dir:       the directory to byte-compile
     maxlevels: maximum recursion level (default 10)
     ddir:      the directory that will be prepended to the path to the
-               file as it ni compiled into each byte-code file.
+               file kama it ni compiled into each byte-code file.
     force:     ikiwa Kweli, force compilation, even ikiwa timestamps are up-to-date
     quiet:     full output ukijumuisha Uongo ama 0, errors only ukijumuisha 1,
                no output ukijumuisha 2
@@ -68,13 +68,13 @@ eleza compile_dir(dir, maxlevels=10, ddir=Tupu, force=Uongo, rx=Tupu,
     """
     ProcessPoolExecutor = Tupu
     ikiwa workers < 0:
-         ashiria ValueError('workers must be greater ama equal to 0')
+        ashiria ValueError('workers must be greater ama equal to 0')
     ikiwa workers != 1:
         jaribu:
-            # Only agiza when needed, as low resource platforms may
+            # Only agiza when needed, kama low resource platforms may
             # fail to agiza it
             kutoka concurrent.futures agiza ProcessPoolExecutor
-        except ImportError:
+        tatizo ImportError:
             workers = 1
     files = _walk_dir(dir, quiet=quiet, maxlevels=maxlevels,
                       ddir=ddir)
@@ -82,7 +82,7 @@ eleza compile_dir(dir, maxlevels=10, ddir=Tupu, force=Uongo, rx=Tupu,
     ikiwa workers != 1 na ProcessPoolExecutor ni sio Tupu:
         # If workers == 0, let ProcessPoolExecutor choose
         workers = workers ama Tupu
-        ukijumuisha ProcessPoolExecutor(max_workers=workers) as executor:
+        ukijumuisha ProcessPoolExecutor(max_workers=workers) kama executor:
             results = executor.map(partial(compile_file,
                                            ddir=ddir, force=force,
                                            rx=rx, quiet=quiet,
@@ -145,23 +145,23 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
                     mtime = int(os.stat(fullname).st_mtime)
                     expect = struct.pack('<4sll', importlib.util.MAGIC_NUMBER,
                                          0, mtime)
-                    ukijumuisha open(cfile, 'rb') as chandle:
+                    ukijumuisha open(cfile, 'rb') kama chandle:
                         actual = chandle.read(12)
                     ikiwa expect == actual:
                         rudisha success
-                except OSError:
-                    pass
+                tatizo OSError:
+                    pita
             ikiwa sio quiet:
                 andika('Compiling {!r}...'.format(fullname))
             jaribu:
                 ok = py_compile.compile(fullname, cfile, dfile, Kweli,
                                         optimize=optimize,
                                         invalidation_mode=invalidation_mode)
-            except py_compile.PyCompileError as err:
+            tatizo py_compile.PyCompileError kama err:
                 success = Uongo
                 ikiwa quiet >= 2:
                     rudisha success
-                elikiwa quiet:
+                lasivyo quiet:
                     andika('*** Error compiling {!r}...'.format(fullname))
                 isipokua:
                     andika('*** ', end='')
@@ -170,11 +170,11 @@ eleza compile_file(fullname, ddir=Tupu, force=Uongo, rx=Tupu, quiet=0,
                                      errors='backslashreplace')
                 msg = msg.decode(sys.stdout.encoding)
                 andika(msg)
-            except (SyntaxError, UnicodeError, OSError) as e:
+            tatizo (SyntaxError, UnicodeError, OSError) kama e:
                 success = Uongo
                 ikiwa quiet >= 2:
                     rudisha success
-                elikiwa quiet:
+                lasivyo quiet:
                     andika('*** Error compiling {!r}...'.format(fullname))
                 isipokua:
                     andika('*** ', end='')
@@ -193,15 +193,15 @@ eleza compile_path(skip_curdir=1, maxlevels=0, force=Uongo, quiet=0,
 
     skip_curdir: ikiwa true, skip current directory (default Kweli)
     maxlevels:   max recursion level (default 0)
-    force: as kila compile_dir() (default Uongo)
-    quiet: as kila compile_dir() (default 0)
-    legacy: as kila compile_dir() (default Uongo)
-    optimize: as kila compile_dir() (default -1)
-    invalidation_mode: as kila compiler_dir()
+    force: kama kila compile_dir() (default Uongo)
+    quiet: kama kila compile_dir() (default 0)
+    legacy: kama kila compile_dir() (default Uongo)
+    optimize: kama kila compile_dir() (default -1)
+    invalidation_mode: kama kila compiler_dir()
     """
     success = Kweli
     kila dir kwenye sys.path:
-        ikiwa (not dir ama dir == os.curdir) na skip_curdir:
+        ikiwa (sio dir ama dir == os.curdir) na skip_curdir:
             ikiwa quiet < 2:
                 andika('Skipping current directory')
         isipokua:
@@ -235,7 +235,7 @@ eleza main():
                         help='force rebuild even ikiwa timestamps are up to date')
     parser.add_argument('-q', action='count', dest='quiet', default=0,
                         help='output only error messages; -qq will suppress '
-                             'the error messages as well.')
+                             'the error messages kama well.')
     parser.add_argument('-b', action='store_true', dest='legacy',
                         help='use legacy (pre-PEP3147) compiled file locations')
     parser.add_argument('-d', metavar='DESTDIR',  dest='ddir', default=Tupu,
@@ -282,10 +282,10 @@ eleza main():
     # ikiwa flist ni provided then load it
     ikiwa args.flist:
         jaribu:
-            ukijumuisha (sys.stdin ikiwa args.flist=='-' isipokua open(args.flist)) as f:
+            ukijumuisha (sys.stdin ikiwa args.flist=='-' isipokua open(args.flist)) kama f:
                 kila line kwenye f:
                     compile_dests.append(line.strip())
-        except OSError:
+        tatizo OSError:
             ikiwa args.quiet < 2:
                 andika("Error reading file list {}".format(args.flist))
             rudisha Uongo
@@ -316,7 +316,7 @@ eleza main():
             rudisha compile_path(legacy=args.legacy, force=args.force,
                                 quiet=args.quiet,
                                 invalidation_mode=invalidation_mode)
-    except KeyboardInterrupt:
+    tatizo KeyboardInterrupt:
         ikiwa args.quiet < 2:
             andika("\n[interrupted]")
         rudisha Uongo
@@ -324,5 +324,5 @@ eleza main():
 
 
 ikiwa __name__ == '__main__':
-    exit_status = int(not main())
+    exit_status = int(sio main())
     sys.exit(exit_status)

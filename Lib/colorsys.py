@@ -88,7 +88,7 @@ eleza rgb_to_hls(r, g, b):
     bc = (maxc-b) / (maxc-minc)
     ikiwa r == maxc:
         h = bc-gc
-    elikiwa g == maxc:
+    lasivyo g == maxc:
         h = 2.0+rc-bc
     isipokua:
         h = 4.0+gc-rc
@@ -133,7 +133,7 @@ eleza rgb_to_hsv(r, g, b):
     bc = (maxc-b) / (maxc-minc)
     ikiwa r == maxc:
         h = bc-gc
-    elikiwa g == maxc:
+    lasivyo g == maxc:
         h = 2.0+rc-bc
     isipokua:
         h = 4.0+gc-rc

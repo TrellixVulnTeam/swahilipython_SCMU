@@ -72,7 +72,7 @@ kundi tixCommand:
     """The tix commands provide access to miscellaneous  elements
     of  Tix's  internal state na the Tix application context.
     Most of the information manipulated by these  commands pertains
-    to  the  application  as a whole, ama to a screen or
+    to  the  application  kama a whole, ama to a screen ama
     display, rather than to a particular window.
 
     This ni a mixin class, assumed to be mixed to Tkinter.Tk
@@ -112,7 +112,7 @@ kundi tixCommand:
         # Copied kutoka Tkinter.py
         ikiwa kw:
             cnf = _cnfmerge((cnf, kw))
-        elikiwa cnf:
+        lasivyo cnf:
             cnf = _cnfmerge(cnf)
         ikiwa cnf ni Tupu:
             rudisha self._getconfigure('tix', 'configure')
@@ -125,7 +125,7 @@ kundi tixCommand:
         different calls kutoka this application.  This command will create a
         file selection dialog widget when it ni called the first time. This
         dialog will be returned by all subsequent calls to tix_filedialog.
-        An optional dlgkundi parameter can be passed to specified what type
+        An optional dlgkundi parameter can be pitaed to specified what type
         of file selection dialog widget ni desired. Possible options are
         tix FileSelectDialog ama tixExFileSelectDialog.
         """
@@ -240,7 +240,7 @@ kundi Form:
         self.tk.call('tixForm', 'forget', self._w)
 
     eleza grid(self, xsize=0, ysize=0):
-        ikiwa (not xsize) na (not ysize):
+        ikiwa (sio xsize) na (sio ysize):
             x = self.tk.call('tixForm', 'grid', self._w)
             y = self.tk.splitlist(x)
             z = ()
@@ -272,10 +272,10 @@ kundi TixWidget(tkinter.Widget):
     Widget initialization ni extended kwenye two ways:
        1) It ni possible to give a list of options which must be part of
        the creation command (so called Tix 'static' options). These cannot be
-       given as a 'config' command later.
+       given kama a 'config' command later.
        2) It ni possible to give the name of an existing TK widget. These are
        child widgets created automatically by a Tix mega-widget. The Tk call
-       to create these widgets ni therefore bypassed kwenye TixWidget.__init__
+       to create these widgets ni therefore bypitaed kwenye TixWidget.__init__
 
     Both options are kila use by subclasses only.
     """
@@ -316,7 +316,7 @@ kundi TixWidget(tkinter.Widget):
 
         # Dictionary to hold subwidget names kila easier access. We can't
         # use the children list because the public Tix names may sio be the
-        # same as the pathname component
+        # same kama the pathname component
         self.subwidget_list = {}
 
     # We set up an attribute access function so that it ni possible to
@@ -327,7 +327,7 @@ kundi TixWidget(tkinter.Widget):
     eleza __getattr__(self, name):
         ikiwa name kwenye self.subwidget_list:
             rudisha self.subwidget_list[name]
-         ashiria AttributeError(name)
+        ashiria AttributeError(name)
 
     eleza set_silent(self, value):
         """Set a variable without calling its action routine"""
@@ -338,7 +338,7 @@ kundi TixWidget(tkinter.Widget):
         the sub-class)."""
         n = self._subwidget_name(name)
         ikiwa sio n:
-             ashiria TclError("Subwidget " + name + " sio child of " + self._name)
+            ashiria TclError("Subwidget " + name + " sio child of " + self._name)
         # Remove header of name na leading dot
         n = n[len(self._w)+1:]
         rudisha self._nametowidget(n)
@@ -355,14 +355,14 @@ kundi TixWidget(tkinter.Widget):
                 retlist.append(self._nametowidget(name))
             tatizo:
                 # some of the widgets are unknown e.g. border kwenye LabelFrame
-                pass
+                pita
         rudisha retlist
 
     eleza _subwidget_name(self,name):
         """Get a subwidget name (returns a String, sio a Widget !)"""
         jaribu:
             rudisha self.tk.call(self._w, 'subwidget', name)
-        except TclError:
+        tatizo TclError:
             rudisha Tupu
 
     eleza _subwidget_names(self):
@@ -370,14 +370,14 @@ kundi TixWidget(tkinter.Widget):
         jaribu:
             x = self.tk.call(self._w, 'subwidgets', '-all')
             rudisha self.tk.splitlist(x)
-        except TclError:
+        tatizo TclError:
             rudisha Tupu
 
     eleza config_all(self, option, value):
         """Set configuration options kila all subwidgets (and self)."""
         ikiwa option == '':
             return
-        elikiwa sio isinstance(option, str):
+        lasivyo sio isinstance(option, str):
             option = repr(option)
         ikiwa sio isinstance(value, str):
             value = repr(value)
@@ -389,9 +389,9 @@ kundi TixWidget(tkinter.Widget):
         ikiwa sio master:
             master = tkinter._default_root
             ikiwa sio master:
-                 ashiria RuntimeError('Too early to create image')
+                ashiria RuntimeError('Too early to create image')
         ikiwa kw na cnf: cnf = _cnfmerge((cnf, kw))
-        elikiwa kw: cnf = kw
+        lasivyo kw: cnf = kw
         options = ()
         kila k, v kwenye cnf.items():
             ikiwa callable(v):
@@ -401,9 +401,9 @@ kundi TixWidget(tkinter.Widget):
     eleza image_delete(self, imgname):
         jaribu:
             self.tk.call('image', 'delete', imgname)
-        except TclError:
+        tatizo TclError:
             # May happen ikiwa the root was destroyed
-            pass
+            pita
 
 # Subwidgets are child widgets created automatically by mega-widgets.
 # In python, we have to create these subwidgets manually to mirror their
@@ -412,7 +412,7 @@ kundi TixSubWidget(TixWidget):
     """Subwidget class.
 
     This ni used to mirror child widgets automatically created
-    by Tix/Tk as part of a mega-widget kwenye Python (which ni sio informed
+    by Tix/Tk kama part of a mega-widget kwenye Python (which ni sio informed
     of this)"""
 
     eleza __init__(self, master, name,
@@ -436,12 +436,12 @@ kundi TixSubWidget(TixWidget):
                 jaribu:
                     w = master._nametowidget(n)
                     parent = w
-                except KeyError:
+                tatizo KeyError:
                     # Create the intermediate widget
                     parent = TixSubWidget(parent, plist[i],
                                           destroy_physically=0,
                                           check_intermediate=0)
-            # The Tk widget name ni kwenye plist, sio kwenye name
+            # The Tk widget name ni kwenye plist, haiko kwenye name
             ikiwa plist:
                 name = plist[-1]
             TixWidget.__init__(self, parent, Tupu, Tupu, {'name' : name})
@@ -458,7 +458,7 @@ kundi TixSubWidget(TixWidget):
         ikiwa self._name kwenye self.master.subwidget_list:
             toa self.master.subwidget_list[self._name]
         ikiwa self.destroy_physically:
-            # This ni bypassed only kila a few widgets
+            # This ni bypitaed only kila a few widgets
             self.tk.call('destroy', self._w)
 
 
@@ -472,12 +472,12 @@ kundi DisplayStyle:
         ikiwa sio master:
             ikiwa 'refwindow' kwenye kw:
                 master = kw['refwindow']
-            elikiwa 'refwindow' kwenye cnf:
+            lasivyo 'refwindow' kwenye cnf:
                 master = cnf['refwindow']
             isipokua:
                 master = tkinter._default_root
                 ikiwa sio master:
-                     ashiria RuntimeError("Too early to create display style: "
+                    ashiria RuntimeError("Too early to create display style: "
                                        "no root window")
         self.tk = master.tk
         self.stylename = self.tk.call('tixDisplayStyle', itemtype,
@@ -489,7 +489,7 @@ kundi DisplayStyle:
     eleza _options(self, cnf, kw):
         ikiwa kw na cnf:
             cnf = _cnfmerge((cnf, kw))
-        elikiwa kw:
+        lasivyo kw:
             cnf = kw
         opts = ()
         kila k, v kwenye cnf.items():
@@ -586,9 +586,9 @@ kundi ComboBox(TixWidget):
         jaribu:
             self.subwidget_list['tick'] = _dummyButton(self, 'tick')
             self.subwidget_list['cross'] = _dummyButton(self, 'cross')
-        except TypeError:
+        tatizo TypeError:
             # unavailable when -fancy sio specified
-            pass
+            pita
 
     # align
 
@@ -798,7 +798,7 @@ kundi FileSelectBox(TixWidget):
         self.subwidget_list['filter'] = _dummyComboBox(self, 'filter')
         self.subwidget_list['selection'] = _dummyComboBox(self, 'selection')
 
-    eleza apply_filter(self):              # name of subwidget ni same as command
+    eleza apply_filter(self):              # name of subwidget ni same kama command
         self.tk.call(self._w, 'filter')
 
     eleza invoke(self):
@@ -849,7 +849,7 @@ kundi FileEntry(TixWidget):
 
     eleza file_dialog(self):
         # FIXME: rudisha python object
-        pass
+        pita
 
 kundi HList(TixWidget, XView, YView):
     """HList - Hierarchy display  widget can be used to display any data
@@ -1119,7 +1119,7 @@ kundi ListNoteBook(TixWidget):
             ret.append(self.subwidget(x))
         rudisha ret
 
-    eleza raise_page(self, name):              #  ashiria ni a python keyword
+    eleza raise_page(self, name):              # ashiria ni a python keyword
         self.tk.call(self._w, 'raise', name)
 
 kundi Meter(TixWidget):
@@ -1165,7 +1165,7 @@ kundi NoteBook(TixWidget):
             ret.append(self.subwidget(x))
         rudisha ret
 
-    eleza raise_page(self, name):              #  ashiria ni a python keyword
+    eleza raise_page(self, name):              # ashiria ni a python keyword
         self.tk.call(self._w, 'raise', name)
 
     eleza raised(self):
@@ -1173,7 +1173,7 @@ kundi NoteBook(TixWidget):
 
 kundi NoteBookFrame(TixWidget):
     # FIXME: This ni dangerous to expose to be called on its own.
-    pass
+    pita
 
 kundi OptionMenu(TixWidget):
     """OptionMenu - creates a menu button of options.
@@ -1245,7 +1245,7 @@ kundi PanedWindow(TixWidget):
         rudisha [self.subwidget(x) kila x kwenye names]
 
 kundi PopupMenu(TixWidget):
-    """PopupMenu widget can be used as a replacement of the tk_popup command.
+    """PopupMenu widget can be used kama a replacement of the tk_popup command.
     The advantage of the Tix PopupMenu widget ni it requires less application
     code to manipulate.
 
@@ -1421,7 +1421,7 @@ kundi TList(TixWidget, XView, YView):
     used to display data kwenye a tabular format. The list entries of a TList
     widget are similar to the entries kwenye the Tk listbox widget. The main
     differences are (1) the TList widget can display the list entries kwenye a
-    two dimensional format na (2) you can use graphical images as well as
+    two dimensional format na (2) you can use graphical images kama well as
     multiple colors na fonts kila the list entries.
 
     Subwidgets - Tupu"""
@@ -1548,7 +1548,7 @@ kundi Tree(TixWidget):
 kundi CheckList(TixWidget):
     """The CheckList widget
     displays a list of items to be selected by the user. CheckList acts
-    similarly to the Tk checkbutton ama radiobutton widgets, except it is
+    similarly to the Tk checkbutton ama radiobutton widgets, tatizo it is
     capable of handling many more items than checkbuttons ama radiobuttons.
     """
     # FIXME: It should inherit -superkundi tixTree
@@ -1674,9 +1674,9 @@ kundi _dummyComboBox(ComboBox, TixSubWidget):
             self.subwidget_list['tick'] = _dummyButton(self, 'tick')
             #cross Button : present ikiwa created ukijumuisha the fancy option
             self.subwidget_list['cross'] = _dummyButton(self, 'cross')
-        except TypeError:
+        tatizo TypeError:
             # unavailable when -fancy sio specified
-            pass
+            pita
 
 kundi _dummyDirList(DirList, TixSubWidget):
     eleza __init__(self, master, name, destroy_physically=1):
@@ -1736,7 +1736,7 @@ kundi _dummyPanedWindow(PanedWindow, TixSubWidget):
 ### Utility Routines ###
 ########################
 
-#mike Should tixDestroy be exposed as a wrapper? - but sio kila widgets.
+#mike Should tixDestroy be exposed kama a wrapper? - but sio kila widgets.
 
 eleza OptionName(widget):
     '''Returns the qualified path name kila the widget. Normally used to set
@@ -1764,24 +1764,24 @@ kundi CObjView(TixWidget):
     to see all the objects.
     """
     # FIXME: It should inherit -superkundi tixScrolledWidget
-    pass
+    pita
 
 
 kundi Grid(TixWidget, XView, YView):
     '''The Tix Grid command creates a new window  na makes it into a
     tixGrid widget. Additional options, may be specified on the command
-    line ama kwenye the option database to configure aspects such as its cursor
+    line ama kwenye the option database to configure aspects such kama its cursor
     na relief.
 
     A Grid widget displays its contents kwenye a two dimensional grid of cells.
     Each cell may contain one Tix display item, which may be kwenye text,
     graphics ama other formats. See the DisplayStyle kundi kila more information
     about Tix display items. Individual cells, ama groups of cells, can be
-    formatted ukijumuisha a wide range of attributes, such as its color, relief and
+    formatted ukijumuisha a wide range of attributes, such kama its color, relief na
     border.
 
     Subwidgets - Tupu'''
-    # valid specific resources as of Tk 8.4
+    # valid specific resources kama of Tk 8.4
     # editdonecmd, editnotifycmd, floatingcols, floatingrows, formatcmd,
     # highlightbackground, highlightcolor, leftmargin, itemtype, selectmode,
     # selectunit, topmargin,
@@ -1790,7 +1790,7 @@ kundi Grid(TixWidget, XView, YView):
         self.cnf= cnf
         TixWidget.__init__(self, master, 'tixGrid', static, cnf, kw)
 
-    # valid options as of Tk 8.4
+    # valid options kama of Tk 8.4
     # anchor, bdtype, cget, configure, delete, dragsite, dropsite, entrycget,
     # edit, entryconfigure, format, geometryinfo, info, index, move, nearest,
     # selection, set, size, unset, xview, yview

@@ -25,7 +25,7 @@ kundi ComparableException:
     eleza __eq__(self, anExc):
         ikiwa sio isinstance(anExc, Exception):
             rudisha NotImplemented
-        rudisha (self.err.__class__ == anExc.__class__ and
+        rudisha (self.err.__class__ == anExc.__class__ na
                 self.err.args == anExc.args)
 
     eleza __getattr__(self, attr):
@@ -37,16 +37,16 @@ eleza do_test(buf, method):
         fp = Tupu
         env['REQUEST_METHOD'] = 'GET'
         env['QUERY_STRING'] = buf
-    elikiwa method == "POST":
+    lasivyo method == "POST":
         fp = BytesIO(buf.encode('latin-1')) # FieldStorage expects bytes
         env['REQUEST_METHOD'] = 'POST'
         env['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
         env['CONTENT_LENGTH'] = str(len(buf))
     isipokua:
-         ashiria ValueError("unknown method: %s" % method)
+        ashiria ValueError("unknown method: %s" % method)
     jaribu:
         rudisha cgi.parse(fp, env, strict_parsing=1)
-    except Exception as err:
+    tatizo Exception kama err:
         rudisha ComparableException(err)
 
 parse_strict_test_cases = [
@@ -234,7 +234,7 @@ Content-Length: 3
         self.addCleanup(fs.file.close)
         # ikiwa we're sio chunking properly, readline ni only called twice
         # (by read_binary); ikiwa we are chunking properly, it will be called 5 times
-        # as long as the chunksize ni 1 << 16.
+        # kama long kama the chunksize ni 1 << 16.
         self.assertGreater(f.numcalls, 2)
         f.close()
 
@@ -372,7 +372,7 @@ Test
     eleza test_fieldstorage_as_context_manager(self):
         fp = BytesIO(b'x' * 10)
         env = {'REQUEST_METHOD': 'PUT'}
-        ukijumuisha cgi.FieldStorage(fp=fp, environ=env) as fs:
+        ukijumuisha cgi.FieldStorage(fp=fp, environ=env) kama fs:
             content = fs.file.read()
             self.assertUongo(fs.file.closed)
         self.assertKweli(fs.file.closed)

@@ -21,14 +21,14 @@ agiza warnings
 
 jaribu:
     kutoka concurrent.futures agiza ThreadPoolExecutor
-except ImportError:
+tatizo ImportError:
     ThreadPoolExecutor = Tupu
 
 kutoka test.support agiza run_unittest, TESTFN, DirsOnSysPath, cpython_only
 kutoka test.support agiza MISSING_C_DOCSTRINGS, cpython_only
 kutoka test.support.script_helper agiza assert_python_ok, assert_python_failure
-kutoka test agiza inspect_fodder as mod
-kutoka test agiza inspect_fodder2 as mod2
+kutoka test agiza inspect_fodder kama mod
+kutoka test agiza inspect_fodder2 kama mod2
 kutoka test agiza support
 
 kutoka test.test_agiza agiza _ready_to_import
@@ -70,7 +70,7 @@ eleza signatures_with_lexicographic_keyword_only_parameters():
         kila j kwenye range(len(parameters)):
             ikiwa i & (bit << j):
                 p.append(parameters[j])
-        fn_text = "eleza foo(*, " + ", ".join(p) + "): pass"
+        fn_text = "eleza foo(*, " + ", ".join(p) + "): pita"
         symbols = {}
         exec(fn_text, symbols, symbols)
         tuma symbols['foo']
@@ -78,7 +78,7 @@ eleza signatures_with_lexicographic_keyword_only_parameters():
 
 eleza unsorted_keyword_only_parameters_fn(*, throw, out, the, baby, with_,
                                         the_, bathwater):
-    pass
+    pita
 
 unsorted_keyword_only_parameters = 'throw out the baby with_ the_ bathwater'.split()
 
@@ -115,7 +115,7 @@ async eleza coroutine_function_example(self):
 
 @types.coroutine
 eleza gen_coroutine_function_example(self):
-    yield
+    tuma
     rudisha 'spam'
 
 kundi EqualsToAll:
@@ -214,7 +214,7 @@ kundi TestPredicates(IsTestBase):
         coro.close(); gen_coro.close(); # silence warnings
 
     eleza test_isawaitable(self):
-        eleza gen(): yield
+        eleza gen(): tuma
         self.assertUongo(inspect.isawaitable(gen()))
 
         coro = coroutine_function_example(1)
@@ -225,11 +225,11 @@ kundi TestPredicates(IsTestBase):
 
         kundi Future:
             eleza __await__():
-                pass
+                pita
         self.assertKweli(inspect.isawaitable(Future()))
         self.assertUongo(inspect.isawaitable(Future))
 
-        kundi NotFuture: pass
+        kundi NotFuture: pita
         not_fut = NotFuture()
         not_fut.__await__ = lambda: Tupu
         self.assertUongo(inspect.isawaitable(not_fut))
@@ -265,11 +265,11 @@ kundi TestPredicates(IsTestBase):
 
             @abstractmethod
             eleza foo(self):
-                pass
+                pita
 
         kundi ClassExample(AbstractClassExample):
             eleza foo(self):
-                pass
+                pita
 
         a = ClassExample()
 
@@ -289,19 +289,19 @@ kundi TestPredicates(IsTestBase):
         kundi AbstractClassExample(AbstractChecker):
             @abstractmethod
             eleza foo(self):
-                pass
+                pita
         kundi ClassExample(AbstractClassExample):
             eleza foo(self):
-                pass
+                pita
         self.assertEqual(isabstract_checks, [Kweli, Uongo])
 
         isabstract_checks.clear()
         kundi AbstractChild(AbstractClassExample):
-            pass
+            pita
         kundi AbstractGrandchild(AbstractChild):
-            pass
+            pita
         kundi ConcreteGrandchild(ClassExample):
-            pass
+            pita
         self.assertEqual(isabstract_checks, [Kweli, Kweli, Uongo])
 
 
@@ -365,7 +365,7 @@ kundi GetSourceBase(unittest.TestCase):
     fodderModule = Tupu
 
     eleza setUp(self):
-        ukijumuisha open(inspect.getsourcefile(self.fodderModule)) as fp:
+        ukijumuisha open(inspect.getsourcefile(self.fodderModule)) kama fp:
             self.source = fp.read()
 
     eleza sourcerange(self, top, bottom):
@@ -514,20 +514,20 @@ kundi TestRetrievingSourceCode(GetSourceBase):
         self.assertEqual(inspect.getfile(mod.StupidGit), mod.__file__)
 
     eleza test_getfile_builtin_module(self):
-        ukijumuisha self.assertRaises(TypeError) as e:
+        ukijumuisha self.assertRaises(TypeError) kama e:
             inspect.getfile(sys)
         self.assertKweli(str(e.exception).startswith('<module'))
 
     eleza test_getfile_builtin_class(self):
-        ukijumuisha self.assertRaises(TypeError) as e:
+        ukijumuisha self.assertRaises(TypeError) kama e:
             inspect.getfile(int)
         self.assertKweli(str(e.exception).startswith('<class'))
 
     eleza test_getfile_builtin_function_or_method(self):
-        ukijumuisha self.assertRaises(TypeError) as e_abs:
+        ukijumuisha self.assertRaises(TypeError) kama e_abs:
             inspect.getfile(abs)
         self.assertIn('expected, got', str(e_abs.exception))
-        ukijumuisha self.assertRaises(TypeError) as e_append:
+        ukijumuisha self.assertRaises(TypeError) kama e_append:
             inspect.getfile(list.append)
         self.assertIn('expected, got', str(e_append.exception))
 
@@ -535,16 +535,16 @@ kundi TestRetrievingSourceCode(GetSourceBase):
         kundi CM(type):
             @property
             eleza __module__(cls):
-                 ashiria AttributeError
+                ashiria AttributeError
         kundi C(metaclass=CM):
-            pass
+            pita
         ukijumuisha self.assertRaises(TypeError):
             inspect.getfile(C)
 
     eleza test_getfile_broken_repr(self):
         kundi ErrorRepr:
             eleza __repr__(self):
-                 ashiria Exception('xyz')
+                ashiria Exception('xyz')
         er = ErrorRepr()
         ukijumuisha self.assertRaises(TypeError):
             inspect.getfile(er)
@@ -555,14 +555,14 @@ kundi TestRetrievingSourceCode(GetSourceBase):
         m = sys.modules[name] = ModuleType(name)
         m.__file__ = "<string>" # hopefully sio a real filename...
         m.__loader__ = "dummy"  # pretend the filename ni understood by a loader
-        exec("eleza x(): pass", m.__dict__)
+        exec("eleza x(): pita", m.__dict__)
         self.assertEqual(inspect.getsourcefile(m.x.__code__), '<string>')
         toa sys.modules[name]
         inspect.getmodule(compile('a=10','','single'))
 
     eleza test_proceed_with_fake_filename(self):
         '''doctest monkeypatches linecache to enable inspection'''
-        fn, source = '<test>', 'eleza x(): pass\n'
+        fn, source = '<test>', 'eleza x(): pita\n'
         getlines = linecache.getlines
         eleza monkey(filename, module_globals=Tupu):
             ikiwa filename == fn:
@@ -627,13 +627,13 @@ kundi TestOneliners(GetSourceBase):
 
     eleza test_manyargs(self):
         # Test inspect.getsource ukijumuisha a regular function where
-        # the arguments are on two lines na _not_ indented and
+        # the arguments are on two lines na _not_ indented na
         # the body on the second line ukijumuisha the last arguments.
         self.assertSourceEqual(mod2.manyargs, 40, 41)
 
     eleza test_twolinefunc(self):
         # Test inspect.getsource ukijumuisha a regular function where
-        # the body ni on two lines, following the argument list and
+        # the body ni on two lines, following the argument list na
         # endelead on the next line by a \\.
         self.assertSourceEqual(mod2.twolinefunc, 44, 45)
 
@@ -644,7 +644,7 @@ kundi TestOneliners(GetSourceBase):
 
     eleza test_anonymous(self):
         # Test inspect.getsource ukijumuisha a lambda function defined
-        # as argument to another function.
+        # kama argument to another function.
         self.assertSourceEqual(mod2.anonymous, 55, 55)
 
 kundi TestBuggyCases(GetSourceBase):
@@ -673,7 +673,7 @@ kundi TestBuggyCases(GetSourceBase):
 
     # This should sio skip kila CPython, but might on a repackaged python where
     # unicodedata ni sio an external module, ama on pypy.
-    @unittest.skipIf(not hasattr(unicodedata, '__file__') or
+    @unittest.skipIf(sio hasattr(unicodedata, '__file__') ama
                                  unicodedata.__file__.endswith('.py'),
                      "unicodedata ni sio an external binary module")
     eleza test_findsource_binary(self):
@@ -710,10 +710,10 @@ kundi TestNoEOL(GetSourceBase):
         self.tempdir = TESTFN + '_dir'
         os.mkdir(self.tempdir)
         ukijumuisha open(os.path.join(self.tempdir,
-                               'inspect_fodder3%spy' % os.extsep), 'w') as f:
-            f.write("kundi X:\n    pass # No EOL")
+                               'inspect_fodder3%spy' % os.extsep), 'w') kama f:
+            f.write("kundi X:\n    pita # No EOL")
         ukijumuisha DirsOnSysPath(self.tempdir):
-            agiza inspect_fodder3 as mod3
+            agiza inspect_fodder3 kama mod3
         self.fodderModule = mod3
         super().setUp()
 
@@ -729,13 +729,13 @@ kundi _BrokenDataDescriptor(object):
     A broken data descriptor. See bug #1785.
     """
     eleza __get__(*args):
-         ashiria AttributeError("broken data descriptor")
+        ashiria AttributeError("broken data descriptor")
 
     eleza __set__(*args):
-         ashiria RuntimeError
+        ashiria RuntimeError
 
     eleza __getattr__(*args):
-         ashiria AttributeError("broken data descriptor")
+        ashiria AttributeError("broken data descriptor")
 
 
 kundi _BrokenMethodDescriptor(object):
@@ -743,10 +743,10 @@ kundi _BrokenMethodDescriptor(object):
     A broken method descriptor. See bug #1785.
     """
     eleza __get__(*args):
-         ashiria AttributeError("broken method descriptor")
+        ashiria AttributeError("broken method descriptor")
 
     eleza __getattr__(*args):
-         ashiria AttributeError("broken method descriptor")
+        ashiria AttributeError("broken method descriptor")
 
 
 # Helper kila testing classify_class_attrs.
@@ -757,10 +757,10 @@ eleza attrs_wo_objs(cls):
 kundi TestClassesAndFunctions(unittest.TestCase):
     eleza test_newstyle_mro(self):
         # The same w/ new-kundi MRO.
-        kundi A(object):    pass
-        kundi B(A): pass
-        kundi C(A): pass
-        kundi D(B, C): pass
+        kundi A(object):    pita
+        kundi B(A): pita
+        kundi C(A): pita
+        kundi D(B, C): pita
 
         expected = (D, B, C, A, object)
         got = inspect.getmro(D)
@@ -850,7 +850,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
         # Issue 20684: low level introspection API must ignore __wrapped__
         @functools.wraps(mod.spam)
         eleza ham(x, y):
-            pass
+            pita
         # Basic check
         self.assertArgSpecEquals(ham, ['x', 'y'], formatted='(x, y)')
         self.assertFullArgSpecEquals(ham, ['x', 'y'], formatted='(x, y)')
@@ -863,11 +863,11 @@ kundi TestClassesAndFunctions(unittest.TestCase):
         kundi C:
             @functools.wraps(mod.spam)
             eleza ham(self, x, y):
-                pass
+                pita
             pham = functools.partialmethod(ham)
             @functools.wraps(mod.spam)
             eleza __call__(self, x, y):
-                pass
+                pita
         check_method(C())
         check_method(C.ham)
         check_method(C().ham)
@@ -877,29 +877,29 @@ kundi TestClassesAndFunctions(unittest.TestCase):
         kundi C_new:
             @functools.wraps(mod.spam)
             eleza __new__(self, x, y):
-                pass
+                pita
         check_method(C_new)
 
         kundi C_init:
             @functools.wraps(mod.spam)
             eleza __init__(self, x, y):
-                pass
+                pita
         check_method(C_init)
 
     eleza test_getfullargspec_signature_attr(self):
         eleza test():
-            pass
+            pita
         spam_param = inspect.Parameter('spam', inspect.Parameter.POSITIONAL_ONLY)
         test.__signature__ = inspect.Signature(parameters=(spam_param,))
 
         self.assertFullArgSpecEquals(test, ['spam'], formatted='(spam)')
 
     eleza test_getfullargspec_signature_annos(self):
-        eleza test(a:'spam') -> 'ham': pass
+        eleza test(a:'spam') -> 'ham': pita
         spec = inspect.getfullargspec(test)
         self.assertEqual(test.__annotations__, spec.annotations)
 
-        eleza test(): pass
+        eleza test(): pita
         spec = inspect.getfullargspec(test)
         self.assertEqual(test.__annotations__, spec.annotations)
 
@@ -951,24 +951,24 @@ kundi TestClassesAndFunctions(unittest.TestCase):
     eleza test_getargspec_method(self):
         kundi A(object):
             eleza m(self):
-                pass
+                pita
         self.assertArgSpecEquals(A.m, ['self'])
 
     eleza test_classify_newstyle(self):
         kundi A(object):
 
-            eleza s(): pass
+            eleza s(): pita
             s = staticmethod(s)
 
-            eleza c(cls): pass
+            eleza c(cls): pita
             c = classmethod(c)
 
-            eleza getp(self): pass
+            eleza getp(self): pita
             p = property(getp)
 
-            eleza m(self): pass
+            eleza m(self): pita
 
-            eleza m1(self): pass
+            eleza m1(self): pita
 
             datablob = '1'
 
@@ -993,7 +993,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
 
         kundi B(A):
 
-            eleza m(self): pass
+            eleza m(self): pita
 
         attrs = attrs_wo_objs(B)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
@@ -1008,8 +1008,8 @@ kundi TestClassesAndFunctions(unittest.TestCase):
 
         kundi C(A):
 
-            eleza m(self): pass
-            eleza c(self): pass
+            eleza m(self): pita
+            eleza c(self): pita
 
         attrs = attrs_wo_objs(C)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
@@ -1023,7 +1023,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
 
         kundi D(B, C):
 
-            eleza m1(self): pass
+            eleza m1(self): pita
 
         attrs = attrs_wo_objs(D)
         self.assertIn(('s', 'static method', A), attrs, 'missing static method')
@@ -1076,7 +1076,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
                 rudisha NoBool()
 
             eleza __bool__(self):
-                 ashiria NotImplementedError(
+                ashiria NotImplementedError(
                     "This object does sio specify a boolean value")
 
         kundi HasNB(object):
@@ -1091,7 +1091,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
             eleza __dir__(self):
                 rudisha ['__class__', '__module__', '__name__', 'fish']
         kundi Class(metaclass=Meta):
-            pass
+            pita
         should_find = inspect.Attribute('fish', 'data', Meta, 'slap')
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
@@ -1104,7 +1104,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
                     rudisha 42
                 rudisha super().__getattr(name)
         kundi Class(metaclass=Meta):
-            pass
+            pita
         should_find = inspect.Attribute('BOOM', 'data', Meta, 42)
         self.assertIn(should_find, inspect.classify_class_attrs(Class))
 
@@ -1132,9 +1132,9 @@ kundi TestClassesAndFunctions(unittest.TestCase):
                     rudisha 3
                 rudisha super().__getattr__(name)
         kundi Class1(metaclass=Meta1):
-            pass
+            pita
         kundi Class2(Class1, metaclass=Meta3):
-            pass
+            pita
 
         should_find1 = inspect.Attribute('one', 'data', Meta1, 1)
         should_find2 = inspect.Attribute('two', 'data', Meta2, 2)
@@ -1148,7 +1148,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
             eleza __dir__(cls):
                 rudisha ['__class__', '__name__', 'missing']
         kundi C(metaclass=M):
-            pass
+            pita
         attrs = [a[0] kila a kwenye inspect.classify_class_attrs(C)]
         self.assertNotIn('missing', attrs)
 
@@ -1161,7 +1161,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
             # A quick'n'dirty way to discard standard attributes of new-style
             # classes.
             kundi Empty(object):
-                pass
+                pita
             eleza wrapped(x):
                 ikiwa '__name__' kwenye dir(x) na hasattr(Empty, x.__name__):
                     rudisha Uongo
@@ -1177,7 +1177,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
             [('dd', A.__dict__['dd'])])
 
         kundi B(A):
-            pass
+            pita
 
         self.assertEqual(inspect.getmembers(B, ismethoddescriptor),
             [('md', A.__dict__['md'])])
@@ -1187,7 +1187,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
     eleza test_getmembers_method(self):
         kundi B:
             eleza f(self):
-                pass
+                pita
 
         self.assertIn(('f', B.f), inspect.getmembers(B))
         self.assertNotIn(('f', B.f), inspect.getmembers(B, inspect.ismethod))
@@ -1213,7 +1213,7 @@ kundi TestClassesAndFunctions(unittest.TestCase):
             eleza __dir__(cls):
                 rudisha ['__class__', '__name__', 'missing']
         kundi C(metaclass=M):
-            pass
+            pita
         attrs = [a[0] kila a kwenye inspect.getmembers(C)]
         self.assertNotIn('missing', attrs)
 
@@ -1221,11 +1221,11 @@ kundi TestIsDataDescriptor(unittest.TestCase):
 
     eleza test_custom_descriptors(self):
         kundi NonDataDescriptor:
-            eleza __get__(self, value, type=Tupu): pass
+            eleza __get__(self, value, type=Tupu): pita
         kundi DataDescriptor0:
-            eleza __set__(self, name, value): pass
+            eleza __set__(self, name, value): pita
         kundi DataDescriptor1:
-            eleza __delete__(self, name): pass
+            eleza __delete__(self, name): pita
         kundi DataDescriptor2:
             __set__ = Tupu
         self.assertUongo(inspect.isdatadescriptor(NonDataDescriptor()),
@@ -1247,19 +1247,19 @@ kundi TestIsDataDescriptor(unittest.TestCase):
         kundi Propertied:
             @property
             eleza a_property(self):
-                pass
+                pita
         self.assertKweli(inspect.isdatadescriptor(Propertied.a_property),
                         'a property ni a data descriptor')
 
     eleza test_functions(self):
         kundi Test(object):
-            eleza instance_method(self): pass
+            eleza instance_method(self): pita
             @classmethod
-            eleza class_method(cls): pass
+            eleza class_method(cls): pita
             @staticmethod
-            eleza static_method(): pass
+            eleza static_method(): pita
         eleza function():
-            pass
+            pita
         a_lambda = lambda: Tupu
         self.assertUongo(inspect.isdatadescriptor(Test().instance_method),
                          'a instance method ni sio a data descriptor')
@@ -1295,7 +1295,7 @@ kundi TestGetClosureVars(unittest.TestCase):
         eleza f(nonlocal_ref):
             eleza g(local_ref):
                 andika(local_ref, nonlocal_ref, _global_ref, unbound_ref)
-                yield
+                tuma
             rudisha g
         _arg = object()
         nonlocal_vars = {"nonlocal_ref": _arg}
@@ -1360,13 +1360,13 @@ kundi TestGetClosureVars(unittest.TestCase):
         Y(check_y_combinator)
 
     eleza test_getclosurevars_empty(self):
-        eleza foo(): pass
+        eleza foo(): pita
         _empty = inspect.ClosureVars({}, {}, {}, set())
         self.assertEqual(inspect.getclosurevars(lambda: Kweli), _empty)
         self.assertEqual(inspect.getclosurevars(foo), _empty)
 
     eleza test_getclosurevars_error(self):
-        kundi T: pass
+        kundi T: pita
         self.assertRaises(TypeError, inspect.getclosurevars, 1)
         self.assertRaises(TypeError, inspect.getclosurevars, list)
         self.assertRaises(TypeError, inspect.getclosurevars, {})
@@ -1409,14 +1409,14 @@ kundi TestGetcallargsFunctions(unittest.TestCase):
         locs = dict(locs ama {}, func=func)
         jaribu:
             eval('func(%s)' % call_param_string, Tupu, locs)
-        except Exception as e:
+        tatizo Exception kama e:
             ex1 = e
         isipokua:
             self.fail('Exception sio raised')
         jaribu:
             eval('inspect.getcallargs(func, %s)' % call_param_string, Tupu,
                  locs)
-        except Exception as e:
+        tatizo Exception kama e:
             ex2 = e
         isipokua:
             self.fail('Exception sio raised')
@@ -1570,7 +1570,7 @@ kundi TestGetcallargsFunctions(unittest.TestCase):
 
         # issue #20816: getcallargs() fails to iterate over non-existent
         # kwonlydefaults na raises a wrong TypeError
-        eleza f5(*, a): pass
+        eleza f5(*, a): pita
         ukijumuisha self.assertRaisesRegex(TypeError,
                                     'missing 1 required keyword-only'):
             inspect.getcallargs(f5)
@@ -1578,7 +1578,7 @@ kundi TestGetcallargsFunctions(unittest.TestCase):
 
         # issue20817:
         eleza f6(a, b, c):
-            pass
+            pita
         ukijumuisha self.assertRaisesRegex(TypeError, "'a', 'b' na 'c'"):
             inspect.getcallargs(f6)
 
@@ -1600,12 +1600,12 @@ kundi TestGetcallargsMethods(TestGetcallargsFunctions):
 
     eleza setUp(self):
         kundi Foo(object):
-            pass
+            pita
         self.cls = Foo
         self.inst = Foo()
 
     eleza makeCallable(self, signature):
-        assert 'self' sio kwenye signature
+        assert 'self' haiko kwenye signature
         mk = super(TestGetcallargsMethods, self).makeCallable
         self.cls.method = mk('self, ' + signature)
         rudisha self.inst.method
@@ -1625,7 +1625,7 @@ kundi TestGetcallargsUnboundMethods(TestGetcallargsMethods):
             *self._getAssertEqualParams(func, call_params_string, locs))
 
     eleza _getAssertEqualParams(self, func, call_params_string, locs=Tupu):
-        assert 'inst' sio kwenye call_params_string
+        assert 'inst' haiko kwenye call_params_string
         locs = dict(locs ama {}, inst=self.inst)
         rudisha (func, 'inst,' + call_params_string, locs)
 
@@ -1648,7 +1648,7 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi Thing(object):
             x = object()
         kundi OtherThing(Thing):
-            pass
+            pita
 
         something = OtherThing()
         self.assertEqual(inspect.getattr_static(something, 'x'), Thing.x)
@@ -1667,14 +1667,14 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi Thing(object):
             @property
             eleza x(self):
-                 ashiria AttributeError("I'm pretending sio to exist")
+                ashiria AttributeError("I'm pretending sio to exist")
         thing = Thing()
         self.assertEqual(inspect.getattr_static(thing, 'x'), Thing.x)
 
     eleza test_descriptor_raises_AttributeError(self):
         kundi descriptor(object):
             eleza __get__(*_):
-                 ashiria AttributeError("I'm pretending sio to exist")
+                ashiria AttributeError("I'm pretending sio to exist")
         desc = descriptor()
         kundi Thing(object):
             x = desc
@@ -1700,7 +1700,7 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi Thing(object):
             x = object()
         kundi OtherThing(Thing):
-            pass
+            pita
 
         self.assertEqual(inspect.getattr_static(OtherThing, 'x'), Thing.x)
 
@@ -1721,18 +1721,18 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi meta(type):
             attr = 'foo'
         kundi Thing(object, metaclass=meta):
-            pass
+            pita
         self.assertEqual(inspect.getattr_static(Thing, 'attr'), 'foo')
 
         kundi sub(meta):
-            pass
+            pita
         kundi OtherThing(object, metaclass=sub):
             x = 3
         self.assertEqual(inspect.getattr_static(OtherThing, 'attr'), 'foo')
 
         kundi OtherOtherThing(OtherThing):
-            pass
-        # this test ni odd, but it was added as it exposed a bug
+            pita
+        # this test ni odd, but it was added kama it exposed a bug
         self.assertEqual(inspect.getattr_static(OtherOtherThing, 'x'), 3)
 
     eleza test_no_dict_no_slots(self):
@@ -1741,7 +1741,7 @@ kundi TestGetattrStatic(unittest.TestCase):
 
     eleza test_no_dict_no_slots_instance_member(self):
         # returns descriptor
-        ukijumuisha open(__file__) as handle:
+        ukijumuisha open(__file__) kama handle:
             self.assertEqual(inspect.getattr_static(handle, 'name'), type(handle).name)
 
     eleza test_inherited_slots(self):
@@ -1752,7 +1752,7 @@ kundi TestGetattrStatic(unittest.TestCase):
                 self.x = 'foo'
 
         kundi OtherThing(Thing):
-            pass
+            pita
         # it would be nice ikiwa this worked...
         # we get the descriptor instead of the instance attribute
         self.assertEqual(inspect.getattr_static(OtherThing(), 'x'), Thing.x)
@@ -1783,7 +1783,7 @@ kundi TestGetattrStatic(unittest.TestCase):
         kundi meta(type):
             d = descriptor()
         kundi Thing(object, metaclass=meta):
-            pass
+            pita
         self.assertEqual(inspect.getattr_static(Thing, 'd'), meta.__dict__['d'])
 
 
@@ -1813,7 +1813,7 @@ kundi TestGetattrStatic(unittest.TestCase):
             foo = 3
 
         kundi Something(Base, metaclass=Meta):
-            pass
+            pita
 
         self.assertEqual(inspect.getattr_static(Something(), 'foo'), 3)
         self.assertEqual(inspect.getattr_static(Something, 'foo'), 3)
@@ -1882,7 +1882,7 @@ kundi TestGetattrStatic(unittest.TestCase):
             executed = Uongo
 
         kundi Thing(metaclass=Meta):
-            pass
+            pita
 
         ukijumuisha self.assertRaises(AttributeError):
             inspect.getattr_static(Thing, "spam")
@@ -1908,7 +1908,7 @@ kundi TestGetGeneratorState(unittest.TestCase):
 
     eleza test_closed_after_exhaustion(self):
         kila i kwenye self.generator:
-            pass
+            pita
         self.assertEqual(self._generatorstate(), inspect.GEN_CLOSED)
 
     eleza test_closed_after_immediate_exception(self):
@@ -1927,9 +1927,9 @@ kundi TestGetGeneratorState(unittest.TestCase):
                 tuma number
                 self.assertEqual(self._generatorstate(), inspect.GEN_RUNNING)
         self.generator = running_check_generator()
-        # Running up to the first yield
+        # Running up to the first tuma
         next(self.generator)
-        # Running after the first yield
+        # Running after the first tuma
         next(self.generator)
 
     eleza test_easy_debugging(self):
@@ -1965,19 +1965,19 @@ kundi TestGetGeneratorState(unittest.TestCase):
                           'b': (1, 2, 3), 'c': 12})
         jaribu:
             next(numbers)
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         self.assertEqual(inspect.getgeneratorlocals(numbers), {})
 
     eleza test_getgeneratorlocals_empty(self):
-        eleza yield_one():
+        eleza tuma_one():
             tuma 1
-        one = yield_one()
+        one = tuma_one()
         self.assertEqual(inspect.getgeneratorlocals(one), {})
         jaribu:
             next(one)
-        except StopIteration:
-            pass
+        tatizo StopIteration:
+            pita
         self.assertEqual(inspect.getgeneratorlocals(one), {})
 
     eleza test_getgeneratorlocals_error(self):
@@ -2015,7 +2015,7 @@ kundi TestGetCoroutineState(unittest.TestCase):
         wakati Kweli:
             jaribu:
                 self.coroutine.send(Tupu)
-            except StopIteration:
+            tatizo StopIteration:
                 koma
 
         self.assertEqual(self._coroutinestate(), inspect.CORO_CLOSED)
@@ -2036,7 +2036,7 @@ kundi TestGetCoroutineState(unittest.TestCase):
     eleza test_getcoroutinelocals(self):
         @types.coroutine
         eleza gencoro():
-            yield
+            tuma
 
         gencoro = gencoro()
         async eleza func(a=Tupu):
@@ -2054,12 +2054,12 @@ kundi TestGetCoroutineState(unittest.TestCase):
 kundi MySignature(inspect.Signature):
     # Top-level to make it picklable;
     # used kwenye test_signature_object_pickle
-    pass
+    pita
 
 kundi MyParameter(inspect.Parameter):
     # Top-level to make it picklable;
     # used kwenye test_signature_object_pickle
-    pass
+    pita
 
 
 
@@ -2083,7 +2083,7 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertEqual(str(S()), '()')
 
         eleza test(po, pk, pod=42, pkd=100, *args, ko, **kwargs):
-            pass
+            pita
         sig = inspect.signature(test)
         po = sig.parameters['po'].replace(kind=P.POSITIONAL_ONLY)
         pod = sig.parameters['pod'].replace(kind=P.POSITIONAL_ONLY)
@@ -2124,7 +2124,7 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertKweli('(po, pk' kwenye repr(sig))
 
     eleza test_signature_object_pickle(self):
-        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pita
         foo_partial = functools.partial(foo, a=1)
 
         sig = inspect.signature(foo_partial)
@@ -2153,7 +2153,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_immutability(self):
         eleza test(a):
-            pass
+            pita
         sig = inspect.signature(test)
 
         ukijumuisha self.assertRaises(AttributeError):
@@ -2164,12 +2164,12 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_on_noarg(self):
         eleza test():
-            pass
+            pita
         self.assertEqual(self.signature(test), ((), ...))
 
     eleza test_signature_on_wargs(self):
         eleza test(a, b:'foo') -> 123:
-            pass
+            pita
         self.assertEqual(self.signature(test),
                          ((('a', ..., ..., "positional_or_keyword"),
                            ('b', ..., 'foo', "positional_or_keyword")),
@@ -2177,7 +2177,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_on_wkwonly(self):
         eleza test(*, a:float, b:str) -> int:
-            pass
+            pita
         self.assertEqual(self.signature(test),
                          ((('a', ..., float, "keyword_only"),
                            ('b', ..., str, "keyword_only")),
@@ -2185,7 +2185,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_on_complex_args(self):
         eleza test(a, b:'foo'=10, *args:'bar', spam:'baz', ham=123, **kwargs:int):
-            pass
+            pita
         self.assertEqual(self.signature(test),
                          ((('a', ..., ..., "positional_or_keyword"),
                            ('b', 10, 'foo', "positional_or_keyword"),
@@ -2197,19 +2197,19 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_without_self(self):
         eleza test_args_only(*args):  # NOQA
-            pass
+            pita
 
         eleza test_args_kwargs_only(*args, **kwargs):  # NOQA
-            pass
+            pita
 
         kundi A:
             @classmethod
             eleza test_classmethod(*args):  # NOQA
-                pass
+                pita
 
             @staticmethod
             eleza test_staticmethod(*args):  # NOQA
-                pass
+                pita
 
             f1 = functools.partialmethod((test_classmethod), 1)
             f2 = functools.partialmethod((test_args_only), 1)
@@ -2321,7 +2321,7 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertEqual(inspect.signature(func),
                          inspect.signature(decorated_func))
 
-        eleza wrapper_like(*args, **kwargs) -> int: pass
+        eleza wrapper_like(*args, **kwargs) -> int: pita
         self.assertEqual(inspect.signature(decorated_func,
                                            follow_wrapped=Uongo),
                          inspect.signature(wrapper_like))
@@ -2343,7 +2343,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_from_functionlike_object(self):
         eleza func(a,b, *args, kwonly=Kweli, kwonlyreq, **kwargs):
-            pass
+            pita
 
         kundi funclike:
             # Has to be callable, na have correct
@@ -2399,11 +2399,11 @@ kundi TestSignatureObject(unittest.TestCase):
         # sio classes.
 
         eleza func(a,b, *args, kwonly=Kweli, kwonlyreq, **kwargs):
-            pass
+            pita
 
         kundi funclike:
             eleza __init__(self, marker):
-                pass
+                pita
 
             __name__ = func.__name__
             __code__ = func.__code__
@@ -2416,13 +2416,13 @@ kundi TestSignatureObject(unittest.TestCase):
     eleza test_signature_on_method(self):
         kundi Test:
             eleza __init__(*args):
-                pass
+                pita
             eleza m1(self, arg1, arg2=1) -> int:
-                pass
+                pita
             eleza m2(*args):
-                pass
+                pita
             eleza __call__(*, a):
-                pass
+                pita
 
         self.assertEqual(self.signature(Test().m1),
                          ((('arg1', ..., ..., "positional_or_keyword"),
@@ -2444,10 +2444,10 @@ kundi TestSignatureObject(unittest.TestCase):
         # Issue 24298
         kundi Test:
             eleza m1(self, arg1, arg2=1) -> int:
-                pass
+                pita
         @functools.wraps(Test().m1)
         eleza m1d(*args, **kwargs):
-            pass
+            pita
         self.assertEqual(self.signature(m1d),
                          ((('arg1', ..., ..., "positional_or_keyword"),
                            ('arg2', 1, ..., "positional_or_keyword")),
@@ -2457,7 +2457,7 @@ kundi TestSignatureObject(unittest.TestCase):
         kundi Test:
             @classmethod
             eleza foo(cls, arg1, *, arg2=1):
-                pass
+                pita
 
         meth = Test().foo
         self.assertEqual(self.signature(meth),
@@ -2475,7 +2475,7 @@ kundi TestSignatureObject(unittest.TestCase):
         kundi Test:
             @staticmethod
             eleza foo(cls, *, arg):
-                pass
+                pita
 
         meth = Test().foo
         self.assertEqual(self.signature(meth),
@@ -2495,7 +2495,7 @@ kundi TestSignatureObject(unittest.TestCase):
         Parameter = inspect.Parameter
 
         eleza test():
-            pass
+            pita
 
         self.assertEqual(self.signature(partial(test)), ((), ...))
 
@@ -2506,7 +2506,7 @@ kundi TestSignatureObject(unittest.TestCase):
             inspect.signature(partial(test, a=1))
 
         eleza test(a, b, *, c, d):
-            pass
+            pita
 
         self.assertEqual(self.signature(partial(test)),
                          ((('a', ..., ..., "positional_or_keyword"),
@@ -2548,7 +2548,7 @@ kundi TestSignatureObject(unittest.TestCase):
                           ...))
 
         eleza test(a, *args, b, **kwargs):
-            pass
+            pita
 
         self.assertEqual(self.signature(partial(test, 1)),
                          ((('args', ..., ..., "var_positional"),
@@ -2595,7 +2595,7 @@ kundi TestSignatureObject(unittest.TestCase):
                           ...))
 
         eleza test(a, b, c:int) -> 42:
-            pass
+            pita
 
         sig = test.__signature__ = inspect.signature(test)
 
@@ -2665,7 +2665,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
 
         eleza foo(a, b, c, d, **kwargs):
-            pass
+            pita
         sig = inspect.signature(foo)
         params = sig.parameters.copy()
         params['a'] = params['a'].replace(kind=Parameter.POSITIONAL_ONLY)
@@ -2710,7 +2710,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         kundi Spam:
             eleza test():
-                pass
+                pita
             ham = partialmethod(test)
 
         ukijumuisha self.assertRaisesRegex(ValueError, "has incorrect arguments"):
@@ -2718,7 +2718,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         kundi Spam:
             eleza test(it, a, *, c) -> 'spam':
-                pass
+                pita
             ham = partialmethod(test, c=1)
 
         self.assertEqual(self.signature(Spam.ham),
@@ -2734,7 +2734,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         kundi Spam:
             eleza test(self: 'anno', x):
-                pass
+                pita
 
             g = partialmethod(test, 1)
 
@@ -2743,7 +2743,7 @@ kundi TestSignatureObject(unittest.TestCase):
                           ...))
 
     eleza test_signature_on_fake_partialmethod(self):
-        eleza foo(a): pass
+        eleza foo(a): pita
         foo._partialmethod = 'spam'
         self.assertEqual(str(inspect.signature(foo)), '(a)')
 
@@ -2759,7 +2759,7 @@ kundi TestSignatureObject(unittest.TestCase):
         kundi Foo:
             @decorator
             eleza bar(self, a, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(Foo.bar),
                          ((('self', ..., ..., "positional_or_keyword"),
@@ -2792,7 +2792,7 @@ kundi TestSignatureObject(unittest.TestCase):
         kundi Foo:
             @decorator
             eleza __call__(self, a, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(Foo.__call__),
                          ((('a', ..., ..., "positional_or_keyword"),
@@ -2805,7 +2805,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
         # Test we handle __signature__ partway down the wrapper stack
         eleza wrapped_foo_call():
-            pass
+            pita
         wrapped_foo_call.__wrapped__ = Foo.__call__
 
         self.assertEqual(self.signature(wrapped_foo_call),
@@ -2817,7 +2817,7 @@ kundi TestSignatureObject(unittest.TestCase):
     eleza test_signature_on_class(self):
         kundi C:
             eleza __init__(self, a):
-                pass
+                pita
 
         self.assertEqual(self.signature(C),
                          ((('a', ..., ..., "positional_or_keyword"),),
@@ -2825,10 +2825,10 @@ kundi TestSignatureObject(unittest.TestCase):
 
         kundi CM(type):
             eleza __call__(cls, a):
-                pass
+                pita
         kundi C(metaclass=CM):
             eleza __init__(self, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(C),
                          ((('a', ..., ..., "positional_or_keyword"),),
@@ -2839,7 +2839,7 @@ kundi TestSignatureObject(unittest.TestCase):
                 rudisha super().__new__(mcls, name, bases, dct)
         kundi C(metaclass=CM):
             eleza __init__(self, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(C),
                          ((('b', ..., ..., "positional_or_keyword"),),
@@ -2862,7 +2862,7 @@ kundi TestSignatureObject(unittest.TestCase):
                 rudisha super().__new__(mcls, name, bases, dct)
         kundi C(metaclass=CM):
             eleza __init__(self, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(CMM),
                          ((('name', ..., ..., "positional_or_keyword"),
@@ -2886,7 +2886,7 @@ kundi TestSignatureObject(unittest.TestCase):
                 rudisha super().__init__(name, bases, dct)
         kundi C(metaclass=CM):
             eleza __init__(self, b):
-                pass
+                pita
 
         self.assertEqual(self.signature(CM),
                          ((('name', ..., ..., "positional_or_keyword"),
@@ -2899,14 +2899,14 @@ kundi TestSignatureObject(unittest.TestCase):
                      "Signature information kila builtins requires docstrings")
     eleza test_signature_on_class_without_init(self):
         # Test classes without user-defined __init__ ama __new__
-        kundi C: pass
+        kundi C: pita
         self.assertEqual(str(inspect.signature(C)), '()')
-        kundi D(C): pass
+        kundi D(C): pita
         self.assertEqual(str(inspect.signature(D)), '()')
 
         # Test meta-classes without user-defined __init__ ama __new__
-        kundi C(type): pass
-        kundi D(C): pass
+        kundi C(type): pita
+        kundi D(C): pita
         ukijumuisha self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
             self.assertEqual(inspect.signature(C), Tupu)
         ukijumuisha self.assertRaisesRegex(ValueError, "callable.*is sio supported"):
@@ -2919,47 +2919,47 @@ kundi TestSignatureObject(unittest.TestCase):
                     'buffer_callback=Tupu)')
         self.assertEqual(str(inspect.signature(_pickle.Pickler)), expected)
 
-        kundi P(_pickle.Pickler): pass
-        kundi EmptyTrait: pass
-        kundi P2(EmptyTrait, P): pass
+        kundi P(_pickle.Pickler): pita
+        kundi EmptyTrait: pita
+        kundi P2(EmptyTrait, P): pita
         self.assertEqual(str(inspect.signature(P)), expected)
         self.assertEqual(str(inspect.signature(P2)), expected)
 
         kundi P3(P2):
             eleza __init__(self, spam):
-                pass
+                pita
         self.assertEqual(str(inspect.signature(P3)), '(spam)')
 
         kundi MetaP(type):
             eleza __call__(cls, foo, bar):
-                pass
+                pita
         kundi P4(P2, metaclass=MetaP):
-            pass
+            pita
         self.assertEqual(str(inspect.signature(P4)), '(foo, bar)')
 
     eleza test_signature_on_callable_objects(self):
         kundi Foo:
             eleza __call__(self, a):
-                pass
+                pita
 
         self.assertEqual(self.signature(Foo()),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
         kundi Spam:
-            pass
+            pita
         ukijumuisha self.assertRaisesRegex(TypeError, "is sio a callable object"):
             inspect.signature(Spam())
 
         kundi Bar(Spam, Foo):
-            pass
+            pita
 
         self.assertEqual(self.signature(Bar()),
                          ((('a', ..., ..., "positional_or_keyword"),),
                           ...))
 
         kundi Wrapped:
-            pass
+            pita
         Wrapped.__wrapped__ = lambda a: Tupu
         self.assertEqual(self.signature(Wrapped),
                          ((('a', ..., ..., "positional_or_keyword"),),
@@ -2975,83 +2975,83 @@ kundi TestSignatureObject(unittest.TestCase):
                           ...))
 
     eleza test_signature_equality(self):
-        eleza foo(a, *, b:int) -> float: pass
+        eleza foo(a, *, b:int) -> float: pita
         self.assertUongo(inspect.signature(foo) == 42)
         self.assertKweli(inspect.signature(foo) != 42)
         self.assertKweli(inspect.signature(foo) == EqualsToAll())
         self.assertUongo(inspect.signature(foo) != EqualsToAll())
 
-        eleza bar(a, *, b:int) -> float: pass
+        eleza bar(a, *, b:int) -> float: pita
         self.assertKweli(inspect.signature(foo) == inspect.signature(bar))
         self.assertUongo(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza bar(a, *, b:int) -> int: pass
+        eleza bar(a, *, b:int) -> int: pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza bar(a, *, b:int): pass
+        eleza bar(a, *, b:int): pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza bar(a, *, b:int=42) -> float: pass
+        eleza bar(a, *, b:int=42) -> float: pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza bar(a, *, c) -> float: pass
+        eleza bar(a, *, c) -> float: pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza bar(a, b:int) -> float: pass
+        eleza bar(a, b:int) -> float: pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
-        eleza spam(b:int, a) -> float: pass
+        eleza spam(b:int, a) -> float: pita
         self.assertUongo(inspect.signature(spam) == inspect.signature(bar))
         self.assertKweli(inspect.signature(spam) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(spam)), hash(inspect.signature(bar)))
 
-        eleza foo(*, a, b, c): pass
-        eleza bar(*, c, b, a): pass
+        eleza foo(*, a, b, c): pita
+        eleza bar(*, c, b, a): pita
         self.assertKweli(inspect.signature(foo) == inspect.signature(bar))
         self.assertUongo(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza foo(*, a=1, b, c): pass
-        eleza bar(*, c, b, a=1): pass
+        eleza foo(*, a=1, b, c): pita
+        eleza bar(*, c, b, a=1): pita
         self.assertKweli(inspect.signature(foo) == inspect.signature(bar))
         self.assertUongo(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza foo(pos, *, a=1, b, c): pass
-        eleza bar(pos, *, c, b, a=1): pass
+        eleza foo(pos, *, a=1, b, c): pita
+        eleza bar(pos, *, c, b, a=1): pita
         self.assertKweli(inspect.signature(foo) == inspect.signature(bar))
         self.assertUongo(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza foo(pos, *, a, b, c): pass
-        eleza bar(pos, *, c, b, a=1): pass
+        eleza foo(pos, *, a, b, c): pita
+        eleza bar(pos, *, c, b, a=1): pita
         self.assertUongo(inspect.signature(foo) == inspect.signature(bar))
         self.assertKweli(inspect.signature(foo) != inspect.signature(bar))
         self.assertNotEqual(
             hash(inspect.signature(foo)), hash(inspect.signature(bar)))
 
-        eleza foo(pos, *args, a=42, b, c, **kwargs:int): pass
-        eleza bar(pos, *args, c, b, a=42, **kwargs:int): pass
+        eleza foo(pos, *args, a=42, b, c, **kwargs:int): pita
+        eleza bar(pos, *args, c, b, a=42, **kwargs:int): pita
         self.assertKweli(inspect.signature(foo) == inspect.signature(bar))
         self.assertUongo(inspect.signature(foo) != inspect.signature(bar))
         self.assertEqual(
@@ -3061,7 +3061,7 @@ kundi TestSignatureObject(unittest.TestCase):
         S = inspect.Signature
         P = inspect.Parameter
 
-        eleza foo(a): pass
+        eleza foo(a): pita
         foo_sig = inspect.signature(foo)
 
         manual_sig = S(parameters=[P('a', P.POSITIONAL_OR_KEYWORD)])
@@ -3070,30 +3070,30 @@ kundi TestSignatureObject(unittest.TestCase):
         self.assertNotEqual(hash(foo_sig),
                             hash(manual_sig.replace(return_annotation='spam')))
 
-        eleza bar(a) -> 1: pass
+        eleza bar(a) -> 1: pita
         self.assertNotEqual(hash(foo_sig), hash(inspect.signature(bar)))
 
-        eleza foo(a={}): pass
+        eleza foo(a={}): pita
         ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
-        eleza foo(a) -> {}: pass
+        eleza foo(a) -> {}: pita
         ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(inspect.signature(foo))
 
     eleza test_signature_str(self):
         eleza foo(a:int=1, *, b, c=Tupu, **kwargs) -> 42:
-            pass
+            pita
         self.assertEqual(str(inspect.signature(foo)),
                          '(a: int = 1, *, b, c=Tupu, **kwargs) -> 42')
 
         eleza foo(a:int=1, *args, b, c=Tupu, **kwargs) -> 42:
-            pass
+            pita
         self.assertEqual(str(inspect.signature(foo)),
                          '(a: int = 1, *args, b, c=Tupu, **kwargs) -> 42')
 
         eleza foo():
-            pass
+            pita
         self.assertEqual(str(inspect.signature(foo)), '()')
 
     eleza test_signature_str_positional_only(self):
@@ -3126,7 +3126,7 @@ kundi TestSignatureObject(unittest.TestCase):
 
     eleza test_signature_replace_anno(self):
         eleza test() -> 42:
-            pass
+            pita
 
         sig = inspect.signature(test)
         sig = sig.replace(return_annotation=Tupu)
@@ -3140,9 +3140,9 @@ kundi TestSignatureObject(unittest.TestCase):
     eleza test_signature_on_mangled_parameters(self):
         kundi Spam:
             eleza foo(self, __p1:1=2, *, __p2:2=3):
-                pass
+                pita
         kundi Ham(Spam):
-            pass
+            pita
 
         self.assertEqual(self.signature(Spam.foo),
                          ((('self', ..., ..., "positional_or_keyword"),
@@ -3154,22 +3154,22 @@ kundi TestSignatureObject(unittest.TestCase):
                          self.signature(Ham.foo))
 
     eleza test_signature_from_callable_python_obj(self):
-        kundi MySignature(inspect.Signature): pass
-        eleza foo(a, *, b:1): pass
+        kundi MySignature(inspect.Signature): pita
+        eleza foo(a, *, b:1): pita
         foo_sig = MySignature.from_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
     eleza test_signature_from_callable_class(self):
         # A regression test kila a kundi inheriting its signature kutoka `object`.
-        kundi MySignature(inspect.Signature): pass
-        kundi foo: pass
+        kundi MySignature(inspect.Signature): pita
+        kundi foo: pita
         foo_sig = MySignature.from_callable(foo)
         self.assertIsInstance(foo_sig, MySignature)
 
     @unittest.skipIf(MISSING_C_DOCSTRINGS,
                      "Signature information kila builtins requires docstrings")
     eleza test_signature_from_callable_builtin_obj(self):
-        kundi MySignature(inspect.Signature): pass
+        kundi MySignature(inspect.Signature): pita
         sig = MySignature.from_callable(_pickle.Pickler)
         self.assertIsInstance(sig, MySignature)
 
@@ -3308,7 +3308,7 @@ kundi TestParameterObject(unittest.TestCase):
     @cpython_only
     eleza test_signature_parameter_implicit(self):
         ukijumuisha self.assertRaisesRegex(ValueError,
-                                    'implicit arguments must be passed as '
+                                    'implicit arguments must be pitaed kama '
                                     'positional ama keyword arguments, '
                                     'not positional-only'):
             inspect.Parameter('.0', kind=inspect.Parameter.POSITIONAL_ONLY)
@@ -3495,11 +3495,11 @@ kundi TestSignatureBind(unittest.TestCase):
 
     eleza test_signature_bind_arguments(self):
         eleza test(a, *args, b, z=100, **kwargs):
-            pass
+            pita
         sig = inspect.signature(test)
         ba = sig.bind(10, 20, b=30, c=40, args=50, kwargs=60)
-        # we won't have 'z' argument kwenye the bound arguments object, as we didn't
-        # pass it to the 'bind'
+        # we won't have 'z' argument kwenye the bound arguments object, kama we didn't
+        # pita it to the 'bind'
         self.assertEqual(tuple(ba.arguments.items()),
                          (('a', 10), ('args', (20,)), ('b', 30),
                           ('kwargs', {'c': 40, 'args': 50, 'kwargs': 60})))
@@ -3529,7 +3529,7 @@ kundi TestSignatureBind(unittest.TestCase):
         self.assertEqual(self.call(test, 1, 2, foo=4, bar=5),
                          (1, 2, 3, 4, 5, {}))
 
-        ukijumuisha self.assertRaisesRegex(TypeError, "but was passed as a keyword"):
+        ukijumuisha self.assertRaisesRegex(TypeError, "but was pitaed kama a keyword"):
             self.call(test, 1, 2, foo=4, bar=5, c_po=10)
 
         ukijumuisha self.assertRaisesRegex(TypeError, "parameter ni positional only"):
@@ -3541,7 +3541,7 @@ kundi TestSignatureBind(unittest.TestCase):
     eleza test_signature_bind_with_self_arg(self):
         # Issue #17071: one of the parameters ni named "self
         eleza test(a, self, b):
-            pass
+            pita
         sig = inspect.signature(test)
         ba = sig.bind(1, 2, 3)
         self.assertEqual(ba.args, (1, 2, 3))
@@ -3580,14 +3580,14 @@ kundi TestSignatureBind(unittest.TestCase):
 
 kundi TestBoundArguments(unittest.TestCase):
     eleza test_signature_bound_arguments_unhashable(self):
-        eleza foo(a): pass
+        eleza foo(a): pita
         ba = inspect.signature(foo).bind(1)
 
         ukijumuisha self.assertRaisesRegex(TypeError, 'unhashable type'):
             hash(ba)
 
     eleza test_signature_bound_arguments_equality(self):
-        eleza foo(a): pass
+        eleza foo(a): pita
         ba = inspect.signature(foo).bind(1)
         self.assertKweli(ba == ba)
         self.assertUongo(ba != ba)
@@ -3605,12 +3605,12 @@ kundi TestBoundArguments(unittest.TestCase):
         self.assertKweli(ba == ba3)
         self.assertUongo(ba != ba3)
 
-        eleza bar(b): pass
+        eleza bar(b): pita
         ba4 = inspect.signature(bar).bind(1)
         self.assertUongo(ba == ba4)
         self.assertKweli(ba != ba4)
 
-        eleza foo(*, a, b): pass
+        eleza foo(*, a, b): pita
         sig = inspect.signature(foo)
         ba1 = sig.bind(a=1, b=2)
         ba2 = sig.bind(b=2, a=1)
@@ -3618,7 +3618,7 @@ kundi TestBoundArguments(unittest.TestCase):
         self.assertUongo(ba1 != ba2)
 
     eleza test_signature_bound_arguments_pickle(self):
-        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pita
         sig = inspect.signature(foo)
         ba = sig.bind(20, 30, z={})
 
@@ -3628,13 +3628,13 @@ kundi TestBoundArguments(unittest.TestCase):
                 self.assertEqual(ba, ba_pickled)
 
     eleza test_signature_bound_arguments_repr(self):
-        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pass
+        eleza foo(a, b, *, c:1={}, **kw) -> {42:'ham'}: pita
         sig = inspect.signature(foo)
         ba = sig.bind(20, 30, z={})
         self.assertRegex(repr(ba), r'<BoundArguments \(a=20,.*\}\}\)>')
 
     eleza test_signature_bound_arguments_apply_defaults(self):
-        eleza foo(a, b=1, *args, c:1={}, **kw): pass
+        eleza foo(a, b=1, *args, c:1={}, **kw): pita
         sig = inspect.signature(foo)
 
         ba = sig.bind(20)
@@ -3653,7 +3653,7 @@ kundi TestBoundArguments(unittest.TestCase):
 
         # Make sure that BoundArguments produced by bind_partial()
         # are supported.
-        eleza foo(a, b): pass
+        eleza foo(a, b): pita
         sig = inspect.signature(foo)
         ba = sig.bind_partial(20)
         ba.apply_defaults()
@@ -3662,14 +3662,14 @@ kundi TestBoundArguments(unittest.TestCase):
             [('a', 20)])
 
         # Test no args
-        eleza foo(): pass
+        eleza foo(): pita
         sig = inspect.signature(foo)
         ba = sig.bind()
         ba.apply_defaults()
         self.assertEqual(list(ba.arguments.items()), [])
 
         # Make sure a no-args binding still acquires proper defaults.
-        eleza foo(a='spam'): pass
+        eleza foo(a='spam'): pita
         sig = inspect.signature(foo)
         ba = sig.bind()
         ba.apply_defaults()
@@ -3779,7 +3779,7 @@ kundi TestSignatureDefinitions(unittest.TestCase):
             ikiwa sio callable(obj):
                 endelea
             # The builtin types haven't been converted to AC yet
-            ikiwa isinstance(obj, type) na (name sio kwenye types_with_signatures):
+            ikiwa isinstance(obj, type) na (name haiko kwenye types_with_signatures):
                 # Note that this also skips all the exception types
                 no_signature.add(name)
             ikiwa (name kwenye no_signature):
@@ -3788,7 +3788,7 @@ kundi TestSignatureDefinitions(unittest.TestCase):
             ukijumuisha self.subTest(builtin=name):
                 self.assertIsNotTupu(inspect.signature(obj))
         # Check callables that haven't been converted don't claim a signature
-        # This ensures this test will start failing as more signatures are
+        # This ensures this test will start failing kama more signatures are
         # added, so the affected items can be moved into the scope of the
         # regression test above
         kila name kwenye no_signature:
@@ -3797,7 +3797,7 @@ kundi TestSignatureDefinitions(unittest.TestCase):
 
     eleza test_python_function_override_signature(self):
         eleza func(*args, **kwargs):
-            pass
+            pita
         func.__text_signature__ = '($self, a, b=1, *args, c, d=2, **kwargs)'
         sig = inspect.signature(func)
         self.assertIsNotTupu(sig)
@@ -3815,7 +3815,7 @@ kundi NTimesUnwrappable:
     @property
     eleza __wrapped__(self):
         ikiwa self.n <= 0:
-             ashiria Exception("Unwrapped too many times")
+            ashiria Exception("Unwrapped too many times")
         ikiwa self._next ni Tupu:
             self._next = NTimesUnwrappable(self.n - 1)
         rudisha self._next
@@ -3835,7 +3835,7 @@ kundi TestUnwrap(unittest.TestCase):
         kila __ kwenye range(10):
             @functools.wraps(wrapper)
             eleza wrapper():
-                pass
+                pita
         self.assertIsNot(wrapper.__wrapped__, func)
         self.assertIs(inspect.unwrap(wrapper), func)
 
@@ -3844,22 +3844,22 @@ kundi TestUnwrap(unittest.TestCase):
             rudisha a + b
         @functools.wraps(func1)
         eleza func2():
-            pass
+            pita
         @functools.wraps(func2)
         eleza wrapper():
-            pass
+            pita
         func2.stop_here = 1
         unwrapped = inspect.unwrap(wrapper,
                                    stop=(lambda f: hasattr(f, "stop_here")))
         self.assertIs(unwrapped, func2)
 
     eleza test_cycle(self):
-        eleza func1(): pass
+        eleza func1(): pita
         func1.__wrapped__ = func1
         ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
             inspect.unwrap(func1)
 
-        eleza func2(): pass
+        eleza func2(): pita
         func2.__wrapped__ = func1
         func1.__wrapped__ = func2
         ukijumuisha self.assertRaisesRegex(ValueError, 'wrapper loop'):
@@ -3868,7 +3868,7 @@ kundi TestUnwrap(unittest.TestCase):
             inspect.unwrap(func2)
 
     eleza test_unhashable(self):
-        eleza func(): pass
+        eleza func(): pita
         func.__wrapped__ = Tupu
         kundi C:
             __hash__ = Tupu
@@ -3892,7 +3892,7 @@ kundi TestMain(unittest.TestCase):
 
     eleza test_custom_getattr(self):
         eleza foo():
-            pass
+            pita
         foo.__signature__ = 42
         ukijumuisha self.assertRaises(TypeError):
             inspect.signature(foo)
@@ -3942,7 +3942,7 @@ eleza foo():
 
     eleza assertInspectEqual(self, path, source):
         inspected_src = inspect.getsource(source)
-        ukijumuisha open(path) as src:
+        ukijumuisha open(path) kama src:
             self.assertEqual(
                 src.read().splitlines(Kweli),
                 inspected_src.splitlines(Kweli)
@@ -3950,10 +3950,10 @@ eleza foo():
 
     eleza test_getsource_reload(self):
         # see issue 1218234
-        ukijumuisha _ready_to_import('reload_bug', self.src_before) as (name, path):
+        ukijumuisha _ready_to_import('reload_bug', self.src_before) kama (name, path):
             module = importlib.import_module(name)
             self.assertInspectEqual(path, module)
-            ukijumuisha open(path, 'w') as src:
+            ukijumuisha open(path, 'w') kama src:
                 src.write(self.src_after)
             self.assertInspectEqual(path, module)
 

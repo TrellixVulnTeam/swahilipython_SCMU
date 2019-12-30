@@ -46,7 +46,7 @@ kundi AutoCompleteWindow:
         # The index of the start of the completion
         self.startindex = Tupu
         # The last typed start, used so that when the selection changes,
-        # the new start will be as close as possible to the last typed one.
+        # the new start will be kama close kama possible to the last typed one.
         self.lasttypedstart = Tupu
         # Do we have an indication that the user wants the completion window
         # (kila example, he clicked the list)
@@ -172,7 +172,7 @@ kundi AutoCompleteWindow:
             self._change_start(completed)
             i = self._binary_search(completed)
             ikiwa self.completions[i] == completed na \
-               (i == len(self.completions)-1 or
+               (i == len(self.completions)-1 ama
                 self.completions[i+1][:len(completed)] != completed):
                 # There ni exactly one matching completion
                 rudisha completed == start
@@ -191,8 +191,8 @@ kundi AutoCompleteWindow:
             # the focus.
             acw.tk.call("::tk::unsupported::MacWindowStyle", "style", acw._w,
                         "help", "noActivates")
-        except TclError:
-            pass
+        tatizo TclError:
+            pita
         self.scrollbar = scrollbar = Scrollbar(acw, orient=VERTICAL)
         self.listbox = listbox = Listbox(acw, yscrollcommand=scrollbar.set,
                                          exportselection=Uongo)
@@ -274,13 +274,13 @@ kundi AutoCompleteWindow:
         jaribu:
             ikiwa sio self.autocompletewindow.focus_get():
                 self.hide_window()
-        except KeyError:
+        tatizo KeyError:
             # See issue 734176, when user click on menu, acw.focus_get()
             # will get KeyError.
             self.hide_window()
 
     eleza hide_event(self, event):
-        # Hide autocomplete list ikiwa it exists na does sio have focus or
+        # Hide autocomplete list ikiwa it exists na does sio have focus ama
         # mouse click on widget / text area.
         ikiwa self.is_active():
             ikiwa event.type == EventType.FocusOut:
@@ -288,7 +288,7 @@ kundi AutoCompleteWindow:
                 # acw.focus_get() when click on acw, otherwise it will return
                 # Tupu na close the window
                 self.widget.after(1, self._hide_event_check)
-            elikiwa event.type == EventType.ButtonPress:
+            lasivyo event.type == EventType.ButtonPress:
                 # ButtonPress event only bind to self.widget
                 self.hide_window()
 
@@ -321,11 +321,11 @@ kundi AutoCompleteWindow:
             # Normal editing of text
             ikiwa len(keysym) == 1:
                 self._change_start(self.start + keysym)
-            elikiwa keysym == "underscore":
+            lasivyo keysym == "underscore":
                 self._change_start(self.start + '_')
-            elikiwa keysym == "period":
+            lasivyo keysym == "period":
                 self._change_start(self.start + '.')
-            elikiwa keysym == "minus":
+            lasivyo keysym == "minus":
                 self._change_start(self.start + '-')
             isipokua:
                 # keysym == "BackSpace"
@@ -339,12 +339,12 @@ kundi AutoCompleteWindow:
             self._selection_changed()
             rudisha "koma"
 
-        elikiwa keysym == "Return":
+        lasivyo keysym == "Return":
             self.complete()
             self.hide_window()
             rudisha 'koma'
 
-        elikiwa (self.mode == ATTRS na keysym in
+        lasivyo (self.mode == ATTRS na keysym in
               ("period", "space", "parenleft", "parenright", "bracketleft",
                "bracketright")) ama \
              (self.mode == FILES na keysym in
@@ -360,16 +360,16 @@ kundi AutoCompleteWindow:
             self.hide_window()
             rudisha Tupu
 
-        elikiwa keysym kwenye ("Home", "End", "Prior", "Next", "Up", "Down") na \
+        lasivyo keysym kwenye ("Home", "End", "Prior", "Next", "Up", "Down") na \
              sio state:
             # Move the selection kwenye the listbox
             self.userwantswindow = Kweli
             cursel = int(self.listbox.curselection()[0])
             ikiwa keysym == "Home":
                 newsel = 0
-            elikiwa keysym == "End":
+            lasivyo keysym == "End":
                 newsel = len(self.completions)-1
-            elikiwa keysym kwenye ("Prior", "Next"):
+            lasivyo keysym kwenye ("Prior", "Next"):
                 jump = self.listbox.nearest(self.listbox.winfo_height()) - \
                        self.listbox.nearest(0)
                 ikiwa keysym == "Prior":
@@ -377,7 +377,7 @@ kundi AutoCompleteWindow:
                 isipokua:
                     assert keysym == "Next"
                     newsel = min(len(self.completions)-1, cursel+jump)
-            elikiwa keysym == "Up":
+            lasivyo keysym == "Up":
                 newsel = max(0, cursel-1)
             isipokua:
                 assert keysym == "Down"
@@ -388,7 +388,7 @@ kundi AutoCompleteWindow:
             self._change_start(self.completions[newsel])
             rudisha "koma"
 
-        elikiwa (keysym == "Tab" na sio state):
+        lasivyo (keysym == "Tab" na sio state):
             ikiwa self.lastkey_was_tab:
                 # two tabs kwenye a row; insert current selection na close acw
                 cursel = int(self.listbox.curselection()[0])
@@ -401,12 +401,12 @@ kundi AutoCompleteWindow:
                 self.lastkey_was_tab = Kweli
                 rudisha Tupu
 
-        elikiwa any(s kwenye keysym kila s kwenye ("Shift", "Control", "Alt",
+        lasivyo any(s kwenye keysym kila s kwenye ("Shift", "Control", "Alt",
                                        "Meta", "Command", "Option")):
             # A modifier key, so ignore
             rudisha Tupu
 
-        elikiwa event.char na event.char >= ' ':
+        lasivyo event.char na event.char >= ' ':
             # Regular character ukijumuisha a non-length-1 keycode
             self._change_start(self.start + event.char)
             self.lasttypedstart = self.start

@@ -49,15 +49,15 @@ eleza _load_tile(master):
 eleza _format_optvalue(value, script=Uongo):
     """Internal function."""
     ikiwa script:
-        # ikiwa caller passes a Tcl script to tk.call, all the values need to
+        # ikiwa caller pitaes a Tcl script to tk.call, all the values need to
         # be grouped into words (arguments to a command kwenye Tcl dialect)
         value = _stringify(value)
-    elikiwa isinstance(value, (list, tuple)):
+    lasivyo isinstance(value, (list, tuple)):
         value = _join(value)
     rudisha value
 
 eleza _format_optdict(optdict, script=Uongo, ignore=Tupu):
-    """Formats optdict to a tuple to pass it to tk.call.
+    """Formats optdict to a tuple to pita it to tk.call.
 
     E.g. (script=Uongo):
       {'foreground': 'blue', 'padding': [1, 2, 3, 4]} returns:
@@ -65,7 +65,7 @@ eleza _format_optdict(optdict, script=Uongo, ignore=Tupu):
 
     opts = []
     kila opt, value kwenye optdict.items():
-        ikiwa sio ignore ama opt sio kwenye ignore:
+        ikiwa sio ignore ama opt haiko kwenye ignore:
             opts.append("-%s" % opt)
             ikiwa value ni sio Tupu:
                 opts.append(_format_optvalue(value, script))
@@ -82,21 +82,21 @@ eleza _mapdict_values(items):
     opt_val = []
     kila *state, val kwenye items:
         # hacks kila backward compatibility
-        state[0] #  ashiria IndexError ikiwa empty
+        state[0] # ashiria IndexError ikiwa empty
         ikiwa len(state) == 1:
             # ikiwa it ni empty (something that evaluates to Uongo), then
             # format it to Tcl code to denote the "normal" state
             state = state[0] ama ''
         isipokua:
             # group multiple states
-            state = ' '.join(state) #  ashiria TypeError ikiwa sio str
+            state = ' '.join(state) # ashiria TypeError ikiwa sio str
         opt_val.append(state)
         ikiwa val ni sio Tupu:
             opt_val.append(val)
     rudisha opt_val
 
 eleza _format_mapdict(mapdict, script=Uongo):
-    """Formats mapdict to pass it to tk.call.
+    """Formats mapdict to pita it to tk.call.
 
     E.g. (script=Uongo):
       {'expand': [('active', 'selected', 'grey'), ('focus', [1, 2, 3, 4])]}
@@ -136,7 +136,7 @@ eleza _format_elemcreate(etype, script=Uongo, *args, **kw):
 
         opts = _format_optdict(kw, script)
 
-    elikiwa etype == "from": # clone an element
+    lasivyo etype == "from": # clone an element
         # it expects a themename na optionally an element to clone from,
         # otherwise it will clone {} (empty element)
         spec = args[0] # theme name
@@ -150,7 +150,7 @@ eleza _format_elemcreate(etype, script=Uongo, *args, **kw):
     rudisha spec, opts
 
 eleza _format_layoutlist(layout, indent=0, indent_size=2):
-    """Formats a layout list so we can pass the result to ttk::style
+    """Formats a layout list so we can pita the result to ttk::style
     layout na ttk::style settings. Note that the layout doesn't have to
     be a list necessarily.
 
@@ -200,10 +200,10 @@ eleza _format_layoutlist(layout, indent=0, indent_size=2):
 
 eleza _script_from_settings(settings):
     """Returns an appropriate script, based on settings, according to
-    theme_settings definition to be used by theme_settings and
+    theme_settings definition to be used by theme_settings na
     theme_create."""
     script = []
-    # a script will be generated according to settings passed, which
+    # a script will be generated according to settings pitaed, which
     # will then be evaluated by Tcl
     kila name, opts kwenye settings.items():
         # will format specific keys according to Tcl code
@@ -291,7 +291,7 @@ eleza _val_or_dict(tk, options, *args):
 
     If no option ni specified, a dict ni returned. If an option is
     specified ukijumuisha the Tupu value, the value kila that option ni returned.
-    Otherwise, the function just sets the passed options na the caller
+    Otherwise, the function just sets the pitaed options na the caller
     shouldn't be expecting a rudisha value anyway."""
     options = _format_optdict(options)
     res = tk.call(*(args + options))
@@ -306,8 +306,8 @@ eleza _convert_stringval(value):
     value = str(value)
     jaribu:
         value = int(value)
-    except (ValueError, TypeError):
-        pass
+    tatizo (ValueError, TypeError):
+        pita
 
     rudisha value
 
@@ -327,7 +327,7 @@ eleza _tclobj_to_py(val):
         isipokua:
             val = list(map(_convert_stringval, val))
 
-    elikiwa hasattr(val, 'typename'): # some other (single) Tcl object
+    lasivyo hasattr(val, 'typename'): # some other (single) Tcl object
         val = _convert_stringval(val)
 
     rudisha val
@@ -351,7 +351,7 @@ eleza setup_master(master=Tupu):
         ikiwa tkinter._support_default_root:
             master = tkinter._default_root ama tkinter.Tk()
         isipokua:
-             ashiria RuntimeError(
+            ashiria RuntimeError(
                     "No master specified na tkinter ni "
                     "configured to sio support default root")
     rudisha master
@@ -377,7 +377,7 @@ kundi Style(object):
         """Query ama sets the default value of the specified option(s) in
         style.
 
-        Each key kwenye kw ni an option na each value ni either a string or
+        Each key kwenye kw ni an option na each value ni either a string ama
         a sequence identifying the value kila that option."""
         ikiwa query_opt ni sio Tupu:
             kw[query_opt] = Tupu
@@ -428,7 +428,7 @@ kundi Style(object):
 
         LAYOUTS
 
-            A layout can contain the value Tupu, ikiwa takes no options, or
+            A layout can contain the value Tupu, ikiwa takes no options, ama
             a dict of options specifying how to arrange the element.
             The layout mechanism uses a simplified version of the pack
             geometry manager: given an initial cavity, each element is
@@ -451,7 +451,7 @@ kundi Style(object):
         lspec = Tupu
         ikiwa layoutspec:
             lspec = _format_layoutlist(layoutspec)[0]
-        elikiwa layoutspec ni sio Tupu: # will disable the layout ({}, '', etc)
+        lasivyo layoutspec ni sio Tupu: # will disable the layout ({}, '', etc)
             lspec = "null" # could be any other word, but this may make sense
                            # when calling layout(style) later
 
@@ -482,7 +482,7 @@ kundi Style(object):
         """Creates a new theme.
 
         It ni an error ikiwa themename already exists. If parent is
-        specified, the new theme will inherit styles, elements and
+        specified, the new theme will inherit styles, elements na
         layouts kutoka the specified parent theme. If settings are present,
         they are expected to have the same syntax used kila theme_settings."""
         script = _script_from_settings(settings) ikiwa settings isipokua ''
@@ -501,7 +501,7 @@ kundi Style(object):
 
         Each key kwenye settings ni a style na each value may contain the
         keys 'configure', 'map', 'layout' na 'element create' na they
-        are expected to have the same format as specified by the methods
+        are expected to have the same format kama specified by the methods
         configure, map, layout na element_create respectively."""
         script = _script_from_settings(settings)
         self.tk.call(self._name, "theme", "settings", themename, script)
@@ -594,7 +594,7 @@ kundi Widget(tkinter.Widget):
 
 
 kundi Button(Widget):
-    """Ttk Button widget, displays a textual label and/or image, and
+    """Ttk Button widget, displays a textual label and/or image, na
     evaluates a command when pressed."""
 
     eleza __init__(self, master=Tupu, **kw):
@@ -636,7 +636,7 @@ kundi Checkbutton(Widget):
 
 
     eleza invoke(self):
-        """Toggles between the selected na deselected states and
+        """Toggles between the selected na deselected states na
         invokes the associated command. If the widget ni currently
         selected, sets the option variable to the offvalue option
         na deselects the widget; otherwise, sets the option variable
@@ -781,7 +781,7 @@ LabelFrame = Labelframe # tkinter name compatibility
 
 
 kundi Menubutton(Widget):
-    """Ttk Menubutton widget displays a textual label and/or image, and
+    """Ttk Menubutton widget displays a textual label and/or image, na
     displays a menu when pressed."""
 
     eleza __init__(self, master=Tupu, **kw):
@@ -866,7 +866,7 @@ kundi Notebook(Widget):
 
 
     eleza index(self, tab_id):
-        """Returns the numeric index of the tab specified by tab_id, or
+        """Returns the numeric index of the tab specified by tab_id, ama
         the total number of tabs ikiwa tab_id ni the string "end"."""
         rudisha self.tk.getint(self.tk.call(self._w, "index", tab_id))
 
@@ -911,7 +911,7 @@ kundi Notebook(Widget):
         this notebook.
 
         This will extend the bindings kila the toplevel window containing
-        this notebook as follows:
+        this notebook kama follows:
 
             Control-Tab: selects the tab following the currently selected
                          one
@@ -994,7 +994,7 @@ PanedWindow = Panedwindow # tkinter name compatibility
 kundi Progressbar(Widget):
     """Ttk Progressbar widget shows the status of a long-running
     operation. They can operate kwenye two modes: determinate mode shows the
-    amount completed relative to the total amount of work to be done, and
+    amount completed relative to the total amount of work to be done, na
     indeterminate mode provides an animated display to let the user know
     that something ni happening."""
 
@@ -1357,7 +1357,7 @@ kundi Treeview(Widget, tkinter.XView, tkinter.YView):
         the new item. If index ni less than ama equal to zero, the new node
         ni inserted at the beginning, ikiwa index ni greater than ama equal to
         the current number of children, it ni inserted at the end. If iid
-        ni specified, it ni used as the item identifier, iid must not
+        ni specified, it ni used kama the item identifier, iid must not
         already exist kwenye the tree. Otherwise, a new unique identifier
         ni generated."""
         opts = _format_optdict(kw)
@@ -1376,7 +1376,7 @@ kundi Treeview(Widget, tkinter.XView, tkinter.YView):
         If no options are given, a dict ukijumuisha options/values kila the item
         ni returned. If option ni specified then the value kila that option
         ni returned. Otherwise, sets the options to the corresponding
-        values as given by kw."""
+        values kama given by kw."""
         ikiwa option ni sio Tupu:
             kw[option] = Tupu
         rudisha _val_or_dict(self.tk, kw, self._w, "item", item)
@@ -1540,7 +1540,7 @@ kundi LabeledScale(Frame):
         tmp = Label(self).pack(side=label_side) # place holder
         self.label.place(anchor='n' ikiwa label_side == 'top' isipokua 's')
 
-        # update the label as scale ama variable changes
+        # update the label kama scale ama variable changes
         self.__tracecb = self._variable.trace_variable('w', self._adjust)
         self.bind('<Configure>', self._adjust)
         self.bind('<Map>', self._adjust)
@@ -1550,8 +1550,8 @@ kundi LabeledScale(Frame):
         """Destroy this widget na possibly its associated variable."""
         jaribu:
             self._variable.trace_vdelete('w', self.__tracecb)
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         isipokua:
             toa self._variable
         super().destroy()
@@ -1602,7 +1602,7 @@ kundi OptionMenu(Menubutton):
     the user to select a value kutoka a menu."""
 
     eleza __init__(self, master, variable, default=Tupu, *values, **kwargs):
-        """Construct a themed OptionMenu widget ukijumuisha master as the parent,
+        """Construct a themed OptionMenu widget ukijumuisha master kama the parent,
         the resource textvariable set to variable, the initially selected
         value specified by the default parameter, the menu values given by
         *values na additional keywords.
@@ -1624,7 +1624,7 @@ kundi OptionMenu(Menubutton):
         self._variable = variable
         self._callback = kwargs.pop('command', Tupu)
         ikiwa kwargs:
-             ashiria tkinter.TclError('unknown option -%s' % (
+            ashiria tkinter.TclError('unknown option -%s' % (
                 next(iter(kwargs.keys()))))
 
         self.set_menu(default, *values)
@@ -1655,6 +1655,6 @@ kundi OptionMenu(Menubutton):
         """Destroy this widget na its associated variable."""
         jaribu:
             toa self._variable
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
         super().destroy()

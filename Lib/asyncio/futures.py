@@ -33,8 +33,8 @@ kundi Future:
 
     - This kundi ni sio thread-safe.
 
-    - result() na exception() do sio take a timeout argument and
-       ashiria an exception when the future isn't done yet.
+    - result() na exception() do sio take a timeout argument na
+      ashiria an exception when the future isn't done yet.
 
     - Callbacks registered ukijumuisha add_done_callback() are always called
       via the event loop's call_soon().
@@ -45,7 +45,7 @@ kundi Future:
     (In Python 3.4 ama later we may be able to unify the implementations.)
     """
 
-    # Class variables serving as defaults kila instance variables.
+    # Class variables serving kama defaults kila instance variables.
     _state = _PENDING
     _result = Tupu
     _exception = Tupu
@@ -110,7 +110,7 @@ kundi Future:
     @_log_traceback.setter
     eleza _log_traceback(self, val):
         ikiwa bool(val):
-             ashiria ValueError('_log_traceback can only be set to Uongo')
+            ashiria ValueError('_log_traceback can only be set to Uongo')
         self.__log_traceback = Uongo
 
     eleza get_loop(self):
@@ -121,7 +121,7 @@ kundi Future:
         """Cancel the future na schedule callbacks.
 
         If the future ni already done ama cancelled, rudisha Uongo.  Otherwise,
-        change the future's state to cancelled, schedule the callbacks and
+        change the future's state to cancelled, schedule the callbacks na
         rudisha Kweli.
         """
         self.__log_traceback = Uongo
@@ -134,7 +134,7 @@ kundi Future:
     eleza __schedule_callbacks(self):
         """Internal: Ask the event loop to call all callbacks.
 
-        The callbacks are scheduled to be called as soon as possible. Also
+        The callbacks are scheduled to be called kama soon kama possible. Also
         clears the callback list.
         """
         callbacks = self._callbacks[:]
@@ -167,12 +167,12 @@ kundi Future:
         the future ni done na has an exception set, this exception ni raised.
         """
         ikiwa self._state == _CANCELLED:
-             ashiria exceptions.CancelledError
+            ashiria exceptions.CancelledError
         ikiwa self._state != _FINISHED:
-             ashiria exceptions.InvalidStateError('Result ni sio ready.')
+            ashiria exceptions.InvalidStateError('Result ni sio ready.')
         self.__log_traceback = Uongo
         ikiwa self._exception ni sio Tupu:
-             ashiria self._exception
+            ashiria self._exception
         rudisha self._result
 
     eleza exception(self):
@@ -184,9 +184,9 @@ kundi Future:
         InvalidStateError.
         """
         ikiwa self._state == _CANCELLED:
-             ashiria exceptions.CancelledError
+            ashiria exceptions.CancelledError
         ikiwa self._state != _FINISHED:
-             ashiria exceptions.InvalidStateError('Exception ni sio set.')
+            ashiria exceptions.InvalidStateError('Exception ni sio set.')
         self.__log_traceback = Uongo
         rudisha self._exception
 
@@ -204,7 +204,7 @@ kundi Future:
                 context = contextvars.copy_context()
             self._callbacks.append((fn, context))
 
-    # New method sio kwenye PEP 3148.
+    # New method haiko kwenye PEP 3148.
 
     eleza remove_done_callback(self, fn):
         """Remove all instances of a callback kutoka the "call when done" list.
@@ -228,7 +228,7 @@ kundi Future:
         InvalidStateError.
         """
         ikiwa self._state != _PENDING:
-             ashiria exceptions.InvalidStateError(f'{self._state}: {self!r}')
+            ashiria exceptions.InvalidStateError(f'{self._state}: {self!r}')
         self._result = result
         self._state = _FINISHED
         self.__schedule_callbacks()
@@ -240,11 +240,11 @@ kundi Future:
         InvalidStateError.
         """
         ikiwa self._state != _PENDING:
-             ashiria exceptions.InvalidStateError(f'{self._state}: {self!r}')
+            ashiria exceptions.InvalidStateError(f'{self._state}: {self!r}')
         ikiwa isinstance(exception, type):
             exception = exception()
         ikiwa type(exception) ni StopIteration:
-             ashiria TypeError("StopIteration interacts badly ukijumuisha generators "
+            ashiria TypeError("StopIteration interacts badly ukijumuisha generators "
                             "and cannot be raised into a Future")
         self._exception = exception
         self._state = _FINISHED
@@ -256,8 +256,8 @@ kundi Future:
             self._asyncio_future_blocking = Kweli
             tuma self  # This tells Task to wait kila completion.
         ikiwa sio self.done():
-             ashiria RuntimeError("await wasn't used ukijumuisha future")
-        rudisha self.result()  # May  ashiria too.
+            ashiria RuntimeError("await wasn't used ukijumuisha future")
+        rudisha self.result()  # May ashiria too.
 
     __iter__ = __await__  # make compatible ukijumuisha 'tuma from'.
 
@@ -271,8 +271,8 @@ eleza _get_loop(fut):
     # Otherwise fallbacks to using the old '_loop' property.
     jaribu:
         get_loop = fut.get_loop
-    except AttributeError:
-        pass
+    tatizo AttributeError:
+        pita
     isipokua:
         rudisha get_loop()
     rudisha fut._loop
@@ -289,9 +289,9 @@ eleza _convert_future_exc(exc):
     exc_kundi = type(exc)
     ikiwa exc_kundi ni concurrent.futures.CancelledError:
         rudisha exceptions.CancelledError(*exc.args)
-    elikiwa exc_kundi ni concurrent.futures.TimeoutError:
+    lasivyo exc_kundi ni concurrent.futures.TimeoutError:
         rudisha exceptions.TimeoutError(*exc.args)
-    elikiwa exc_kundi ni concurrent.futures.InvalidStateError:
+    lasivyo exc_kundi ni concurrent.futures.InvalidStateError:
         rudisha exceptions.InvalidStateError(*exc.args)
     isipokua:
         rudisha exc
@@ -341,10 +341,10 @@ eleza _chain_future(source, destination):
     """
     ikiwa sio isfuture(source) na sio isinstance(source,
                                                concurrent.futures.Future):
-         ashiria TypeError('A future ni required kila source argument')
+        ashiria TypeError('A future ni required kila source argument')
     ikiwa sio isfuture(destination) na sio isinstance(destination,
                                                     concurrent.futures.Future):
-         ashiria TypeError('A future ni required kila destination argument')
+        ashiria TypeError('A future ni required kila destination argument')
     source_loop = _get_loop(source) ikiwa isfuture(source) isipokua Tupu
     dest_loop = _get_loop(destination) ikiwa isfuture(destination) isipokua Tupu
 
@@ -362,7 +362,7 @@ eleza _chain_future(source, destination):
                 source_loop.call_soon_threadsafe(source.cancel)
 
     eleza _call_set_state(source):
-        ikiwa (destination.cancelled() and
+        ikiwa (destination.cancelled() na
                 dest_loop ni sio Tupu na dest_loop.is_closed()):
             return
         ikiwa dest_loop ni Tupu ama dest_loop ni source_loop:
@@ -389,8 +389,8 @@ eleza wrap_future(future, *, loop=Tupu):
 
 jaribu:
     agiza _asyncio
-except ImportError:
-    pass
+tatizo ImportError:
+    pita
 isipokua:
     # _CFuture ni needed kila tests.
     Future = _CFuture = _asyncio.Future

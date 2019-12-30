@@ -29,13 +29,13 @@ kundi Using__package__:
           isipokua:
               rudisha caller_name.rsplit('.', 1)[0]
 
-    Then the normal algorithm kila relative name imports can proceed as if
+    Then the normal algorithm kila relative name imports can proceed kama if
     __package__ had been set.
 
     """
 
     eleza import_module(self, globals_):
-        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.fake') as importer:
+        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.fake') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 self.__import__('pkg.fake')
                 module = self.__import__('',
@@ -116,7 +116,7 @@ kundi Using__package__PEP451(Using__package__):
 kundi Setting__package__:
 
     """Because __package__ ni a new feature, it ni sio always set by a loader.
-    Import will set it as needed to help ukijumuisha the transition to relying on
+    Import will set it kama needed to help ukijumuisha the transition to relying on
     __package__.
 
     For a top-level module, __package__ ni set to Tupu [top-level]. For a
@@ -129,7 +129,7 @@ kundi Setting__package__:
 
     # [top-level]
     eleza test_top_level(self):
-        ukijumuisha self.mock_modules('top_level') as mock:
+        ukijumuisha self.mock_modules('top_level') kama mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['top_level'].__package__
                 module = self.__import__('top_level')
@@ -137,7 +137,7 @@ kundi Setting__package__:
 
     # [package]
     eleza test_package(self):
-        ukijumuisha self.mock_modules('pkg.__init__') as mock:
+        ukijumuisha self.mock_modules('pkg.__init__') kama mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['pkg'].__package__
                 module = self.__import__('pkg')
@@ -145,7 +145,7 @@ kundi Setting__package__:
 
     # [submodule]
     eleza test_submodule(self):
-        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.mod') as mock:
+        ukijumuisha self.mock_modules('pkg.__init__', 'pkg.mod') kama mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 toa mock['pkg.mod'].__package__
                 pkg = self.__import__('pkg.mod')

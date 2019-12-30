@@ -1,7 +1,7 @@
 agiza asyncio
 agiza unittest
 
-kutoka test.test_asyncio agiza functional as func_tests
+kutoka test.test_asyncio agiza functional kama func_tests
 
 
 eleza tearDownModule():
@@ -30,7 +30,7 @@ kundi ReceiveStuffProto(asyncio.BufferedProtocol):
 kundi BaseTestBufferedProtocol(func_tests.FunctionalTestCaseMixin):
 
     eleza new_loop(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza test_buffered_proto_create_connection(self):
 

@@ -1,5 +1,5 @@
 #-*- coding: iso-8859-1 -*-
-# pysqlite2/test/userfunctions.py: tests kila user-defined functions and
+# pysqlite2/test/userfunctions.py: tests kila user-defined functions na
 #                                  aggregates.
 #
 # Copyright (C) 2005-2007 Gerhard Häring <gh@ghaering.de>
@@ -18,13 +18,13 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza unittest
 agiza unittest.mock
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 eleza func_returntext():
     rudisha "foo"
@@ -61,31 +61,31 @@ eleza func(*args):
 
 kundi AggrNoStep:
     eleza __init__(self):
-        pass
+        pita
 
     eleza finalize(self):
         rudisha 1
 
 kundi AggrNoFinalize:
     eleza __init__(self):
-        pass
+        pita
 
     eleza step(self, x):
-        pass
+        pita
 
 kundi AggrExceptionInInit:
     eleza __init__(self):
         5/0
 
     eleza step(self, x):
-        pass
+        pita
 
     eleza finalize(self):
-        pass
+        pita
 
 kundi AggrExceptionInStep:
     eleza __init__(self):
-        pass
+        pita
 
     eleza step(self, x):
         5/0
@@ -95,10 +95,10 @@ kundi AggrExceptionInStep:
 
 kundi AggrExceptionInFinalize:
     eleza __init__(self):
-        pass
+        pita
 
     eleza step(self, x):
-        pass
+        pita
 
     eleza finalize(self):
         5/0
@@ -229,7 +229,7 @@ kundi FunctionTests(unittest.TestCase):
 
     eleza CheckFuncException(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select raiseexception()")
             cur.fetchone()
         self.assertEqual(str(cm.exception), 'user-defined function raised exception')
@@ -327,7 +327,7 @@ kundi AggregateTests(unittest.TestCase):
     eleza tearDown(self):
         #self.cur.close()
         #self.con.close()
-        pass
+        pita
 
     eleza CheckAggrErrorOnCreate(self):
         ukijumuisha self.assertRaises(sqlite.OperationalError):
@@ -335,34 +335,34 @@ kundi AggregateTests(unittest.TestCase):
 
     eleza CheckAggrNoStep(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(AttributeError) as cm:
+        ukijumuisha self.assertRaises(AttributeError) kama cm:
             cur.execute("select nostep(t) kutoka test")
         self.assertEqual(str(cm.exception), "'AggrNoStep' object has no attribute 'step'")
 
     eleza CheckAggrNoFinalize(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select nofinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
 
     eleza CheckAggrExceptionInInit(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excInit(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's '__init__' method raised error")
 
     eleza CheckAggrExceptionInStep(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excStep(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'step' method raised error")
 
     eleza CheckAggrExceptionInFinalize(self):
         cur = self.con.cursor()
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             cur.execute("select excFinalize(t) kutoka test")
             val = cur.fetchone()[0]
         self.assertEqual(str(cm.exception), "user-defined aggregate's 'finalize' method raised error")
@@ -435,15 +435,15 @@ kundi AuthorizerTests(unittest.TestCase):
         self.con.set_authorizer(self.authorizer_cb)
 
     eleza tearDown(self):
-        pass
+        pita
 
     eleza test_table_access(self):
-        ukijumuisha self.assertRaises(sqlite.DatabaseError) as cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
             self.con.execute("select * kutoka t2")
         self.assertIn('prohibited', str(cm.exception))
 
     eleza test_column_access(self):
-        ukijumuisha self.assertRaises(sqlite.DatabaseError) as cm:
+        ukijumuisha self.assertRaises(sqlite.DatabaseError) kama cm:
             self.con.execute("select c2 kutoka t1")
         self.assertIn('prohibited', str(cm.exception))
 
@@ -451,9 +451,9 @@ kundi AuthorizerRaiseExceptionTests(AuthorizerTests):
     @staticmethod
     eleza authorizer_cb(action, arg1, arg2, dbname, source):
         ikiwa action != sqlite.SQLITE_SELECT:
-             ashiria ValueError
+            ashiria ValueError
         ikiwa arg2 == 'c2' ama arg1 == 't2':
-             ashiria ValueError
+            ashiria ValueError
         rudisha sqlite.SQLITE_OK
 
 kundi AuthorizerIllegalTypeTests(AuthorizerTests):

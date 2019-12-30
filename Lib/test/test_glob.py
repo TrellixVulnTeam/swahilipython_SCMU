@@ -125,7 +125,7 @@ kundi GlobTests(unittest.TestCase):
                       ])
 
     eleza test_glob_bytes_directory_with_trailing_slash(self):
-        # Same as test_glob_directory_with_trailing_slash, but ukijumuisha a
+        # Same kama test_glob_directory_with_trailing_slash, but ukijumuisha a
         # bytes argument.
         res = glob.glob(os.fsencode(self.norm('Z*Z') + os.sep))
         self.assertEqual(res, [])

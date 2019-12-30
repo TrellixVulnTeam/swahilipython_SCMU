@@ -5,7 +5,7 @@ agiza email
 kutoka email.message agiza Message
 kutoka email._policybase agiza compat32
 kutoka test.support agiza load_package_tests
-kutoka test.test_email agiza __file__ as landmark
+kutoka test.test_email agiza __file__ kama landmark
 
 # Load all tests kwenye package
 eleza load_tests(*args):
@@ -23,7 +23,7 @@ eleza openfile(filename, *args, **kws):
 kundi TestEmailBase(unittest.TestCase):
 
     maxDiff = Tupu
-    # Currently the default policy ni compat32.  By setting that as the default
+    # Currently the default policy ni compat32.  By setting that kama the default
     # here we make minimal changes kwenye the test_email tests compared to their
     # pre-3.3 state.
     policy = compat32
@@ -38,7 +38,7 @@ kundi TestEmailBase(unittest.TestCase):
     ndiffAssertEqual = unittest.TestCase.assertEqual
 
     eleza _msgobj(self, filename):
-        ukijumuisha openfile(filename) as fp:
+        ukijumuisha openfile(filename) kama fp:
             rudisha email.message_from_file(fp, policy=self.policy)
 
     eleza _str_msg(self, string, message=Tupu, policy=Tupu):
@@ -75,7 +75,7 @@ kundi TestEmailBase(unittest.TestCase):
 eleza parameterize(cls):
     """A test method parameterization kundi decorator.
 
-    Parameters are specified as the value of a kundi attribute that ends with
+    Parameters are specified kama the value of a kundi attribute that ends with
     the string '_params'.  Call the portion before '_params' the prefix.  Then
     a method to be parameterized must have the same prefix, the string
     '_as_', na an arbitrary suffix.
@@ -83,16 +83,16 @@ eleza parameterize(cls):
     The value of the _params attribute may be either a dictionary ama a list.
     The values kwenye the dictionary na the elements of the list may either be
     single values, ama a list.  If single values, they are turned into single
-    element tuples.  However derived, the resulting sequence ni passed via
+    element tuples.  However derived, the resulting sequence ni pitaed via
     *args to the parameterized test function.
 
     In a _params dictionary, the keys become part of the name of the generated
     tests.  In a _params list, the values kwenye the list are converted into a
-    string by joining the string values of the elements of the tuple by '_' and
+    string by joining the string values of the elements of the tuple by '_' na
     converting any blanks into '_'s, na this become part of the name.
     The  full name of a generated test ni a 'test_' prefix, the portion of the
     test function name after the  '_as_' separator, plus an '_', plus the name
-    derived as explained above.
+    derived kama explained above.
 
     For example, ikiwa we have:
 
@@ -121,8 +121,8 @@ eleza parameterize(cls):
     be used to select the test individually kutoka the unittest command line.
 
     The values kwenye the params dict can be a single value, a tuple, ama a
-    dict.  If a single value of a tuple, it ni passed to the test function
-    as positional arguments.  If a dict, it ni a passed via **kw.
+    dict.  If a single value of a tuple, it ni pitaed to the test function
+    kama positional arguments.  If a dict, it ni a pitaed via **kw.
 
     """
     paramdicts = {}
@@ -142,11 +142,11 @@ eleza parameterize(cls):
             testers[name.split('_as_')[0] + '_as_'].append(name)
     testfuncs = {}
     kila name kwenye paramdicts:
-        ikiwa name sio kwenye testers:
-             ashiria ValueError("No tester found kila {}".format(name))
+        ikiwa name haiko kwenye testers:
+            ashiria ValueError("No tester found kila {}".format(name))
     kila name kwenye testers:
-        ikiwa name sio kwenye paramdicts:
-             ashiria ValueError("No params found kila {}".format(name))
+        ikiwa name haiko kwenye paramdicts:
+            ashiria ValueError("No params found kila {}".format(name))
     kila name, attr kwenye cls.__dict__.items():
         kila paramsname, paramsdict kwenye paramdicts.items():
             ikiwa name.startswith(paramsname):

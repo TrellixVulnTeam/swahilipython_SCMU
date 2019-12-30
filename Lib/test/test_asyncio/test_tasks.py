@@ -19,7 +19,7 @@ agiza asyncio
 kutoka asyncio agiza coroutines
 kutoka asyncio agiza futures
 kutoka asyncio agiza tasks
-kutoka test.test_asyncio agiza utils as test_utils
+kutoka test.test_asyncio agiza utils kama test_utils
 kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok
 
@@ -29,7 +29,7 @@ eleza tearDownModule():
 
 
 async eleza coroutine_function():
-    pass
+    pita
 
 
 @contextlib.contextmanager
@@ -39,7 +39,7 @@ eleza set_coroutine_debug(enabled):
     old_debug = coroutines._DEBUG
     jaribu:
         coroutines._DEBUG = enabled
-        yield
+        tuma
     mwishowe:
         coroutines._DEBUG = old_debug
 
@@ -63,18 +63,18 @@ kundi Dummy:
         rudisha '<Dummy>'
 
     eleza __call__(self, *args):
-        pass
+        pita
 
 
 kundi CoroLikeObject:
     eleza send(self, v):
-         ashiria StopIteration(42)
+        ashiria StopIteration(42)
 
     eleza throw(self, *exc):
-        pass
+        pita
 
     eleza close(self):
-        pass
+        pita
 
     eleza __await__(self):
         rudisha self
@@ -238,7 +238,7 @@ kundi BaseTaskTests:
         loop = asyncio.new_event_loop()
         f = self.new_future(self.loop)
         ukijumuisha self.assertRaisesRegex(ValueError, 'The future belongs to a '
-                                    'different loop than the one specified as '
+                                    'different loop than the one specified kama '
                                     'the loop argument'):
             asyncio.ensure_future(f, loop=loop)
         loop.close()
@@ -369,7 +369,7 @@ kundi BaseTaskTests:
         # test coroutine object
         gen = notmuch()
         # On Python >= 3.5, generators now inherit the name of the
-        # function, as expected, na have a qualified name (__qualname__
+        # function, kama expected, na have a qualified name (__qualname__
         # attribute).
         coro_name = 'notmuch'
         coro_qualname = ('BaseTaskTests.test_task_repr_coro_decorator'
@@ -469,7 +469,7 @@ kundi BaseTaskTests:
     eleza test_cancel(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             tuma 0
 
@@ -487,12 +487,12 @@ kundi BaseTaskTests:
         self.assertKweli(t.cancelled())
         self.assertUongo(t.cancel())
 
-    eleza test_cancel_yield(self):
+    eleza test_cancel_tuma(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza task():
-                yield
-                yield
+                tuma
+                tuma
                 rudisha 12
 
         t = self.new_task(self.loop, task())
@@ -547,7 +547,7 @@ kundi BaseTaskTests:
             await fut1
             jaribu:
                 await fut2
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 rudisha 42
 
         t = self.new_task(self.loop, task())
@@ -571,8 +571,8 @@ kundi BaseTaskTests:
             await fut1
             jaribu:
                 await fut2
-            except asyncio.CancelledError:
-                pass
+            tatizo asyncio.CancelledError:
+                pita
             res = await fut3
             rudisha res
 
@@ -634,10 +634,10 @@ kundi BaseTaskTests:
     eleza test_cancel_awaited_task(self):
         # This tests kila a relatively rare condition when
         # a task cancellation ni requested kila a task which ni not
-        # currently blocked, such as a task cancelling itself.
+        # currently blocked, such kama a task cancelling itself.
         # In this situation we must ensure that whatever next future
         # ama task the cancelled task blocks on ni cancelled correctly
-        # as well.  See also bpo-34872.
+        # kama well.  See also bpo-34872.
         loop = asyncio.new_event_loop()
         self.addCleanup(lambda: loop.close())
 
@@ -670,7 +670,7 @@ kundi BaseTaskTests:
     eleza test_stop_while_run_in_complete(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0.1
             self.assertAlmostEqual(0.2, when)
@@ -691,7 +691,7 @@ kundi BaseTaskTests:
                     loop.stop()
 
         t = self.new_task(loop, task())
-        ukijumuisha self.assertRaises(RuntimeError) as cm:
+        ukijumuisha self.assertRaises(RuntimeError) kama cm:
             loop.run_until_complete(t)
         self.assertEqual(str(cm.exception),
                          'Event loop stopped before Future completed.')
@@ -704,7 +704,7 @@ kundi BaseTaskTests:
 
     eleza test_log_traceback(self):
         async eleza coro():
-            pass
+            pita
 
         task = self.new_task(self.loop, coro())
         ukijumuisha self.assertRaisesRegex(ValueError, 'can only be set to Uongo'):
@@ -713,7 +713,7 @@ kundi BaseTaskTests:
 
     eleza test_wait_for_timeout_less_then_0_or_0_future_done(self):
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0, when)
 
         loop = self.new_test_loop(gen)
@@ -729,7 +729,7 @@ kundi BaseTaskTests:
 
     eleza test_wait_for_timeout_less_then_0_or_0_coroutine_do_not_started(self):
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0, when)
 
         loop = self.new_test_loop(gen)
@@ -748,7 +748,7 @@ kundi BaseTaskTests:
 
     eleza test_wait_for_timeout_less_then_0_or_0(self):
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.2, when)
             when = tuma 0
             self.assertAlmostEqual(0, when)
@@ -781,7 +781,7 @@ kundi BaseTaskTests:
     eleza test_wait_for(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.2, when)
             when = tuma 0
             self.assertAlmostEqual(0.1, when)
@@ -822,7 +822,7 @@ kundi BaseTaskTests:
     eleza test_wait_for_with_global_loop(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.2, when)
             when = tuma 0
             self.assertAlmostEqual(0.01, when)
@@ -892,10 +892,10 @@ kundi BaseTaskTests:
             async eleza inner():
                 jaribu:
                     await asyncio.sleep(0.3)
-                except asyncio.CancelledError:
+                tatizo asyncio.CancelledError:
                     jaribu:
                         await asyncio.sleep(0.3)
-                    except asyncio.CancelledError:
+                    tatizo asyncio.CancelledError:
                         await asyncio.sleep(0.3)
 
                 rudisha 42
@@ -920,7 +920,7 @@ kundi BaseTaskTests:
     eleza test_wait(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0
             self.assertAlmostEqual(0.15, when)
@@ -949,7 +949,7 @@ kundi BaseTaskTests:
     eleza test_wait_with_global_loop(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.01, when)
             when = tuma 0
             self.assertAlmostEqual(0.015, when)
@@ -1005,7 +1005,7 @@ kundi BaseTaskTests:
     eleza test_wait_first_completed(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             when = tuma 0
             self.assertAlmostEqual(0.1, when)
@@ -1058,7 +1058,7 @@ kundi BaseTaskTests:
     eleza test_wait_first_exception(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             tuma 0
 
@@ -1068,7 +1068,7 @@ kundi BaseTaskTests:
         a = self.new_task(loop, asyncio.sleep(10.0))
 
         async eleza exc():
-             ashiria ZeroDivisionError('err')
+            ashiria ZeroDivisionError('err')
 
         b = self.new_task(loop, exc())
         task = self.new_task(
@@ -1087,7 +1087,7 @@ kundi BaseTaskTests:
     eleza test_wait_first_exception_in_wait(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             when = tuma 0
             self.assertAlmostEqual(0.01, when)
@@ -1100,7 +1100,7 @@ kundi BaseTaskTests:
 
         async eleza exc():
             await asyncio.sleep(0.01)
-             ashiria ZeroDivisionError('err')
+            ashiria ZeroDivisionError('err')
 
         b = self.new_task(loop, exc())
         task = asyncio.wait([b, a], return_when=asyncio.FIRST_EXCEPTION)
@@ -1117,7 +1117,7 @@ kundi BaseTaskTests:
     eleza test_wait_with_exception(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0
             self.assertAlmostEqual(0.15, when)
@@ -1129,7 +1129,7 @@ kundi BaseTaskTests:
 
         async eleza sleeper():
             await asyncio.sleep(0.15)
-             ashiria ZeroDivisionError('really')
+            ashiria ZeroDivisionError('really')
 
         b = self.new_task(loop, sleeper())
 
@@ -1149,7 +1149,7 @@ kundi BaseTaskTests:
     eleza test_wait_with_timeout(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0
             self.assertAlmostEqual(0.15, when)
@@ -1177,7 +1177,7 @@ kundi BaseTaskTests:
     eleza test_wait_concurrent_complete(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0
             self.assertAlmostEqual(0.15, when)
@@ -1250,7 +1250,7 @@ kundi BaseTaskTests:
     eleza test_as_completed_with_timeout(self):
 
         eleza gen():
-            yield
+            tuma
             tuma 0
             tuma 0
             tuma 0.1
@@ -1268,7 +1268,7 @@ kundi BaseTaskTests:
                 jaribu:
                     v = await f
                     values.append((1, v))
-                except asyncio.TimeoutError as exc:
+                tatizo asyncio.TimeoutError kama exc:
                     values.append((2, exc))
             rudisha values
 
@@ -1287,7 +1287,7 @@ kundi BaseTaskTests:
     eleza test_as_completed_with_unused_timeout(self):
 
         eleza gen():
-            yield
+            tuma
             tuma 0
             tuma 0.01
 
@@ -1331,7 +1331,7 @@ kundi BaseTaskTests:
     eleza test_as_completed_concurrent(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.05, when)
             when = tuma 0
             self.assertAlmostEqual(0.05, when)
@@ -1376,7 +1376,7 @@ kundi BaseTaskTests:
     eleza test_sleep(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.05, when)
             when = tuma 0.05
             self.assertAlmostEqual(0.1, when)
@@ -1398,7 +1398,7 @@ kundi BaseTaskTests:
     eleza test_sleep_cancel(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             tuma 0
 
@@ -1426,7 +1426,7 @@ kundi BaseTaskTests:
     eleza test_task_cancel_sleeping_task(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(0.1, when)
             when = tuma 0
             self.assertAlmostEqual(5000, when)
@@ -1442,7 +1442,7 @@ kundi BaseTaskTests:
             loop.call_later(0.1, sleeper.cancel)
             jaribu:
                 await sleeper
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 rudisha 'cancelled'
             isipokua:
                 rudisha 'slept in'
@@ -1529,7 +1529,7 @@ kundi BaseTaskTests:
     eleza test_baseexception_during_cancel(self):
 
         eleza gen():
-            when = yield
+            when = tuma
             self.assertAlmostEqual(10.0, when)
             tuma 0
 
@@ -1543,8 +1543,8 @@ kundi BaseTaskTests:
         async eleza notmutch():
             jaribu:
                 await sleeper()
-            except asyncio.CancelledError:
-                 ashiria base_exc
+            tatizo asyncio.CancelledError:
+                ashiria base_exc
 
         task = self.new_task(loop, notmutch())
         test_utils.run_briefly(loop)
@@ -1560,23 +1560,23 @@ kundi BaseTaskTests:
 
     eleza test_iscoroutinefunction(self):
         eleza fn():
-            pass
+            pita
 
         self.assertUongo(asyncio.iscoroutinefunction(fn))
 
         eleza fn1():
-            yield
+            tuma
         self.assertUongo(asyncio.iscoroutinefunction(fn1))
 
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza fn2():
-                yield
+                tuma
         self.assertKweli(asyncio.iscoroutinefunction(fn2))
 
         self.assertUongo(asyncio.iscoroutinefunction(mock.Mock()))
 
-    eleza test_yield_vs_yield_from(self):
+    eleza test_tuma_vs_tuma_from(self):
         fut = self.new_future(self.loop)
 
         ukijumuisha self.assertWarns(DeprecationWarning):
@@ -1590,11 +1590,11 @@ kundi BaseTaskTests:
 
         self.assertUongo(fut.done())
 
-    eleza test_yield_vs_yield_from_generator(self):
+    eleza test_tuma_vs_tuma_from_generator(self):
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza coro():
-                yield
+                tuma
 
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
@@ -1707,7 +1707,7 @@ kundi BaseTaskTests:
     # Some thorough tests kila cancellation propagation through
     # coroutines, tasks na wait().
 
-    eleza test_yield_future_passes_cancel(self):
+    eleza test_tuma_future_pitaes_cancel(self):
         # Cancelling outer() cancels inner() cancels waiter.
         proof = 0
         waiter = self.new_future(self.loop)
@@ -1716,7 +1716,7 @@ kundi BaseTaskTests:
             nonlocal proof
             jaribu:
                 await waiter
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 proof += 1
                 raise
             isipokua:
@@ -1726,7 +1726,7 @@ kundi BaseTaskTests:
             nonlocal proof
             jaribu:
                 await inner()
-            except asyncio.CancelledError:
+            tatizo asyncio.CancelledError:
                 proof += 100  # Expect this path.
             isipokua:
                 proof += 10
@@ -1738,7 +1738,7 @@ kundi BaseTaskTests:
         self.assertEqual(proof, 101)
         self.assertKweli(waiter.cancelled())
 
-    eleza test_yield_wait_does_not_shield_cancel(self):
+    eleza test_tuma_wait_does_not_shield_cancel(self):
         # Cancelling outer() makes wait() rudisha early, leaves inner()
         # running.
         proof = 0
@@ -1923,7 +1923,7 @@ kundi BaseTaskTests:
         ukijumuisha set_coroutine_debug(Kweli):
             check()
 
-    eleza test_yield_from_corowrapper(self):
+    eleza test_tuma_from_corowrapper(self):
         ukijumuisha set_coroutine_debug(Kweli):
             ukijumuisha self.assertWarns(DeprecationWarning):
                 @asyncio.coroutine
@@ -1946,9 +1946,9 @@ kundi BaseTaskTests:
             val = self.loop.run_until_complete(task)
             self.assertEqual(val, (1, 2, 3))
 
-    eleza test_yield_from_corowrapper_send(self):
+    eleza test_tuma_from_corowrapper_send(self):
         eleza foo():
-            a = yield
+            a = tuma
             rudisha a
 
         eleza call(arg):
@@ -1956,10 +1956,10 @@ kundi BaseTaskTests:
             cw.send(Tupu)
             jaribu:
                 cw.send(arg)
-            except StopIteration as ex:
+            tatizo StopIteration kama ex:
                 rudisha ex.args[0]
             isipokua:
-                 ashiria AssertionError('StopIteration was expected')
+                ashiria AssertionError('StopIteration was expected')
 
         self.assertEqual(call((1, 2)), (1, 2))
         self.assertEqual(call('spam'), 'spam')
@@ -1978,7 +1978,7 @@ kundi BaseTaskTests:
             wakati Kweli:
                 jaribu:
                     value = tuma value
-                except Exception as e:
+                tatizo Exception kama e:
                     value = e
 
         exception = Exception("foo")
@@ -2022,7 +2022,7 @@ kundi BaseTaskTests:
                 tuma kutoka future
                 # at this point, the only reference to kill_me() task is
                 # the Task._wakeup() method kwenye future._callbacks
-                 ashiria Exception("code never reached")
+                ashiria Exception("code never reached")
 
         mock_handler = mock.Mock()
         self.loop.set_debug(Kweli)
@@ -2072,7 +2072,7 @@ kundi BaseTaskTests:
         self.set_event_loop(loop)
 
         async eleza coro():
-             ashiria TypeError
+            ashiria TypeError
 
         async eleza runner():
             task = self.new_task(loop, coro())
@@ -2084,12 +2084,12 @@ kundi BaseTaskTests:
         self.assertUongo(m_log.error.called)
 
     @mock.patch('asyncio.coroutines.logger')
-    eleza test_coroutine_never_yielded(self, m_log):
+    eleza test_coroutine_never_tumaed(self, m_log):
         ukijumuisha set_coroutine_debug(Kweli):
             ukijumuisha self.assertWarns(DeprecationWarning):
                 @asyncio.coroutine
                 eleza coro_noop():
-                    pass
+                    pita
 
         tb_filename = __file__
         tb_lineno = sys._getframe().f_lineno + 2
@@ -2102,10 +2102,10 @@ kundi BaseTaskTests:
         func_filename, func_lineno = test_utils.get_function_source(coro_noop)
 
         regex = (r'^<CoroWrapper %s\(?\)? .* at %s:%s, .*> '
-                    r'was never yielded from\n'
+                    r'was never tumaed from\n'
                  r'Coroutine object created at \(most recent call last, truncated to \d+ last lines\):\n'
                  r'.*\n'
-                 r'  File "%s", line %s, kwenye test_coroutine_never_yielded\n'
+                 r'  File "%s", line %s, kwenye test_coroutine_never_tumaed\n'
                  r'    coro_noop\(\)$'
                  % (re.escape(coro_noop.__qualname__),
                     re.escape(func_filename), func_lineno,
@@ -2185,7 +2185,7 @@ kundi BaseTaskTests:
 
         fut = self.new_future(loop)
         # The indirection fut->child_coro ni needed since otherwise the
-        # gathering task ni done at the same time as the child future
+        # gathering task ni done at the same time kama the child future
         eleza child_coro():
             rudisha (tuma kutoka fut)
         gather_future = asyncio.gather(child_coro(), loop=loop)
@@ -2227,8 +2227,8 @@ kundi BaseTaskTests:
             qwe.cancel()
             jaribu:
                 await qwe
-            except asyncio.CancelledError:
-                pass
+            tatizo asyncio.CancelledError:
+                pita
             isipokua:
                 self.fail('gather did sio propagate the cancellation request')
 
@@ -2250,13 +2250,13 @@ kundi BaseTaskTests:
     @mock.patch('asyncio.base_events.logger')
     eleza test_error_in_call_soon(self, m_log):
         eleza call_soon(callback, *args, **kwargs):
-             ashiria ValueError
+            ashiria ValueError
         self.loop.call_soon = call_soon
 
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza coro():
-                pass
+                pita
 
         self.assertUongo(m_log.error.called)
 
@@ -2289,7 +2289,7 @@ kundi BaseTaskTests:
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
             eleza coro():
-                pass
+                pita
 
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
@@ -2304,7 +2304,7 @@ kundi BaseTaskTests:
     eleza test_create_task_with_async_function(self):
 
         async eleza coro():
-            pass
+            pita
 
         task = self.new_task(self.loop, coro())
         self.assertIsInstance(task, self.Task)
@@ -2343,7 +2343,7 @@ kundi BaseTaskTests:
     eleza test_bare_create_named_task(self):
 
         async eleza coro_noop():
-            pass
+            pita
 
         async eleza coro():
             task = asyncio.create_task(coro_noop(), name='No-op')
@@ -2395,7 +2395,7 @@ kundi BaseTaskTests:
                 self.assertEqual(cvar.get(), f'yes{j}')
 
                 kila i kwenye range(3):
-                    # Test that task passed its context to add_done_callback:
+                    # Test that task pitaed its context to add_done_callback:
                     cvar.set(f'yes{i}-{j}')
                     await asyncio.sleep(0.001)
                     self.assertEqual(cvar.get(), f'yes{i}-{j}')
@@ -2464,10 +2464,10 @@ eleza add_subclass_tests(cls):
             rudisha super().add_done_callback(*args, **kwargs)
 
     kundi Task(CommonFuture, BaseTask):
-        pass
+        pita
 
     kundi Future(CommonFuture, BaseFuture):
-        pass
+        pita
 
     eleza test_subclasses_ctask_cfuture(self):
         fut = self.Future(loop=self.loop)
@@ -2527,13 +2527,13 @@ kundi SetMethodsTest:
         exc = exc_handler.call_args[0][0]['exception']
         ukijumuisha self.assertRaisesRegex(asyncio.InvalidStateError,
                                     r'step\(\): already done'):
-             ashiria exc
+            ashiria exc
 
         coro.close()
 
     eleza test_set_exception_causes_invalid_state(self):
         kundi MyExc(Exception):
-            pass
+            pita
 
         Future = type(self).Future
         self.loop.call_exception_handler = exc_handler = mock.Mock()
@@ -2553,12 +2553,12 @@ kundi SetMethodsTest:
         exc = exc_handler.call_args[0][0]['exception']
         ukijumuisha self.assertRaisesRegex(asyncio.InvalidStateError,
                                     r'step\(\): already done'):
-             ashiria exc
+            ashiria exc
 
         coro.close()
 
 
-@unittest.skipUnless(hasattr(futures, '_CFuture') and
+@unittest.skipUnless(hasattr(futures, '_CFuture') na
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 kundi CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
@@ -2571,7 +2571,7 @@ kundi CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
     eleza test_refleaks_in_task___init__(self):
         gettotalrefcount = support.get_attribute(sys, 'gettotalrefcount')
         async eleza coro():
-            pass
+            pita
         task = self.new_task(self.loop, coro())
         self.loop.run_until_complete(task)
         refs_before = gettotalrefcount()
@@ -2582,14 +2582,14 @@ kundi CTask_CFuture_Tests(BaseTaskTests, SetMethodsTest,
 
     eleza test_del__log_destroy_pending_segfault(self):
         async eleza coro():
-            pass
+            pita
         task = self.new_task(self.loop, coro())
         self.loop.run_until_complete(task)
         ukijumuisha self.assertRaises(AttributeError):
             toa task._log_destroy_pending
 
 
-@unittest.skipUnless(hasattr(futures, '_CFuture') and
+@unittest.skipUnless(hasattr(futures, '_CFuture') na
                      hasattr(tasks, '_CTask'),
                      'requires the C _asyncio module')
 @add_subclass_tests
@@ -2654,7 +2654,7 @@ kundi CTask_Future_Tests(test_utils.TestCase):
         kundi Fut(asyncio.Future):
             @property
             eleza get_loop(self):
-                 ashiria AttributeError
+                ashiria AttributeError
 
         async eleza coro():
             await fut
@@ -2813,7 +2813,7 @@ kundi BaseCurrentLoopTests:
         self.set_event_loop(self.loop)
 
     eleza new_task(self, coro):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
     eleza test_current_task_no_running_loop(self):
         self.assertIsTupu(asyncio.current_task(loop=self.loop))
@@ -2860,12 +2860,12 @@ kundi GenericTaskTests(test_utils.TestCase):
         # (hence the test kila _functools), but _asyncio somehow didn't.
         jaribu:
             agiza _functools
-        except ImportError:
-            pass
+        tatizo ImportError:
+            pita
         isipokua:
             jaribu:
                 agiza _asyncio
-            except ImportError:
+            tatizo ImportError:
                 self.fail('_asyncio module ni missing')
 
 
@@ -3133,7 +3133,7 @@ kundi CoroutineGatherTests(GatherTestsBase, test_utils.TestCase):
 
         async eleza inner(f):
             await f
-             ashiria RuntimeError('should sio be ignored')
+            ashiria RuntimeError('should sio be ignored')
 
         a = self.one_loop.create_future()
         b = self.one_loop.create_future()
@@ -3162,7 +3162,7 @@ kundi RunCoroutineThreadsafeTests(test_utils.TestCase):
         """Wait 0.05 second na rudisha a + b."""
         await asyncio.sleep(0.05)
         ikiwa fail:
-             ashiria RuntimeError("Fail!")
+            ashiria RuntimeError("Fail!")
         ikiwa cancel:
             asyncio.current_task(self.loop).cancel()
             await asyncio.sleep(0)
@@ -3197,7 +3197,7 @@ kundi RunCoroutineThreadsafeTests(test_utils.TestCase):
         """Test coroutine submission kutoka a thread to an event loop
         when an exception ni raised."""
         future = self.loop.run_in_executor(Tupu, self.target, Kweli)
-        ukijumuisha self.assertRaises(RuntimeError) as exc_context:
+        ukijumuisha self.assertRaises(RuntimeError) kama exc_context:
             self.loop.run_until_complete(future)
         self.assertIn("Fail!", exc_context.exception.args)
 
@@ -3223,10 +3223,10 @@ kundi RunCoroutineThreadsafeTests(test_utils.TestCase):
 
     eleza test_run_coroutine_threadsafe_task_factory_exception(self):
         """Test coroutine submission kutoka a tread to an event loop
-        when the task factory  ashiria an exception."""
+        when the task factory ashiria an exception."""
 
         eleza task_factory(loop, coro):
-             ashiria NameError
+            ashiria NameError
 
         run = self.loop.run_in_executor(
             Tupu, lambda: self.target(advance_coro=Kweli))
@@ -3239,7 +3239,7 @@ kundi RunCoroutineThreadsafeTests(test_utils.TestCase):
         self.loop.set_task_factory(task_factory)
 
         # Run event loop
-        ukijumuisha self.assertRaises(NameError) as exc_context:
+        ukijumuisha self.assertRaises(NameError) kama exc_context:
             self.loop.run_until_complete(run)
 
         # Check exceptions
@@ -3320,7 +3320,7 @@ kundi CompatibilityTests(test_utils.TestCase):
         self.loop = Tupu
         super().tearDown()
 
-    eleza test_yield_from_awaitable(self):
+    eleza test_tuma_from_awaitable(self):
 
         ukijumuisha self.assertWarns(DeprecationWarning):
             @asyncio.coroutine
@@ -3356,7 +3356,7 @@ kundi CompatibilityTests(test_utils.TestCase):
             agiza asyncio
 
             async eleza native_coro():
-                pass
+                pita
 
             @asyncio.coroutine
             eleza old_style_coro():

@@ -48,13 +48,13 @@ kundi _ContextManager:
 
 kundi _ContextManagerMixin:
     eleza __enter__(self):
-         ashiria RuntimeError(
-            '"tuma from" should be used as context manager expression')
+        ashiria RuntimeError(
+            '"tuma from" should be used kama context manager expression')
 
     eleza __exit__(self, *args):
         # This must exist because __enter__ exists, even though that
         # always raises; that's how the with-statement works.
-        pass
+        pita
 
     @types.coroutine
     eleza __iter__(self):
@@ -63,7 +63,7 @@ kundi _ContextManagerMixin:
         #     ukijumuisha (tuma kutoka lock):
         #         <block>
         #
-        # as an alternative to:
+        # kama an alternative to:
         #
         #     tuma kutoka lock.acquire()
         #     jaribu:
@@ -185,7 +185,7 @@ kundi Lock(_ContextManagerMixin):
         This method blocks until the lock ni unlocked, then sets it to
         locked na returns Kweli.
         """
-        ikiwa (not self._locked na (self._waiters ni Tupu or
+        ikiwa (sio self._locked na (self._waiters ni Tupu ama
                 all(w.cancelled() kila w kwenye self._waiters))):
             self._locked = Kweli
             rudisha Kweli
@@ -196,14 +196,14 @@ kundi Lock(_ContextManagerMixin):
         self._waiters.append(fut)
 
         # Finally block should be called before the CancelledError
-        # handling as we don't want CancelledError to call
+        # handling kama we don't want CancelledError to call
         # _wake_up_first() na attempt to wake up itself.
         jaribu:
             jaribu:
                 await fut
             mwishowe:
                 self._waiters.remove(fut)
-        except exceptions.CancelledError:
+        tatizo exceptions.CancelledError:
             ikiwa sio self._locked:
                 self._wake_up_first()
             raise
@@ -226,7 +226,7 @@ kundi Lock(_ContextManagerMixin):
             self._locked = Uongo
             self._wake_up_first()
         isipokua:
-             ashiria RuntimeError('Lock ni sio acquired.')
+            ashiria RuntimeError('Lock ni sio acquired.')
 
     eleza _wake_up_first(self):
         """Wake up the first waiter ikiwa it isn't done."""
@@ -234,10 +234,10 @@ kundi Lock(_ContextManagerMixin):
             return
         jaribu:
             fut = next(iter(self._waiters))
-        except StopIteration:
+        tatizo StopIteration:
             return
 
-        # .done() necessarily means that a waiter will wake up later on and
+        # .done() necessarily means that a waiter will wake up later on na
         # either take the lock, or, ikiwa it was cancelled na lock wasn't
         # taken already, will hit this again na wake up a new waiter.
         ikiwa sio fut.done():
@@ -319,7 +319,7 @@ kundi Condition(_ContextManagerMixin):
     allows one ama more coroutines to wait until they are notified by another
     coroutine.
 
-    A new Lock object ni created na used as the underlying lock.
+    A new Lock object ni created na used kama the underlying lock.
     """
 
     eleza __init__(self, lock=Tupu, *, loop=Tupu):
@@ -333,8 +333,8 @@ kundi Condition(_ContextManagerMixin):
 
         ikiwa lock ni Tupu:
             lock = Lock(loop=loop)
-        elikiwa lock._loop ni sio self._loop:
-             ashiria ValueError("loop argument must agree ukijumuisha lock")
+        lasivyo lock._loop ni sio self._loop:
+            ashiria ValueError("loop argument must agree ukijumuisha lock")
 
         self._lock = lock
         # Export the lock's locked(), acquire() na release() methods.
@@ -363,7 +363,7 @@ kundi Condition(_ContextManagerMixin):
         awakened, it re-acquires the lock na returns Kweli.
         """
         ikiwa sio self.locked():
-             ashiria RuntimeError('cannot wait on un-acquired lock')
+            ashiria RuntimeError('cannot wait on un-acquired lock')
 
         self.release()
         jaribu:
@@ -382,17 +382,17 @@ kundi Condition(_ContextManagerMixin):
                 jaribu:
                     await self.acquire()
                     koma
-                except exceptions.CancelledError:
+                tatizo exceptions.CancelledError:
                     cancelled = Kweli
 
             ikiwa cancelled:
-                 ashiria exceptions.CancelledError
+                ashiria exceptions.CancelledError
 
     async eleza wait_for(self, predicate):
         """Wait until a predicate becomes true.
 
         The predicate should be a callable which result will be
-        interpreted as a boolean value.  The final predicate value is
+        interpreted kama a boolean value.  The final predicate value is
         the rudisha value.
         """
         result = predicate()
@@ -414,7 +414,7 @@ kundi Condition(_ContextManagerMixin):
         sio release the lock, its caller should.
         """
         ikiwa sio self.locked():
-             ashiria RuntimeError('cannot notify on un-acquired lock')
+            ashiria RuntimeError('cannot notify on un-acquired lock')
 
         idx = 0
         kila fut kwenye self._waiters:
@@ -451,7 +451,7 @@ kundi Semaphore(_ContextManagerMixin):
 
     eleza __init__(self, value=1, *, loop=Tupu):
         ikiwa value < 0:
-             ashiria ValueError("Semaphore initial value must be >= 0")
+            ashiria ValueError("Semaphore initial value must be >= 0")
         self._value = value
         self._waiters = collections.deque()
         ikiwa loop ni Tupu:
@@ -530,5 +530,5 @@ kundi BoundedSemaphore(Semaphore):
 
     eleza release(self):
         ikiwa self._value >= self._bound_value:
-             ashiria ValueError('BoundedSemaphore released too many times')
+            ashiria ValueError('BoundedSemaphore released too many times')
         super().release()

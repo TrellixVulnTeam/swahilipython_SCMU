@@ -44,16 +44,16 @@ kundi BaseTestSuite(object):
     eleza addTest(self, test):
         # sanity checks
         ikiwa sio callable(test):
-             ashiria TypeError("{} ni sio callable".format(repr(test)))
+            ashiria TypeError("{} ni sio callable".format(repr(test)))
         ikiwa isinstance(test, type) na issubclass(test,
                                                  (case.TestCase, TestSuite)):
-             ashiria TypeError("TestCases na TestSuites must be instantiated "
-                            "before passing them to addTest()")
+            ashiria TypeError("TestCases na TestSuites must be instantiated "
+                            "before pitaing them to addTest()")
         self._tests.append(test)
 
     eleza addTests(self, tests):
         ikiwa isinstance(tests, str):
-             ashiria TypeError("tests must be an iterable of tests, sio a string")
+            ashiria TypeError("tests must be an iterable of tests, sio a string")
         kila test kwenye tests:
             self.addTest(test)
 
@@ -70,9 +70,9 @@ kundi BaseTestSuite(object):
         """Stop holding a reference to the TestCase at index."""
         jaribu:
             test = self._tests[index]
-        except TypeError:
+        tatizo TypeError:
             # support kila suite implementations that have overridden self._tests
-            pass
+            pita
         isipokua:
             # Some unittest tests add non TestCase/TestSuite objects to
             # the suite.
@@ -93,8 +93,8 @@ kundi TestSuite(BaseTestSuite):
     """A test suite ni a composite test consisting of a number of TestCases.
 
     For use, create an instance of TestSuite, then add test case instances.
-    When all tests have been added, the suite can be passed to a test
-    runner, such as TextTestRunner. It will run the individual test cases
+    When all tests have been added, the suite can be pitaed to a test
+    runner, such kama TextTestRunner. It will run the individual test cases
     kwenye the order kwenye which they were added, aggregating the results. When
     subclassing, do sio forget to call the base kundi constructor.
     """
@@ -114,7 +114,7 @@ kundi TestSuite(BaseTestSuite):
                 self._handleClassSetUp(test, result)
                 result._previousTestClass = test.__class__
 
-                ikiwa (getattr(test.__class__, '_classSetupFailed', Uongo) or
+                ikiwa (getattr(test.__class__, '_classSetupFailed', Uongo) ama
                     getattr(result, '_moduleSetUpFailed', Uongo)):
                     endelea
 
@@ -151,17 +151,17 @@ kundi TestSuite(BaseTestSuite):
 
         jaribu:
             currentClass._classSetupFailed = Uongo
-        except TypeError:
+        tatizo TypeError:
             # test may actually be a function
             # so its kundi will be a builtin-type
-            pass
+            pita
 
         setUpClass = getattr(currentClass, 'setUpClass', Tupu)
         ikiwa setUpClass ni sio Tupu:
             _call_if_exists(result, '_setupStdout')
             jaribu:
                 setUpClass()
-            except Exception as e:
+            tatizo Exception kama e:
                 ikiwa isinstance(result, _DebugResult):
                     raise
                 currentClass._classSetupFailed = Kweli
@@ -199,17 +199,17 @@ kundi TestSuite(BaseTestSuite):
         result._moduleSetUpFailed = Uongo
         jaribu:
             module = sys.modules[currentModule]
-        except KeyError:
+        tatizo KeyError:
             return
         setUpModule = getattr(module, 'setUpModule', Tupu)
         ikiwa setUpModule ni sio Tupu:
             _call_if_exists(result, '_setupStdout')
             jaribu:
                 setUpModule()
-            except Exception as e:
+            tatizo Exception kama e:
                 jaribu:
                     case.doModuleCleanups()
-                except Exception as exc:
+                tatizo Exception kama exc:
                     self._createClassOrModuleLevelException(result, exc,
                                                             'setUpModule',
                                                             currentModule)
@@ -248,7 +248,7 @@ kundi TestSuite(BaseTestSuite):
 
         jaribu:
             module = sys.modules[previousModule]
-        except KeyError:
+        tatizo KeyError:
             return
 
         tearDownModule = getattr(module, 'tearDownModule', Tupu)
@@ -256,7 +256,7 @@ kundi TestSuite(BaseTestSuite):
             _call_if_exists(result, '_setupStdout')
             jaribu:
                 tearDownModule()
-            except Exception as e:
+            tatizo Exception kama e:
                 ikiwa isinstance(result, _DebugResult):
                     raise
                 self._createClassOrModuleLevelException(result, e,
@@ -266,7 +266,7 @@ kundi TestSuite(BaseTestSuite):
                 _call_if_exists(result, '_restoreStdout')
                 jaribu:
                     case.doModuleCleanups()
-                except Exception as e:
+                tatizo Exception kama e:
                     self._createClassOrModuleLevelException(result, e,
                                                             'tearDownModule',
                                                             previousModule)
@@ -288,7 +288,7 @@ kundi TestSuite(BaseTestSuite):
             _call_if_exists(result, '_setupStdout')
             jaribu:
                 tearDownClass()
-            except Exception as e:
+            tatizo Exception kama e:
                 ikiwa isinstance(result, _DebugResult):
                     raise
                 className = util.strclass(previousClass)
@@ -309,7 +309,7 @@ kundi TestSuite(BaseTestSuite):
 
 kundi _ErrorHolder(object):
     """
-    Placeholder kila a TestCase inside a result. As far as a TestResult
+    Placeholder kila a TestCase inside a result. As far kama a TestResult
     ni concerned, this looks exactly like a unit test. Used to insert
     arbitrary errors into a test suite run.
     """
@@ -337,7 +337,7 @@ kundi _ErrorHolder(object):
     eleza run(self, result):
         # could call result.addError(...) - but this test-like object
         # shouldn't be run anyway
-        pass
+        pita
 
     eleza __call__(self, result):
         rudisha self.run(result)
@@ -349,7 +349,7 @@ eleza _isnotsuite(test):
     "A crude way to tell apart testcases na suites ukijumuisha duck-typing"
     jaribu:
         iter(test)
-    except TypeError:
+    tatizo TypeError:
         rudisha Kweli
     rudisha Uongo
 

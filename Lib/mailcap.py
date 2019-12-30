@@ -31,7 +31,7 @@ eleza getcaps():
     kila mailcap kwenye listmailcapfiles():
         jaribu:
             fp = open(mailcap, 'r')
-        except OSError:
+        tatizo OSError:
             endelea
         ukijumuisha fp:
             morecaps, lineno = _readmailcapfile(fp, lineno)
@@ -112,7 +112,7 @@ eleza _readmailcapfile(fp, lineno):
 eleza parseline(line):
     """Parse one entry kwenye a mailcap file na rudisha a dictionary.
 
-    The viewing command ni stored as the value ukijumuisha the key "view",
+    The viewing command ni stored kama the value ukijumuisha the key "view",
     na the rest of the fields produce key-value pairs kwenye the dict.
     """
     fields = []
@@ -135,7 +135,7 @@ eleza parseline(line):
             fvalue = field[i+1:].strip()
         ikiwa fkey kwenye fields:
             # Ignore it
-            pass
+            pita
         isipokua:
             fields[fkey] = fvalue
     rudisha key, fields
@@ -147,7 +147,7 @@ eleza parsefield(line, i, n):
         c = line[i]
         ikiwa c == ';':
             koma
-        elikiwa c == '\\':
+        lasivyo c == '\\':
             i = i+2
         isipokua:
             i = i+1
@@ -203,11 +203,11 @@ eleza subst(field, MIMEtype, filename, plist=[]):
             c = field[i]; i = i+1
             ikiwa c == '%':
                 res = res + c
-            elikiwa c == 's':
+            lasivyo c == 's':
                 res = res + filename
-            elikiwa c == 't':
+            lasivyo c == 't':
                 res = res + MIMEtype
-            elikiwa c == '{':
+            lasivyo c == '{':
                 start = i
                 wakati i < n na field[i] != '}':
                     i = i+1

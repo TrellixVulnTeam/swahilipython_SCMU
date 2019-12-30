@@ -17,7 +17,7 @@ kutoka unittest agiza mock
 kutoka datetime agiza datetime, timezone, timedelta
 jaribu:
     agiza ssl
-except ImportError:
+tatizo ImportError:
     ssl = Tupu
 
 CERTFILE = os.path.join(os.path.dirname(__file__) ama os.curdir, "keycert3.pem")
@@ -73,17 +73,17 @@ kundi TestImaplib(unittest.TestCase):
 
     eleza test_imap4_host_default_value(self):
         # Check whether the IMAP4_PORT ni truly unavailable.
-        ukijumuisha socket.socket() as s:
+        ukijumuisha socket.socket() kama s:
             jaribu:
                 s.connect(('', imaplib.IMAP4_PORT))
                 self.skipTest(
                     "Cannot run the test ukijumuisha local IMAP server running.")
-            except socket.error:
-                pass
+            tatizo socket.error:
+                pita
 
         # This ni the exception that should be raised.
         expected_errnos = support.get_socket_conn_refused_errs()
-        ukijumuisha self.assertRaises(OSError) as cm:
+        ukijumuisha self.assertRaises(OSError) kama cm:
             imaplib.IMAP4()
         self.assertIn(cm.exception.errno, expected_errnos)
 
@@ -103,7 +103,7 @@ ikiwa ssl:
 isipokua:
 
     kundi SecureTCPServer:
-        pass
+        pita
 
     IMAP4_SSL = Tupu
 
@@ -146,8 +146,8 @@ kundi SimpleIMAPHandler(socketserver.StreamRequestHandler):
                         # Naked sockets rudisha empty strings..
                         return
                     line += part
-                except OSError:
-                    # ..but SSLSockets  ashiria exceptions.
+                tatizo OSError:
+                    # ..but SSLSockets ashiria exceptions.
                     return
                 ikiwa line.endswith(b'\r\n'):
                     koma
@@ -157,7 +157,7 @@ kundi SimpleIMAPHandler(socketserver.StreamRequestHandler):
             ikiwa self.continuation:
                 jaribu:
                     self.continuation.send(line)
-                except StopIteration:
+                tatizo StopIteration:
                     self.continuation = Tupu
                 endelea
             splitline = line.decode('ASCII').split()
@@ -203,7 +203,7 @@ kundi NewIMAPTestsMixin():
         kundi TestTCPServer(self.server_class):
             eleza handle_error(self, request, client_address):
                 """
-                End request na  ashiria the error ikiwa one occurs.
+                End request na ashiria the error ikiwa one occurs.
                 """
                 self.close_request(request)
                 self.server_close()
@@ -231,7 +231,7 @@ kundi NewIMAPTestsMixin():
         Cleans up the test server. This method should sio be called manually,
         it ni added to the cleanup queue kwenye the _setup method already.
         """
-        # ikiwa logout was called already we'd  ashiria an exception trying to
+        # ikiwa logout was called already we'd ashiria an exception trying to
         # shutdown the client once again
         ikiwa self.client ni sio Tupu na self.client.state != 'LOGOUT':
             self.client.shutdown()
@@ -277,7 +277,7 @@ kundi NewIMAPTestsMixin():
 
     eleza test_enable_UTF8_raises_error_if_not_supported(self):
         client, _ = self._setup(SimpleIMAPHandler)
-        typ, data = client.login('user', 'pass')
+        typ, data = client.login('user', 'pita')
         self.assertEqual(typ, 'OK')
         ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
                 'does sio support ENABLE'):
@@ -290,11 +290,11 @@ kundi NewIMAPTestsMixin():
                 self._send_tagged(tag, 'OK', 'ENABLE successful')
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
             eleza cmd_APPEND(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'okay')
         client, server = self._setup(UTF8AppendServer)
         self.assertEqual(client._encoding, 'ascii')
@@ -317,7 +317,7 @@ kundi NewIMAPTestsMixin():
                 self._send_tagged(tag, 'OK', 'ENABLE successful')
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, _ = self._setup(UTF8Server)
         typ, _ = client.authenticate('MYAUTH', lambda x: b'fake')
@@ -342,7 +342,7 @@ kundi NewIMAPTestsMixin():
         kundi MyServer(SimpleIMAPHandler):
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = tuma
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
         client, _ = self._setup(MyServer)
         ukijumuisha self.assertRaisesRegex(imaplib.IMAP4.error,
@@ -353,7 +353,7 @@ kundi NewIMAPTestsMixin():
         kundi MyServer(SimpleIMAPHandler):
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, server = self._setup(MyServer)
         code, _ = client.authenticate('MYAUTH', lambda x: b'fake')
@@ -364,7 +364,7 @@ kundi NewIMAPTestsMixin():
         kundi MyServer(SimpleIMAPHandler):
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
         client, server = self._setup(MyServer)
         code, _ = client.authenticate('MYAUTH', lambda x: 'fake')
@@ -378,7 +378,7 @@ kundi NewIMAPTestsMixin():
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                                     'VzdG9uLm1jaS5uZXQ=')
-                r = yield
+                r = tuma
                 ikiwa (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                          b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
                     self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
@@ -396,7 +396,7 @@ kundi NewIMAPTestsMixin():
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                                     'VzdG9uLm1jaS5uZXQ=')
-                r = yield
+                r = tuma
                 ikiwa (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                          b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
                     self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
@@ -411,7 +411,7 @@ kundi NewIMAPTestsMixin():
         kundi MyServer(SimpleIMAPHandler):
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = tuma
                 ikiwa self.response == b'*\r\n':
                     self._send_tagged(
                         tag,
@@ -438,20 +438,20 @@ kundi NewIMAPTestsMixin():
     eleza test_simple_with_statement(self):
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
         ukijumuisha self.imap_class(*server.server_address):
-            pass
+            pita
 
     eleza test_with_statement(self):
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
-        ukijumuisha self.imap_class(*server.server_address) as imap:
-            imap.login('user', 'pass')
+        ukijumuisha self.imap_class(*server.server_address) kama imap:
+            imap.login('user', 'pita')
             self.assertEqual(server.logged, 'user')
         self.assertIsTupu(server.logged)
 
     eleza test_with_statement_logout(self):
         # It ni legal to log out explicitly inside the ukijumuisha block
         _, server = self._setup(SimpleIMAPHandler, connect=Uongo)
-        ukijumuisha self.imap_class(*server.server_address) as imap:
-            imap.login('user', 'pass')
+        ukijumuisha self.imap_class(*server.server_address) kama imap:
+            imap.login('user', 'pita')
             self.assertEqual(server.logged, 'user')
             imap.logout()
             self.assertIsTupu(server.logged)
@@ -461,14 +461,14 @@ kundi NewIMAPTestsMixin():
 
     eleza test_login(self):
         client, _ = self._setup(SimpleIMAPHandler)
-        typ, data = client.login('user', 'pass')
+        typ, data = client.login('user', 'pita')
         self.assertEqual(typ, 'OK')
         self.assertEqual(data[0], b'LOGIN completed')
         self.assertEqual(client.state, 'AUTH')
 
     eleza test_logout(self):
         client, _ = self._setup(SimpleIMAPHandler)
-        typ, data = client.login('user', 'pass')
+        typ, data = client.login('user', 'pita')
         self.assertEqual(typ, 'OK')
         self.assertEqual(data[0], b'LOGIN completed')
         typ, data = client.logout()
@@ -482,7 +482,7 @@ kundi NewIMAPTestsMixin():
                 self._send_textline('* LSUB () "." directoryA')
                 rudisha self._send_tagged(tag, 'OK', 'LSUB completed')
         client, _ = self._setup(LsubCmd)
-        client.login('user', 'pass')
+        client.login('user', 'pita')
         typ, data = client.lsub()
         self.assertEqual(typ, 'OK')
         self.assertEqual(data[0], b'() "." directoryA')
@@ -521,7 +521,7 @@ kundi NewIMAPSSLTests(NewIMAPTestsMixin, unittest.TestCase):
                                  ssl_context=ssl_context)
         client.shutdown()
 
-    # Mock the private method _connect(), so mark the test as specific
+    # Mock the private method _connect(), so mark the test kama specific
     # to CPython stdlib
     @cpython_only
     eleza test_certfile_arg_warn(self):
@@ -585,7 +585,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @contextmanager
     eleza reaped_pair(self, hdlr):
-        ukijumuisha self.reaped_server(hdlr) as server:
+        ukijumuisha self.reaped_server(hdlr) kama server:
             client = self.imap_class(*server.server_address)
             jaribu:
                 tuma server, client
@@ -594,7 +594,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @reap_threads
     eleza test_connect(self):
-        ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
             client = self.imap_class(*server.server_address)
             client.shutdown()
 
@@ -603,7 +603,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
         # This violates RFC 3501, which disallows ']' characters kwenye tag names,
         # but imaplib has allowed producing such tags forever, other programs
-        # also produce them (eg: OtherInbox's Organizer app as of 20140716),
+        # also produce them (eg: OtherInbox's Organizer app kama of 20140716),
         # na Gmail, kila example, accepts them na produces them.  So we
         # support them.  See issue #21815.
 
@@ -615,7 +615,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
             eleza cmd_SELECT(self, tag, args):
@@ -636,7 +636,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send_line(msg.encode('ascii'))
                 self._send_tagged(tag, 'OK', 'STORE completed.')
 
-        ukijumuisha self.reaped_pair(BracketFlagHandler) as (server, client):
+        ukijumuisha self.reaped_pair(BracketFlagHandler) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response, b'ZmFrZQ==\r\n')
@@ -655,7 +655,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 # EOF without sending a complete welcome message.
                 self.wfile.write(b'* OK')
 
-        ukijumuisha self.reaped_server(EOFHandler) as server:
+        ukijumuisha self.reaped_server(EOFHandler) kama server:
             self.assertRaises(imaplib.IMAP4.abort,
                               self.imap_class, *server.server_address)
 
@@ -668,7 +668,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send(b'* CAPABILITY IMAP4rev1 AUTH\n')
                 self._send_tagged(tag, 'OK', 'CAPABILITY completed')
 
-        ukijumuisha self.reaped_server(BadNewlineHandler) as server:
+        ukijumuisha self.reaped_server(BadNewlineHandler) kama server:
             self.assertRaises(imaplib.IMAP4.abort,
                               self.imap_class, *server.server_address)
 
@@ -680,12 +680,12 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
         eleza cmd_AUTHENTICATE(self, tag, args):
             self._send_textline('+')
-            self.server.response = yield
+            self.server.response = tuma
             self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
     @reap_threads
     eleza test_enable_raises_error_if_not_AUTH(self):
-        ukijumuisha self.reaped_pair(self.UTF8Server) as (server, client):
+        ukijumuisha self.reaped_pair(self.UTF8Server) kama (server, client):
             self.assertUongo(client.utf8_enabled)
             self.assertRaises(imaplib.IMAP4.error, client.enable, 'foo')
             self.assertUongo(client.utf8_enabled)
@@ -696,19 +696,19 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
     eleza test_enable_raises_error_if_no_capability(self):
         kundi NoEnableServer(self.UTF8Server):
             capabilities = 'AUTH'
-        ukijumuisha self.reaped_pair(NoEnableServer) as (server, client):
+        ukijumuisha self.reaped_pair(NoEnableServer) kama (server, client):
             self.assertRaises(imaplib.IMAP4.error, client.enable, 'foo')
 
     @reap_threads
     eleza test_enable_UTF8_raises_error_if_not_supported(self):
         kundi NonUTF8Server(SimpleIMAPHandler):
-            pass
+            pita
         ukijumuisha self.assertRaises(imaplib.IMAP4.error):
-            ukijumuisha self.reaped_pair(NonUTF8Server) as (server, client):
-                typ, data = client.login('user', 'pass')
+            ukijumuisha self.reaped_pair(NonUTF8Server) kama (server, client):
+                typ, data = client.login('user', 'pita')
                 self.assertEqual(typ, 'OK')
                 client.enable('UTF8=ACCEPT')
-                pass
+                pita
 
     @reap_threads
     eleza test_enable_UTF8_Kweli_append(self):
@@ -716,10 +716,10 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
         kundi UTF8AppendServer(self.UTF8Server):
             eleza cmd_APPEND(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'okay')
 
-        ukijumuisha self.reaped_pair(UTF8AppendServer) as (server, client):
+        ukijumuisha self.reaped_pair(UTF8AppendServer) kama (server, client):
             self.assertEqual(client._encoding, 'ascii')
             code, _ = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
@@ -742,7 +742,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
     @reap_threads
     eleza test_search_disallows_charset_in_utf8_mode(self):
-        ukijumuisha self.reaped_pair(self.UTF8Server) as (server, client):
+        ukijumuisha self.reaped_pair(self.UTF8Server) kama (server, client):
             typ, _ = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(typ, 'OK')
             typ, _ = client.enable('UTF8=ACCEPT')
@@ -759,7 +759,7 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 self._send_tagged(tag, 'NO', 'unrecognized authentication '
                                   'type {}'.format(args[0]))
 
-        ukijumuisha self.reaped_pair(MyServer) as (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 client.authenticate('METHOD', lambda: 1)
 
@@ -770,10 +770,10 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = tuma
                 self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] invalid')
 
-        ukijumuisha self.reaped_pair(MyServer) as (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 code, data = client.authenticate('MYAUTH', lambda x: b'fake')
 
@@ -784,16 +784,16 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.server.response = yield
+                self.server.response = tuma
                 self._send_tagged(tag, 'OK', 'FAKEAUTH successful')
 
-        ukijumuisha self.reaped_pair(MyServer) as (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: b'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response,
                              b'ZmFrZQ==\r\n')  # b64 encoded 'fake'
 
-        ukijumuisha self.reaped_pair(MyServer) as (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             code, data = client.authenticate('MYAUTH', lambda x: 'fake')
             self.assertEqual(code, 'OK')
             self.assertEqual(server.response,
@@ -810,19 +810,19 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+ PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2Uucm'
                                     'VzdG9uLm1jaS5uZXQ=')
-                r = yield
+                r = tuma
                 ikiwa (r == b'dGltIGYxY2E2YmU0NjRiOWVmYT'
                          b'FjY2E2ZmZkNmNmMmQ5ZjMy\r\n'):
                     self._send_tagged(tag, 'OK', 'CRAM-MD5 successful')
                 isipokua:
                     self._send_tagged(tag, 'NO', 'No access')
 
-        ukijumuisha self.reaped_pair(AuthHandler) as (server, client):
+        ukijumuisha self.reaped_pair(AuthHandler) kama (server, client):
             self.assertKweli('AUTH=CRAM-MD5' kwenye client.capabilities)
             ret, data = client.login_cram_md5("tim", "tanstaaftanstaaf")
             self.assertEqual(ret, "OK")
 
-        ukijumuisha self.reaped_pair(AuthHandler) as (server, client):
+        ukijumuisha self.reaped_pair(AuthHandler) kama (server, client):
             self.assertKweli('AUTH=CRAM-MD5' kwenye client.capabilities)
             ret, data = client.login_cram_md5("tim", b"tanstaaftanstaaf")
             self.assertEqual(ret, "OK")
@@ -835,14 +835,14 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
 
             eleza cmd_AUTHENTICATE(self, tag, args):
                 self._send_textline('+')
-                self.response = yield
+                self.response = tuma
 
                 ikiwa self.response == b'*\r\n':
                     self._send_tagged(tag, 'NO', '[AUTHENTICATIONFAILED] aborted')
                 isipokua:
                     self._send_tagged(tag, 'OK', 'MYAUTH successful')
 
-        ukijumuisha self.reaped_pair(MyServer) as (server, client):
+        ukijumuisha self.reaped_pair(MyServer) kama (server, client):
             ukijumuisha self.assertRaises(imaplib.IMAP4.error):
                 code, data = client.authenticate('MYAUTH', lambda x: Tupu)
 
@@ -853,31 +853,31 @@ kundi ThreadedNetworkedTests(unittest.TestCase):
                 # Send a very long response line
                 self.wfile.write(b'* OK ' + imaplib._MAXLINE * b'x' + b'\r\n')
 
-        ukijumuisha self.reaped_server(TooLongHandler) as server:
+        ukijumuisha self.reaped_server(TooLongHandler) kama server:
             self.assertRaises(imaplib.IMAP4.error,
                               self.imap_class, *server.server_address)
 
     @reap_threads
     eleza test_simple_with_statement(self):
         # simplest call
-        ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
             ukijumuisha self.imap_class(*server.server_address):
-                pass
+                pita
 
     @reap_threads
     eleza test_with_statement(self):
-        ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
-            ukijumuisha self.imap_class(*server.server_address) as imap:
-                imap.login('user', 'pass')
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.imap_class(*server.server_address) kama imap:
+                imap.login('user', 'pita')
                 self.assertEqual(server.logged, 'user')
             self.assertIsTupu(server.logged)
 
     @reap_threads
     eleza test_with_statement_logout(self):
         # what happens ikiwa already logout kwenye the block?
-        ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
-            ukijumuisha self.imap_class(*server.server_address) as imap:
-                imap.login('user', 'pass')
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
+            ukijumuisha self.imap_class(*server.server_address) kama imap:
+                imap.login('user', 'pita')
                 self.assertEqual(server.logged, 'user')
                 imap.logout()
                 self.assertIsTupu(server.logged)
@@ -898,12 +898,12 @@ kundi ThreadedNetworkedTestsSSL(ThreadedNetworkedTests):
                 ssl.CertificateError,
                 "IP address mismatch, certificate ni sio valid kila "
                 "'127.0.0.1'"):
-            ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
+            ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
                 client = self.imap_class(*server.server_address,
                                          ssl_context=ssl_context)
                 client.shutdown()
 
-        ukijumuisha self.reaped_server(SimpleIMAPHandler) as server:
+        ukijumuisha self.reaped_server(SimpleIMAPHandler) kama server:
             client = self.imap_class("localhost", server.server_address[1],
                                      ssl_context=ssl_context)
             client.shutdown()
@@ -915,7 +915,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
     host = 'cyrus.andrew.cmu.edu'
     port = 143
     username = 'anonymous'
-    password = 'pass'
+    pitaword = 'pita'
     imap_kundi = imaplib.IMAP4
 
     eleza setUp(self):
@@ -933,7 +933,7 @@ kundi RemoteIMAPTest(unittest.TestCase):
                 self.assertIsInstance(cap, str)
             self.assertIn('LOGINDISABLED', self.server.capabilities)
             self.assertIn('AUTH=ANONYMOUS', self.server.capabilities)
-            rs = self.server.login(self.username, self.password)
+            rs = self.server.login(self.username, self.pitaword)
             self.assertEqual(rs[0], 'OK')
 
     eleza test_logout(self):
@@ -966,10 +966,10 @@ kundi RemoteIMAP_SSLTest(RemoteIMAPTest):
     imap_kundi = IMAP4_SSL
 
     eleza setUp(self):
-        pass
+        pita
 
     eleza tearDown(self):
-        pass
+        pita
 
     eleza create_ssl_context(self):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -984,7 +984,7 @@ kundi RemoteIMAP_SSLTest(RemoteIMAPTest):
                 self.assertIsInstance(cap, str)
             self.assertNotIn('LOGINDISABLED', server.capabilities)
             self.assertIn('AUTH=PLAIN', server.capabilities)
-            rs = server.login(self.username, self.password)
+            rs = server.login(self.username, self.pitaword)
             self.assertEqual(rs[0], 'OK')
         mwishowe:
             server.logout()

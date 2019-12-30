@@ -82,8 +82,8 @@ kundi Font:
         ikiwa exists:
             self.delete_font = Uongo
             # confirm font exists
-            ikiwa self.name sio kwenye tk.splitlist(tk.call("font", "names")):
-                 ashiria tkinter._tkinter.TclError(
+            ikiwa self.name haiko kwenye tk.splitlist(tk.call("font", "names")):
+                ashiria tkinter._tkinter.TclError(
                     "named font %s does sio already exist" % (self.name,))
             # ikiwa font config info supplied, apply it
             ikiwa font:
@@ -112,8 +112,8 @@ kundi Font:
         jaribu:
             ikiwa self.delete_font:
                 self._call("font", "delete", self.name)
-        except Exception:
-            pass
+        tatizo Exception:
+            pita
 
     eleza copy(self):
         "Return a distinct copy of the current font"

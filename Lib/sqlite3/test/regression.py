@@ -17,13 +17,13 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza datetime
 agiza unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 agiza weakref
 agiza functools
 kutoka test agiza support
@@ -67,10 +67,10 @@ kundi RegressionTests(unittest.TestCase):
 
     eleza CheckColumnNameWithSpaces(self):
         cur = self.con.cursor()
-        cur.execute('select 1 as "foo bar [datetime]"')
+        cur.execute('select 1 kama "foo bar [datetime]"')
         self.assertEqual(cur.description[0][0], "foo bar")
 
-        cur.execute('select 1 as "foo baz"')
+        cur.execute('select 1 kama "foo baz"')
         self.assertEqual(cur.description[0][0], "foo baz")
 
     eleza CheckStatementFinalizationOnCloseDb(self):
@@ -94,12 +94,12 @@ kundi RegressionTests(unittest.TestCase):
         con.execute("insert into foo(x) values (1)")
         jaribu:
             con.execute("insert into foo(x) values (1)")
-        except sqlite.DatabaseError:
-            pass
+        tatizo sqlite.DatabaseError:
+            pita
         con.execute("insert into foo(x) values (2)")
         jaribu:
             con.commit()
-        except sqlite.OperationalError:
+        tatizo sqlite.OperationalError:
             self.fail("pysqlite knew nothing about the implicit ROLLBACK")
 
     eleza CheckWorkaroundForBuggySqliteTransferBindings(self):
@@ -136,7 +136,7 @@ kundi RegressionTests(unittest.TestCase):
     eleza CheckErrorMsgDecodeError(self):
         # When porting the module to Python 3.0, the error message about
         # decoding errors disappeared. This verifies they're back again.
-        ukijumuisha self.assertRaises(sqlite.OperationalError) as cm:
+        ukijumuisha self.assertRaises(sqlite.OperationalError) kama cm:
             self.con.execute("select 'xxx' || ? || 'yyy' colname",
                              (bytes(bytearray([250])),)).fetchone()
         msg = "Could sio decode to UTF-8 column 'colname' ukijumuisha text 'xxx"
@@ -185,7 +185,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         kundi Cursor(sqlite.Cursor):
             eleza __init__(self, con):
-                pass
+                pita
 
         con = sqlite.connect(":memory:")
         cur = Cursor(con)
@@ -199,7 +199,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         The Python 3.0 port of the module didn't cope ukijumuisha values of subclasses of str.
         """
-        kundi MyStr(str): pass
+        kundi MyStr(str): pita
         self.con.execute("select ?", (MyStr("abc"),))
 
     eleza CheckConnectionConstructorCallCheck(self):
@@ -209,7 +209,7 @@ kundi RegressionTests(unittest.TestCase):
         """
         kundi Connection(sqlite.Connection):
             eleza __init__(self, name):
-                pass
+                pita
 
         con = Connection(":memory:")
         ukijumuisha self.assertRaises(sqlite.ProgrammingError):
@@ -275,8 +275,8 @@ kundi RegressionTests(unittest.TestCase):
         """
         http://bugs.python.org/issue10811
 
-        Recursively using a cursor, such as when reusing it kutoka a generator led to segfaults.
-        Now we catch recursive cursor usage na  ashiria a ProgrammingError.
+        Recursively using a cursor, such kama when reusing it kutoka a generator led to segfaults.
+        Now we catch recursive cursor usage na ashiria a ProgrammingError.
         """
         con = sqlite.connect(":memory:")
 
@@ -357,9 +357,9 @@ kundi RegressionTests(unittest.TestCase):
                 con.commit()
                 ikiwa counter == 0:
                     self.assertEqual(row[0], 0)
-                elikiwa counter == 1:
+                lasivyo counter == 1:
                     self.assertEqual(row[0], 1)
-                elikiwa counter == 2:
+                lasivyo counter == 2:
                     self.assertEqual(row[0], 2)
                 counter += 1
         self.assertEqual(counter, 3, "should have returned exactly three rows")
@@ -370,7 +370,7 @@ kundi RegressionTests(unittest.TestCase):
         more than once.
         """
         eleza callback(*args):
-            pass
+            pita
         con = sqlite.connect(":memory:")
         cur = sqlite.Cursor(con)
         ref = weakref.ref(cur, callback)

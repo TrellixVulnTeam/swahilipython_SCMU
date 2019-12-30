@@ -74,7 +74,7 @@ kundi TestBasicOps:
         kila (seq, shuffled_seq) kwenye zip(seqs, shuffled_seqs):
             self.assertEqual(len(seq), len(shuffled_seq))
             self.assertEqual(set(seq), set(shuffled_seq))
-        # The above tests all would pass ikiwa the shuffle was a
+        # The above tests all would pita ikiwa the shuffle was a
         # no-op. The following non-deterministic test covers that.  It
         # asserts that the shuffled sequence of 1000 distinct elements
         # must be different kutoka the original one. Although there is
@@ -268,7 +268,7 @@ kundi TestBasicOps:
                  ("randv2_64.pck", 866),
                  ("randv3.pck", 343)]
         kila file, value kwenye files:
-            ukijumuisha open(support.findfile(file),"rb") as f:
+            ukijumuisha open(support.findfile(file),"rb") kama f:
                 r = pickle.load(f)
             self.assertEqual(int(r.random()*1000), value)
 
@@ -282,7 +282,7 @@ kundi TestBasicOps:
 
 jaribu:
     random.SystemRandom().random()
-except NotImplementedError:
+tatizo NotImplementedError:
     SystemRandom_available = Uongo
 isipokua:
     SystemRandom_available = Kweli
@@ -292,7 +292,7 @@ kundi SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
     gen = random.SystemRandom()
 
     eleza test_autoseed(self):
-        # Doesn't need to do anything except sio fail
+        # Doesn't need to do anything tatizo sio fail
         self.gen.seed()
 
     eleza test_saverestore(self):
@@ -300,7 +300,7 @@ kundi SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertRaises(NotImplementedError, self.gen.setstate, Tupu)
 
     eleza test_seedargs(self):
-        # Doesn't need to do anything except sio fail
+        # Doesn't need to do anything tatizo sio fail
         self.gen.seed(100)
 
     eleza test_gauss(self):
@@ -313,7 +313,7 @@ kundi SystemRandom_TestBasicOps(TestBasicOps, unittest.TestCase):
             self.assertRaises(NotImplementedError, pickle.dumps, self.gen, proto)
 
     eleza test_53_bits_per_float(self):
-        # This should pass whenever a C double has 53 bit precision.
+        # This should pita whenever a C double has 53 bit precision.
         span = 2 ** 53
         cum = 0
         kila i kwenye range(100):
@@ -445,12 +445,12 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
                 rudisha Tupu
         jaribu:
             self.gen.seed(BadInt())
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
     eleza test_bug_31482(self):
         # Verify that version 1 seeds are unaffected by hash randomization
-        # when the seeds are expressed as bytes rather than strings.
+        # when the seeds are expressed kama bytes rather than strings.
         # The hash(b) values listed are the Python2.7 hash() values
         # which were used kila seeding.
 
@@ -499,8 +499,8 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.assertEqual(self.gen.getrandbits(100), bits100)
 
         # Little trick to make "tuple(x % (2**32) kila x kwenye internalstate)"
-        #  ashiria ValueError. I cannot think of a simple way to achieve this, so
-        # I am opting kila using a generator as the middle argument of setstate
+        # ashiria ValueError. I cannot think of a simple way to achieve this, so
+        # I am opting kila using a generator kama the middle argument of setstate
         # which attempts to cast a NaN to integer.
         state_values = self.gen.getstate()[1]
         state_values = list(state_values)
@@ -541,7 +541,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
 
     eleza test_strong_reference_implementation(self):
         # Like test_referenceImplementation, but checks kila exact bit-level
-        # equality.  This should pass on any box where C double contains
+        # equality.  This should pita on any box where C double contains
         # at least 53 bits of precision (the underlying algorithm suffers
         # no rounding errors -- all results are exact).
         kutoka math agiza ldexp
@@ -571,7 +571,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         self.gen.seed(seed)
 
     eleza test_53_bits_per_float(self):
-        # This should pass whenever a C double has 53 bit precision.
+        # This should pita whenever a C double has 53 bit precision.
         span = 2 ** 53
         cum = 0
         kila i kwenye range(100):
@@ -628,7 +628,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
 
     eleza test_randrange_uses_getrandbits(self):
         # Verify use of getrandbits by randrange
-        # Use same seed as kwenye the cross-platform repeatability test
+        # Use same seed kama kwenye the cross-platform repeatability test
         # kwenye test_genrandbits above.
         self.gen.seed(1234567)
         # If randrange uses getrandbits, it should pick getrandbits(100)
@@ -690,7 +690,7 @@ kundi MersenneTwister_TestBasicOps(TestBasicOps, unittest.TestCase):
         n = 42
         epsilon = 0.01
         limit = (maxsize - (maxsize % n)) / maxsize
-        ukijumuisha unittest.mock.patch.object(random.Random, 'random') as random_mock:
+        ukijumuisha unittest.mock.patch.object(random.Random, 'random') kama random_mock:
             random_mock.side_effect = [limit + epsilon, limit - epsilon]
             self.gen._randbelow_without_getrandbits(n, maxsize=maxsize)
             self.assertEqual(random_mock.call_count, 2)
@@ -794,8 +794,8 @@ kundi TestDistributions(unittest.TestCase):
             kila i kwenye range(len(x)):
                 jaribu:
                     y.append(variate(*args))
-                except IndexError:
-                    pass
+                tatizo IndexError:
+                    pita
             s1 = s2 = 0
             kila e kwenye y:
                 s1 += e
@@ -894,7 +894,7 @@ kundi TestDistributions(unittest.TestCase):
 
         # #3: 0 < alpha < 1.
         # This ni the most complex region of code to cover,
-        # as there are multiple if-else statements. Let's take a look at the
+        # kama there are multiple if-else statements. Let's take a look at the
         # source code, na determine the values that we need accordingly:
         #
         # wakati 1:
@@ -909,7 +909,7 @@ kundi TestDistributions(unittest.TestCase):
         #     ikiwa p > 1.0: # <=== (C)
         #         ikiwa u1 <= x ** (alpha - 1.0): # <=== (D)
         #             koma
-        #     elikiwa u1 <= _exp(-x): # <=== (E)
+        #     lasivyo u1 <= _exp(-x): # <=== (E)
         #         koma
         # rudisha x * beta
         #
@@ -918,7 +918,7 @@ kundi TestDistributions(unittest.TestCase):
         # r1 = random() <= 1.0 / b
         #
         # We now get to the second if-else branch, na here, since p <= 1.0,
-        # (C) ni Uongo na we take the elikiwa branch, (E). For it to be Kweli,
+        # (C) ni Uongo na we take the lasivyo branch, (E). For it to be Kweli,
         # so that the koma ni executed, we need that:
         # r2 = random() <= _exp(-x)
         # r2 <= _exp(-(p ** (1.0/alpha)))
@@ -969,7 +969,7 @@ kundi TestDistributions(unittest.TestCase):
 
 kundi TestRandomSubclassing(unittest.TestCase):
     eleza test_random_subclass_with_kwargs(self):
-        # SF bug #1486663 -- this used to erroneously  ashiria a TypeError
+        # SF bug #1486663 -- this used to erroneously ashiria a TypeError
         kundi Subclass(random.Random):
             eleza __init__(self, newarg=Tupu):
                 random.Random.__init__(self)
@@ -1036,25 +1036,25 @@ kundi TestRandomSubclassing(unittest.TestCase):
                 rudisha random.Random.getrandbits(self, n)
 
         kundi SubClass5(Mixin1, random.Random):
-            pass
+            pita
         called = set()
         SubClass5().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
         kundi SubClass6(Mixin2, random.Random):
-            pass
+            pita
         called = set()
         SubClass6().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
 
         kundi SubClass7(Mixin1, Mixin2, random.Random):
-            pass
+            pita
         called = set()
         SubClass7().randrange(42)
         self.assertEqual(called, {'Mixin1.random'})
 
         kundi SubClass8(Mixin2, Mixin1, random.Random):
-            pass
+            pita
         called = set()
         SubClass8().randrange(42)
         self.assertEqual(called, {'Mixin2.getrandbits'})
@@ -1080,7 +1080,7 @@ kundi TestModule(unittest.TestCase):
             # child process
             jaribu:
                 val = random.getrandbits(128)
-                ukijumuisha open(w, "w") as f:
+                ukijumuisha open(w, "w") kama f:
                     f.write(str(val))
             mwishowe:
                 os._exit(0)
@@ -1088,7 +1088,7 @@ kundi TestModule(unittest.TestCase):
             # parent process
             os.close(w)
             val = random.getrandbits(128)
-            ukijumuisha open(r, "r") as f:
+            ukijumuisha open(r, "r") kama f:
                 child_val = eval(f.read())
             self.assertNotEqual(val, child_val)
 

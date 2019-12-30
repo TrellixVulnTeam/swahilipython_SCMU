@@ -11,7 +11,7 @@ agiza sys, unittest
 
 jaribu:
     WINFUNCTYPE
-except NameError:
+tatizo NameError:
     # fake to enable this test on Linux
     WINFUNCTYPE = CFUNCTYPE
 
@@ -39,29 +39,29 @@ kundi FunctionTestCase(unittest.TestCase):
             kundi X(object, Array):
                 _length_ = 5
                 _type_ = "i"
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
 
         kutoka _ctypes agiza _Pointer
         jaribu:
             kundi X(object, _Pointer):
-                pass
-        except TypeError:
-            pass
+                pita
+        tatizo TypeError:
+            pita
 
         kutoka _ctypes agiza _SimpleCData
         jaribu:
             kundi X(object, _SimpleCData):
                 _type_ = "i"
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
         jaribu:
             kundi X(object, Structure):
                 _fields_ = []
-        except TypeError:
-            pass
+        tatizo TypeError:
+            pita
 
 
     @need_symbol('c_wchar')
@@ -111,7 +111,7 @@ kundi FunctionTestCase(unittest.TestCase):
         self.assertEqual(result, 21)
         self.assertEqual(type(result), int)
 
-        # You cannot assign character format codes as restype any longer
+        # You cannot assign character format codes kama restype any longer
         self.assertRaises(TypeError, setattr, f, "restype", "i")
 
     eleza test_floatresult(self):
@@ -179,7 +179,7 @@ kundi FunctionTestCase(unittest.TestCase):
         f.restype = POINTER(c_int)
         f.argtypes = [POINTER(c_int)]
 
-        # This only works ikiwa the value c_int(42) passed to the
+        # This only works ikiwa the value c_int(42) pitaed to the
         # function ni still alive wakati the pointer (the result) is
         # used.
 
@@ -269,7 +269,7 @@ kundi FunctionTestCase(unittest.TestCase):
 
 
     eleza test_callbacks_2(self):
-        # Can also use simple datatypes as argument type specifiers
+        # Can also use simple datatypes kama argument type specifiers
         # kila the callback function.
         # In this case the call receives an instance of that type
         f = dll._testfunc_callback_i_if

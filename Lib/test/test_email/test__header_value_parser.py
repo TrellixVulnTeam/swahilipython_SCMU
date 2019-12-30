@@ -1,6 +1,6 @@
 agiza string
 agiza unittest
-kutoka email agiza _header_value_parser as parser
+kutoka email agiza _header_value_parser kama parser
 kutoka email agiza errors
 kutoka email agiza policy
 kutoka test.test_email agiza TestEmailBase, parameterize
@@ -956,19 +956,19 @@ kundi TestParser(TestParserMixin, TestEmailBase):
 
     # get_word (ikiwa this were black box we'd repeat all the qs/atom tests)
 
-    eleza test_get_word_atom_yields_atom(self):
+    eleza test_get_word_atom_tumas_atom(self):
         word = self._test_get_x(parser.get_word,
             ' (foo) bar (bang) :ah', ' (foo) bar (bang) ', ' bar ', [], ':ah')
         self.assertEqual(word.token_type, 'atom')
         self.assertEqual(word[0].token_type, 'cfws')
 
     eleza test_get_word_all_CFWS(self):
-        # bpo-29412: Test that we don't  ashiria IndexError when parsing CFWS only
+        # bpo-29412: Test that we don't ashiria IndexError when parsing CFWS only
         # token.
         ukijumuisha self.assertRaises(errors.HeaderParseError):
             parser.get_word('(Recipients list suppressed')
 
-    eleza test_get_word_qs_yields_qs(self):
+    eleza test_get_word_qs_tumas_qs(self):
         word = self._test_get_x(parser.get_word,
             '"bar " (bang) ah', '"bar " (bang) ', 'bar  ', [], 'ah')
         self.assertEqual(word.token_type, 'quoted-string')

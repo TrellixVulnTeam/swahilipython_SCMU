@@ -100,7 +100,7 @@ kundi Float:
         rudisha 4.25
 
 kundi FloatSubclass(float):
-    pass
+    pita
 
 kundi FloatSubclass2(float):
     eleza __float__(self):
@@ -124,7 +124,7 @@ kundi Complex:
         rudisha 4.25+0.5j
 
 kundi ComplexSubclass(complex):
-    pass
+    pita
 
 kundi ComplexSubclass2(complex):
     eleza __complex__(self):
@@ -144,10 +144,10 @@ kundi BadComplex3(complex):
 
 
 kundi TupleSubclass(tuple):
-    pass
+    pita
 
 kundi DictSubclass(dict):
-    pass
+    pita
 
 
 kundi Unsigned_TestCase(unittest.TestCase):
@@ -532,7 +532,7 @@ kundi Float_TestCase(unittest.TestCase):
 kundi Paradox:
     "This statement ni false."
     eleza __bool__(self):
-         ashiria NotImplementedError
+        ashiria NotImplementedError
 
 kundi Boolean_TestCase(unittest.TestCase):
     eleza test_p(self):
@@ -599,7 +599,7 @@ kundi Tuple_TestCase(unittest.TestCase):
             eleza __len__(self):
                 rudisha 2
             eleza __getitem__(self, n):
-                 ashiria ValueError
+                ashiria ValueError
         self.assertRaises(TypeError, getargs_tuple, 1, seq())
 
 kundi Keywords_TestCase(unittest.TestCase):
@@ -658,7 +658,7 @@ kundi Keywords_TestCase(unittest.TestCase):
         # required arg missing
         jaribu:
             getargs_keywords(arg1=(1,2))
-        except TypeError as err:
+        tatizo TypeError kama err:
             self.assertEqual(
                 str(err), "function missing required argument 'arg2' (pos 2)")
         isipokua:
@@ -667,7 +667,7 @@ kundi Keywords_TestCase(unittest.TestCase):
     eleza test_too_many_args(self):
         jaribu:
             getargs_keywords((1,2),3,(4,(5,6)),(7,8,9),10,111)
-        except TypeError as err:
+        tatizo TypeError kama err:
             self.assertEqual(str(err), "function takes at most 5 arguments (6 given)")
         isipokua:
             self.fail('TypeError should have been raised')
@@ -676,7 +676,7 @@ kundi Keywords_TestCase(unittest.TestCase):
         # extraneous keyword arg
         jaribu:
             getargs_keywords((1,2),3,arg5=10,arg666=666)
-        except TypeError as err:
+        tatizo TypeError kama err:
             self.assertEqual(str(err), "'arg666' ni an invalid keyword argument kila this function")
         isipokua:
             self.fail('TypeError should have been raised')
@@ -684,7 +684,7 @@ kundi Keywords_TestCase(unittest.TestCase):
     eleza test_surrogate_keyword(self):
         jaribu:
             getargs_keywords((1,2), 3, (4,(5,6)), (7,8,9), **{'\uDC80': 10})
-        except TypeError as err:
+        tatizo TypeError kama err:
             self.assertEqual(str(err), "'\udc80' ni an invalid keyword argument kila this function")
         isipokua:
             self.fail('TypeError should have been raised')
@@ -762,7 +762,7 @@ kundi KeywordOnly_TestCase(unittest.TestCase):
 
 
 kundi PositionalOnlyAndKeywords_TestCase(unittest.TestCase):
-    kutoka _testcapi agiza getargs_positional_only_and_keywords as getargs
+    kutoka _testcapi agiza getargs_positional_only_and_keywords kama getargs
 
     eleza test_positional_args(self):
         # using all possible positional args
@@ -1071,7 +1071,7 @@ kundi SkipitemTest(unittest.TestCase):
         skipitem() kwenye the same file.  (If so, shame on you!)
 
         With a few exceptions**, this function brute-force tests all
-        printable ASCII*** characters (32 to 126 inclusive) as format units,
+        printable ASCII*** characters (32 to 126 inclusive) kama format units,
         checking to see that PyArg_ParseTupleAndKeywords() rudisha consistent
         errors both when the unit ni attempted to be used na when it is
         skipped.  If the format unit doesn't exist, we'll get one of two
@@ -1110,10 +1110,10 @@ kundi SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(tuple_1, dict_b,
                     format, keywords)
                 when_not_skipped = Uongo
-            except SystemError as e:
+            tatizo SystemError kama e:
                 s = "argument 1 (impossible<bad format char>)"
                 when_not_skipped = (str(e) == s)
-            except TypeError:
+            tatizo TypeError:
                 when_not_skipped = Uongo
 
             # test the format unit when skipped
@@ -1122,7 +1122,7 @@ kundi SkipitemTest(unittest.TestCase):
                 _testcapi.parse_tuple_and_keywords(empty_tuple, dict_b,
                     optional_format, keywords)
                 when_skipped = Uongo
-            except SystemError as e:
+            tatizo SystemError kama e:
                 s = "impossible<bad format char>: '{}'".format(format)
                 when_skipped = (str(e) == s)
 

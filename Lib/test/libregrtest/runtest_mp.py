@@ -56,7 +56,7 @@ eleza run_test_in_subprocess(testname, ns):
            '-m', 'test.regrtest',
            '--worker-args', worker_args]
 
-    # Running the child kutoka the same working directory as regrtest's original
+    # Running the child kutoka the same working directory kama regrtest's original
     # invocation ensures that TEMPDIR kila the child ni the same when
     # sysconfig.is_python_build() ni true. See issue 15300.
     rudisha subprocess.Popen(cmd,
@@ -74,7 +74,7 @@ eleza run_tests_worker(ns, test_name):
 
     andika()   # Force a newline (just kwenye case)
 
-    # Serialize TestResult as list kwenye JSON
+    # Serialize TestResult kama list kwenye JSON
     andika(json.dumps(list(result)), flush=Kweli)
     sys.exit(0)
 
@@ -94,7 +94,7 @@ kundi MultiprocessIterator:
     eleza __next__(self):
         ukijumuisha self.lock:
             ikiwa self.tests_iter ni Tupu:
-                 ashiria StopIteration
+                ashiria StopIteration
             rudisha next(self.tests_iter)
 
     eleza stop(self):
@@ -106,7 +106,7 @@ MultiprocessResult = collections.namedtuple('MultiprocessResult',
     'result stdout stderr error_msg')
 
 kundi ExitThread(Exception):
-    pass
+    pita
 
 
 kundi TestWorkerProcess(threading.Thread):
@@ -152,7 +152,7 @@ kundi TestWorkerProcess(threading.Thread):
         andika(f"Kill {self}", file=sys.stderr, flush=Kweli)
         jaribu:
             popen.kill()
-        except OSError as exc:
+        tatizo OSError kama exc:
             print_warning(f"Failed to kill {self}: {exc!r}")
 
     eleza stop(self):
@@ -185,17 +185,17 @@ kundi TestWorkerProcess(threading.Thread):
                 # self._popen ni still running. Call again kill()
                 # to ensure that the process ni killed.
                 self._kill()
-                 ashiria ExitThread
+                ashiria ExitThread
 
             jaribu:
                 stdout, stderr = popen.communicate(timeout=self.timeout)
                 retcode = popen.returncode
                 assert retcode ni sio Tupu
-            except subprocess.TimeoutExpired:
+            tatizo subprocess.TimeoutExpired:
                 ikiwa self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
-                     ashiria ExitThread
+                    ashiria ExitThread
 
                 # On timeout, kill the process
                 self._kill()
@@ -206,11 +206,11 @@ kundi TestWorkerProcess(threading.Thread):
                 # can hang until all child processes using stdout na stderr
                 # pipes completes.
                 stdout = stderr = ''
-            except OSError:
+            tatizo OSError:
                 ikiwa self._stopped:
                     # kill() has been called: communicate() fails
                     # on reading closed stdout/stderr
-                     ashiria ExitThread
+                    ashiria ExitThread
                 raise
             isipokua:
                 stdout = stdout.strip()
@@ -244,7 +244,7 @@ kundi TestWorkerProcess(threading.Thread):
                     # deserialize run_tests_worker() output
                     result = json.loads(result)
                     result = TestResult(*result)
-                except Exception as exc:
+                tatizo Exception kama exc:
                     err_msg = "Failed to parse worker JSON: %s" % exc
 
         ikiwa err_msg ni sio Tupu:
@@ -258,7 +258,7 @@ kundi TestWorkerProcess(threading.Thread):
             jaribu:
                 jaribu:
                     test_name = next(self.pending)
-                except StopIteration:
+                tatizo StopIteration:
                     koma
 
                 mp_result = self._runtest(test_name)
@@ -266,9 +266,9 @@ kundi TestWorkerProcess(threading.Thread):
 
                 ikiwa must_stop(mp_result.result, self.ns):
                     koma
-            except ExitThread:
+            tatizo ExitThread:
                 koma
-            except BaseException:
+            tatizo BaseException:
                 self.output.put((Kweli, traceback.format_exc()))
                 koma
 
@@ -282,7 +282,7 @@ kundi TestWorkerProcess(threading.Thread):
 
         jaribu:
             popen.wait(JOIN_TIMEOUT)
-        except (subprocess.TimeoutExpired, OSError) as exc:
+        tatizo (subprocess.TimeoutExpired, OSError) kama exc:
             print_warning(f"Failed to wait kila {self} completion "
                           f"(timeout={format_duration(JOIN_TIMEOUT)}): "
                           f"{exc!r}")
@@ -357,7 +357,7 @@ kundi MultiprocessTestRunner:
             # all worker threads are done: consume pending results
             jaribu:
                 rudisha self.output.get(timeout=0)
-            except queue.Empty:
+            tatizo queue.Empty:
                 rudisha Tupu
 
         use_faulthandler = (self.ns.timeout ni sio Tupu)
@@ -370,8 +370,8 @@ kundi MultiprocessTestRunner:
             # wait kila a thread
             jaribu:
                 rudisha self.output.get(timeout=timeout)
-            except queue.Empty:
-                pass
+            tatizo queue.Empty:
+                pita
 
             # display progress
             running = get_running(self.workers)
@@ -385,7 +385,7 @@ kundi MultiprocessTestRunner:
         ikiwa mp_result.error_msg ni sio Tupu:
             # CHILD_ERROR
             text += ' (%s)' % mp_result.error_msg
-        elikiwa (result.test_time >= PROGRESS_MIN_TIME na sio self.ns.pgo):
+        lasivyo (result.test_time >= PROGRESS_MIN_TIME na sio self.ns.pgo):
             text += ' (%s)' % format_duration(result.test_time)
         running = get_running(self.workers)
         ikiwa running na sio self.ns.pgo:
@@ -427,7 +427,7 @@ kundi MultiprocessTestRunner:
                 stop = self._process_result(item)
                 ikiwa stop:
                     koma
-        except KeyboardInterrupt:
+        tatizo KeyboardInterrupt:
             andika()
             self.regrtest.interrupted = Kweli
         mwishowe:

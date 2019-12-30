@@ -86,8 +86,8 @@ kundi TestFail:
                 endelea
             jaribu:
                 self.loads(doc)
-            except self.JSONDecodeError:
-                pass
+            tatizo self.JSONDecodeError:
+                pita
             isipokua:
                 self.fail("Expected failure kila fail{0}.json: {1!r}".format(idx, doc))
 
@@ -126,7 +126,7 @@ kundi TestFail:
             ('"spam', 'Unterminated string starting at', 0),
         ]
         kila data, msg, idx kwenye test_cases:
-            ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -162,7 +162,7 @@ kundi TestFail:
             ('{"spam":42,}', 'Expecting property name enclosed kwenye double quotes', 11),
         ]
         kila data, msg, idx kwenye test_cases:
-            ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -185,7 +185,7 @@ kundi TestFail:
             ('"spam",42', 'Extra data', 6),
         ]
         kila data, msg, idx kwenye test_cases:
-            ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, msg)
@@ -204,7 +204,7 @@ kundi TestFail:
             ('\n  \n\n     !', 4, 6, 10),
         ]
         kila data, line, col, idx kwenye test_cases:
-            ukijumuisha self.assertRaises(self.JSONDecodeError) as cm:
+            ukijumuisha self.assertRaises(self.JSONDecodeError) kama cm:
                 self.loads(data)
             err = cm.exception
             self.assertEqual(err.msg, 'Expecting value')
@@ -215,5 +215,5 @@ kundi TestFail:
                              'Expecting value: line %s column %d (char %d)' %
                              (line, col, idx))
 
-kundi TestPyFail(TestFail, PyTest): pass
-kundi TestCFail(TestFail, CTest): pass
+kundi TestPyFail(TestFail, PyTest): pita
+kundi TestCFail(TestFail, CTest): pita

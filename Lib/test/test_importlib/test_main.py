@@ -66,7 +66,7 @@ kundi NameNormalizationTests(
         metadata_dir = site_dir / 'my_pkg.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w') as strm:
+        ukijumuisha metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'my-pkg'
 
@@ -87,7 +87,7 @@ kundi NameNormalizationTests(
         metadata_dir = site_dir / 'CherryPy.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w') as strm:
+        ukijumuisha metadata.open('w') kama strm:
             strm.write('Version: 1.0\n')
         rudisha 'CherryPy'
 
@@ -111,7 +111,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w', encoding='utf-8') as fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
             fp.write('Description: pôrˈtend\n')
         rudisha 'portend'
 
@@ -124,7 +124,7 @@ kundi NonASCIITests(fixtures.OnSysPath, fixtures.SiteDir, unittest.TestCase):
         metadata_dir = site_dir / 'portend.dist-info'
         metadata_dir.mkdir()
         metadata = metadata_dir / 'METADATA'
-        ukijumuisha metadata.open('w', encoding='utf-8') as fp:
+        ukijumuisha metadata.open('w', encoding='utf-8') kama fp:
             fp.write(textwrap.dedent("""
                 Name: portend
 

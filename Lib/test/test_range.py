@@ -32,10 +32,10 @@ kundi RangeTest(unittest.TestCase):
         kila i, (x, y) kwenye enumerate(pairs):
             ikiwa x == y:
                 endelea
-            elikiwa x == sentinel:
+            lasivyo x == sentinel:
                 self.fail('{}: iterator ended unexpectedly '
                           'at position {}; expected {}'.format(test_id, i, y))
-            elikiwa y == sentinel:
+            lasivyo y == sentinel:
                 self.fail('{}: unexpected excess element {} at '
                           'position {}'.format(test_id, x, i))
             isipokua:
@@ -152,7 +152,7 @@ kundi RangeTest(unittest.TestCase):
         eleza _range_len(x):
             jaribu:
                 length = len(x)
-            except OverflowError:
+            tatizo OverflowError:
                 step = x[1] - x[0]
                 length = 1 + ((x[-1] - x[0]) // step)
             rudisha length
@@ -267,12 +267,12 @@ kundi RangeTest(unittest.TestCase):
         self.assertRaises(TypeError, u.index)
 
         kundi BadExc(Exception):
-            pass
+            pita
 
         kundi BadCmp:
             eleza __eq__(self, other):
                 ikiwa other == 2:
-                     ashiria BadExc()
+                    ashiria BadExc()
                 rudisha Uongo
 
         a = range(4)
@@ -311,7 +311,7 @@ kundi RangeTest(unittest.TestCase):
         # User-defined kundi ukijumuisha a failing __index__ method
         kundi IX:
             eleza __index__(self):
-                 ashiria RuntimeError
+                ashiria RuntimeError
         self.assertRaises(RuntimeError, range, IX())
 
         # User-defined kundi ukijumuisha an invalid __index__ method
@@ -383,7 +383,7 @@ kundi RangeTest(unittest.TestCase):
                 it = pickle.loads(d)
                 jaribu:
                     next(it)
-                except StopIteration:
+                tatizo StopIteration:
                     endelea
                 d = pickle.dumps(it, proto)
                 it = pickle.loads(d)
@@ -416,7 +416,7 @@ kundi RangeTest(unittest.TestCase):
             self.assertEqual(list(i2), [])
 
     eleza test_odd_bug(self):
-        # This used to  ashiria a "SystemError: NULL result without error"
+        # This used to ashiria a "SystemError: NULL result without error"
         # because the range validation step was eating the exception
         # before NULL was returned.
         ukijumuisha self.assertRaises(TypeError):
@@ -438,7 +438,7 @@ kundi RangeTest(unittest.TestCase):
             eleza __int__(self): rudisha 1
             eleza __index__(self): rudisha 1
         self.assertNotIn(C2(), range(3))
-        # ..except ikiwa explicitly told so.
+        # ..tatizo ikiwa explicitly told so.
         self.assertIn(int(C2()), range(3))
 
         # Check that the range.__contains__ optimization ni only

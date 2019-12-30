@@ -12,7 +12,7 @@ agiza warnings
 kundi ExecModuleTests(abc.LoaderTests):
 
     eleza exec_module(self, name):
-        ukijumuisha util.uncache(name), captured_stdout() as stdout:
+        ukijumuisha util.uncache(name), captured_stdout() kama stdout:
             spec = self.machinery.ModuleSpec(
                     name, self.machinery.FrozenImporter, origin='frozen',
                     is_package=self.machinery.FrozenImporter.is_package(name))
@@ -79,7 +79,7 @@ kundi ExecModuleTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.exec_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -92,7 +92,7 @@ kundi ExecModuleTests(abc.LoaderTests):
 kundi LoaderTests(abc.LoaderTests):
 
     eleza test_module(self):
-        ukijumuisha util.uncache('__hello__'), captured_stdout() as stdout:
+        ukijumuisha util.uncache('__hello__'), captured_stdout() kama stdout:
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__hello__')
@@ -106,7 +106,7 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_package(self):
-        ukijumuisha util.uncache('__phello__'),  captured_stdout() as stdout:
+        ukijumuisha util.uncache('__phello__'),  captured_stdout() kama stdout:
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__')
@@ -125,7 +125,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_lacking_parent(self):
         ukijumuisha util.uncache('__phello__', '__phello__.spam'), \
-             captured_stdout() as stdout:
+             captured_stdout() kama stdout:
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module = self.machinery.FrozenImporter.load_module('__phello__.spam')
@@ -142,7 +142,7 @@ kundi LoaderTests(abc.LoaderTests):
             self.assertUongo(hasattr(module, '__file__'))
 
     eleza test_module_reuse(self):
-        ukijumuisha util.uncache('__hello__'), captured_stdout() as stdout:
+        ukijumuisha util.uncache('__hello__'), captured_stdout() kama stdout:
             ukijumuisha warnings.catch_warnings():
                 warnings.simplefilter('ignore', DeprecationWarning)
                 module1 = self.machinery.FrozenImporter.load_module('__hello__')
@@ -171,7 +171,7 @@ kundi LoaderTests(abc.LoaderTests):
 
     eleza test_unloadable(self):
         assert self.machinery.FrozenImporter.find_module('_not_real') ni Tupu
-        ukijumuisha self.assertRaises(ImportError) as cm:
+        ukijumuisha self.assertRaises(ImportError) kama cm:
             self.machinery.FrozenImporter.load_module('_not_real')
         self.assertEqual(cm.exception.name, '_not_real')
 
@@ -188,7 +188,7 @@ kundi InspectLoaderTests:
     eleza test_get_code(self):
         # Make sure that the code object ni good.
         name = '__hello__'
-        ukijumuisha captured_stdout() as stdout:
+        ukijumuisha captured_stdout() kama stdout:
             code = self.machinery.FrozenImporter.get_code(name)
             mod = types.ModuleType(name)
             exec(code, mod.__dict__)
@@ -212,7 +212,7 @@ kundi InspectLoaderTests:
         # Raise ImportError kila modules that are sio frozen.
         kila meth_name kwenye ('get_code', 'get_source', 'is_package'):
             method = getattr(self.machinery.FrozenImporter, meth_name)
-            ukijumuisha self.assertRaises(ImportError) as cm:
+            ukijumuisha self.assertRaises(ImportError) kama cm:
                 method('importlib')
             self.assertEqual(cm.exception.name, 'importlib')
 

@@ -5,7 +5,7 @@
 #
 
 agiza _codecs_hk, codecs
-agiza _multibytecodec as mbc
+agiza _multibytecodec kama mbc
 
 codec = _codecs_hk.getcodec('big5hkscs')
 

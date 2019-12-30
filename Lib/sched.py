@@ -11,12 +11,12 @@ substituting time na sleep kutoka built-in module time, ama you can
 implement simulated time by writing your own functions.  This can
 also be used to integrate scheduling ukijumuisha STDWIN events; the delay
 function ni allowed to modify the queue.  Time can be expressed as
-integers ama floating point numbers, as long as it ni consistent.
+integers ama floating point numbers, kama long kama it ni consistent.
 
 Events are specified by tuples (time, priority, action, argument, kwargs).
 As kwenye UNIX, lower priority numbers mean higher priority; kwenye this
-way the queue can be maintained as a priority queue.  Execution of the
-event means calling the action function, passing it the argument
+way the queue can be maintained kama a priority queue.  Execution of the
+event means calling the action function, pitaing it the argument
 sequence kwenye "argument" (remember that kwenye Python, multiple function
 arguments are be packed kwenye a sequence) na keyword parameters kwenye "kwargs".
 The action function may be an instance method so it
@@ -27,7 +27,7 @@ agiza time
 agiza heapq
 kutoka collections agiza namedtuple
 agiza threading
-kutoka time agiza monotonic as _time
+kutoka time agiza monotonic kama _time
 
 __all__ = ["scheduler"]
 
@@ -40,7 +40,7 @@ kundi Event(namedtuple('Event', 'time, priority, action, argument, kwargs')):
     eleza __ge__(s, o): rudisha (s.time, s.priority) >= (o.time, o.priority)
 
 Event.time.__doc__ = ('''Numeric type compatible ukijumuisha the rudisha value of the
-timefunc function passed to the constructor.''')
+timefunc function pitaed to the constructor.''')
 Event.priority.__doc__ = ('''Events scheduled kila the same time will be executed
 in the order of their priority.''')
 Event.action.__doc__ = ('''Executing the event means executing
@@ -55,7 +55,7 @@ _sentinel = object()
 kundi scheduler:
 
     eleza __init__(self, timefunc=_time, delayfunc=time.sleep):
-        """Initialize a new instance, passing the time na delay
+        """Initialize a new instance, pitaing the time na delay
         functions"""
         self._queue = []
         self._lock = threading.RLock()
@@ -77,7 +77,7 @@ kundi scheduler:
         rudisha event # The ID
 
     eleza enter(self, delay, priority, action, argument=(), kwargs=_sentinel):
-        """A variant that specifies the time as a relative time.
+        """A variant that specifies the time kama a relative time.
 
         This ni actually the more commonly used interface.
 
@@ -88,8 +88,8 @@ kundi scheduler:
     eleza cancel(self, event):
         """Remove an event kutoka the queue.
 
-        This must be presented the ID as returned by enter().
-        If the event ni sio kwenye the queue, this raises ValueError.
+        This must be presented the ID kama returned by enter().
+        If the event ni haiko kwenye the queue, this raises ValueError.
 
         """
         ukijumuisha self._lock:
@@ -110,12 +110,12 @@ kundi scheduler:
         When there ni a positive delay until the first event, the
         delay function ni called na the event ni left kwenye the queue;
         otherwise, the event ni removed kutoka the queue na executed
-        (its action function ni called, passing it the argument).  If
+        (its action function ni called, pitaing it the argument).  If
         the delay function returns prematurely, it ni simply
         restarted.
 
         It ni legal kila both the delay function na the action
-        function to modify the queue ama to  ashiria an exception;
+        function to modify the queue ama to ashiria an exception;
         exceptions are sio caught but the scheduler's state remains
         well-defined so run() may be called again.
 

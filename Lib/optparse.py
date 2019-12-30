@@ -2,7 +2,7 @@
 
 By Greg Ward <gward@python.net>
 
-Originally distributed as Optik.
+Originally distributed kama Optik.
 
 For support, use the optik-users@lists.sourceforge.net mailing list
 (http://lists.sourceforge.net/lists/listinfo/optik-users).
@@ -88,7 +88,7 @@ eleza _repr(self):
 
 jaribu:
     kutoka gettext agiza gettext, ngettext
-except ImportError:
+tatizo ImportError:
     eleza gettext(message):
         rudisha message
 
@@ -110,7 +110,7 @@ kundi OptParseError (Exception):
 
 kundi OptionError (OptParseError):
     """
-    Raised ikiwa an Option instance ni created ukijumuisha invalid or
+    Raised ikiwa an Option instance ni created ukijumuisha invalid ama
     inconsistent arguments.
     """
 
@@ -174,9 +174,9 @@ kundi HelpFormatter:
         the maximum starting column kila option help text
       help_position : int
         the calculated starting column kila option help text;
-        initially the same as the maximum
+        initially the same kama the maximum
       width : int
-        total number of columns kila output (pass Tupu to constructor for
+        total number of columns kila output (pita Tupu to constructor for
         this value to be taken kutoka the $COLUMNS environment variable)
       level : int
         current indentation level
@@ -189,11 +189,11 @@ kundi HelpFormatter:
         by default.  Set to false value to disable default value expansion.
       option_strings : { Option : str }
         maps Option instances to the snippet of help text explaining
-        the syntax of that option, e.g. "-h, --help" or
+        the syntax of that option, e.g. "-h, --help" ama
         "-fFILE, --file=FILE"
       _short_opt_fmt : str
         format string controlling how short options ukijumuisha values are
-        printed kwenye help text.  Must be either "%s%s" ("-fFILE") or
+        printed kwenye help text.  Must be either "%s%s" ("-fFILE") ama
         "%s %s" ("-f FILE"), because those are the two syntaxes that
         Optik supports.
       _long_opt_fmt : str
@@ -213,7 +213,7 @@ kundi HelpFormatter:
         ikiwa width ni Tupu:
             jaribu:
                 width = int(os.environ['COLUMNS'])
-            except (KeyError, ValueError):
+            tatizo (KeyError, ValueError):
                 width = 80
             width -= 2
         self.width = width
@@ -232,14 +232,14 @@ kundi HelpFormatter:
         self.parser = parser
 
     eleza set_short_opt_delimiter(self, delim):
-        ikiwa delim sio kwenye ("", " "):
-             ashiria ValueError(
+        ikiwa delim haiko kwenye ("", " "):
+            ashiria ValueError(
                 "invalid metavar delimiter kila short options: %r" % delim)
         self._short_opt_fmt = "%s" + delim + "%s"
 
     eleza set_long_opt_delimiter(self, delim):
-        ikiwa delim sio kwenye ("=", " "):
-             ashiria ValueError(
+        ikiwa delim haiko kwenye ("=", " "):
+            ashiria ValueError(
                 "invalid metavar delimiter kila long options: %r" % delim)
         self._long_opt_fmt = "%s" + delim + "%s"
 
@@ -253,10 +253,10 @@ kundi HelpFormatter:
         self.level -= 1
 
     eleza format_usage(self, usage):
-         ashiria NotImplementedError("subclasses must implement")
+        ashiria NotImplementedError("subclasses must implement")
 
     eleza format_heading(self, heading):
-         ashiria NotImplementedError("subclasses must implement")
+        ashiria NotImplementedError("subclasses must implement")
 
     eleza _format_text(self, text):
         """
@@ -314,7 +314,7 @@ kundi HelpFormatter:
         ikiwa len(opts) > opt_width:
             opts = "%*s%s\n" % (self.current_indent, "", opts)
             indent_first = self.help_position
-        isipokua:                       # start help on same line as opts
+        isipokua:                       # start help on same line kama opts
             opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
             indent_first = 0
         result.append(opts)
@@ -324,7 +324,7 @@ kundi HelpFormatter:
             result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
             result.extend(["%*s%s\n" % (self.help_position, "", line)
                            kila line kwenye help_lines[1:]])
-        elikiwa opts[-1] != "\n":
+        lasivyo opts[-1] != "\n":
             result.append("\n")
         rudisha "".join(result)
 
@@ -406,10 +406,10 @@ kundi TitledHelpFormatter (HelpFormatter):
 eleza _parse_num(val, type):
     ikiwa val[:2].lower() == "0x":         # hexadecimal
         radix = 16
-    elikiwa val[:2].lower() == "0b":       # binary
+    lasivyo val[:2].lower() == "0b":       # binary
         radix = 2
         val = val[2:] ama "0"            # have to remove "0b" prefix
-    elikiwa val[:1] == "0":                # octal
+    lasivyo val[:1] == "0":                # octal
         radix = 8
     isipokua:                               # decimal
         radix = 10
@@ -428,8 +428,8 @@ eleza check_builtin(option, opt, value):
     (cvt, what) = _builtin_cvt[option.type]
     jaribu:
         rudisha cvt(value)
-    except ValueError:
-         ashiria OptionValueError(
+    tatizo ValueError:
+        ashiria OptionValueError(
             _("option %s: invalid %s value: %r") % (opt, what, value))
 
 eleza check_choice(option, opt, value):
@@ -437,7 +437,7 @@ eleza check_choice(option, opt, value):
         rudisha value
     isipokua:
         choices = ", ".join(map(repr, option.choices))
-         ashiria OptionValueError(
+        ashiria OptionValueError(
             _("option %s: invalid choice: %r (choose kutoka %s)")
             % (opt, value, choices))
 
@@ -524,7 +524,7 @@ kundi Option:
     # constructor argument validation.
     TYPES = ("string", "int", "long", "float", "complex", "choice")
 
-    # Dictionary of argument checking functions, which convert and
+    # Dictionary of argument checking functions, which convert na
     # validate option arguments according to the option type.
     #
     # Signature of checking functions is:
@@ -576,7 +576,7 @@ kundi Option:
         # complicated interdependencies, but luckily they can be farmed
         # out to the _check_*() methods listed kwenye CHECK_METHODS -- which
         # could be handy kila subclasses!  The one thing these all share
-        # ni that they  ashiria OptionError ikiwa they discover a problem.
+        # ni that they ashiria OptionError ikiwa they discover a problem.
         kila checker kwenye self.CHECK_METHODS:
             checker(self)
 
@@ -586,25 +586,25 @@ kundi Option:
         # could be Tupu.
         opts = [opt kila opt kwenye opts ikiwa opt]
         ikiwa sio opts:
-             ashiria TypeError("at least one option string must be supplied")
+            ashiria TypeError("at least one option string must be supplied")
         rudisha opts
 
     eleza _set_opt_strings(self, opts):
         kila opt kwenye opts:
             ikiwa len(opt) < 2:
-                 ashiria OptionError(
+                ashiria OptionError(
                     "invalid option string %r: "
                     "must be at least two characters long" % opt, self)
-            elikiwa len(opt) == 2:
+            lasivyo len(opt) == 2:
                 ikiwa sio (opt[0] == "-" na opt[1] != "-"):
-                     ashiria OptionError(
+                    ashiria OptionError(
                         "invalid short option string %r: "
                         "must be of the form -x, (x any non-dash char)" % opt,
                         self)
                 self._short_opts.append(opt)
             isipokua:
                 ikiwa sio (opt[0:2] == "--" na opt[2] != "-"):
-                     ashiria OptionError(
+                    ashiria OptionError(
                         "invalid long option string %r: "
                         "must start ukijumuisha --, followed by non-dash" % opt,
                         self)
@@ -622,7 +622,7 @@ kundi Option:
                     setattr(self, attr, Tupu)
         ikiwa attrs:
             attrs = sorted(attrs.keys())
-             ashiria OptionError(
+            ashiria OptionError(
                 "invalid keyword arguments: %s" % ", ".join(attrs),
                 self)
 
@@ -632,8 +632,8 @@ kundi Option:
     eleza _check_action(self):
         ikiwa self.action ni Tupu:
             self.action = "store"
-        elikiwa self.action sio kwenye self.ACTIONS:
-             ashiria OptionError("invalid action: %r" % self.action, self)
+        lasivyo self.action haiko kwenye self.ACTIONS:
+            ashiria OptionError("invalid action: %r" % self.action, self)
 
     eleza _check_type(self):
         ikiwa self.type ni Tupu:
@@ -646,36 +646,36 @@ kundi Option:
                     self.type = "string"
         isipokua:
             # Allow type objects ama builtin type conversion functions
-            # (int, str, etc.) as an alternative to their names.
+            # (int, str, etc.) kama an alternative to their names.
             ikiwa isinstance(self.type, type):
                 self.type = self.type.__name__
 
             ikiwa self.type == "str":
                 self.type = "string"
 
-            ikiwa self.type sio kwenye self.TYPES:
-                 ashiria OptionError("invalid option type: %r" % self.type, self)
-            ikiwa self.action sio kwenye self.TYPED_ACTIONS:
-                 ashiria OptionError(
+            ikiwa self.type haiko kwenye self.TYPES:
+                ashiria OptionError("invalid option type: %r" % self.type, self)
+            ikiwa self.action haiko kwenye self.TYPED_ACTIONS:
+                ashiria OptionError(
                     "must sio supply a type kila action %r" % self.action, self)
 
     eleza _check_choice(self):
         ikiwa self.type == "choice":
             ikiwa self.choices ni Tupu:
-                 ashiria OptionError(
+                ashiria OptionError(
                     "must supply a list of choices kila type 'choice'", self)
-            elikiwa sio isinstance(self.choices, (tuple, list)):
-                 ashiria OptionError(
+            lasivyo sio isinstance(self.choices, (tuple, list)):
+                ashiria OptionError(
                     "choices must be a list of strings ('%s' supplied)"
                     % str(type(self.choices)).split("'")[1], self)
-        elikiwa self.choices ni sio Tupu:
-             ashiria OptionError(
+        lasivyo self.choices ni sio Tupu:
+            ashiria OptionError(
                 "must sio supply choices kila type %r" % self.type, self)
 
     eleza _check_dest(self):
         # No destination given, na we need one kila this action.  The
         # self.type check ni kila callbacks that take a value.
-        takes_value = (self.action kwenye self.STORE_ACTIONS or
+        takes_value = (self.action kwenye self.STORE_ACTIONS ama
                        self.type ni sio Tupu)
         ikiwa self.dest ni Tupu na takes_value:
 
@@ -688,8 +688,8 @@ kundi Option:
                 self.dest = self._short_opts[0][1]
 
     eleza _check_const(self):
-        ikiwa self.action sio kwenye self.CONST_ACTIONS na self.const ni sio Tupu:
-             ashiria OptionError(
+        ikiwa self.action haiko kwenye self.CONST_ACTIONS na self.const ni sio Tupu:
+            ashiria OptionError(
                 "'const' must sio be supplied kila action %r" % self.action,
                 self)
 
@@ -697,36 +697,36 @@ kundi Option:
         ikiwa self.action kwenye self.TYPED_ACTIONS:
             ikiwa self.nargs ni Tupu:
                 self.nargs = 1
-        elikiwa self.nargs ni sio Tupu:
-             ashiria OptionError(
+        lasivyo self.nargs ni sio Tupu:
+            ashiria OptionError(
                 "'nargs' must sio be supplied kila action %r" % self.action,
                 self)
 
     eleza _check_callback(self):
         ikiwa self.action == "callback":
             ikiwa sio callable(self.callback):
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback sio callable: %r" % self.callback, self)
-            ikiwa (self.callback_args ni sio Tupu and
+            ikiwa (self.callback_args ni sio Tupu na
                 sio isinstance(self.callback_args, tuple)):
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback_args, ikiwa supplied, must be a tuple: sio %r"
                     % self.callback_args, self)
-            ikiwa (self.callback_kwargs ni sio Tupu and
+            ikiwa (self.callback_kwargs ni sio Tupu na
                 sio isinstance(self.callback_kwargs, dict)):
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback_kwargs, ikiwa supplied, must be a dict: sio %r"
                     % self.callback_kwargs, self)
         isipokua:
             ikiwa self.callback ni sio Tupu:
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback supplied (%r) kila non-callback option"
                     % self.callback, self)
             ikiwa self.callback_args ni sio Tupu:
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback_args supplied kila non-callback option", self)
             ikiwa self.callback_kwargs ni sio Tupu:
-                 ashiria OptionError(
+                ashiria OptionError(
                     "callback_kwargs supplied kila non-callback option", self)
 
 
@@ -787,30 +787,30 @@ kundi Option:
     eleza take_action(self, action, dest, opt, value, values, parser):
         ikiwa action == "store":
             setattr(values, dest, value)
-        elikiwa action == "store_const":
+        lasivyo action == "store_const":
             setattr(values, dest, self.const)
-        elikiwa action == "store_true":
+        lasivyo action == "store_true":
             setattr(values, dest, Kweli)
-        elikiwa action == "store_false":
+        lasivyo action == "store_false":
             setattr(values, dest, Uongo)
-        elikiwa action == "append":
+        lasivyo action == "append":
             values.ensure_value(dest, []).append(value)
-        elikiwa action == "append_const":
+        lasivyo action == "append_const":
             values.ensure_value(dest, []).append(self.const)
-        elikiwa action == "count":
+        lasivyo action == "count":
             setattr(values, dest, values.ensure_value(dest, 0) + 1)
-        elikiwa action == "callback":
+        lasivyo action == "callback":
             args = self.callback_args ama ()
             kwargs = self.callback_kwargs ama {}
             self.callback(self, opt, value, parser, *args, **kwargs)
-        elikiwa action == "help":
+        lasivyo action == "help":
             parser.print_help()
             parser.exit()
-        elikiwa action == "version":
+        lasivyo action == "version":
             parser.print_version()
             parser.exit()
         isipokua:
-             ashiria ValueError("unknown action %r" % self.action)
+            ashiria ValueError("unknown action %r" % self.action)
 
         rudisha 1
 
@@ -835,7 +835,7 @@ kundi Values:
     eleza __eq__(self, other):
         ikiwa isinstance(other, Values):
             rudisha self.__dict__ == other.__dict__
-        elikiwa isinstance(other, dict):
+        lasivyo isinstance(other, dict):
             rudisha self.__dict__ == other
         isipokua:
             rudisha NotImplemented
@@ -864,10 +864,10 @@ kundi Values:
     eleza _update(self, dict, mode):
         ikiwa mode == "careful":
             self._update_careful(dict)
-        elikiwa mode == "loose":
+        lasivyo mode == "loose":
             self._update_loose(dict)
         isipokua:
-             ashiria ValueError("invalid update mode: %r" % mode)
+            ashiria ValueError("invalid update mode: %r" % mode)
 
     eleza read_module(self, modname, mode="careful"):
         __import__(modname)
@@ -904,7 +904,7 @@ kundi OptionContainer:
         has multiple short option strings, it will appear kwenye this
         dictionary multiple times. [1]
       _long_opt : { string : Option }
-        dictionary mapping long option strings, eg. "--file" or
+        dictionary mapping long option strings, eg. "--file" ama
         "--exclude", to the Option instances that implement them.
         Again, a given Option can occur multiple times kwenye this
         dictionary. [1]
@@ -945,8 +945,8 @@ kundi OptionContainer:
         self.defaults = parser.defaults
 
     eleza set_conflict_handler(self, handler):
-        ikiwa handler sio kwenye ("error", "resolve"):
-             ashiria ValueError("invalid conflict_resolution value %r" % handler)
+        ikiwa handler haiko kwenye ("error", "resolve"):
+            ashiria ValueError("invalid conflict_resolution value %r" % handler)
         self.conflict_handler = handler
 
     eleza set_description(self, description):
@@ -977,11 +977,11 @@ kundi OptionContainer:
         ikiwa conflict_opts:
             handler = self.conflict_handler
             ikiwa handler == "error":
-                 ashiria OptionConflictError(
+                ashiria OptionConflictError(
                     "conflicting option string(s): %s"
                     % ", ".join([co[0] kila co kwenye conflict_opts]),
                     option)
-            elikiwa handler == "resolve":
+            lasivyo handler == "resolve":
                 kila (opt, c_option) kwenye conflict_opts:
                     ikiwa opt.startswith("--"):
                         c_option._long_opts.remove(opt)
@@ -998,12 +998,12 @@ kundi OptionContainer:
         """
         ikiwa isinstance(args[0], str):
             option = self.option_class(*args, **kwargs)
-        elikiwa len(args) == 1 na sio kwargs:
+        lasivyo len(args) == 1 na sio kwargs:
             option = args[0]
             ikiwa sio isinstance(option, Option):
-                 ashiria TypeError("not an Option instance: %r" % option)
+                ashiria TypeError("not an Option instance: %r" % option)
         isipokua:
-             ashiria TypeError("invalid arguments")
+            ashiria TypeError("invalid arguments")
 
         self._check_conflict(option)
 
@@ -1017,7 +1017,7 @@ kundi OptionContainer:
         ikiwa option.dest ni sio Tupu:     # option has a dest, we need a default
             ikiwa option.default ni sio NO_DEFAULT:
                 self.defaults[option.dest] = option.default
-            elikiwa option.dest sio kwenye self.defaults:
+            lasivyo option.dest haiko kwenye self.defaults:
                 self.defaults[option.dest] = Tupu
 
         rudisha option
@@ -1029,11 +1029,11 @@ kundi OptionContainer:
     # -- Option query/removal methods ----------------------------------
 
     eleza get_option(self, opt_str):
-        rudisha (self._short_opt.get(opt_str) or
+        rudisha (self._short_opt.get(opt_str) ama
                 self._long_opt.get(opt_str))
 
     eleza has_option(self, opt_str):
-        rudisha (opt_str kwenye self._short_opt or
+        rudisha (opt_str kwenye self._short_opt ama
                 opt_str kwenye self._long_opt)
 
     eleza remove_option(self, opt_str):
@@ -1041,7 +1041,7 @@ kundi OptionContainer:
         ikiwa option ni Tupu:
             option = self._long_opt.get(opt_str)
         ikiwa option ni Tupu:
-             ashiria ValueError("no such option %r" % opt_str)
+            ashiria ValueError("no such option %r" % opt_str)
 
         kila opt kwenye option._short_opts:
             toa self._short_opt[opt]
@@ -1140,15 +1140,15 @@ kundi OptionParser (OptionContainer):
           -ablah -bboo -- foo bar baz
         If this flag were false, that command line would be interpreted as
           -ablah -- foo bar -bboo baz
-        -- ie. we stop processing options as soon as we see the first
+        -- ie. we stop processing options kama soon kama we see the first
         non-option argument.  (This ni the tradition followed by
         Python's getopt module, Perl's Getopt::Std, na other argument-
         parsing libraries, but it ni generally annoying to users.)
 
       process_default_values : bool = true
         ikiwa true, option default values are processed similarly to option
-        values kutoka the command line: that is, they are passed to the
-        type-checking function kila the option's type (as long as the
+        values kutoka the command line: that is, they are pitaed to the
+        type-checking function kila the option's type (as long kama the
         default value ni a string).  (This really only matters ikiwa you
         have defined custom types; see SF bug #955889.)  Set it to false
         to restore the behaviour of Optik 1.4.1 na earlier.
@@ -1201,7 +1201,7 @@ kundi OptionParser (OptionContainer):
 
         # Populate the option list; initial sources are the
         # standard_option_list kundi attribute, the 'option_list'
-        # argument, na (ikiwa applicable) the _add_version_option() and
+        # argument, na (ikiwa applicable) the _add_version_option() na
         # _add_help_option() methods.
         self._populate_option_list(option_list,
                                    add_help=add_help_option)
@@ -1264,10 +1264,10 @@ kundi OptionParser (OptionContainer):
     eleza set_usage(self, usage):
         ikiwa usage ni Tupu:
             self.usage = _("%prog [options]")
-        elikiwa usage ni SUPPRESS_USAGE:
+        lasivyo usage ni SUPPRESS_USAGE:
             self.usage = Tupu
         # For backwards compatibility ukijumuisha Optik 1.3 na earlier.
-        elikiwa usage.lower().startswith("usage: "):
+        lasivyo usage.lower().startswith("usage: "):
             self.usage = usage[7:]
         isipokua:
             self.usage = usage
@@ -1324,20 +1324,20 @@ kundi OptionParser (OptionContainer):
         # XXX lots of overlap ukijumuisha OptionContainer.add_option()
         ikiwa isinstance(args[0], str):
             group = OptionGroup(self, *args, **kwargs)
-        elikiwa len(args) == 1 na sio kwargs:
+        lasivyo len(args) == 1 na sio kwargs:
             group = args[0]
             ikiwa sio isinstance(group, OptionGroup):
-                 ashiria TypeError("not an OptionGroup instance: %r" % group)
+                ashiria TypeError("not an OptionGroup instance: %r" % group)
             ikiwa group.parser ni sio self:
-                 ashiria ValueError("invalid OptionGroup (wrong parser)")
+                ashiria ValueError("invalid OptionGroup (wrong parser)")
         isipokua:
-             ashiria TypeError("invalid arguments")
+            ashiria TypeError("invalid arguments")
 
         self.option_groups.append(group)
         rudisha group
 
     eleza get_option_group(self, opt_str):
-        option = (self._short_opt.get(opt_str) or
+        option = (self._short_opt.get(opt_str) ama
                   self._long_opt.get(opt_str))
         ikiwa option na option.container ni sio self:
             rudisha option.container
@@ -1370,7 +1370,7 @@ kundi OptionParser (OptionContainer):
         ikiwa values ni Tupu:
             values = self.get_default_values()
 
-        # Store the halves of the argument list as attributes kila the
+        # Store the halves of the argument list kama attributes kila the
         # convenience of callbacks:
         #   rargs
         #     the rest of the command-line (the "r" stands for
@@ -1385,7 +1385,7 @@ kundi OptionParser (OptionContainer):
 
         jaribu:
             stop = self._process_args(largs, rargs, values)
-        except (BadOptionError, OptionValueError) as err:
+        tatizo (BadOptionError, OptionValueError) kama err:
             self.error(str(err))
 
         args = largs + rargs
@@ -1399,8 +1399,8 @@ kundi OptionParser (OptionContainer):
         Check that the supplied option values na leftover arguments are
         valid.  Returns the option values na leftover arguments
         (possibly adjusted, possibly completely new -- whatever you
-        like).  Default implementation just returns the passed-in
-        values; subclasses may override as desired.
+        like).  Default implementation just returns the pitaed-in
+        values; subclasses may override kama desired.
         """
         rudisha (values, args)
 
@@ -1422,14 +1422,14 @@ kundi OptionParser (OptionContainer):
             ikiwa arg == "--":
                 toa rargs[0]
                 return
-            elikiwa arg[0:2] == "--":
+            lasivyo arg[0:2] == "--":
                 # process a single long option (possibly ukijumuisha value(s))
                 self._process_long_opt(rargs, values)
-            elikiwa arg[:1] == "-" na len(arg) > 1:
+            lasivyo arg[:1] == "-" na len(arg) > 1:
                 # process a cluster of short options (possibly with
                 # value(s) kila the last one only)
                 self._process_short_opts(rargs, values)
-            elikiwa self.allow_interspersed_args:
+            lasivyo self.allow_interspersed_args:
                 largs.append(arg)
                 toa rargs[0]
             isipokua:
@@ -1444,7 +1444,7 @@ kundi OptionParser (OptionContainer):
         # [arg0, ..., arg(i-1)] (any options na their arguments will have
         # been removed kutoka largs).
         #
-        # The wakati loop will usually consume 1 ama more arguments per pass.
+        # The wakati loop will usually consume 1 ama more arguments per pita.
         # If it consumes 1 (eg. arg ni an option that takes no arguments),
         # then after _process_arg() ni done the situation is:
         #
@@ -1486,13 +1486,13 @@ kundi OptionParser (OptionContainer):
                     "%(option)s option requires %(number)d argument",
                     "%(option)s option requires %(number)d arguments",
                     nargs) % {"option": opt, "number": nargs})
-            elikiwa nargs == 1:
+            lasivyo nargs == 1:
                 value = rargs.pop(0)
             isipokua:
                 value = tuple(rargs[0:nargs])
                 toa rargs[0:nargs]
 
-        elikiwa had_explicit_value:
+        lasivyo had_explicit_value:
             self.error(_("%s option does sio take a value") % opt)
 
         isipokua:
@@ -1510,7 +1510,7 @@ kundi OptionParser (OptionContainer):
             i += 1                      # we have consumed a character
 
             ikiwa sio option:
-                 ashiria BadOptionError(opt)
+                ashiria BadOptionError(opt)
             ikiwa option.takes_value():
                 # Any characters left kwenye arg?  Pretend they're the
                 # next arg, na stop consuming characters of arg.
@@ -1524,7 +1524,7 @@ kundi OptionParser (OptionContainer):
                         "%(option)s option requires %(number)d argument",
                         "%(option)s option requires %(number)d arguments",
                         nargs) % {"option": opt, "number": nargs})
-                elikiwa nargs == 1:
+                lasivyo nargs == 1:
                     value = rargs.pop(0)
                 isipokua:
                     value = tuple(rargs[0:nargs])
@@ -1563,7 +1563,7 @@ kundi OptionParser (OptionContainer):
 
         Print a usage message incorporating 'msg' to stderr na exit.
         If you override this kwenye a subclass, it should sio rudisha -- it
-        should either exit ama  ashiria an exception.
+        should either exit ama ashiria an exception.
         """
         self.print_usage(sys.stderr)
         self.exit(2, "%s: error: %s\n" % (self.get_prog_name(), msg))
@@ -1654,24 +1654,24 @@ eleza _match_abbrev(s, wordmap):
 
     Return the string key kwenye 'wordmap' kila which 's' ni an unambiguous
     abbreviation.  If 's' ni found to be ambiguous ama doesn't match any of
-    'words',  ashiria BadOptionError.
+    'words', ashiria BadOptionError.
     """
     # Is there an exact match?
     ikiwa s kwenye wordmap:
         rudisha s
     isipokua:
-        # Isolate all words ukijumuisha s as a prefix.
+        # Isolate all words ukijumuisha s kama a prefix.
         possibilities = [word kila word kwenye wordmap.keys()
                          ikiwa word.startswith(s)]
         # No exact match, so there had better be just one possibility.
         ikiwa len(possibilities) == 1:
             rudisha possibilities[0]
-        elikiwa sio possibilities:
-             ashiria BadOptionError(s)
+        lasivyo sio possibilities:
+            ashiria BadOptionError(s)
         isipokua:
             # More than one possible completion: ambiguous prefix.
             possibilities.sort()
-             ashiria AmbiguousOptionError(s, possibilities)
+            ashiria AmbiguousOptionError(s, possibilities)
 
 
 # Some day, there might be many Option classes.  As of Optik 1.3, the

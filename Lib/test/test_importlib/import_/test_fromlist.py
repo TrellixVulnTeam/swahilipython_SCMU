@@ -17,7 +17,7 @@ kundi ReturnValue:
 
     eleza test_return_from_import(self):
         # [agiza return]
-        ukijumuisha util.mock_spec('pkg.__init__', 'pkg.module') as importer:
+        ukijumuisha util.mock_spec('pkg.__init__', 'pkg.module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.module')
                 self.assertEqual(module.__name__, 'pkg')
@@ -44,7 +44,7 @@ kundi HandlingFromlist:
     [object case]. This ni even true ikiwa the object does sio exist [bad object].
 
     If a package ni being imported, then what ni listed kwenye fromlist may be
-    treated as a module to be imported [module]. And this extends to what is
+    treated kama a module to be imported [module]. And this extends to what is
     contained kwenye __all__ when '*' ni imported [using *]. And '*' does sio need
     to be the only name kwenye the fromlist [using * ukijumuisha others].
 
@@ -52,14 +52,14 @@ kundi HandlingFromlist:
 
     eleza test_object(self):
         # [object case]
-        ukijumuisha util.mock_modules('module') as importer:
+        ukijumuisha util.mock_modules('module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('module', fromlist=['attr'])
                 self.assertEqual(module.__name__, 'module')
 
     eleza test_nonexistent_object(self):
         # [bad object]
-        ukijumuisha util.mock_modules('module') as importer:
+        ukijumuisha util.mock_modules('module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('module', fromlist=['non_existent'])
                 self.assertEqual(module.__name__, 'module')
@@ -67,7 +67,7 @@ kundi HandlingFromlist:
 
     eleza test_module_from_package(self):
         # [module]
-        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', fromlist=['module'])
                 self.assertEqual(module.__name__, 'pkg')
@@ -75,7 +75,7 @@ kundi HandlingFromlist:
                 self.assertEqual(module.module.__name__, 'pkg.module')
 
     eleza test_nonexistent_from_package(self):
-        ukijumuisha util.mock_modules('pkg.__init__') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg', fromlist=['non_existent'])
                 self.assertEqual(module.__name__, 'pkg')
@@ -88,21 +88,21 @@ kundi HandlingFromlist:
         eleza module_code():
             agiza i_do_not_exist
         ukijumuisha util.mock_modules('pkg.__init__', 'pkg.mod',
-                               module_code={'pkg.mod': module_code}) as importer:
+                               module_code={'pkg.mod': module_code}) kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
-                ukijumuisha self.assertRaises(ModuleNotFoundError) as exc:
+                ukijumuisha self.assertRaises(ModuleNotFoundError) kama exc:
                     self.__import__('pkg', fromlist=['mod'])
                 self.assertEqual('i_do_not_exist', exc.exception.name)
 
     eleza test_empty_string(self):
-        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.mod') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.mod') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 module = self.__import__('pkg.mod', fromlist=[''])
                 self.assertEqual(module.__name__, 'pkg.mod')
 
     eleza basic_star_test(self, fromlist=['*']):
         # [using *]
-        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module') as mock:
+        ukijumuisha util.mock_modules('pkg.__init__', 'pkg.module') kama mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module']
                 module = self.__import__('pkg', fromlist=fromlist)
@@ -120,7 +120,7 @@ kundi HandlingFromlist:
     eleza test_star_with_others(self):
         # [using * ukijumuisha others]
         context = util.mock_modules('pkg.__init__', 'pkg.module1', 'pkg.module2')
-        ukijumuisha context as mock:
+        ukijumuisha context kama mock:
             ukijumuisha util.import_state(meta_path=[mock]):
                 mock['pkg'].__all__ = ['module1']
                 module = self.__import__('pkg', fromlist=['module2', '*'])
@@ -131,7 +131,7 @@ kundi HandlingFromlist:
                 self.assertEqual(module.module2.__name__, 'pkg.module2')
 
     eleza test_nonexistent_in_all(self):
-        ukijumuisha util.mock_modules('pkg.__init__') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['non_existent']
                 module = self.__import__('pkg', fromlist=['*'])
@@ -139,7 +139,7 @@ kundi HandlingFromlist:
                 self.assertUongo(hasattr(module, 'non_existent'))
 
     eleza test_star_in_all(self):
-        ukijumuisha util.mock_modules('pkg.__init__') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]):
                 importer['pkg'].__all__ = ['*']
                 module = self.__import__('pkg', fromlist=['*'])
@@ -147,7 +147,7 @@ kundi HandlingFromlist:
                 self.assertUongo(hasattr(module, '*'))
 
     eleza test_invalid_type(self):
-        ukijumuisha util.mock_modules('pkg.__init__') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)
@@ -157,7 +157,7 @@ kundi HandlingFromlist:
                     self.__import__('pkg', fromlist=iter([b'attr']))
 
     eleza test_invalid_type_in_all(self):
-        ukijumuisha util.mock_modules('pkg.__init__') as importer:
+        ukijumuisha util.mock_modules('pkg.__init__') kama importer:
             ukijumuisha util.import_state(meta_path=[importer]), \
                  warnings.catch_warnings():
                 warnings.simplefilter('error', BytesWarning)

@@ -41,7 +41,7 @@ kundi AboutDialog(Toplevel):
         self.fg = "#000000"
         self.create_widgets()
         self.resizable(height=Uongo, width=Uongo)
-        self.title(title or
+        self.title(title ama
                    f'About IDLE {python_version()} ({build_bits()} bit)')
         self.transient(parent)
         self.grab_set()
@@ -156,7 +156,7 @@ kundi AboutDialog(Toplevel):
         self.display_printer_text('About - Python Credits', credits)
 
     # Encode CREDITS.txt to utf-8 kila proper version of Loewis.
-    # Specify others as ascii until need utf-8, so catch errors.
+    # Specify others kama ascii until need utf-8, so catch errors.
     eleza show_idle_credits(self):
         "Handle Idle Credits button event."
         self.display_file_text('About - Credits', 'CREDITS.txt', 'utf-8')
@@ -174,7 +174,7 @@ kundi AboutDialog(Toplevel):
 
         Built-in constants have type _sitebuiltins._Printer.  The
         text ni extracted kutoka the built-in na then sent to a text
-        viewer ukijumuisha self as the parent na title as the title of
+        viewer ukijumuisha self kama the parent na title kama the title of
         the popup.
         """
         printer._Printer__setup()
@@ -186,7 +186,7 @@ kundi AboutDialog(Toplevel):
         """Create textview kila filename.
 
         The filename needs to be kwenye the current directory.  The path
-        ni sent to a text viewer ukijumuisha self as the parent, title as
+        ni sent to a text viewer ukijumuisha self kama the parent, title as
         the title of the popup, na the file encoding.
         """
         fn = os.path.join(os.path.abspath(os.path.dirname(__file__)), filename)

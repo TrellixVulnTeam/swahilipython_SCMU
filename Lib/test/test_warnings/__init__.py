@@ -9,9 +9,9 @@ agiza unittest
 kutoka test agiza support
 kutoka test.support.script_helper agiza assert_python_ok, assert_python_failure
 
-kutoka test.test_warnings.data agiza stacklevel as warning_tests
+kutoka test.test_warnings.data agiza stacklevel kama warning_tests
 
-agiza warnings as original_warnings
+agiza warnings kama original_warnings
 
 py_warnings = support.import_fresh_module('warnings', blocked=['_warnings'])
 c_warnings = support.import_fresh_module('warnings', fresh=['_warnings'])
@@ -25,19 +25,19 @@ eleza warnings_state(module):
     kila to_clear kwenye (sys, warning_tests):
         jaribu:
             to_clear.__warningregistry__.clear()
-        except AttributeError:
-            pass
+        tatizo AttributeError:
+            pita
     jaribu:
         __warningregistry__.clear()
-    except NameError:
-        pass
+    tatizo NameError:
+        pita
     original_warnings = warning_tests.warnings
     original_filters = module.filters
     jaribu:
         module.filters = original_filters[:]
         module.simplefilter("once")
         warning_tests.warnings = module
-        yield
+        tuma
     mwishowe:
         warning_tests.warnings = original_warnings
         module.filters = original_filters
@@ -96,20 +96,20 @@ kundi FilterTests(BaseTest):
     """Testing the filtering functionality."""
 
     eleza test_error(self):
-        ukijumuisha original_warnings.catch_warnings(module=self.module) as w:
+        ukijumuisha original_warnings.catch_warnings(module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("error", category=UserWarning)
             self.assertRaises(UserWarning, self.module.warn,
                                 "FilterTests.test_error")
 
     eleza test_error_after_default(self):
-        ukijumuisha original_warnings.catch_warnings(module=self.module) as w:
+        ukijumuisha original_warnings.catch_warnings(module=self.module) kama w:
             self.module.resetwarnings()
             message = "FilterTests.test_ignore_after_default"
             eleza f():
                 self.module.warn(message, UserWarning)
 
-            ukijumuisha support.captured_stderr() as stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 f()
             stderr = stderr.getvalue()
             self.assertIn("UserWarning: FilterTests.test_ignore_after_default",
@@ -122,7 +122,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_ignore(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("ignore", category=UserWarning)
             self.module.warn("FilterTests.test_ignore", UserWarning)
@@ -131,7 +131,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_ignore_after_default(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             message = "FilterTests.test_ignore_after_default"
             eleza f():
@@ -144,7 +144,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_always(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("always", category=UserWarning)
             message = "FilterTests.test_always"
@@ -159,7 +159,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_always_after_default(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             message = "FilterTests.test_always_after_ignore"
             eleza f():
@@ -179,7 +179,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_default(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("default", category=UserWarning)
             message = UserWarning("FilterTests.test_default")
@@ -188,14 +188,14 @@ kundi FilterTests(BaseTest):
                 ikiwa x == 0:
                     self.assertEqual(w[-1].message, message)
                     toa w[:]
-                elikiwa x == 1:
+                lasivyo x == 1:
                     self.assertEqual(len(w), 0)
                 isipokua:
-                     ashiria ValueError("loop variant unhandled")
+                    ashiria ValueError("loop variant unhandled")
 
     eleza test_module(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("module", category=UserWarning)
             message = UserWarning("FilterTests.test_module")
@@ -207,7 +207,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_once(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("once", category=UserWarning)
             message = UserWarning("FilterTests.test_once")
@@ -224,7 +224,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_module_globals(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.simplefilter("always", UserWarning)
 
             # bpo-33509: module_globals=Tupu must sio crash
@@ -244,7 +244,7 @@ kundi FilterTests(BaseTest):
             self.assertEqual(len(w), 2)
 
     eleza test_inheritance(self):
-        ukijumuisha original_warnings.catch_warnings(module=self.module) as w:
+        ukijumuisha original_warnings.catch_warnings(module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("error", category=Warning)
             self.assertRaises(UserWarning, self.module.warn,
@@ -252,7 +252,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_ordering(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("ignore", category=UserWarning)
             self.module.filterwarnings("error", category=UserWarning,
@@ -260,7 +260,7 @@ kundi FilterTests(BaseTest):
             toa w[:]
             jaribu:
                 self.module.warn("FilterTests.test_ordering", UserWarning)
-            except UserWarning:
+            tatizo UserWarning:
                 self.fail("order handling kila actions failed")
             self.assertEqual(len(w), 0)
 
@@ -268,7 +268,7 @@ kundi FilterTests(BaseTest):
         # Test filterwarnings().
         # Implicitly also tests resetwarnings().
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn, 'convert to error')
 
@@ -293,7 +293,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_message_matching(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.simplefilter("ignore", UserWarning)
             self.module.filterwarnings("error", "match", UserWarning)
             self.assertRaises(UserWarning, self.module.warn, "match")
@@ -310,7 +310,7 @@ kundi FilterTests(BaseTest):
 
         L = [("default",X(),UserWarning,X(),0) kila i kwenye range(2)]
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.filters = L
             self.module.warn_explicit(UserWarning("b"), Tupu, "f.py", 42)
             self.assertEqual(str(w[-1].message), "b")
@@ -350,7 +350,7 @@ kundi FilterTests(BaseTest):
 
     eleza test_append_duplicate(self):
         ukijumuisha original_warnings.catch_warnings(module=self.module,
-                record=Kweli) as w:
+                record=Kweli) kama w:
             self.module.resetwarnings()
             self.module.simplefilter("ignore")
             self.module.simplefilter("error", append=Kweli)
@@ -376,7 +376,7 @@ kundi WarnTests(BaseTest):
 
     eleza test_message(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.simplefilter("once")
             kila i kwenye range(4):
                 text = 'multi %d' %i  # Different text on each call.
@@ -389,7 +389,7 @@ kundi WarnTests(BaseTest):
         # warn() should handle non-standard types without issue.
         kila ob kwenye (Warning, Tupu, 42):
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 self.module.simplefilter("once")
                 self.module.warn(ob)
                 # Don't directly compare objects since
@@ -399,7 +399,7 @@ kundi WarnTests(BaseTest):
     eleza test_filename(self):
         ukijumuisha warnings_state(self.module):
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 warning_tests.inner("spam1")
                 self.assertEqual(os.path.basename(w[-1].filename),
                                     "stacklevel.py")
@@ -412,7 +412,7 @@ kundi WarnTests(BaseTest):
         # make sure all messages are different, so the warning won't be skipped
         ukijumuisha warnings_state(self.module):
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 warning_tests.inner("spam3", stacklevel=1)
                 self.assertEqual(os.path.basename(w[-1].filename),
                                     "stacklevel.py")
@@ -439,7 +439,7 @@ kundi WarnTests(BaseTest):
         support.unload('test.test_warnings.data.import_warning')
         ukijumuisha warnings_state(self.module):
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 self.module.simplefilter('always')
                 agiza test.test_warnings.data.import_warning
                 self.assertEqual(len(w), 1)
@@ -450,20 +450,20 @@ kundi WarnTests(BaseTest):
         codeobj = compile(("agiza warnings\n"
                            "warnings.warn('hello', UserWarning)"),
                           filename, "exec")
-        ukijumuisha original_warnings.catch_warnings(record=Kweli) as w:
+        ukijumuisha original_warnings.catch_warnings(record=Kweli) kama w:
             self.module.simplefilter("always", category=UserWarning)
             exec(codeobj)
         self.assertEqual(w[0].filename, filename)
 
     eleza test_warn_explicit_non_ascii_filename(self):
         ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                module=self.module) as w:
+                module=self.module) kama w:
             self.module.resetwarnings()
             self.module.filterwarnings("always", category=UserWarning)
             kila filename kwenye ("nonascii\xe9\u20ac", "surrogate\udc80"):
                 jaribu:
                     os.fsencode(filename)
-                except UnicodeEncodeError:
+                tatizo UnicodeEncodeError:
                     endelea
                 self.module.warn_explicit("text", UserWarning, filename, 1)
                 self.assertEqual(w[-1].filename, filename)
@@ -498,24 +498,24 @@ kundi WarnTests(BaseTest):
 
     eleza test_warning_classes(self):
         kundi MyWarningClass(Warning):
-            pass
+            pita
 
         kundi NonWarningSubclass:
-            pass
+            pita
 
-        # passing a non-subkundi of Warning should  ashiria a TypeError
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        # pitaing a non-subkundi of Warning should ashiria a TypeError
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             self.module.warn('bad warning category', '')
         self.assertIn('category must be a Warning subclass, sio ',
                       str(cm.exception))
 
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             self.module.warn('bad warning category', NonWarningSubclass)
         self.assertIn('category must be a Warning subclass, sio ',
                       str(cm.exception))
 
-        # check that warning instances also  ashiria a TypeError
-        ukijumuisha self.assertRaises(TypeError) as cm:
+        # check that warning instances also ashiria a TypeError
+        ukijumuisha self.assertRaises(TypeError) kama cm:
             self.module.warn('bad warning category', MyWarningClass())
         self.assertIn('category must be a Warning subclass, sio ',
                       str(cm.exception))
@@ -523,15 +523,15 @@ kundi WarnTests(BaseTest):
         ukijumuisha original_warnings.catch_warnings(module=self.module):
             self.module.resetwarnings()
             self.module.filterwarnings('default')
-            ukijumuisha self.assertWarns(MyWarningClass) as cm:
+            ukijumuisha self.assertWarns(MyWarningClass) kama cm:
                 self.module.warn('good warning category', MyWarningClass)
             self.assertEqual('good warning category', str(cm.warning))
 
-            ukijumuisha self.assertWarns(UserWarning) as cm:
+            ukijumuisha self.assertWarns(UserWarning) kama cm:
                 self.module.warn('good warning category', Tupu)
             self.assertEqual('good warning category', str(cm.warning))
 
-            ukijumuisha self.assertWarns(MyWarningClass) as cm:
+            ukijumuisha self.assertWarns(MyWarningClass) kama cm:
                 self.module.warn('good warning category', MyWarningClass)
             self.assertIsInstance(cm.warning, Warning)
 
@@ -578,10 +578,10 @@ kundi PyWCmdLineTests(WCmdLineTests, unittest.TestCase):
     module = py_warnings
 
     eleza test_improper_option(self):
-        # Same as above, but check that the message ni printed out when
+        # Same kama above, but check that the message ni printed out when
         # the interpreter ni executed. This also checks that options are
         # actually parsed at all.
-        rc, out, err = assert_python_ok("-Wxxx", "-c", "pass")
+        rc, out, err = assert_python_ok("-Wxxx", "-c", "pita")
         self.assertIn(b"Invalid -W option ignored: invalid action: 'xxx'", err)
 
     eleza test_warnings_bootstrap(self):
@@ -601,8 +601,8 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
     module = c_warnings
 
     eleza test_filter(self):
-        # Everything should function even ikiwa 'filters' ni sio kwenye warnings.
-        ukijumuisha original_warnings.catch_warnings(module=self.module) as w:
+        # Everything should function even ikiwa 'filters' ni haiko kwenye warnings.
+        ukijumuisha original_warnings.catch_warnings(module=self.module) kama w:
             self.module.filterwarnings("error", "", Warning, "", 0)
             self.assertRaises(UserWarning, self.module.warn,
                                 'convert to error')
@@ -618,7 +618,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
             original_registry = self.module.onceregistry
             __warningregistry__ = {}
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 self.module.resetwarnings()
                 self.module.filterwarnings("once", category=UserWarning)
                 self.module.warn_explicit(message, UserWarning, "file", 42)
@@ -646,7 +646,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         original = self.module.defaultaction
         jaribu:
             ukijumuisha original_warnings.catch_warnings(record=Kweli,
-                    module=self.module) as w:
+                    module=self.module) kama w:
                 self.module.resetwarnings()
                 registry = {}
                 self.module.warn_explicit(message, UserWarning, "<test>", 42,
@@ -683,7 +683,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         ukijumuisha original_warnings.catch_warnings(module=self.module):
             self.module.filterwarnings("always", category=UserWarning)
             toa self.module.showwarning
-            ukijumuisha support.captured_output('stderr') as stream:
+            ukijumuisha support.captured_output('stderr') kama stream:
                 self.module.warn(text)
                 result = stream.getvalue()
         self.assertIn(text, result)
@@ -697,7 +697,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
             show = self.module._showwarnmsg
             jaribu:
                 toa self.module._showwarnmsg
-                ukijumuisha support.captured_output('stderr') as stream:
+                ukijumuisha support.captured_output('stderr') kama stream:
                     self.module.warn(text)
                     result = stream.getvalue()
             mwishowe:
@@ -719,7 +719,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         ukijumuisha original_warnings.catch_warnings(module=self.module):
             self.module.filterwarnings("always", category=UserWarning)
             toa self.module.showwarning
-            ukijumuisha support.captured_output('stderr') as stream:
+            ukijumuisha support.captured_output('stderr') kama stream:
                 warning_tests.inner(text)
                 result = stream.getvalue()
         self.assertEqual(result.count('\n'), 2,
@@ -743,7 +743,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         jaribu:
             catch = original_warnings.catch_warnings(record=Kweli,
                                                      module=self.module)
-            ukijumuisha catch as w:
+            ukijumuisha catch kama w:
                 self.module.filterwarnings("always", category=UserWarning)
                 globals_dict['__file__'] = Tupu
                 original_warnings.warn('test', UserWarning)
@@ -761,7 +761,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         self.assertNotIn(b'Error', stderr)
 
     eleza test_issue31285(self):
-        # warn_explicit() should neither  ashiria a SystemError nor cause an
+        # warn_explicit() should neither ashiria a SystemError nor cause an
         # assertion failure, kwenye case the rudisha value of get_source() has a
         # bad splitlines() method.
         eleza get_bad_loader(splitlines_ret_val):
@@ -777,7 +777,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
         ukijumuisha original_warnings.catch_warnings(module=wmod):
             wmod.filterwarnings('default', category=UserWarning)
 
-            ukijumuisha support.captured_stderr() as stderr:
+            ukijumuisha support.captured_stderr() kama stderr:
                 wmod.warn_explicit(
                     'foo', UserWarning, 'bar', 1,
                     module_globals={'__loader__': get_bad_loader(42),
@@ -787,7 +787,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
             show = wmod._showwarnmsg
             jaribu:
                 toa wmod._showwarnmsg
-                ukijumuisha support.captured_stderr() as stderr:
+                ukijumuisha support.captured_stderr() kama stderr:
                     wmod.warn_explicit(
                         'eggs', UserWarning, 'bar', 1,
                         module_globals={'__loader__': get_bad_loader([42]),
@@ -798,7 +798,7 @@ kundi _WarningsTests(BaseTest, unittest.TestCase):
 
     @support.cpython_only
     eleza test_issue31411(self):
-        # warn_explicit() shouldn't  ashiria a SystemError kwenye case
+        # warn_explicit() shouldn't ashiria a SystemError kwenye case
         # warnings.onceregistry isn't a dictionary.
         wmod = self.module
         ukijumuisha original_warnings.catch_warnings(module=wmod):
@@ -879,7 +879,7 @@ kundi WarningsDisplayTests(BaseTest):
 
     eleza test_formatwarning_override(self):
         # bpo-35178: Test that a custom formatwarning function gets the 'line'
-        # argument as a positional argument, na sio only as a keyword argument
+        # argument kama a positional argument, na sio only kama a keyword argument
         eleza myformatwarning(message, category, filename, lineno, text):
             rudisha f'm={message}:c={category}:f={filename}:l={lineno}:t={text}'
 
@@ -906,7 +906,7 @@ kundi PyWarningsDisplayTests(WarningsDisplayTests, unittest.TestCase):
     eleza test_tracemalloc(self):
         self.addCleanup(support.unlink, support.TESTFN)
 
-        ukijumuisha open(support.TESTFN, 'w') as fp:
+        ukijumuisha open(support.TESTFN, 'w') kama fp:
             fp.write(textwrap.dedent("""
                 eleza func():
                     f = open(__file__)
@@ -972,7 +972,7 @@ kundi CatchWarningTests(BaseTest):
     eleza test_catch_warnings_recording(self):
         wmod = self.module
         # Ensure warnings are recorded when requested
-        ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) as w:
+        ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) kama w:
             self.assertEqual(w, [])
             self.assertIs(type(w), list)
             wmod.simplefilter("always")
@@ -986,7 +986,7 @@ kundi CatchWarningTests(BaseTest):
             self.assertEqual(w, [])
         # Ensure warnings are sio recorded when sio requested
         orig_showwarning = wmod.showwarning
-        ukijumuisha wmod.catch_warnings(module=wmod, record=Uongo) as w:
+        ukijumuisha wmod.catch_warnings(module=wmod, record=Uongo) kama w:
             self.assertIsTupu(w)
             self.assertIs(wmod.showwarning, orig_showwarning)
 
@@ -1008,14 +1008,14 @@ kundi CatchWarningTests(BaseTest):
         orig_filters = wmod.filters
         orig_showwarning = wmod.showwarning
         # Ensure default behaviour ni sio to record warnings
-        ukijumuisha wmod.catch_warnings(module=wmod) as w:
+        ukijumuisha wmod.catch_warnings(module=wmod) kama w:
             self.assertIsTupu(w)
             self.assertIs(wmod.showwarning, orig_showwarning)
             self.assertIsNot(wmod.filters, orig_filters)
         self.assertIs(wmod.filters, orig_filters)
         ikiwa wmod ni sys.modules['warnings']:
             # Ensure the default module ni this one
-            ukijumuisha wmod.catch_warnings() as w:
+            ukijumuisha wmod.catch_warnings() kama w:
                 self.assertIsTupu(w)
                 self.assertIs(wmod.showwarning, orig_showwarning)
                 self.assertIsNot(wmod.filters, orig_filters)
@@ -1034,7 +1034,7 @@ kundi CatchWarningTests(BaseTest):
 
         # Override warnings.showwarning() before calling catch_warnings()
         ukijumuisha support.swap_attr(wmod, 'showwarning', my_logger):
-            ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) as log:
+            ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) kama log:
                 self.assertIsNot(wmod.showwarning, my_logger)
 
                 wmod.simplefilter("always")
@@ -1057,7 +1057,7 @@ kundi CatchWarningTests(BaseTest):
             nonlocal my_log
             my_log.append(message)
 
-        ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) as log:
+        ukijumuisha wmod.catch_warnings(module=wmod, record=Kweli) kama log:
             wmod.simplefilter("always")
             wmod.showwarning = my_logger
             wmod.warn(text)
@@ -1071,7 +1071,7 @@ kundi CatchWarningTests(BaseTest):
         wmod = self.module
         ikiwa wmod ni sio sys.modules['warnings']:
             self.skipTest('module to test ni sio loaded warnings module')
-        ukijumuisha support.check_warnings(quiet=Uongo) as w:
+        ukijumuisha support.check_warnings(quiet=Uongo) kama w:
             self.assertEqual(w.warnings, [])
             wmod.simplefilter("always")
             wmod.warn("foo")
@@ -1085,14 +1085,14 @@ kundi CatchWarningTests(BaseTest):
 
         ukijumuisha support.check_warnings():
             # defaults to quiet=Kweli without argument
-            pass
+            pita
         ukijumuisha support.check_warnings(('foo', UserWarning)):
             wmod.warn("foo")
 
         ukijumuisha self.assertRaises(AssertionError):
             ukijumuisha support.check_warnings(('', RuntimeWarning)):
                 # defaults to quiet=Uongo ukijumuisha argument
-                pass
+                pita
         ukijumuisha self.assertRaises(AssertionError):
             ukijumuisha support.check_warnings(('foo', RuntimeWarning)):
                 wmod.warn("foo")
@@ -1196,12 +1196,12 @@ kundi BootstrapTest(unittest.TestCase):
         # "agiza encodings" emits a warning whereas the warnings ni sio loaded
         # ama sio completely loaded (warnings imports indirectly encodings by
         # importing linecache) yet
-        ukijumuisha support.temp_cwd() as cwd, support.temp_cwd('encodings'):
+        ukijumuisha support.temp_cwd() kama cwd, support.temp_cwd('encodings'):
             # encodings loaded by initfsencoding()
-            assert_python_ok('-c', 'pass', PYTHONPATH=cwd)
+            assert_python_ok('-c', 'pita', PYTHONPATH=cwd)
 
             # Use -W to load warnings module at startup
-            assert_python_ok('-c', 'pass', '-W', 'always', PYTHONPATH=cwd)
+            assert_python_ok('-c', 'pita', '-W', 'always', PYTHONPATH=cwd)
 
 
 kundi FinalizationTest(unittest.TestCase):

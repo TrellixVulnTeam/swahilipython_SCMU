@@ -25,7 +25,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza setUp():
             events.append('setUp')
-             ashiria RuntimeError('raised by setUp')
+            ashiria RuntimeError('raised by setUp')
 
         eleza test():
             events.append('test')
@@ -53,7 +53,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza test():
             events.append('test')
-             ashiria RuntimeError('raised by test')
+            ashiria RuntimeError('raised by test')
 
         eleza tearDown():
             events.append('tearDown')
@@ -108,7 +108,7 @@ kundi Test_FunctionTestCase(unittest.TestCase):
 
         eleza tearDown():
             events.append('tearDown')
-             ashiria RuntimeError('raised by tearDown')
+            ashiria RuntimeError('raised by tearDown')
 
         expected = ['startTest', 'setUp', 'test', 'tearDown', 'addError',
                     'stopTest']

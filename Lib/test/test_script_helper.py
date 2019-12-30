@@ -21,14 +21,14 @@ kundi TestScriptHelper(unittest.TestCase):
 
     eleza test_assert_python_ok_raises(self):
         # I didn't agiza the sys module so this child will fail.
-        ukijumuisha self.assertRaises(AssertionError) as error_context:
+        ukijumuisha self.assertRaises(AssertionError) kama error_context:
             script_helper.assert_python_ok('-c', 'sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('command line:', error_msg)
         self.assertIn('sys.exit(0)', error_msg, msg='unexpected command line')
 
     eleza test_assert_python_failure_raises(self):
-        ukijumuisha self.assertRaises(AssertionError) as error_context:
+        ukijumuisha self.assertRaises(AssertionError) kama error_context:
             script_helper.assert_python_failure('-c', 'agiza sys; sys.exit(0)')
         error_msg = str(error_context.exception)
         self.assertIn('Process rudisha code ni 0\n', error_msg)
@@ -39,11 +39,11 @@ kundi TestScriptHelper(unittest.TestCase):
     eleza test_assert_python_isolated_when_env_not_required(self, mock_popen):
         ukijumuisha mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=Uongo) as mock_ire_func:
+                               return_value=Uongo) kama mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             jaribu:
                 script_helper._assert_python(Kweli, '-c', 'Tupu')
-            except RuntimeError as err:
+            tatizo RuntimeError kama err:
                 self.assertEqual('bail out of unittest', err.args[0])
             self.assertEqual(1, mock_popen.call_count)
             self.assertEqual(1, mock_ire_func.call_count)
@@ -55,14 +55,14 @@ kundi TestScriptHelper(unittest.TestCase):
 
     @mock.patch('subprocess.Popen')
     eleza test_assert_python_not_isolated_when_env_is_required(self, mock_popen):
-        """Ensure that -I ni sio passed when the environment ni required."""
+        """Ensure that -I ni sio pitaed when the environment ni required."""
         ukijumuisha mock.patch.object(script_helper,
                                'interpreter_requires_environment',
-                               return_value=Kweli) as mock_ire_func:
+                               return_value=Kweli) kama mock_ire_func:
             mock_popen.side_effect = RuntimeError('bail out of unittest')
             jaribu:
                 script_helper._assert_python(Kweli, '-c', 'Tupu')
-            except RuntimeError as err:
+            tatizo RuntimeError kama err:
                 self.assertEqual('bail out of unittest', err.args[0])
             popen_command = mock_popen.call_args[0][0]
             self.assertNotIn('-I', popen_command)

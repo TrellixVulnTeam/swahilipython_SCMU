@@ -17,14 +17,14 @@ kundi PindentTests(unittest.TestCase):
     script = os.path.join(scriptsdir, 'pindent.py')
 
     eleza assertFileEqual(self, fn1, fn2):
-        ukijumuisha open(fn1) as f1, open(fn2) as f2:
+        ukijumuisha open(fn1) kama f1, open(fn2) kama f2:
             self.assertEqual(f1.readlines(), f2.readlines())
 
     eleza pindent(self, source, *args):
         ukijumuisha subprocess.Popen(
                 (sys.executable, self.script) + args,
                 stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                universal_newlines=Kweli) as proc:
+                universal_newlines=Kweli) kama proc:
             out, err = proc.communicate(source)
         self.assertIsTupu(err)
         rudisha out
@@ -34,11 +34,11 @@ kundi PindentTests(unittest.TestCase):
 
     eleza test_selftest(self):
         self.maxDiff = Tupu
-        ukijumuisha support.temp_dir() as directory:
+        ukijumuisha support.temp_dir() kama directory:
             data_path = os.path.join(directory, '_test.py')
-            ukijumuisha open(self.script) as f:
+            ukijumuisha open(self.script) kama f:
                 closed = f.read()
-            ukijumuisha open(data_path, 'w') as f:
+            ukijumuisha open(data_path, 'w') kama f:
                 f.write(closed)
 
             rc, out, err = assert_python_ok(self.script, '-d', data_path)
@@ -46,9 +46,9 @@ kundi PindentTests(unittest.TestCase):
             self.assertEqual(err, b'')
             backup = data_path + '~'
             self.assertKweli(os.path.exists(backup))
-            ukijumuisha open(backup) as f:
+            ukijumuisha open(backup) kama f:
                 self.assertEqual(f.read(), closed)
-            ukijumuisha open(data_path) as f:
+            ukijumuisha open(data_path) kama f:
                 clean = f.read()
             compile(clean, '_test.py', 'exec')
             self.assertEqual(self.pindent(clean, '-c'), closed)
@@ -57,20 +57,20 @@ kundi PindentTests(unittest.TestCase):
             rc, out, err = assert_python_ok(self.script, '-c', data_path)
             self.assertEqual(out, b'')
             self.assertEqual(err, b'')
-            ukijumuisha open(backup) as f:
+            ukijumuisha open(backup) kama f:
                 self.assertEqual(f.read(), clean)
-            ukijumuisha open(data_path) as f:
+            ukijumuisha open(data_path) kama f:
                 self.assertEqual(f.read(), closed)
 
             broken = self.lstriplines(closed)
-            ukijumuisha open(data_path, 'w') as f:
+            ukijumuisha open(data_path, 'w') kama f:
                 f.write(broken)
             rc, out, err = assert_python_ok(self.script, '-r', data_path)
             self.assertEqual(out, b'')
             self.assertEqual(err, b'')
-            ukijumuisha open(backup) as f:
+            ukijumuisha open(backup) kama f:
                 self.assertEqual(f.read(), broken)
-            ukijumuisha open(data_path) as f:
+            ukijumuisha open(data_path) kama f:
                 indented = f.read()
             compile(indented, '_test.py', 'exec')
             self.assertEqual(self.pindent(broken, '-r'), indented)
@@ -84,19 +84,19 @@ kundi PindentTests(unittest.TestCase):
     eleza test_statements(self):
         clean = textwrap.dedent("""\
             ikiwa a:
-                pass
+                pita
 
             ikiwa a:
-                pass
+                pita
             isipokua:
-                pass
+                pita
 
             ikiwa a:
-                pass
+                pita
             elif:
-                pass
+                pita
             isipokua:
-                pass
+                pita
 
             wakati a:
                 koma
@@ -104,7 +104,7 @@ kundi PindentTests(unittest.TestCase):
             wakati a:
                 koma
             isipokua:
-                pass
+                pita
 
             kila i kwenye a:
                 koma
@@ -112,58 +112,58 @@ kundi PindentTests(unittest.TestCase):
             kila i kwenye a:
                 koma
             isipokua:
-                pass
+                pita
 
             jaribu:
-                pass
+                pita
             mwishowe:
-                pass
+                pita
 
             jaribu:
-                pass
-            except TypeError:
-                pass
-            except ValueError:
-                pass
+                pita
+            tatizo TypeError:
+                pita
+            tatizo ValueError:
+                pita
             isipokua:
-                pass
+                pita
 
             jaribu:
-                pass
-            except TypeError:
-                pass
-            except ValueError:
-                pass
+                pita
+            tatizo TypeError:
+                pita
+            tatizo ValueError:
+                pita
             mwishowe:
-                pass
+                pita
 
             ukijumuisha a:
-                pass
+                pita
 
             kundi A:
-                pass
+                pita
 
             eleza f():
-                pass
+                pita
             """)
 
         closed = textwrap.dedent("""\
             ikiwa a:
-                pass
+                pita
             # end if
 
             ikiwa a:
-                pass
+                pita
             isipokua:
-                pass
+                pita
             # end if
 
             ikiwa a:
-                pass
+                pita
             elif:
-                pass
+                pita
             isipokua:
-                pass
+                pita
             # end if
 
             wakati a:
@@ -173,7 +173,7 @@ kundi PindentTests(unittest.TestCase):
             wakati a:
                 koma
             isipokua:
-                pass
+                pita
             # end while
 
             kila i kwenye a:
@@ -183,45 +183,45 @@ kundi PindentTests(unittest.TestCase):
             kila i kwenye a:
                 koma
             isipokua:
-                pass
+                pita
             # end for
 
             jaribu:
-                pass
+                pita
             mwishowe:
-                pass
+                pita
             # end try
 
             jaribu:
-                pass
-            except TypeError:
-                pass
-            except ValueError:
-                pass
+                pita
+            tatizo TypeError:
+                pita
+            tatizo ValueError:
+                pita
             isipokua:
-                pass
+                pita
             # end try
 
             jaribu:
-                pass
-            except TypeError:
-                pass
-            except ValueError:
-                pass
+                pita
+            tatizo TypeError:
+                pita
+            tatizo ValueError:
+                pita
             mwishowe:
-                pass
+                pita
             # end try
 
             ukijumuisha a:
-                pass
+                pita
             # end with
 
             kundi A:
-                pass
+                pita
             # end kundi A
 
             eleza f():
-                pass
+                pita
             # end eleza f
             """)
         self.pindent_test(clean, closed)
@@ -231,7 +231,7 @@ kundi PindentTests(unittest.TestCase):
             eleza foobar(a, b):
                 ikiwa a == b:
                     a = a+1
-                elikiwa a < b:
+                lasivyo a < b:
                     b = b-1
                     ikiwa b > a: a = a-1
                 isipokua:
@@ -241,7 +241,7 @@ kundi PindentTests(unittest.TestCase):
             eleza foobar(a, b):
                 ikiwa a == b:
                     a = a+1
-                elikiwa a < b:
+                lasivyo a < b:
                     b = b-1
                     ikiwa b > a: a = a-1
                     # end if
@@ -256,12 +256,12 @@ kundi PindentTests(unittest.TestCase):
         clean = textwrap.dedent("""\
             ikiwa a:
                      ikiwa b:
-                              pass
+                              pita
             """)
         closed = textwrap.dedent("""\
             ikiwa a:
                      ikiwa b:
-                              pass
+                              pita
                      # end if
             # end if
             """)
@@ -272,12 +272,12 @@ kundi PindentTests(unittest.TestCase):
         clean = textwrap.dedent("""\
             ikiwa a:
             \tikiwa b:
-            \t\tpass
+            \t\tpita
             """)
         closed = textwrap.dedent("""\
             ikiwa a:
             \tikiwa b:
-            \t\tpass
+            \t\tpita
             \t# end if
             # end if
             """)
@@ -294,7 +294,7 @@ kundi PindentTests(unittest.TestCase):
                def\
             \\
             f:
-                  pass
+                  pita
             """)
         closed = textwrap.dedent("""\
             class\\
@@ -303,7 +303,7 @@ kundi PindentTests(unittest.TestCase):
                def\
             \\
             f:
-                  pass
+                  pita
                # end eleza f
             # end kundi A
             """)
@@ -314,22 +314,22 @@ kundi PindentTests(unittest.TestCase):
         clean = textwrap.dedent("""\
             ikiwa a:
 
-                pass
+                pita
             """)
         closed = textwrap.dedent("""\
             ikiwa a:
 
-                pass
+                pita
             # end if
             """)
         self.pindent_test(clean, closed)
 
     eleza test_oneline(self):
         clean = textwrap.dedent("""\
-            ikiwa a: pass
+            ikiwa a: pita
             """)
         closed = textwrap.dedent("""\
-            ikiwa a: pass
+            ikiwa a: pita
             # end if
             """)
         self.pindent_test(clean, closed)

@@ -11,22 +11,22 @@ kundi BaseStream(io.BufferedIOBase):
 
     eleza _check_not_closed(self):
         ikiwa self.closed:
-             ashiria ValueError("I/O operation on closed file")
+            ashiria ValueError("I/O operation on closed file")
 
     eleza _check_can_read(self):
         ikiwa sio self.readable():
-             ashiria io.UnsupportedOperation("File sio open kila reading")
+            ashiria io.UnsupportedOperation("File sio open kila reading")
 
     eleza _check_can_write(self):
         ikiwa sio self.writable():
-             ashiria io.UnsupportedOperation("File sio open kila writing")
+            ashiria io.UnsupportedOperation("File sio open kila writing")
 
     eleza _check_can_seek(self):
         ikiwa sio self.readable():
-             ashiria io.UnsupportedOperation("Seeking ni only supported "
+            ashiria io.UnsupportedOperation("Seeking ni only supported "
                                           "on files open kila reading")
         ikiwa sio self.seekable():
-             ashiria io.UnsupportedOperation("The underlying file object "
+            ashiria io.UnsupportedOperation("The underlying file object "
                                           "does sio support seeking")
 
 
@@ -64,7 +64,7 @@ kundi DecompressReader(io.RawIOBase):
         rudisha self._fp.seekable()
 
     eleza readinto(self, b):
-        ukijumuisha memoryview(b) as view, view.cast("B") as byte_view:
+        ukijumuisha memoryview(b) kama view, view.cast("B") kama byte_view:
             data = self.read(len(byte_view))
             byte_view[:len(data)] = data
         rudisha len(data)
@@ -80,7 +80,7 @@ kundi DecompressReader(io.RawIOBase):
         # rudisha any data. In this case, try again after reading another block.
         wakati Kweli:
             ikiwa self._decompressor.eof:
-                rawblock = (self._decompressor.unused_data or
+                rawblock = (self._decompressor.unused_data ama
                             self._fp.read(BUFFER_SIZE))
                 ikiwa sio rawblock:
                     koma
@@ -89,14 +89,14 @@ kundi DecompressReader(io.RawIOBase):
                     **self._decomp_args)
                 jaribu:
                     data = self._decompressor.decompress(rawblock, size)
-                except self._trailing_error:
+                tatizo self._trailing_error:
                     # Trailing data isn't a valid compressed stream; ignore it.
                     koma
             isipokua:
                 ikiwa self._decompressor.needs_input:
                     rawblock = self._fp.read(BUFFER_SIZE)
                     ikiwa sio rawblock:
-                         ashiria EOFError("Compressed file ended before the "
+                        ashiria EOFError("Compressed file ended before the "
                                        "end-of-stream marker was reached")
                 isipokua:
                     rawblock = b""
@@ -118,19 +118,19 @@ kundi DecompressReader(io.RawIOBase):
         self._decompressor = self._decomp_factory(**self._decomp_args)
 
     eleza seek(self, offset, whence=io.SEEK_SET):
-        # Recalculate offset as an absolute file position.
+        # Recalculate offset kama an absolute file position.
         ikiwa whence == io.SEEK_SET:
-            pass
-        elikiwa whence == io.SEEK_CUR:
+            pita
+        lasivyo whence == io.SEEK_CUR:
             offset = self._pos + offset
-        elikiwa whence == io.SEEK_END:
+        lasivyo whence == io.SEEK_END:
             # Seeking relative to EOF - we need to know the file's size.
             ikiwa self._size < 0:
                 wakati self.read(io.DEFAULT_BUFFER_SIZE):
-                    pass
+                    pita
             offset = self._size + offset
         isipokua:
-             ashiria ValueError("Invalid value kila whence: {}".format(whence))
+            ashiria ValueError("Invalid value kila whence: {}".format(whence))
 
         # Make it so that offset ni the number of bytes to skip forward.
         ikiwa offset < self._pos:

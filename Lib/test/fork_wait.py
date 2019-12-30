@@ -11,7 +11,7 @@ active threads survive kwenye the child after a fork(); this ni an error.
 
 agiza os, sys, time, unittest
 agiza threading
-agiza test.support as support
+agiza test.support kama support
 
 
 LONGSLEEP = 2
@@ -40,8 +40,8 @@ kundi ForkWait(unittest.TestCase):
             self.alive[id] = os.getpid()
             jaribu:
                 time.sleep(SHORTSLEEP)
-            except OSError:
-                pass
+            tatizo OSError:
+                pita
 
     eleza wait_impl(self, cpid):
         kila i kwenye range(10):

@@ -6,7 +6,7 @@ module."""
 
 
 # XXX this module has *lots* of code ripped-off quite transparently from
-# build_ext.py -- sio surprisingly really, as the work required to build
+# build_ext.py -- sio surprisingly really, kama the work required to build
 # a static library kutoka a collection of C source files ni sio really all
 # that different kutoka what's required to build a shared object file from
 # a collection of C source files.  Nevertheless, I haven't done the
@@ -67,7 +67,7 @@ kundi build_clib(Command):
 
     eleza finalize_options(self):
         # This might be confusing: both build-clib na build-temp default
-        # to build-temp as defined by the "build" command.  This ni because
+        # to build-temp kama defined by the "build" command.  This ni because
         # I think that C libraries are really just temporary build
         # by-products, at least kutoka the point of view of building Python
         # extensions -- but I want to keep my options open.
@@ -87,7 +87,7 @@ kundi build_clib(Command):
         ikiwa isinstance(self.include_dirs, str):
             self.include_dirs = self.include_dirs.split(os.pathsep)
 
-        # XXX same as kila build_ext -- what about 'self.define' and
+        # XXX same kama kila build_ext -- what about 'self.define' na
         # 'self.undef' ?
 
 
@@ -118,7 +118,7 @@ kundi build_clib(Command):
     eleza check_library_list(self, libraries):
         """Ensure that the list of libraries ni valid.
 
-        `library` ni presumably provided as a command option 'libraries'.
+        `library` ni presumably provided kama a command option 'libraries'.
         This method checks that it ni a list of 2-tuples, where the tuples
         are (library_name, build_info_dict).
 
@@ -126,27 +126,27 @@ kundi build_clib(Command):
         just returns otherwise.
         """
         ikiwa sio isinstance(libraries, list):
-             ashiria DistutilsSetupError(
+            ashiria DistutilsSetupError(
                   "'libraries' option must be a list of tuples")
 
         kila lib kwenye libraries:
             ikiwa sio isinstance(lib, tuple) na len(lib) != 2:
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "each element of 'libraries' must a 2-tuple")
 
             name, build_info = lib
 
             ikiwa sio isinstance(name, str):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "first element of each tuple kwenye 'libraries' "
                       "must be a string (the library name)")
 
             ikiwa '/' kwenye name ama (os.sep != '/' na os.sep kwenye name):
-                 ashiria DistutilsSetupError("bad library name '%s': "
+                ashiria DistutilsSetupError("bad library name '%s': "
                        "may sio contain directory separators" % lib[0])
 
             ikiwa sio isinstance(build_info, dict):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                       "second element of each tuple kwenye 'libraries' "
                       "must be a dictionary (build info)")
 
@@ -169,7 +169,7 @@ kundi build_clib(Command):
         kila (lib_name, build_info) kwenye self.libraries:
             sources = build_info.get('sources')
             ikiwa sources ni Tupu ama sio isinstance(sources, (list, tuple)):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present na must be "
                        "a list of source filenames" % lib_name)
@@ -182,7 +182,7 @@ kundi build_clib(Command):
         kila (lib_name, build_info) kwenye libraries:
             sources = build_info.get('sources')
             ikiwa sources ni Tupu ama sio isinstance(sources, (list, tuple)):
-                 ashiria DistutilsSetupError(
+                ashiria DistutilsSetupError(
                        "in 'libraries' option (library '%s'), "
                        "'sources' must be present na must be "
                        "a list of source filenames" % lib_name)

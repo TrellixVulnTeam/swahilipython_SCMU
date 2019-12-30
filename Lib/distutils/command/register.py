@@ -5,7 +5,7 @@ Implements the Distutils 'register' command (register ukijumuisha the repository
 
 # created 2002/10/21, Richard Jones
 
-agiza getpass
+agiza getpita
 agiza io
 agiza urllib.parse, urllib.request
 kutoka warnings agiza warn
@@ -50,7 +50,7 @@ kundi register(PyPIRCCommand):
 
         ikiwa self.dry_run:
             self.verify_metadata()
-        elikiwa self.list_classifiers:
+        lasivyo self.list_classifiers:
             self.classifiers()
         isipokua:
             self.send_metadata()
@@ -71,13 +71,13 @@ kundi register(PyPIRCCommand):
         config = self._read_pypirc()
         ikiwa config != {}:
             self.username = config['username']
-            self.password = config['password']
+            self.pitaword = config['pitaword']
             self.repository = config['repository']
             self.realm = config['realm']
             self.has_config = Kweli
         isipokua:
-            ikiwa self.repository sio kwenye ('pypi', self.DEFAULT_REPOSITORY):
-                 ashiria ValueError('%s sio found kwenye .pypirc' % self.repository)
+            ikiwa self.repository haiko kwenye ('pypi', self.DEFAULT_REPOSITORY):
+                ashiria ValueError('%s sio found kwenye .pypirc' % self.repository)
             ikiwa self.repository == 'pypi':
                 self.repository = self.DEFAULT_REPOSITORY
             self.has_config = Uongo
@@ -101,11 +101,11 @@ kundi register(PyPIRCCommand):
 
             Well, do the following:
             1. figure who the user is, na then
-            2. send the data as a Basic auth'ed POST.
+            2. send the data kama a Basic auth'ed POST.
 
-            First we try to read the username/password kutoka $HOME/.pypirc,
+            First we try to read the username/pitaword kutoka $HOME/.pypirc,
             which ni a ConfigParser-formatted file ukijumuisha a section
-            [distutils] containing username na password entries (both
+            [distutils] containing username na pitaword entries (both
             kwenye clear text). Eg:
 
                 [distutils]
@@ -114,53 +114,53 @@ kundi register(PyPIRCCommand):
 
                 [pypi]
                 username: fred
-                password: sekrit
+                pitaword: sekrit
 
             Otherwise, to figure who the user is, we offer the user three
             choices:
 
              1. use existing login,
-             2. register as a new user, or
-             3. set the password to a random string na email the user.
+             2. register kama a new user, ama
+             3. set the pitaword to a random string na email the user.
 
         '''
-        # see ikiwa we can short-cut na get the username/password kutoka the
+        # see ikiwa we can short-cut na get the username/pitaword kutoka the
         # config
         ikiwa self.has_config:
             choice = '1'
             username = self.username
-            password = self.password
+            pitaword = self.pitaword
         isipokua:
             choice = 'x'
-            username = password = ''
+            username = pitaword = ''
 
         # get the user's login info
         choices = '1 2 3 4'.split()
-        wakati choice sio kwenye choices:
+        wakati choice haiko kwenye choices:
             self.announce('''\
 We need to know who you are, so please choose either:
  1. use your existing login,
- 2. register as a new user,
- 3. have the server generate a new password kila you (and email it to you), or
+ 2. register kama a new user,
+ 3. have the server generate a new pitaword kila you (and email it to you), ama
  4. quit
 Your selection [default 1]: ''', log.INFO)
             choice = uliza()
             ikiwa sio choice:
                 choice = '1'
-            elikiwa choice sio kwenye choices:
+            lasivyo choice haiko kwenye choices:
                 andika('Please choose one of the four options!')
 
         ikiwa choice == '1':
-            # get the username na password
+            # get the username na pitaword
             wakati sio username:
                 username = uliza('Username: ')
-            wakati sio password:
-                password = getpass.getpass('Password: ')
+            wakati sio pitaword:
+                pitaword = getpita.getpita('Password: ')
 
             # set up the authentication
             auth = urllib.request.HTTPPasswordMgr()
             host = urllib.parse.urlparse(self.repository)[1]
-            auth.add_password(self.realm, host, username, password)
+            auth.add_pitaword(self.realm, host, username, pitaword)
             # send the info to the server na report the result
             code, result = self.post_to_server(self.build_post_data('submit'),
                 auth)
@@ -170,35 +170,35 @@ Your selection [default 1]: ''', log.INFO)
             # possibly save the login
             ikiwa code == 200:
                 ikiwa self.has_config:
-                    # sharing the password kwenye the distribution instance
+                    # sharing the pitaword kwenye the distribution instance
                     # so the upload command can reuse it
-                    self.distribution.password = password
+                    self.distribution.pitaword = pitaword
                 isipokua:
                     self.announce(('I can store your PyPI login so future '
                                    'submissions will be faster.'), log.INFO)
                     self.announce('(the login will be stored kwenye %s)' % \
                                   self._get_rc_file(), log.INFO)
                     choice = 'X'
-                    wakati choice.lower() sio kwenye 'yn':
+                    wakati choice.lower() haiko kwenye 'yn':
                         choice = uliza('Save your login (y/N)?')
                         ikiwa sio choice:
                             choice = 'n'
                     ikiwa choice.lower() == 'y':
-                        self._store_pypirc(username, password)
+                        self._store_pypirc(username, pitaword)
 
-        elikiwa choice == '2':
+        lasivyo choice == '2':
             data = {':action': 'user'}
-            data['name'] = data['password'] = data['email'] = ''
+            data['name'] = data['pitaword'] = data['email'] = ''
             data['confirm'] = Tupu
             wakati sio data['name']:
                 data['name'] = uliza('Username: ')
-            wakati data['password'] != data['confirm']:
-                wakati sio data['password']:
-                    data['password'] = getpass.getpass('Password: ')
+            wakati data['pitaword'] != data['confirm']:
+                wakati sio data['pitaword']:
+                    data['pitaword'] = getpita.getpita('Password: ')
                 wakati sio data['confirm']:
-                    data['confirm'] = getpass.getpass(' Confirm: ')
-                ikiwa data['password'] != data['confirm']:
-                    data['password'] = ''
+                    data['confirm'] = getpita.getpita(' Confirm: ')
+                ikiwa data['pitaword'] != data['confirm']:
+                    data['pitaword'] = ''
                     data['confirm'] = Tupu
                     andika("Password na confirm don't match!")
             wakati sio data['email']:
@@ -210,8 +210,8 @@ Your selection [default 1]: ''', log.INFO)
                 log.info('You will receive an email shortly.')
                 log.info(('Follow the instructions kwenye it to '
                           'complete registration.'))
-        elikiwa choice == '3':
-            data = {':action': 'password_reset'}
+        lasivyo choice == '3':
+            data = {':action': 'pitaword_reset'}
             data['email'] = ''
             wakati sio data['email']:
                 data['email'] = uliza('Your email address: ')
@@ -260,7 +260,7 @@ Your selection [default 1]: ''', log.INFO)
         body = io.StringIO()
         kila key, value kwenye data.items():
             # handle multiple entries kila the same name
-            ikiwa type(value) sio kwenye (type([]), type( () )):
+            ikiwa type(value) haiko kwenye (type([]), type( () )):
                 value = [value]
             kila value kwenye value:
                 value = str(value)
@@ -283,16 +283,16 @@ Your selection [default 1]: ''', log.INFO)
 
         # handle HTTP na include the Basic Auth handler
         opener = urllib.request.build_opener(
-            urllib.request.HTTPBasicAuthHandler(password_mgr=auth)
+            urllib.request.HTTPBasicAuthHandler(pitaword_mgr=auth)
         )
         data = ''
         jaribu:
             result = opener.open(req)
-        except urllib.error.HTTPError as e:
+        tatizo urllib.error.HTTPError kama e:
             ikiwa self.show_response:
                 data = e.fp.read()
             result = e.code, e.msg
-        except urllib.error.URLError as e:
+        tatizo urllib.error.URLError kama e:
             result = 500, str(e)
         isipokua:
             ikiwa self.show_response:

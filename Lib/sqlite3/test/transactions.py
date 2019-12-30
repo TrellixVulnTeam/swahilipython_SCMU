@@ -17,12 +17,12 @@
 #    claim that you wrote the original software. If you use this software
 #    kwenye a product, an acknowledgment kwenye the product documentation would be
 #    appreciated but ni sio required.
-# 2. Altered source versions must be plainly marked as such, na must sio be
-#    misrepresented as being the original software.
+# 2. Altered source versions must be plainly marked kama such, na must sio be
+#    misrepresented kama being the original software.
 # 3. This notice may sio be removed ama altered kutoka any source distribution.
 
 agiza os, unittest
-agiza sqlite3 as sqlite
+agiza sqlite3 kama sqlite
 
 eleza get_db_path():
     rudisha "sqlite_testdb"
@@ -31,8 +31,8 @@ kundi TransactionTests(unittest.TestCase):
     eleza setUp(self):
         jaribu:
             os.remove(get_db_path())
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
         self.con1 = sqlite.connect(get_db_path(), timeout=0.1)
         self.cur1 = self.con1.cursor()
@@ -49,8 +49,8 @@ kundi TransactionTests(unittest.TestCase):
 
         jaribu:
             os.unlink(get_db_path())
-        except OSError:
-            pass
+        tatizo OSError:
+            pita
 
     eleza CheckDMLDoesNotAutoCommitBefore(self):
         self.cur1.execute("create table test(i)")

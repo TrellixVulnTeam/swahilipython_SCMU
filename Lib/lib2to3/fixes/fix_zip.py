@@ -10,7 +10,7 @@ iter(<>), list(<>), tuple(<>), sorted(<>), ...join(<>), ama kila V kwenye <>:.
 # Local imports
 kutoka .. agiza fixer_base
 kutoka ..pytree agiza Node
-kutoka ..pygram agiza python_symbols as syms
+kutoka ..pygram agiza python_symbols kama syms
 kutoka ..fixer_util agiza Name, ArgList, in_special_context
 
 
